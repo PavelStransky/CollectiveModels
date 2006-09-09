@@ -1,0 +1,124 @@
+using System;
+
+namespace PavelStransky.Math {
+	/// <summary>
+	/// Zadanými hodnotami proloží kubický spline
+	/// </summary>
+	public class Spline {
+		// Vstupní data
+		private PointVector data;
+		// Vektor druhých derivací
+		private Vector d2;
+
+		public Spline(PointVector data) {
+			if(data.Length <= 2)
+				throw new Exception(errorMessageBadLength);
+
+			this.data = data.SortX();
+			this.d2 = this.ComputeDerivation();
+		}
+
+		private Vector ComputeDerivation() {
+			Matrix m = new Matrix(4, this.data.Length);
+			Vector result;
+		
+			double xn = this.data[1].X - this.data[0].Y;
+			double yn = this.data[1].Y - this.data[0].Y;
+
+			for(int i = 1; i < this.data.Length - 1; i++) {
+				double xo = xn;
+				xn = this.data[i + 1].X - this.data[i].X;
+		
+				double yo = yn;
+				yn = this.data[i + 1].Y - this.data[i].Y;
+		
+				m[0, i] = yn / xn - yo / xo;
+				m[1, i] = xo / 6.0;
+				m[2, i] = (xo + xn) / 3.0;
+				m[3, i] = xn / 6.0;
+			}
+	
+			int n = this.data.Length - 2;
+			for(int i = 2; i <= n; i++) {
+				double d = m[1, i] / m[2, i - 1];
+				m[2, i] -= m[3, i - 1] * d;
+				m[1, i] = 0;
+		
+				m[0, i] -= m[0, i - 1] * d;
+			}
+	
+			m[0, n] /= m[2, n];
+	
+			for(int i = n - 1; i >= 1; i--)
+				m[0, i] = (m[0, i] - m[3, i] * m[0, i + 1]) / m[2, i];
+			 
+			result = m.GetRowVector(0);
+			result[0] = result[result.Length - 1] = 0;
+
+			return result;
+		}
+
+		/// <summary>
+		/// Indexer (vrací aproximovanou hodnotu v daném bodì)
+		/// </summary>
+		public double this[double x] {
+			get {
+				double t, A, B, C, D, dx;
+	
+				int i;
+				for(i = 1; i < this.data.Length; i++)
+					if((this.data[i - 1].X <= x) && (this.data[i].X > x)) break;
+				if(i == this.data.Length) 
+					return 0.0;
+	
+				dx = (this.data[i].X - this.data[i - 1].X);
+				t = (x - this.data[i - 1].X) / dx;
+
+				A = 1 - t;
+				B = t;
+				C = (A * A * A - A) * dx * dx / 6.0;
+				D = (B * B * B - B) * dx * dx / 6.0;
+	
+				return A * this.data[i - 1].Y + B * this.data[i].Y + C * this.d2[i - 1] + D * this.d2[i];
+			}
+		}
+
+		/// <summary>
+		/// Vrací aproximovanou hodnotu
+		/// </summary>
+		/// <param name="x">Bod</param>
+		public double GetValue(double x) {
+			return this[x];
+		}
+
+		/// <summary>
+		/// Vrátí vektor apoximovaných dat v zadaném rozmezí startX - EndX
+		/// </summary>
+		/// <param name="number">Poèet bodù ve výstupním vektoru</param>
+		/// <param name="startX">Poèáteèní hodnota nezávisle promìnné</param>
+		/// <param name="endX">Koncová hodnota nezávisle promìnné</param>
+		public PointVector GetPointVector(int number, double startX, double endX) {
+			PointVector result = new PointVector(number);
+
+			double koef = (endX - startX) / number;
+
+			for(int i = 0; i < result.Length; i++) {
+				double x = koef * i + startX;
+				result[i].X = x;
+				result[i].Y = this[x];
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Vrátí vektor aproximovaných dat v rozmezí mezi minimální a maximální hodnotou vstupních dat
+		/// </summary>
+		/// <param name="number">Poèet bodù ve výstupním vektoru</param>
+		public PointVector GetPointVector(int number) {
+			return this.GetPointVector(number, this.data.MinX(), this.data.MaxX());
+		}
+
+		private const string errorMessageBadLength = "K výpoètu spline musí mít vstupní data alespoò 3 body.";
+	}
+}

@@ -1,0 +1,491 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{32A09091-75AC-4F78-BB4D-8721DAD0E1CE}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Expression</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>PavelStransky.Expression</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\GCM\GCM.csproj">
+      <Project>{9A261EE9-33BB-4136-B0CA-681BD82B6806}</Project>
+      <Name>GCM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IBM\IBM.csproj">
+      <Project>{1F119B82-E6B3-4FF0-A026-72AC1D452DA6}</Project>
+      <Name>IBM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Math\Math.csproj">
+      <Name>Math</Name>
+      <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Array.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Atom.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\ArrayAdd.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\ArrayGen.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\BinaryOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Divide.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Equals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\GEquals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Greater.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Interval.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\LEquals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Lesser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Minus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\NotEquals.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Plus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Power.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperators\Times.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ColorArray.cs" />
+    <Compile Include="Context.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Expression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExpressionList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Formula.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Function.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Dynamics\CGCMJ.cs" />
+    <Compile Include="Functions\Dynamics\CIBM.cs" />
+    <Compile Include="Functions\Dynamics\Energy.cs" />
+    <Compile Include="Functions\Dynamics\EnergyLevels.cs" />
+    <Compile Include="Functions\Dynamics\HH.cs" />
+    <Compile Include="Functions\Dynamics\QGCM.cs" />
+    <Compile Include="Functions\Dynamics\SALIG.cs" />
+    <Compile Include="Functions\Dynamics\SALIR.cs" />
+    <Compile Include="Functions\Dynamics\SALIZ.cs" />
+    <Compile Include="Functions\Dynamics\TrajectoryP.cs" />
+    <Compile Include="Functions\Math\Abs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\AddItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Math\ArcTan.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Array.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Array2Vector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Clear.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\CM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\CumulHistogram.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\DGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\DropColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\DropRows.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\EigenSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Eval.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Exit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Export.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FNames.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\For.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FullHelp.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FunctionDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FunctionDefinitionIE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FunctionDefinitionMinMax.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FunctionDefinitionMinMaxIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\FunctionDefinitions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Dynamics\CGCM.cs" />
+    <Compile Include="Functions\Dynamics\Equipotential.cs" />
+    <Compile Include="Functions\Dynamics\InitialCondition.cs" />
+    <Compile Include="Functions\Dynamics\Poincare.cs" />
+    <Compile Include="Functions\Dynamics\SALI.cs" />
+    <Compile Include="Functions\Dynamics\TrajectoryM.cs" />
+    <Compile Include="Functions\GenArray.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\GetColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\GetRows.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\GetX.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\GetY.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\GraphArray.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Help.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Histogram.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\HotKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\If.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Import.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Integrate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Interval.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Join.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Length.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\LGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Load.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Math\Log.cs" />
+    <Compile Include="Functions\Math\Sqrt.cs" />
+    <Compile Include="Functions\Matrix.cs" />
+    <Compile Include="Functions\Max.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\MaxAbs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\MaxAbsIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\MaxIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Mean.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Min.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\MinAbs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\MinAbsIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\MinIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Norm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Normalize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Objects.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\PC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Permute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Point.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\PointVector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Polynom.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Regression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Save.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\SLength.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\SNormalize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Sort.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\SortDesc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Spacing.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Split.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\SplitColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\SplitRows.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Start.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Stop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\String.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\SwapDim.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Symmetry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Timer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Transpose.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Type.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Use.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Var.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Vector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Wigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Functions\Windows.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GraphArray.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GraphProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Indexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\Operator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\Operators.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Timer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Transform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnaryOperators\Minus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnaryOperators\Plus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnaryOperators\UnaryOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Variable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Timer.resx">
+      <DependentUpon>Timer.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

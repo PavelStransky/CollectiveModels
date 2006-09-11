@@ -5,15 +5,18 @@ using System.Text;
 namespace PavelStransky.Math {
     /// <summary>
     /// Tøída, poèátající adaptivní RK metodou; podle NR, pomocí metody 4. a 5. øádu urèí chybu výpoètu
+    /// Jako hodnotící parametr uvažuje i energii
     /// </summary>
     public class RungeKuttaAdaptive: RungeKutta {
+        private Vector scale;
+
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="equation">Rovnice</param>
+        /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výpoètu</param>
-        public RungeKuttaAdaptive(VectorFunction equation, double precision)
-            : base(equation, precision) {
+        public RungeKuttaAdaptive(IDynamicalSystem dynamicalSystem, double precision)
+            : base(dynamicalSystem, precision != 0.0 ? precision : defaultPrecision) {
         }
 
         /// <summary>
@@ -24,33 +27,49 @@ namespace PavelStransky.Math {
         /// <param name="newStep">Nový krok</param>
         /// <returns>Vypoèítaný pøírùstek</returns>
         public override Vector Step(Vector x, ref double step, out double newStep) {
+            VectorFunction equation = this.dynamicalSystem.Equation;
+
             do {
-                Vector rightSide0 = this.equation(x);
-                Vector rightSide1 = this.equation(x + step * b[0, 0] * rightSide0);
-                Vector rightSide2 = this.equation(x + step * (b[1, 0] * rightSide0 + b[1, 1] * rightSide1));
-                Vector rightSide3 = this.equation(x + step * (b[2, 0] * rightSide0 + b[2, 1] * rightSide1 + b[2, 2] * rightSide2));
-                Vector rightSide4 = this.equation(x + step * (b[3, 0] * rightSide0 + b[3, 1] * rightSide1 + b[3, 2] * rightSide2 + b[3, 3] * rightSide3));
-                Vector rightSide5 = this.equation(x + step * (b[4, 0] * rightSide0 + b[4, 1] * rightSide1 + b[4, 2] * rightSide2 + b[4, 3] * rightSide3 + b[4, 4] * rightSide4));
+                Vector rightSide0 = equation(x);
+                Vector rightSide1 = equation(x + step * b[0, 0] * rightSide0);
+                Vector rightSide2 = equation(x + step * (b[1, 0] * rightSide0 + b[1, 1] * rightSide1));
+                Vector rightSide3 = equation(x + step * (b[2, 0] * rightSide0 + b[2, 1] * rightSide1 + b[2, 2] * rightSide2));
+                Vector rightSide4 = equation(x + step * (b[3, 0] * rightSide0 + b[3, 1] * rightSide1 + b[3, 2] * rightSide2 + b[3, 3] * rightSide3));
+                Vector rightSide5 = equation(x + step * (b[4, 0] * rightSide0 + b[4, 1] * rightSide1 + b[4, 2] * rightSide2 + b[4, 3] * rightSide3 + b[4, 4] * rightSide4));
 
                 Vector error = step * (dc[0] * rightSide0 + dc[2] * rightSide2 + dc[3] * rightSide3 + dc[4] * rightSide4 + dc[5] * rightSide5);
-                Vector verror = Vector.ItemDiv(error, x.Abs() + step * rightSide0.Abs());
-
+                Vector verror = Vector.ItemDiv(error, scale);
                 double maxerror = verror.Abs().Max() / this.precision;
 
                 if(maxerror <= 1.0) {
                     if(maxerror > errorCon)
-                        newStep = safety * step * System.Math.Pow(maxerror, powerShrink);
+                        newStep = safety * step * System.Math.Pow(maxerror, powerGrow);
                     else
                         newStep = step * 5.0;
 
                     return step * (c5[0] * rightSide0 + c5[2] * rightSide2 + c5[3] * rightSide3 + c5[5] * rightSide5);
                 }
 
-                newStep = safety * step * System.Math.Pow(maxerror, powerGrow);
+                newStep = safety * step * System.Math.Pow(maxerror, powerShrink);
                 newStep = System.Math.Max(newStep, maxStepChange * step);
 
                 step = newStep;
             } while(true);
+        }
+
+        /// <summary>
+        /// Øeší rovnici s poèáteèními podmínkami po èas time
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        public override void Init(Vector initialX) {
+            // Inicializujeme meze
+            Vector bounds = this.dynamicalSystem.Bounds(this.dynamicalSystem.E(initialX));
+            
+            this.scale = new Vector(4);
+            for(int i = 0; i < 4; i++)
+                this.scale[i] = bounds[2 * i + 1] - bounds[2 * i];
+
+            base.Init(initialX);
         }
 
         /// <summary>
@@ -114,5 +133,7 @@ namespace PavelStransky.Math {
         private const double safety = 0.9;
         private const double maxStepChange = 0.1;
         private double errorCon = System.Math.Pow((5.0 / safety), 1.0 / powerGrow);
+
+        private const double defaultPrecision = 1E-12;
     }
 }

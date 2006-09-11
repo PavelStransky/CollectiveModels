@@ -23,8 +23,8 @@ namespace PavelStransky.Math {
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
-        public SALI(IDynamicalSystem dynamicalSystem)
-            : base(dynamicalSystem) {
+        public SALI(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod)
+            : base(dynamicalSystem, precision, rkMethod) {
         }
 
         /// <summary>
@@ -46,8 +46,7 @@ namespace PavelStransky.Math {
         /// <param name="time">Èas</param>
         public PointVector TimeDependence(Vector initialX, double time) {
             PointVector result = new PointVector(defaultNumPoints);
-            RungeKutta rkx = new RungeKutta(this.dynamicalSystem.Equation, defaultPrecision);
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision); 
+            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
 
             int finished = 0;
 
@@ -58,16 +57,22 @@ namespace PavelStransky.Math {
             w1[0] = 1;
             w2[initialX.Length / 2] = 1;
 
-            double step = defaultPrecision;
+            double step = this.rungeKutta.Precision;
             double t = 0;
+
+            this.rungeKutta.Init(initialX);
 
             do {
                 for(int i = 0; i < 1000; i++) {
-                    this.x += rkx.Step(this.x, ref step, out step);
-                    w1 += rkw.Step(w1, ref step, out step);
-                    w2 += rkw.Step(w2, ref step, out step);
+                    double newStep, tStep;
+
+                    this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
+                    w1 += rkw.Step(w1, ref step, out tStep);
+                    w2 += rkw.Step(w2, ref step, out tStep);
 
                     t += step;
+
+                    step = newStep;
                 }
 
                 w1 = w1.EuklideanNormalization();
@@ -94,7 +99,6 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         public double TimeZero(Vector initialX) {
-            RungeKutta rkx = new RungeKutta(this.dynamicalSystem.Equation, defaultPrecision);
             RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
 
             this.x = initialX;
@@ -107,12 +111,18 @@ namespace PavelStransky.Math {
             double step = defaultPrecision;
             double time = 0;
 
+            this.rungeKutta.Init(initialX);
+
             do {
-                this.x += rkx.Step(this.x, ref step, out step);
-                w1 += rkw.Step(w1, ref step, out step);
-                w2 += rkw.Step(w2, ref step, out step);
+                double newStep, tStep;
+
+                this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
+                w1 += rkw.Step(w1, ref step, out tStep);
+                w2 += rkw.Step(w2, ref step, out tStep);
 
                 time += step;
+
+                step = newStep;
 
                 w1 = w1.EuklideanNormalization();
                 w2 = w2.EuklideanNormalization();

@@ -207,21 +207,28 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Meze v souøadnicích x, vx na pøímce y = 0
+        /// Meze v souøadnicích x, y, px, py seøazené do vektoru o 8 složkách (xmin, xmax, ...)
         /// </summary>
         /// <param name="e">Energie</param>
         public Vector Bounds(double e) {
-            Vector result;
+            Vector result = new Vector(8);
             Vector roots = this.Roots(e, 0.0);
 
             if(roots.Length != 0) {
-                result = new Vector(3);
                 result[0] = roots.Min();
                 result[1] = roots.Max();
-                result[2] = System.Math.Sqrt(2.0 / this.K * (e - this.VBG(this.ExtremalBeta(0.0)[0], 0.0)));
+
+                // Meze v y jsou dané maximem v x
+                result[2] = -roots.MaxAbs();
+                result[3] = -result[2];
+
+                // Meze v px, py jsou stejné a symetrické
+                result[4] = -System.Math.Sqrt(2.0 * this.K * (e - this.VBG(this.ExtremalBeta(0.0)[0], 0.0)));
+                result[5] = -result[4];
+
+                result[6] = result[4];
+                result[7] = result[5];
             }
-            else
-                result = new Vector(0);
 
             return result;
         }

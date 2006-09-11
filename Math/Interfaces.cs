@@ -104,7 +104,7 @@ namespace PavelStransky.Math {
         Vector IC(double e, double l);
 
         /// <summary>
-        /// Hranice kinematicky dostupné oblasti na ose x
+        /// Hranice kinematicky dostupné oblasti na osach x, y, vx, vy
         /// </summary>
         /// <param name="e">Energie</param>
         Vector Bounds(double e);

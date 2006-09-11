@@ -179,6 +179,7 @@
     <Compile Include="Function.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Dynamics\Bounds.cs" />
     <Compile Include="Functions\Dynamics\CGCMJ.cs" />
     <Compile Include="Functions\Dynamics\CIBM.cs" />
     <Compile Include="Functions\Dynamics\Energy.cs" />

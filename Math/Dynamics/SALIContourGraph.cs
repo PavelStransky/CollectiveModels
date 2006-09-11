@@ -12,8 +12,10 @@ namespace PavelStransky.Math {
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
-        public SALIContourGraph(IDynamicalSystem dynamicalSystem)
-            : base(dynamicalSystem) {
+        /// <param name="precision">Pøesnost výsledku</param>
+        /// <param name="rkMethod">Metoda k výpoètu RK</param>
+        public SALIContourGraph(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod)
+            : base(dynamicalSystem, precision, rkMethod) {
             if(dynamicalSystem.DegreesOfFreedom != 2)
                 throw new Exception(errorMessageBadDimension);
         }
@@ -25,7 +27,6 @@ namespace PavelStransky.Math {
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="time">Èas</param>
         public double TimeZeroWithPS(Vector initialX, PointVector section, double time) {
-            RungeKutta rkx = new RungeKutta(this.dynamicalSystem.Equation, defaultPrecision);
             RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
 
             this.x = initialX;
@@ -41,18 +42,22 @@ namespace PavelStransky.Math {
             double step = defaultPrecision;
             double t = 0;
 
+            this.rungeKutta.Init(initialX);
+
             do {
                 Vector oldx = this.x;
 
-                this.x += rkx.Step(this.x, ref step, out step);
-                w1 += rkw.Step(w1, ref step, out step);
-                w2 += rkw.Step(w2, ref step, out step);
+                double newStep, tStep;
+
+                this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
+                w1 += rkw.Step(w1, ref step, out tStep);
+                w2 += rkw.Step(w2, ref step, out tStep);
 
                 t += step;
 
                 double y = this.x[1];
                 if(y * oldy <= 0) {
-                    Vector v = (this.x - oldx) * (y / (y - oldy)) + this.x;
+                    Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
                     section[finished].X = v[0];
                     section[finished].Y = v[2];
                     finished++;
@@ -86,8 +91,8 @@ namespace PavelStransky.Math {
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
             double kx = (boundX[1] - boundX[0]) / (n1 - 1);
             double x0 = boundX[0];
-            double ky = 2.0 * boundX[2] / (n2 - 1);
-            double y0 = -boundX[2];
+            double ky = 2.0 * boundX[5] / (n2 - 1);
+            double y0 = -boundX[4];
 
             // Poèáteèní podmínky
             Vector ic = new Vector(4);

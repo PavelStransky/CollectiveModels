@@ -4,8 +4,11 @@ using System.Text;
 
 namespace PavelStransky.Math {
     public class RungeKutta {
-        // Pravá strana rovnice
-        protected VectorFunction equation;
+        // Dynamický systém
+        protected IDynamicalSystem dynamicalSystem;
+
+        // Rovnice (jen pro klasickou RK, jinak se musí použít dynamický systém)
+        private VectorFunction equation;
 
         protected Vector[] x;
         protected Vector time;
@@ -16,7 +19,17 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="equation">Rovnice</param>
+        /// <param name="dynamicalSystem">Dynamický systém</param>
+        /// <param name="precision">Pøesnost výpoètu</param>
+        public RungeKutta(IDynamicalSystem dynamicalSystem, double precision)
+            : this(new VectorFunction(dynamicalSystem.Equation), precision) {
+            this.dynamicalSystem = dynamicalSystem;
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="equation">Pravá strana rovnic</param>
         /// <param name="precision">Pøesnost výpoètu</param>
         public RungeKutta(VectorFunction equation, double precision) {
             this.equation = equation;
@@ -75,6 +88,8 @@ namespace PavelStransky.Math {
             double step = this.precision;
             int i = 0;
 
+            this.Init(initialX);
+
             while(this.time[i] < t) {
                 if(i + 1 >= numPoints) {
                     numPoints = numPoints * 3 / 2;
@@ -91,6 +106,13 @@ namespace PavelStransky.Math {
             }
 
             this.ChangeLength(i);
+        }
+
+        /// <summary>
+        /// Inicializuje výpoèet
+        /// </summary>
+        /// <param name="initialX">Vektor poèáteèních podmínek</param>
+        public virtual void Init(Vector initialX) {
         }
 
         /// <summary>
@@ -121,7 +143,7 @@ namespace PavelStransky.Math {
         public Matrix GetMatrix() {
             int length = this.x[0].Length;
             int numPoints = this.time.Length;
-            Matrix result = new Matrix(numPoints, 2 * length + 1);
+            Matrix result = new Matrix(numPoints, length + 1);
 
             for(int i = 0; i < numPoints; i++) {
                 result[i, 0] = this.time[i];
@@ -133,7 +155,7 @@ namespace PavelStransky.Math {
             return result;
         }
 
-        private const double defaultPrecision = 1E-4;
+        private const double defaultPrecision = 1E-3;
         private const int initialNumPoints = 10000;
     }
 }

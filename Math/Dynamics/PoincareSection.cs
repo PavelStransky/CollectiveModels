@@ -8,9 +8,6 @@ namespace PavelStransky.Math {
     /// a zaznamenává souøadnice o indexech i1, i2
     /// </summary>
     public class PoincareSection: DynamicalSystem {
-        // Runge-Kutta pro výpoèet
-        private RungeKutta rungeKutta;
-
         // Urèení roviny
         private Vector plane;
 
@@ -26,12 +23,11 @@ namespace PavelStransky.Math {
         /// <param name="i2">Zaznamenávaný index y</param>
         /// <param name="precision">Pøesnost výsledku</param>
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
-        public PoincareSection(IDynamicalSystem dynamicalSystem, Vector plane, int i1, int i2, double precision, RungeKuttaMethods rkMethod) : base(dynamicalSystem) {
+        public PoincareSection(IDynamicalSystem dynamicalSystem, Vector plane, int i1, int i2, double precision, RungeKuttaMethods rkMethod)
+            : base(dynamicalSystem, precision, rkMethod) {
             this.plane = plane;
             this.i1 = i1;
             this.i2 = i2;
-
-            this.rungeKutta = this.CreateRungeKutta(precision, rkMethod);
         }
 
         /// <summary>
@@ -48,6 +44,8 @@ namespace PavelStransky.Math {
             double step = this.rungeKutta.Precision;
             double time = 0;
 
+            this.rungeKutta.Init(initialX);
+
             do {
                 double newStep;
                 Vector newx = x + this.rungeKutta.Step(x, ref step, out newStep);
@@ -56,7 +54,7 @@ namespace PavelStransky.Math {
 
                 double newsp = newx * this.plane;
                 if(newsp * sp <= 0) {
-                    Vector v = (newx - x) / (newsp - sp) * sp + x;
+                    Vector v = (x - newx) / (newsp - sp) * sp + x;
                     result[finished].X = v[this.i1];
                     result[finished].Y = v[this.i2];
                     finished++;

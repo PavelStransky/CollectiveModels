@@ -7,27 +7,23 @@ namespace PavelStransky.Math {
     /// Tøída, poèátající adaptivní RK metodou; ovìøuje energii
     /// </summary>
     public class RungeKuttaEnergy: RungeKutta {
-        protected ScalarFunction energy;
-
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="equation">Rovnice</param>
-        /// <param name="energy">Energie</param>
+        /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výpoètu</param>
-        public RungeKuttaEnergy(VectorFunction equation, ScalarFunction energy, double precision)
-            : base(equation, precision) {
-            this.energy = energy;
+        public RungeKuttaEnergy(IDynamicalSystem dynamicalSystem, double precision)
+            : base(dynamicalSystem, precision) {
         }
 
         public override Vector Step(Vector x, ref double step, out double newStep) {
-            double e = this.energy(x);
+            double e = this.dynamicalSystem.E(x);
             Vector result;
             newStep = step;
 
             do {
                 result = base.Step(x, ref step, out step);
-                double newe = this.energy(x + result);
+                double newe = this.dynamicalSystem.E(x + result);
 
                 double diff = System.Math.Abs(newe - e);
 

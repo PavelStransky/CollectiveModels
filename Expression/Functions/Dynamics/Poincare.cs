@@ -100,7 +100,7 @@ namespace PavelStransky.Expression.Functions {
         // Maximální poèet pokusù, než bude 
         private const int maxNumAttemps = 10;
 
-        private const string help = "Vypoèítá Poincarého øez pro danou energii nebo pro danou poèáteèní podmínku";
+        private const string help = "Vypoèítá Poincarého øez pro danou poèáteèní podmínku";
         private const string parameters = "Dynamický systém; energie - trajektorie bude náhodnì vybrána (double) | poèáteèní podmínky (x, y, vx, vy) (Vector); poèet bodù øezu; rovina øezu (Vector); index 1 (int); index 2 (int) [; metoda výpoètu RK [; pøesnost výpoètu (double)]]";
     }
 }

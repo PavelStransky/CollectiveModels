@@ -215,6 +215,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.SALIG());
             functions.Add(new Functions.EnergyLevels());
             functions.Add(new Functions.Energy());
+            functions.Add(new Functions.Bounds());
 
             // Funkce IBM
             functions.Add(new Functions.CIBM());

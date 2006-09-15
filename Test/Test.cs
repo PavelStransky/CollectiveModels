@@ -46,7 +46,7 @@ namespace PavelStransky.Test {
             b = c.E(r1);
             j = c.J(r1).EuklideanNorm();
 
-            ClassicalGCM c1 = new ClassicalGCM(-1, 1, 1, 1);
+            SimpleClassicalGCM c1 = new SimpleClassicalGCM(-1, 1, 1, 1);
             Vector v1 = c1.Roots(-0.1, System.Math.PI / 2.0);
         }
 
@@ -70,7 +70,7 @@ namespace PavelStransky.Test {
         /// Test na výpoèet hranice dostupné oblasti (GCM kontura)
         /// </summary>
         private static void PokusGCMContour() {
-            ClassicalGCM gcm = new ClassicalGCM(-1, 1, 1, 1);
+            SimpleClassicalGCM gcm = new SimpleClassicalGCM(-1, 1, 1, 1);
             PointVector[] p = gcm.EquipotentialContours(-0.1);
 
             FileStream f = new FileStream("c:\\tmp\\gcm.txt", FileMode.Create);

@@ -9,7 +9,7 @@ namespace PavelStransky.Forms {
     /// <summary>
     /// TextBox pro zadávání pøíkazù - nìkteré speciální funkce
     /// </summary>
-    public class CommandTextBox: TextBox {
+    public class CommandTextBox: RichTextBox {
         // Událost Execute
         public delegate void ExecuteCommandEventHandler(object sender, ExecuteCommandEventArgs e);
         public event ExecuteCommandEventHandler ExecuteCommand;

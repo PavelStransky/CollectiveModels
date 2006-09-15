@@ -44,18 +44,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Konstruktor rozšíøeného Lagrangiánu
-        /// </summary>
-        /// <param name="a">Parametr A</param>
-        /// <param name="b">Parametr B</param>
-        /// <param name="c">Parametr C</param>
-        /// <param name="k">Parametr K</param>
-        /// <param name="l">Parametr L</param>
-        public QuantumGCM(double a, double b, double c, double k, double l)
-            : base(a, b, c, k, l) {
-        }
-
-        /// <summary>
         /// Nastaví testovací parametry podle fortranovského kódu
         /// </summary>
         public void Test() {

@@ -1,217 +1,421 @@
 using System;
+using System.IO;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Data;
-using System.IO;
+using System.Threading;
+
+using PavelStransky.Expression;
+using PavelStransky.Math;
 
 namespace PavelStransky.Forms {
-	/// <summary>
-	/// Editor pøíkazù pro Context
-	/// </summary>
-	public class Editor : System.Windows.Forms.Form {
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		private System.Windows.Forms.MainMenu mainMenu;
-		private System.Windows.Forms.MenuItem mnFile;
-		private System.Windows.Forms.MenuItem mnFileOpen;
-		private System.Windows.Forms.MenuItem mnFileExit;
+    /// <summary>
+    /// Formuláø pro editaci
+    /// </summary>
+    public partial class Editor : Form {
+        //Kontext s výrazy
+        private Context context;
 
-		private System.Windows.Forms.OpenFileDialog openFileDialog;
+        // Jméno souboru
+        private string fileName = string.Empty;
 
-		// Jednotlivé øádky dokumentu
-		private ArrayList documentLines = new ArrayList();
+        // Došlo k modifikaci?
+        private bool modified = false;
 
-		// Objekt graphics
-		Graphics graphics;
+        // Èíslo výsledkového formuláøe
+        private static int resultNumber = 0;
 
-		// Fonty
-		private Font inputFont;
-		private Font outputFont;
+        /// <summary>
+        /// Nefunguje dobøe událost txtCommand_OnModifiedChanged, proto musíme vyøešit po svém
+        /// </summary>
+        private bool Modified {
+            get {
+                return this.modified;
+            }
+            set {
+                if(this.modified != value) {
+                    this.modified = value;
+                    this.SetCaption();
+                }
+            }
+        }
 
-		// Brushes
-		private Brush brush;
+        /// <summary>
+        /// Pøeète / nastaví jméno souboru
+        /// </summary>
+        public string FileName {
+            get {
+                return this.fileName;
+            }
+            set {
+                this.Directory = this.DirectoryFromFile(value);
+                this.fileName = value;
+            }
+        }
 
-		public Editor() {
-			this.graphics = this.CreateGraphics();
-			this.brush = Brushes.Blue;
+        /// <summary>
+        /// Nastaví / vyzvedne aktuální adresáø
+        /// </summary>
+        public string Directory {
+            get {
+                if(this.context.Contains(directoryVariable) && this.context[directoryVariable].Item is string)
+                    return this.context[directoryVariable].Item as string;
+                else
+                    return string.Empty;
+            }
+            set {
+                this.context.SetVariable(directoryVariable, value);
+            }
+        }
 
-			this.InitializeComponent();
-			this.CreateFonts();
-			this.InitializeOpenFileDialog();
-		}
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        public Editor() {
+            this.InitializeComponent();
 
-		/// <summary>
-		/// Vytvoøí fonty
-		/// </summary>
-		private void CreateFonts() {
-			this.inputFont = new Font("Arial", 10, FontStyle.Bold);
-			this.outputFont = new Font("Arial", 10, FontStyle.Regular);
-			TextLineInformation.LineHeight = (int)(1.2*System.Math.Max(this.inputFont.Height, this.outputFont.Height));
-		}
+            this.context = new Expression.Context();
+            this.context.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
+            this.context.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
 
-		/// <summary>
-		/// Vytvoøí a nastaví dialog otevøení souboru
-		/// </summary>
-		private void InitializeOpenFileDialog() {
-			this.openFileDialog = new OpenFileDialog();
-			this.openFileDialog.Filter = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
-			this.openFileDialog.FileOk += new CancelEventHandler(openFileDialog_FileOk);
-		}
+            this.SetCaption();
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing ) {
-			if( disposing ) {
-				if (components != null) {
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Událost z kontextu - žádost o uzavøení okna
+        /// </summary>
+        private void context_ExitRequest(object sender, EventArgs e) {
+            this.Close();
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent() {
-			this.mainMenu = new System.Windows.Forms.MainMenu();
-			this.mnFile = new System.Windows.Forms.MenuItem();
-			this.mnFileOpen = new System.Windows.Forms.MenuItem();
-			this.mnFileExit = new System.Windows.Forms.MenuItem();
-			// 
-			// mainMenu
-			// 
-			this.mainMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					 this.mnFile});
-			// 
-			// mnFile
-			// 
-			this.mnFile.Index = 0;
-			this.mnFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				   this.mnFileOpen,
-																				   this.mnFileExit});
-			this.mnFile.Text = "&Soubor";
-			// 
-			// mnFileOpen
-			// 
-			this.mnFileOpen.Index = 0;
-			this.mnFileOpen.Text = "&Otevøít";
-			this.mnFileOpen.Click += new System.EventHandler(this.mnFileOpen_Click);
-			// 
-			// mnFileExit
-			// 
-			this.mnFileExit.Index = 1;
-			this.mnFileExit.Text = "&Konec";
-			// 
-			// Editor
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 266);
-			this.Menu = this.mainMenu;
-			this.Name = "Editor";
-			this.Text = "Editor";
+        #region Obsluha grafu
+        private delegate void GraphRequestDelegate(object sender, GraphRequestEventArgs e);
 
-		}
-		#endregion
+        /// <summary>
+        /// Událost z kontextu - žádost o vytvoøení grafu
+        /// </summary>
+        private void context_GraphRequest(object sender, GraphRequestEventArgs e) {
+            // Spustíme ve vlastním threadu
+            this.Invoke(new GraphRequestDelegate(this.GraphRequestInvoke), new object[] { sender, e });
+        }
 
-		/// <summary>
-		/// Zadán soubor k otevøení
-		/// </summary>
-		private void openFileDialog_FileOk(object sender, CancelEventArgs e) {
-			StreamReader sr = new StreamReader(openFileDialog.FileName);
+        /// <summary>
+        /// Vytvoøení nového formuláøe musíme spustit ve vlastním threadu
+        /// </summary>
+        private void GraphRequestInvoke(object sender, GraphRequestEventArgs e) {
+            GraphForm graphForm = (this.MdiParent as MainForm).NewParentForm(typeof(GraphForm), this, e.Variable.Name) as GraphForm;
 
-			string nextLine;
-			this.documentLines.Clear();
+            bool isGA = false;
+            GraphArray ga = null;
+            int count = 1;
+            int lengthX = 1;
+            int lengthY = 1;
 
-			TextLineInformation.DocumentHeight = 0;
-			TextLineInformation.DocumentWidth = 0;
+            if(e.Variable.Item is GraphArray) {
+                isGA = true;
+                ga = e.Variable.Item as GraphArray;
+                count = ga.Count;
+                lengthX = ga.LengthX;
+                lengthY = ga.LengthY;
+            }
 
-			TextLineInformation nextLineInfo;
-			SizeF sizeF;
+            if(graphForm.NumGraphControls() != count)
+                graphForm.Controls.Clear();
 
-			while((nextLine = sr.ReadLine()) != null) {
-				nextLineInfo = new TextLineInformation();
-				nextLineInfo.Text = nextLine;
+            for(int i = 0; i < count; i++) {
+                Expression.Graph g = null;
+                int index = i;
+                if(isGA)
+                    g = ga[i];
+                else {
+                    index = -1;
+                    g = e.Variable.Item as Expression.Graph;
+                }
 
-				sizeF = graphics.MeasureString(nextLine, inputFont);
-				nextLineInfo.Width = (int)sizeF.Width;
+                RectangleF position = new RectangleF((float)(i % lengthX) / (float)lengthX, (int)(i / lengthX) / (float)lengthY, 1 / (float)lengthX, 1 / (float)lengthY);
 
-				int lineLength = nextLineInfo.Width + 2 * TextLineInformation.Margin;
-				if(lineLength > TextLineInformation.DocumentWidth)
-					TextLineInformation.DocumentWidth = lineLength;
+                if(g is Expression.DensityGraph) {
+                    DensityGraph densityGraph = graphForm.GraphControl(index) as DensityGraph;
 
-				this.documentLines.Add(nextLineInfo);
-			}
+                    if(densityGraph != null)
+                        densityGraph.SetVariable(e.Variable, index);
+                    else {
+                        graphForm.SuspendLayout();
+                        densityGraph = new DensityGraph(e.Variable, index, position);
+                        this.SetGraphStyles(densityGraph, graphForm, string.Format("{0}{1}", e.Variable.Name, i));
+                        graphForm.Controls.Add(densityGraph);
+                        graphForm.ResumeLayout();
+                    }
+                }
+                else if(g is Expression.LineGraph) {
+                    LineGraph lineGraph = graphForm.GraphControl(index) as LineGraph;
 
-			sr.Close();
+                    if(lineGraph != null)
+                        lineGraph.SetVariable(e.Variable, index);
+                    else {
+                        graphForm.SuspendLayout();
+                        lineGraph = new LineGraph(e.Variable, index, position);
+                        this.SetGraphStyles(lineGraph, graphForm, string.Format("{0}{1}", e.Variable.Name, i));
+                        graphForm.Controls.Add(lineGraph);
+                        graphForm.ResumeLayout();
+                    }
+                }
+            }
 
-			TextLineInformation.DocumentHeight = this.documentLines.Count * TextLineInformation.LineHeight + 2 * TextLineInformation.Margin;
-			this.AutoScrollMinSize = new Size(TextLineInformation.DocumentWidth, TextLineInformation.DocumentHeight);
-			this.Invalidate();
-		}
+            graphForm.Show();
+            this.Activate();
+        }
 
-		protected override void OnPaint(PaintEventArgs e) {
-			base.OnPaint (e);
+        /// <summary>
+        /// Nastaví styly nového grafu na formuláøi
+        /// </summary>
+        /// <param name="graph">Graf</param>
+        /// <param name="form">Formuláø</param>
+        /// <param name="name">Jméno controlu</param>
+        /// <param name="position">Umístìní controlu</param>
+        private void SetGraphStyles(Graph graph, Form form, string name) {
+            graph.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            graph.SetPosition(form.Width, form.Height);
+            graph.Name = name;
+            graph.KeyDown += new KeyEventHandler(Editor_KeyDown);
+        }
+        #endregion
 
-			Graphics graphics = e.Graphics;
-			int scrollPositionX = this.AutoScrollPosition.X;
-			int scrollPositionY = this.AutoScrollPosition.Y;
-			graphics.TranslateTransform(scrollPositionX, scrollPositionY);
+        #region Otevírání a ukládání pøíkazù
+        /// <summary>
+        /// Kontroluje, zda v nìjakém podøízeném oknì neprobíhá výpoèet
+        /// </summary>
+        /// <returns>True, pokud neprobíhá</returns>
+        private bool CheckForComputing() {
+            MainForm form = this.MdiParent as MainForm;
 
-			if(this.documentLines.Count != 0) {
-				int minLineInClipRegion = this.WorldYCoordinateToLineIndex(e.ClipRectangle.Top - scrollPositionY);
-				if(minLineInClipRegion < 0)
-					minLineInClipRegion = 0;
-				int maxLineInClipRegion = this.WorldYCoordinateToLineIndex(e.ClipRectangle.Bottom - scrollPositionY);
-				if(maxLineInClipRegion >= this.documentLines.Count || maxLineInClipRegion < 0)
-					maxLineInClipRegion = this.documentLines.Count - 1;
+            for(int i = 0; i < form.MdiChildren.Length; i++) {
+                ResultForm resultForm = form.MdiChildren[i] as ResultForm;
 
-				for(int i = minLineInClipRegion; i <= maxLineInClipRegion; i++) {
-					TextLineInformation line = (TextLineInformation)this.documentLines[i];
-					graphics.DrawString(line.Text, inputFont, brush, this.LineIndexToWorldCoordinates(i));
-				}
-			}
-		}
+                if(resultForm != null && resultForm.ParentEditor == this && resultForm.Calulating) {
+                    DialogResult result = MessageBox.Show(this,
+                        string.Format(messageClose, resultForm.Name),
+                        captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
-		private Point LineIndexToWorldCoordinates(int index) {
-			return new Point(TextLineInformation.Margin, index * TextLineInformation.LineHeight + TextLineInformation.Margin);
-		}
+                    switch(result) {
+                        case DialogResult.Yes: 
+                            resultForm.Abort();
+                            resultForm.Close();
+                            break;
+                        case DialogResult.No:
+                            return false;
+                    }
+                }
+            }
 
-		private int WorldYCoordinateToLineIndex(int y) {
-			if(y < TextLineInformation.Margin)
-				return -1;
-			else
-				return (y - TextLineInformation.Margin) / TextLineInformation.LineHeight;
-		}
+            return true;
+        }
 
-		/// <summary>
-		/// Otevøít soubor
-		/// </summary>
-		private void mnFileOpen_Click(object sender, System.EventArgs e) {
-			this.openFileDialog.ShowDialog();
-		}
-	}
+        /// <summary>
+        /// Kontroluje, zda došlo ke zmìnám. Pokud ano, vyšle dotaz na uložení
+        /// </summary>
+        /// <returns>False, pokud je žádost o zrušení akce</returns>
+        private bool CheckForChanges() {
+            if(this.Modified) {
+                DialogResult result = MessageBox.Show(this,
+                    this.fileName == string.Empty ? messageChanged : string.Format(messageFileChanged, this.fileName),
+                    captionFileChanged, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
-	/// <summary>
-	/// Informace o každém øádku
-	/// </summary>
-	class TextLineInformation {
-		public enum LineTypes {Input, Output}
+                if(result == DialogResult.Cancel)
+                    return false;
+                else if(result == DialogResult.No)
+                    return true;
+                else if(result == DialogResult.Yes)
+                    return this.Save();
+            }
 
-		public string Text = string.Empty;
-		public int Width = 0;
-		public LineTypes LineType = LineTypes.Input;
+            return true;
+        }
 
-		public static int DocumentHeight;
-		public static int DocumentWidth;
-		public static int LineHeight;
+        /// <summary>
+        /// Uloží soubor. Pokud nezná jméno, otevøe dialog
+        /// </summary>
+        /// <returns>False, pokud soubor nebyl uložen</returns>
+        public bool Save() {
+            if(this.fileName == string.Empty) {
+                this.Activate();
+                (this.MdiParent as MainForm).SaveFileDialog.FileName = this.fileName;
+                if((this.MdiParent as MainForm).SaveFileDialog.ShowDialog() == DialogResult.OK)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return this.Save(this.fileName);
+        }
 
-		public const int Margin = 10;
-	}
+        /// <summary>
+        /// Uloží pøíkazy do souboru
+        /// </summary>
+        /// <param name="fileName">Jméno souboru</param>
+        /// <returns>False, pokud se uložení nezdaøilo</returns>
+        public bool Save(string fileName) {
+            try {
+                this.txtCommand.Export(fileName);
+
+                this.fileName = fileName;
+                this.modified = false;
+                this.SetCaption();
+
+                return true;
+            }
+            catch(DetailException e) {
+                MessageBox.Show(this, string.Format(messageFailedSaveDetail, fileName, e.Message, e.DetailMessage),
+                    captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return false;
+            }
+            catch(Exception e) {
+                MessageBox.Show(this, string.Format(messageFailedSave, fileName, e.Message),
+                    captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Otevøe pøíkazy ze souboru
+        /// </summary>
+        /// <param name="fileName">Jméno souboru</param>
+        /// <returns>False, pokud se otevøení nezdaøilo</returns>
+        public bool Open(string fileName) {
+            try {
+                this.txtCommand.Import(fileName);
+
+                this.FileName = fileName;
+                this.modified = false;
+                this.txtCommand.Modified = false;
+
+                this.SetCaption();
+
+                return true;
+            }
+            catch(DetailException e) {
+                MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
+                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return false;
+            }
+            catch(Exception e) {
+                MessageBox.Show(this, string.Format(messageFailedOpen, fileName, e.Message),
+                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return false;
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Pøi žádosti o spuštìní pøíkazu
+        /// </summary>
+        private void txtCommand_ExecuteCommand(object sender, PavelStransky.Forms.ExecuteCommandEventArgs e) {
+            // Chceme nové okno
+            if(e.NewWindow)
+                resultNumber++;
+
+            string windowName = string.Format(defaultResultWindowName, resultNumber);
+
+            ResultForm f = (this.MdiParent as MainForm).NewParentForm(typeof(ResultForm), this, windowName) as ResultForm;
+
+            if(f.Calulating) {
+                f.Activate();
+                MessageBox.Show(this, messageCalculationRunning);
+                this.Activate();
+            }
+            else {
+                f.SetExpression(this.context, e.Expression);
+                f.Show();
+                f.Start();
+
+                this.Activate();
+            }
+        }
+
+        /// <summary>
+        /// Pøi zmìnì textu zmìníme atribut Modified
+        /// </summary>
+        private void txtCommand_TextChanged(object sender, System.EventArgs e) {
+            this.Modified = txtCommand.Modified;
+        }
+
+        /// <summary>
+        /// nastaví nadpis okna
+        /// </summary>
+        private void SetCaption() {
+            this.Text = string.Format(this.fileName == string.Empty ? titleFormat : titleFormatFile,
+                defaultName, this.fileName, this.Modified ? asterisk : string.Empty);
+        }
+
+        /// <summary>
+        /// Pøi aktivaci okna nastavíme focus
+        /// </summary>
+        private void Editor_Activated(object sender, System.EventArgs e) {
+            this.txtCommand.Focus();
+        }
+
+        /// <summary>
+        /// Pro KeyDown na kontextu
+        /// </summary>
+        private void Editor_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) {
+            if(e.Alt || e.Shift)
+                return;
+            if(e.Control && e.KeyValue <= 'Z' && e.KeyValue >= 'A') {
+                try {
+                    e.Handled = this.context.HotKey((char)e.KeyValue);
+                }
+                catch(DetailException exc) {
+                    MessageBox.Show(this, string.Format("{0}\n\n{1}", exc.Message, exc.DetailMessage));
+                }
+                catch(Exception exc) {
+                    MessageBox.Show(this, string.Format("{0}", exc.Message));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pøi uzavírání okna musíme uzavøít všechny pøidružené formuláøe
+        /// </summary>
+        protected override void OnFormClosing(FormClosingEventArgs e) {
+            e.Cancel = !this.CheckForChanges();
+        }
+
+        /// <summary>
+        /// Podle názvu souboru urèí adresáø
+        /// </summary>
+        /// <param name="fileName">Název souboru s cestou</param>
+        private string DirectoryFromFile(string fileName) {
+            FileInfo f = new FileInfo(fileName);
+            return f.DirectoryName;
+        }
+
+        private const string directoryVariable = "_dir";
+
+        private const string messageOpen = "Chcete, aby byly všechny pøíkazy historie po otevøení automaticky spuštìny?";
+        private const string captionOpen = "Otevøení historie";
+
+        private const string messageFileChanged = "Soubor '{0}' byl zmìnìn. Chcete zmìny uložit?";
+        private const string messageChanged = "Data nejsou uložena. Chcete je uložit?";
+        private const string captionFileChanged = "Uložení souboru";
+
+        private const string messageFailedSave = "Uložení do souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
+        private const string messageFailedSaveDetail = "Uložení do souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
+        private const string captionFailedSave = "Chyba!";
+        private const string messageFailedOpen = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
+        private const string messageFailedOpenDetail = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
+        private const string captionFailedOpen = "Chyba!";
+
+        private const string messageClose = "V oknì {0} probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
+        private const string captionClose = "Varování";
+
+        private const string messageCalculationRunning = "V aktuálním oknì probíhá výpoèet, nelze spustit nový výpoèet!";
+        private const string defaultResultWindowName = "Result{0}";
+
+        private const string defaultName = "GCM Prográmek";
+        private const string titleFormatFile = "{0} - {1} {2}";
+        private const string titleFormat = "{0} {2}";
+        private const string asterisk = "*";
+    }
 }

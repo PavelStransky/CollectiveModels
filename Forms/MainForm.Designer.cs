@@ -1,26 +1,23 @@
-using System.ComponentModel;
-using System.Windows.Forms;
-
 namespace PavelStransky.Forms {
     partial class MainForm {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components = null;
+        private System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing) {
-            if(disposing) {
-                if(components != null) {
-                    components.Dispose();
-                }
+            if(disposing && (components != null)) {
+                components.Dispose();
             }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
+
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -35,16 +32,20 @@ namespace PavelStransky.Forms {
             this.mnFileSaveAs = new System.Windows.Forms.MenuItem();
             this.mnFileSeparator = new System.Windows.Forms.MenuItem();
             this.mnExit = new System.Windows.Forms.MenuItem();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.mnWindow = new System.Windows.Forms.MenuItem();
+            this.MnCascade = new System.Windows.Forms.MenuItem();
+            this.mnTileHorizontal = new System.Windows.Forms.MenuItem();
+            this.mnTileVertical = new System.Windows.Forms.MenuItem();
+            this.mnArrangeIcons = new System.Windows.Forms.MenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.lblCommand = new System.Windows.Forms.Label();
-            this.txtCommand = new PavelStransky.Forms.CommandTextBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // mnMenu
             // 
             this.mnMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.mnFile});
+            this.mnFile,
+            this.mnWindow});
             // 
             // mnFile
             // 
@@ -92,67 +93,78 @@ namespace PavelStransky.Forms {
             this.mnExit.Index = 5;
             this.mnExit.Text = "&Konec";
             // 
-            // openFileDialog
+            // mnWindow
             // 
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
+            this.mnWindow.Index = 1;
+            this.mnWindow.MdiList = true;
+            this.mnWindow.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.MnCascade,
+            this.mnTileHorizontal,
+            this.mnTileVertical,
+            this.mnArrangeIcons});
+            this.mnWindow.Text = "&Okno";
+            // 
+            // MnCascade
+            // 
+            this.MnCascade.Index = 0;
+            this.MnCascade.Text = "&Uspoøádat";
+            this.MnCascade.Click += new System.EventHandler(this.MnCascade_Click);
+            // 
+            // mnTileHorizontal
+            // 
+            this.mnTileHorizontal.Index = 1;
+            this.mnTileHorizontal.Text = "&Vodorovnì";
+            this.mnTileHorizontal.Click += new System.EventHandler(this.mnTileHorizontal_Click);
+            // 
+            // mnTileVertical
+            // 
+            this.mnTileVertical.Index = 2;
+            this.mnTileVertical.Text = "&Svisle";
+            this.mnTileVertical.Click += new System.EventHandler(this.mnTileVertical_Click);
+            // 
+            // mnArrangeIcons
+            // 
+            this.mnArrangeIcons.Index = 3;
+            this.mnArrangeIcons.Text = "Seøadit &ikony";
+            this.mnArrangeIcons.Click += new System.EventHandler(this.mnArrangeIcons_Click);
             // 
             // saveFileDialog
             // 
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
-            // lblCommand
+            // openFileDialog
             // 
-            this.lblCommand.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblCommand.Location = new System.Drawing.Point(4, 1);
-            this.lblCommand.Name = "lblCommand";
-            this.lblCommand.Size = new System.Drawing.Size(128, 16);
-            this.lblCommand.TabIndex = 7;
-            this.lblCommand.Text = "Pøíkazy:";
-            // 
-            // txtCommand
-            // 
-            this.txtCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCommand.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtCommand.Location = new System.Drawing.Point(7, 20);
-            this.txtCommand.Multiline = true;
-            this.txtCommand.Name = "txtCommand";
-            this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCommand.Size = new System.Drawing.Size(548, 435);
-            this.txtCommand.TabIndex = 6;
-            this.txtCommand.WordWrap = false;
-            this.txtCommand.ExecuteCommand += new PavelStransky.Forms.CommandTextBox.ExecuteCommandEventHandler(this.txtCommand_ExecuteCommand);
-            this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
-            this.txtCommand.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
             // 
             // MainForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(561, 467);
-            this.Controls.Add(this.lblCommand);
-            this.Controls.Add(this.txtCommand);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(781, 562);
+            this.IsMdiContainer = true;
             this.Menu = this.mnMenu;
             this.Name = "MainForm";
-            this.Text = "Prográmek";
-            this.Activated += new System.EventHandler(this.MainForm_Activated);
+            this.Text = "MainForm";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
+
         #endregion
 
         private System.Windows.Forms.MainMenu mnMenu;
         private System.Windows.Forms.MenuItem mnFile;
+        private System.Windows.Forms.MenuItem mnFileNew;
         private System.Windows.Forms.MenuItem mnFileOpen;
         private System.Windows.Forms.MenuItem mnFileSave;
         private System.Windows.Forms.MenuItem mnFileSaveAs;
-        private System.Windows.Forms.MenuItem mnExit;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.MenuItem mnFileSeparator;
-        private System.Windows.Forms.MenuItem mnFileNew;
-        private Label lblCommand;
-        private CommandTextBox txtCommand;
+        private System.Windows.Forms.MenuItem mnExit;
+        private System.Windows.Forms.MenuItem mnWindow;
+        private System.Windows.Forms.MenuItem MnCascade;
+        private System.Windows.Forms.MenuItem mnTileHorizontal;
+        private System.Windows.Forms.MenuItem mnTileVertical;
+        private System.Windows.Forms.MenuItem mnArrangeIcons;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

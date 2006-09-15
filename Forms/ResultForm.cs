@@ -11,7 +11,7 @@ using PavelStransky.Math;
 using PavelStransky.Expression;
 
 namespace PavelStransky.Forms {
-    public partial class ResultForm: ContextForm, IOutputWriter {
+    public partial class ResultForm: ChildForm, IOutputWriter {
         /// Výraz
         private Expression.Expression expression;
 
@@ -87,6 +87,18 @@ namespace PavelStransky.Forms {
                 this.btPause.Visible = true;
                 this.btContinue.Visible = false;
             }
+        }
+
+        /// <summary>
+        /// Pøeruší výpoèet
+        /// </summary>
+        public void Abort() {
+            if(this.calcThread.ThreadState == ThreadState.Suspended)
+                this.calcThread.Resume();
+
+            while(this.calcThread.ThreadState == ThreadState.Suspended) ;
+
+            this.calcThread.Abort();
         }
 
         /// <summary>
@@ -188,16 +200,8 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public ResultForm()
-            : base() {
-        }
-
-        /// <summary>
-        /// Konstruktor s kontextem
-        /// </summary>
-        /// <param name="context">Kontext</param>
-        public ResultForm(Context context)
-            : base(context) {
+        public ResultForm() {
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -230,24 +234,10 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Uzavøení formuláøe
-        /// </summary>
-        public override bool Close() {
-            base.Close();
-
-            return this.cancelClosing;
-        }
-
-        /// <summary>
         /// Stiknutí tlaèítka Pøerušit
         /// </summary>
         private void btInterrupt_Click(object sender, EventArgs e) {
-            if(this.calcThread.ThreadState == ThreadState.Suspended)
-                this.calcThread.Resume();
-
-            while(this.calcThread.ThreadState == ThreadState.Suspended) ;
-
-            this.calcThread.Abort();
+            this.Abort();
         }
 
         /// <summary>
@@ -313,7 +303,7 @@ namespace PavelStransky.Forms {
         private const string timeText = "Doba výpoètu: {0}";
         private const string captionFormat = "{0} - {1}";
 
-        private const string messageClose = "V oknì {0} probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
+        private const string messageClose = "V oknì probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
         private const string captionClose = "Varování";
 
         private const string captionCalculating = "Probíhá výpoèet...";

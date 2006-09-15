@@ -201,7 +201,9 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.FullHelp(functions));
 
             // Funkce GCM
-            functions.Add(new Functions.CGCM());
+            functions.Add(new Functions.SimpleCGCM());
+            functions.Add(new Functions.ExtendedCGCM1());
+            functions.Add(new Functions.ExtendedCGCM2());
             functions.Add(new Functions.CGCMJ());
             functions.Add(new Functions.QGCM());
             functions.Add(new Functions.Equipotential());

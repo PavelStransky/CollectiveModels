@@ -20,18 +20,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Kinetická energie
-        /// </summary>
-        /// <param name="x">Souøadnice x</param>
-        /// <param name="y">Souøadnice y</param>
-        /// <param name="px">Hybnost x</param>
-        /// <param name="py">Hybnost y</param>
-        public double T(double x, double y, double px, double py) {
-            double b2 = x * x + y * y;
-            return 1.0 / (2.0 * this.K * (1 + this.Kappa * b2)) * (px * px + py * py);
-        }
-
-        /// <summary>
         /// Potenciál
         /// </summary>
         /// <param name="x">Souøadnice x</param>
@@ -40,25 +28,6 @@ namespace PavelStransky.GCM {
         public double V(double x, double y) {
             double b2 = x * x + y * y;
             return this.A * b2 + this.B * x * (x * x - 3 * y * y) + this.C * b2 * b2;
-        }
-
-        /// <summary>
-        /// Celková energie
-        /// </summary>
-        /// <param name="x">Souøadnice x</param>
-        /// <param name="y">Souøadnice y</param>
-        /// <param name="px">Souøadnice x</param>
-        /// <param name="py">Souøadnice y</param>
-        public double E(double x, double y, double px, double py) {
-            return this.T(x, y, px, py) + this.V(x, y);
-        }
-
-        /// <summary>
-        /// Celková energie
-        /// </summary>
-        /// <param name="x">Souøadnice a hybnosti</param>
-        public double E(Vector x) {
-            return this.T(x[0], x[1], x[2], x[3]) + this.V(x[0], x[1]);
         }
 
         /// <summary>
@@ -125,18 +94,6 @@ namespace PavelStransky.GCM {
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Kostruktor rozšíøeného lagrangiánu
-        /// </summary>
-        /// <param name="a">A</param>
-        /// <param name="b">B</param>
-        /// <param name="c">C</param>
-        /// <param name="k">D</param>
-        /// <param name="kappa">Kappa</param>
-        public GCM(double a, double b, double c, double k, double kappa)
-            : base(a, b, c, k, kappa) {
         }
 
         /// <summary>

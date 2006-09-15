@@ -109,10 +109,6 @@
     <Compile Include="CommandTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Context.cs" />
-    <Compile Include="ContextForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="DensityBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -121,6 +117,9 @@
     </Compile>
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor.Designer.cs">
+      <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Graph.cs">
       <SubType>UserControl</SubType>
@@ -140,6 +139,9 @@
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChildForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ResultForm.cs">
       <SubType>Form</SubType>
@@ -162,6 +164,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor.resx">
+      <SubType>Designer</SubType>
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Graph.resx">
@@ -181,6 +184,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResultForm.resx">

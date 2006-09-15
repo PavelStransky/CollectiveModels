@@ -8,20 +8,12 @@ namespace PavelStransky.Forms {
 	/// <summary>
 	/// Prázdný formuláø. Grafy do nìj pøidáváme my
 	/// </summary>
-	public class GraphForm : ContextForm {
+	public class GraphForm : ChildForm {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-        public GraphForm()
-            : base() {
-        }
-
-		/// <summary>
-		/// Konstruktor s kontextem
-		/// </summary>
-		/// <param name="context">Kontext</param>
-        public GraphForm(Context context)
-            : base(context) {
+        public GraphForm() {
+            this.InitializeComponent();
         }
 
 		/// <summary>
@@ -55,7 +47,7 @@ namespace PavelStransky.Forms {
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		protected override void InitializeComponent() {
+		protected void InitializeComponent() {
 			// 
 			// GraphForm
 			// 

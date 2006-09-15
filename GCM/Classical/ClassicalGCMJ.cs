@@ -254,18 +254,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Kostruktor rozšíøeného lagrangiánu
-        /// </summary>
-        /// <param name="a">A</param>
-        /// <param name="b">B</param>
-        /// <param name="c">C</param>
-        /// <param name="k">D</param>
-        /// <param name="l">L</param>
-        public ClassicalGCMJ(double a, double b, double c, double k, double l)
-            : base(a, b, c, k, l) {
-        }
-
-        /// <summary>
         /// Kostruktor standardního lagranžiánu
         /// </summary>
         /// <param name="a">A</param>

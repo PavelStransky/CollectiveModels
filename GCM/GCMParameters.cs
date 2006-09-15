@@ -10,13 +10,12 @@ namespace PavelStransky.GCM {
     /// </summary>
     public class GCMParameters {
         // Parametry GCM
-        private double a, b, c, k, kappa;
+        private double a, b, c, k;
 
         public double A { get { return this.a; } set { this.a = value; } }
         public double B { get { return this.b; } set { this.b = value; } }
         public double C { get { return this.c; } set { this.c = value; } }
         public double K { get { return this.k; } set { this.k = value; } }
-        public double Kappa { get { return this.kappa; } set { this.kappa = value; } }
 
         public double C2 { get { return this.a * System.Math.Sqrt(5.0); } set { this.a = value / System.Math.Sqrt(5.0); } }
         public double C3 { get { return -this.b * System.Math.Sqrt(35.0 / 2.0); } set { this.b = -value * System.Math.Sqrt(2.0 / 35.0); } }
@@ -42,33 +41,20 @@ namespace PavelStransky.GCM {
         public bool IsGammaSoft { get { return this.B == 0; } }
 
         /// <summary>
-        /// Kostruktor rozšíøeného modelu
+        /// Kostruktor GCM modelu
         /// </summary>
         /// <param name="a">A</param>
         /// <param name="b">B</param>
         /// <param name="c">C</param>
         /// <param name="k">D</param>
-        /// <param name="l">L</param>
-        public GCMParameters(double a, double b, double c, double k, double l) {
+        public GCMParameters(double a, double b, double c, double k) {
             this.a = a;
             this.b = b;
             this.c = c;
             this.k = k;
-            this.kappa = l;
 
             if(this.c <= 0)
                 throw new Exception("Program umí poèítat pouze pøípady s C > 0");
-        }
-
-        /// <summary>
-        /// Kostruktor standardního modelu
-        /// </summary>
-        /// <param name="a">A</param>
-        /// <param name="b">B</param>
-        /// <param name="c">C</param>
-        /// <param name="k">D</param>
-        public GCMParameters(double a, double b, double c, double k)
-            : this(a, b, c, k, 0.0) {
         }
    }
 }

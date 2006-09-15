@@ -38,7 +38,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.Multiline = true;
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.ReadOnly = true;
-            this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtCommand.Size = new System.Drawing.Size(330, 106);
             this.txtCommand.TabIndex = 1;
             // 
@@ -61,7 +61,7 @@ namespace PavelStransky.Forms {
             this.txtResult.Multiline = true;
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
-            this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtResult.Size = new System.Drawing.Size(330, 102);
             this.txtResult.TabIndex = 3;
             // 
@@ -139,6 +139,7 @@ namespace PavelStransky.Forms {
             this.Controls.Add(this.lblCommand);
             this.Name = "ResultForm";
             this.Text = "Výpoèet...";
+            this.ShowInTaskbar = false;
             this.ResumeLayout(false);
             this.PerformLayout();
 

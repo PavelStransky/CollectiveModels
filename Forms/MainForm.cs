@@ -50,9 +50,6 @@ namespace PavelStransky.Forms {
 			this.expContext.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
 			this.expContext.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
 
-			// Kontext formuláøù
-			this.controlContext = new Context();
-
 			this.SetCaption();
 		}
 
@@ -60,7 +57,8 @@ namespace PavelStransky.Forms {
         /// Konstruktor
         /// </summary>
         /// <param name="fileName">Soubor k otevøení</param>
-        public MainForm(string fileName) : this() {
+        public MainForm(string fileName)
+            : this() {
             this.Open(fileName);
         }
 
@@ -368,6 +366,7 @@ namespace PavelStransky.Forms {
                     windowName = string.Format(defaultResultWindowName, ++resultNumber);
 
             ResultForm f = this.controlContext.CreateForm(typeof(ResultForm), windowName) as ResultForm;
+
             if(f.Calulating) {
                 MessageBox.Show(this, messageCalculationRunning);
             }

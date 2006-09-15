@@ -9,13 +9,17 @@ namespace PavelStransky.Forms {
 	public class Context {
 		private Hashtable forms;
 
+        // Zmìna v kontextu
+        public delegate void ChangeEventHandler(object sender, EventArgs e);
+        public event ChangeEventHandler Change;
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
 		public Context() {
 			this.forms = new Hashtable();
 		}
-
+        
 		/// <summary>
 		/// Pøidá formuláø do kontextu. Pokud už existuje, jen jej zobrazí
 		/// </summary>
@@ -25,7 +29,17 @@ namespace PavelStransky.Forms {
 				throw new ContextException(string.Format(errorMessageFormExists, form.Name));
 			else 
 				this.forms.Add(form.Name, form);
+
+            this.OnChange(new EventArgs());
 		}
+
+        /// <summary>
+        /// Voláno pøi pøidání nového formuláøe do kontextu
+        /// </summary>
+        protected void OnChange(EventArgs e) {
+            if(this.Change != null)
+                this.Change(this, e);
+        }
 
 		/// <summary>
 		/// Vymaže vše, co je v kontextu uloženo
@@ -37,9 +51,10 @@ namespace PavelStransky.Forms {
                 names.Add(name);
 
             foreach(string name in names)
-                if(this.Close(name))
+                if(this.Close(name)) 
                     return true;
 
+            this.OnChange(new EventArgs());
             return false;
 		}
 
@@ -59,6 +74,7 @@ namespace PavelStransky.Forms {
 			else
 				throw new ContextException(string.Format(errorMessageNoObject, name));
 
+            this.OnChange(new EventArgs());
             return false;
 		}
 
@@ -86,6 +102,17 @@ namespace PavelStransky.Forms {
 				return form;
 			}
 		}
+
+        /// <summary>
+        /// Jména všech formuláøù na kontextu
+        /// </summary>
+        public string [] ObjectNames() {
+            string [] retValue = new string[this.forms.Keys.Count];
+            int i = 0;
+            foreach(string key in this.forms.Keys)
+                retValue[i++] = key;
+            return retValue;
+        }
 
 		/// <summary>
 		/// Zjistí, zda na kontextu existuje objekt s daným názvem
@@ -117,7 +144,7 @@ namespace PavelStransky.Forms {
 
 				this.Add(form);
 				return form;
-			}
+    		}
 		}
 
 		private const string errorMessageNoObject = "Formuláø \"{0}\" nebyl nalezen.";

@@ -306,6 +306,7 @@ namespace PavelStransky.Forms {
         private void WriteInvoke(string s) {
             this.txtResult.Text = s;
         }
+
         #endregion
 
         private const string newLine = "\r\n";

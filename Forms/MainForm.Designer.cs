@@ -118,9 +118,10 @@ namespace PavelStransky.Forms {
             this.txtCommand.Location = new System.Drawing.Point(7, 20);
             this.txtCommand.Multiline = true;
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCommand.Size = new System.Drawing.Size(548, 387);
+            this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtCommand.Size = new System.Drawing.Size(548, 435);
             this.txtCommand.TabIndex = 6;
+            this.txtCommand.WordWrap = false;
             this.txtCommand.ExecuteCommand += new PavelStransky.Forms.CommandTextBox.ExecuteCommandEventHandler(this.txtCommand_ExecuteCommand);
             this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
             this.txtCommand.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
@@ -128,7 +129,7 @@ namespace PavelStransky.Forms {
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(561, 419);
+            this.ClientSize = new System.Drawing.Size(561, 467);
             this.Controls.Add(this.lblCommand);
             this.Controls.Add(this.txtCommand);
             this.Menu = this.mnMenu;

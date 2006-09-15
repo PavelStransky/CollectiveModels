@@ -48,12 +48,16 @@ namespace PavelStransky.Forms {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		protected void InitializeComponent() {
-			// 
-			// GraphForm
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(720, 622);
-			this.Name = "GraphForm";
+            this.SuspendLayout();
+            // 
+            // GraphForm
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.ClientSize = new System.Drawing.Size(392, 266);
+            this.Name = "GraphForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.ResumeLayout(false);
+
 		}
 		#endregion
 

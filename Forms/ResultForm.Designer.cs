@@ -138,8 +138,9 @@ namespace PavelStransky.Forms {
             this.Controls.Add(this.txtCommand);
             this.Controls.Add(this.lblCommand);
             this.Name = "ResultForm";
-            this.Text = "Výpoèet...";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "Výpoèet...";
             this.ResumeLayout(false);
             this.PerformLayout();
 

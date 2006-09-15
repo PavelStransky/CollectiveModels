@@ -39,17 +39,6 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Vytvoøí nevé okno s editorem
-        /// </summary>
-        private Editor NewEditor() {
-            Editor editor = new Editor();
-            editor.MdiParent = this;
-            editor.Show();
-
-            return editor;
-        }
-
-        /// <summary>
         /// Nastaví vlastnosti dialogu
         /// </summary>
         /// <param name="dialog">Dialog</param>
@@ -58,6 +47,17 @@ namespace PavelStransky.Forms {
             dialog.Filter = defaultFileFilter;
             dialog.DefaultExt = defaultFileExt;
             dialog.InitialDirectory = defaultDirectory;
+        }
+
+        /// <summary>
+        /// Vytvoøí nevé okno s editorem
+        /// </summary>
+        private Editor NewEditor() {
+            Editor editor = new Editor();
+            editor.MdiParent = this;
+            editor.Show();
+
+            return editor;
         }
 
         /// <summary>
@@ -71,14 +71,19 @@ namespace PavelStransky.Forms {
 
             for(int i = 0; i < this.MdiChildren.Length; i++) {
                 result = this.MdiChildren[i] as ChildForm;
+
                 if(result != null && result.ParentEditor == parent && result.Name == name && result.GetType() == type)
                     return result;
             }
 
-            if(type == typeof(GraphForm))
+            if(type == typeof(GraphForm)) {
                 result = new GraphForm();
-            else if(type == typeof(ResultForm))
+                result.Location = new Point(margin, this.Height - result.Size.Height - 8 * margin);
+            }
+            else if(type == typeof(ResultForm)) {
                 result = new ResultForm();
+                result.Location = new Point(this.Width - result.Size.Width - 2 * margin, margin);
+            }
             else
                 result = new ChildForm();
 
@@ -172,5 +177,6 @@ namespace PavelStransky.Forms {
         private const string defaultFileExt = "his";
         private const string defaultDirectory = "c:\\gcm";
 
+        private const int margin = 8;
     }
 }

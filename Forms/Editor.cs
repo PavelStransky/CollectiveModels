@@ -185,27 +185,31 @@ namespace PavelStransky.Forms {
 
         #region Otevírání a ukládání pøíkazù
         /// <summary>
-        /// Kontroluje, zda v nìjakém podøízeném oknì neprobíhá výpoèet
+        /// Pokusí se zavøít všechna podøízená okna
         /// </summary>
-        /// <returns>True, pokud neprobíhá</returns>
-        private bool CheckForComputing() {
+        /// <returns>True, pokud je vše OK a uzavøení se podaøilo</returns>
+        private bool CloseChildWindow() {
             MainForm form = this.MdiParent as MainForm;
 
             for(int i = 0; i < form.MdiChildren.Length; i++) {
-                ResultForm resultForm = form.MdiChildren[i] as ResultForm;
+                // Všechny podøízené formuláøe
+                ChildForm childForm = form.MdiChildren[i] as ChildForm;
 
-                if(resultForm != null && resultForm.ParentEditor == this && resultForm.Calulating) {
-                    DialogResult result = MessageBox.Show(this,
-                        string.Format(messageClose, resultForm.Name),
-                        captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if(childForm != null && childForm.ParentEditor == this) {
+                    ResultForm resultForm = childForm as ResultForm;
+                    if(resultForm != null && resultForm.Calulating) {
+                        DialogResult result = MessageBox.Show(this,
+                            string.Format(messageClose, resultForm.Name),
+                            captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
-                    switch(result) {
-                        case DialogResult.Yes: 
-                            resultForm.Abort();
-                            resultForm.Close();
-                            break;
-                        case DialogResult.No:
-                            return false;
+                        switch(result) {
+                            case DialogResult.Yes:
+                                resultForm.Abort();
+                                resultForm.Close();
+                                break;
+                            case DialogResult.No:
+                                return false;
+                        }
                     }
                 }
             }
@@ -379,7 +383,7 @@ namespace PavelStransky.Forms {
         /// Pøi uzavírání okna musíme uzavøít všechny pøidružené formuláøe
         /// </summary>
         protected override void OnFormClosing(FormClosingEventArgs e) {
-            e.Cancel = !this.CheckForChanges();
+            e.Cancel = !(this.CheckForChanges() && this.CloseChildWindow());
         }
 
         /// <summary>

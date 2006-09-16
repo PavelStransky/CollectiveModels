@@ -28,10 +28,14 @@ namespace PavelStransky.Forms {
             this.mnFile = new System.Windows.Forms.MenuItem();
             this.mnFileNew = new System.Windows.Forms.MenuItem();
             this.mnFileOpen = new System.Windows.Forms.MenuItem();
+            this.mnFileClose = new System.Windows.Forms.MenuItem();
+            this.mnFileSeparator1 = new System.Windows.Forms.MenuItem();
             this.mnFileSave = new System.Windows.Forms.MenuItem();
             this.mnFileSaveAs = new System.Windows.Forms.MenuItem();
-            this.mnFileSeparator = new System.Windows.Forms.MenuItem();
+            this.mnFileSeparator2 = new System.Windows.Forms.MenuItem();
             this.mnExit = new System.Windows.Forms.MenuItem();
+            this.mnSettings = new System.Windows.Forms.MenuItem();
+            this.mnSetttingsRegistry = new System.Windows.Forms.MenuItem();
             this.mnWindow = new System.Windows.Forms.MenuItem();
             this.MnCascade = new System.Windows.Forms.MenuItem();
             this.mnTileHorizontal = new System.Windows.Forms.MenuItem();
@@ -45,6 +49,7 @@ namespace PavelStransky.Forms {
             // 
             this.mnMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.mnFile,
+            this.mnSettings,
             this.mnWindow});
             // 
             // mnFile
@@ -53,9 +58,11 @@ namespace PavelStransky.Forms {
             this.mnFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.mnFileNew,
             this.mnFileOpen,
+            this.mnFileClose,
+            this.mnFileSeparator1,
             this.mnFileSave,
             this.mnFileSaveAs,
-            this.mnFileSeparator,
+            this.mnFileSeparator2,
             this.mnExit});
             this.mnFile.Text = "&Soubor";
             // 
@@ -68,34 +75,57 @@ namespace PavelStransky.Forms {
             // mnFileOpen
             // 
             this.mnFileOpen.Index = 1;
-            this.mnFileOpen.Text = "&Otevøít pøíkazy...";
+            this.mnFileOpen.Text = "&Otevøít...";
             this.mnFileOpen.Click += new System.EventHandler(this.mnFileOpen_Click);
+            // 
+            // mnFileClose
+            // 
+            this.mnFileClose.Index = 2;
+            this.mnFileClose.Text = "&Zavøít";
+            // 
+            // mnFileSeparator1
+            // 
+            this.mnFileSeparator1.Index = 3;
+            this.mnFileSeparator1.Text = "-";
             // 
             // mnFileSave
             // 
-            this.mnFileSave.Index = 2;
-            this.mnFileSave.Text = "&Uložit pøíkazy";
+            this.mnFileSave.Index = 4;
+            this.mnFileSave.Text = "&Uložit";
             this.mnFileSave.Click += new System.EventHandler(this.mnFileSave_Click);
             // 
             // mnFileSaveAs
             // 
-            this.mnFileSaveAs.Index = 3;
-            this.mnFileSaveAs.Text = "&Uložit pøíkazy jako...";
+            this.mnFileSaveAs.Index = 5;
+            this.mnFileSaveAs.Text = "&Uložit jako...";
             this.mnFileSaveAs.Click += new System.EventHandler(this.mnFileSaveAs_Click);
             // 
-            // mnFileSeparator
+            // mnFileSeparator2
             // 
-            this.mnFileSeparator.Index = 4;
-            this.mnFileSeparator.Text = "-";
+            this.mnFileSeparator2.Index = 6;
+            this.mnFileSeparator2.Text = "-";
             // 
             // mnExit
             // 
-            this.mnExit.Index = 5;
+            this.mnExit.Index = 7;
             this.mnExit.Text = "&Konec";
+            // 
+            // mnSettings
+            // 
+            this.mnSettings.Index = 1;
+            this.mnSettings.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.mnSetttingsRegistry});
+            this.mnSettings.Text = "&Nastavení";
+            // 
+            // mnSetttingsRegistry
+            // 
+            this.mnSetttingsRegistry.Index = 0;
+            this.mnSetttingsRegistry.Text = "&Registrace ve Windows";
+            this.mnSetttingsRegistry.Click += new System.EventHandler(this.mnSetttingsRegistry_Click);
             // 
             // mnWindow
             // 
-            this.mnWindow.Index = 1;
+            this.mnWindow.Index = 2;
             this.mnWindow.MdiList = true;
             this.mnWindow.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.MnCascade,
@@ -157,7 +187,7 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.MenuItem mnFileOpen;
         private System.Windows.Forms.MenuItem mnFileSave;
         private System.Windows.Forms.MenuItem mnFileSaveAs;
-        private System.Windows.Forms.MenuItem mnFileSeparator;
+        private System.Windows.Forms.MenuItem mnFileSeparator2;
         private System.Windows.Forms.MenuItem mnExit;
         private System.Windows.Forms.MenuItem mnWindow;
         private System.Windows.Forms.MenuItem MnCascade;
@@ -166,5 +196,9 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.MenuItem mnArrangeIcons;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.MenuItem mnFileClose;
+        private System.Windows.Forms.MenuItem mnFileSeparator1;
+        private System.Windows.Forms.MenuItem mnSettings;
+        private System.Windows.Forms.MenuItem mnSetttingsRegistry;
     }
 }

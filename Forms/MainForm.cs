@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+
+using Microsoft.Win32;
 
 namespace PavelStransky.Forms {
     public partial class MainForm : Form {
@@ -18,10 +21,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         public MainForm() {
             this.InitializeComponent();
-
-            this.SetDialogProperties(this.openFileDialog);
-            this.SetDialogProperties(this.saveFileDialog);
-
+            this.Initialize();
             this.NewEditor();
         }
 
@@ -31,11 +31,21 @@ namespace PavelStransky.Forms {
         /// <param name="fName">Název souboru</param>
         public MainForm(string fName) {
             this.InitializeComponent();
+            this.Initialize();
+            this.NewEditor().Open(fName);
+        }
 
+        /// <summary>
+        /// Inicializace instance nové GCM
+        /// </summary>
+        private void Initialize() {
             this.SetDialogProperties(this.openFileDialog);
             this.SetDialogProperties(this.saveFileDialog);
 
-            this.NewEditor().Open(fName);
+            if(this.IsRegistered)
+                this.mnSetttingsRegistry.Checked = true;
+            else
+                this.mnSetttingsRegistry.Checked = false;
         }
 
         /// <summary>
@@ -173,9 +183,76 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
+        #region Menu Nastavení
+        /// <summary>
+        /// Vytvoøí název aplikace pro registr Windows
+        /// </summary>
+        private string RegistryEntryName {
+            get {
+                string companyName = Application.CompanyName.Trim().Replace(" ", string.Empty);
+                string productName = Application.ProductName.Trim().Replace(" ", string.Empty);
+                string version = Application.ProductVersion; version = version.Substring(0, version.IndexOf('.'));
+                return string.Format("{0}.{1}.{2}", companyName, productName, version);
+            }
+        }
+
+        /// <summary>
+        /// Je program zaregistrován?
+        /// </summary>
+        private bool IsRegistered {
+            get {
+                string path = Application.ExecutablePath;
+                string keyName = this.RegistryEntryName;
+
+                // Existuje klíè v registrech?
+                RegistryKey rk = Registry.ClassesRoot.OpenSubKey(string.Format(commandEntryName, keyName));
+                if(rk == null)
+                    return false;
+                
+                // Existuje záznam s cestou?
+                string commandEntry = rk.GetValue(string.Empty) as string;
+                if(commandEntry == null || commandEntry == string.Empty)
+                    return false;
+
+                if(string.Format(commandEntryFormat, path) != commandEntry)
+                    return false;
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Registrace pøípony
+        /// </summary>
+        private void mnSetttingsRegistry_Click(object sender, EventArgs e) {
+            string path = Application.ExecutablePath;
+            string keyName = this.RegistryEntryName;
+
+            // Podle stavu buï zaregistrujeme, nebo odregistrujeme
+            if(this.mnSetttingsRegistry.Checked) {
+                Registry.ClassesRoot.DeleteSubKeyTree('.' + defaultFileExt);
+                Registry.ClassesRoot.DeleteSubKeyTree(keyName);
+
+                this.mnSetttingsRegistry.Checked = false;
+            }
+            else {
+                Registry.ClassesRoot.CreateSubKey('.' + defaultFileExt).SetValue(string.Empty, keyName);
+                Registry.ClassesRoot.CreateSubKey(keyName).SetValue(string.Empty, programDescription);
+                Registry.ClassesRoot.CreateSubKey(string.Format("{0}\\DefaultIcon", keyName)).SetValue(string.Empty, string.Format("{0},0", path));
+                Registry.ClassesRoot.CreateSubKey(string.Format(commandEntryName, keyName)).SetValue(string.Empty, string.Format(commandEntryFormat, path));
+
+                this.mnSetttingsRegistry.Checked = true;
+            }
+        }
+        #endregion
+
         private const string defaultFileFilter = "Soubory historie (*.gcm)|*.gcm|Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
-        private const string defaultFileExt = "his";
+        private const string defaultFileExt = "gcm";
         private const string defaultDirectory = "c:\\gcm";
+
+        private const string commandEntryName = "{0}\\shell\\open\\command";
+        private const string commandEntryFormat = "\"{0}\" %1";
+        private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
 
         private const int margin = 8;
     }

@@ -15,8 +15,8 @@ namespace PavelStransky.Forms
         static void Main(string[] args) {
             if(args.Length == 0)
                 Application.Run(new MainForm());
-  //          else
-//                Application.Run(new MainForm(args[0]));
+            else
+                Application.Run(new MainForm(args[0]));
         }
 
         private const string defaultFileName = @"c:\gcm\Regularita.his";

@@ -26,11 +26,11 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Konstruktor s otevøením souboru
         /// </summary>
-        /// <param name="fName">Název souboru</param>
-        public MainForm(string fName) {
+        /// <param name="fileName">Název souboru</param>
+        public MainForm(string fileName) {
             this.InitializeComponent();
             this.Initialize();
-            this.Open(fName);
+            this.Open(fileName);
         }
 
         /// <summary>
@@ -129,6 +129,10 @@ namespace PavelStransky.Forms {
             Import import = null;
             Editor editor = null;
 
+            // Pøídání pøípony
+            if(fileName.IndexOf(defaultFileExt) != fileName.Length - 3)
+                fileName = string.Format("{0}.{1}", fileName, defaultFileExt);
+
             try {
                 import = new Import(fileName, true);
                 editor = import.Read() as Editor;
@@ -154,6 +158,11 @@ namespace PavelStransky.Forms {
                         expression.Evaluate();
                     }
                 }
+                
+               editor.FileName = fileName;
+                editor.Modified = false;
+                editor.Activate();
+
             }
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
@@ -166,10 +175,6 @@ namespace PavelStransky.Forms {
             finally {
                 import.Close();
             }
-
-            editor.FileName = fileName;
-            editor.Modified = false;
-            editor.Activate();
         }
 
         /// <summary>
@@ -270,8 +275,12 @@ namespace PavelStransky.Forms {
 
             // Podle stavu buï zaregistrujeme, nebo odregistrujeme
             if(this.mnSetttingsRegistry.Checked) {
-                Registry.ClassesRoot.DeleteSubKeyTree('.' + defaultFileExt);
-                Registry.ClassesRoot.DeleteSubKeyTree(keyName);
+                try {
+                    Registry.ClassesRoot.DeleteSubKeyTree(keyName);
+                    Registry.ClassesRoot.DeleteSubKeyTree('.' + defaultFileExt);
+                }
+                catch(Exception exp) {
+                }
 
                 this.mnSetttingsRegistry.Checked = false;
             }
@@ -291,7 +300,7 @@ namespace PavelStransky.Forms {
         private const string defaultDirectory = "c:\\gcm";
 
         private const string commandEntryName = "{0}\\shell\\open\\command";
-        private const string commandEntryFormat = "\"{0}\" %1";
+        private const string commandEntryFormat = "\"{0}\" \"%1\"";
         private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
 
         private const string messageFailedOpen = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";

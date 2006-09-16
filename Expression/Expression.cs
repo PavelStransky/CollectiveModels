@@ -100,6 +100,13 @@ namespace PavelStransky.Expression {
 		/// <param name="detailMessage">Detail chyby</param>
 		public ExpressionException(string message, string detailMessage) : base(errMessage + message, detailMessage) {}
 
-		private const string errMessage = "Pøi zpracování výrazu došlo k chybì: ";
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="message">Text chybového hlášení</param>
+        /// <param name="detailMessage">Detail chyby</param>
+        public ExpressionException(string message, string detailMessage, Exception innerException) : base(errMessage + message, detailMessage, innerException) { }
+
+        private const string errMessage = "Pøi zpracování výrazu došlo k chybì: ";
 	}
 }

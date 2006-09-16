@@ -101,7 +101,7 @@ namespace PavelStransky.Expression
 			}
 			catch(Exception e) {
                 depth--;
-				throw new ExpressionException(e.Message, string.Format(errorMessageDetail, this.expression));
+				throw new ExpressionException(e.Message, string.Format(errorMessageDetail, this.expression), e);
 			}
 
             TimeSpan duration = DateTime.Now - startTime;

@@ -256,7 +256,7 @@ namespace PavelStransky.Forms {
 
                         switch(result) {
                             case DialogResult.Yes:
-                                resultForm.Abort();
+                                resultForm.Abort(true);
                                 break;
                             case DialogResult.No:
                                 return false;

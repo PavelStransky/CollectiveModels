@@ -30,8 +30,18 @@ namespace PavelStransky.Math {
 		/// <param name="message">Text chybového hlášení</param>
 		/// <param name="detailMessage">Detail chyby</param>
 		public DetailException(string message, string detailMessage) : this(message) {
-			this.detailMessage = detailMessage;
-		}
+            this.detailMessage = detailMessage;
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="message">Text chybového hlášení</param>
+        /// <param name="detailMessage">Detail chyby</param>
+        public DetailException(string message, string detailMessage, Exception innerException)
+            : this(message, innerException) {
+            this.detailMessage = detailMessage;
+        }
 	}
 
 	/// <summary>

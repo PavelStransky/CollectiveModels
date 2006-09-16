@@ -68,7 +68,7 @@ namespace PavelStransky.Forms {
             try {
                 this.calcThread = null;
                 this.expression = new PavelStransky.Expression.Expression(expContext, command, this); 
-                this.txtCommand.Text = command;
+                this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
 
                 this.btRecalculate.Visible = true;
@@ -111,13 +111,15 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Pøeruší výpoèet
         /// </summary>
-        public void Abort() {
+        /// <param name="closing">True, pokud se pøerušuje pøi zavírání oken</param>
+        public void Abort(bool closing) {
             if(this.calcThread.ThreadState == ThreadState.Suspended)
                 this.calcThread.Resume();
 
             while(this.calcThread.ThreadState == ThreadState.Suspended) ;
 
             this.calcThread.Abort();
+            this.calculating = !closing;
         }
 
         /// <summary>
@@ -132,6 +134,8 @@ namespace PavelStransky.Forms {
             }
             catch(Exception exc) {
                 try {
+                    if(exc.InnerException is ThreadAbortException && !this.calculating)
+                        return;
                     this.Invoke(new ExceptionDelegate(this.CatchException), exc);
                 }
                 catch { }
@@ -154,7 +158,7 @@ namespace PavelStransky.Forms {
             this.txtResult.Clear();
 
             // Nastavení ovládacích prvkù
-            this.btRecalculate.Visible = false;
+            this.btRecalculate.Visible = true;
             this.btInterrupt.Visible = false;
             this.btContinue.Visible = false;
             this.btPause.Visible = false;
@@ -256,7 +260,7 @@ namespace PavelStransky.Forms {
         /// Stiknutí tlaèítka Pøerušit
         /// </summary>
         private void btInterrupt_Click(object sender, EventArgs e) {
-            this.Abort();
+            this.Abort(false);
         }
 
         /// <summary>

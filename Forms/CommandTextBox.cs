@@ -27,50 +27,6 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Uloží obsah textboxu do souboru
-        /// </summary>
-        /// <param name="fName">Jméno souboru</param>
-        public void Export(string fName) {
-            FileStream f = new FileStream(fName, FileMode.Create);
-            StreamWriter t = new StreamWriter(f);
-
-            this.Export(t);
-
-            t.Close();
-            f.Close();
-        }
-
-        /// <summary>
-        /// Uloží obsah vektoru do souboru
-        /// </summary>
-        /// <param name="t">StreamWriter</param>
-        public void Export(StreamWriter t) {
-            t.Write(this.Text);
-        }
-
-        /// <summary>
-        /// Naète obsah vektoru ze souboru
-        /// </summary>
-        /// <param name="fName">Jméno souboru</param>
-        public void Import(string fName) {
-            FileStream f = new FileStream(fName, FileMode.Open);
-            StreamReader t = new StreamReader(f);
-
-            this.Import(t);
-
-            t.Close();
-            f.Close();
-        }
-
-        /// <summary>
-        /// Naète obsah vektoru ze souboru
-        /// </summary>
-        /// <param name="t">StreamReader</param>
-        public void Import(StreamReader t) {
-            this.Text = t.ReadToEnd();
-        }
-
-        /// <summary>
         /// Vyvolání události o spuštìní pøíkazu
         /// </summary>
         protected void OnExecuteCommand(ExecuteCommandEventArgs e) {

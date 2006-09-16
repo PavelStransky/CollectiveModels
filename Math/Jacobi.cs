@@ -13,7 +13,12 @@ namespace PavelStransky.Math {
 		private Vector [] eigenVector;
 		private double [] eigenValue;
 
-		/// <summary>
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public Jacobi() { }
+        
+        /// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="source">Zdrojová symetrická matice</param>
@@ -243,120 +248,72 @@ namespace PavelStransky.Math {
 		/// <summary>
 		/// Uloží výsledky do souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Ukládat v binární podobì</param>
-		public void Export(string fileName, bool binary) {
-			FileStream f = new FileStream(fileName, FileMode.Create);
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(this.eigenValue.Length);
+                for(int i = 0; i < this.eigenValue.Length; i++) {
+                    b.Write(this.eigenValue[i]);
+                    for(int j = 0; j < this.eigenVector.Length; j++)
+                        b.Write(this.eigenVector[i][j]);
+                }
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine(this.eigenValue.Length);
+                for(int i = 0; i < this.eigenValue.Length; i++) {
+                    t.WriteLine("Vlastní hodnota:\t{0}", this.eigenValue[i]);
+                    t.Write("Vlastní vektor:");
 
-			if(binary) {
-				BinaryWriter b = new BinaryWriter(f);
-				this.Export(b);
-				b.Close();
-			}
-			else {
-				StreamWriter t = new StreamWriter(f);
-				this.Export(t);
-				t.Close();
-			}
-
-			f.Close();
-		}
-
-		/// <summary>
-		/// Uloží výsledky do souboru textovì
-		/// </summary>
-		/// <param name="t">StreamWriter</param>
-		public void Export(StreamWriter t) {
-			t.WriteLine(this.GetType().FullName);
-			t.WriteLine(this.eigenValue.Length);
-			for(int i = 0; i < this.eigenValue.Length; i++) {
-				t.WriteLine("Vlastní hodnota:\t{0}", this.eigenValue[i]);
-				t.Write("Vlastní vektor:");
-
-				for(int j = 0; j < this.eigenVector.Length; j++)
-					t.Write("\t{0}", this.eigenVector[i][j]);
-				t.WriteLine();
-			}
-		}
-
-		/// <summary>
-		/// Uloží výsledky do souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryWriter</param>
-		public void Export(BinaryWriter b) {
-			b.Write(this.GetType().FullName);
-			b.Write(this.eigenValue.Length);
-			for(int i = 0; i < this.eigenValue.Length; i++) {
-				b.Write(this.eigenValue[i]);
-				for(int j = 0; j < this.eigenVector.Length; j++)
-					b.Write(this.eigenVector[i][j]);
-			}
+                    for(int j = 0; j < this.eigenVector.Length; j++)
+                        t.Write("\t{0}", this.eigenVector[i][j]);
+                    t.WriteLine();
+                }
+            }
 		}
 
 		/// <summary>
 		/// Naète výsledky ze souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public void Import(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Open);
+        /// <param name="import">Import</param>
+        public void Import(Import import) {
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                int size = b.ReadInt32();
+                this.eigenValue = new double[size];
+                this.eigenVector = new Vector[size];
 
-			if(binary) {
-				BinaryReader b = new BinaryReader(f);
-				this.Import(b);
-				b.Close();
-			}
-			else {
-				StreamReader t = new StreamReader(f);
-				this.Import(t);
-				t.Close();
-			}
+                for(int i = 0; i < size; i++) {
+                    this.eigenValue[i] = b.ReadDouble();
 
-			f.Close();
-		}
-		
-		/// <summary>
-		/// Naète výsledky ze souboru textovì
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public void Import(StreamReader t) {
-			ImportExportException.CheckImportType(t.ReadLine(), this.GetType());
+                    this.eigenVector[i] = new Vector(size);
+                    for(int j = 0; j < size; j++)
+                        this.eigenVector[i][j] = b.ReadDouble();
+                }
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                int size = int.Parse(t.ReadLine());
+                this.eigenValue = new double[size];
+                this.eigenVector = new Vector[size];
 
-			int size = int.Parse(t.ReadLine());
-			this.eigenValue = new double[size];
-			this.eigenVector = new Vector[size];
+                for(int i = 0; i < size; i++) {
+                    string line = t.ReadLine();
+                    string[] s = line.Split('\t');
+                    this.eigenValue[i] = double.Parse(s[1]);
 
-			for(int i = 0; i < size; i++) {
-				string line = t.ReadLine();
-				string []s = line.Split('\t');
-				this.eigenValue[i] = double.Parse(s[1]);
-
-				line = t.ReadLine();
-				s = line.Split('\t');
-				this.eigenVector[i] = new Vector(size);
-				for(int j = 0; j < size; j++)
-					this.eigenVector[i][j] = double.Parse(s[j + 1]);
-			}
-		}
-
-		/// <summary>
-		/// Naète výsledky ze souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public void Import(BinaryReader b) {
-			ImportExportException.CheckImportType(b.ReadString(), this.GetType());
-
-			int size = b.ReadInt32();
-			this.eigenValue = new double[size];
-			this.eigenVector = new Vector[size];
-
-			for(int i = 0; i < size; i++) {
-				this.eigenValue[i] = b.ReadDouble();
-
-				this.eigenVector[i] = new Vector(size);
-				for(int j = 0; j < size; j++)
-					this.eigenVector[i][j] = b.ReadDouble();
-			}
+                    line = t.ReadLine();
+                    s = line.Split('\t');
+                    this.eigenVector[i] = new Vector(size);
+                    for(int j = 0; j < size; j++)
+                        this.eigenVector[i][j] = double.Parse(s[j + 1]);
+                }
+            }
 		}
 		#endregion
 	}

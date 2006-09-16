@@ -108,6 +108,7 @@
     <Compile Include="FFT.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ImportExport.cs" />
     <Compile Include="Interfaces.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -16,6 +16,11 @@ namespace PavelStransky.Math {
 		// v
 		// X
 
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public Matrix() { }
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -421,132 +426,59 @@ namespace PavelStransky.Math {
 
 		#region Implementace IExportable
 		/// <summary>
-		/// Vytvoøí matici z dat ze souboru
-		/// </summary>
-		/// <param name="fileName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public Matrix(string fileName, bool binary) {
-			this.Import(fileName, binary);
-		}
-
-		/// <summary>
-		/// Vytvoøí matici ze StreamReaderu
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public Matrix(StreamReader t) {
-			this.Import(t);
-		}
-
-		/// <summary>
-		/// Vytvoøí matici z BinaryReaderu
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public Matrix(BinaryReader b) {
-			this.Import(b);
-		}
-
-		/// <summary>
 		/// Uloží obsah matice do souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Ukládat v binární podobì</param>
-		public void Export(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Create);
-
-			if(binary) {
-				BinaryWriter b = new BinaryWriter(f);
-				this.Export(b);
-				b.Close();
-			}
-			else {
-				StreamWriter t = new StreamWriter(f);
-				this.Export(t);
-				t.Close();
-			}
-
-			f.Close();
+		/// <param name="export">Export</param>
+		public void Export(Export export) {
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(this.LengthX);
+                b.Write(this.LengthY);
+                for(int i = 0; i < this.LengthX; i++)
+                    for(int j = 0; j < this.LengthY; j++)
+                        b.Write(this[i, j]);
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine("{0}\t{1}", this.LengthX, this.LengthY);
+                for(int i = 0; i < this.LengthX; i++) {
+                    for(int j = 0; j < this.LengthY; j++)
+                        t.Write("{0}\t", this[i, j]);
+                    t.WriteLine();
+                }
+            }
 		}
 		
-		/// <summary>
-		/// Uloží obsah matice do souboru textovì
-		/// </summary>
-		/// <param name="t">StreamWriter</param>
-		public void Export(StreamWriter t) {
-			t.WriteLine(this.GetType().FullName);
-			t.WriteLine("{0}\t{1}", this.LengthX, this.LengthY);
-			for(int i = 0; i < this.LengthX; i++) {
-				for(int j = 0; j < this.LengthY; j++)
-					t.Write("{0}\t", this[i,j]);
-				t.WriteLine();
-			}
-		}
-		
-		/// <summary>
-		/// Uloží obsah matice do souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryWriter</param>
-		public void Export(BinaryWriter b) {
-			b.Write(this.GetType().FullName);
-			b.Write(this.LengthX);
-			b.Write(this.LengthY);
-			for(int i = 0; i < this.LengthX; i++) 
-				for(int j = 0; j < this.LengthY; j++)
-					b.Write(this[i,j]);
-		}
-
 		/// <summary>
 		/// Naète obsah matice ze souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public void Import(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Open);
+        /// <param name="import">Import</param>
+        public void Import(Import import) {
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                this.item = new double[b.ReadInt32(), b.ReadInt32()];
+                for(int i = 0; i < this.LengthX; i++)
+                    for(int j = 0; j < this.LengthY; j++)
+                        this[i, j] = b.ReadDouble();
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                string line = t.ReadLine();
+                string[] s = line.Split('\t');
+                this.item = new double[int.Parse(s[0]), int.Parse(s[1])];
 
-			if(binary) {
-				BinaryReader b = new BinaryReader(f);
-				this.Import(b);
-				b.Close();
-			}
-			else {
-				StreamReader t = new StreamReader(f);
-				this.Import(t);
-				t.Close();
-			}
-
-			f.Close();
-		}
-		
-		/// <summary>
-		/// Naète obsah matice ze souboru textovì
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public void Import(StreamReader t) {
-			ImportExportException.CheckImportType(t.ReadLine(), this.GetType());
-
-			string line = t.ReadLine();
-			string []s = line.Split('\t');
-			this.item = new double[int.Parse(s[0]), int.Parse(s[1])];
-
-			for(int i = 0; i < this.LengthX; i++) {
-				line = t.ReadLine();
-				s = line.Split('\t');
-				for(int j = 0; j < this.LengthY; j++)
-					this[i,j] = double.Parse(s[j]);
-			}
-		}
-
-		/// <summary>
-		/// Naète obsah matice ze souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public void Import(BinaryReader b) {
-			ImportExportException.CheckImportType(b.ReadString(), this.GetType());
-			
-			this.item = new double[b.ReadInt32(), b.ReadInt32()];
-			for(int i = 0; i < this.LengthX; i++) 
-				for(int j = 0; j < this.LengthY; j++)
-					this[i,j] = b.ReadDouble();
-		}
+                for(int i = 0; i < this.LengthX; i++) {
+                    line = t.ReadLine();
+                    s = line.Split('\t');
+                    for(int j = 0; j < this.LengthY; j++)
+                        this[i, j] = double.Parse(s[j]);
+                }
+            }
+        }
 		#endregion
 
 		/// <summary>

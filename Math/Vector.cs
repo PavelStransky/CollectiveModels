@@ -10,6 +10,11 @@ namespace PavelStransky.Math {
 		// Prvky vektoru
 		private double [] item;
 
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public Vector() { }
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -307,119 +312,46 @@ namespace PavelStransky.Math {
 
 		#region Implementace IExportable
 		/// <summary>
-		/// Vytvoøí vektor z dat ze souboru
-		/// </summary>
-		/// <param name="fileName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public Vector(string fileName, bool binary) {
-			this.Import(fileName, binary);
-		}
-
-		/// <summary>
-		/// Vytvoøí vektor ze StreamReaderu
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public Vector(StreamReader t) {
-			this.Import(t);
-		}
-
-		/// <summary>
-		/// Vytvoøí vektor z BinaryReaderu
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public Vector(BinaryReader b) {
-			this.Import(b);
-		}
-		
-		/// <summary>
 		/// Uloží obsah vektoru do souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Ukládat v binární podobì</param>
-		public void Export(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Create);
-
-			if(binary) {
-				BinaryWriter b = new BinaryWriter(f);
-				this.Export(b);
-				b.Close();
-			}
-			else {
-				StreamWriter t = new StreamWriter(f);
-				this.Export(t);
-				t.Close();
-			}
-
-			f.Close();
-		}
-
-		/// <summary>
-		/// Uloží obsah vektoru do souboru textovì
-		/// </summary>
-		/// <param name="t">StreamWriter</param>
-		public void Export(StreamWriter t) {
-			t.WriteLine(this.GetType().FullName);
-			t.WriteLine(this.Length);
-			for(int i = 0; i < this.Length; i++)
-				t.WriteLine(this[i]);
-		}
-
-		/// <summary>
-		/// Uloží obsah vektoru do souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryWriter</param>
-		public void Export(BinaryWriter b) {
-			b.Write(this.GetType().FullName);
-			b.Write(this.Length);
-			for(int i = 0; i < this.Length; i++)
-				b.Write(this[i]);
-		}
+		/// <param name="export">Export</param>
+        public void Export(Export export) {
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(this.Length);
+                for(int i = 0; i < this.Length; i++)
+                    b.Write(this[i]);
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine(this.Length);
+                for(int i = 0; i < this.Length; i++)
+                    t.WriteLine(this[i]);
+            }
+        }
 
 		/// <summary>
 		/// Naète obsah vektoru ze souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public void Import(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Open);
-
-			if(binary) {
-				BinaryReader b = new BinaryReader(f);
-				this.Import(b);
-				b.Close();
-			}
-			else {
-				StreamReader t = new StreamReader(f);
-				this.Import(t);
-				t.Close();
-			}
-
-			f.Close();
-		}
-		
-		/// <summary>
-		/// Naète obsah vektoru ze souboru textovì
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public void Import(StreamReader t) {
-			ImportExportException.CheckImportType(t.ReadLine(), this.GetType());
-
-			this.item = new double[int.Parse(t.ReadLine())];
-			for(int i = 0; i < this.Length; i++)
-				this[i] = double.Parse(t.ReadLine());
-		}
-
-		/// <summary>
-		/// Naète obsah vektoru ze souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public void Import(BinaryReader b) {
-			ImportExportException.CheckImportType(b.ReadString(), this.GetType());
-
-			this.item = new double[b.ReadInt32()];
-			for(int i = 0; i < this.Length; i++)
-				this[i] = b.ReadDouble();
-		}
+        /// <param name="import">Import</param>
+        public void Import(Import import) {
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                this.item = new double[b.ReadInt32()];
+                for(int i = 0; i < this.Length; i++)
+                    this[i] = b.ReadDouble();
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                this.item = new double[int.Parse(t.ReadLine())];
+                for(int i = 0; i < this.Length; i++)
+                    this[i] = double.Parse(t.ReadLine());
+            }
+        }
 		#endregion
 
 		/// <summary>

@@ -56,19 +56,5 @@ namespace PavelStransky.Math {
 		/// <param name="message">Text chybového hlášení</param>
 		/// <param name="detailMessage">Detail chyby</param>
 		public ImportExportException(string message, string detailMessage) : base(message, detailMessage) {}
-
-		/// <summary>
-		/// Provede kontrolu typù
-		/// </summary>
-		/// <param name="fType">Typ dat v souboru</param>
-		/// <param name="cType">Typ tøídy</param>
-		public static void CheckImportType(string fType, Type cType) {
-			if(fType.Trim() != cType.FullName)
-				throw new ImportExportException(errorMessageImportBadType,
-					string.Format(errorMessageImportBadTypeDetail, fType, cType));
-		}
-
-		private const string errorMessageImportBadType = "Nesouhlasí typy pøi importu souboru dat.";
-		private const string errorMessageImportBadTypeDetail = "Typ dat souboru: {0}\nTyp tøídy: {1}";
 	}
 }

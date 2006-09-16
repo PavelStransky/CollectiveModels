@@ -38,32 +38,12 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Uloží data do souboru
         /// </summary>
-        void Export(string fileName, bool binary);
+        void Export(Export export);
 
         /// <summary>
-        /// Uloží data do souboru v textové podobì
+        /// Naète data
         /// </summary>
-        void Export(StreamWriter t);
-
-        /// <summary>
-        /// Uloží data do souboru v binární podobì
-        /// </summary>
-        void Export(BinaryWriter b);
-
-        /// <summary>
-        /// Naète data ze souboru
-        /// </summary>
-        void Import(string fileName, bool binary);
-
-        /// <summary>
-        /// Naète data z textového souboru
-        /// </summary>
-        void Import(StreamReader t);
-
-        /// <summary>
-        /// Naète data z binárního souboru
-        /// </summary>
-        void Import(BinaryReader b);
+        void Import(Import import);
     }
 
     /// <summary>

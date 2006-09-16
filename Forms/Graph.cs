@@ -217,7 +217,9 @@ namespace PavelStransky.Forms {
 		/// Uložení dat
 		/// </summary>
 		private void saveFileDialog_FileOk(object sender, CancelEventArgs e) {
-			(this.Item as IExportable).Export(this.saveFileDialog.FileName, true);
+            Export export = new Export(this.saveFileDialog.FileName, true);
+            export.Write(this.Item);
+            export.Close();
 		}
 
 		/// <summary>

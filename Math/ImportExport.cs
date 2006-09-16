@@ -33,6 +33,7 @@ namespace PavelStransky.Math {
         /// Konstruktor
         /// </summary>
         /// <param name="fileName">Soubor k otevøení</param>
+        /// <param name="binary">True, pokud bude soubor binární</param>
         public Import(string fileName, bool binary) {
             this.f = new FileStream(fileName, FileMode.Open);
 
@@ -60,6 +61,14 @@ namespace PavelStransky.Math {
                 return null;
             }
 
+            return this.Read(typeName);
+        }
+
+        /// <summary>
+        /// Pøeète objekt s daným typem
+        /// </summary>
+        /// <param name="typeName">Jméno typu</param>
+        public object Read(string typeName) {
             // Vytvoøení objektu
             object result;
             if(typeName == typeof(int).FullName)
@@ -79,7 +88,7 @@ namespace PavelStransky.Math {
             if(ie != null)
                 ie.Import(this);
 
-            return ie;
+            return result;
         }
 
         /// <summary>
@@ -170,13 +179,22 @@ namespace PavelStransky.Math {
             else
                 t.WriteLine(typeName);
 
+            this.Write(typeName, o);
+        }
+
+        /// <summary>
+        /// Zapíše objekt daného typu
+        /// </summary>
+        /// <param name="typeName">Název typu objektu</param>
+        /// <param name="o">Objekt</param>
+        public void Write(string typeName, object o) {
             if(o is int) {
                 if(binary) b.Write((int)o); else t.WriteLine(o);
             }
-            if(o is double) {
+            else if(o is double) {
                 if(binary) b.Write((double)o); else t.WriteLine(o);
             }
-            if(o is string) {
+            else if(o is string) {
                 if(binary) b.Write((string)o); else t.WriteLine(o);
             }
             else if(o as IExportable != null) {

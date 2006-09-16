@@ -49,6 +49,7 @@ namespace PavelStransky.Forms {
             this.ClientSize = new System.Drawing.Size(561, 341);
             this.Controls.Add(this.txtCommand);
             this.Name = "Editor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Prográmek";
             this.Activated += new System.EventHandler(this.Editor_Activated);
             this.ResumeLayout(false);

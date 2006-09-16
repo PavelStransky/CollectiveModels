@@ -1,11 +1,13 @@
 using System;
 using System.Drawing;
 
+using PavelStransky.Math;
+
 namespace PavelStransky.Expression {
 	/// <summary>
 	/// Tøída, která zapouzdøuje graf (urèuje jeho obsah, popø. další parametry)
 	/// </summary>
-	public class Graph {
+	public class Graph: IExportable {
 		protected object item;
 
 		// Kontext a výraz celého grafu
@@ -83,6 +85,11 @@ namespace PavelStransky.Expression {
 		}
 
         /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public Graph() { }
+
+        /// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="item">Data pro graf</param>
@@ -107,6 +114,26 @@ namespace PavelStransky.Expression {
 				this.graphExpression.Evaluate();
 		}
 
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public virtual void Export(Export export) {
+            export.Write(this.item);
+            export.Write(this.graphContext);
+        }
+
+        /// <summary>
+        /// Naète obsah ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public virtual void Import(PavelStransky.Math.Import import) {
+            this.item = import.Read();
+            this.graphContext = import.Read() as Context;
+        }
+        #endregion
+
 		// Parametry grafu
 		private const string paramTitle = "title";
 		private const string paramShow = "show";
@@ -122,7 +149,7 @@ namespace PavelStransky.Expression {
 	/// <summary>
 	/// Tøída, která zapouzdøuje èárový graf
 	/// </summary>
-	public class LineGraph : Graph {
+	public class LineGraph : Graph, IExportable {
 		private object errors;
 
 		// Kontexty a výrazy jednotlivých køivek
@@ -252,6 +279,11 @@ namespace PavelStransky.Expression {
 		}
 		#endregion
 
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public LineGraph() { }
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -294,7 +326,43 @@ namespace PavelStransky.Expression {
 					this.itemExpression[i].Evaluate();
 		}
 
-		// Parametry grafu
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public override void Export(Export export) {
+            base.Export(export);
+
+            if(export.Binary)
+                export.B.Write(this.itemContext.Length);
+            else
+                export.T.WriteLine(this.itemContext.Length);
+
+            for(int i = 0; i < this.itemContext.Length; i++)
+                export.Write(this.itemContext[i]);
+        }
+
+        /// <summary>
+        /// Naète obsah kontextu ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public override void Import(PavelStransky.Math.Import import) {
+            base.Import(import);
+
+            int length = 0;
+            if(import.Binary)
+                length = import.B.ReadInt32();
+            else
+                length = Int32.Parse(import.T.ReadLine());
+
+            this.itemContext = new Context[length];
+            for(int i = 0; i < length; i++)
+                this.itemContext[i] = import.Read() as Context;
+        }
+        #endregion
+
+        // Parametry grafu
 		private const string paramTitle = "title";
 		private const string paramShift = "shift";
 		private const string paramLineColor = "lcolor";
@@ -395,6 +463,11 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		public Array LabelsY {get {return this.labelsY;}}
 
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public DensityGraph() { }
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -406,6 +479,28 @@ namespace PavelStransky.Expression {
 			this.labelsX = labelsX;
 			this.labelsY = labelsY;
 		}
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public override void Export(Export export) {
+            base.Export(export);
+            export.Write(labelsX);
+            export.Write(labelsY);
+        }
+
+        /// <summary>
+        /// Naète obsah ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public override void Import(PavelStransky.Math.Import import) {
+            base.Import(import);
+            this.labelsX = import.Read() as Array;
+            this.labelsY = import.Read() as Array;
+        }
+        #endregion
 
 		private const string paramShowLabels = "showlabels";
 		private const bool defaultShowLabels = true;

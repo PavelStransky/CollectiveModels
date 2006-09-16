@@ -144,185 +144,84 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Uloží obsah kontextu do souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Ukládat v binární podobì</param>
-		public void Export(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Create);
+		/// <param name="export">Export</param>
+        public void Export(Export export) {
+            // Poèet objektù k záznamu
+            int num = 0;
+            foreach(Variable v in this.objects.Values)
+                if(v != null)
+                    num++;
 
-			if(binary) {
-				BinaryWriter b = new BinaryWriter(f);
-				this.Export(b);
-				b.Close();
-			}
-			else {
-				StreamWriter t = new StreamWriter(f);
-				this.Export(t);
-				t.Close();
-			}
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(num);
 
-			f.Close();
-		}
+                foreach(Variable v in this.objects.Values)
+                    if(v != null) {
+                        b.Write(v.Name);
+                        b.Write(v.Expression);
+                        export.Write(v.Item);
+                    }
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine(num);
 
-		/// <summary>
-		/// Uloží obsah kontextu do souboru textovì
-		/// </summary>
-		/// <param name="t">StreamWriter</param>
-		public void Export(StreamWriter t) {
-			t.WriteLine(this.GetType().FullName);
-
-			foreach(Variable v in this.objects.Values) {
-				if(v != null) {
-					t.WriteLine(v.Name);
-					t.WriteLine(v.Item.GetType().FullName);
-					t.WriteLine(v.Expression);
-					IExportable iExportable = v.Item as IExportable;
-					if(iExportable != null)
-						iExportable.Export(t);
-					else if(v.Item is double || v.Item is int || v.Item is string)
-						t.WriteLine(v.Item);
-					else if(v.Item is PointD) {
-						t.WriteLine("{0}\t{1}", (v.Item as PointD).X, (v.Item as PointD).Y);
-					}
-					t.WriteLine(separator);
-				}
-			}		
-		}
-
-		/// <summary>
-		/// Uloží obsah kontextu do souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryWriter</param>
-		public void Export(BinaryWriter b) {
-			b.Write(this.GetType().FullName);
-
-			foreach(Variable v in this.objects.Values) {
-				if(v != null) {
-					b.Write(v.Name);
-					b.Write(v.Item.GetType().FullName);
-					b.Write(v.Expression);
-					IExportable iExportable = v.Item as IExportable;
-					if(iExportable != null)
-						iExportable.Export(b);
-					else if(v.Item is double) 
-						b.Write((double)v.Item);
-					else if(v.Item is int)
-						b.Write((int)v.Item);
-					else if(v.Item is string)
-						b.Write((string)v.Item);
-					else if(v.Item is PointD) {
-						b.Write((v.Item as PointD).X);
-						b.Write((v.Item as PointD).Y);
-					}
-				}
-			}		
-		}
+                foreach(Variable v in this.objects.Values)
+                    if(v != null) {
+                        t.WriteLine(v.Name);
+                        t.WriteLine(v.Expression);
+                        export.Write(v.Item);
+                        t.WriteLine(separator);
+                    }
+            }
+        }
 
 		/// <summary>
 		/// Naète obsah kontextu ze souboru
 		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public void Import(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Open);
+        /// <param name="import">Import</param>
+        public void Import(PavelStransky.Math.Import import) {
+            this.Clear();
 
-			if(binary) {
-				BinaryReader b = new BinaryReader(f);
-				this.Import(b);
-				b.Close();
-			}
-			else {
-				StreamReader t = new StreamReader(f);
-				this.Import(t);
-				t.Close();
-			}
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                int num = b.ReadInt32();
 
-			f.Close();
-		}
+                for(int i = 0; i < num; i++) {
+                    string name = b.ReadString();
+                    string e = b.ReadString();
+                    Assignment assignment = null;
 
-		/// <summary>
-		/// Naète obsah kontextu ze souboru textovì
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public void Import(StreamReader t) {
-			ImportExportException.CheckImportType(t.ReadLine(), this.GetType());			
+                    if(e != string.Empty)
+                        assignment = new Assignment(this, e, null);
 
-			this.Clear();
+                    this.SetVariable(name, import.Read(), assignment);
+                }
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                int num = int.Parse(t.ReadLine());
 
-			string name;
-			while((name = t.ReadLine()) != null) {
-				string typeName = t.ReadLine();
-				string e = t.ReadLine();
-				Assignment assignment = null;
+                for(int i = 0; i < num; i++) {
+                    string name = t.ReadLine();
+                    string e = t.ReadLine();
+                    Assignment assignment = null;
 
-				if(e != string.Empty)
-					assignment = new Assignment(this, e, null);
+                    if(e != string.Empty)
+                        assignment = new Assignment(this, e, null);
 
-				if(typeName == typeof(Vector).FullName) 
-					this.SetVariable(name, new Vector(t), assignment);
-				else if(typeName == typeof(PointVector).FullName)
-					this.SetVariable(name, new PointVector(t), assignment);
-				else if(typeName == typeof(Matrix).FullName) 
-					this.SetVariable(name, new Matrix(t), assignment);
-				else if(typeName == typeof(Array).FullName) 
-					this.SetVariable(name, new Array(t), assignment);
-				else if(typeName == typeof(double).FullName)
-					this.SetVariable(name, double.Parse(t.ReadLine()), assignment);
-				else if(typeName == typeof(int).FullName)
-					this.SetVariable(name, int.Parse(t.ReadLine()), assignment);
-				else if(typeName == typeof(PointD).FullName) {
-					string line = t.ReadLine();
-					string []s = line.Split('\t');
-					this.SetVariable(name, new PointD(double.Parse(s[0]), double.Parse(s[1])), assignment);
-				}
+                    this.SetVariable(name, import.Read(), assignment);
 
-				// Prázdná øádka s oddìlovaèem
-				t.ReadLine();
-			}
-		}
-
-		/// <summary>
-		/// Naète obsah kontextu ze souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public void Import(BinaryReader b) {
-			ImportExportException.CheckImportType(b.ReadString(), this.GetType());
-
-			this.Clear();
-
-			// Kvùli ukonèení ètení po dosažení konce souboru
-			try {
-				while(true) {
-					string name = b.ReadString();
-					string typeName = b.ReadString();
-					string e = b.ReadString();
-					Assignment assignment = null;
-
-					if(e != string.Empty)
-						assignment = new Assignment(this, e, null);
-
-					if(typeName == typeof(Vector).FullName) 
-						this.SetVariable(name, new Vector(b), assignment);
-					else if(typeName == typeof(PointVector).FullName) 
-						this.SetVariable(name, new PointVector(b), assignment);
-					else if(typeName == typeof(Matrix).FullName) 
-						this.SetVariable(name, new Matrix(b), assignment);
-					else if(typeName == typeof(Array).FullName) 
-						this.SetVariable(name, new Array(b), assignment);
-					else if(typeName == typeof(double).FullName)
-						this.SetVariable(name, b.ReadDouble(), assignment);
-					else if(typeName == typeof(int).FullName)
-						this.SetVariable(name, b.ReadInt32(), assignment);
-					else if(typeName == typeof(string).FullName)
-						this.SetVariable(name, b.ReadString(), assignment);
-					else if(typeName == typeof(PointD).FullName)
-						this.SetVariable(name, new PointD(b.ReadDouble(), b.ReadDouble()), assignment);
-				}
-			}
-			catch(EndOfStreamException) {}
-			catch(Exception e) {
-				throw e;
-			}
-		}
+                    // Prázdná øádka s oddìlovaèem
+                    t.ReadLine();
+                }
+            }
+        }
 		#endregion
 
 		private const string errorMessageNoObject = "Objekt \"{0}\" nebyl nalezen.";

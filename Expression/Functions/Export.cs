@@ -8,8 +8,9 @@ namespace PavelStransky.Expression.Functions {
 	/// <summary>
 	/// Uloží jednu promìnnou do souboru
 	/// </summary>
-	public class Export: FunctionDefinitionIE {
-		public override string Help {get {return help;}}
+	public class FnExport: FunctionDefinitionIE {
+        public override string Name { get { return name; } }
+        public override string Help { get { return help; } }
 		public override string Parameters {get {return parameters;}}
 
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
@@ -24,15 +25,14 @@ namespace PavelStransky.Expression.Functions {
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			IExportable iExportable = arguments[1] as IExportable;
-			if(iExportable != null)
-				iExportable.Export(item as string, this.Binary(arguments, 2));
-			else
-				this.BadTypeError(arguments[1], 0);			
+            Export export = new Export(item as string, this.Binary(arguments, 2));
+            export.Write(arguments[1]);
+            export.Close();
 
 			return null;
 		}
-			
+
+        private const string name = "export";
 		private const string help = "Uloží jednu promìnnou do souboru (implicitnì binárnì)";
 		private const string parameters = "název souboru (string); promìnná; [;\"binary\" | \"text\"]";
 	}

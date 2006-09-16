@@ -14,7 +14,7 @@ namespace PavelStransky.Forms {
     /// <summary>
     /// Formuláø pro editaci
     /// </summary>
-    public partial class Editor : Form {
+    public partial class Editor : Form, IExportable {
         //Kontext s výrazy
         private Context context;
 
@@ -28,9 +28,14 @@ namespace PavelStransky.Forms {
         private static int resultNumber = 0;
 
         /// <summary>
+        /// Kontext
+        /// </summary>
+        public Context Context { get { return this.context; } }
+
+        /// <summary>
         /// Nefunguje dobøe událost txtCommand_OnModifiedChanged, proto musíme vyøešit po svém
         /// </summary>
-        private bool Modified {
+        public bool Modified {
             get {
                 return this.modified;
             }
@@ -91,21 +96,21 @@ namespace PavelStransky.Forms {
         }
 
         #region Obsluha grafu
-        private delegate void GraphRequestDelegate(object sender, GraphRequestEventArgs e);
+        private delegate void GraphRequestDelegate(Variable v);
 
         /// <summary>
         /// Událost z kontextu - žádost o vytvoøení grafu
         /// </summary>
         private void context_GraphRequest(object sender, GraphRequestEventArgs e) {
             // Spustíme ve vlastním threadu
-            this.Invoke(new GraphRequestDelegate(this.GraphRequestInvoke), new object[] { sender, e });
+            this.Invoke(new GraphRequestDelegate(this.CreateGraph), new object[] { e.Variable });
         }
 
         /// <summary>
         /// Vytvoøení nového formuláøe musíme spustit ve vlastním threadu
         /// </summary>
-        private void GraphRequestInvoke(object sender, GraphRequestEventArgs e) {
-            GraphForm graphForm = (this.MdiParent as MainForm).NewParentForm(typeof(GraphForm), this, e.Variable.Name) as GraphForm;
+        private void CreateGraph(Variable v) {
+            GraphForm graphForm = (this.MdiParent as MainForm).NewParentForm(typeof(GraphForm), this, v.Name) as GraphForm;
 
             bool isGA = false;
             GraphArray ga = null;
@@ -113,9 +118,9 @@ namespace PavelStransky.Forms {
             int lengthX = 1;
             int lengthY = 1;
 
-            if(e.Variable.Item is GraphArray) {
+            if(v.Item is GraphArray) {
                 isGA = true;
-                ga = e.Variable.Item as GraphArray;
+                ga = v.Item as GraphArray;
                 count = ga.Count;
                 lengthX = ga.LengthX;
                 lengthY = ga.LengthY;
@@ -131,7 +136,7 @@ namespace PavelStransky.Forms {
                     g = ga[i];
                 else {
                     index = -1;
-                    g = e.Variable.Item as Expression.Graph;
+                    g = v.Item as Expression.Graph;
                 }
 
                 RectangleF position = new RectangleF((float)(i % lengthX) / (float)lengthX, (int)(i / lengthX) / (float)lengthY, 1 / (float)lengthX, 1 / (float)lengthY);
@@ -140,11 +145,11 @@ namespace PavelStransky.Forms {
                     DensityGraph densityGraph = graphForm.GraphControl(index) as DensityGraph;
 
                     if(densityGraph != null)
-                        densityGraph.SetVariable(e.Variable, index);
+                        densityGraph.SetVariable(v, index);
                     else {
                         graphForm.SuspendLayout();
-                        densityGraph = new DensityGraph(e.Variable, index, position);
-                        this.SetGraphStyles(densityGraph, graphForm, string.Format("{0}{1}", e.Variable.Name, i));
+                        densityGraph = new DensityGraph(v, index, position);
+                        this.SetGraphStyles(densityGraph, graphForm, string.Format("{0}{1}", v.Name, i));
                         graphForm.Controls.Add(densityGraph);
                         graphForm.ResumeLayout();
                     }
@@ -153,11 +158,11 @@ namespace PavelStransky.Forms {
                     LineGraph lineGraph = graphForm.GraphControl(index) as LineGraph;
 
                     if(lineGraph != null)
-                        lineGraph.SetVariable(e.Variable, index);
+                        lineGraph.SetVariable(v, index);
                     else {
                         graphForm.SuspendLayout();
-                        lineGraph = new LineGraph(e.Variable, index, position);
-                        this.SetGraphStyles(lineGraph, graphForm, string.Format("{0}{1}", e.Variable.Name, i));
+                        lineGraph = new LineGraph(v, index, position);
+                        this.SetGraphStyles(lineGraph, graphForm, string.Format("{0}{1}", v.Name, i));
                         graphForm.Controls.Add(lineGraph);
                         graphForm.ResumeLayout();
                     }
@@ -394,6 +399,53 @@ namespace PavelStransky.Forms {
             FileInfo f = new FileInfo(fileName);
             return f.DirectoryName;
         }
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah kontextu do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            // Musíme ukládat binárnì
+            if(!export.Binary)
+                throw new Exception("");
+
+            // Binárnì
+            BinaryWriter b = export.B;
+            b.Write(this.Location.X);
+            b.Write(this.Location.Y);
+            b.Write(this.Size.Width);
+            b.Write(this.Size.Height);
+
+            b.Write(this.txtCommand.Rtf);
+            b.Write(this.txtCommand.SelectionStart);
+
+            export.Write(this.context);
+        }
+
+        /// <summary>
+        /// Naète obsah kontextu ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public void Import(PavelStransky.Math.Import import) {
+            // Musíme èíst binárnì
+            if(!import.Binary)
+                throw new Exception("");
+
+            // Binárnì
+            BinaryReader b = import.B;
+            this.Location = new Point(b.ReadInt32(), b.ReadInt32());
+            this.Size = new Size(b.ReadInt32(), b.ReadInt32());
+
+            this.txtCommand.Rtf = b.ReadString();
+            this.txtCommand.SelectionStart = b.ReadInt32();
+
+            this.context = import.Read() as Context;
+
+            this.context.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
+            this.context.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
+        }
+        #endregion
 
         private const string directoryVariable = "_dir";
 

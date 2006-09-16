@@ -41,6 +41,11 @@ namespace PavelStransky.GCM {
         public bool IsGammaSoft { get { return this.B == 0; } }
 
         /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public GCMParameters() { }
+
+        /// <summary>
         /// Kostruktor GCM modelu
         /// </summary>
         /// <param name="a">A</param>

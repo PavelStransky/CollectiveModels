@@ -85,175 +85,58 @@ namespace PavelStransky.Expression {
 
 		#region Implementace IExportable
 		/// <summary>
-		/// Vytvoøí øadu z dat ze souboru
-		/// </summary>
-		/// <param name="fileName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public Array(string fileName, bool binary) {
-			this.Import(fileName, binary);
-		}
-
-		/// <summary>
-		/// Vytvoøí øadu ze StreamReaderu
-		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public Array(StreamReader t) {
-			this.Import(t);
-		}
-		
-		/// <summary>
-		/// Vytvoøí øadu z BinaryReaderu
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public Array(BinaryReader b) {
-			this.Import(b);
-		}
-
-		/// <summary>
-		/// Uloží obsah øady do souboru
-		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Ukládat v binární podobì</param>
-		public void Export(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Create);
-
-			if(binary) {
-				BinaryWriter b = new BinaryWriter(f);
-				this.Export(b);
-				b.Close();
-			}
-			else {
-				StreamWriter t = new StreamWriter(f);
-				this.Export(t);
-				t.Close();
-			}
-
-			f.Close();
-		}
-
-		/// <summary>
 		/// Uloží obsah øady do souboru textovì
 		/// </summary>
-		/// <param name="t">StreamWriter</param>
-		public void Export(StreamWriter t) {
-			t.WriteLine(this.GetType().FullName);
-			t.WriteLine(this.Count);
-			t.WriteLine(this.type.FullName);
-			for(int i = 0; i < this.Count; i++) {
-				if(this[i] is IExportable)
-					(this[i] as IExportable).Export(t);
-				else if(this[i] is double || this[i] is int || this[i] is string) {
-					t.WriteLine(this[i]);
-				}
-			}
-		}
+		/// <param name="export">Export</param>
+        public void Export(Export export) {
+            string typeName = this.type.FullName;
 
-		/// <summary>
-		/// Uloží obsah øady do souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryWriter</param>
-		public void Export(BinaryWriter b) {
-			b.Write(this.GetType().FullName);
-			b.Write(this.Count);
-			b.Write(this.type.FullName);
-			for(int i = 0; i < this.Count; i++) {
-				if(this[i] is IExportable)
-					(this[i] as IExportable).Export(b);
-				else if(this[i] is double) 
-					b.Write((double)this[i]);
-				else if(this[i] is int)
-					b.Write((int)this[i]);
-				else if(this[i] is string) 
-					b.Write((string)this[i]);
-			}
-		}
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(this.Count);
+                b.Write(typeName);
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine(this.Count);
+                t.WriteLine(typeName);
+            }
 
-		/// <summary>
-		/// Naète obsah øady ze souboru
-		/// </summary>
-		/// <param name="fName">Jméno souboru</param>
-		/// <param name="binary">Soubor v binární podobì</param>
-		public void Import(string fName, bool binary) {
-			FileStream f = new FileStream(fName, FileMode.Open);
-
-			if(binary) {
-				BinaryReader b = new BinaryReader(f);
-				this.Import(b);
-				b.Close();
-			}
-			else {
-				StreamReader t = new StreamReader(f);
-				this.Import(t);
-				t.Close();
-			}
-
-			f.Close();
-		}
+            foreach(object o in this)
+                export.Write(typeName, o);
+        }
 
 		/// <summary>
 		/// Naète obsah øady ze souboru textovì
 		/// </summary>
-		/// <param name="t">StreamReader</param>
-		public void Import(StreamReader t) {
-			ImportExportException.CheckImportType(t.ReadLine(), this.GetType());			
+        /// <param name="import">Import</param>
+        public void Import(PavelStransky.Math.Import import) {
+            string typeName = string.Empty;
+            int length = 0;
+            this.Clear();
 
-			int length = int.Parse(t.ReadLine());
-			string typeName = t.ReadLine();
-			if(length == 0)
-				this.type = null;
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                length = b.ReadInt32();
+                typeName = b.ReadString();
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                length = int.Parse(t.ReadLine());
+                typeName = t.ReadLine();
+            }
 
-			for(int i = 0; i < length; i++) {
-                if(typeName == typeof(Vector).FullName)
-                    this.Add(new Vector(t));
-                else if(typeName == typeof(Matrix).FullName)
-                    this.Add(new Matrix(t));
-                else if(typeName == typeof(Array).FullName)
-                    this.Add(new Array(t));
-                else if(typeName == typeof(PointD).FullName)
-                    this.Add(new PointD(t));
-                else if(typeName == typeof(PointVector).FullName)
-                    this.Add(new PointVector(t));
-                else if(typeName == typeof(double).FullName)
-                    this.Add(double.Parse(t.ReadLine()));
-                else if(typeName == typeof(int).FullName)
-                    this.Add(int.Parse(t.ReadLine()));
-                else if(typeName == typeof(string).FullName)
-                    this.Add(t.ReadLine());
-			}
-		}
+            if(length == 0)
+                this.type = null;
 
-
-		/// <summary>
-		/// Naète obsah øady ze souboru binárnì
-		/// </summary>
-		/// <param name="b">BinaryReader</param>
-		public void Import(BinaryReader b) {
-			ImportExportException.CheckImportType(b.ReadString(), this.GetType());
-
-			int length = b.ReadInt32();
-			string typeName = b.ReadString();
-			if(length == 0)
-				this.type = null;
-
-			for(int i = 0; i < length; i++) {
-                if(typeName == typeof(Vector).FullName)
-                    this.Add(new Vector(b));
-                else if(typeName == typeof(Matrix).FullName)
-                    this.Add(new Matrix(b));
-                else if(typeName == typeof(Array).FullName)
-                    this.Add(new Array(b));
-                else if(typeName == typeof(PointD).FullName)
-                    this.Add(new PointD(b));
-                else if(typeName == typeof(PointVector).FullName)
-                    this.Add(new PointVector(b));
-                else if(typeName == typeof(double).FullName)
-                    this.Add(b.ReadDouble());
-                else if(typeName == typeof(int).FullName)
-                    this.Add(b.ReadInt32());
-                else if(typeName == typeof(string).FullName)
-                    this.Add(b.ReadString());
-			}
-		}
+            for(int i = 0; i < length; i++)
+                this.Add(import.Read(typeName));
+            
+        }
 		#endregion
 
 		/// <summary>

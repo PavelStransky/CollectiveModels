@@ -2,13 +2,16 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
+
+using PavelStransky.Math;
 
 namespace PavelStransky.Forms {
 	/// <summary>
 	/// Prázdný formuláø. Grafy do nìj pøidáváme my
 	/// </summary>
-	public class GraphForm : ChildForm {
+	public class GraphForm : ChildForm, IExportable {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -74,7 +77,46 @@ namespace PavelStransky.Forms {
 					g.SetPosition(this.Width, this.Height);
 			}
 		}
-	}
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah formuláøe do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            // Musíme ukládat binárnì
+            if(!export.Binary)
+                throw new Exception("");
+
+            // Binárnì
+            BinaryWriter b = export.B;
+            b.Write(this.Location.X);
+            b.Write(this.Location.Y);
+            b.Write(this.Size.Width);
+            b.Write(this.Size.Height);
+
+            b.Write(this.Name);
+        }
+
+        /// <summary>
+        /// Naète obsah kontextu ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public void Import(PavelStransky.Math.Import import) {
+            // Musíme èíst binárnì
+            if(!import.Binary)
+                throw new Exception("");
+
+            // Binárnì
+            BinaryReader b = import.B;
+            this.Location = new Point(b.ReadInt32(), b.ReadInt32());
+            this.Size = new Size(b.ReadInt32(), b.ReadInt32());
+
+            this.Name = b.ReadString();
+            this.Text = this.Name;
+        }
+        #endregion
+    }
 
 	/// <summary>
 	/// Výjimka ve tøídì Graph

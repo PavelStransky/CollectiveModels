@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -11,7 +12,7 @@ using PavelStransky.Math;
 using PavelStransky.Expression;
 
 namespace PavelStransky.Forms {
-    public partial class ResultForm: ChildForm, IOutputWriter {
+    public partial class ResultForm: ChildForm, IOutputWriter, IExportable {
         /// Výraz
         private Expression.Expression expression;
 
@@ -51,17 +52,35 @@ namespace PavelStransky.Forms {
         public bool Calulating { get { return this.calculating; } }
 
         /// <summary>
+        /// Pro zadaný text v oknì txtCommand pøiøadí context a vytvoøí výraz
+        /// </summary>
+        /// <param name="expContext">Kontext</param>
+        public void SetContext(Expression.Context expContext) {
+            this.SetExpression(expContext, this.txtCommand.Text);
+        }
+
+        /// <summary>
         /// Výraz
         /// </summary>
+        /// <param name="expContext">Kontext</param>
+        /// <param name="command">Pøíkaz</param>
         public void SetExpression (Expression.Context expContext, string command) {
             try {
                 this.calcThread = null;
                 this.expression = new PavelStransky.Expression.Expression(expContext, command, this); 
                 this.txtCommand.Text = command;
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
+
+                this.btRecalculate.Visible = true;
+                this.lblResult.Visible = true;
+                this.lblComputing.Visible = false;
+                this.btInterrupt.Visible = false;
+                this.btPause.Visible = false;
+                this.btContinue.Visible = false;
             }
             catch(Exception exc) {
                 this.CatchException(exc);
+                this.Close();
             }		
         }
 
@@ -297,6 +316,50 @@ namespace PavelStransky.Forms {
             this.txtResult.Text = s;
         }
 
+        #endregion
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah formuáøe do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            // Musíme ukládat binárnì
+            if(!export.Binary)
+                throw new Exception("");
+
+            // Binárnì
+            BinaryWriter b = export.B;
+            b.Write(this.Location.X);
+            b.Write(this.Location.Y);
+            b.Write(this.Size.Width);
+            b.Write(this.Size.Height);
+
+            b.Write(this.Name);
+            b.Write(this.txtCommand.Text);
+            b.Write(this.txtResult.Text);
+        }
+
+        /// <summary>
+        /// Naète obsah formuláøe ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public void Import(PavelStransky.Math.Import import) {
+            // Musíme èíst binárnì
+            if(!import.Binary)
+                throw new Exception("");
+
+            // Binárnì
+            BinaryReader b = import.B;
+            this.Location = new Point(b.ReadInt32(), b.ReadInt32());
+            this.Size = new Size(b.ReadInt32(), b.ReadInt32());
+
+            this.Name = b.ReadString();
+            this.txtCommand.Text = b.ReadString();
+            this.txtResult.Text = b.ReadString();
+
+            this.Text = this.Name;
+        }
         #endregion
 
         private const string newLine = "\r\n";

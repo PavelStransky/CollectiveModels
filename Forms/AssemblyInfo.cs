@@ -8,11 +8,11 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("CollectiveModels")]
+[assembly: AssemblyTitle("Collective Models")]
 [assembly: AssemblyDescription("Program for analysing nuclear collective models (GCM, IBM)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pavel Stransky")]
-[assembly: AssemblyProduct("CollectiveModels")]
+[assembly: AssemblyProduct("Collective Models")]
 [assembly: AssemblyCopyright("Pavel Stransky")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		

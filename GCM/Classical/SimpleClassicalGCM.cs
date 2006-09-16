@@ -1,11 +1,12 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
 using PavelStransky.Math;
 
 namespace PavelStransky.GCM {
-    public class SimpleClassicalGCM: GCM, IDynamicalSystem {
+    public class SimpleClassicalGCM: GCM, IExportable, IDynamicalSystem {
         // Generátor náhodných èísel
         private Random random = new Random();
 
@@ -85,6 +86,11 @@ namespace PavelStransky.GCM {
         /// Poèet stupòù volnosti
         /// </summary>
         public int DegreesOfFreedom { get { return degreesOfFreedom; } }
+
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public SimpleClassicalGCM() { }
 
         /// <summary>
         /// Konstruktor standardního Lagrangiánu
@@ -174,6 +180,53 @@ namespace PavelStransky.GCM {
 
             return s.ToString();
         }
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží GCM tøídu do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(this.A);
+                b.Write(this.B);
+                b.Write(this.C);
+                b.Write(this.K);
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine("{0}\t{1}\t{2}\t{3}", this.A, this.B, this.C, this.K);
+            }
+        }
+
+        /// <summary>
+        /// Naète GCM tøídu ze souboru textovì
+        /// </summary>
+        /// <param name="import">Import</param>
+        public void Import(Import import) {
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                this.A = b.ReadDouble();
+                this.B = b.ReadDouble();
+                this.C = b.ReadDouble();
+                this.K = b.ReadDouble();
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                string line = t.ReadLine();
+                string[] s = line.Split('\t');
+                this.A = double.Parse(s[0]);
+                this.B = double.Parse(s[1]);
+                this.C = double.Parse(s[2]);
+                this.K = double.Parse(s[3]);
+            }
+        }
+        #endregion
 
         private const double poincareTime = 100;
         private const int degreesOfFreedom = 2;

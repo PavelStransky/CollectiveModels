@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 using Microsoft.Win32;
 
+using PavelStransky.Math;
+using PavelStransky.Expression;
+
 namespace PavelStransky.Forms {
     public partial class MainForm : Form {
         /// <summary>
@@ -22,7 +25,7 @@ namespace PavelStransky.Forms {
         public MainForm() {
             this.InitializeComponent();
             this.Initialize();
-            this.NewEditor();
+            this.New();
         }
 
         /// <summary>
@@ -32,7 +35,7 @@ namespace PavelStransky.Forms {
         public MainForm(string fName) {
             this.InitializeComponent();
             this.Initialize();
-            this.NewEditor().Open(fName);
+            this.Open(fName);
         }
 
         /// <summary>
@@ -46,6 +49,8 @@ namespace PavelStransky.Forms {
                 this.mnSetttingsRegistry.Checked = true;
             else
                 this.mnSetttingsRegistry.Checked = false;
+
+            this.Text = Application.ProductName;
         }
 
         /// <summary>
@@ -62,12 +67,10 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Vytvoøí nevé okno s editorem
         /// </summary>
-        private Editor NewEditor() {
+        private void New() {
             Editor editor = new Editor();
             editor.MdiParent = this;
             editor.Show();
-
-            return editor;
         }
 
         /// <summary>
@@ -139,7 +142,7 @@ namespace PavelStransky.Forms {
         /// Nové okno
         /// </summary>
         private void mnFileNew_Click(object sender, EventArgs e) {
-            this.NewEditor();
+            this.New();
         }
 
         /// <summary>
@@ -153,8 +156,13 @@ namespace PavelStransky.Forms {
         /// Uložit
         /// </summary>
         private void mnFileSave_Click(object sender, EventArgs e) {
-            if(this.ActiveMdiChild is Editor)
-                (this.ActiveMdiChild as Editor).Save();
+            if(this.ActiveMdiChild is Editor) {
+                string fileName = (this.ActiveMdiChild as Editor).FileName;
+                if(fileName == null || fileName == string.Empty)
+                    this.saveFileDialog.ShowDialog();
+                else
+                    this.Save(this.ActiveMdiChild as Editor, fileName);
+            }
         }
 
         /// <summary>
@@ -170,8 +178,6 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Ukonèí aplikaci
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void mnExit_Click(object sender, EventArgs e) {
             Application.Exit();
         }
@@ -180,7 +186,7 @@ namespace PavelStransky.Forms {
         /// Otevøení souboru - voláno z dialogu FileOpen
         /// </summary>
         private void openFileDialog_FileOk(object sender, CancelEventArgs e) {
-            this.NewEditor().Open(this.openFileDialog.FileName);
+            this.Open(this.openFileDialog.FileName);
         }
 
         /// <summary>
@@ -188,7 +194,73 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e) {
             if(this.ActiveMdiChild is Editor)
-                (this.ActiveMdiChild as Editor).Save(this.saveFileDialog.FileName);
+                this.Save(this.ActiveMdiChild as Editor, this.saveFileDialog.FileName);
+        }
+
+        /// <summary>
+        /// Otevøe soubor
+        /// </summary>
+        /// <param name="fileName">Název souboru</param>
+        private void Open(string fileName) {
+            Import import = new Import(fileName, true);
+            Editor editor = import.Read() as Editor;
+
+            editor.MdiParent = this;
+            editor.Show();
+
+            int num = import.B.ReadInt32();
+            for(int i = 0; i < num; i++) {
+                object o = import.Read();
+                if(o is ChildForm) {
+                    (o as ChildForm).ParentEditor = editor;
+                    (o as ChildForm).MdiParent = this;
+                    (o as ChildForm).Show();
+                }
+                if(o is ResultForm) {
+                    (o as ResultForm).SetContext(editor.Context);
+                }
+                if(o is GraphForm) {
+                    // Pøepoèítáme graf
+                    string expressionText = editor.Context[(o as GraphForm).Name].Expression + ";";
+                    Expression.Expression expression = new PavelStransky.Expression.Expression(editor.Context, expressionText);
+                    expression.Evaluate();
+                }
+            }
+
+            import.Close();
+
+            editor.Modified = false;
+            editor.Activate();
+        }
+
+        /// <summary>
+        /// Uloží soubor
+        /// </summary>
+        /// <param name="editor">Okno editoru</param>
+        /// <param name="fileName">Název souboru</param>
+        private void Save(Editor editor, string fileName) {
+            editor.FileName = fileName;
+
+            Export export = new Export(fileName, true);
+            export.Write(editor);
+
+            int num = 0;
+            for(int i = 0; i < this.MdiChildren.Length; i++) {
+                ChildForm childForm = this.MdiChildren[i] as ChildForm;
+                if(childForm as IExportable != null && childForm.ParentEditor == editor)
+                    num++;
+            }
+
+            export.B.Write(num);
+            for(int i = 0; i < this.MdiChildren.Length; i++) {
+                ChildForm childForm = this.MdiChildren[i] as ChildForm;
+                if(childForm as IExportable != null && childForm.ParentEditor == editor)
+                    export.Write(childForm);
+            }
+
+            export.Close();
+
+            editor.Modified = false;
         }
         #endregion
 

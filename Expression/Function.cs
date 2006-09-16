@@ -151,6 +151,9 @@ namespace PavelStransky.Expression
 
         #region IOutputWriter Members
         public void Clear() {
+            if(this.writer == null)
+                return;
+
             Atom p = this.parent;
             StringBuilder s = new StringBuilder();
 
@@ -160,22 +163,32 @@ namespace PavelStransky.Expression
             }
 
             this.infoText = string.Empty;
+
             this.writer.Clear();
             this.writer.Write(s.ToString());
         }
 
         public void Write(object o) {
+            if(this.writer == null)
+                return;
+
             string s = o.ToString();
             this.infoText += s;
             this.writer.Write(s);
         }
 
         public void WriteLine() {
+            if(this.writer == null)
+                return;
+
             this.infoText += newLine;
             this.writer.WriteLine();
         }
 
         public void WriteLine(object o) {
+            if(this.writer == null)
+                return;
+
             string s = o.ToString();
             this.infoText += s + newLine;
             this.writer.WriteLine(s);

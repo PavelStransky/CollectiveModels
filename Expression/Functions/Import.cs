@@ -9,9 +9,10 @@ namespace PavelStransky.Expression.Functions {
 	/// <summary>
 	/// Provede import dat
 	/// </summary>
-	public class Import: FunctionDefinitionIE {
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+	public class FnImport: FunctionDefinitionIE {
+        public override string Name { get { return name; } }
+        public override string Help { get { return help; } }
+        public override string Parameters { get { return parameters; } }
 
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
@@ -28,52 +29,20 @@ namespace PavelStransky.Expression.Functions {
 			object result = null;
 
 			string fileName = arguments[0] as string;
-			FileStream f = new FileStream(fileName, FileMode.Open);
 
-			if(arguments.Count == 2 && (string)arguments[1] == "matlab") {
-				// Import dat z matlabu - matice, nevíme, jaké má rozmìry
-				StreamReader t = new StreamReader(f);
-				return this.ImportMatlab(t);
-			}
-			else if(this.Binary(arguments, 1)) {
-				BinaryReader b = new BinaryReader(f);
-				string typeName = b.ReadString();
-				b.BaseStream.Position = 0;
-
-                if(typeName == typeof(Array).FullName)
-                    result = new Array(b);
-                else if(typeName == typeof(Vector).FullName)
-                    result = new Vector(b);
-                else if(typeName == typeof(PointD).FullName)
-                    result = new PointD(b);
-                else if(typeName == typeof(PointVector).FullName)
-                    result = new PointVector(b);
-                else if(typeName == typeof(Matrix).FullName)
-                    result = new Matrix(b);
-
-				b.Close();
-			}
-			else {
-				StreamReader t = new StreamReader(f);
-				string typeName = t.ReadLine();
-				t.BaseStream.Position = 0;
-				t.DiscardBufferedData();
-
-                if(typeName == typeof(Array).FullName)
-                    result = new Array(t);
-                else if(typeName == typeof(Vector).FullName)
-                    result = new Vector(t);
-                else if(typeName == typeof(PointD).FullName)
-                    result = new PointD(t);
-                else if(typeName == typeof(PointVector).FullName)
-                    result = new PointVector(t);
-                else if(typeName == typeof(Matrix).FullName)
-                    result = new Matrix(t);
-
-				t.Close();
-			}
-
-			f.Close();
+            if(arguments.Count == 2 && (string)arguments[1] == "matlab") {
+                // Import dat z matlabu - matice, nevíme, jaké má rozmìry
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                StreamReader t = new StreamReader(f);
+                result = this.ImportMatlab(t);
+                t.Close();
+                f.Close();
+            }
+            else {
+                Import import = new Import(fileName, this.Binary(arguments, 1));
+                result = import.Read();
+                import.Close();
+            }
 
 			return result;
 		}
@@ -137,6 +106,8 @@ namespace PavelStransky.Expression.Functions {
 		}
 
 		private const string paramMatlab = "matlab";
+
+        private const string name = "import";
 		private const string help = "Provede import dat ze souboru (implicitnì binárnì).";
 		private const string parameters = "jméno souboru (string) [;\"binary\" | \"text\" | \"matlab\"]";
 	}

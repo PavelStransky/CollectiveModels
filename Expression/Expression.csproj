@@ -315,9 +315,6 @@
     <Compile Include="Functions\LGraph.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Load.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Functions\Math\Log.cs" />
     <Compile Include="Functions\Math\Sqrt.cs" />
     <Compile Include="Functions\Matrix.cs" />
@@ -373,9 +370,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Regression.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Save.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\SLength.cs">
@@ -453,6 +447,7 @@
     <Compile Include="HotKey.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Import.cs" />
     <Compile Include="Indexer.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -97,6 +97,11 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public GCM() { }
+
+        /// <summary>
         /// Kostruktor standardního lagranžiánu
         /// </summary>
         /// <param name="a">A</param>

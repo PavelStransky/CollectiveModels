@@ -136,11 +136,15 @@ namespace PavelStransky.Test {
 			}
 
 			pv = pv.SortX();
-			pv.Export(root + "spline1.txt", true);
+            Export export = new Export(root + "spline1.txt", true);
+            export.Write(pv);
+            export.Close();
 
 			Spline s = new Spline(pv);
 			result = s.GetPointVector(resultLength);
-			result.Export(root + "spline2.txt", true);
+			export = new Export(root + "spline2.txt", true);
+            export.Write(result);
+            export.Close();
 		}
 
 		/// <summary>
@@ -158,7 +162,9 @@ namespace PavelStransky.Test {
 
 			PointVector pv = FFT.PowerSpectrum(FFT.Compute(v), 0.005);
 
-			pv.Export(root + "fft.txt", true);
+            Export export = new Export(root + "fft.txt", true);
+            export.Write(pv);
+            export.Close();
 		}
 
 		/// <summary>
@@ -232,7 +238,9 @@ namespace PavelStransky.Test {
 //				double x = (v == null) ? (double)(exp.Evaluate() as Variable).Item : 0.0;
 				Console.WriteLine(v);
 //				Console.WriteLine(x);
-				context.Export("c:\\eeg\\context.txt", true);
+                Export export = new Export("c:\\eeg\\context.txt", true);
+                export.Write(context);
+                export.Close();
 				exp = new PavelStransky.Expression.Expression(context, "save(\"c:\\eeg\\prdlacka.txt\")");
 				exp.Evaluate();
 			}
@@ -255,8 +263,13 @@ namespace PavelStransky.Test {
 		/// </summary>
 		private static void PokusImportExport() {
 			Context context = new Context();
-			context.Import("c:\\eeg\\context.txt", true);
-			context.Export("c:\\eeg\\context1.txt", true);
+            Expression.Import import = new PavelStransky.Expression.Import("c:\\eeg\\context.txt", true);
+            context = import.Read() as Context;
+            import.Close();
+
+            Export export = new Export("c:\\eeg\\context1.txt", true);
+            export.Write(context);
+            export.Close();
 		}
 
 		/// <summary>
@@ -264,11 +277,17 @@ namespace PavelStransky.Test {
 		/// </summary>
 		private static void PokusImportEEG() {
 			Context context = new Context();
-			context.Import("c:\\eeg\\eeg.txt", true);
+            Expression.Import import = new PavelStransky.Expression.Import("c:\\eeg\\eeg.txt", true);
+            context = import.Read() as Context;
+            import.Close();
+
 			string text = "z = splitcolumns(m)";
 			Expression.Expression exp = new Expression.Expression(context, text);
 			exp.Evaluate();
-			context.Export("c:\\eeg\\context1.txt", true);
+
+            Export export = new Export("c:\\eeg\\context1.txt", true);
+            export.Write(context);
+            export.Close();
 		}	
 
 		/// <summary>

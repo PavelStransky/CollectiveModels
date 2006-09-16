@@ -33,6 +33,11 @@ namespace PavelStransky.Forms {
         public Context Context { get { return this.context; } }
 
         /// <summary>
+        /// Dialog Uložit
+        /// </summary>
+        public SaveFileDialog SaveFileDialog { get { return this.saveFileDialog; } }
+
+        /// <summary>
         /// Nefunguje dobøe událost txtCommand_OnModifiedChanged, proto musíme vyøešit po svém
         /// </summary>
         public bool Modified {
@@ -57,6 +62,7 @@ namespace PavelStransky.Forms {
             set {
                 this.Directory = this.DirectoryFromFile(value);
                 this.fileName = value;
+                this.SetCaption();
             }
         }
 
@@ -72,7 +78,16 @@ namespace PavelStransky.Forms {
             }
             set {
                 this.context.SetVariable(directoryVariable, value);
+                this.saveFileDialog.InitialDirectory = value;
             }
+        }
+
+        /// <summary>
+        /// Inicializuje eventy pro context
+        /// </summary>
+        private void InitializeEvents() {
+            this.context.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
+            this.context.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
         }
 
         /// <summary>
@@ -80,11 +95,8 @@ namespace PavelStransky.Forms {
         /// </summary>
         public Editor() {
             this.InitializeComponent();
-
             this.context = new Expression.Context();
-            this.context.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
-            this.context.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
-
+            this.InitializeEvents();
             this.SetCaption();
         }
 
@@ -110,7 +122,7 @@ namespace PavelStransky.Forms {
         /// Vytvoøení nového formuláøe musíme spustit ve vlastním threadu
         /// </summary>
         private void CreateGraph(Variable v) {
-            GraphForm graphForm = (this.MdiParent as MainForm).NewParentForm(typeof(GraphForm), this, v.Name) as GraphForm;
+            GraphForm graphForm = this.NewParentForm(typeof(GraphForm), v.Name) as GraphForm;
 
             bool isGA = false;
             GraphArray ga = null;
@@ -188,6 +200,41 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
+        /// <summary>
+        /// Vytvoøí nový podøízený formuláø
+        /// </summary>
+        /// <param name="type">Typ formuláøe</param>
+        /// <param name="name">Název okna</param>
+        public ChildForm NewParentForm(Type type, string name) {
+            ChildForm result;
+
+            Form[] forms = this.MdiParent.MdiChildren;
+            for(int i = 0; i < forms.Length; i++) {
+                result = forms[i] as ChildForm;
+
+                if(result != null && result.ParentEditor == this && result.Name == name && result.GetType() == type)
+                    return result;
+            }
+
+            if(type == typeof(GraphForm)) {
+                result = new GraphForm();
+                result.Location = new Point(margin, this.Height - result.Size.Height - 8 * margin);
+            }
+            else if(type == typeof(ResultForm)) {
+                result = new ResultForm();
+                result.Location = new Point(this.Width - result.Size.Width - 2 * margin, margin);
+            }
+            else
+                result = new ChildForm();
+
+            result.Name = name;
+            result.Text = name;
+            result.ParentEditor = this;
+            result.MdiParent = this.MdiParent;
+
+            return result;
+        }
+
         #region Otevírání a ukládání pøíkazù
         /// <summary>
         /// Pokusí se zavøít všechna podøízená okna
@@ -210,12 +257,16 @@ namespace PavelStransky.Forms {
                         switch(result) {
                             case DialogResult.Yes:
                                 resultForm.Abort();
-                                resultForm.Close();
                                 break;
                             case DialogResult.No:
                                 return false;
                         }
                     }
+
+                    childForm.Close();
+
+                    // Vymazali jsme formuláø, proto musíme vrátit index zpìt
+                    i--;
                 }
             }
 
@@ -244,15 +295,13 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Uloží soubor. Pokud nezná jméno, otevøe dialog
+        /// Uloží pøíkazy; pokud zatím neznáme jméno souboru, ukáže dialog
         /// </summary>
-        /// <returns>False, pokud soubor nebyl uložen</returns>
+        /// <returns></returns>
         public bool Save() {
-            if(this.fileName == string.Empty) {
-                this.Activate();
-                (this.MdiParent as MainForm).SaveFileDialog.FileName = this.fileName;
-                if((this.MdiParent as MainForm).SaveFileDialog.ShowDialog() == DialogResult.OK)
-                    return true;
+            if(this.fileName == null || this.fileName == string.Empty) {
+                if(this.saveFileDialog.ShowDialog() == DialogResult.OK)
+                    return this.Save(this.saveFileDialog.FileName);
                 else
                     return false;
             }
@@ -261,19 +310,45 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Uloží pøíkazy a vždy zobrazí dialog
+        /// </summary>
+        public bool SaveAs() {
+            this.saveFileDialog.FileName = this.fileName;
+
+            if(this.saveFileDialog.ShowDialog() == DialogResult.OK)
+                return this.Save(this.saveFileDialog.FileName);
+            else
+                return false;
+        }
+
+        /// <summary>
         /// Uloží pøíkazy do souboru
         /// </summary>
         /// <param name="fileName">Jméno souboru</param>
         /// <returns>False, pokud se uložení nezdaøilo</returns>
         public bool Save(string fileName) {
+            this.FileName = fileName;
+            Export export = null;
+
             try {
-                this.txtCommand.Export(fileName);
+                export = new Export(fileName, true);
+                export.Write(this);
 
-                this.fileName = fileName;
-                this.modified = false;
-                this.SetCaption();
+                Form parentForm = this.MdiParent;
 
-                return true;
+                int num = 0;
+                for(int i = 0; i < parentForm.MdiChildren.Length; i++) {
+                    ChildForm childForm = parentForm.MdiChildren[i] as ChildForm;
+                    if(childForm as IExportable != null && childForm.ParentEditor == this)
+                        num++;
+                }
+
+                export.B.Write(num);
+                for(int i = 0; i < parentForm.MdiChildren.Length; i++) {
+                    ChildForm childForm = parentForm.MdiChildren[i] as ChildForm;
+                    if(childForm as IExportable != null && childForm.ParentEditor == this)
+                        export.Write(childForm);
+                }
             }
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedSaveDetail, fileName, e.Message, e.DetailMessage),
@@ -285,35 +360,14 @@ namespace PavelStransky.Forms {
                     captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Otevøe pøíkazy ze souboru
-        /// </summary>
-        /// <param name="fileName">Jméno souboru</param>
-        /// <returns>False, pokud se otevøení nezdaøilo</returns>
-        public bool Open(string fileName) {
-            try {
-                this.txtCommand.Import(fileName);
-
-                this.FileName = fileName;
-                this.modified = false;
-                this.txtCommand.Modified = false;
-
-                this.SetCaption();
-
-                return true;
+            finally {
+                export.Close();
             }
-            catch(DetailException e) {
-                MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
-                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return false;
-            }
-            catch(Exception e) {
-                MessageBox.Show(this, string.Format(messageFailedOpen, fileName, e.Message),
-                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return false;
-            }
+
+            this.Modified = false;
+            this.SetCaption();
+
+            return true;
         }
         #endregion
 
@@ -327,7 +381,7 @@ namespace PavelStransky.Forms {
 
             string windowName = string.Format(defaultResultWindowName, resultNumber);
 
-            ResultForm f = (this.MdiParent as MainForm).NewParentForm(typeof(ResultForm), this, windowName) as ResultForm;
+            ResultForm f = this.NewParentForm(typeof(ResultForm), windowName) as ResultForm;
 
             if(f.Calulating) {
                 f.Activate();
@@ -441,9 +495,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.SelectionStart = b.ReadInt32();
 
             this.context = import.Read() as Context;
-
-            this.context.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
-            this.context.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
+            this.InitializeEvents();
         }
         #endregion
 
@@ -459,9 +511,6 @@ namespace PavelStransky.Forms {
         private const string messageFailedSave = "Uložení do souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
         private const string messageFailedSaveDetail = "Uložení do souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
         private const string captionFailedSave = "Chyba!";
-        private const string messageFailedOpen = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
-        private const string messageFailedOpenDetail = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
-        private const string captionFailedOpen = "Chyba!";
 
         private const string messageClose = "V oknì {0} probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
         private const string captionClose = "Varování";
@@ -473,5 +522,7 @@ namespace PavelStransky.Forms {
         private const string titleFormatFile = "{0} - {1} {2}";
         private const string titleFormat = "{0} {2}";
         private const string asterisk = "*";
+
+        private const int margin = 8;
     }
 }

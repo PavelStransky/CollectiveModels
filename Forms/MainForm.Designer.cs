@@ -82,6 +82,7 @@ namespace PavelStransky.Forms {
             // 
             this.mnFileClose.Index = 2;
             this.mnFileClose.Text = "&Zavøít";
+            this.mnFileClose.Click += new System.EventHandler(this.mnFileClose_Click);
             // 
             // mnFileSeparator1
             // 
@@ -158,10 +159,6 @@ namespace PavelStransky.Forms {
             this.mnArrangeIcons.Index = 3;
             this.mnArrangeIcons.Text = "Seøadit &ikony";
             this.mnArrangeIcons.Click += new System.EventHandler(this.mnArrangeIcons_Click);
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
             // openFileDialog
             // 

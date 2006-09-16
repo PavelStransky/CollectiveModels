@@ -26,6 +26,7 @@ namespace PavelStransky.Forms {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.txtCommand = new PavelStransky.Forms.CommandTextBox();
             this.SuspendLayout();
             // 
@@ -33,6 +34,7 @@ namespace PavelStransky.Forms {
             // 
             this.txtCommand.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCommand.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtCommand.ForeColor = System.Drawing.Color.Blue;
             this.txtCommand.Location = new System.Drawing.Point(0, 0);
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.Size = new System.Drawing.Size(561, 341);
@@ -58,5 +60,6 @@ namespace PavelStransky.Forms {
         #endregion
 
         private CommandTextBox txtCommand;
+        private SaveFileDialog saveFileDialog;
     }
 }

@@ -15,11 +15,6 @@ using PavelStransky.Expression;
 namespace PavelStransky.Forms {
     public partial class MainForm : Form {
         /// <summary>
-        /// Dialog k uložení 
-        /// </summary>
-        public SaveFileDialog SaveFileDialog { get { return this.saveFileDialog; } }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         public MainForm() {
@@ -42,8 +37,7 @@ namespace PavelStransky.Forms {
         /// Inicializace instance nové GCM
         /// </summary>
         private void Initialize() {
-            this.SetDialogProperties(this.openFileDialog);
-            this.SetDialogProperties(this.saveFileDialog);
+            this.SetDialogProperties(this.openFileDialog, defaultDirectory);
 
             if(this.IsRegistered)
                 this.mnSetttingsRegistry.Checked = true;
@@ -57,54 +51,12 @@ namespace PavelStransky.Forms {
         /// Nastaví vlastnosti dialogu
         /// </summary>
         /// <param name="dialog">Dialog</param>
-        private void SetDialogProperties(FileDialog dialog) {
+        private void SetDialogProperties(FileDialog dialog, string directory) {
             dialog.Reset();
             dialog.Filter = defaultFileFilter;
             dialog.DefaultExt = defaultFileExt;
-            dialog.InitialDirectory = defaultDirectory;
-        }
-
-        /// <summary>
-        /// Vytvoøí nevé okno s editorem
-        /// </summary>
-        private void New() {
-            Editor editor = new Editor();
-            editor.MdiParent = this;
-            editor.Show();
-        }
-
-        /// <summary>
-        /// Vytvoøí nový formuláø
-        /// </summary>
-        /// <param name="type">Typ formuláøe</param>
-        /// <param name="parent">Ke kterému formuláøi (editoru) patøí</param>
-        /// <param name="name">Název okna</param>
-        public ChildForm NewParentForm(Type type, Editor parent, string name) {
-            ChildForm result;
-
-            for(int i = 0; i < this.MdiChildren.Length; i++) {
-                result = this.MdiChildren[i] as ChildForm;
-
-                if(result != null && result.ParentEditor == parent && result.Name == name && result.GetType() == type)
-                    return result;
-            }
-
-            if(type == typeof(GraphForm)) {
-                result = new GraphForm();
-                result.Location = new Point(margin, this.Height - result.Size.Height - 8 * margin);
-            }
-            else if(type == typeof(ResultForm)) {
-                result = new ResultForm();
-                result.Location = new Point(this.Width - result.Size.Width - 2 * margin, margin);
-            }
-            else
-                result = new ChildForm();
-
-            result.Name = name;
-            result.Text = name;
-            result.ParentEditor = parent;
-            result.MdiParent = this;
-            return result;
+            dialog.InitialDirectory = directory;
+            dialog.RestoreDirectory = false;
         }
 
         #region Menu Okno
@@ -146,40 +98,20 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Vytvoøí nevé okno s editorem
+        /// </summary>
+        private void New() {
+            Editor editor = new Editor();
+            this.SetDialogProperties(editor.SaveFileDialog, this.openFileDialog.InitialDirectory);
+            editor.MdiParent = this;
+            editor.Show();
+        }
+
+        /// <summary>
         /// Otevøít
         /// </summary>
         private void mnFileOpen_Click(object sender, EventArgs e) {
             this.openFileDialog.ShowDialog();
-        }
-
-        /// <summary>
-        /// Uložit
-        /// </summary>
-        private void mnFileSave_Click(object sender, EventArgs e) {
-            if(this.ActiveMdiChild is Editor) {
-                string fileName = (this.ActiveMdiChild as Editor).FileName;
-                if(fileName == null || fileName == string.Empty)
-                    this.saveFileDialog.ShowDialog();
-                else
-                    this.Save(this.ActiveMdiChild as Editor, fileName);
-            }
-        }
-
-        /// <summary>
-        /// Uložit jako
-        /// </summary>
-        private void mnFileSaveAs_Click(object sender, EventArgs e) {
-            if(this.ActiveMdiChild is Editor) {
-                this.saveFileDialog.FileName = (this.ActiveMdiChild as Editor).FileName;
-                this.saveFileDialog.ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// Ukonèí aplikaci
-        /// </summary>
-        private void mnExit_Click(object sender, EventArgs e) {
-            Application.Exit();
         }
 
         /// <summary>
@@ -190,77 +122,104 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Uložení souboru - voláno z dialogu FileSave
-        /// </summary>
-        private void saveFileDialog_FileOk(object sender, CancelEventArgs e) {
-            if(this.ActiveMdiChild is Editor)
-                this.Save(this.ActiveMdiChild as Editor, this.saveFileDialog.FileName);
-        }
-
-        /// <summary>
         /// Otevøe soubor
         /// </summary>
         /// <param name="fileName">Název souboru</param>
         private void Open(string fileName) {
-            Import import = new Import(fileName, true);
-            Editor editor = import.Read() as Editor;
+            Import import = null;
+            Editor editor = null;
 
-            editor.MdiParent = this;
-            editor.Show();
+            try {
+                import = new Import(fileName, true);
+                editor = import.Read() as Editor;
 
-            int num = import.B.ReadInt32();
-            for(int i = 0; i < num; i++) {
-                object o = import.Read();
-                if(o is ChildForm) {
-                    (o as ChildForm).ParentEditor = editor;
-                    (o as ChildForm).MdiParent = this;
-                    (o as ChildForm).Show();
-                }
-                if(o is ResultForm) {
-                    (o as ResultForm).SetContext(editor.Context);
-                }
-                if(o is GraphForm) {
-                    // Pøepoèítáme graf
-                    string expressionText = editor.Context[(o as GraphForm).Name].Expression + ";";
-                    Expression.Expression expression = new PavelStransky.Expression.Expression(editor.Context, expressionText);
-                    expression.Evaluate();
+                editor.MdiParent = this;
+                editor.Show();
+
+                int num = import.B.ReadInt32();
+                for(int i = 0; i < num; i++) {
+                    object o = import.Read();
+                    if(o is ChildForm) {
+                        (o as ChildForm).ParentEditor = editor;
+                        (o as ChildForm).MdiParent = this;
+                        (o as ChildForm).Show();
+                    }
+                    if(o is ResultForm) {
+                        (o as ResultForm).SetContext(editor.Context);
+                    }
+                    if(o is GraphForm) {
+                        // Pøepoèítáme graf
+                        string expressionText = editor.Context[(o as GraphForm).Name].Expression + ";";
+                        Expression.Expression expression = new PavelStransky.Expression.Expression(editor.Context, expressionText);
+                        expression.Evaluate();
+                    }
                 }
             }
+            catch(DetailException e) {
+                MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
+                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+            catch(Exception e) {
+                MessageBox.Show(this, string.Format(messageFailedOpen, fileName, e.Message),
+                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+            finally {
+                import.Close();
+            }
 
-            import.Close();
-
+            editor.FileName = fileName;
             editor.Modified = false;
             editor.Activate();
         }
 
         /// <summary>
-        /// Uloží soubor
+        /// Najde editor pøíslušející k aktivnímu oknu
         /// </summary>
-        /// <param name="editor">Okno editoru</param>
-        /// <param name="fileName">Název souboru</param>
-        private void Save(Editor editor, string fileName) {
-            editor.FileName = fileName;
+        /// <param name="form">Aktivní okno</param>
+        public Editor FindActiveMdiEditor(Form form) {
+            if(form is Editor)
+                return form as Editor;
 
-            Export export = new Export(fileName, true);
-            export.Write(editor);
-
-            int num = 0;
-            for(int i = 0; i < this.MdiChildren.Length; i++) {
-                ChildForm childForm = this.MdiChildren[i] as ChildForm;
-                if(childForm as IExportable != null && childForm.ParentEditor == editor)
-                    num++;
+            if(form is ChildForm) {
+                for(int i = 0; i < this.MdiChildren.Length; i++) {
+                    Editor editor = this.MdiChildren[i] as Editor;
+                    if(editor != null && editor == (form as ChildForm).ParentEditor)
+                        return editor;
+                }
             }
 
-            export.B.Write(num);
-            for(int i = 0; i < this.MdiChildren.Length; i++) {
-                ChildForm childForm = this.MdiChildren[i] as ChildForm;
-                if(childForm as IExportable != null && childForm.ParentEditor == editor)
-                    export.Write(childForm);
-            }
+            throw new FormsException(string.Format(errorMessageEditorNotFound, form.Name));
+        }
 
-            export.Close();
+        /// <summary>
+        /// Uložit
+        /// </summary>
+        private void mnFileSave_Click(object sender, EventArgs e) {
+            Editor editor = this.FindActiveMdiEditor(this.ActiveMdiChild);
+            editor.Save();
+        }
 
-            editor.Modified = false;
+        /// <summary>
+        /// Uložit jako
+        /// </summary>
+        private void mnFileSaveAs_Click(object sender, EventArgs e) {
+            Editor editor = this.FindActiveMdiEditor(this.ActiveMdiChild);
+            editor.SaveAs();
+        }
+
+        /// <summary>
+        /// Zavøít
+        /// </summary>
+        private void mnFileClose_Click(object sender, EventArgs e) {
+            Editor editor = this.FindActiveMdiEditor(this.ActiveMdiChild);
+            editor.Close();
+        }
+
+        /// <summary>
+        /// Ukonèí aplikaci
+        /// </summary>
+        private void mnExit_Click(object sender, EventArgs e) {
+            Application.Exit();
         }
         #endregion
 
@@ -335,6 +294,10 @@ namespace PavelStransky.Forms {
         private const string commandEntryFormat = "\"{0}\" %1";
         private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
 
-        private const int margin = 8;
+        private const string messageFailedOpen = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
+        private const string messageFailedOpenDetail = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
+        private const string captionFailedOpen = "Chyba!";
+
+        private const string errorMessageEditorNotFound = "K formuláøi {0} nebyl nalezen rodièovský editor!";
     }
 }

@@ -121,6 +121,7 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormsException.cs" />
     <Compile Include="Graph.cs">
       <SubType>UserControl</SubType>
     </Compile>

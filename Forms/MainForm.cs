@@ -168,6 +168,15 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Ukonèí aplikaci
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mnExit_Click(object sender, EventArgs e) {
+            Application.Exit();
+        }
+
+        /// <summary>
         /// Otevøení souboru - voláno z dialogu FileOpen
         /// </summary>
         private void openFileDialog_FileOk(object sender, CancelEventArgs e) {

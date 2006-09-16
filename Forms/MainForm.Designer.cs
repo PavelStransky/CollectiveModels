@@ -109,6 +109,7 @@ namespace PavelStransky.Forms {
             // 
             this.mnExit.Index = 7;
             this.mnExit.Text = "&Konec";
+            this.mnExit.Click += new System.EventHandler(this.mnExit_Click);
             // 
             // mnSettings
             // 

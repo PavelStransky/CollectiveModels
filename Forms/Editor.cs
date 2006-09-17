@@ -218,11 +218,11 @@ namespace PavelStransky.Forms {
 
             if(type == typeof(GraphForm)) {
                 result = new GraphForm();
-                result.Location = new Point(margin, this.Height - result.Size.Height - 8 * margin);
+                result.Location = new Point(margin, this.MdiParent.Height - result.Size.Height - 8 * margin);
             }
             else if(type == typeof(ResultForm)) {
                 result = new ResultForm();
-                result.Location = new Point(this.Width - result.Size.Width - 2 * margin, margin);
+                result.Location = new Point(this.MdiParent.Width - result.Size.Width - 2 * margin, margin);
             }
             else
                 result = new ChildForm();

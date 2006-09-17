@@ -80,7 +80,7 @@ namespace PavelStransky.Math {
             else
                 result = this.CreateObject(typeName);
 
-            if(result == null)
+            if(result == null && typeName != nullString)
                 throw new ImportExportException(string.Format(errorMessageCannotCreateObject, typeName));
 
             // Import dat
@@ -125,6 +125,7 @@ namespace PavelStransky.Math {
         }
 
         private const string errorMessageCannotCreateObject = "Nepodaøilo se vytvoøit objekt typu {0}. Import se nezdaøil.";
+        public const string nullString = "null";
     }
 
     /// <summary>
@@ -173,7 +174,7 @@ namespace PavelStransky.Math {
         /// <param name="o">Objekt</param>
         public void Write(object o) {
             // Na první øádku zapíšeme typ
-            string typeName = o.GetType().FullName;
+            string typeName = (o == null) ? nullString : o.GetType().FullName;
             if(binary)
                 b.Write(typeName);
             else
@@ -200,7 +201,7 @@ namespace PavelStransky.Math {
             else if(o as IExportable != null) {
                 (o as IExportable).Export(this);
             }
-            else
+            else if(o != null)
                 throw new ImportExportException(string.Format(errorMessageBadType, typeName));
         }
 
@@ -217,5 +218,6 @@ namespace PavelStransky.Math {
         }
 
         public const string errorMessageBadType = "Typ {0} neumím uložit. Uložení se nezdaøilo.";
+        public const string nullString = "null";
     }
 }

@@ -518,8 +518,8 @@ namespace PavelStransky.Forms {
         private const string messageCalculationRunning = "V aktuálním oknì probíhá výpoèet, nelze spustit nový výpoèet!";
         private const string defaultResultWindowName = "Result{0}";
 
-        private const string defaultName = "GCM Prográmek";
-        private const string titleFormatFile = "{0} - {1} {2}";
+        private const string defaultName = "Utitled";
+        private const string titleFormatFile = "{1} {2}";
         private const string titleFormat = "{0} {2}";
         private const string asterisk = "*";
 

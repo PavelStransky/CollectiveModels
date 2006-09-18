@@ -30,6 +30,7 @@ namespace PavelStransky.Forms {
         public MainForm(string fileName) {
             this.InitializeComponent();
             this.Initialize();
+            this.Show();
             this.Open(fileName);
         }
 
@@ -130,7 +131,7 @@ namespace PavelStransky.Forms {
             Editor editor = null;
 
             // Pøídání pøípony
-            if(fileName.IndexOf(defaultFileExt) != fileName.Length - 3)
+            if(fileName.Length < 3 || fileName.Substring(fileName.Length - 3, 3) != defaultFileExt)
                 fileName = string.Format("{0}.{1}", fileName, defaultFileExt);
 
             try {

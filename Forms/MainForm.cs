@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,13 +15,26 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Forms {
     public partial class MainForm : Form {
+        private ArrayList openedFileNames = new ArrayList();
+
+        /// <summary>
+        /// Otevøené soubory pøi ukonèování aplikace
+        /// </summary>
+        public ArrayList OpenedFileNames { get { return this.openedFileNames; } }
+
         /// <summary>
         /// Konstruktor
         /// </summary>
         public MainForm() {
             this.InitializeComponent();
             this.Initialize();
-            this.New();
+            this.Show();
+
+            foreach(string fileName in this.openedFileNames)
+                if(fileName != null && fileName != string.Empty)
+                    this.Open(fileName);
+
+            this.openedFileNames.Clear();
         }
 
         /// <summary>
@@ -46,6 +60,31 @@ namespace PavelStransky.Forms {
                 this.mnSetttingsRegistry.Checked = false;
 
             this.Text = Application.ProductName;
+
+            // Naètení záznamù z registrù
+            RegistryKey rk = Application.UserAppDataRegistry;
+            object x = rk.GetValue(registryKeyPositionX);
+            object y = rk.GetValue(registryKeyPositionY);
+            if(x is int && y is int) {
+                this.StartPosition = FormStartPosition.Manual;
+                this.Location = new Point((int)x, (int)y);
+            }
+            else
+                this.StartPosition = FormStartPosition.WindowsDefaultLocation;
+
+            object width = rk.GetValue(registryKeyWidth);
+            object height = rk.GetValue(registryKeyHeight);
+
+            if(width is int && height is int)
+                this.Size = new Size((int)width, (int)height);
+
+            int i = 0;
+            object openedFile;
+            while((openedFile = rk.GetValue(string.Format(registryKeyOpenedFile, i))) != null) {
+                this.openedFileNames.Add(openedFile);
+                rk.DeleteValue(string.Format(registryKeyOpenedFile, i));
+                i++;
+            }
         }
 
         /// <summary>
@@ -160,7 +199,7 @@ namespace PavelStransky.Forms {
                     }
                 }
                 
-               editor.FileName = fileName;
+                editor.FileName = fileName;
                 editor.Modified = false;
                 editor.Activate();
 
@@ -168,10 +207,12 @@ namespace PavelStransky.Forms {
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
                     captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                editor.Close();
             }
             catch(Exception e) {
                 MessageBox.Show(this, string.Format(messageFailedOpen, fileName, e.Message),
                     captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                editor.Close();
             }
             finally {
                 import.Close();
@@ -225,7 +266,24 @@ namespace PavelStransky.Forms {
         /// Ukonèí aplikaci
         /// </summary>
         private void mnExit_Click(object sender, EventArgs e) {
-            Application.Exit();
+            this.Close();
+        }
+
+        /// <summary>
+        /// Pøi ukonèení ukládáme informace o aktuálním oknì
+        /// </summary>
+        protected override void OnFormClosing(FormClosingEventArgs e) {
+            base.OnFormClosing(e);
+
+            RegistryKey rk = Application.UserAppDataRegistry;
+            rk.SetValue(registryKeyPositionX, this.Location.X);
+            rk.SetValue(registryKeyPositionY, this.Location.Y);
+            rk.SetValue(registryKeyWidth, this.Width);
+            rk.SetValue(registryKeyHeight, this.Height);
+
+            int i = 0;
+            foreach(string fileName in this.openedFileNames)
+                rk.SetValue(string.Format(registryKeyOpenedFile, i++), fileName);
         }
         #endregion
 
@@ -233,7 +291,7 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Vytvoøí název aplikace pro registr Windows
         /// </summary>
-        private string RegistryEntryName {
+        public string RegistryEntryName {
             get {
                 string companyName = Application.CompanyName.Trim().Replace(" ", string.Empty);
                 string productName = Application.ProductName.Trim().Replace(" ", string.Empty);
@@ -309,5 +367,11 @@ namespace PavelStransky.Forms {
         private const string captionFailedOpen = "Chyba!";
 
         private const string errorMessageEditorNotFound = "K formuláøi {0} nebyl nalezen rodièovský editor!";
+
+        private const string registryKeyPositionX = "PositionX";
+        private const string registryKeyPositionY = "PositionY";
+        private const string registryKeyWidth = "Width";
+        private const string registryKeyHeight = "Height";
+        private const string registryKeyOpenedFile = "OpenedFile{0}";
     }
 }

@@ -328,10 +328,11 @@ namespace PavelStransky.Forms {
         /// <returns>False, pokud se uložení nezdaøilo</returns>
         public bool Save(string fileName) {
             this.FileName = fileName;
+            string fileNameSave = fileName + ".sav";
             Export export = null;
 
             try {
-                export = new Export(fileName, true);
+                export = new Export(fileNameSave, true);
                 export.Write(this);
 
                 Form parentForm = this.MdiParent;
@@ -349,23 +350,29 @@ namespace PavelStransky.Forms {
                     if(childForm as IExportable != null && childForm.ParentEditor == this)
                         export.Write(childForm);
                 }
+
+                export.Close();
+
+                // Doèasný soubor, do kterého jsme ukládali, pøejmenujeme na orig. verzi
+                if(File.Exists(fileName))
+                    File.Delete(fileName);
+                File.Move(fileNameSave, fileName);
+
+                this.Modified = false;            
+                this.SetCaption();
             }
             catch(DetailException e) {
+                export.Close();
                 MessageBox.Show(this, string.Format(messageFailedSaveDetail, fileName, e.Message, e.DetailMessage),
                     captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return false;
             }
             catch(Exception e) {
+                export.Close();
                 MessageBox.Show(this, string.Format(messageFailedSave, fileName, e.Message),
                     captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return false;
             }
-            finally {
-                export.Close();
-            }
-
-            this.Modified = false;
-            this.SetCaption();
 
             return true;
         }
@@ -442,7 +449,13 @@ namespace PavelStransky.Forms {
         /// Pøi uzavírání okna musíme uzavøít všechny pøidružené formuláøe
         /// </summary>
         protected override void OnFormClosing(FormClosingEventArgs e) {
+            base.OnFormClosing(e);
             e.Cancel = !(this.CheckForChanges() && this.CloseChildWindow());
+
+            if(e.Cancel)
+                (this.MdiParent as MainForm).OpenedFileNames.Clear();
+            else if(e.CloseReason == CloseReason.MdiFormClosing && this.fileName != null && this.fileName != string.Empty)
+                (this.MdiParent as MainForm).OpenedFileNames.Add(this.fileName);
         }
 
         /// <summary>
@@ -466,6 +479,9 @@ namespace PavelStransky.Forms {
 
             // Binárnì
             BinaryWriter b = export.B;
+            b.Write((this.MdiParent as MainForm).RegistryEntryName);
+            b.Write(0);                 // Rezervované
+
             b.Write(this.Location.X);
             b.Write(this.Location.Y);
             b.Write(this.Size.Width);
@@ -488,6 +504,9 @@ namespace PavelStransky.Forms {
 
             // Binárnì
             BinaryReader b = import.B;
+            b.ReadString();                 // Oznaèení verze (zatím nekontrolujeme)
+            b.ReadInt32();                  // Èíslo verze
+
             this.Location = new Point(b.ReadInt32(), b.ReadInt32());
             this.Size = new Size(b.ReadInt32(), b.ReadInt32());
 

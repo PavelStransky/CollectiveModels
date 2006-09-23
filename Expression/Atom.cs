@@ -475,7 +475,9 @@ namespace PavelStransky.Expression {
 				if(!IsInBracket(e, index)) {
 					// Kontrolujeme, zda se nejedná o nìjaký z operátorù "<=, >=, =="
 					string substring = e.Substring(System.Math.Max(index - 2, 0), 
-						System.Math.Min(binaryOperators.MaxOperatorLength + 2, e.Length - index));
+						System.Math.Min(binaryOperators.MaxOperatorLength + 2, e.Length - index))
+                        .Replace(openBracket.ToString(), string.Empty)
+                        .Replace(closeBracket.ToString(), string.Empty);
 					int pos = FindBinaryOperatorPosition(substring);
 					// Mùže být napø. x =-12
 					if(pos < 0 || substring.IndexOf(assignmentOperator, pos) < 0)

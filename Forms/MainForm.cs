@@ -207,12 +207,16 @@ namespace PavelStransky.Forms {
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
                     captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                editor.Close();
+
+                if(editor != null)
+                    editor.Close();
             }
             catch(Exception e) {
                 MessageBox.Show(this, string.Format(messageFailedOpen, fileName, e.Message),
                     captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                editor.Close();
+
+                if(editor != null)
+                    editor.Close();
             }
             finally {
                 import.Close();

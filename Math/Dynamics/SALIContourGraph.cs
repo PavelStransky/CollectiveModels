@@ -92,7 +92,7 @@ namespace PavelStransky.Math {
             double kx = (boundX[1] - boundX[0]) / (n1 - 1);
             double x0 = boundX[0];
             double ky = 2.0 * boundX[5] / (n2 - 1);
-            double y0 = -boundX[4];
+            double y0 = boundX[4];
 
             // Poèáteèní podmínky
             Vector ic = new Vector(4);
@@ -102,11 +102,12 @@ namespace PavelStransky.Math {
             double kic = 1.0 / this.dynamicalSystem.E(ic);
 
             Matrix result = new Matrix(n1, n2);
+            int[,] trPassed = new int[n1, n2];
 
             for(int i = 0; i < n1; i++)
                 for(int j = 0; j < n2; j++) {
                     // Na aktuálním bodì už máme spoèítanou trajektorii
-                    if(result[i, j] != 0)
+                    if(trPassed[i, j] != 0)
                         continue;
 
                     ic[0] = kx * i + x0;
@@ -120,24 +121,33 @@ namespace PavelStransky.Math {
                         
                         PointVector section = new PointVector(0);
                         double sali = this.TimeZeroWithPS(ic, section, time);
-                        
-                        int salii = -1;
-                        if(sali < 1E-13)
-                            salii = 10;
-                        else if(sali < 1E-4)
-                            salii = (int)(-System.Math.Log10(sali) - 3.0);
+
+                        // 0.0 bude regulární oblast (pro SALI > 1E-5), mezi 1E-5 a 1E-15 budeme 
+                        // brát log10 / 10, pro SALI < 1E-15 bude sali = 1;
+                        if(sali < 1E-15)
+                            sali = 1.0;
+                        else
+                            sali = System.Math.Max(0.1 * (-System.Math.Log10(sali) - 5.0), 0.0);
 
                         // Zaznamenáme i poèáteèní podmínku
-                        result[i, j] = salii;
+                        result[i, j] = sali;
+                        trPassed[i, j]++;
 
                         for(int k = 0; k < section.Length; k++) {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
-                            if(result[n1x, n2x] == 0)
-                                result[n1x, n2x] = salii;
+                            if(result[n1x, n2x] == 0) {
+                                result[n1x, n2x] += sali;
+                                trPassed[n1x, n2x]++;
+                            }
                         }
                     }
                 }
+
+            for(int i = 0; i < n1; i++)
+                for(int j = 0; j < n2; j++)
+                    if(trPassed[i, j] != 0)
+                        result[i, j] /= trPassed[i, j];
 
             return result;
         }

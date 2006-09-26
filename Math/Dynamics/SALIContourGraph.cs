@@ -96,10 +96,6 @@ namespace PavelStransky.Math {
 
             // Poèáteèní podmínky
             Vector ic = new Vector(4);
-            ic[3] = 1.0;
-
-            // Koeficient, který stojí pøed kinetickým èlenem
-            double kic = 1.0 / this.dynamicalSystem.E(ic);
 
             Matrix result = new Matrix(n1, n2);
             int[,] trPassed = new int[n1, n2];
@@ -111,14 +107,11 @@ namespace PavelStransky.Math {
                         continue;
 
                     ic[0] = kx * i + x0;
-                    ic[1] = 0;
-                    ic[2] = ky * j + y0;
-                    ic[3] = 0;
+                    ic[1] = 0.0;
+                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
+                    ic[3] = 0.0;
 
-                    double e0 = this.dynamicalSystem.E(ic);
-                    if(e0 <= e) {
-                        ic[3] = System.Math.Sqrt((e - e0) * kic);
-                        
+                    if(this.dynamicalSystem.IC(ic, e)) {
                         PointVector section = new PointVector(0);
                         double sali = this.TimeZeroWithPS(ic, section, time);
 
@@ -136,10 +129,8 @@ namespace PavelStransky.Math {
                         for(int k = 0; k < section.Length; k++) {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
-                            if(result[n1x, n2x] == 0) {
-                                result[n1x, n2x] += sali;
-                                trPassed[n1x, n2x]++;
-                            }
+                            result[n1x, n2x] += sali;
+                            trPassed[n1x, n2x]++;
                         }
                     }
                 }

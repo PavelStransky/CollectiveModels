@@ -356,6 +356,16 @@ namespace PavelStransky.Math {
 		/// </summary>
 		public double this [int i] {get {return this.item[i];} set {this.item[i] = value;}}
 
+        /// <summary>
+        /// První prvek vektoru
+        /// </summary>
+        public double FirstItem { get { return this[0]; } set { this[0] = value; } }
+
+        /// <summary>
+        /// Poslední prvek vektoru
+        /// </summary>
+        public double LastItem { get { return this[this.Length - 1]; } set { this[this.Length - 1] = value; } }
+
 		/// <summary>
 		/// Vektor vynuluje
 		/// </summary>

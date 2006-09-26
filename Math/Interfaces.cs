@@ -84,6 +84,14 @@ namespace PavelStransky.Math {
         Vector IC(double e, double l);
 
         /// <summary>
+        /// Generuje hybnosti do poèáteèních podmínek
+        /// </summary>
+        /// <param name="ic">Souøadnice poèáteèních podmínek</param>
+        /// <param name="e">Energie</param>
+        /// <returns>True, pokud se generování podaøilo</returns>
+        bool IC(Vector ic, double e);
+
+        /// <summary>
         /// Hranice kinematicky dostupné oblasti na osach x, y, vx, vy
         /// </summary>
         /// <param name="e">Energie</param>

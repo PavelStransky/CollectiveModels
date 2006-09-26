@@ -76,6 +76,13 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// NEFUNGUJE !!!
         /// </summary>
+        public bool IC(Vector ic, double e) {
+            return false;
+        }
+
+        /// <summary>
+        /// NEFUNGUJE !!!
+        /// </summary>
         public Vector Bounds(double e) {
             return new Vector(0);
         }

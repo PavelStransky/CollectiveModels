@@ -13,9 +13,11 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Kinetická energie
         /// </summary>
+        /// <param name="x">Souøadnice x</param>
+        /// <param name="y">Souøadnice y</param>
         /// <param name="px">Hybnost x</param>
         /// <param name="py">Hybnost y</param>
-        public double T(double px, double py) {
+        public virtual double T(double x, double y, double px, double py) {
             return 1.0 / (2.0 * this.K) * (px * px + py * py);
         }
 
@@ -27,7 +29,7 @@ namespace PavelStransky.GCM {
         /// <param name="px">Souøadnice x</param>
         /// <param name="py">Souøadnice y</param>
         public double E(double x, double y, double px, double py) {
-            return this.T(px, py) + this.V(x, y);
+            return this.T(x, y, px, py) + this.V(x, y);
         }
 
         /// <summary>
@@ -35,14 +37,14 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>
         public double E(Vector x) {
-            return this.T(x[2], x[3]) + this.V(x[0], x[1]);
+            return this.T(x[0], x[1], x[2], x[3]) + this.V(x[0], x[1]);
         }
 
         /// <summary>
         /// Pravá strana Hamiltonových pohybových rovnic
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>
-        public Vector Equation(Vector x) {
+        public virtual Vector Equation(Vector x) {
             Vector result = new Vector(4);
 
             double b2 = x[0] * x[0] + x[1] * x[1];
@@ -62,7 +64,7 @@ namespace PavelStransky.GCM {
         /// Matice pro výpoèet SALI (Jakobián)
         /// </summary>
         /// <param name="x">Vektor x v èase t</param>
-        public Matrix Jacobian(Vector x) {
+        public virtual Matrix Jacobian(Vector x) {
             Matrix result = new Matrix(4, 4);
 
             double b2 = x[0] * x[0] + x[1] * x[1];
@@ -125,30 +127,46 @@ namespace PavelStransky.GCM {
                 result[0] = (this.random.NextDouble() * 2.0 - 1) * rmax;
                 result[1] = (this.random.NextDouble() * 2.0 - 1) * rmax;
 
-                double b2 = result[0] * result[0] + result[1] * result[1];
-                double d = 1.0 / this.K;
-                double tbracket = 2.0 * (e - this.V(result[0], result[1])) * d;
+                result[2] = 0.0;
+                result[3] = 0.0;
 
-                if(tbracket < 0)
-                    continue;
+                if(this.E(result) < e)
+                    if(this.IC(result, e))
+                        break;
 
-                result[2] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
-                result[3] = System.Math.Sqrt(tbracket - result[2] * result[2]);
-
-                if(this.random.Next(2) == 0)
-                    result[2] = -result[2];
-                if(this.random.Next(2) == 0)
-                    result[3] = -result[3];
-
-                result[2] /= d;
-                result[3] /= d;
-
-//              double chkE = this.E(result);
-
-                break;
             } while(true);
 
             return result;
+        }
+
+        /// <summary>
+        /// Generování hybností v poèáteèní podmínce
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="ic">Polohy poè. podmínky</param>
+        /// <returns>True, pokud se generování podaøilo</returns>        
+        public bool IC(Vector ic, double e) {
+            // Koeficient pøed kinetickým èlenem
+            double koef = this.T(ic[0], ic[1], 1.0, 0.0);
+            double tbracket = (e - this.V(ic[0], ic[1])) / koef;
+
+            if(ic[2] == 0.0) {
+                ic[2] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
+
+                if(this.random.Next(2) == 0)
+                    ic[2] = -ic[2];
+            }
+
+            tbracket -= ic[2] * ic[2];
+            if(tbracket < 0.0)
+                return false;
+
+            ic[3] = System.Math.Sqrt(tbracket);
+
+            if(this.random.Next(2) == 0)
+                ic[3] = -ic[3];
+
+            return true;
         }
 
         /// <summary>
@@ -186,7 +204,7 @@ namespace PavelStransky.GCM {
         /// Uloží GCM tøídu do souboru
         /// </summary>
         /// <param name="export">Export</param>
-        public void Export(Export export) {
+        public virtual void Export(Export export) {
             if(export.Binary) {
                 // Binárnì
                 BinaryWriter b = export.B;
@@ -206,7 +224,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Import import) {
+        public virtual void Import(Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

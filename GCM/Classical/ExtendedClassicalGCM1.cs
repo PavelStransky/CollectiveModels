@@ -9,7 +9,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Klasický GCM s hmotou úmìrnou beta^2
     /// </summary>
-    public class ExtendedClassicalGCM1 : GCM, IDynamicalSystem, IExportable {
+    public class ExtendedClassicalGCM1 : SimpleClassicalGCM, IDynamicalSystem, IExportable {
         // Generátor náhodných èísel
         private Random random = new Random();
 
@@ -24,35 +24,16 @@ namespace PavelStransky.GCM {
         /// <param name="y">Souøadnice y</param>
         /// <param name="px">Hybnost x</param>
         /// <param name="py">Hybnost y</param>
-        public double T(double x, double y, double px, double py) {
+        public override double T(double x, double y, double px, double py) {
             double b2 = x * x + y * y;
             return 1.0 / (2.0 * this.K * (1 + this.Kappa * b2)) * (px * px + py * py);
-        }
-
-        /// <summary>
-        /// Celková energie
-        /// </summary>
-        /// <param name="x">Souøadnice x</param>
-        /// <param name="y">Souøadnice y</param>
-        /// <param name="px">Souøadnice x</param>
-        /// <param name="py">Souøadnice y</param>
-        public double E(double x, double y, double px, double py) {
-            return this.T(x, y, px, py) + this.V(x, y);
-        }
-
-        /// <summary>
-        /// Celková energie
-        /// </summary>
-        /// <param name="x">Souøadnice a hybnosti</param>
-        public double E(Vector x) {
-            return this.T(x[0], x[1], x[2], x[3]) + this.V(x[0], x[1]);
         }
 
         /// <summary>
         /// Pravá strana Hamiltonových pohybových rovnic
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>
-        public Vector Equation(Vector x) {
+        public override Vector Equation(Vector x) {
             Vector result = new Vector(4);
 
             double b2 = x[0] * x[0] + x[1] * x[1];
@@ -75,7 +56,7 @@ namespace PavelStransky.GCM {
         /// Matice pro výpoèet SALI (Jakobián)
         /// </summary>
         /// <param name="x">Vektor x v èase t</param>
-        public Matrix Jacobian(Vector x) {
+        public override Matrix Jacobian(Vector x) {
             Matrix result = new Matrix(4, 4);
 
             double b2 = x[0] * x[0] + x[1] * x[1];
@@ -110,11 +91,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Poèet stupòù volnosti
-        /// </summary>
-        public int DegreesOfFreedom { get { return degreesOfFreedom; } }
-
-        /// <summary>
         /// Prázdný konstruktor
         /// </summary>
         public ExtendedClassicalGCM1() { }
@@ -130,66 +106,6 @@ namespace PavelStransky.GCM {
         public ExtendedClassicalGCM1(double a, double b, double c, double k, double kappa)
             : base(a, b, c, k) {
             this.kappa = kappa;
-        }
-
-        /// <summary>
-        /// Generuje poèáteèní podmínky rovnomìrnì ve FP
-        /// </summary>
-        /// <param name="e">Energie</param>
-        /// <returns>Poèáteèní podmínky ve formátu (x, y, px, py)</returns>
-        public Vector IC(double e) {
-            Vector result = new Vector(4);
-
-            Vector r = this.Roots(e, 0);
-            if(r.Length == 0)
-                throw new GCMException(string.Format(errorMessageInitialCondition, e));
-
-            // Nalezení nejvìtšího koøenu (v absolutní hodnotì)
-            double rmax = System.Math.Abs(r[0]);
-            for(int i = 1; i < r.Length; i++)
-                if(System.Math.Abs(r[i]) > rmax)
-                    rmax = System.Math.Abs(r[i]);
-            do {
-                // Poèáteèní podmínky v poloze hledáme ve èverci (-rmax, rmax) x (-rmax, rmax)
-                result[0] = (this.random.NextDouble() * 2.0 - 1) * rmax;
-                result[1] = (this.random.NextDouble() * 2.0 - 1) * rmax;
-
-                double b2 = result[0] * result[0] + result[1] * result[1];
-                double d = 1.0 / (this.K * (1 + this.Kappa * b2));
-                double tbracket = 2.0 * (e - this.V(result[0], result[1])) * d;
-
-                if(tbracket < 0)
-                    continue;
-
-                result[2] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
-                result[3] = System.Math.Sqrt(tbracket - result[2] * result[2]);
-
-                if(this.random.Next(2) == 0)
-                    result[2] = -result[2];
-                if(this.random.Next(2) == 0)
-                    result[3] = -result[3];
-
-                result[2] /= d;
-                result[3] /= d;
-
-                //              double chkE = this.E(result);
-
-                break;
-            } while(true);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Generuje poèáteèní podmínky ve FP
-        /// </summary>
-        /// <param name="e">Energie</param>
-        /// <param name="l">Impulsmoment</param>
-        public Vector IC(double e, double l) {
-            if(l == 0.0)
-                return this.IC(e);
-            else
-                throw new GCMException(string.Format(errorMessageNonzeroJ, this.GetType().FullName, typeof(ClassicalGCMJ).FullName));
         }
 
         /// <summary>
@@ -215,7 +131,7 @@ namespace PavelStransky.GCM {
         /// Uloží GCM tøídu do souboru
         /// </summary>
         /// <param name="export">Export</param>
-        public void Export(Export export) {
+        public override void Export(Export export) {
             if(export.Binary) {
                 // Binárnì
                 BinaryWriter b = export.B;
@@ -236,7 +152,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Import import) {
+        public override void Import(Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

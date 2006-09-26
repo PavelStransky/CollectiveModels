@@ -59,7 +59,7 @@ namespace PavelStransky.Expression.Functions {
                     double e = (double)arguments[1];
                     ic = dynamicalSystem.IC(e);
                 }
-                else if(arguments[1] is Vector && (arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom)
+                else if(arguments[1] is Vector && (arguments[1] as Vector).Length / 2 == dynamicalSystem.DegreesOfFreedom)
                     ic = (Vector)arguments[1];
                 else
                     return this.BadTypeError(arguments[1], 1);

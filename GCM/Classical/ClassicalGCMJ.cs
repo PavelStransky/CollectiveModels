@@ -399,6 +399,10 @@ namespace PavelStransky.GCM {
             return this.IC(e, 0.0);
         }
 
+        public bool IC(Vector ic, double e) {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
         public Vector Bounds(double e) {
             throw new Exception("The method or operation is not implemented.");
         }

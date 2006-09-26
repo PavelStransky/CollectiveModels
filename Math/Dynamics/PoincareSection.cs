@@ -11,6 +11,9 @@ namespace PavelStransky.Math {
         // Urèení roviny
         private Vector plane;
 
+        // Èíslo, které dourèuje rovinu (plane * x == crossPoint)
+        private double crossPoint;
+
         // Indexy
         private int i1, i2;
 
@@ -25,6 +28,13 @@ namespace PavelStransky.Math {
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
         public PoincareSection(IDynamicalSystem dynamicalSystem, Vector plane, int i1, int i2, double precision, RungeKuttaMethods rkMethod)
             : base(dynamicalSystem, precision, rkMethod) {
+            if(plane.Length % 2 == 1) {
+                this.crossPoint = plane.LastItem;
+                plane.Length = plane.Length - 1;
+            }
+            else {
+                this.crossPoint = 0;
+            }
             this.plane = plane;
             this.i1 = i1;
             this.i2 = i2;
@@ -53,8 +63,9 @@ namespace PavelStransky.Math {
                 step = newStep;
 
                 double newsp = newx * this.plane;
-                if(newsp * sp <= 0) {
-                    Vector v = (x - newx) / (newsp - sp) * sp + x;
+                if((newsp <= this.crossPoint && sp > this.crossPoint) ||
+                    (sp <= this.crossPoint && newsp > this.crossPoint)) {
+                    Vector v = (x - newx) * (sp / (newsp - sp)) + x;
                     result[finished].X = v[this.i1];
                     result[finished].Y = v[this.i2];
                     finished++;

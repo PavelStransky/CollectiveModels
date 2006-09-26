@@ -59,13 +59,24 @@ namespace PavelStransky.Math {
         /// <param name="newStep">Nový krok</param>
         /// <returns>Vypoèítaný pøírùstek</returns>
         public virtual Vector Step(Vector x, ref double step, out double newStep) {
+            //Kód neoptimalizovaný na rychlost
+            //Vector rightSide1 = this.equation(x);
+            //Vector rightSide2 = this.equation(x + 0.5 * step * rightSide1);
+            //Vector rightSide3 = this.equation(x + 0.5 * step * rightSide2);
+            //Vector rightSide4 = this.equation(x + step * rightSide3);
+
+            //newStep = step;
+            //return (rightSide1 / 6.0 + rightSide2 / 3.0 + rightSide3 / 3.0 + rightSide4 / 6.0) * step;
+
             Vector rightSide1 = this.equation(x);
-            Vector rightSide2 = this.equation(x + 0.5 * step * rightSide1);
-            Vector rightSide3 = this.equation(x + 0.5 * step * rightSide2);
-            Vector rightSide4 = this.equation(x + step * rightSide3);
+            Vector rightSide2 = this.equation(Vector.Summarize(x, 0.5 * step, rightSide1));
+            Vector rightSide3 = this.equation(Vector.Summarize(x, 0.5 * step, rightSide2));
+            Vector rightSide4 = this.equation(Vector.Summarize(x, step, rightSide3));
 
             newStep = step;
-            return (rightSide1 / 6.0 + rightSide2 / 3.0 + rightSide3 / 3.0 + rightSide4 / 6.0) * step;
+
+            double s3 = step / 3.0;
+            return Vector.Summarize(0.5 * s3, rightSide1, s3, rightSide2, s3, rightSide3, 0.5 * s3, rightSide4);
         }
 
         /// <summary>

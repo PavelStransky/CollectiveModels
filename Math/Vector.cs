@@ -56,9 +56,10 @@ namespace PavelStransky.Math {
             if(v1.Length != v2.Length)
                 throw new VectorException(errorMessageDifferentLength);
 
-            Vector result = new Vector(v1.Length);
+            int length = v1.Length;
+            Vector result = new Vector(length);
 
-            for(int i = 0; i < result.Length; i++)
+            for(int i = 0; i < length; i++)
                 result[i] = v1[i] + v2[i];
 
             return result;
@@ -68,9 +69,10 @@ namespace PavelStransky.Math {
 		/// Pøiète ke každé složce vektoru èíslo
 		/// </summary>
 		public static Vector operator +(Vector v, double d) {
-			Vector result = new Vector(v.Length);
+            int length = v.Length;
+			Vector result = new Vector(length);
 
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = v[i] + d;
 
 			return result;
@@ -83,9 +85,10 @@ namespace PavelStransky.Math {
 			if(v1.Length != v2.Length)
 				throw new VectorException(errorMessageDifferentLength);
 
-			Vector result = new Vector(v1.Length);
+            int length = v1.Length;
+            Vector result = new Vector(length);
 
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = v1[i] - v2[i];
 
 			return result;
@@ -95,9 +98,10 @@ namespace PavelStransky.Math {
 		/// Odeète od každé složky vektoru èíslo
 		/// </summary>
 		public static Vector operator -(Vector v, double d) {
-			Vector result = new Vector(v.Length);
+            int length = v.Length;
+            Vector result = new Vector(v.Length);
 
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = v[i] - d;
 
 			return result;
@@ -108,9 +112,10 @@ namespace PavelStransky.Math {
 		/// Odeète od èísla každou složku vektoru
 		/// </summary>
 		public static Vector operator -(double d, Vector v) {
-			Vector result = new Vector(v.Length);
+            int length = v.Length;
+            Vector result = new Vector(length);
 
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = d - v[i];
 
 			return result;
@@ -120,9 +125,10 @@ namespace PavelStransky.Math {
 		/// Vynásobí vektor èíslem
 		/// </summary>
 		public static Vector operator *(Vector v, double koef) {
-			Vector result = new Vector(v.Length);
+            int length = v.Length;
+            Vector result = new Vector(length);
 
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = koef * v[i];
 
 			return result;
@@ -139,9 +145,10 @@ namespace PavelStransky.Math {
 		/// Vydìlí vektor èíslem
 		/// </summary>
 		public static Vector operator /(Vector v, double koef) {
-			Vector result = new Vector(v.Length);
+            int length = v.Length;
+            Vector result = new Vector(length);
 
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = v[i] / koef;
 
 			return result;
@@ -154,9 +161,10 @@ namespace PavelStransky.Math {
             if(v1.Length != v2.Length)
                 throw new VectorException(errorMessageDifferentLength);
 
-            Vector result = new Vector(v1.Length);
+            int length = v1.Length;
+            Vector result = new Vector(length);
 
-            for(int i = 0; i < result.Length; i++)
+            for(int i = 0; i < length; i++)
                 result[i] = v1[i] / v2[i];
 
             return result;
@@ -169,9 +177,10 @@ namespace PavelStransky.Math {
 			if(v1.Length != v2.Length)
 				throw new VectorException(errorMessageDifferentLength);
 
-			double result = 0;
+            int length = v1.Length;
+            double result = 0;
 
-			for(int i = 0; i < v1.Length; i++)
+			for(int i = 0; i < length; i++)
 				result += v1[i] * v2[i];
 
 			return result;
@@ -184,12 +193,14 @@ namespace PavelStransky.Math {
 			if(m.LengthY != v.Length)
 				throw new VectorException(errorMessageMatrixVector);
 
-			Vector result = new Vector(m.LengthX);
+            int lengthX = m.LengthX;
+            int lengthY = v.Length;
+            Vector result = new Vector(lengthX);
 
-			for(int i = 0; i < result.Length; i++) {
+			for(int i = 0; i < lengthX; i++) {
 				result[i] = 0;
-				for(int j = 0; j < v.Length; j++)
-					result[i] += m[i,j] * v[j];
+                for(int j = 0; j < lengthY; j++)
+                    result[i] += m[i, j] * v[j];
 			}
 
 			return result;
@@ -202,21 +213,64 @@ namespace PavelStransky.Math {
 			if(m.LengthX != v.Length)
 				throw new VectorException(errorMessageMatrixVector);
 
-			Vector result = new Vector(m.LengthY);
+            int lengthX = v.Length;
+            int lengthY = m.LengthY;
+            Vector result = new Vector(lengthY);
 
-			for(int i = 0; i < result.Length; i++) {
+			for(int i = 0; i < lengthY; i++) {
 				result[i] = 0;
-				for(int j = 0; j < v.Length; j++)
-					result[i] += v[j] * m[j,i];
+                for(int j = 0; j < lengthX; j++)
+                    result[i] += v[j] * m[j, i];
 			}
 
 			return result;
-		}
+        }
 
-		/// <summary>
-		/// Operátor rovnosti
-		/// </summary>
-		public static bool operator ==(Vector v1, Vector v2) {
+        #region Summarize
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(double d1, Vector v1, double d2, Vector v2) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++) 
+                result[i] = d1 * v1[i] + d2 * v2[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(Vector v1, double d2, Vector v2) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = v1[i] + d2 * v2[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(double d1, Vector v1, double d2, Vector v2, double d3, Vector v3, double d4, Vector v4) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = d1 * v1[i] + d2 * v2[i] * d3 * v3[i] + d4 * v4[i];
+
+            return result;
+        }
+        #endregion
+
+        /// <summary>
+        /// Operátor rovnosti
+        /// </summary>
+        public static bool operator ==(Vector v1, Vector v2) {
 			if(v1.Length != v2.Length)
 				return false;
 

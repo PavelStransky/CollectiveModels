@@ -261,7 +261,7 @@ namespace PavelStransky.Math {
             Vector result = new Vector(length);
 
             for(int i = 0; i < length; i++)
-                result[i] = d1 * v1[i] + d2 * v2[i] * d3 * v3[i] + d4 * v4[i];
+                result[i] = d1 * v1[i] + d2 * v2[i] + d3 * v3[i] + d4 * v4[i];
 
             return result;
         }

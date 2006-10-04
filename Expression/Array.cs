@@ -89,7 +89,8 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="export">Export</param>
         public void Export(Export export) {
-            string typeName = this.type.FullName;
+            // Pokud ještì nebyl zadán typ, uložíme string.Empty
+            string typeName = this.type != null ? this.type.FullName : string.Empty;
 
             if(export.Binary) {
                 // Binárnì

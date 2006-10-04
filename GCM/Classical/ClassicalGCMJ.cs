@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Tøída GCM modelu s nenulovým úhlovým momentem
     /// </summary>
-    public class ClassicalGCMJ: GCMParameters, IDynamicalSystem {
+    public class ClassicalGCMJ: GCMParameters, IDynamicalSystem, IExportable {
         // Generátor náhodných èísel
         private Random random = new Random();
 
@@ -28,7 +29,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Kinetická energie
         /// </summary>
-        /// <param name="vx">Vektor hybností</param>
+        /// <param name="px">Vektor hybností</param>
         public double T(Vector px) {
             return 1.0 / (2 * this.K) * px.SquaredEuklideanNorm(5, 10);
         }
@@ -128,31 +129,11 @@ namespace PavelStransky.GCM {
         public Vector J(Vector x) {
             Vector result = new Vector(3);
 
-            result[0] = x[iVd] * (System.Math.Sqrt(3.0) * x[iX] + x[iY]) - x[iV] * (System.Math.Sqrt(3.0) * x[iXd] + x[iYd]) - x[iUd] * x[iZ] + x[iU] * x[iZd];
-            result[1] = -x[iUd] * (System.Math.Sqrt(3.0) * x[iX] - x[iY]) + x[iU] * (System.Math.Sqrt(3.0) * x[iXd] - x[iYd]) + x[iVd] * x[iZ] - x[iV] * x[iZd];
-            result[2] = x[iU] * x[iVd] - x[iUd] * x[iV] + 2.0 * (x[iY] * x[iZd] - x[iYd] * x[iZ]);
+            result[0] = -x[iVd] * (System.Math.Sqrt(3.0) * x[iX] + x[iY]) - x[iV] * (System.Math.Sqrt(3.0) * x[iXd] + x[iYd]) - x[iUd] * x[iZ] - x[iU] * x[iZd];
+            result[1] = -x[iUd] * (System.Math.Sqrt(3.0) * x[iX] - x[iY]) + x[iU] * (System.Math.Sqrt(3.0) * x[iXd] - x[iYd]) - x[iVd] * x[iZ] + x[iV] * x[iZd];
+            result[2] = -x[iU] * x[iVd] - x[iUd] * x[iV] - 2.0 * (x[iY] * x[iZd] + x[iYd] * x[iZ]);
 
             return result;
-        }
-
-        /// <summary>
-        /// Derivace potenciálu podle souøadnice
-        /// </summary>
-        /// <param name="i">Index souøadnice</param>
-        /// <param name="x">Souøadnice x</param>
-        /// <param name="y">Souøadnice y</param>
-        /// <param name="z">Souøadnice z</param>
-        /// <param name="u">Souøadnice u</param>
-        /// <param name="v">Souøadnice v</param>
-        public double DV(int i, double x, double y, double z, double u, double v) {
-            Vector vx = new Vector(10);
-            vx[0] = x;
-            vx[1] = y;
-            vx[2] = z;
-            vx[3] = u;
-            vx[4] = v;
-
-            return this.Equation(vx)[5 + i] * this.K;
         }
 
         /// <summary>
@@ -254,6 +235,11 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public ClassicalGCMJ() { }
+
+        /// <summary>
         /// Kostruktor standardního lagranžiánu
         /// </summary>
         /// <param name="a">A</param>
@@ -313,82 +299,109 @@ namespace PavelStransky.GCM {
         public Vector IC(double e, double l) {
             int iteration = 0;
 
+            // Nalezení maximálního rozmìru x
+            Vector nullX = new Vector(5);
+            double maxX = 0;
+            for(int i = 0; i <= iV; i++)
+                maxX = System.Math.Max(maxX, System.Math.Abs(this.NonzeroRoots(e, i, nullX).MaxAbs()));
+
             // Hledáme, dokud se netrefíme do takových poèáteèních podmínek, které umí splnit podmínku na L i E
-            while(true) {
+            for(int iterationX = 0; iterationX < maxIteration; iteration++) {
                 Vector result = new Vector(10);
 
                 try {
                     // Potenciální èlen
-                    for(int i = 0; i <= iV; i++) {
-                        Vector r = this.NonzeroRoots(e, i, result);
+                    for(int i = 0; i <= iV; i++)
+                        result[i] = this.random.NextDouble() * 2 * maxX - maxX;
 
-                        int j = r.Length / 2;
-                        j = this.random.Next(j);
-
-                        result[i] = this.random.NextDouble() * (r[j + 1] - r[j]) + r[j];
-                    }
-
-                    // Kinetický èlen
-                    double tbracket = (e - this.V(result)) * 2.0 / this.K;
-
-                    // Generování xd, yd, zd
-                    for(int i = iXd; i <= iZd; i++) {
-                        result[i] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
-                        if(this.random.Next(2) == 0)
-                            result[i] = -result[i];
-                        tbracket -= result[i] * result[i];
-                    }
-
-                    // Dopoèítání ud, vd
-                    double Ax = System.Math.Sqrt(3.0) * result[iX] + result[iY];
-                    double Bx = -(System.Math.Sqrt(3.0) * result[iXd] + result[iYd]) * result[iV] + result[iU] * result[iZd];
-                    double Cx = -(System.Math.Sqrt(3.0) * result[iX] - result[iY]);
-                    double Dx = (System.Math.Sqrt(3.0) * result[iXd] - result[iYd]) * result[iU] - result[iV] * result[iZd];
-                    double Ex = 2.0 * (result[iY] * result[iZd] - result[iYd] * result[iZ]);
-
-                    double Xx = Ax * Ax + result[iZ] * result[iZ] + result[iU] * result[iU];
-                    double Yx = result[iZ] * result[iZ] + Cx * Cx + result[iV] * result[iV];
-                    double Zx = 2.0 * (-Ax * result[iZ] + Cx * result[iZ] - result[iU] * result[iV]);
-                    double Ux = 2.0 * (-Bx * result[iZ] + Cx * Dx - result[iV] * Ex);
-                    double Vx = 2.0 * (Ax * Bx + result[iZ] * Dx + result[iU] * Ex);
-                    double Wx = Bx * Bx + Dx * Dx + Ex * Ex;
-
-                    double lambda = l * l / (this.K * this.K) - Wx;
-                    double h = tbracket;
-
-                    double Px = lambda - h * Xx;
-                    double Qx = Xx - Yx;
-
-                    Vector polynom = new Vector(5);
-                    polynom[0] = Px * Px - Vx * Vx * h;
-                    polynom[1] = -2.0 * (Px * Ux + Zx * Vx * h);
-                    polynom[2] = Ux * Ux + 2.0 * Px * Qx - Zx * Zx * h + Vx * Vx;
-                    polynom[3] = -2.0 * Ux * Qx + 2.0 * Zx * Vx;
-                    polynom[4] = Qx * Qx + Zx * Zx;
-
-                    Vector roots = Polynom.SolveR(polynom).Sort() as Vector;
-
-                    if(roots.Length == 0)
+                    // Energie je nižší než nagenerovaný potenciál - musíme generovat znovu
+                    if(e < this.V(result))
                         continue;
 
-                    result[iUd] = roots[this.random.Next(roots.Length)];
-                    tbracket -= result[iUd] * result[iUd];
-                    result[iVd] = System.Math.Sqrt(tbracket);
+                    // Zkoušíme nejprve nìkolikrát pro daný potenciální èlen najít èlen kinetický
+                    for(int iterationP = 0; iterationP < maxIteration; iterationP++) {
+                        // Kinetický èlen
+                        double tbracket = (e - this.V(result)) * 2.0 / this.K;
 
-                    if(System.Math.Abs(this.J(result).EuklideanNorm() - System.Math.Abs(l)) < zeroValue) {
-                        for(int i = 5; i < 10; i++)
-                            result[i] /= this.K;
-                        return result;
+                        // Generování xd, yd, zd
+                        for(int i = iXd; i <= iZd; i++) {
+                            result[i] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
+                            if(this.random.Next(2) == 0)
+                                result[i] = -result[i];
+                            tbracket -= result[i] * result[i];
+                        }
+
+                        // Dopoèítání ud, vd
+                        double Ax = System.Math.Sqrt(3.0) * result[iX] + result[iY];
+                        double Bx = -(System.Math.Sqrt(3.0) * result[iXd] + result[iYd]) * result[iV] + result[iU] * result[iZd];
+                        double Cx = -(System.Math.Sqrt(3.0) * result[iX] - result[iY]);
+                        double Dx = (System.Math.Sqrt(3.0) * result[iXd] - result[iYd]) * result[iU] - result[iV] * result[iZd];
+                        double Ex = 2.0 * (result[iY] * result[iZd] - result[iYd] * result[iZ]);
+
+                        double Xx = Ax * Ax + result[iZ] * result[iZ] + result[iU] * result[iU];
+                        double Yx = result[iZ] * result[iZ] + Cx * Cx + result[iV] * result[iV];
+                        double Zx = 2.0 * (-Ax * result[iZ] + Cx * result[iZ] - result[iU] * result[iV]);
+                        double Ux = 2.0 * (-Bx * result[iZ] + Cx * Dx - result[iV] * Ex);
+                        double Vx = 2.0 * (Ax * Bx + result[iZ] * Dx + result[iU] * Ex);
+                        double Wx = Bx * Bx + Dx * Dx + Ex * Ex;
+
+                        double lambda = l * l / (this.K * this.K) - Wx;
+                        double h = tbracket;
+
+                        double Px = lambda - h * Xx;
+                        double Qx = Xx - Yx;
+
+                        Vector polynom = new Vector(5);
+                        polynom[0] = Px * Px - Vx * Vx * h;
+                        polynom[1] = -2.0 * (Px * Ux + Zx * Vx * h);
+                        polynom[2] = Ux * Ux + 2.0 * Px * Qx - Zx * Zx * h + Vx * Vx;
+                        polynom[3] = -2.0 * Ux * Qx + 2.0 * Zx * Vx;
+                        polynom[4] = Qx * Qx + Zx * Zx;
+
+                        Vector roots = Polynom.SolveR(polynom).Sort() as Vector;
+
+                        // Zkoušíme náhodnì všechny koøeny
+                        while(roots.Length != 0) {
+                            int i = this.random.Next(roots.Length);
+                            result[iUd] = roots[i];
+                            roots[i] = roots.LastItem;
+                            roots.Length -= 1;
+
+                            double t = tbracket - result[iUd] * result[iUd];
+                            if(t < 0)
+                                continue;
+
+                            result[iVd] = System.Math.Sqrt(t);
+                            result[iZd] = -result[iZd];
+
+                            for(int k = 5; k < 10; k++)
+                                result[k] *= this.K;
+
+                            // Mùže být ještì obrácené znaménko?
+                            if(System.Math.Abs(this.J(result).EuklideanNorm() - System.Math.Abs(l)) < zeroValue) {
+                                double ex = this.E(result);
+                                double Jx = this.J(result).EuklideanNorm();
+
+                                return result;
+                            }
+
+                            // Mùže být ještì obrácené znaménko?
+                            result[iVd] = -result[iVd];
+
+                            if(System.Math.Abs(this.J(result).EuklideanNorm() - System.Math.Abs(l)) < zeroValue) {
+                                double ex = this.E(result);
+                                double Jx = this.J(result).EuklideanNorm();
+
+                                return result;
+                            }
+                        }
                     }
                 }
                 catch(Exception exc) {
                 }
-
-                iteration++;
-
-                if(iteration > maxIteration)
-                    throw new Exception("Chyba, pøekroèen poèet iterací");
             }
+
+            throw new Exception("Chyba, pøekroèen poèet iterací");
         }
 
         /// <summary>
@@ -413,12 +426,59 @@ namespace PavelStransky.GCM {
 
         #endregion
 
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží GCM tøídu do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(this.A);
+                b.Write(this.B);
+                b.Write(this.C);
+                b.Write(this.K);
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine("{0}\t{1}\t{2}\t{3}", this.A, this.B, this.C, this.K);
+            }
+        }
+
+        /// <summary>
+        /// Naète GCM tøídu ze souboru textovì
+        /// </summary>
+        /// <param name="import">Import</param>
+        public void Import(Import import) {
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                this.A = b.ReadDouble();
+                this.B = b.ReadDouble();
+                this.C = b.ReadDouble();
+                this.K = b.ReadDouble();
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                string line = t.ReadLine();
+                string[] s = line.Split('\t');
+                this.A = double.Parse(s[0]);
+                this.B = double.Parse(s[1]);
+                this.C = double.Parse(s[2]);
+                this.K = double.Parse(s[3]);
+            }
+        }
+        #endregion
+
         private const int degreesOfFreedom = 5;
-        private const double zeroValue = 10E-7;
+        private const double zeroValue = 1E-6;
 
         private const int iX = 0, iY = 1, iZ = 2, iU = 3, iV = 4;
         private const int iXd = 5, iYd = 6, iZd = 7, iUd = 8, iVd = 9;
 
-        private const int maxIteration = 5000;
+        private const int maxIteration = 100;
     }
 }

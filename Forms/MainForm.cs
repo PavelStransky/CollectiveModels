@@ -46,6 +46,8 @@ namespace PavelStransky.Forms {
             this.Initialize();
             this.Show();
             this.Open(fileName);
+
+            this.openedFileNames.Clear();
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace PavelStransky.Forms {
             RegistryKey rk = Application.UserAppDataRegistry;
             object x = rk.GetValue(registryKeyPositionX);
             object y = rk.GetValue(registryKeyPositionY);
-            if(x is int && y is int) {
+            if(x is int && y is int && (int)x > 0 && (int)y > 0) {
                 this.StartPosition = FormStartPosition.Manual;
                 this.Location = new Point((int)x, (int)y);
             }
@@ -75,7 +77,7 @@ namespace PavelStransky.Forms {
             object width = rk.GetValue(registryKeyWidth);
             object height = rk.GetValue(registryKeyHeight);
 
-            if(width is int && height is int)
+            if(width is int && height is int && (int)width > 0 && (int)height > 0)
                 this.Size = new Size((int)width, (int)height);
 
             int i = 0;

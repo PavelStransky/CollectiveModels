@@ -34,6 +34,8 @@ namespace PavelStransky.Expression {
                 return new ExtendedClassicalGCM1();
             else if(typeName == typeof(ExtendedClassicalGCM2).FullName)
                 return new ExtendedClassicalGCM2();
+            else if(typeName == typeof(ClassicalGCMJ).FullName)
+                return new ClassicalGCMJ();
             else if(typeName == typeof(ClassicalIBM).FullName)
                 return new ClassicalIBM();
             else if(typeName == typeof(Graph).FullName)

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression
 	/// <summary>
 	/// Tøída pro vyhodnocení funkce
 	/// </summary>
-	public class Function: Atom, IOutputWriter {
+	public class Function: Atom {
 		// Typ operátoru
 		private Functions.FunctionDefinition function;
 
@@ -92,7 +92,7 @@ namespace PavelStransky.Expression
  			
 			try {
                 depth++;
-				result = this.function.Evaluate(context, this.arguments, this);
+				result = this.function.Evaluate(context, this.arguments, this.writer);
                 depth--;
 			}
 			catch(DetailException e) {
@@ -148,51 +148,5 @@ namespace PavelStransky.Expression
 
         private const string defaultLogFile = "c:\\gcm\\default.log";
         private const string errorMessageDetail = "Výraz: {0}";
-
-        #region IOutputWriter Members
-        public void Clear() {
-            if(this.writer == null)
-                return;
-
-            Atom p = this.parent;
-            StringBuilder s = new StringBuilder();
-
-            while(p != null) {
-                s.Insert(0, p.InfoText);
-                p = p.Parent;
-            }
-
-            this.infoText = string.Empty;
-
-            this.writer.Clear();
-            this.writer.Write(s.ToString());
-        }
-
-        public void Write(object o) {
-            if(this.writer == null)
-                return;
-
-            string s = o.ToString();
-            this.infoText += s;
-            this.writer.Write(s);
-        }
-
-        public void WriteLine() {
-            if(this.writer == null)
-                return;
-
-            this.infoText += newLine;
-            this.writer.WriteLine();
-        }
-
-        public void WriteLine(object o) {
-            if(this.writer == null)
-                return;
-
-            string s = o.ToString();
-            this.infoText += s + newLine;
-            this.writer.WriteLine(s);
-        }
-        #endregion
     }
 }

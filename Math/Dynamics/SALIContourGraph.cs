@@ -117,10 +117,10 @@ namespace PavelStransky.Math {
 
                         // 0.0 bude regulární oblast (pro SALI > 1E-5), mezi 1E-5 a 1E-15 budeme 
                         // brát log10 / 10, pro SALI < 1E-15 bude sali = 1;
-                        if(sali < 1E-15)
+                        if(sali < 1E-10)
                             sali = 1.0;
                         else
-                            sali = System.Math.Max(0.1 * (-System.Math.Log10(sali) - 5.0), 0.0);
+                            sali = System.Math.Max(0.2 * (-System.Math.Log10(sali) - 5.0), 0.0);
 
                         // Zaznamenáme i poèáteèní podmínku
                         result[i, j] = sali;
@@ -136,9 +136,12 @@ namespace PavelStransky.Math {
                 }
 
             for(int i = 0; i < n1; i++)
-                for(int j = 0; j < n2; j++)
+                for(int j = 0; j < n2; j++) {
                     if(trPassed[i, j] != 0)
                         result[i, j] /= trPassed[i, j];
+                    else
+                        result[i, j] = -1.0;
+                }
 
             return result;
         }

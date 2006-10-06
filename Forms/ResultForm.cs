@@ -183,7 +183,8 @@ namespace PavelStransky.Forms {
             this.lblResult.Visible = true;
             this.SetCaption(captionFinished);
 
-            this.txtResult.Text += newLine;
+            if(this.txtResult.Text != string.Empty)
+                this.txtResult.Text += newLine;
             this.txtResult.Text += string.Format(timeText, this.GetTimeLengthString(duration));
 
             if(result != null) {
@@ -318,6 +319,8 @@ namespace PavelStransky.Forms {
 
         private void WriteInvoke(string s) {
             this.txtResult.Text = s;
+            this.txtResult.SelectionStart = this.txtResult.Text.Length - 1;
+            this.txtResult.ScrollToCaret();
         }
 
         #endregion

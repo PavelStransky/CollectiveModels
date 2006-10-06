@@ -30,12 +30,6 @@ namespace PavelStransky.Expression.Functions {
             return evaluatedArguments;
         }
 
-        private IOutputWriter writer;
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            this.writer = writer;
-            return base.Evaluate(context, arguments, writer);
-        }
-
         protected override object Evaluate(int depth, object item, ArrayList arguments) {
             if(item as IDynamicalSystem != null) {
                 IDynamicalSystem dynamicalSystem = item as IDynamicalSystem;
@@ -57,7 +51,7 @@ namespace PavelStransky.Expression.Functions {
 
                 SALI sali = new SALI(dynamicalSystem, precision, rkMethod);
 
-                if(sali.IsRegular(ic, writer))
+                if(sali.IsRegular(ic))
                     return 1;
                 else
                     return 0;

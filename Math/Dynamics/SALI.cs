@@ -136,7 +136,7 @@ namespace PavelStransky.Math {
         /// Vrátí true, pokud daná trajektorie je podle SALI regulární
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
-        public bool IsRegular(Vector initialX, IOutputWriter writer) {
+        public bool IsRegular(Vector initialX) {
             RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
 
             this.x = initialX;
@@ -150,8 +150,8 @@ namespace PavelStransky.Math {
             double time = 0;
 
             double cumulLogSALI = 0;
-            Vector logSALI = new Vector(window);
-            int iWindow = 0;
+            Vector logSALIQueue = new Vector(window);    // Realizuje frontu
+            int iQueue = 0;
 
             int i1 = (int)(1.0 / defaultPrecision);
             bool init = true;
@@ -176,21 +176,19 @@ namespace PavelStransky.Math {
 
                 double ai = this.AlignmentIndex(w1, w2);
                 double logAI = (ai <= 0.0 ? 0.0 : -System.Math.Log10(ai) / window);
-                cumulLogSALI += logAI - logSALI[iWindow];
-                logSALI[iWindow] = logAI;
-                iWindow = (iWindow + 1) % window;
+                cumulLogSALI += logAI - logSALIQueue[iQueue];
+                logSALIQueue[iQueue] = logAI;
+                iQueue = (iQueue + 1) % window;
 
-                if(init && iWindow < 50)
+                // Nejprve napoèítáme 100 jednotek, než zaèneme vyøazovat
+                if(init && iQueue < initTime)
                     continue;
-
-                if(iWindow % 50 == 0)
-                    writer.WriteLine(string.Format("{0}, {1}", cumulLogSALI, time));
 
                 init = false;
 
                 if(cumulLogSALI > 4.0)
                     return false;
-                if(cumulLogSALI < time / 500.0)
+                if(cumulLogSALI < (time - initTime) / 500.0)
                     return true;
             } while(true);
         }
@@ -199,6 +197,8 @@ namespace PavelStransky.Math {
         protected const int defaultNumPoints = 500;
         protected const double maxTime = 500;
         protected const double minSALI = 10E-7;
+
         protected const int window = 200;
+        protected const int initTime = 100;
     }
 }

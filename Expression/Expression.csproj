@@ -179,6 +179,8 @@
     <Compile Include="Function.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\FnTime.cs" />
+    <Compile Include="Functions\Print.cs" />
     <Compile Include="Functions\SumAbs.cs" />
     <Compile Include="Functions\Dynamics\Bounds.cs" />
     <Compile Include="Functions\Dynamics\CGCMJ.cs" />

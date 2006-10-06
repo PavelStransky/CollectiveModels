@@ -46,6 +46,9 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return left - right;
 		}
 
+        protected override object EvaluateTimeTimex(DateTime left, DateTime right) {
+            return left - right;
+        }
 		private const string operatorName = "-";
 	}
 }

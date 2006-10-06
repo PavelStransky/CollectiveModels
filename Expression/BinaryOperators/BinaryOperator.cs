@@ -24,24 +24,26 @@ namespace PavelStransky.Expression.BinaryOperators {
 		/// <param name="left">Levá èást operátoru</param>
 		/// <param name="right">Pravá èást operátoru</param>
 		public virtual object Evaluate(object left, object right) {
-			if(left is int)
-				return this.EvaluateI((int)left, right);
-			else if(left is double)
-				return this.EvaluateD((double)left, right);
-			else if(left is PointD)
-				return this.EvaluateP((PointD)left, right);
-			else if(left is Vector)
-				return this.EvaluateV((Vector)left, right);
-			else if(left is PointVector)
-				return this.EvaluatePv((PointVector)left, right);
-			else if(left is Matrix)
-				return this.EvaluateM((Matrix)left, right);
-			else if(left is string)
-				return this.EvaluateS((string)left, right);
-			else if(left is Array) 
-				return this.EvaluateA((Array)left, right);
-			else
-				return this.UnknownType(left, right);
+            if(left is int)
+                return this.EvaluateI((int)left, right);
+            else if(left is double)
+                return this.EvaluateD((double)left, right);
+            else if(left is PointD)
+                return this.EvaluateP((PointD)left, right);
+            else if(left is Vector)
+                return this.EvaluateV((Vector)left, right);
+            else if(left is PointVector)
+                return this.EvaluatePv((PointVector)left, right);
+            else if(left is Matrix)
+                return this.EvaluateM((Matrix)left, right);
+            else if(left is string)
+                return this.EvaluateS((string)left, right);
+            else if(left is Array)
+                return this.EvaluateA((Array)left, right);
+            else if(left is DateTime)
+                return this.EvaluateTime((DateTime)left, right);
+            else
+                return this.UnknownType(left, right);
 		}
 
 		#region Evaluate functions
@@ -191,7 +193,14 @@ namespace PavelStransky.Expression.BinaryOperators {
 			else
 				return this.EvaluateSSx(left, right.ToString());
 		}
-		
+
+        protected virtual object EvaluateTime(DateTime left, object right) {
+            if(right is DateTime)
+                return this.EvaluateTimeTimex(left, (DateTime)right);
+            else
+                return this.UnknownType(left, right);
+        }
+
 		protected virtual object EvaluateA(Array left, object right) {
 			Array result = new Array();
 
@@ -455,8 +464,12 @@ namespace PavelStransky.Expression.BinaryOperators {
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateS(left, right[i]));
 			return result;
-		}		
-		#endregion
+		}
+
+        protected virtual object EvaluateTimeTimex(DateTime left, DateTime right) {
+            return this.UnknownType(left, right);
+        }
+        #endregion
 
 		/// <summary>
 		/// Výjimka - neznámý typ pro výpoèet výrazu

@@ -156,7 +156,6 @@ namespace PavelStransky.Forms {
 				MessageBox.Show(this, exc.Message);
 
             this.calculating = false;
-            this.txtResult.Clear();
 
             // Nastavení ovládacích prvkù
             this.btRecalculate.Visible = true;
@@ -184,8 +183,8 @@ namespace PavelStransky.Forms {
             this.lblResult.Visible = true;
             this.SetCaption(captionFinished);
 
-            this.txtResult.Clear();
-            this.txtResult.Text = string.Format(timeText, this.GetTimeLengthString(duration));
+            this.txtResult.Text += newLine;
+            this.txtResult.Text += string.Format(timeText, this.GetTimeLengthString(duration));
 
             if(result != null) {
                 if(result is Variable)

@@ -136,16 +136,69 @@ namespace PavelStransky.Math {
         /// Vrátí true, pokud daná trajektorie je podle SALI regulární
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
-        public bool IsRegular(Vector initialX) {
-            if(this.TimeZero(initialX) >= maxTime)
-                return true;
-            else
-                return false;
+        public bool IsRegular(Vector initialX, IOutputWriter writer) {
+            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
+
+            this.x = initialX;
+
+            Vector w1 = new Vector(initialX.Length);
+            Vector w2 = new Vector(initialX.Length);
+            w1[0] = 1;
+            w2[initialX.Length / 2] = 1;
+
+            double step = defaultPrecision;
+            double time = 0;
+
+            double cumulLogSALI = 0;
+            Vector logSALI = new Vector(window);
+            int iWindow = 0;
+
+            int i1 = (int)(1.0 / defaultPrecision);
+            bool init = true;
+
+            this.rungeKutta.Init(initialX);
+
+            do {
+                for(int i = 0; i < i1; i++) {
+                    double newStep, tStep;
+
+                    this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
+                    w1 += rkw.Step(w1, ref step, out tStep);
+                    w2 += rkw.Step(w2, ref step, out tStep);
+
+                    time += step;
+
+                    step = newStep;
+
+                    w1 = w1.EuklideanNormalization();
+                    w2 = w2.EuklideanNormalization();
+                }
+
+                double ai = this.AlignmentIndex(w1, w2);
+                double logAI = (ai <= 0.0 ? 0.0 : -System.Math.Log10(ai) / window);
+                cumulLogSALI += logAI - logSALI[iWindow];
+                logSALI[iWindow] = logAI;
+                iWindow = (iWindow + 1) % window;
+
+                if(init && iWindow < 50)
+                    continue;
+
+                if(iWindow % 50 == 0)
+                    writer.WriteLine(string.Format("{0}, {1}", cumulLogSALI, time));
+
+                init = false;
+
+                if(cumulLogSALI > 4.0)
+                    return false;
+                if(cumulLogSALI < time / 500.0)
+                    return true;
+            } while(true);
         }
 
         protected const double defaultPrecision = 1E-3;
         protected const int defaultNumPoints = 500;
         protected const double maxTime = 500;
         protected const double minSALI = 10E-7;
+        protected const int window = 200;
     }
 }

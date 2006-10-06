@@ -615,18 +615,40 @@ namespace PavelStransky.Math {
 		}		
 		#endregion
 
+
+        /// <summary>
+        /// Souèet prvkù vektoru mezy indexy iStart, iEnd
+        /// </summary>
+        /// <param name="iStart">Poèáteèní index výpoètu</param>
+        /// <param name="iEnd">Koncový index výpoètu</param>
+        public double Sum(int iStart, int iEnd) {
+            double result = 0;
+
+            for(int i = iStart; i < iEnd; i++)
+                result += this[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Souèet prvkù vektoru v absolutní hodnotì
+        /// </summary>
+        public double SumAbs(int iStart, int iEnd) {
+            double result = 0;
+
+            for(int i = iStart; i < iEnd; i++)
+                result += System.Math.Abs(this[i]);
+
+            return result;
+        }
+
 		/// <summary>
 		/// Støední hodnota mezi indexy iStart, iEnd
 		/// </summary>
 		/// <param name="iStart">Poèáteèní index výpoètu</param>
 		/// <param name="iEnd">Koncový index výpoètu</param>
-		public double PartialMean(int iStart, int iEnd) {
-			double result = 0;
-
-			for(int i = iStart; i < iEnd; i++)
-				result += this[i];
-
-			return result / (iEnd - iStart);
+		public double Mean(int iStart, int iEnd) {
+			return this.Sum(iStart, iEnd) / (iEnd - iStart);
 		}
 
 		/// <summary>
@@ -634,9 +656,9 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="iStart">Poèáteèní index výpoètu</param>
 		/// <param name="iEnd">Koncový index výpoètu</param>
-		public double PartialVariance(int iStart, int iEnd) {
+		public double Variance(int iStart, int iEnd) {
 			double result = 0;
-			double mean = this.PartialMean(iStart, iEnd);
+			double mean = this.Mean(iStart, iEnd);
 
 			for(int i = iStart; i < iEnd; i++) {
 				double d = this[i] - mean;
@@ -646,16 +668,37 @@ namespace PavelStransky.Math {
 			return System.Math.Sqrt(result / (iEnd - iStart));
 		}
 
-		/// <summary>
-		/// Støední hodnota
-		/// </summary>
-		public double Mean () {
-			double result = 0;
+        /// <summary>
+        /// Souèet prvkù vektoru
+        /// </summary>
+        public double Sum() {
+            int length = this.Length;
+            double result = 0;
 
-			for(int i = 0; i < this.Length; i++)
-				result += this[i];
+            for(int i = 0; i < length; i++)
+                result += this[i];
 
-			return result / this.Length;
+            return result;
+        }
+
+        /// <summary>
+        /// Souèet prvkù vektoru v absolutní hodnotì
+        /// </summary>
+        public double SumAbs() {
+            int length = this.Length;
+            double result = 0;
+
+            for(int i = 0; i < length; i++)
+                result += System.Math.Abs(this[i]);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Støední hodnota
+        /// </summary>
+        public double Mean() {
+			return this.Sum() / this.Length;
 		}
 		
 		/// <summary>

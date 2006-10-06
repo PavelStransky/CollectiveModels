@@ -278,10 +278,23 @@ namespace PavelStransky.Math {
 			return new PointVector((PointD [])this.item.Clone());
 		}
 
-		/// <summary>
-		/// Vektor x-ových hodnot
-		/// </summary>
-		public Vector VectorX {
+        /// <summary>
+        /// Prohodí souøadnice X, Y
+        /// </summary>
+        public PointVector SwapXY() {
+            int length = this.Length;
+            PointVector result = new PointVector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = new PointD(this[i].Y, this[i].X);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vektor x-ových hodnot
+        /// </summary>
+        public Vector VectorX {
 			get {
 				Vector result = new Vector(this.Length);
 

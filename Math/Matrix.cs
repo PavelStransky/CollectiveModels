@@ -86,10 +86,12 @@ namespace PavelStransky.Math {
 			if(m1.LengthX != m2.LengthX || m1.LengthY != m2.LengthY)
 				throw new MatrixException(errorMessageDifferentDimension);
 
-			Matrix result = new Matrix(m1.LengthX, m1.LengthY);
+            int lengthX = m1.LengthX;
+            int lengthY = m1.LengthY;
+			Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = m1[i,j] + m2[i,j];
 
 			return result;
@@ -99,10 +101,12 @@ namespace PavelStransky.Math {
 		/// Pøiète ke každé složce matice èíslo
 		/// </summary>
 		public static Matrix operator +(Matrix m, double d) {
-			Matrix result = new Matrix(m.LengthX, m.LengthY);
+            int lengthX = m.LengthX;
+            int lengthY = m.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = m[i,j] + d;
 
 			return result;
@@ -115,10 +119,12 @@ namespace PavelStransky.Math {
 			if(m1.LengthX != m2.LengthX || m1.LengthY != m2.LengthY)
 				throw new MatrixException(errorMessageDifferentDimension);
 
-			Matrix result = new Matrix(m1.LengthX, m1.LengthY);
+            int lengthX = m1.LengthX;
+            int lengthY = m1.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = m1[i,j] - m2[i,j];
 
 			return result;
@@ -128,10 +134,12 @@ namespace PavelStransky.Math {
 		/// Odeète od každé složky matice èíslo
 		/// </summary>
 		public static Matrix operator -(Matrix m, double d) {
-			Matrix result = new Matrix(m.LengthX, m.LengthY);
+            int lengthX = m.LengthX;
+            int lengthY = m.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = m[i,j] - d;
 
 			return result;
@@ -141,10 +149,12 @@ namespace PavelStransky.Math {
 		/// Odeète od èísla každou složku vektoru
 		/// </summary>
 		public static Matrix operator -(double d, Matrix m) {
-			Matrix result = new Matrix(m.LengthX, m.LengthY);
+            int lengthX = m.LengthX;
+            int lengthY = m.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = d - m[i,j];
 
 			return result;
@@ -154,10 +164,12 @@ namespace PavelStransky.Math {
 		/// Vynásobí matici èíslem
 		/// </summary>
 		public static Matrix operator *(Matrix m, double koef) {
-			Matrix result = new Matrix(m.LengthX, m.LengthY);
+            int lengthX = m.LengthX;
+            int lengthY = m.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = koef * m[i,j];
 
 			return result;
@@ -167,10 +179,12 @@ namespace PavelStransky.Math {
 		/// Vydìlí matici èíslem
 		/// </summary>
 		public static Matrix operator /(Matrix m, double koef) {
-			Matrix result = new Matrix(m.LengthX, m.LengthY);
+            int lengthX = m.LengthX;
+            int lengthY = m.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i,j] = m[i,j] / koef;
 
 			return result;
@@ -197,12 +211,15 @@ namespace PavelStransky.Math {
 			if(m1.LengthY != m2.LengthX)
 				throw new MatrixException(errorMessageMultiplication);
 
-			Matrix result = new Matrix(m1.LengthX, m2.LengthY);
+            int lengthX = m1.LengthX;
+            int lengthY = m2.LengthY;
+            int l = m1.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++) {
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++) {
 					result[i,j] = 0;
-					for(int k = 0; k < m1.LengthY; k++)
+					for(int k = 0; k < l; k++)
 						result[i,j] += m1[i,k] * m2[k,j];
 				}
 
@@ -215,8 +232,11 @@ namespace PavelStransky.Math {
 			if(this.LengthX != m.LengthX || this.LengthY != m.LengthY)
 				return false;
 
-			for(int i = 0; i < this.LengthX; i++)
-				for(int j = 0; j < this.LengthY; j++)
+            int lengthX = m.LengthX;
+            int lengthY = m.LengthY;
+
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					if(this[i, j] != m[i, j])
 						return false;
 
@@ -224,9 +244,12 @@ namespace PavelStransky.Math {
 		}
 
 		public override int GetHashCode() {
-			double result = 0;
-			for(int i = 0; i < this.LengthX; i++)
-				for(int j = 0; j < this.LengthY; j++)
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            double result = 0;
+			
+            for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result += this[i, j];
 			return (int)(result / System.Math.Pow(10, System.Math.Ceiling(System.Math.Log10(result))) * ((double)int.MaxValue - (double)int.MinValue) + int.MinValue);
 		}
@@ -243,8 +266,10 @@ namespace PavelStransky.Math {
 			if(!this.IsSquare)
 				throw new MatrixException(errorMessageNotSquare);
 
+            int length = this.Length;
 			double trace = 0;
-			for(int i = 0; i < this.LengthX; i++)
+
+			for(int i = 0; i < length; i++)
 				trace += item[i,i];
 
 			return trace;
@@ -261,16 +286,17 @@ namespace PavelStransky.Math {
 			double [,] item = (double [,]) this.item.Clone();
 
 			// Jednotková matice
-			Matrix result = new Matrix(this.Length, this.Length);
+            int length = this.Length;
+            Matrix result = new Matrix(length, length);
 			result.SetUnit();
 
 			// Úprava matice na trojúhelníkovou
-			for(int i = 0; i < result.Length; i++) {
+			for(int i = 0; i < length; i++) {
 				int maxi = i;
 				double max = System.Math.Abs(item[i,i]);
 
 				// Vyhledání maximálního prvku - pivotace
-				for(int j = i + 1; j < result.Length; j++)
+				for(int j = i + 1; j < length; j++)
 					if(max < System.Math.Abs(item[j,i])) {
 						maxi = j;
 						max = System.Math.Abs(item[j,i]);
@@ -278,7 +304,7 @@ namespace PavelStransky.Math {
 
 				// Prohození øádkù i a maxi
 				if(maxi != i) {
-					for(int j = 0; j < result.Length; j++) {
+					for(int j = 0; j < length; j++) {
 						double p = item[maxi,j];
 						item[maxi,j] = item[i,j];
 						item[i,j] = p;
@@ -296,12 +322,12 @@ namespace PavelStransky.Math {
 
 				diskriminant *= d;
 
-				for(int j = 0; j < result.Length; j++) {
+				for(int j = 0; j < length; j++) {
 					item[i,j] /= d;
 					result[i,j] /= d;
 				}
 
-				for(int j = 0; j < result.Length; j++) {
+				for(int j = 0; j < length; j++) {
 					if(i != j) {
 						d = item[j,i];
 						for(int k = 0; k < result.Length; k++) {
@@ -319,10 +345,12 @@ namespace PavelStransky.Math {
 		/// Transpozice matice
 		/// </summary>
 		public Matrix Transpose() {
-			Matrix result = new Matrix(this.LengthY, this.LengthX);
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            Matrix result = new Matrix(lengthY, lengthX);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i, j] = this[j, i];
 
 			return result;
@@ -335,8 +363,10 @@ namespace PavelStransky.Math {
 			if(!this.IsSquare)
 				throw new MatrixException(errorMessageNotSquare);
 
-			for(int i = 0; i < this.Length; i++)
-				for(int j = 0; j < this.Length; j++)
+            int length = this.Length;
+
+			for(int i = 0; i < length; i++)
+				for(int j = 0; j < length; j++)
 					if(i == j) 
 						this[i,j] = 1;
 					else
@@ -347,8 +377,11 @@ namespace PavelStransky.Math {
 		/// Matici vynuluje
 		/// </summary>
 		public void Clear() {
-			for(int i = 0; i < this.LengthX; i++)
-				for(int j = 0; j < this.LengthY; j++)
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            
+            for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					this[i,j] = 0;
 		}
 
@@ -363,10 +396,12 @@ namespace PavelStransky.Math {
 		/// Transformace prvkù matice podle zadané transformaèní funkce
 		/// </summary>
 		public Matrix Transform(RealFunction function) {
-			Matrix result = new Matrix(this.LengthX, this.LengthY);
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result[i, j] = function(this[i, j]);
 
 			return result;
@@ -377,9 +412,10 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="i">Index øádku</param>
 		public Vector GetRowVector(int i) {
-			Vector result = new Vector(this.LengthY);
+            int length = this.LengthY;
+            Vector result = new Vector(length);
 			
-			for(int j = 0; j < result.Length; j++)
+			for(int j = 0; j < length; j++)
 				result[j] = this[i,j];
 
 			return result;
@@ -390,9 +426,10 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="j">Index sloupce</param>
 		public Vector GetColumnVector(int j) {
-			Vector result = new Vector(this.LengthX);
+            int length = this.LengthX;
+            Vector result = new Vector(length);
 			
-			for(int i = 0; i < result.Length; i++)
+			for(int i = 0; i < length; i++)
 				result[i] = this[i,j];
 
 			return result;
@@ -406,8 +443,10 @@ namespace PavelStransky.Math {
 		public void SetRowVector(int i, Vector v) {
 			if(this.LengthY != v.Length) 
 				throw new MatrixException(errorMessageDifferentLength);
-		
-			for(int j = 0; j < this.LengthY; j++)
+
+            int lengthY = this.LengthY;
+
+			for(int j = 0; j < lengthY; j++)
 				this[i,j] = v[j];
 		}
 
@@ -419,8 +458,10 @@ namespace PavelStransky.Math {
 		public void SetColumnVector(int j, Vector v) {
 			if(this.LengthX != v.Length) 
 				throw new MatrixException(errorMessageDifferentLength);
-			
-			for(int i = 0; i < this.LengthX; i++)
+
+            int lengthX = this.LengthX;
+
+			for(int i = 0; i < lengthX; i++)
 				this[i,j] = v[i];
 		}
 
@@ -430,21 +471,24 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="export">Export</param>
 		public void Export(Export export) {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
             if(export.Binary) {
                 // Binárnì
                 BinaryWriter b = export.B;
-                b.Write(this.LengthX);
-                b.Write(this.LengthY);
-                for(int i = 0; i < this.LengthX; i++)
-                    for(int j = 0; j < this.LengthY; j++)
+                b.Write(lengthX);
+                b.Write(lengthY);
+                for(int i = 0; i < lengthX; i++)
+                    for(int j = 0; j < lengthY; j++)
                         b.Write(this[i, j]);
             }
             else {
                 // Textovì
                 StreamWriter t = export.T;
-                t.WriteLine("{0}\t{1}", this.LengthX, this.LengthY);
-                for(int i = 0; i < this.LengthX; i++) {
-                    for(int j = 0; j < this.LengthY; j++)
+                t.WriteLine("{0}\t{1}", lengthX, lengthY);
+                for(int i = 0; i < lengthX; i++) {
+                    for(int j = 0; j < lengthY; j++)
                         t.Write("{0}\t", this[i, j]);
                     t.WriteLine();
                 }
@@ -456,12 +500,15 @@ namespace PavelStransky.Math {
 		/// </summary>
         /// <param name="import">Import</param>
         public void Import(Import import) {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;
                 this.item = new double[b.ReadInt32(), b.ReadInt32()];
-                for(int i = 0; i < this.LengthX; i++)
-                    for(int j = 0; j < this.LengthY; j++)
+                for(int i = 0; i < lengthX; i++)
+                    for(int j = 0; j < lengthY; j++)
                         this[i, j] = b.ReadDouble();
             }
             else {
@@ -471,26 +518,58 @@ namespace PavelStransky.Math {
                 string[] s = line.Split('\t');
                 this.item = new double[int.Parse(s[0]), int.Parse(s[1])];
 
-                for(int i = 0; i < this.LengthX; i++) {
+                for(int i = 0; i < lengthX; i++) {
                     line = t.ReadLine();
                     s = line.Split('\t');
-                    for(int j = 0; j < this.LengthY; j++)
+                    for(int j = 0; j < lengthY; j++)
                         this[i, j] = double.Parse(s[j]);
                 }
             }
         }
 		#endregion
 
-		/// <summary>
-		/// Souèet prvkù mimo diagonálu
-		/// </summary>
-		public double NondiagonalSum() {
+        /// <summary>
+        /// Souèet všech prvkù
+        /// </summary>
+        public double Sum() {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            double result = 0.0;
+
+            for(int i = 0; i < lengthX; i++)
+                for(int j = 0; j < lengthY; j++)
+                    result += this[i, j];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Souèet všech prvkù v absolutní hodnotì
+        /// </summary>
+        public double SumAbs() {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            double result = 0.0;
+
+            for(int i = 0; i < lengthX; i++)
+                for(int j = 0; j < lengthY; j++)
+                    result += System.Math.Abs(this[i, j]);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Souèet prvkù mimo diagonálu
+        /// </summary>
+        public double NondiagonalSum() {
 			if(!this.IsSquare)
 				throw new MatrixException(errorMessageNotSquare);
 
-			double sum = 0;
-			for(int i = 0; i < this.Length; i++)
-				for(int j = 0; j < this.Length; j++)
+            int length = this.Length;
+
+            double sum = 0;
+			for(int i = 0; i < length; i++)
+				for(int j = 0; j < length; j++)
 					if(i != j) sum += this[i,j];
 
 			return sum;
@@ -503,9 +582,11 @@ namespace PavelStransky.Math {
 			if(!this.IsSquare)
 				throw new MatrixException(errorMessageNotSquare);
 
+            int length = this.Length;
+
 			double sum = 0;
-			for(int i = 0; i < this.LengthX; i++)
-				for(int j = 0; j < this.LengthY; j++)
+			for(int i = 0; i < length; i++)
+				for(int j = 0; j < length; j++)
 					if(i != j) sum += System.Math.Abs(this[i, j]);
 
 			return sum;
@@ -518,7 +599,9 @@ namespace PavelStransky.Math {
 		public double EuklideanRowNorm(int row) {
 			double result = 0;
 
-			for(int j = 0; j < this.LengthY; j++)
+            int lengthY = this.LengthY;
+
+			for(int j = 0; j < lengthY; j++)
 				result += this[row, j] * this[row, j];
 
 			return System.Math.Sqrt(result);
@@ -531,7 +614,9 @@ namespace PavelStransky.Math {
 		public double AbsRowNorm(int row) {
 			double result = 0;
 
-			for(int j = 0; j < this.LengthY; j++)
+            int lengthY = this.LengthY;
+
+			for(int j = 0; j < lengthY; j++)
 				result += System.Math.Abs(this[row, j]);
 
 			return result;
@@ -544,7 +629,9 @@ namespace PavelStransky.Math {
 		public double EuklideanColumnNorm(int column) {
 			double result = 0;
 
-			for(int i = 0; i < this.LengthX; i++)
+            int lengthX = this.LengthX;
+
+			for(int i = 0; i < lengthX; i++)
 				result += this[i, column] * this[i, column];
 
 			return System.Math.Sqrt(result);
@@ -557,7 +644,9 @@ namespace PavelStransky.Math {
 		public double AbsColumnNorm(int column) {
 			double result = 0;
 
-			for(int i = 0; i < this.LengthX; i++)
+            int lengthX = this.LengthX;
+
+			for(int i = 0; i < lengthX; i++)
 				result += System.Math.Abs(this[i, column]);
 
 			return result;
@@ -569,8 +658,11 @@ namespace PavelStransky.Math {
 		public double EuklideanNorm() {
 			double result = 0;
 
-			for(int i = 0; i < this.LengthX; i++)
-				for(int j = 0; j < this.LengthY; j++)
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result += this[i, j] * this[i, j];
 
 			return System.Math.Sqrt(result);;
@@ -582,8 +674,11 @@ namespace PavelStransky.Math {
 		public double AbsNorm() {
 			double result = 0;
 
-			for(int i = 0; i < this.LengthX; i++)
-				for(int j = 0; j < this.LengthY; j++)
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++)
 					result += System.Math.Abs(this[i, j]);
 
 			return result;
@@ -595,7 +690,8 @@ namespace PavelStransky.Math {
 		/// <param name="row">Index øádku</param>
 		/// <param name="d">Èíslo</param>
 		public void MultiplyRow(int row, double d) {
-			for(int j = 0; j < this.LengthY; j++)
+            int lengthY = this.LengthY;
+            for(int j = 0; j < lengthY; j++)
 				this[row, j] *= d;
 		}
 
@@ -605,7 +701,8 @@ namespace PavelStransky.Math {
 		/// <param name="column">Index sloupce</param>
 		/// <param name="d">Èíslo</param>
 		public void MultiplyColumn(int column, double d) {
-			for(int i = 0; i < this.LengthX; i++)
+            int lengthX = this.LengthX;
+            for(int i = 0; i < lengthX; i++)
 				this[i, column] *= d;
 		}
 
@@ -615,7 +712,8 @@ namespace PavelStransky.Math {
 		/// <param name="row1">Øádek 1</param>
 		/// <param name="row2">Øádek 2</param>
 		public void SwapRows(int row1, int row2) {
-			for(int j = 0; j < this.LengthY; j++) {
+            int lengthY = this.LengthY;
+            for(int j = 0; j < this.LengthY; j++) {
 				double item = this[row1, j];
 				this[row1, j] = this[row2, j];
 				this[row2, j] = item;
@@ -628,7 +726,8 @@ namespace PavelStransky.Math {
 		/// <param name="column1">Sloupec 1</param>
 		/// <param name="column2">Sloupec 2</param>
 		public void SwapColumns(int column1, int column2) {
-			for(int i = 0; i < this.LengthY; i++) {
+            int lengthX = this.LengthX;
+            for(int i = 0; i < lengthX; i++) {
 				double item = this[i, column1];
 				this[i, column1] = this[i, column2];
 				this[i, column2] = item;
@@ -643,11 +742,14 @@ namespace PavelStransky.Math {
 			if(this.LengthX == 0 || this.LengthY == 0)
 				throw new MatrixException(errorMessageNoData);
 
-			int [] result = {0, 0};
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+            int[] result = { 0, 0 };
 			double max = this[0, 0];
 
-			for(int i = 0; i < this.LengthX; i++) 
-				for(int j = 0; j < this.LengthY; j++)
+			for(int i = 0; i < lengthX; i++) 
+				for(int j = 0; j < lengthY; j++)
 					if(max < this[i, j]) {
 						result[0] = i;
 						result[1] = j;
@@ -672,11 +774,14 @@ namespace PavelStransky.Math {
 			if(this.LengthX == 0 || this.LengthY == 0)
 				throw new MatrixException(errorMessageNoData);
 
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
 			int [] result = {0, 0};
 			double max = System.Math.Abs(this[0, 0]);
 
-			for(int i = 0; i < this.LengthX; i++) 
-				for(int j = 0; j < this.LengthY; j++) {
+			for(int i = 0; i < lengthX; i++) 
+				for(int j = 0; j < lengthY; j++) {
 					double d = System.Math.Abs(this[i, j]);
 					if(max < d) {
 						result[0] = i;
@@ -703,11 +808,14 @@ namespace PavelStransky.Math {
 			if(this.LengthX == 0 || this.LengthY == 0)
 				throw new MatrixException(errorMessageNoData);
 
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
 			int [] result = {0, 0};
 			double min = this[0, 0];
 
-			for(int i = 0; i < this.LengthX; i++) 
-				for(int j = 0; j < this.LengthY; j++)
+			for(int i = 0; i < lengthX; i++) 
+				for(int j = 0; j < lengthY; j++)
 					if(min > this[i, j]) {
 						result[0] = i;
 						result[1] = j;
@@ -732,11 +840,14 @@ namespace PavelStransky.Math {
 			if(this.LengthX == 0 || this.LengthY == 0)
 				throw new MatrixException(errorMessageNoData);
 
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
 			int [] result = {0, 0};
 			double min = System.Math.Abs(this[0, 0]);
 
-			for(int i = 0; i < this.LengthX; i++) 
-				for(int j = 0; j < this.LengthY; j++) {
+			for(int i = 0; i < lengthX; i++) 
+				for(int j = 0; j < lengthY; j++) {
 					double d = System.Math.Abs(this[i, j]);
 					if(min > d) {
 						result[0] = i;
@@ -763,8 +874,11 @@ namespace PavelStransky.Math {
 		public override string ToString() {
 			StringBuilder s = new StringBuilder();
 
-			for(int i = 0; i < this.LengthX; i++) {
-				for(int j = 0; j < this.LengthY; j++)
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+			for(int i = 0; i < lengthX; i++) {
+				for(int j = 0; j < lengthY; j++)
 					s.Append(string.Format("{0,10:#####0.000}\t", this[i, j]));
 				s.Append('\n');
 			}

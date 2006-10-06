@@ -179,6 +179,7 @@
     <Compile Include="Function.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\SumAbs.cs" />
     <Compile Include="Functions\Dynamics\Bounds.cs" />
     <Compile Include="Functions\Dynamics\CGCMJ.cs" />
     <Compile Include="Functions\Dynamics\CIBM.cs" />
@@ -405,9 +406,11 @@
     <Compile Include="Functions\String.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Sum.cs" />
     <Compile Include="Functions\SwapDim.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\SwapXY.cs" />
     <Compile Include="Functions\Symmetry.cs">
       <SubType>Code</SubType>
     </Compile>

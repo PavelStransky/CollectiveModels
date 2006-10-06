@@ -182,6 +182,9 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.Integrate());
 			functions.Add(new Functions.Wigner());
 			functions.Add(new Functions.FnType());
+            functions.Add(new Functions.SwapXY());
+            functions.Add(new Functions.Sum());
+            functions.Add(new Functions.SumAbs());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());

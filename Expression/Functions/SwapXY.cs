@@ -1,0 +1,34 @@
+using System;
+using System.Collections;
+
+using PavelStransky.Math;
+using PavelStransky.Expression;
+
+namespace PavelStransky.Expression.Functions {
+    /// <summary>
+    /// V bodu nebo vektoru bodù prohodí souøadnice X a Y
+    /// </summary>
+    public class SwapXY : FunctionDefinition {
+        public override string Help { get { return help; } }
+        public override string Parameters { get { return parameters; } }
+
+        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsNumber(evaluatedArguments, 1);
+            return evaluatedArguments;
+        }
+
+        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+            if(item is PointVector)
+                return (item as PointVector).SwapXY();
+            else if(item is PointD)
+                return new PointD((item as PointD).Y, (item as PointD).X);
+            else if(item is Array)
+                return this.EvaluateArray(depth, item as Array, arguments);
+            else
+                return this.BadTypeError(item, 0);
+        }
+
+        private const string help = "V bodu (PointD) nebo vektoru bodù (PointVector) prohodí souøadnice X a Y";
+        private const string parameters = "PointD | PointVector";
+    }
+}

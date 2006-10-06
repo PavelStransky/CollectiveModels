@@ -81,7 +81,7 @@ namespace PavelStransky.Math {
             return result;
         }
 
-        private const double maxTimeWithoutCross = 50.0;
+        private const double maxTimeWithoutCross = 100.0;
 
         private const string errorMessageNoCross = "Trajektorie s danými poèáteèními podmínkami neprotíná rovinu øezu!";
     }

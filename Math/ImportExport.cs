@@ -79,6 +79,8 @@ namespace PavelStransky.Math {
                 result = binary ? b.ReadString() : t.ReadLine();
             else if(typeName == typeof(DateTime).FullName)
                 result = DateTime.FromBinary(binary ? b.ReadInt64() : long.Parse(t.ReadLine()));
+            else if(typeName == typeof(TimeSpan).FullName)
+                result = TimeSpan.FromTicks(binary ? b.ReadInt64() : long.Parse(t.ReadLine()));
             else
                 result = this.CreateObject(typeName);
 
@@ -202,6 +204,9 @@ namespace PavelStransky.Math {
             }
             else if(o is DateTime) {
                 if(binary) b.Write(((DateTime)o).ToBinary()); else t.WriteLine(((DateTime)o).ToBinary());
+            }
+            else if(o is TimeSpan) {
+                if(binary) b.Write(((TimeSpan)o).Ticks); else t.WriteLine(((TimeSpan)o).Ticks);
             }
             else if(o as IExportable != null) {
                 (o as IExportable).Export(this);

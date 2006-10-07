@@ -156,6 +156,8 @@ namespace PavelStransky.Math {
             int i1 = (int)(1.0 / defaultPrecision);
             bool init = true;
 
+            double timeM = initTime;
+
             this.rungeKutta.Init(initialX);
 
             do {
@@ -175,20 +177,25 @@ namespace PavelStransky.Math {
                 w2 = w2.EuklideanNormalization();
 
                 double ai = this.AlignmentIndex(w1, w2);
-                double logAI = (ai <= 0.0 ? 0.0 : -System.Math.Log10(ai) / window);
-                cumulLogSALI += logAI - logSALIQueue[iQueue];
-                logSALIQueue[iQueue] = logAI;
+                double logAI = (ai <= 0.0 ? 0.0 : -System.Math.Log10(ai));
+                double logAIw = logAI / window;
+                cumulLogSALI += logAIw - logSALIQueue[iQueue];
+                logSALIQueue[iQueue] = logAIw;
                 iQueue = (iQueue + 1) % window;
 
-                // Nejprve napoèítáme 100 jednotek, než zaèneme vyøazovat
+                // Nejprve napoèítáme initTime jednotek, než zaèneme vyøazovat
                 if(init && iQueue < initTime)
                     continue;
 
                 init = false;
 
+                // Pokud se objeví jeden bod SALI < 4, pak je trajektorie na rozhraní. Posuneme dále DecisionPoint
+                if(logAI > 4.0)
+                    timeM = time;
+
                 if(cumulLogSALI > 4.0)
                     return false;
-                if(cumulLogSALI < (time - initTime) / 500.0)
+                if(cumulLogSALI < (time - timeM) / 500.0)
                     return true;
             } while(true);
         }

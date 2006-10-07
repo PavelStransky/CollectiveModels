@@ -1,32 +1,31 @@
 using System;
-using System.Timers;
 
 namespace PavelStransky.Expression {
 	/// <summary>
 	/// Zapouzdøuje HotKey
 	/// </summary>
-	public class HotKey {
-		private Atom atom;
-		private char key;
+    public class HotKey {
+        private Atom atom;
+        private char key;
 
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		public HotKey(Atom atom, char key) {
-			this.atom = atom;
-			this.key = key.ToString().ToUpper()[0];
-		}
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        public HotKey(Atom atom, char key) {
+            this.atom = atom;
+            this.key = key.ToString().ToUpper()[0];
+        }
 
-		/// <summary>
-		/// Vrátí hodnotu Key
-		/// </summary>
-		public char Key {get {return this.key;}}
+        /// <summary>
+        /// Vrátí hodnotu Key
+        /// </summary>
+        public char Key { get { return this.key; } }
 
-		/// <summary>
-		/// Spustí výpoèet
-		/// </summary>
-		public void Evaluate() {
-			this.atom.Evaluate();
-		}
-	}
+        /// <summary>
+        /// Spustí výpoèet
+        /// </summary>
+        public void Evaluate() {
+            this.atom.Evaluate();
+        }
+    }
 }

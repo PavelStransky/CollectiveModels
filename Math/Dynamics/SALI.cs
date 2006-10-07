@@ -155,17 +155,16 @@ namespace PavelStransky.Math {
                 if(logAI > 3.0)
                     timeM = 1000;
 
-                if(cumulLogSALI > 4.0)
+                if(cumulLogSALI > 4.0 + (time - timeM) / 1000.0)
                     return false;
                 if(cumulLogSALI < (time - timeM) / 500.0)
                     return true;
             } while(true);
         }
 
-        protected const double defaultPrecision = 3E-4;
+        protected const double defaultPrecision = 1E-3;
         protected const int defaultNumPoints = 500;
         protected const double maxTime = 500;
-        protected const double minSALI = 10E-7;
 
         protected const int window = 400;
         protected const int initTime = 100;

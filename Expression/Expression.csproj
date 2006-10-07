@@ -179,6 +179,7 @@
     <Compile Include="Function.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />
     <Compile Include="Functions\Time.cs" />
     <Compile Include="Functions\TimeNow.cs" />

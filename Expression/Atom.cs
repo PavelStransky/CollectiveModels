@@ -193,6 +193,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.FnRand());
             functions.Add(new Functions.FnInt());
             functions.Add(new Functions.FnDouble());
+            functions.Add(new Functions.Spectrum());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());

@@ -162,7 +162,7 @@ namespace PavelStransky.Math {
             } while(true);
         }
 
-        protected const double defaultPrecision = 1E-3;
+        protected const double defaultPrecision = 3E-4;
         protected const int defaultNumPoints = 500;
         protected const double maxTime = 500;
         protected const double minSALI = 10E-7;

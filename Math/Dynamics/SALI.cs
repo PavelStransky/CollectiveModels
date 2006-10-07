@@ -95,44 +95,6 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Vypoèítá èas, ve kterém SALI == 0
-        /// </summary>
-        /// <param name="initialX">Poèáteèní podmínky</param>
-        public double TimeZero(Vector initialX) {
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
-
-            this.x = initialX;
-
-            Vector w1 = new Vector(initialX.Length);
-            Vector w2 = new Vector(initialX.Length);
-            w1[0] = 1;
-            w2[initialX.Length / 2] = 1;
-
-            double step = defaultPrecision;
-            double time = 0;
-
-            this.rungeKutta.Init(initialX);
-
-            do {
-                double newStep, tStep;
-
-                this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
-                w1 += rkw.Step(w1, ref step, out tStep);
-                w2 += rkw.Step(w2, ref step, out tStep);
-
-                time += step;
-
-                step = newStep;
-
-                w1 = w1.EuklideanNormalization();
-                w2 = w2.EuklideanNormalization();
-
-            } while(this.AlignmentIndex(w1, w2) > minSALI && time < maxTime);
-
-            return time;
-        }
-
-        /// <summary>
         /// Vrátí true, pokud daná trajektorie je podle SALI regulární
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
@@ -190,8 +152,8 @@ namespace PavelStransky.Math {
                 init = false;
 
                 // Pokud se objeví jeden bod SALI < 4, pak je trajektorie na rozhraní. Posuneme dále DecisionPoint
-                if(logAI > 4.0)
-                    timeM = time;
+                if(logAI > 3.0)
+                    timeM = 1000;
 
                 if(cumulLogSALI > 4.0)
                     return false;
@@ -205,7 +167,7 @@ namespace PavelStransky.Math {
         protected const double maxTime = 500;
         protected const double minSALI = 10E-7;
 
-        protected const int window = 200;
+        protected const int window = 400;
         protected const int initTime = 100;
     }
 }

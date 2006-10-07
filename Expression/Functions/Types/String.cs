@@ -27,21 +27,23 @@ namespace PavelStransky.Expression.Functions {
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			string format = arguments[1] as string;
 
-			if(item is int)
-				return ((int)item).ToString(format);
-			else if(item is double)
-				return ((double)item).ToString(format);
-			else if(item is PointD || item is Vector || item is PointVector || item is Matrix)
-				return item.ToString();
-			else if(item is string)
-				return item as string;
-			else if(item is Array) 
-				return this.EvaluateArray(depth, item as Array, arguments);
-			else
-				return this.BadTypeError(item, 0);			
+            if(item is int)
+                return ((int)item).ToString(format);
+            else if(item is double)
+                return ((double)item).ToString(format);
+            else if(item is DateTime)
+                return ((DateTime)item).ToString(format);
+            else if(item is PointD || item is Vector || item is PointVector || item is Matrix)
+                return item.ToString();
+            else if(item is string)
+                return item as string;
+            else if(item is Array)
+                return this.EvaluateArray(depth, item as Array, arguments);
+            else
+                return this.BadTypeError(item, 0);			
 		}
 
 		private const string help = "Vrátí hodnoty jako øetìzec";
-		private const string parameters = "int | double | Point | Vector | PointVector | Matrix";
+		private const string parameters = "int | double | Point | Vector | PointVector | Matrix [; formát (string)]";
 	}
 }

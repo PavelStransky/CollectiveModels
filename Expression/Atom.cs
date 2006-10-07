@@ -89,9 +89,10 @@ namespace PavelStransky.Expression {
 		/// <returns>Výsledek výpoètu</returns>
 		public virtual object Evaluate() {
 			return null;
-		}
+        }
 
-		/// <summary>
+        #region Funkce a operátory
+        /// <summary>
 		/// Statický konstruktor
 		/// </summary>
 		static Atom() {
@@ -118,7 +119,6 @@ namespace PavelStransky.Expression {
 			functions = new Functions.FunctionDefinitions();
 			functions.Add(new Functions.AddItem());
 			functions.Add(new Functions.FnArray());
-			functions.Add(new Functions.Array2Vector());
 			functions.Add(new Functions.Clear());
 			functions.Add(new Functions.CM());
 			functions.Add(new Functions.DropColumns());
@@ -191,6 +191,8 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.TimeNow());
             functions.Add(new Functions.FnTime());
             functions.Add(new Functions.FnRand());
+            functions.Add(new Functions.FnInt());
+            functions.Add(new Functions.FnDouble());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());
@@ -219,7 +221,6 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.InitialCondition());
             functions.Add(new Functions.Poincare());
             functions.Add(new Functions.FnSALI());
-            functions.Add(new Functions.SALIZ());
             functions.Add(new Functions.SALIR());
             functions.Add(new Functions.SALIG());
             functions.Add(new Functions.EnergyLevels());
@@ -231,9 +232,10 @@ namespace PavelStransky.Expression {
 
             // Henon - Heiles
             functions.Add(new Functions.HH());
-		}
+        }
+        #endregion
 
-		/// <summary>
+        /// <summary>
 		/// Odstraní komentáø
 		/// </summary>
 		/// <param name="e">Výraz</param>

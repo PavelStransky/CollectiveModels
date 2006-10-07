@@ -319,7 +319,7 @@ namespace PavelStransky.Forms {
 
         private void WriteInvoke(string s) {
             this.txtResult.Text = s;
-            this.txtResult.SelectionStart = this.txtResult.Text.Length - 1;
+            this.txtResult.SelectionStart = System.Math.Max(0, this.txtResult.Text.Length - 1);
             this.txtResult.ScrollToCaret();
         }
 

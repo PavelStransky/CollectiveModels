@@ -197,7 +197,6 @@
     <Compile Include="Functions\Dynamics\QGCM.cs" />
     <Compile Include="Functions\Dynamics\SALIG.cs" />
     <Compile Include="Functions\Dynamics\SALIR.cs" />
-    <Compile Include="Functions\Dynamics\SALIZ.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryP.cs" />
     <Compile Include="Functions\Math\Abs.cs">
       <SubType>Code</SubType>
@@ -208,10 +207,7 @@
     <Compile Include="Functions\Math\ArcTan.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Array.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Array2Vector.cs">
+    <Compile Include="Functions\Types\Array.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Clear.cs">
@@ -324,7 +320,9 @@
     </Compile>
     <Compile Include="Functions\Math\Log.cs" />
     <Compile Include="Functions\Math\Sqrt.cs" />
-    <Compile Include="Functions\Matrix.cs" />
+    <Compile Include="Functions\Types\Double.cs" />
+    <Compile Include="Functions\Types\Int.cs" />
+    <Compile Include="Functions\Types\Matrix.cs" />
     <Compile Include="Functions\Max.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -367,10 +365,10 @@
     <Compile Include="Functions\Permute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Point.cs">
+    <Compile Include="Functions\Types\Point.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\PointVector.cs">
+    <Compile Include="Functions\Types\PointVector.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Polynom.cs">
@@ -409,7 +407,7 @@
     <Compile Include="Functions\Stop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\String.cs">
+    <Compile Include="Functions\Types\String.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Sum.cs" />
@@ -435,7 +433,7 @@
     <Compile Include="Functions\Var.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Vector.cs">
+    <Compile Include="Functions\Types\Vector.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Wigner.cs">

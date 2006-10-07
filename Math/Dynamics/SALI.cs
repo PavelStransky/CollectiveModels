@@ -169,10 +169,10 @@ namespace PavelStransky.Math {
                     time += step;
 
                     step = newStep;
-
-                    w1 = w1.EuklideanNormalization();
-                    w2 = w2.EuklideanNormalization();
                 }
+
+                w1 = w1.EuklideanNormalization();
+                w2 = w2.EuklideanNormalization();
 
                 double ai = this.AlignmentIndex(w1, w2);
                 double logAI = (ai <= 0.0 ? 0.0 : -System.Math.Log10(ai) / window);

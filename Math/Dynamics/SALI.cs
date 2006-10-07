@@ -118,7 +118,7 @@ namespace PavelStransky.Math {
             int i1 = (int)(1.0 / defaultPrecision);
             bool init = true;
 
-            double timeM = initTime;
+            double timeM = 2.0 * initTime;
 
             this.rungeKutta.Init(initialX);
 

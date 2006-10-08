@@ -111,14 +111,9 @@ namespace PavelStransky.Math {
             double step = defaultPrecision;
             double time = 0;
 
-            double cumulLogSALI = 0;
-            Vector logSALIQueue = new Vector(window);    // Realizuje frontu
-            int iQueue = 0;
+            MeanQueue queue = new MeanQueue(window);
 
             int i1 = (int)(1.0 / defaultPrecision);
-            bool init = true;
-
-            double timeM = 2.0 * initTime;
 
             this.rungeKutta.Init(initialX);
 
@@ -139,25 +134,14 @@ namespace PavelStransky.Math {
                 w2 = w2.EuklideanNormalization();
 
                 double ai = this.AlignmentIndex(w1, w2);
-                double logAI = (ai <= 0.0 ? 0.0 : -System.Math.Log10(ai));
-                double logAIw = logAI / window;
-                cumulLogSALI += logAIw - logSALIQueue[iQueue];
-                logSALIQueue[iQueue] = logAIw;
-                iQueue = (iQueue + 1) % window;
+                double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
+                queue.Set(logAI);
 
-                // Nejprve napoèítáme initTime jednotek, než zaèneme vyøazovat
-                if(init && iQueue < initTime)
-                    continue;
+                double meanSALI = queue.Mean;
 
-                init = false;
-
-                // Pokud se objeví jeden bod SALI < 4, pak je trajektorie na rozhraní. Posuneme dále DecisionPoint
-                if(logAI > 3.0)
-                    timeM = 1000;
-
-                if(cumulLogSALI > 4.0 + (time - timeM) / 1000.0)
+                if(meanSALI > 5.0 + time / 1000.0)
                     return false;
-                if(cumulLogSALI < (time - timeM) / 500.0)
+                if(meanSALI < (time - 1000.0) / 200.0)
                     return true;
             } while(true);
         }
@@ -165,8 +149,44 @@ namespace PavelStransky.Math {
         protected const double defaultPrecision = 1E-3;
         protected const int defaultNumPoints = 500;
         protected const double maxTime = 500;
+        
+        protected const int window = 10;
+    }
 
-        protected const int window = 400;
-        protected const int initTime = 100;
+    /// <summary>
+    /// Realizuje frontu k vystøedovávání
+    /// </summary>
+    public class MeanQueue {
+        private Vector queue;
+        private int index;
+
+        /// <summary>
+        /// Délka fronty
+        /// </summary>
+        public int Length { get { return this.queue.Length; } }
+
+        /// <summary>
+        /// Støední hodnota
+        /// </summary>
+        public double Mean { get { return this.queue.Mean(); } }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="length">Délka fronty</param>
+        public MeanQueue(int length) {
+            this.queue = new Vector(length);
+            this.index = 0;
+        }
+
+        /// <summary>
+        /// Nastaví hodnotu na aktuální pozici
+        /// </summary>
+        /// <param name="value">Hodnota</param>
+        /// <returns>Hodnota z aktuální pozice</returns>
+        public void Set(double value) {
+            this.queue[this.index++] = value;
+            this.index %= this.Length;
+        }
     }
 }

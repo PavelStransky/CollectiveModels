@@ -98,6 +98,10 @@
       <Project>{9A261EE9-33BB-4136-B0CA-681BD82B6806}</Project>
       <Name>GCM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IBM\IBM.csproj">
+      <Project>{1F119B82-E6B3-4FF0-A026-72AC1D452DA6}</Project>
+      <Name>IBM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Name>Math</Name>
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>

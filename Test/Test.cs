@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using PavelStransky.IBM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 using PavelStransky.GCM;
@@ -17,11 +18,21 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusClassicalGCMJ();
+            Test.PokusSaliContourGraph();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Pokus na SALIContourGraph, 9.10.2006
+        /// </summary>
+        public static void PokusSaliContourGraph() {
+            ClassicalIBM ibm = new ClassicalIBM(0.7, -0.3);
+            SALIContourGraph sali = new SALIContourGraph(ibm, 0);
+            Matrix m = sali.Compute(0, 100, 100);
+
+        }
 
         /// <summary>
         /// Pokus na rozšíøený klasický GCM

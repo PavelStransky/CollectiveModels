@@ -15,16 +15,13 @@ namespace PavelStransky.Expression.Functions {
 
         protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
+            this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
 
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
 
-            if(evaluatedArguments.Count > 2 && evaluatedArguments[2] != null)
-                this.CheckArgumentsType(evaluatedArguments, 2, typeof(string));
-
-            if(evaluatedArguments.Count > 3 && evaluatedArguments[3] != null) {
-                this.ConvertInt2Double(evaluatedArguments, 3);
-                this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
+            if(evaluatedArguments.Count > 2 && evaluatedArguments[2] != null) {
+                this.ConvertInt2Double(evaluatedArguments, 2);
+                this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
             }
 
             return evaluatedArguments;
@@ -41,15 +38,11 @@ namespace PavelStransky.Expression.Functions {
                 else
                     return this.BadTypeError(arguments[1], 1);
 
-                RungeKuttaMethods rkMethod = defaultRKMethod;
-                if(arguments.Count > 2 && arguments[2] != null)
-                    rkMethod = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[2], true);
-
                 double precision = 0;
-                if(arguments.Count > 3 && arguments[3] != null)
-                    precision = (double)arguments[3];
+                if(arguments.Count > 2 && arguments[2] != null)
+                    precision = (double)arguments[2];
 
-                SALI sali = new SALI(dynamicalSystem, precision, rkMethod);
+                SALI sali = new SALI(dynamicalSystem, precision);
 
                 if(sali.IsRegular(ic))
                     return 1;
@@ -66,6 +59,6 @@ namespace PavelStransky.Expression.Functions {
         private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;
 
         private const string help = "Vrátí 1, pokud je trejektorie podle SALI regulární, jinak vrátí 0";
-        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector) [; metoda výpoètu RK [; pøesnost výpoètu (double)]]";
+        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector) [; pøesnost výpoètu (double)]]";
     }
 }

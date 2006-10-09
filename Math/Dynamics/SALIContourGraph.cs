@@ -14,84 +14,221 @@ namespace PavelStransky.Math {
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výsledku</param>
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
-        public SALIContourGraph(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod)
-            : base(dynamicalSystem, precision, rkMethod) {
+        public SALIContourGraph(IDynamicalSystem dynamicalSystem, double precision)
+            : base(dynamicalSystem, precision) {
             if(dynamicalSystem.DegreesOfFreedom != 2)
                 throw new Exception(errorMessageBadDimension);
         }
 
         /// <summary>
-        /// Poèítá SALI + Poincarého øez
+        /// Vrátí true, pokud daná trajektorie je podle SALI regulární
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
-        /// <param name="time">Èas</param>
-        public double TimeZeroWithPS(Vector initialX, PointVector section, double time) {
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection) {
+            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision);
 
             this.x = initialX;
             double oldy = this.x[1];
             int finished = 0;
-            section.Length = defaultNumPoints;
+            bool result = false;
+
+            poincareSection.Length = defaultNumPoints;
 
             Vector w1 = new Vector(initialX.Length);
             Vector w2 = new Vector(initialX.Length);
             w1[0] = 1;
             w2[initialX.Length / 2] = 1;
 
-            double step = defaultPrecision;
-            double t = 0;
+            double step = this.rungeKutta.Precision;
+            double time = 0.0;
+
+            MeanQueue queue = new MeanQueue(window);
+
+            int i1 = (int)(1.0 / step);
 
             this.rungeKutta.Init(initialX);
 
             do {
-                Vector oldx = this.x;
+                for(int i = 0; i < i1; i++) {
+                    Vector oldx = this.x;
+                    double newStep, tStep;
 
-                double newStep, tStep;
+                    this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
+                    w1 += rkw.Step(w1, ref step, out tStep);
+                    w2 += rkw.Step(w2, ref step, out tStep);
 
-                this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
-                w1 += rkw.Step(w1, ref step, out tStep);
-                w2 += rkw.Step(w2, ref step, out tStep);
+                    time += step;
 
-                t += step;
+                    step = newStep;
 
-                double y = this.x[1];
-                if(y * oldy <= 0) {
-                    Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
-                    section[finished].X = v[0];
-                    section[finished].Y = v[2];
-                    finished++;
+                    double y = this.x[1];
+                    if(y * oldy <= 0) {
+                        Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
+                        poincareSection[finished].X = v[0];
+                        poincareSection[finished].Y = v[2];
+                        finished++;
 
-                    if(finished >= section.Length)
-                        section.Length = section.Length * 3 / 2;
+                        if(finished >= poincareSection.Length)
+                            poincareSection.Length = poincareSection.Length * 3 / 2;
+                    }
+                    oldy = y;
                 }
-                oldy = y;
 
                 w1 = w1.EuklideanNormalization();
                 w2 = w2.EuklideanNormalization();
 
-            } while(t < time);
+                double ai = this.AlignmentIndex(w1, w2);
+                double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
+                queue.Set(logAI);
 
-            section.Length = finished;
+                double meanSALI = queue.Mean;
 
-            return this.AlignmentIndex(w1, w2);
+                if(meanSALI > 5.0 + time / 1000.0) {
+                    result = false;
+                    break;
+                }
+                if(meanSALI < (time - 1000.0) / 200.0) {
+                    result = true;
+                    break;
+                }
+
+            } while(true);
+
+            poincareSection.Length = finished;
+            return result;
+        }
+
+        /// <summary>
+        /// Zpøesnìní mezí pro výpoèet
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="bounds">Vstupní meze</param>
+        /// <param name="n1">Rozmìr x výsledné matice</param>
+        /// <param name="n2">Rozmìr vx výsledné matice</param>
+        private Vector ExactBounds(double e, int n1, int n2) {
+            Vector boundX = this.dynamicalSystem.Bounds(e);
+            
+            // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
+            double kx = (boundX[1] - boundX[0]) / (n1 - 1);
+            double x0 = boundX[0];
+            double ky = (boundX[5] - boundX[4]) / (n2 - 1);
+            double y0 = boundX[4];
+
+            // Poèáteèní podmínky
+            Vector ic = new Vector(4);
+
+            // Hledání optimální oblasti
+            bool foundIC = false;
+
+            // Smìr 1
+            for(int i = 1; i < n1; i++) {
+                for(int j = 1; j < n2; j++) {
+                    ic[0] = kx * i + x0;
+                    ic[1] = 0.0;
+                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
+                    ic[3] = 0.0;
+
+                    if(this.dynamicalSystem.IC(ic, e)) {
+                        foundIC = true;
+                        break;
+                    }
+                }
+                if(foundIC) {
+                    boundX[0] = kx * (i - 1) + x0;
+                    break;
+                }
+            }
+
+            kx = (boundX[1] - boundX[0]) / (n1 - 1);
+            x0 = boundX[0];
+
+            foundIC = false;
+
+            // Smìr 4
+            for(int j = 1; j < n2; j++) {
+                for(int i = 1; i < n1; i++) {
+                    ic[0] = kx * i + x0;
+                    ic[1] = 0.0;
+                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
+                    ic[3] = 0.0;
+
+                    if(this.dynamicalSystem.IC(ic, e)) {
+                        foundIC = true;
+                        break;
+                    }
+                }
+                if(foundIC) {
+                    boundX[4] = ky * (j - 1) + y0;
+                    break;
+                }
+            }
+
+            ky = (boundX[5] - boundX[4]) / (n2 - 1);
+            y0 = boundX[4];
+
+            foundIC = false;
+
+            // Smìr 3
+            for(int i = n2 - 2; i >= 0; i--) {
+                for(int j = 1; j < n2; j++) {
+                    ic[0] = kx * i + x0;
+                    ic[1] = 0.0;
+                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
+                    ic[3] = 0.0;
+
+                    if(this.dynamicalSystem.IC(ic, e)) {
+                        foundIC = true;
+                        break;
+                    }
+                }
+                if(foundIC) {
+                    boundX[1] = kx * (i + 1) + x0;
+                    break;
+                }
+            }
+
+            kx = (boundX[1] - boundX[0]) / (n1 - 1);
+            x0 = boundX[0];
+
+            foundIC = false;
+
+            // Smìr 2
+            for(int j = n2 - 2; j >= 0; j--) {
+                for(int i = 1; i < n1; i++) {
+                    ic[0] = kx * i + x0;
+                    ic[1] = 0.0;
+                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
+                    ic[3] = 0.0;
+
+                    if(this.dynamicalSystem.IC(ic, e)) {
+                        foundIC = true;
+                        break;
+                    }
+                }
+                if(foundIC) {
+                    boundX[5] = ky * (j + 1) + y0;
+                    break;
+                }
+            }
+
+            return boundX;
         }
 
         /// <summary>
         /// Poèítá pro danou energii
         /// </summary>
         /// <param name="e">Energie</param>
-        /// <param name="time">Doba výpoètu</param>
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
-        public Matrix Compute(double e, double time, int n1, int n2) {
+        public Matrix Compute(double e, int n1, int n2) {
             // Výpoèet mezí
-            Vector boundX = this.dynamicalSystem.Bounds(e);
+            Vector boundX = this.ExactBounds(e, n1, n2);
 
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
             double kx = (boundX[1] - boundX[0]) / (n1 - 1);
             double x0 = boundX[0];
-            double ky = 2.0 * boundX[5] / (n2 - 1);
+            double ky = (boundX[5] - boundX[4]) / (n2 - 1);
             double y0 = boundX[4];
 
             // Poèáteèní podmínky
@@ -113,24 +250,23 @@ namespace PavelStransky.Math {
 
                     if(this.dynamicalSystem.IC(ic, e)) {
                         PointVector section = new PointVector(0);
-                        double sali = this.TimeZeroWithPS(ic, section, time);
+                        int sali = this.IsRegularPS(ic, section) ? 1 : 0;
 
-                        // 0.0 bude regulární oblast (pro SALI > 1E-5), mezi 1E-5 a 1E-15 budeme 
-                        // brát log10 / 10, pro SALI < 1E-15 bude sali = 1;
-                        if(sali < 1E-10)
-                            sali = 1.0;
-                        else
-                            sali = System.Math.Max(0.2 * (-System.Math.Log10(sali) - 5.0), 0.0);
+                        bool[,] actPassed = new bool[n1, n2];
 
                         // Zaznamenáme i poèáteèní podmínku
                         result[i, j] = sali;
                         trPassed[i, j]++;
+                        actPassed[i, j] = true;
 
                         for(int k = 0; k < section.Length; k++) {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
-                            result[n1x, n2x] += sali;
-                            trPassed[n1x, n2x]++;
+                            if(!actPassed[n1x, n2x]) {
+                                result[n1x, n2x] += sali;
+                                trPassed[n1x, n2x]++;
+                                actPassed[n1x, n2x] = true;
+                            }
                         }
                     }
                 }

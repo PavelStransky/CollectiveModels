@@ -16,19 +16,16 @@ namespace PavelStransky.Expression.Functions {
 
         protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 3);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 5);
+            this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
 
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
 
             this.ConvertInt2Double(evaluatedArguments, 2);
             this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
 
-            if(evaluatedArguments.Count > 3 && evaluatedArguments[3] != null)
-                this.CheckArgumentsType(evaluatedArguments, 3, typeof(string));
-
-            if(evaluatedArguments.Count > 4 && evaluatedArguments[4] != null) {
-                this.ConvertInt2Double(evaluatedArguments, 4);
-                this.CheckArgumentsType(evaluatedArguments, 4, typeof(double));
+            if(evaluatedArguments.Count > 3 && evaluatedArguments[3] != null) {
+                this.ConvertInt2Double(evaluatedArguments, 3);
+                this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
             }
 
             return evaluatedArguments;
@@ -47,15 +44,11 @@ namespace PavelStransky.Expression.Functions {
 
                 double time = (double)arguments[2];
 
-                RungeKuttaMethods rkMethod = defaultRKMethod;
-                if(arguments.Count > 3 && arguments[3] != null)
-                    rkMethod = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[3], true);
-
                 double precision = 0;
                 if(arguments.Count > 4 && arguments[4] != null)
                     precision = (double)arguments[4];
 
-                SALI sali = new SALI(dynamicalSystem, precision, rkMethod);
+                SALI sali = new SALI(dynamicalSystem, precision);
 
                 return sali.TimeDependence(ic, time);
             }
@@ -70,6 +63,6 @@ namespace PavelStransky.Expression.Functions {
 
         private const string name = "sali";
         private const string help = "Vypoèítá závislost SALI pro jednu tajektorii na èase";
-        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector); èas (double) [; metoda výpoètu RK [; pøesnost výpoètu (double)]]";
+        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector); èas (double) [; pøesnost výpoètu (double)]";
     }
 }

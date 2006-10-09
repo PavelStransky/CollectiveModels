@@ -88,7 +88,7 @@ namespace PavelStransky.Math {
                     result = false;
                     break;
                 }
-                if(meanSALI < (time - 1000.0) / 200.0) {
+                if(meanSALI < (time - 1000.0) / 250.0) {
                     result = true;
                     break;
                 }
@@ -183,7 +183,7 @@ namespace PavelStransky.Math {
                     }
                 }
                 if(foundIC) {
-                    boundX[1] = kx * (i + 1) + x0;
+                    boundX[1] = kx * i + x0;
                     break;
                 }
             }
@@ -207,7 +207,7 @@ namespace PavelStransky.Math {
                     }
                 }
                 if(foundIC) {
-                    boundX[5] = ky * (j + 1) + y0;
+                    boundX[5] = ky * j + y0;
                     break;
                 }
             }

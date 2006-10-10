@@ -500,13 +500,13 @@ namespace PavelStransky.Math {
 		/// </summary>
         /// <param name="import">Import</param>
         public void Import(Import import) {
-            int lengthX = this.LengthX;
-            int lengthY = this.LengthY;
-
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;
-                this.item = new double[b.ReadInt32(), b.ReadInt32()];
+                int lengthX = b.ReadInt32();
+                int lengthY = b.ReadInt32();
+
+                this.item = new double[lengthX, lengthY];
                 for(int i = 0; i < lengthX; i++)
                     for(int j = 0; j < lengthY; j++)
                         this[i, j] = b.ReadDouble();
@@ -516,8 +516,10 @@ namespace PavelStransky.Math {
                 StreamReader t = import.T;
                 string line = t.ReadLine();
                 string[] s = line.Split('\t');
-                this.item = new double[int.Parse(s[0]), int.Parse(s[1])];
+                int lengthX = int.Parse(s[0]);
+                int lengthY = int.Parse(s[1]);
 
+                this.item = new double[lengthX, lengthY];
                 for(int i = 0; i < lengthX; i++) {
                     line = t.ReadLine();
                     s = line.Split('\t');

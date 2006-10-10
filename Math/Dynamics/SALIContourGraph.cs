@@ -282,12 +282,12 @@ namespace PavelStransky.Math {
                     else {
                         // Na první záporné pozici zobrazíme celkovı poèet trajektorií
                         if(total > 0) {
-                            result[i, j] = -total;
+                            result[i, j] = -1.0 / total;
                             total = 0;
                         }
                         // Na druhé nezáporné pozici zobrazíme poèet regulárních trajektorií
                         else if(regular > 0) {
-                            result[i, j] = -regular;
+                            result[i, j] = -1.0 / regular;
                             regular = 0;
                         }
                         else

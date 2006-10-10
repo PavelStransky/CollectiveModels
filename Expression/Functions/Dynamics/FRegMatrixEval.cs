@@ -26,8 +26,8 @@ namespace PavelStransky.Expression.Functions {
                 int lengthY = m.LengthY;
 
                 // Poèty trajektorií
-                int regularT = 0;
-                int totalT = 0;
+                double regularT = 0.0;
+                double totalT = 0.0;
 
                 // Poèty bodù
                 int regularP = 0;
@@ -42,10 +42,10 @@ namespace PavelStransky.Expression.Functions {
                         double d = m[i, j];
 
                         if(d < 0) {
-                            if(totalT == 0)
-                                totalT = -(int)d;
-                            else if(regularT == 0)
-                                regularT = -(int)d;
+                            if(totalT == 0.0)
+                                totalT = -1.0 / d;
+                            else if(regularT == 0.0)
+                                regularT = -1.0 / d;
                         }
                         else {
                             if(d == 0.0)
@@ -58,7 +58,7 @@ namespace PavelStransky.Expression.Functions {
                         }
                     }
 
-                Vector result = new Vector(6);
+                Vector result = new Vector(7);
                 result[0] = total / totalP;
                 result[1] = lengthX * lengthY;
                 result[2] = totalP;

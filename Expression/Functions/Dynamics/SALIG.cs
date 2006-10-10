@@ -42,7 +42,7 @@ namespace PavelStransky.Expression.Functions {
                     precision = (double)arguments[4];
 
                 SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precision);
-                return sali.Compute(e, sizex, sizey);
+                return sali.Compute(e, sizex, sizey, this.writer);
             }
 
             else if(item is Array)

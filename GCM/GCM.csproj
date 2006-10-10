@@ -39,7 +39,7 @@
   <ItemGroup>
     <Compile Include="Classical\ExtendedClassicalGCM1.cs" />
     <Compile Include="Classical\ExtendedClassicalGCM2.cs" />
-    <Compile Include="Classical\SimpleClassicalGCM.cs" />
+    <Compile Include="Classical\ClassicalGCM.cs" />
     <Compile Include="Classical\ClassicalGCMJ.cs" />
     <Compile Include="Classical\GCMJBisectionFunction.cs" />
     <Compile Include="GCMParameters.cs" />

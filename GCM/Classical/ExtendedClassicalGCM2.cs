@@ -9,7 +9,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Klasický GCM s kinetickým èlenem v Hamiltoniánu úmìrným beta^2
     /// </summary>
-    public class ExtendedClassicalGCM2 : SimpleClassicalGCM, IDynamicalSystem, IExportable {
+    public class ExtendedClassicalGCM2 : ClassicalGCM, IDynamicalSystem, IExportable {
         // Generátor náhodných èísel
         private Random random = new Random();
 

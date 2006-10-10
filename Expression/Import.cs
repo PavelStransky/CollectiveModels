@@ -28,8 +28,8 @@ namespace PavelStransky.Expression {
                 return new Array();
             else if(typeName == typeof(Context).FullName)
                 return new Context();
-            else if(typeName == typeof(SimpleClassicalGCM).FullName)
-                return new SimpleClassicalGCM();
+            else if(typeName == typeof(ClassicalGCM).FullName)
+                return new ClassicalGCM();
             else if(typeName == typeof(ExtendedClassicalGCM1).FullName)
                 return new ExtendedClassicalGCM1();
             else if(typeName == typeof(ExtendedClassicalGCM2).FullName)

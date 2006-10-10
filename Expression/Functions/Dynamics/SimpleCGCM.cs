@@ -47,7 +47,7 @@ namespace PavelStransky.Expression.Functions {
                     k = (double)arguments[3];
                 }
 
-                return new SimpleClassicalGCM((double)item, b, c, k);
+                return new ClassicalGCM((double)item, b, c, k);
             }
 
             else if(item is Array)

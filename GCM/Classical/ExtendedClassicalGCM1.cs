@@ -9,7 +9,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Klasický GCM s hmotou úmìrnou beta^2
     /// </summary>
-    public class ExtendedClassicalGCM1 : SimpleClassicalGCM, IDynamicalSystem, IExportable {
+    public class ExtendedClassicalGCM1 : ClassicalGCM, IDynamicalSystem, IExportable {
         // Generátor náhodných èísel
         private Random random = new Random();
 

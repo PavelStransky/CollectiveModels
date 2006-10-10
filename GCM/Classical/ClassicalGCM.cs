@@ -6,7 +6,7 @@ using System.Text;
 using PavelStransky.Math;
 
 namespace PavelStransky.GCM {
-    public class SimpleClassicalGCM: GCM, IExportable, IDynamicalSystem {
+    public class ClassicalGCM: GCM, IExportable, IDynamicalSystem {
         // Generátor náhodných èísel
         private Random random = new Random();
 
@@ -92,7 +92,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        public SimpleClassicalGCM() { }
+        public ClassicalGCM() { }
 
         /// <summary>
         /// Konstruktor standardního Lagrangiánu
@@ -101,7 +101,7 @@ namespace PavelStransky.GCM {
         /// <param name="b">Parametr B</param>
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr K</param>
-        public SimpleClassicalGCM(double a, double b, double c, double k)
+        public ClassicalGCM(double a, double b, double c, double k)
             : base(a, b, c, k) {
         }
 

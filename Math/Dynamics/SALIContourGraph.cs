@@ -234,6 +234,8 @@ namespace PavelStransky.Math {
             // Poèáteèní podmínky
             Vector ic = new Vector(4);
 
+            int regular = 0;        // Poèet regulárních trajektorií
+            int total = 0;          // Celkový poèet trajektorií
             Matrix result = new Matrix(n1, n2);
             int[,] trPassed = new int[n1, n2];
 
@@ -251,6 +253,8 @@ namespace PavelStransky.Math {
                     if(this.dynamicalSystem.IC(ic, e)) {
                         PointVector section = new PointVector(0);
                         int sali = this.IsRegularPS(ic, section) ? 1 : 0;
+                        regular += sali;
+                        total++;
 
                         bool[,] actPassed = new bool[n1, n2];
 
@@ -275,8 +279,20 @@ namespace PavelStransky.Math {
                 for(int j = 0; j < n2; j++) {
                     if(trPassed[i, j] != 0)
                         result[i, j] /= trPassed[i, j];
-                    else
-                        result[i, j] = -1.0;
+                    else {
+                        // Na první záporné pozici zobrazíme celkový poèet trajektorií
+                        if(total > 0) {
+                            result[i, j] = -total;
+                            total = 0;
+                        }
+                        // Na druhé nezáporné pozici zobrazíme poèet regulárních trajektorií
+                        else if(regular > 0) {
+                            result[i, j] = -regular;
+                            regular = 0;
+                        }
+                        else
+                            result[i, j] = -1;
+                    }
                 }
 
             return result;

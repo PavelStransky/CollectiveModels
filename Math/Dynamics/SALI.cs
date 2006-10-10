@@ -23,8 +23,8 @@ namespace PavelStransky.Math {
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
-        public SALI(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod)
-            : base(dynamicalSystem, precision, rkMethod) {
+        public SALI(IDynamicalSystem dynamicalSystem, double precision)
+            : base(dynamicalSystem, precision != 0.0 ? precision : defaultPrecision, RungeKuttaMethods.Normal) {
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace PavelStransky.Math {
         /// <param name="time">Èas</param>
         public PointVector TimeDependence(Vector initialX, double time) {
             PointVector result = new PointVector(defaultNumPoints);
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
+            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision);
 
             int finished = 0;
 
@@ -99,7 +99,7 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         public bool IsRegular(Vector initialX) {
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), defaultPrecision);
+            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision);
 
             this.x = initialX;
 
@@ -108,12 +108,12 @@ namespace PavelStransky.Math {
             w1[0] = 1;
             w2[initialX.Length / 2] = 1;
 
-            double step = defaultPrecision;
+            double step = this.rungeKutta.Precision;
             double time = 0;
 
             MeanQueue queue = new MeanQueue(window);
 
-            int i1 = (int)(1.0 / defaultPrecision);
+            int i1 = (int)(1.0 / step);
 
             this.rungeKutta.Init(initialX);
 

@@ -265,7 +265,7 @@
     <Compile Include="Functions\FunctionDefinitions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Dynamics\SimpleCGCM.cs" />
+    <Compile Include="Functions\Dynamics\CGCM.cs" />
     <Compile Include="Functions\Dynamics\Equipotential.cs" />
     <Compile Include="Functions\Dynamics\InitialCondition.cs" />
     <Compile Include="Functions\Dynamics\Poincare.cs" />

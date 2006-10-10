@@ -7,9 +7,9 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí SimpleClassicalGCM tøídu
+    /// Vytvoøí ClassicalGCM tøídu
     /// </summary>
-    public class SimpleCGCM : FunctionDefinition {
+    public class CGCM : FunctionDefinition {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 

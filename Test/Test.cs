@@ -18,11 +18,21 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusSaliContourGraph();
+            Test.PokusQuantumGCM1();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// QuantumGCM, 10.10.2006
+        /// </summary>
+        public static void PokusQuantumGCM1() {
+            QuantumGCM q = new QuantumGCM(1, 1, 1, 1);
+            Vector v = q.EnergyLevels(0, 70);
+
+            Console.WriteLine(v.ToString());
+        }
 
         /// <summary>
         /// Pokus na SALIContourGraph, 9.10.2006

@@ -28,7 +28,7 @@ namespace PavelStransky.GCM {
 
             // i1, i2 jsou radiální indexy ketu na levé, resp. pravé stranì
             // Matice je symetrická, staèí tudíž poèítat pouze polovinu
-            for(int irho = minBeta; irho <= maxBeta; irho++) 
+            for(int irho = minBeta; irho <= maxBeta; irho++)
                 for(int i1 = 0; i1 < MaxDim; i1++)
                     for(int i2 = 0; i2 <= i1; i2++) {
                         // Pomocné promìnné
@@ -149,17 +149,17 @@ namespace PavelStransky.GCM {
                             this.radank[i2, i1] = this.radank[i1, i2];
                         }
 
-/*
-                        // Kinetická energie do druhého øádu
-                        if(irho == 3) {
-                            if(idn == 3) 
-                                this.radan[i1, i2, 8] = -3.0 * this.radan[i1, i2, 3];
-                            else if(idn == 1) 
-                                this.radan[i1, i2, 8] = this.radan[i1, i2, 8];
+                        /*
+                                               // Kinetická energie do druhého øádu
+                                                if(irho == 3) {
+                                                    if(idn == 3) 
+                                                        this.radan[i1, i2, 8] = -3.0 * this.radan[i1, i2, 3];
+                                                    else if(idn == 1) 
+                                                        this.radan[i1, i2, 8] = this.radan[i1, i2, 8];
 
-                            this.radan[i2, i1, 7] = this.radan[i1, i2, 7];
-                        }
-*/
+                                                    this.radan[i2, i1, 7] = this.radan[i1, i2, 7];
+                                                }
+                        */
                         this.radan[i2, i1, irho] = radan[i1, i2, irho];
                     }
         }
@@ -179,8 +179,8 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Indexer (Pro kinetický èlen je irho == -1)
         /// </summary>
-       public double this[int i1, int i2, int irho] {get {return irho >= 0 ? this.radan[i1, i2, irho] : this.radank[i1, i2];}}
+        public double this[int i1, int i2, int irho] { get { return irho >= 0 ? this.radan[i1, i2, irho] : this.radank[i1, i2]; } }
 
-        public const int MaxDim = 256;
+        public const int MaxDim = 1300;
     }
 }

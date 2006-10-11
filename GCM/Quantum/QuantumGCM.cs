@@ -2,11 +2,12 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 using PavelStransky.Math;
 
 namespace PavelStransky.GCM {
-    public class QuantumGCM: GCM {
+    public class QuantumGCM : GCM {
         // Parametry báze kvadratického oscilátoru
         private double b2s, c2s;
 
@@ -53,8 +54,8 @@ namespace PavelStransky.GCM {
 
             this.B2 = 61.0;
 
-//          this.b2s = 90.0;
-//          this.c2s = 100.0;
+            //          this.b2s = 90.0;
+            //          this.c2s = 100.0;
 
             this.ifBase = false;
 
@@ -90,7 +91,7 @@ namespace PavelStransky.GCM {
             t.WriteLine("tE2mode\t{0}", this.tE2mode);
 
             t.WriteLine();
-//            t.WriteLine("nPh\t{0}", this.nPh);
+            //            t.WriteLine("nPh\t{0}", this.nPh);
             t.WriteLine("B2S\t{0}", this.b2s);
             t.WriteLine("C2S\t{0}", this.c2s);
 
@@ -189,12 +190,14 @@ namespace PavelStransky.GCM {
             }
         }
 
+
         /// <summary>
         /// Poèítá Hamiltonovu matici
         /// </summary>
         /// <param name="l">Úhlový moment</param>
         /// <param name="nPhonons">Poèet fononù</param>
         public Vector EnergyLevels(int l, int nPhonons) {
+            Debug.Assert(l == 0);
             this.SMin(nPhonons);
 
             // Koeficienty potenciálního èlenu (beta^(i + 2) * cos(3 * gamma)^j)
@@ -204,22 +207,26 @@ namespace PavelStransky.GCM {
                 return new Vector(0);
 
             RAIndex ra = new RAIndex(l, nPhonons);
-            Matrix h = new Matrix(maxI);
+            Matrix h = new Matrix(ra.Length);
+            try {
+                for(int mue = 0; mue < 2; mue++) {
+                    for(int irho = 2; irho <= 4; irho++) {
+                        if(System.Math.Abs(v[irho, mue]) < 1E-5)
+                            continue;
+                        if(irho == 5 && mue != 0)
+                            continue;
 
-            for(int mue = 0; mue < 2; mue++) {
-                for(int irho = 2; irho <= 4; irho++) {
-                    if(System.Math.Abs(v[irho, mue]) < 1E-5)
-                        continue;
-                    if(irho == 5 && mue != 0)
-                        continue;
-
-                    // Výpoèet maticových elementù Hamiltoniánu
-                    for(int i = 0; i < h.Length; i++)
-                        for(int j = 0; j <= i; j++) {
-                            h[i, j] += v[irho, mue] * ame[ra.IA[i], ra.IA[j], mue, l] * rme[ra.IR[i], ra.IR[j], irho];
-                            h[j, i] = h[i, j];
-                        }
+                        // Výpoèet maticových elementù Hamiltoniánu
+                        for(int i = 0; i < h.Length; i++)
+                            for(int j = 0; j <= i; j++) {
+                                h[i, j] += v[irho, mue] * ame[ra.IA[i], ra.IA[j], mue, l] * rme[ra.IR[i], ra.IR[j], irho];
+                                h[j, i] = h[i, j];
+                            }
+                    }
                 }
+            }
+            catch(Exception e) {
+                throw e;
             }
 
             // Kinetické èleny
@@ -231,6 +238,8 @@ namespace PavelStransky.GCM {
 
             Jacobi jacobi = new Jacobi(h);
             jacobi.SortAsc();
+
+//            jacobi.EigenVector[0].Export("c:\\temp\\vec0.txt", false);
 
             return new Vector(jacobi.EigenValue);
         }
@@ -273,6 +282,6 @@ namespace PavelStransky.GCM {
         }
 
         public const double hbar = 0.6582183;
-        public int maxI = 90;
+        //        public int maxI = 190;
     }
 }

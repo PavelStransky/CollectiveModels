@@ -14,6 +14,13 @@ namespace PavelStransky.Math {
 
         private bool binary;
 
+        // Informace o verzi
+        private string versionName;
+        private int versionNumber;
+
+        public string VersionName { get { return this.versionName; } set { this.versionName = value; } }
+        public int VersionNumber { get { return this.versionNumber; } set { this.versionNumber = value; } }
+
         /// <summary>
         /// StreamReader
         /// </summary>
@@ -77,6 +84,8 @@ namespace PavelStransky.Math {
                 result = binary ? b.ReadDouble() : double.Parse(t.ReadLine());
             else if(typeName == typeof(string).FullName)
                 result = binary ? b.ReadString() : t.ReadLine();
+            else if(typeName == typeof(bool).FullName)
+                result = binary ? b.ReadBoolean() : bool.Parse(t.ReadLine());
             else if(typeName == typeof(DateTime).FullName)
                 result = DateTime.FromBinary(binary ? b.ReadInt64() : long.Parse(t.ReadLine()));
             else if(typeName == typeof(TimeSpan).FullName)
@@ -201,6 +210,9 @@ namespace PavelStransky.Math {
             }
             else if(o is string) {
                 if(binary) b.Write((string)o); else t.WriteLine(o);
+            }
+            else if(o is bool) {
+                if(binary) b.Write((bool)o); else t.WriteLine(o);
             }
             else if(o is DateTime) {
                 if(binary) b.Write(((DateTime)o).ToBinary()); else t.WriteLine(((DateTime)o).ToBinary());

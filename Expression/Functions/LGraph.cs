@@ -6,7 +6,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Vytvoøí èárový graf
+	/// Vytvoøí graf
 	/// </summary>
 	/// <param name="args">Argumenty funkce
 	/// 0 ... data k vykreslení (vektor, øada)
@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
 	/// 2 ... parametry jednotlivých køivek (array of string)
 	/// 3 ... chyby ke køivkám
 	/// </param>
-	public class LGraph: FunctionDefinition {
+	public class CreateGraph: FunctionDefinition {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
@@ -58,10 +58,10 @@ namespace PavelStransky.Expression.Functions {
 					this.BadTypeError(arguments[3], 3);
 			}
 
-			return new LineGraph(item, errors, graphParams, itemParams);
+			return new Graph(item, graphParams, itemParams, errors);
 		}
 
-		private const string help = "Vytvoøí èárový graf";
+		private const string help = "Vytvoøí graf";
 		private const string parameters = "data k vykreslení (Array | Vector | PointVector) [;parametry (string) [;parametry jednotlivých køivek (Array of string | string) [;chyby k bodùm (Array | Vector)]]]";	
 	}
 }

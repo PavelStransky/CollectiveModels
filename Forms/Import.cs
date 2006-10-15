@@ -28,6 +28,8 @@ namespace PavelStransky.Forms {
                 return new ResultForm();
             else if(typeName == typeof(GraphForm).FullName)
                 return new GraphForm();
+            else if(typeName == typeof(GraphControl).FullName)
+                return new GraphControl();
             else
                 return base.CreateObject(typeName);
         }

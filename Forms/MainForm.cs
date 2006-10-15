@@ -182,25 +182,22 @@ namespace PavelStransky.Forms {
                 editor.MdiParent = this;
                 editor.Show();
 
-                int num = import.B.ReadInt32();
-                for(int i = 0; i < num; i++) {
-                    object o = import.Read();
-                    if(o is ChildForm) {
-                        (o as ChildForm).ParentEditor = editor;
-                        (o as ChildForm).MdiParent = this;
-                        (o as ChildForm).Show();
-                    }
-                    if(o is ResultForm) {
-                        (o as ResultForm).SetContext(editor.Context);
-                    }
-                    if(o is GraphForm) {
-                        // Pøepoèítáme graf
-                        string expressionText = editor.Context[(o as GraphForm).Name].Expression + ";";
-                        Expression.Expression expression = new PavelStransky.Expression.Expression(editor.Context, expressionText);
-                        expression.Evaluate();
+                // Pokud máme správnou verzi, naèteme ostatní okna
+                if(import.VersionNumber >= 1) {
+                    int num = import.B.ReadInt32();
+                    for(int i = 0; i < num; i++) {
+                        object o = import.Read();
+                        if(o is ChildForm) {
+                            (o as ChildForm).ParentEditor = editor;
+                            (o as ChildForm).MdiParent = this;
+                            (o as ChildForm).Show();
+                        }
+                        if(o is ResultForm) {
+                            (o as ResultForm).SetContext(editor.Context);
+                        }
                     }
                 }
-                
+
                 editor.FileName = fileName;
                 editor.Modified = false;
                 editor.Activate();

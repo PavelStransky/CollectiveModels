@@ -6,12 +6,20 @@ using System.IO;
 using System.Windows.Forms;
 
 using PavelStransky.Math;
+using PavelStransky.Expression;
 
 namespace PavelStransky.Forms {
 	/// <summary>
 	/// Prázdný formuláø. Grafy do nìj pøidáváme my
 	/// </summary>
-	public class GraphForm : ChildForm, IExportable {
+	public partial class GraphForm : ChildForm, IExportable {
+        private GraphControl[] graphControl;
+
+        /// <summary>
+        /// Poèet sloucpù
+        /// </summary>
+        private int numColumns = 1;
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -19,64 +27,56 @@ namespace PavelStransky.Forms {
             this.InitializeComponent();
         }
 
-		/// <summary>
-		/// Pokud existuje, najde na na formuláøi graf s daným
-		/// </summary>
-		/// <param name="index">Index</param>
-		public Graph GraphControl(int index) {
-			foreach(Control control in this.Controls)
-				if((control as Graph) != null) 
-					if((control as Graph).Index == index)
-						return control as Graph;
+        /// <summary>
+        /// Nastaví data do grafu
+        /// </summary>
+        /// <param name="graphs">Objekt s daty</param>
+        /// <param name="numColumns">Poèet sloupcù</param>
+        public void SetGraph(Expression.Array graphs, int numColumns) {
+            int count = graphs.Count;
+            int numRows = (count - 1) / numColumns + 1;
 
-			return null;
-		}
+            Rectangle r = this.ClientRectangle;
+            int xStep = (r.Width - margin) / numColumns;
+            int yStep = (r.Height - margin) / numRows;
 
-		/// <summary>
-		/// Vrátí poèet controlù typu Graph, které se vyskytují na formuláøi stránce
-		/// </summary>
-		public int NumGraphControls() {
-			int result = 0;
-
-			foreach(Control control in this.Controls)
-				if((control as Graph) != null)
-					result++;
-
-			return result;
-		}
-
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		protected void InitializeComponent() {
+            this.graphControl = new GraphControl[count];
             this.SuspendLayout();
-            // 
-            // GraphForm
-            // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(392, 266);
-            this.Name = "GraphForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.ResumeLayout(false);
+            this.Controls.Clear();
+            for(int i = 0; i < count; i++) {
+                GraphControl gc = new GraphControl(graphs[i] as Graph);
+                gc.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                gc.Location = new Point(r.X + margin + xStep * (i % numColumns), r.Y + margin + yStep * (i / numColumns));
+                gc.Size = new Size(xStep - margin, yStep - margin);
+                this.Controls.Add(gc);
+                this.graphControl[i] = gc;
+            }
+            this.ResumeLayout();
 
-		}
-		#endregion
+            this.numColumns = numColumns;
+        }
 
-		/// <summary>
-		/// Pøi zmìnì velikosti formuláøe musíme zmìnit velikosti všech grafù
-		/// </summary>
-		/// <param name="e"></param>
-		protected override void OnSizeChanged(EventArgs e) {
-			base.OnSizeChanged (e);
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
 
-			foreach(Control control in this.Controls) {
-				Graph g = control as Graph;
-				if(g != null) 
-					g.SetPosition(this.Width, this.Height);
-			}
-		}
+            if(this.graphControl == null)
+                return;
+
+            int length = this.graphControl.Length;
+            int numRows = (length - 1) / numColumns + 1;
+
+            Rectangle r = this.ClientRectangle;
+            int xStep = (r.Width - margin) / numColumns;
+            int yStep = (r.Height - margin) / numRows;
+
+            this.SuspendLayout();
+            for(int i = 0; i < length; i++) {
+                GraphControl gc = this.graphControl[i];
+                gc.Location = new Point(r.X + margin + xStep * (i % numColumns), r.Y + margin + yStep * (i / numColumns));
+                gc.Size = new Size(xStep - margin, yStep - margin);
+            }
+            this.ResumeLayout();
+        }
 
         #region Implementace IExportable
         /// <summary>
@@ -87,7 +87,7 @@ namespace PavelStransky.Forms {
             // Musíme ukládat binárnì
             if(!export.Binary)
                 throw new Exception("");
-
+            
             // Binárnì
             BinaryWriter b = export.B;
             b.Write(this.Location.X);
@@ -96,6 +96,12 @@ namespace PavelStransky.Forms {
             b.Write(this.Size.Height);
 
             b.Write(this.Name);
+            b.Write(this.numColumns);
+
+            int length = this.graphControl.Length;
+            b.Write(length);
+            for(int i = 0; i < length; i++)
+                export.Write(this.graphControl[i].GetGraph());
         }
 
         /// <summary>
@@ -114,42 +120,17 @@ namespace PavelStransky.Forms {
 
             this.Name = b.ReadString();
             this.Text = this.Name;
+            int numColumns = b.ReadInt32();
+            int length = b.ReadInt32();
+
+            Expression.Array graphs = new Expression.Array();
+            for(int i = 0; i < length; i++)
+                graphs.Add(import.Read());
+            this.SetGraph(graphs, numColumns);
         }
         #endregion
+
+        // Okraj okolo GraphControlu v pixelech
+        private int margin = 8;
     }
-
-	/// <summary>
-	/// Výjimka ve tøídì Graph
-	/// </summary>
-	public class GraphException: ApplicationException {
-		private string detailMessage = string.Empty;
-
-		/// <summary>
-		/// Pøídavné informace o výjimce
-		/// </summary>
-		public string DetailMessage {get {return this.detailMessage;}}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public GraphException(string message) : base(errMessage + message) {}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public GraphException(string message, Exception innerException) : base(errMessage + message, innerException) {}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		/// <param name="detailMessage">Detail chyby</param>
-		public GraphException(string message, string detailMessage) : this(message) {
-			this.detailMessage = detailMessage;
-		}
-
-		private const string errMessage = "V grafu došlo k chybì: ";
-	}
 }

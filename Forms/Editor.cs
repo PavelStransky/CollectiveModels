@@ -27,6 +27,9 @@ namespace PavelStransky.Forms {
         // Èíslo výsledkového formuláøe
         private static int resultNumber = 0;
 
+        // Èíslo grafového formuláøe
+        private static int graphNumber = 0;
+
         /// <summary>
         /// Kontext
         /// </summary>
@@ -95,7 +98,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         public Editor() {
             this.InitializeComponent();
-            this.context = new Expression.Context();
+            this.context = new Context();
             this.InitializeEvents();
             this.SetCaption();
         }
@@ -108,96 +111,27 @@ namespace PavelStransky.Forms {
         }
 
         #region Obsluha grafu
-        private delegate void GraphRequestDelegate(Variable v);
+        private delegate void GraphRequestDelegate(GraphRequestEventArgs e);
 
         /// <summary>
         /// Událost z kontextu - žádost o vytvoøení grafu
         /// </summary>
         private void context_GraphRequest(object sender, GraphRequestEventArgs e) {
             // Spustíme ve vlastním threadu
-            this.Invoke(new GraphRequestDelegate(this.CreateGraph), new object[] { e.Variable });
+            this.Invoke(new GraphRequestDelegate(this.CreateGraph), new object[] { e });
         }
 
         /// <summary>
         /// Vytvoøení nového formuláøe musíme spustit ve vlastním threadu
         /// </summary>
-        private void CreateGraph(Variable v) {
-            GraphForm graphForm = this.NewParentForm(typeof(GraphForm), v.Name) as GraphForm;
-
-            bool isGA = false;
-            GraphArray ga = null;
-            int count = 1;
-            int lengthX = 1;
-            int lengthY = 1;
-
-            if(v.Item is GraphArray) {
-                isGA = true;
-                ga = v.Item as GraphArray;
-                count = ga.Count;
-                lengthX = ga.LengthX;
-                lengthY = ga.LengthY;
-            }
-
-            if(graphForm.NumGraphControls() != count)
-                graphForm.Controls.Clear();
-
-            for(int i = 0; i < count; i++) {
-                Expression.Graph g = null;
-                int index = i;
-                if(isGA)
-                    g = ga[i];
-                else {
-                    index = -1;
-                    g = v.Item as Expression.Graph;
-                }
-
-                RectangleF position = new RectangleF((float)(i % lengthX) / (float)lengthX, (int)(i / lengthX) / (float)lengthY, 1 / (float)lengthX, 1 / (float)lengthY);
-
-                if(g is Expression.DensityGraph) {
-                    DensityGraph densityGraph = graphForm.GraphControl(index) as DensityGraph;
-
-                    if(densityGraph != null)
-                        densityGraph.SetVariable(v, index);
-                    else {
-                        graphForm.SuspendLayout();
-                        densityGraph = new DensityGraph(v, index, position);
-                        this.SetGraphStyles(densityGraph, graphForm, string.Format("{0}{1}", v.Name, i));
-                        graphForm.Controls.Add(densityGraph);
-                        graphForm.ResumeLayout();
-                    }
-                }
-                else if(g is Expression.LineGraph) {
-                    LineGraph lineGraph = graphForm.GraphControl(index) as LineGraph;
-
-                    if(lineGraph != null)
-                        lineGraph.SetVariable(v, index);
-                    else {
-                        graphForm.SuspendLayout();
-                        lineGraph = new LineGraph(v, index, position);
-                        this.SetGraphStyles(lineGraph, graphForm, string.Format("{0}{1}", v.Name, i));
-                        graphForm.Controls.Add(lineGraph);
-                        graphForm.ResumeLayout();
-                    }
-                }
-            }
+        private void CreateGraph(GraphRequestEventArgs e) {
+            GraphForm graphForm = this.NewParentForm(typeof(GraphForm), e.Name) as GraphForm;
+            graphForm.SetGraph(e.Graphs, e.NumColumns);
 
             graphForm.Show();
             this.Activate();
         }
 
-        /// <summary>
-        /// Nastaví styly nového grafu na formuláøi
-        /// </summary>
-        /// <param name="graph">Graf</param>
-        /// <param name="form">Formuláø</param>
-        /// <param name="name">Jméno controlu</param>
-        /// <param name="position">Umístìní controlu</param>
-        private void SetGraphStyles(Graph graph, Form form, string name) {
-            graph.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            graph.SetPosition(form.Width, form.Height);
-            graph.Name = name;
-            graph.KeyDown += new KeyEventHandler(Editor_KeyDown);
-        }
         #endregion
 
         /// <summary>
@@ -363,12 +297,22 @@ namespace PavelStransky.Forms {
             }
             catch(DetailException e) {
                 export.Close();
+                
+                // Doèasný soubor, do kterého jsme ukládali, smažeme
+                if(File.Exists(fileNameSave))
+                    File.Delete(fileNameSave);
+
                 MessageBox.Show(this, string.Format(messageFailedSaveDetail, fileName, e.Message, e.DetailMessage),
                     captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return false;
             }
             catch(Exception e) {
                 export.Close();
+
+                // Doèasný soubor, do kterého jsme ukládali, smažeme
+                if(File.Exists(fileNameSave))
+                    File.Delete(fileNameSave);
+
                 MessageBox.Show(this, string.Format(messageFailedSave, fileName, e.Message),
                     captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return false;
@@ -480,7 +424,7 @@ namespace PavelStransky.Forms {
             // Binárnì
             BinaryWriter b = export.B;
             b.Write((this.MdiParent as MainForm).RegistryEntryName);
-            b.Write(0);                 // Rezervované
+            b.Write(1);                 // Rezervované
 
             b.Write(this.Location.X);
             b.Write(this.Location.Y);
@@ -504,8 +448,8 @@ namespace PavelStransky.Forms {
 
             // Binárnì
             BinaryReader b = import.B;
-            b.ReadString();                 // Oznaèení verze (zatím nekontrolujeme)
-            b.ReadInt32();                  // Èíslo verze
+            import.VersionName = b.ReadString();                 // Oznaèení verze (zatím nekontrolujeme)
+            import.VersionNumber = b.ReadInt32();                // Èíslo verze
 
             this.Location = new Point(b.ReadInt32(), b.ReadInt32());
             this.Size = new Size(b.ReadInt32(), b.ReadInt32());
@@ -513,7 +457,9 @@ namespace PavelStransky.Forms {
             this.txtCommand.Rtf = b.ReadString();
             this.txtCommand.SelectionStart = b.ReadInt32();
 
-            this.context = import.Read() as Context;
+            if(import.VersionNumber >= 1)
+                this.context = import.Read() as Context;
+
             this.InitializeEvents();
         }
         #endregion

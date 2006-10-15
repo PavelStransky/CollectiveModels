@@ -79,6 +79,6 @@ namespace PavelStransky.Expression.Functions {
         private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;
 
         private const string help = "Vyhodnotí matici získanou pomocí funkce SALIG a vrátí vektor se složkami: (freg; celkový poèet bodù; poèet bodù kinematicky dostupné oblasti; poèet zcela regulárních bodù; poèet zcela chaotických bodù; celkový poèet trajektorií; poèet regulárních trajektorií";
-        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector) [; pøesnost výpoètu (double)]]";
+        private const string parameters = "Výsledek z funkce SALIG (Matrix)";
     }
 }

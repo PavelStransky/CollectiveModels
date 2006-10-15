@@ -130,8 +130,7 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.GenArray());
 			functions.Add(new Functions.GetColumns());
 			functions.Add(new Functions.GetRows());
-			functions.Add(new Functions.LGraph());
-			functions.Add(new Functions.DGraph());
+			functions.Add(new Functions.CreateGraph());
 			functions.Add(new Functions.FnImport());
 			functions.Add(new Functions.Interval());
 			functions.Add(new Functions.Join());
@@ -195,6 +194,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.FnDouble());
             functions.Add(new Functions.Spectrum());
             functions.Add(new Functions.FRegMatrixEval());
+            functions.Add(new Functions.Show());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());

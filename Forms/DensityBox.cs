@@ -9,13 +9,17 @@ namespace PavelStransky.Forms {
 	/// <summary>
 	/// Summary description for DensityPanel.
 	/// </summary>
-	public class DensityBox: System.Windows.Forms.PictureBox {
-		// Matice s daty k vykreslení
-		private Matrix matrix = null;
+	public class DensityBox: System.Windows.Forms.PictureBox, IGraphControl {
+		// Daty k vykreslení
+		private Graph graph;
+
 		// Bitmapa, do které se obrázek vykreslí (kvùli rychlosti)
 		private Bitmap bitmap;
-		// Popisky
-		private Expression.Array labelsX, labelsY;
+
+        /// <summary>
+        /// Matice
+        /// </summary>
+        private Matrix Matrix { get { return this.graph.Item[0] as Matrix; } }
 
 		/// <summary>
 		/// Základní konstruktor
@@ -24,44 +28,64 @@ namespace PavelStransky.Forms {
 			this.SizeMode = PictureBoxSizeMode.StretchImage;
 		}
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="graph">Objekt grafu</param>
+        public DensityBox(Graph graph)
+            : this() {
+            this.SetGraph(graph);
+        }
+
+        /// <summary>
+        /// Vrátí objekt s daty
+        /// </summary>
+        public Graph GetGraph() {
+            return this.graph;
+        }
+
 		/// <summary>
 		/// Nastaví matici k zobrazení
 		/// </summary>
-		/// <param name="m">Matice</param>
-		public void SetMatrix(Matrix m) {
-			// Normování matice
-			this.matrix = m * 255.0 / m.MaxAbs();
-			this.CreateBitmap();
-		}
+		/// <param name="graph">Objekt grafu</param>
+		public void SetGraph(Graph graph) {
+            this.graph = graph;
 
-		/// <summary>
-		/// Nastaví popisky
-		/// </summary>
-		/// <param name="labelsX">Popisky matice na ose X</param>
-		/// <param name="labelsY">Popisky matice na ose Y</param>
-		public void SetLabels(Expression.Array labelsX, Expression.Array labelsY) {
-			this.labelsX = labelsX;
-			this.labelsY = labelsY;
+			// Normování matice
+            Matrix matrix = this.Matrix;
+			matrix = matrix * (255.0 / matrix.MaxAbs());
+
+			this.CreateBitmap(matrix);
 		}
 
 		/// <summary>
 		/// Na základì matice a velikosti okna vytvoøí bitmapu;
 		/// </summary>
-		private void CreateBitmap() {
-			this.bitmap = new Bitmap(this.matrix.LengthX * pointSizeX, this.matrix.LengthY * pointSizeY);
+        /// <param name="matrix">Matice k vykreslení</param>
+		private void CreateBitmap(Matrix matrix) {
+            this.bitmap = new Bitmap(matrix.LengthX * pointSizeX, matrix.LengthY * pointSizeY);
 
-			int sizeX = pointSizeX * this.matrix.LengthX;
-			int sizeY = pointSizeY * this.matrix.LengthY;
+            int sizeX = pointSizeX * matrix.LengthX;
+            int sizeY = pointSizeY * matrix.LengthY;
+            int lengthX = matrix.LengthX;
+            int lengthY = matrix.LengthY;
 
-			for(int i = 0; i < sizeX; i++)
-				for(int j = 0; j < sizeY; j++) {
-					int m = (int)this.matrix[i / pointSizeX, j / pointSizeY];
+			for(int i = 0; i < lengthX; i++)
+				for(int j = 0; j < lengthY; j++) {
+					int m = (int)matrix[i, j];
 
 					int r = m > 0 ? m : 0;
 					int g = 0;
 					int b = m < 0 ? -m : 0;
 
-					this.bitmap.SetPixel(i, j, Color.FromArgb(r, g, b));
+                    Color color = Color.FromArgb(r, g, b);
+
+                    int i1 = i * pointSizeX;
+                    int j1 = j * pointSizeY;
+
+                    for(int k = 0; k < pointSizeX; k++)
+                        for(int l = 0; l < pointSizeY; l++)
+        					this.bitmap.SetPixel(i1 + k, j1 + l, color);
 				}
 
 			this.Image = this.bitmap;
@@ -73,31 +97,65 @@ namespace PavelStransky.Forms {
 		protected override void OnPaint(PaintEventArgs e) {
 			base.OnPaint (e);
 
-			if(this.matrix != null && (this.labelsX != null || this.labelsY != null)) {
-				Graphics g = e.Graphics;
+            Graphics g = e.Graphics;
 
-				float koefX = (float)this.Width / this.matrix.LengthX;
-				float koefY = (float)this.Height / this.matrix.LengthY;
-				float fontHeight = 1.2F * g.MeasureString(defaultMeasuredString, baseFont).Height;
+            Expression.Array labelsX = (Expression.Array)this.graph.GetGeneralParameter(paramLabelsX, defaultLabelsX);
+            Expression.Array labelsY = (Expression.Array)this.graph.GetGeneralParameter(paramLabelsY, defaultLabelsY);
 
-				if(this.labelsX != null) {
-					int lx = System.Math.Min(this.matrix.LengthX, this.labelsX.Count);
-					for(int i = 0; i < lx; i++)
-						e.Graphics.DrawString(this.labelsX[i] as string, baseFont, Brushes.White, i * koefX, 0);
-				}
+            float fontHeight = 1.2F * g.MeasureString(defaultMeasuredString, baseFont).Height;
+            Matrix matrix = this.graph.Item[0] as Matrix;
+
+			if(labelsX.Count > 0) {
+				float koefX = (float)this.Width / matrix.LengthX;
+
+				int lx = System.Math.Min(matrix.LengthX, labelsX.Count);
+				for(int i = 0; i < lx; i++)
+					g.DrawString(labelsX[i].ToString(), baseFont, baseBrush, i * koefX, 0);
+            }
+
+            if(labelsX.Count > 0) {
+                float koefY = (float)this.Height / matrix.LengthY;
 				
-				if(this.labelsY != null) {
-					int ly = System.Math.Min(this.matrix.LengthY, this.labelsY.Count);
-					for(int i = 0; i < ly; i++)
-						e.Graphics.DrawString(this.labelsY[i] as string, baseFont, Brushes.White, 0, (i + 1) * koefY - fontHeight);
-				}
+				int ly = System.Math.Min(matrix.LengthY, labelsY.Count);
+				for(int i = 0; i < ly; i++)
+					e.Graphics.DrawString(labelsY[i].ToString(), baseFont, baseBrush, 0, (i + 1) * koefY - fontHeight);
 			}
 		}
 
-		private const int pointSizeX = 5;
-		private const int pointSizeY = 5;
+        /// <summary>
+        /// Nastaví ToolTip
+        /// </summary>
+        /// <param name="x">X - ová souøadnice myši</param>
+        /// <param name="y">Y - ová souøadnice myši</param>
+        public string ToolTip(int x, int y) {
+            Matrix m = this.Matrix;
 
-		private Font baseFont = new Font("Arial", 8);
+            Expression.Array labelsX = (Expression.Array)this.graph.GetGeneralParameter(paramLabelsX, defaultLabelsX);
+            Expression.Array labelsY = (Expression.Array)this.graph.GetGeneralParameter(paramLabelsY, defaultLabelsY);
+
+            int i = m.LengthX * x / this.Width;
+            int j = m.LengthY * y / this.Height;
+
+            string tip = string.Format("({0}, {1}) = {2,4:F}",
+                    labelsX.Count > i ? labelsX[i] as string : i.ToString(),
+                    labelsY.Count > j ? labelsY[j] as string : j.ToString(),
+                    m[i, j]);
+
+            return tip;
+        }
+
+		private const int pointSizeX = 3;
+		private const int pointSizeY = 3;
+
+		private static Font baseFont = new Font("Arial", 8);
+        private static Brush baseBrush = Brushes.White;
 		private const string defaultMeasuredString = "A";
+
+        // Parametry
+        private const string paramLabelsX = "labelsx";
+        private const string paramLabelsY = "labelsy";
+
+        private static Expression.Array defaultLabelsX = new Expression.Array();
+        private static Expression.Array defaultLabelsY = new Expression.Array();
 	}
 }

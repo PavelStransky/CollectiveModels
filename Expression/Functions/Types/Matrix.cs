@@ -22,6 +22,9 @@ namespace PavelStransky.Expression.Functions {
         protected override object Evaluate(int depth, object item, ArrayList arguments) {
             Array array = item as Array;
 
+            if(array.Count == 0)
+                return new Matrix(0);
+
             if(array.ItemTypeName == typeof(Vector).FullName) {
                 if(array.Count == 0)
                     return null;

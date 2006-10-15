@@ -60,10 +60,6 @@ namespace PavelStransky.Expression {
 				// Jinak ji musíme vytvoøit
 				this.objects.Add(name, retValue = new Variable(this, name, item, assignment));
 
-			// Máme - li graf, zobrazíme graf
-			if((item is Graph && (item as Graph).Show) || item is GraphArray)
-				this.OnGraphRequest(new GraphRequestEventArgs(this, retValue));
-
 			return retValue;
 		}
 
@@ -196,9 +192,9 @@ namespace PavelStransky.Expression {
                     string e = b.ReadString();
                     Assignment assignment = null;
 
-                    if(e != string.Empty)
+                    if(e != string.Empty) {
                         assignment = new Assignment(this, e, null);
-
+                    }
                     this.SetVariable(name, import.Read(), assignment);
                 }
             }

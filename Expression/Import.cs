@@ -40,10 +40,6 @@ namespace PavelStransky.Expression {
                 return new ClassicalIBM();
             else if(typeName == typeof(Graph).FullName)
                 return new Graph();
-            else if(typeName == typeof(LineGraph).FullName)
-                return new LineGraph();
-            else if(typeName == typeof(DensityGraph).FullName)
-                return new DensityGraph();
             else
                 return base.CreateObject(typeName);
         }

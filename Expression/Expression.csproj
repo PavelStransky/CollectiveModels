@@ -180,6 +180,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
+    <Compile Include="Functions\Show.cs" />
     <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />
     <Compile Include="Functions\Time.cs" />
@@ -219,9 +220,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\CumulHistogram.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\DGraph.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\DropColumns.cs">
@@ -448,9 +446,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GraphArray.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GraphProperty.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HotKey.cs">

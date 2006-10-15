@@ -119,11 +119,11 @@
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="FormsException.cs" />
-    <Compile Include="Graph.cs">
+    <Compile Include="GraphControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Graph.Designer.cs">
-      <DependentUpon>Graph.cs</DependentUpon>
+    <Compile Include="GraphControl.Designer.cs">
+      <DependentUpon>GraphControl.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphForm.cs">
       <SubType>Form</SubType>
@@ -165,8 +165,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Graph.resx">
-      <DependentUpon>Graph.cs</DependentUpon>
+    <EmbeddedResource Include="GraphControl.resx">
+      <DependentUpon>GraphControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphForm.resx">

@@ -156,7 +156,6 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.FnFor());
 			functions.Add(new Functions.FnIf());
 			functions.Add(new Functions.FnHotKey());
-			functions.Add(new Functions.FnGraphArray());
 			functions.Add(new Functions.FnPoint());
 			functions.Add(new Functions.Histogram());
 			functions.Add(new Functions.CumulHistogram());

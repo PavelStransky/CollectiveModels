@@ -285,9 +285,6 @@
     <Compile Include="Functions\GetY.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\GraphArray.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Functions\Help.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -315,7 +312,7 @@
     <Compile Include="Functions\Length.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\LGraph.cs">
+    <Compile Include="Functions\CreateGraph.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Math\Log.cs" />

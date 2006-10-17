@@ -139,9 +139,9 @@ namespace PavelStransky.Math {
 
                 double meanSALI = queue.Mean;
 
-                if(meanSALI > 5.0 + time / 1000.0)
+                if(meanSALI > 6.0 + time / 1000.0)
                     return false;
-                if(meanSALI < (time - 1000.0) / 250.0)
+                if(meanSALI < (time - 1000.0) / 300.0)
                     return true;
             } while(true);
         }

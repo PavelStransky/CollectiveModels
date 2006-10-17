@@ -84,11 +84,11 @@ namespace PavelStransky.Math {
 
                 double meanSALI = queue.Mean;
 
-                if(meanSALI > 5.0 + time / 1000.0) {
+                if(meanSALI > 6.0 + time / 1000.0) {
                     result = false;
                     break;
                 }
-                if(meanSALI < (time - 1000.0) / 250.0) {
+                if(meanSALI < (time - 1000.0) / 300.0) {
                     result = true;
                     break;
                 }
@@ -159,7 +159,7 @@ namespace PavelStransky.Math {
                     }
                 }
                 if(foundIC) {
-                    boundX[4] = ky * (j - 1) + y0;
+                    boundX[4] = ky * (j - 2) + y0;
                     break;
                 }
             }
@@ -183,7 +183,7 @@ namespace PavelStransky.Math {
                     }
                 }
                 if(foundIC) {
-                    boundX[1] = kx * i + x0;
+                    boundX[1] = kx * (i + 1) + x0;
                     break;
                 }
             }
@@ -207,7 +207,7 @@ namespace PavelStransky.Math {
                     }
                 }
                 if(foundIC) {
-                    boundX[5] = ky * j + y0;
+                    boundX[5] = ky * (j + 1) + y0;
                     break;
                 }
             }
@@ -277,7 +277,7 @@ namespace PavelStransky.Math {
                         for(int k = 0; k < section.Length; k++) {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
-                            if(!actPassed[n1x, n2x]) {
+                            if(n1x < n1 && n2x < n2 && !actPassed[n1x, n2x]) {
                                 result[n1x, n2x] += sali;
                                 trPassed[n1x, n2x]++;
                                 actPassed[n1x, n2x] = true;

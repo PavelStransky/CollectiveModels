@@ -341,7 +341,7 @@ namespace PavelStransky.Forms {
                     Registry.ClassesRoot.DeleteSubKeyTree(keyName);
                     Registry.ClassesRoot.DeleteSubKeyTree('.' + defaultFileExt);
                 }
-                catch(Exception exp) {
+                catch(Exception) {
                 }
 
                 this.mnSetttingsRegistry.Checked = false;

@@ -27,9 +27,6 @@ namespace PavelStransky.Forms {
         // Èíslo vısledkového formuláøe
         private static int resultNumber = 0;
 
-        // Èíslo grafového formuláøe
-        private static int graphNumber = 0;
-
         /// <summary>
         /// Kontext
         /// </summary>

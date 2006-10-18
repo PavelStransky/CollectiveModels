@@ -397,7 +397,7 @@ namespace PavelStransky.GCM {
                         }
                     }
                 }
-                catch(Exception exc) {
+                catch(Exception) {
                 }
             }
 

@@ -64,7 +64,7 @@ namespace PavelStransky.Math {
                 else
                     typeName = t.ReadLine();
             }
-            catch(EndOfStreamException e) {
+            catch(EndOfStreamException) {
                 return null;
             }
 

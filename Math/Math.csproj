@@ -137,6 +137,7 @@
     <Compile Include="RungeKuttaAdaptive.cs" />
     <Compile Include="RungeKuttaEnergy.cs" />
     <Compile Include="Dynamics\SALI.cs" />
+    <Compile Include="SpecialFunctions.cs" />
     <Compile Include="Spline.cs">
       <SubType>Code</SubType>
     </Compile>

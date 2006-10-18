@@ -28,9 +28,10 @@ namespace PavelStransky.Test {
         /// QuantumGCM, 10.10.2006
         /// </summary>
         public static void PokusQuantumGCM1() {
-            QuantumGCM q = new QuantumGCM(1, 1, 1, 1);
-            Vector v = q.EnergyLevels(0, 70);
+            QuantumGCM q = new QuantumGCM(-1, 1, 1, 1);
+            Console.WriteLine(q.ToString());
 
+            Vector v = q.EnergyLevels(0, 30);
             Console.WriteLine(v.ToString());
         }
 

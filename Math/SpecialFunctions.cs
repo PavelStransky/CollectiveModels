@@ -140,7 +140,7 @@ namespace PavelStransky.Math {
                     return System.Math.Exp(-x + a * System.Math.Log(x) - gla) * h;
             }
 
-            throw new Exception(string.Format(errorMessageIterationOverrun, "GSeries"));
+            throw new Exception(string.Format(errorMessageIterationOverrun, "GFraction"));
         }
 
         /// <summary>

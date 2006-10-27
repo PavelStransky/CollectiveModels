@@ -25,9 +25,11 @@ namespace PavelStransky.Forms {
             this.components = new System.ComponentModel.Container();
             this.lblTitle = new System.Windows.Forms.Label();
             this.contextMenu = new System.Windows.Forms.ContextMenu();
-            this.cmnSaveAs = new System.Windows.Forms.MenuItem();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.cmnSaveAsTxt = new System.Windows.Forms.MenuItem();
+            this.cmnSaveAsGif = new System.Windows.Forms.MenuItem();
+            this.saveFileDialogTxt = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.saveFileDialogGif = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -44,23 +46,35 @@ namespace PavelStransky.Forms {
             // contextMenu
             // 
             this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.cmnSaveAs});
+            this.cmnSaveAsTxt,
+            this.cmnSaveAsGif});
             // 
-            // cmnSaveAs
+            // cmnSaveAsTxt
             // 
-            this.cmnSaveAs.Index = 0;
-            this.cmnSaveAs.Text = "&Uložit jako...";
-            this.cmnSaveAs.Click += new System.EventHandler(this.cmnSaveAs_Click);
+            this.cmnSaveAsTxt.Index = 0;
+            this.cmnSaveAsTxt.Text = "Uložit jako &text...";
+            this.cmnSaveAsTxt.Click += new System.EventHandler(this.cmnSaveAsTxt_Click);
             // 
-            // saveFileDialog
+            // cmnSaveAsGif
             // 
-            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
+            this.cmnSaveAsGif.Index = 1;
+            this.cmnSaveAsGif.Text = "Uložit jako &GIF...";
+            this.cmnSaveAsGif.Click += new System.EventHandler(this.cmnSaveAsGif_Click);
+            // 
+            // saveFileDialogTxt
+            // 
+            this.saveFileDialogTxt.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogTxt_FileOk);
+            // 
+            // saveFileDialogGif
+            // 
+            this.saveFileDialogGif.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogGif_FileOk);
             // 
             // GraphControl
             // 
             this.ContextMenu = this.contextMenu;
             this.Controls.Add(this.lblTitle);
             this.Name = "GraphControl";
+            this.Size = new System.Drawing.Size(150, 170);
             this.ResumeLayout(false);
 
         }
@@ -68,8 +82,10 @@ namespace PavelStransky.Forms {
 
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.ContextMenu contextMenu;
-        private System.Windows.Forms.MenuItem cmnSaveAs;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.MenuItem cmnSaveAsTxt;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogTxt;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogGif;
+        private System.Windows.Forms.MenuItem cmnSaveAsGif;
     }
 }

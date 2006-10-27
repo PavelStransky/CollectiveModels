@@ -1,7 +1,10 @@
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Timers;
+using System.IO;
 
 using PavelStransky.Math;
 using PavelStransky.Expression;
@@ -13,7 +16,13 @@ namespace PavelStransky.Forms {
 	public class LineBox: System.Windows.Forms.PictureBox, IGraphControl {
 		// Data k vykreslení
         private Graph graph;
+
+        // Èasovaè pro animace
         private System.Timers.Timer timer = new System.Timers.Timer();
+
+        // Èasovaè pro ukládání
+        private BackgroundWorker backgroundWorker = new BackgroundWorker();
+
         private int time, maxTime;
 
 		// Zesílení køivek v ose Y
@@ -31,7 +40,106 @@ namespace PavelStransky.Forms {
 		/// <summary>
 		/// Základní konstruktor
 		/// </summary>
-		public LineBox() : base() {}
+		public LineBox() : base() {
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+        }
+
+        #region Uložení obrázku
+        /// <summary>
+        /// Uloží jako GIF
+        /// </summary>
+        /// <param name="fName">Jméno souboru</param>
+        public void SaveGIF(string fName) {
+            (this.Parent.Parent as GraphForm).NewProcess("Ukládání GIF :", this.backgroundWorker, fName);
+        }
+
+        /// <summary>
+        /// Základní pracovní metoda, která ukládá obrázek
+        /// </summary>
+        void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+            string fName = e.Argument as string;
+            int maxTime = this.graph.GetMaxLength();
+
+            if((bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate)) {
+                int interval = (int)(double)this.graph.GetGeneralParameter(paramInterval, defaultInterval) / 10;
+
+                MemoryStream m = new MemoryStream();
+                FileStream f = new FileStream(fName, FileMode.Create);
+                BinaryWriter b = new BinaryWriter(f);
+
+                byte[] buf1;
+                byte[] buf2 = new Byte[19];
+                byte[] buf3 = new Byte[8];
+                buf2[0] = 33;                   // extension introducer
+                buf2[1] = 255;                  // application extension
+                buf2[2] = 11;                   // size of block
+                buf2[3] = 78;                   // N
+                buf2[4] = 69;                   // E
+                buf2[5] = 84;                   // T
+                buf2[6] = 83;                   // S
+                buf2[7] = 67;                   // C
+                buf2[8] = 65;                   // A
+                buf2[9] = 80;                   // P
+                buf2[10] = 69;                  // E
+                buf2[11] = 50;                  // 2
+                buf2[12] = 46;                  // .
+                buf2[13] = 48;                  // 0
+                buf2[14] = 3;                   // Size of block
+                buf2[15] = 1;                   //
+                buf2[16] = 0;                   //
+                buf2[17] = 0;                   //
+                buf2[18] = 0;                   // Block terminator
+
+                buf3[0] = 33;                   // Extension introducer
+                buf3[1] = 249;                  // Graphic control extension
+                buf3[2] = 4;                    // Size of block
+                buf3[3] = 9;                    // Flags: reserved, disposal method, user input, transparent color
+                buf3[4] = (byte)(interval % 256);// Delay time low byte
+                buf3[5] = (byte)(interval / 256);// Delay time high byte
+                buf3[6] = 255;                  // Transparent color index
+                buf3[7] = 0;                    // Block terminator
+
+                for(int time = 0; time < maxTime; time++) {
+                    System.Drawing.Image image = new Bitmap(this.Width, this.Height);
+                    this.PaintGraph(Graphics.FromImage(image), time);
+                    image.Save(m, ImageFormat.Gif);
+
+                    buf1 = m.ToArray();
+
+                    if(time == 0) {
+                        //only write these the first time....
+                        b.Write(buf1, 0, 781); //Header & global color table
+                        b.Write(buf2, 0, 19); //Application extension
+                    }
+
+                    b.Write(buf3, 0, 8); //Graphic extension
+                    b.Write(buf1, 789, buf1.Length - 790); //Image data
+
+                    m.SetLength(0);
+                    this.backgroundWorker.ReportProgress(time * 100 / maxTime);
+
+                    // Požadavek ukonèení procesu
+                    if(this.backgroundWorker.CancellationPending)
+                        break;
+                }
+
+                b.Write((byte)0x3B); //Image terminator
+                b.Close();
+                f.Close();
+                m.Close();
+            }
+
+            else {
+                System.Drawing.Image image = new Bitmap(this.Width, this.Height);
+                this.PaintGraph(Graphics.FromImage(image), maxTime);
+                image.Save(fName, ImageFormat.Gif);
+
+                this.backgroundWorker.ReportProgress(100);
+            }
+        }
+        #endregion
 
         /// <param name="graph">Objekt grafu</param>
         public LineBox(Graph graph)
@@ -127,15 +235,27 @@ namespace PavelStransky.Forms {
 		}
 
 		/// <summary>
-		/// Vykreslení
+		/// Pøekreslení
 		/// </summary>
 		protected override void OnPaint(PaintEventArgs e) {
 			base.OnPaint (e);
+            this.PaintGraph(e.Graphics, this.time);
+        }
+
+        /// <summary>
+        /// Provede vykreslení grafu
+        /// </summary>
+        /// <param name="g">Graphics</param>
+        /// <param name="time">Èas k vykreslení</param>
+        private void PaintGraph(Graphics g, int time){
+            // Barva pozadí
+            Color backgroundColor = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
+            Brush backgroundBrush = (new Pen(backgroundColor)).Brush;
+            g.FillRectangle(backgroundBrush, this.ClientRectangle);
 
 			if(this.graph.Count > 0) {
                 bool shift = (bool)this.graph.GetGeneralParameter(paramShift, defaultShift);
 
-				Graphics g = e.Graphics;
 				int stringHeight = (int)g.MeasureString("M", baseFont).Height;
 
                 double offsetX = this.GetFitOffsetX();
@@ -156,7 +276,7 @@ namespace PavelStransky.Forms {
 					if(shift)
 						offsetY = (i + 1) * (this.Height - this.marginT - this.marginB) / (this.graph.Count + 2) + this.marginT;
 
-					Point [] p = this.graph.PointArrayToDraw(i, offsetX, amplifyX, offsetY, amplifyY, this.time);
+					Point [] p = this.graph.PointArrayToDraw(i, offsetX, amplifyX, offsetY, amplifyY, time);
 
                     Color lineColor = (Color)this.graph.GetCurveParameter(i, paramLineColor, defaultLineColor);
                     float lineWidth = (float)this.graph.GetCurveParameter(i, paramLineWidth, defaultLineWidth);
@@ -474,6 +594,7 @@ namespace PavelStransky.Forms {
         private const string paramPointSize = "psize";
         private const string paramShowLabel = "showlabel";
         private const string paramLabelColor = "labelcolor";
+        private const string paramBackgroundColor = "bcolor";
 
         private const string paramFirstPointColor = "fpcolor";
         private const string paramFirstPointStyle = "fpstyle";
@@ -525,6 +646,7 @@ namespace PavelStransky.Forms {
         private const bool defaultShowLabel = true;
         private static Color defaultLabelColor = Color.FromName("black");
         private const string defaultLineName = "";
+        private static Color defaultBackgroundColor = Color.FromName("white");
 
         private static Color defaultFirstPointColor = Color.FromName("darkred");
         private static Graph.PointStyles defaultFirstPointStyle = Graph.PointStyles.FCircle;

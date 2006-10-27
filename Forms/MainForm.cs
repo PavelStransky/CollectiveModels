@@ -23,6 +23,11 @@ namespace PavelStransky.Forms {
         public ArrayList OpenedFileNames { get { return this.openedFileNames; } }
 
         /// <summary>
+        /// Vrací èi nastavuje aktuální adresáø
+        /// </summary>
+        public string Directory { get { return this.openFileDialog.InitialDirectory; } set { this.openFileDialog.InitialDirectory = value; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         public MainForm() {
@@ -54,7 +59,7 @@ namespace PavelStransky.Forms {
         /// Inicializace instance nové GCM
         /// </summary>
         private void Initialize() {
-            this.SetDialogProperties(this.openFileDialog, defaultDirectory);
+            this.SetDialogProperties(this.openFileDialog);
 
             if(this.IsRegistered)
                 this.mnSetttingsRegistry.Checked = true;
@@ -93,11 +98,11 @@ namespace PavelStransky.Forms {
         /// Nastaví vlastnosti dialogu
         /// </summary>
         /// <param name="dialog">Dialog</param>
-        private void SetDialogProperties(FileDialog dialog, string directory) {
+        private void SetDialogProperties(FileDialog dialog) {
             dialog.Reset();
-            dialog.Filter = defaultFileFilter;
-            dialog.DefaultExt = defaultFileExt;
-            dialog.InitialDirectory = directory;
+            dialog.Filter = WinMain.FileFilterGcm;
+            dialog.DefaultExt = WinMain.FileExtGcm;
+            dialog.InitialDirectory = WinMain.Directory;
             dialog.RestoreDirectory = false;
         }
 
@@ -144,7 +149,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void New() {
             Editor editor = new Editor();
-            this.SetDialogProperties(editor.SaveFileDialog, this.openFileDialog.InitialDirectory);
+            this.SetDialogProperties(editor.SaveFileDialog);
             editor.MdiParent = this;
             editor.Show();
         }
@@ -160,6 +165,7 @@ namespace PavelStransky.Forms {
         /// Otevøení souboru - voláno z dialogu FileOpen
         /// </summary>
         private void openFileDialog_FileOk(object sender, CancelEventArgs e) {
+            WinMain.SetDirectoryFromFile(this.openFileDialog.FileName);
             this.Open(this.openFileDialog.FileName);
         }
 
@@ -172,8 +178,8 @@ namespace PavelStransky.Forms {
             Editor editor = null;
 
             // Pøídání pøípony
-            if(fileName.Length < 3 || fileName.Substring(fileName.Length - 3, 3) != defaultFileExt)
-                fileName = string.Format("{0}.{1}", fileName, defaultFileExt);
+            if(fileName.Length < 3 || fileName.Substring(fileName.Length - 3, 3) != WinMain.FileExtGcm)
+                fileName = string.Format("{0}.{1}", fileName, WinMain.FileExtGcm);
 
             try {
                 import = new Import(fileName, true);
@@ -339,7 +345,7 @@ namespace PavelStransky.Forms {
             if(this.mnSetttingsRegistry.Checked) {
                 try {
                     Registry.ClassesRoot.DeleteSubKeyTree(keyName);
-                    Registry.ClassesRoot.DeleteSubKeyTree('.' + defaultFileExt);
+                    Registry.ClassesRoot.DeleteSubKeyTree('.' + WinMain.FileExtGcm);
                 }
                 catch(Exception) {
                 }
@@ -347,7 +353,7 @@ namespace PavelStransky.Forms {
                 this.mnSetttingsRegistry.Checked = false;
             }
             else {
-                Registry.ClassesRoot.CreateSubKey('.' + defaultFileExt).SetValue(string.Empty, keyName);
+                Registry.ClassesRoot.CreateSubKey('.' + WinMain.FileExtGcm).SetValue(string.Empty, keyName);
                 Registry.ClassesRoot.CreateSubKey(keyName).SetValue(string.Empty, programDescription);
                 Registry.ClassesRoot.CreateSubKey(string.Format("{0}\\DefaultIcon", keyName)).SetValue(string.Empty, string.Format("{0},0", path));
                 Registry.ClassesRoot.CreateSubKey(string.Format(commandEntryName, keyName)).SetValue(string.Empty, string.Format(commandEntryFormat, path));
@@ -356,10 +362,6 @@ namespace PavelStransky.Forms {
             }
         }
         #endregion
-
-        private const string defaultFileFilter = "Soubory historie (*.gcm)|*.gcm|Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
-        private const string defaultFileExt = "gcm";
-        private const string defaultDirectory = "c:\\gcm";
 
         private const string commandEntryName = "{0}\\shell\\open\\command";
         private const string commandEntryFormat = "\"{0}\" \"%1\"";

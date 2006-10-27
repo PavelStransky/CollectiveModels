@@ -67,7 +67,6 @@ namespace PavelStransky.Forms {
         /// <param name="command">Pøíkaz</param>
         public void SetExpression (Expression.Context expContext, string command) {
             try {
-                this.calcThread = null;
                 this.expression = new PavelStransky.Expression.Expression(expContext, command, this); 
                 this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));

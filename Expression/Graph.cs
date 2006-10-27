@@ -255,7 +255,7 @@ namespace PavelStransky.Expression {
 
                     for(int i = 0; i < count; i++) {
                         int l = this.GetLength(i);
-                        Vector e = (i < ecount) ? (errors as Vector[])[i] : null;
+                        Vector e = (i < ecount) ? (errors as Array)[i] as Vector : null;
 
                         if(e == null)
                             result.Add(new Vector(l));  // Pøidáme vektor se samými nulami

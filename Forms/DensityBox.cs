@@ -59,9 +59,9 @@ namespace PavelStransky.Forms {
 
                 // Normování matice
                 Matrix matrix = this.GetMatrix(i);
-                matrix = matrix * (255.0 / matrix.MaxAbs());
+                matrix = matrix * (1.0 / System.Math.Abs(matrix.MaxAbs()));
 
-                this.bitmap[i] = this.CreateBitmap(matrix);
+                this.bitmap[i] = this.CreateBitmap(i, matrix);
 
                 // Žádost o pøerušení procesu
                 if(this.backgroundWorkerCreate.CancellationPending) 
@@ -75,8 +75,9 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Na základì matice a velikosti okna vytvoøí bitmapu;
         /// </summary>
+        /// <param name="index">Index matice</param>
         /// <param name="matrix">Matice k vykreslení</param>
-        private Bitmap CreateBitmap(Matrix matrix) {
+        private Bitmap CreateBitmap(int index, Matrix matrix) {
             int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
             int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
 
@@ -87,15 +88,25 @@ namespace PavelStransky.Forms {
             int lengthX = matrix.LengthX;
             int lengthY = matrix.LengthY;
 
+            Color colorPlus = (Color)this.graph.GetCurveParameter(index, paramColorPlus, defaultColorPlus);
+            Color colorZero = (Color)this.graph.GetCurveParameter(index, paramColorZero, defaultColorZero);
+            Color colorMinus = (Color)this.graph.GetCurveParameter(index, paramColorMinus, defaultColorMinus);
+
             for(int i = 0; i < lengthX; i++) {
                 for(int j = 0; j < lengthY; j++) {
                     int m = (int)matrix[i, j];
 
-                    int r = m > 0 ? m : 0;
-                    int g = 0;
-                    int b = m < 0 ? -m : 0;
-
-                    Color color = Color.FromArgb(r, g, b);
+                    Color color;
+                    if(m < 0) 
+                        color = Color.FromArgb(
+                            (1 + m) * colorZero.R - m * colorMinus.R,
+                            (1 + m) * colorZero.G - m * colorMinus.G,
+                            (1 + m) * colorZero.B - m * colorMinus.B);
+                    else
+                        color = Color.FromArgb(
+                            (1 - m) * colorZero.R + m * colorPlus.R,
+                            (1 - m) * colorZero.G + m * colorPlus.G,
+                            (1 - m) * colorZero.B + m * colorPlus.B);
 
                     int i1 = i * pointSizeX;
                     int j1 = j * pointSizeY;
@@ -350,12 +361,17 @@ namespace PavelStransky.Forms {
         private const string paramInterval = "interval";
         private const string paramPointSizeX = "psizex";
         private const string paramPointSizeY = "psizey";
+        private const string paramColorZero = "colorzero";
+        private const string paramColorPlus = "colorplus";
+        private const string paramColorMinus = "colorminus";
 
         private static Expression.Array defaultLabelsX = new Expression.Array();
         private static Expression.Array defaultLabelsY = new Expression.Array();
         private const double defaultInterval = 1000.0;
         private const int defaultPointSizeX = 3;
         private const int defaultPointSizeY = 3;
-
+        private static Color defaultColorZero = Color.FromName("black");
+        private static Color defaultColorPlus = Color.FromName("blue");
+        private static Color defaultColorMinus = Color.FromName("red");
     }
 }

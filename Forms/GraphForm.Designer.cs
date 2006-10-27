@@ -33,7 +33,7 @@ namespace PavelStransky.Forms {
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.progress.Location = new System.Drawing.Point(139, 262);
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(233, 16);
+            this.progress.Size = new System.Drawing.Size(223, 16);
             this.progress.Step = 1;
             this.progress.TabIndex = 0;
             this.progress.UseWaitCursor = true;
@@ -53,7 +53,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblRestProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRestProcess.AutoSize = true;
-            this.lblRestProcess.Location = new System.Drawing.Point(378, 262);
+            this.lblRestProcess.Location = new System.Drawing.Point(368, 262);
             this.lblRestProcess.Name = "lblRestProcess";
             this.lblRestProcess.Size = new System.Drawing.Size(13, 13);
             this.lblRestProcess.TabIndex = 2;

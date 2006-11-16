@@ -70,9 +70,11 @@ namespace PavelStransky.Forms {
                 this.expression = new PavelStransky.Expression.Expression(expContext, command, this); 
                 this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
+                this.calcThread.Priority = ThreadPriority.BelowNormal;
 
                 this.btRecalculate.Visible = true;
                 this.lblResult.Visible = true;
+                this.chkAsync.Visible = true;
                 this.lblComputing.Visible = false;
                 this.btInterrupt.Visible = false;
                 this.btPause.Visible = false;
@@ -91,20 +93,25 @@ namespace PavelStransky.Forms {
             if(!this.calculating && this.calcThread != null) {
                 this.calculating = true;
                 
+                // Nastavení ovládacích prvkù
                 this.txtResult.Clear();
 
-                this.startTime = DateTime.Now;
-                this.calcThread.Priority = ThreadPriority.BelowNormal;
-                this.calcThread.Start();
-
-                // Nastavení ovládacích prvkù
                 this.SetCaption(captionCalculating);
                 this.btRecalculate.Visible = false;
                 this.lblResult.Visible = false;
+                this.chkAsync.Visible = false;
                 this.lblComputing.Visible = true;
-                this.btInterrupt.Visible = true;
-                this.btPause.Visible = true;
                 this.btContinue.Visible = false;
+
+                this.startTime = DateTime.Now;
+
+                if(this.chkAsync.Checked) {
+                    this.btInterrupt.Visible = true;
+                    this.btPause.Visible = true;
+                    this.calcThread.Start();
+                }
+                else
+                    this.ThreadStart();
             }
         }
 
@@ -158,6 +165,7 @@ namespace PavelStransky.Forms {
 
             // Nastavení ovládacích prvkù
             this.btRecalculate.Visible = true;
+            this.chkAsync.Visible = true;
             this.btInterrupt.Visible = false;
             this.btContinue.Visible = false;
             this.btPause.Visible = false;
@@ -176,6 +184,7 @@ namespace PavelStransky.Forms {
             // Nastavení ovládacích prvkù
             this.btRecalculate.Visible = true;
             this.btInterrupt.Visible = false;
+            this.chkAsync.Visible = true;
             this.btContinue.Visible = false;
             this.btPause.Visible = false;
             this.lblComputing.Visible = false;

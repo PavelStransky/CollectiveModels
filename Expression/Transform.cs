@@ -17,12 +17,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Transform(Context context, string expression, Atom parent, IOutputWriter writer)
-            : base(context, expression, parent, writer) {
+        public Transform(string expression, Atom parent, IOutputWriter writer)
+            : base(expression, parent, writer) {
 			string operatorName = string.Empty;
 			int pos = FindUnaryOperatorPosition(out operatorName, this.expression);
 
@@ -38,11 +37,10 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet vzorce
 		/// </summary>
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
 		/// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate() {
-			object result = base.Evaluate();
-
-			object operandResult = EvaluateAtomObject(this.context, this.operand);
+		public override object Evaluate(Context context) {
+			object operandResult = EvaluateAtomObject(context, this.operand);
 			return this.unaryOperator.Evaluate(operandResult);
 		}
 

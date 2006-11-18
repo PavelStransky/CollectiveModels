@@ -254,8 +254,8 @@ namespace PavelStransky.Test {
 			context.SetVariable("m", m);
 
 			try {
-				Expression.Expression exp = new Expression.Expression(context, text);
-				exp.Evaluate();
+				Expression.Expression exp = new Expression.Expression(text);
+				exp.Evaluate(context);
 				Vector v = (context["z"] as Variable).Item as Vector;
 //				double x = (v == null) ? (double)(exp.Evaluate() as Variable).Item : 0.0;
 				Console.WriteLine(v);
@@ -263,8 +263,8 @@ namespace PavelStransky.Test {
                 Export export = new Export("c:\\eeg\\context.txt", true);
                 export.Write(context);
                 export.Close();
-				exp = new PavelStransky.Expression.Expression(context, "save(\"c:\\eeg\\prdlacka.txt\")");
-				exp.Evaluate();
+				exp = new PavelStransky.Expression.Expression("save(\"c:\\eeg\\prdlacka.txt\")");
+				exp.Evaluate(context);
 			}
 			catch(ExpressionException e) {
 				Console.WriteLine(e.Message);
@@ -304,8 +304,8 @@ namespace PavelStransky.Test {
             import.Close();
 
 			string text = "z = splitcolumns(m)";
-			Expression.Expression exp = new Expression.Expression(context, text);
-			exp.Evaluate();
+			Expression.Expression exp = new Expression.Expression(text);
+			exp.Evaluate(context);
 
             Export export = new Export("c:\\eeg\\context1.txt", true);
             export.Write(context);

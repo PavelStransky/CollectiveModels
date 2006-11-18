@@ -82,10 +82,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet výrazu (pokud nìjaký výraz je)
 		/// </summary>
-		public object Evaluate() {
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        public object Evaluate(Context context) {
 			if(this.assignment == null)
 				throw new ExpressionException(string.Format(errorMessageNoExpression, this.name));
-			return this.assignment.Evaluate();
+			return this.assignment.Evaluate(context);
 		}
 
 		private string defaultName = "Object";

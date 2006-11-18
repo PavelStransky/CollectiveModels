@@ -14,12 +14,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Formula(Context context, string expression, Atom parent, IOutputWriter writer)
-            : base(context, expression, parent, writer) {
+        public Formula(string expression, Atom parent, IOutputWriter writer)
+            : base(expression, parent, writer) {
             this.expression = FillBracket(this.expression);
 
             string operatorName = string.Empty;
@@ -39,12 +38,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet vzorce
 		/// </summary>
-		/// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate() {
-			object retValue = base.Evaluate();
-
-			object left = EvaluateAtomObject(this.context, this.leftOperand);
-			object right = EvaluateAtomObject(this.context, this.rightOperand);
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <returns>Výsledek výpoètu</returns>
+		public override object Evaluate(Context context) {
+			object left = EvaluateAtomObject(context, this.leftOperand);
+			object right = EvaluateAtomObject(context, this.rightOperand);
 
 			return this.binaryOperator.Evaluate(left, right);
 		}

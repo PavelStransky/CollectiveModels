@@ -30,8 +30,6 @@ namespace PavelStransky.Expression {
 
 		// Náš výraz
 		protected string expression;
-		// Kontext
-		protected Context context;
 		// Atom o úroveò výš (kvùli poèítání poètu krokù)
 		protected Atom parent;
         // Kvùli všemožným výstupùm
@@ -61,19 +59,17 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz funkce</param>
 		/// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-		public Atom(Context context, string expression, Atom parent, IOutputWriter writer) {
-			this.Create(context, expression, parent, writer);
+		public Atom(string expression, Atom parent, IOutputWriter writer) {
+			this.Create(expression, parent, writer);
 		}
 
 		/// <summary>
 		/// Vytvoøení objektu
 		/// </summary>
-		private void Create(Context context, string expression, Atom parent, IOutputWriter writer) {
-			this.context = context;
+		private void Create(string expression, Atom parent, IOutputWriter writer) {
 			this.parent = parent;
             this.writer = writer;
 			this.expression = RemoveComment(expression);
@@ -86,8 +82,9 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet èásti výrazu
 		/// </summary>
-		/// <returns>Výsledek výpoètu</returns>
-		public virtual object Evaluate() {
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <returns>Výsledek výpoètu</returns>
+		public virtual object Evaluate(Context context) {
 			return null;
         }
 
@@ -132,7 +129,6 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.GetRows());
 			functions.Add(new Functions.CreateGraph());
 			functions.Add(new Functions.FnImport());
-			functions.Add(new Functions.Interval());
 			functions.Add(new Functions.Join());
 			functions.Add(new Functions.Length());
 			functions.Add(new Functions.SLength());
@@ -144,10 +140,7 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.Split());
 			functions.Add(new Functions.SplitColumns());
 			functions.Add(new Functions.SplitRows());
-			functions.Add(new Functions.Start());
-			functions.Add(new Functions.Stop());
 			functions.Add(new Functions.String());
-			functions.Add(new Functions.FnTimer());
 			functions.Add(new Functions.Transpose());
 			functions.Add(new Functions.FnVector());
             functions.Add(new Functions.FnMatrix());
@@ -155,7 +148,6 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.SwapDim());
 			functions.Add(new Functions.FnFor());
 			functions.Add(new Functions.FnIf());
-			functions.Add(new Functions.FnHotKey());
 			functions.Add(new Functions.FnPoint());
 			functions.Add(new Functions.Histogram());
 			functions.Add(new Functions.CumulHistogram());
@@ -194,7 +186,11 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Spectrum());
             functions.Add(new Functions.FRegMatrixEval());
             functions.Add(new Functions.Show());
-            functions.Add(new Functions.CreateContext());
+
+            functions.Add(new Functions.NewContext());
+            functions.Add(new Functions.GetContext());
+            functions.Add(new Functions.UseContext());
+            functions.Add(new Functions.SetContext());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());
@@ -670,22 +666,22 @@ namespace PavelStransky.Expression {
 
 			switch(ExpressionType(expression)) {
 				case ExpressionTypes.Transform:
-					retValue = new Transform(this.context, expression, this, this.writer);
+					retValue = new Transform(expression, this, this.writer);
 					break;
 				case ExpressionTypes.Formula:
-					retValue = new Formula(this.context, expression, this, this.writer);
+					retValue = new Formula(expression, this, this.writer);
 					break;
 				case ExpressionTypes.Function:
-					retValue = new Function(this.context, expression, this, this.writer);
+					retValue = new Function(expression, this, this.writer);
 					break;
 				case ExpressionTypes.Assignment:
-					retValue = new Assignment(this.context, expression, this, this.writer);
+					retValue = new Assignment(expression, this, this.writer);
 					break;
 				case ExpressionTypes.ExpressionList:
-					retValue = new ExpressionList(this.context, expression, this, this.writer);
+					retValue = new ExpressionList(expression, this, this.writer);
 					break;
 				case ExpressionTypes.Indexer:
-					retValue = new Indexer(this.context, expression, this, this.writer);
+					retValue = new Indexer(expression, this, this.writer);
 					break;
 				case ExpressionTypes.Int32:
 					retValue = Convert.ToInt32(expression);
@@ -781,7 +777,7 @@ namespace PavelStransky.Expression {
 			object retValue;
 
 			if(operand is Atom) {
-				retValue = (operand as Atom).Evaluate();
+				retValue = (operand as Atom).Evaluate(context);
 			}
 			else if(operand is string) {
 				string s = ParseString(operand as String);

@@ -85,9 +85,12 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Inicializuje eventy pro context
         /// </summary>
-        private void InitializeEvents() {
-            this.context.ExitRequest += new PavelStransky.Expression.Context.ExitEventHandler(context_ExitRequest);
-            this.context.GraphRequest += new PavelStransky.Expression.Context.GraphRequestEventHandler(context_GraphRequest);
+        /// <param name="context">Kontext</param>
+        private void InitializeEvents(Context context) {
+            context.ExitRequest += new Context.ExitEventHandler(context_ExitRequest);
+            context.GraphRequest += new Context.GraphRequestEventHandler(context_GraphRequest);
+            context.NewContextRequest += new Context.ContextEventHandler(context_NewContextRequest);
+            context.SetContextRequest += new Context.ContextEventHandler(context_SetContextRequest);
         }
 
         /// <summary>
@@ -96,7 +99,7 @@ namespace PavelStransky.Forms {
         public Editor() {
             this.InitializeComponent();
             this.context = new Context();
-            this.InitializeEvents();
+            this.InitializeEvents(this.context);
             this.SetCaption();
         }
 
@@ -105,6 +108,20 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void context_ExitRequest(object sender, EventArgs e) {
             this.Close();
+        }
+
+        /// <summary>
+        /// Událost z kontextu - zmìna kontextu
+        /// </summary>
+        private void context_SetContextRequest(object sender, ContextEventArgs e) {
+            this.context = e.Context;
+        }
+
+        /// <summary>
+        /// Událost z kontextu - nový kontext (musíme nastavit eventy)
+        /// </summary>
+        void context_NewContextRequest(object sender, ContextEventArgs e) {
+            this.InitializeEvents(e.Context);
         }
 
         #region Obsluha grafu
@@ -425,7 +442,7 @@ namespace PavelStransky.Forms {
                 this.Activate();
             }
             else {
-                f.SetExpression(this.context, e.Expression);
+                f.SetExpression(e.Expression);
                 f.Show();
                 f.Start();
 
@@ -453,25 +470,6 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void Editor_Activated(object sender, System.EventArgs e) {
             this.txtCommand.Focus();
-        }
-
-        /// <summary>
-        /// Pro KeyDown na kontextu
-        /// </summary>
-        private void Editor_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) {
-            if(e.Alt || e.Shift)
-                return;
-            if(e.Control && e.KeyValue <= 'Z' && e.KeyValue >= 'A') {
-                try {
-                    e.Handled = this.context.HotKey((char)e.KeyValue);
-                }
-                catch(DetailException exc) {
-                    MessageBox.Show(this, string.Format("{0}\n\n{1}", exc.Message, exc.DetailMessage));
-                }
-                catch(Exception exc) {
-                    MessageBox.Show(this, string.Format("{0}", exc.Message));
-                }
-            }
         }
 
         /// <summary>
@@ -545,7 +543,7 @@ namespace PavelStransky.Forms {
             if(import.VersionNumber >= 1)
                 this.context = import.Read() as Context;
 
-            this.InitializeEvents();
+            this.InitializeEvents(this.context);
         }
         #endregion
 

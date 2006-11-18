@@ -14,10 +14,10 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Forms {
     public partial class ResultForm: ChildForm, IOutputWriter, IExportable {
-        /// Výraz
+        // Výraz
         private Expression.Expression expression;
 
-        /// Thread, ve kterém pobìží výpoèet
+        // Thread, ve kterém pobìží výpoèet
         private Thread calcThread;
 
         // Pomocná promìnná, která pøenáší stav OnFormClosing na Close
@@ -53,21 +53,12 @@ namespace PavelStransky.Forms {
         public bool Calulating { get { return this.calculating; } }
 
         /// <summary>
-        /// Pro zadaný text v oknì txtCommand pøiøadí context a vytvoøí výraz
-        /// </summary>
-        /// <param name="expContext">Kontext</param>
-        public void SetContext(Expression.Context expContext) {
-            this.SetExpression(expContext, this.txtCommand.Text);
-        }
-
-        /// <summary>
         /// Výraz
         /// </summary>
-        /// <param name="expContext">Kontext</param>
         /// <param name="command">Pøíkaz</param>
-        public void SetExpression (Expression.Context expContext, string command) {
+        public void SetExpression (string command) {
             try {
-                this.expression = new PavelStransky.Expression.Expression(expContext, command, this); 
+                this.expression = new PavelStransky.Expression.Expression(command, this); 
                 this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
                 this.calcThread.Priority = ThreadPriority.BelowNormal;
@@ -156,8 +147,10 @@ namespace PavelStransky.Forms {
         /// Spouští thread
         /// </summary>
         private void ThreadStart() {
+            Context context = this.ParentEditor.Context;
+
             try {
-                object result = this.expression.Evaluate();
+                object result = this.expression.Evaluate(context);
 
                 // Po skonèení výpoètu
                 this.Invoke(new FinishedCalculationDelegate(this.FinishedCalculation), result);
@@ -403,6 +396,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.Text = b.ReadString();
             this.txtResult.Text = b.ReadString();
 
+            this.SetExpression(this.txtCommand.Text);
             this.Text = this.Name;
         }
         #endregion

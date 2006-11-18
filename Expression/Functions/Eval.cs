@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions {
 			if(arguments[0] is string && context.Contains(arguments[0] as string)) {
 				Variable v = context[arguments[0] as string];
 				if(v.IsAssignment)
-					return v.Evaluate();
+					return v.Evaluate(context);
 			}
 			else
 				throw new FunctionDefinitionException(string.Format(errorMessageNoExpression, this.Name));

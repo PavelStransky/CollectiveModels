@@ -21,20 +21,18 @@ namespace PavelStransky.Expression {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="context">Kontext</param>
         /// <param name="expression">Výraz funkce</param>
-        public Expression(Context context, string expression)
-            : this(context, expression, null) {
+        public Expression(string expression)
+            : this(expression, null) {
         }
 
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz funkce</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Expression(Context context, string expression, IOutputWriter writer)
-            : base(context, expression, null, writer) {
+        public Expression(string expression, IOutputWriter writer)
+            : base(expression, null, writer) {
 			if(this.expression[this.expression.Length - 1] != semicolon)
 				throw new ExpressionException(errorMessageNoEndSemicolon, string.Format(errorMessageNoEndSemicolonDetail, this.expression));
 
@@ -52,8 +50,9 @@ namespace PavelStransky.Expression {
 		/// Provede výpoèet
 		/// </summary>
 		/// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate() {
-			object result = EvaluateAtomObject(this.context, this.atom);
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        public override object Evaluate(Context context) {
+			object result = EvaluateAtomObject(context, this.atom);
 
 			if(this.noResult)
 				result = null;

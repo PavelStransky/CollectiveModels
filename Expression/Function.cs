@@ -25,12 +25,11 @@ namespace PavelStransky.Expression
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz funkce</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Function(Context context, string expression, Atom parent, IOutputWriter writer)
-            : base(context, expression, parent, writer) { 
+        public Function(string expression, Atom parent, IOutputWriter writer)
+            : base(expression, parent, writer) { 
 			int pos = FindOpenBracketPosition(this.expression);
 			this.function = functions[this.expression.Substring(0, pos).Trim().ToLower()];
 			string args = this.expression.Substring(pos + 1, this.expression.Length - pos - 2).Trim();
@@ -65,9 +64,10 @@ namespace PavelStransky.Expression
 		/// <summary>
 		/// Provede výpoèet funkce
 		/// </summary>
-		/// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate() {
-			object result = base.Evaluate();
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <returns>Výsledek výpoètu</returns>
+		public override object Evaluate(Context context) {
+            object result = null;
 
             DateTime startTime = DateTime.Now;
 

@@ -15,17 +15,17 @@ namespace PavelStransky.Expression {
 		public delegate void GraphRequestEventHandler(object sender, GraphRequestEventArgs e);
 		public event GraphRequestEventHandler GraphRequest;
 
+        /// <summary>
+        /// Volá se pøi požadavku o graf
+        /// </summary>
+        public void OnGraphRequest(GraphRequestEventArgs e) {
+            if(this.GraphRequest != null)
+                this.GraphRequest(this, e);
+        }
+
 		// Žádost o ukonèení programu
 		public delegate void ExitEventHandler(object sender, EventArgs e);
 		public event ExitEventHandler ExitRequest;
-
-		/// <summary>
-		/// Volá se pøi požadavku o graf
-		/// </summary>
-		public void OnGraphRequest(GraphRequestEventArgs e) {
-			if(this.GraphRequest != null)
-				this.GraphRequest(this, e);
-		}
 
 		/// <summary>
 		/// Volá se pøi požadavku o graf
@@ -34,6 +34,29 @@ namespace PavelStransky.Expression {
 			if(this.ExitRequest != null)
 				this.ExitRequest(this, e);
 		}
+
+        // Vytvoøení kontextu
+        public delegate void ContextEventHandler(object sender, ContextEventArgs e);
+        public event ContextEventHandler NewContextRequest;
+
+        /// <summary>
+        /// Volá se pøi vytvoøení nového kontextu
+        /// </summary>
+        public void OnNewContextRequest(ContextEventArgs e) {
+            if(this.NewContextRequest != null)
+                this.NewContextRequest(this, e);
+        }
+
+        // Žádost o zmìnu kontextu
+        public event ContextEventHandler SetContextRequest;
+
+        /// <summary>
+        /// Volá se pøi žádosti o zmìnu kontextu
+        /// </summary>
+        public void OnSetContextRequest(ContextEventArgs e) {
+            if(this.SetContextRequest != null)
+                this.SetContextRequest(this, e);
+        }
 		#endregion
 
 		private Hashtable objects;
@@ -123,20 +146,6 @@ namespace PavelStransky.Expression {
 			return this.objects.ContainsKey(name);
 		}
 
-		/// <summary>
-		/// Prozkoumá, zda se nevyskytuje pøíslušný HotKey. Pokud ano, spustí jej
-		/// </summary>
-		/// <param name="key">Znak</param>
-		/// <returns>True, pokud byl key nalezen</returns>
-		public bool HotKey(char key) {
-			foreach(Variable var in this.objects.Values)
-				if(var.Item is HotKey && (var.Item as HotKey).Key == key) {
-					(var.Item as HotKey).Evaluate();
-					return true;
-				}
-			return false;
-		}
-
         /// <summary>
         /// Vypíše názvy a typy všech promìnných na kontextu
         /// </summary>
@@ -210,7 +219,7 @@ namespace PavelStransky.Expression {
                     Assignment assignment = null;
 
                     if(e != string.Empty) {
-                        assignment = new Assignment(this, e, null);
+                        assignment = new Assignment(e, null);
                     }
                     this.SetVariable(name, import.Read(), assignment);
                 }
@@ -226,7 +235,7 @@ namespace PavelStransky.Expression {
                     Assignment assignment = null;
 
                     if(e != string.Empty)
-                        assignment = new Assignment(this, e, null);
+                        assignment = new Assignment(e, null);
 
                     this.SetVariable(name, import.Read(), assignment);
 

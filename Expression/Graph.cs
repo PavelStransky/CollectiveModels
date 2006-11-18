@@ -202,16 +202,16 @@ namespace PavelStransky.Expression {
 
             this.graphContext = new Context();
             if(graphParams != null && graphParams != string.Empty) {
-                Expression e = new Expression(this.graphContext, graphParams);
-                e.Evaluate();
+                Expression e = new Expression(graphParams);
+                e.Evaluate(this.graphContext);
             }
 
             this.itemContext = new Context[count];
             for(int i = 0; i < count; i++) {
                 this.itemContext[i] = new Context();
                 if(itemParams != null && itemParams.Count > i && itemParams[i] != null && (itemParams[i] as string) != string.Empty) {
-                    Expression e = new Expression(this.itemContext[i], itemParams[i] as string);
-                    e.Evaluate();
+                    Expression e = new Expression(itemParams[i] as string);
+                    e.Evaluate(this.itemContext[i]);
                 }
             }
 		}

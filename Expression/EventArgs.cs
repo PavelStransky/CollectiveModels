@@ -47,4 +47,25 @@ namespace PavelStransky.Expression
 		public object OldItem {get {return this.oldItem;}}
 		public object NewItem {get {return this.newItem;}}
 	}
+
+    /// <summary>
+    /// Tøída k pøedávání kontextu
+    /// </summary>
+    public class ContextEventArgs : EventArgs {
+        // Nový kontext
+        private Context context;
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="context">Nový kontext</param>
+        public ContextEventArgs(Context context) {
+            this.context = context;
+        }
+
+        /// <summary>
+        /// Nový kontext
+        /// </summary>
+        public Context Context { get { return this.context; } }
+    }
 }

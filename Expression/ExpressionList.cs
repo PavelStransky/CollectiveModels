@@ -15,12 +15,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public ExpressionList(Context context, string expression, Atom parent, IOutputWriter writer)
-            : base(context, expression, parent, writer) {
+        public ExpressionList(string expression, Atom parent, IOutputWriter writer)
+            : base(expression, parent, writer) {
             string[] c = SplitArguments(this.expression);
 
             for(int i = 0; i < c.Length; i++) {
@@ -32,12 +31,13 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede zpracování
 		/// </summary>
-		/// <returns>Výsledek výpoètu je vždy null</returns>
-		public override object Evaluate() {
-			object retValue = base.Evaluate();
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <returns>Výsledek výpoètu je vždy null</returns>
+		public override object Evaluate(Context context) {
+			object retValue = null;
 
 			for(int i = 0; i < this.commands.Count; i++) 
-				retValue = EvaluateAtomObject(this.context, this.commands[i]);
+				retValue = EvaluateAtomObject(context, this.commands[i]);
 			
 			return retValue;
 		}

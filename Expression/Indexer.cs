@@ -19,12 +19,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz funkce</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Indexer(Context context, string expression, Atom parent, IOutputWriter writer)
-            : base(context, expression, parent, writer) {
+        public Indexer(string expression, Atom parent, IOutputWriter writer)
+            : base(expression, parent, writer) {
             int pos = FindLastOpenIndexBracketPosition(this.expression);
 
             this.indexedItem = this.CreateAtomObject(RemoveOutsideBracket(this.expression.Substring(0, pos)).Trim().ToLower());
@@ -46,20 +45,20 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet funkce
 		/// </summary>
-		/// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate() {
-			object result = base.Evaluate();
-			
-			object indexed = EvaluateAtomObject(this.context, indexedItem);
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <returns>Výsledek výpoètu</returns>
+		public override object Evaluate(Context context) {
+            object result = null;			
+			object indexed = EvaluateAtomObject(context, indexedItem);
 
 			try {
-				result = this.Evaluate(0, indexed);
+				result = this.Evaluate(context, 0, indexed);
 			}
 			catch(Exception e) {
 				throw e;
 			}
 			finally {
-				this.ClearEndVariables();
+				this.ClearEndVariables(context);
 			}
 
 			return result;
@@ -68,14 +67,15 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede vyhodnocení indexeru
 		/// </summary>
-		/// <param name="depth">Aktuální hloubka</param>
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="depth">Aktuální hloubka</param>
 		/// <param name="item">Prvek, který se vyhodnocuje</param>
-		private object Evaluate(int depth, object item) {
+		private object Evaluate(Context context, int depth, object item) {
 			if(depth >= this.indexes.Count)
 				return item;
 
-			this.SetEndVariable(item, depth, false);
-			object ind = EvaluateAtomObject(this.context, this.indexes[depth]);
+			this.SetEndVariable(context, item, depth, false);
+			object ind = EvaluateAtomObject(context, this.indexes[depth]);
 			this.CheckIndexType(ind, depth);
 
 			depth++;
@@ -85,16 +85,16 @@ namespace PavelStransky.Expression {
 				if(ind == null) {
 					Array result = new Array();
 					for(int i = 0; i < array.Count; i++)
-						result.Add(this.Evaluate(depth, array[i]));
+						result.Add(this.Evaluate(context, depth, array[i]));
 					return result;
 				}
 				else if(ind is int)
-					return this.Evaluate(depth, array[(int)ind]);
+					return this.Evaluate(context, depth, array[(int)ind]);
 				else if(ind is Array) {
 					Array iArray = ind as Array;
 					Array result = new Array();
 					for(int i = 0; i < iArray.Count; i++)
-						result.Add(this.Evaluate(depth, array[(int)iArray[i]]));
+						result.Add(this.Evaluate(context, depth, array[(int)iArray[i]]));
 					return result;
 				}
 			}
@@ -145,8 +145,8 @@ namespace PavelStransky.Expression {
 				// Vypoèítáme druhý index
 				object indy = null;
 				if(depth < this.indexes.Count) {
-					this.SetEndVariable(item, depth, true);
-					indy = EvaluateAtomObject(this.context, this.indexes[depth]);
+					this.SetEndVariable(context, item, depth, true);
+					indy = EvaluateAtomObject(context, this.indexes[depth]);
 					this.CheckIndexType(ind, depth);
 				}
 
@@ -224,11 +224,12 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Nastaví na kontext pomocnou promìnnou s indexem posledního prvku øady
 		/// </summary>
-		/// <param name="item">Objekt, jehož poslední index nastavujeme</param>
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="item">Objekt, jehož poslední index nastavujeme</param>
 		/// <param name="depth">Aktuální hloubka</param>
 		/// <param name="takeMatrixY">Item je matice a my budeme brát její druhý rozmìr</param>
 		/// <returns>Jméno nastavené promìnné, jinak null</returns>
-		private string SetEndVariable(object item, int depth, bool takeMatrixY) {
+		private string SetEndVariable(Context context, object item, int depth, bool takeMatrixY) {
 			if(this.endVariables.Count < depth || this.endVariables[depth] == null)
 				return null;
 
@@ -244,17 +245,18 @@ namespace PavelStransky.Expression {
 			else if(item is Matrix)
 				end = (item as Matrix).LengthX - 1;
 
-			this.context.SetVariable(endVariable, end);
+			context.SetVariable(endVariable, end);
 			return endVariable;	
 		}
 
 		/// <summary>
 		/// Vymaže z kontextu koncovou promìnnou
 		/// </summary>
-		private void ClearEndVariables() {
+        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        private void ClearEndVariables(Context context) {
 			foreach(string endVariable in this.endVariables)
-				if(this.context.Contains(endVariable))
-					this.context.Clear(endVariable);
+				if(context.Contains(endVariable))
+					context.Clear(endVariable);
 		}
 
 		/// <summary>

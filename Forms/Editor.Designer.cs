@@ -68,7 +68,6 @@ namespace PavelStransky.Forms {
             this.txtCommand.TabIndex = 6;
             this.txtCommand.Text = "";
             this.txtCommand.WordWrap = false;
-            this.txtCommand.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Editor_KeyDown);
             this.txtCommand.ExecuteCommand += new PavelStransky.Forms.CommandTextBox.ExecuteCommandEventHandler(this.txtCommand_ExecuteCommand);
             this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
             // 

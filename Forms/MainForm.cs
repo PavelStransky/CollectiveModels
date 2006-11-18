@@ -198,9 +198,6 @@ namespace PavelStransky.Forms {
                             (o as ChildForm).MdiParent = this;
                             (o as ChildForm).Show();
                         }
-                        if(o is ResultForm) {
-                            (o as ResultForm).SetContext(editor.Context);
-                        }
                     }
                 }
 

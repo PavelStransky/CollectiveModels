@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Text;
 
 using PavelStransky.Math;
 
@@ -135,6 +136,22 @@ namespace PavelStransky.Expression {
 				}
 			return false;
 		}
+
+        /// <summary>
+        /// Vypíše názvy a typy všech promìnných na kontextu
+        /// </summary>
+        public override string ToString() {
+            StringBuilder s = new StringBuilder();
+
+            foreach(string key in this.objects.Keys) {
+                s.Append(key);
+                s.Append(" (");
+                s.Append(this[key].Item.GetType().FullName);
+                s.Append(")\n");
+            }
+
+            return s.ToString();
+        }
 
 		#region Implementace IExportable
 		/// <summary>

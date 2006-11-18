@@ -86,6 +86,27 @@ namespace PavelStransky.Forms {
             }		
         }
 
+#region Obsluha vlastních událostí
+        public event EventHandler CalcStarted;
+        public event EventHandler CalcFinished;
+        public event EventHandler CalcPaused;
+
+        protected virtual void OnCalcStarted(EventArgs e) {
+            if(this.CalcStarted != null)
+                this.CalcStarted(this, e);
+        }
+
+        protected virtual void OnCalcFinished(EventArgs e) {
+            if(this.CalcFinished != null)
+                this.CalcFinished(this, e);
+        }
+
+        protected virtual void OnCalcPaused(EventArgs e) {
+            if(this.CalcPaused != null)
+                this.CalcPaused(this, e);
+        }
+#endregion
+
         /// <summary>
         /// Zahájí výpoèet
         /// </summary>
@@ -104,6 +125,8 @@ namespace PavelStransky.Forms {
                 this.btContinue.Visible = false;
 
                 this.startTime = DateTime.Now;
+
+                this.OnCalcStarted(new EventArgs());
 
                 if(this.chkAsync.Checked) {
                     this.btInterrupt.Visible = true;
@@ -172,6 +195,8 @@ namespace PavelStransky.Forms {
             this.lblComputing.Visible = false;
             this.lblResult.Visible = true;
             this.SetCaption(captionInterrupted);
+
+            this.OnCalcFinished(new EventArgs());
         }
 
         /// <summary>
@@ -206,6 +231,8 @@ namespace PavelStransky.Forms {
             }
 
             this.calculating = false;
+
+            this.OnCalcFinished(new EventArgs());
         }
 
         /// <summary>
@@ -282,6 +309,8 @@ namespace PavelStransky.Forms {
             this.SetCaption(captionPaused);
             this.btPause.Visible = false;
             this.btContinue.Visible = true;
+
+            this.OnCalcPaused(new EventArgs());
         }
 
         /// <summary>
@@ -295,6 +324,7 @@ namespace PavelStransky.Forms {
             this.btContinue.Visible = false;
             this.btPause.Visible = true;
 
+            this.OnCalcStarted(new EventArgs());
         }
 
         /// <summary>

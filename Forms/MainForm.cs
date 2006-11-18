@@ -204,6 +204,7 @@ namespace PavelStransky.Forms {
                     }
                 }
 
+                editor.SetResultFormsEvents();
                 editor.FileName = fileName;
                 editor.Modified = false;
                 editor.Activate();

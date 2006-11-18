@@ -132,11 +132,29 @@ namespace PavelStransky.Forms {
         #endregion
 
         /// <summary>
-        /// Vytvoøí nový podøízený formuláø
+        /// Nastaví eventy všech ResultForms (je nutné po otevøení ze souboru)
+        /// </summary>
+        public void SetResultFormsEvents() {
+            Form[] forms = this.MdiParent.MdiChildren;
+            for(int i = 0; i < forms.Length; i++) {
+                ResultForm rf = forms[i] as ResultForm;
+
+                if(rf != null && rf.ParentEditor == this) {
+                    rf.CalcStarted += new EventHandler(this.Editor_CalcStarted);
+                    rf.CalcFinished += new EventHandler(this.Editor_CalcFinished);
+                    rf.CalcPaused += new EventHandler(this.Editor_CalcPaused);
+                    rf.FormClosed += new FormClosedEventHandler(this.result_FormClosed);
+                    this.mrbResult.Add(rf.Name, rf.Text);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pokusí se nalézt formuláø s daným názvem a typem
         /// </summary>
         /// <param name="type">Typ formuláøe</param>
         /// <param name="name">Název okna</param>
-        public ChildForm NewParentForm(Type type, string name) {
+        private ChildForm GetChildFormFromName(Type type, string name) {
             ChildForm result;
 
             Form[] forms = this.MdiParent.MdiChildren;
@@ -147,6 +165,20 @@ namespace PavelStransky.Forms {
                     return result;
             }
 
+            return null;
+        }
+
+        /// <summary>
+        /// Vytvoøí nový podøízený formuláø
+        /// </summary>
+        /// <param name="type">Typ formuláøe</param>
+        /// <param name="name">Název okna</param>
+        public ChildForm NewParentForm(Type type, string name) {
+            ChildForm result = this.GetChildFormFromName(type, name);
+
+            if(result != null)
+                return result;
+
             if(type == typeof(GraphForm)) {
                 result = new GraphForm();
                 result.Location = new Point(margin, this.MdiParent.Height - result.Size.Height - 8 * margin);
@@ -154,6 +186,11 @@ namespace PavelStransky.Forms {
             else if(type == typeof(ResultForm)) {
                 result = new ResultForm();
                 result.Location = new Point(this.MdiParent.Width - result.Size.Width - 2 * margin, margin);
+                (result as ResultForm).CalcStarted += new EventHandler(this.Editor_CalcStarted);
+                (result as ResultForm).CalcFinished += new EventHandler(this.Editor_CalcFinished);
+                (result as ResultForm).CalcPaused += new EventHandler(this.Editor_CalcPaused);
+                result.FormClosed += new FormClosedEventHandler(this.result_FormClosed);
+                this.mrbResult.Add(name, name);
             }
             else
                 result = new ChildForm();
@@ -161,9 +198,61 @@ namespace PavelStransky.Forms {
             result.Name = name;
             result.Text = name;
             result.ParentEditor = this;
-            result.MdiParent = this.MdiParent;
+            result.MdiParent = this.MdiParent;           
 
             return result;
+        }
+
+        /// <summary>
+        /// Zavøení formuláøe s výsledky
+        /// </summary>
+        private void result_FormClosed(object sender, FormClosedEventArgs e) {
+            ResultForm r = sender as ResultForm;
+
+            if(r != null) 
+                this.mrbResult.Remove(r.Name);
+        }
+
+        /// <summary>
+        /// Zaèátek výpoètu
+        /// </summary>
+        private void Editor_CalcStarted(object sender, EventArgs e) {
+            ResultForm r = sender as ResultForm;
+
+            if(r != null) 
+                this.mrbResult.SetBackColor(r.Name, Color.Red);
+        }
+
+        /// <summary>
+        /// Konec výpoètu
+        /// </summary>
+        private void Editor_CalcFinished(object sender, EventArgs e) {
+            ResultForm r = sender as ResultForm;
+
+            if(r != null)
+                this.mrbResult.SetDefaultBackColor(r.Name);
+        }
+
+        /// <summary>
+        /// Pøerušený výpoèet
+        /// </summary>
+        private void Editor_CalcPaused(object sender, EventArgs e) {
+            ResultForm r = sender as ResultForm;
+
+            if(r != null)
+                this.mrbResult.SetBackColor(r.Name, Color.Blue);
+        }
+
+        /// <summary>
+        /// Kliknutí na RadioButton
+        /// </summary>
+        private void mrbResult_RBClick(object sender, MultipleRadioButtonEventArgs e) {
+            ResultForm result = this.GetChildFormFromName(typeof(ResultForm), e.Name) as ResultForm;
+
+            if(result != null) {
+                result.Activate();
+                this.Activate();
+            }
         }
 
         #region Otevírání a ukládání pøíkazù
@@ -323,11 +412,10 @@ namespace PavelStransky.Forms {
         /// Pøi žádosti o spuštìní pøíkazu
         /// </summary>
         private void txtCommand_ExecuteCommand(object sender, PavelStransky.Forms.ExecuteCommandEventArgs e) {
-            // Chceme nové okno
-            if(e.NewWindow)
-                resultNumber++;
-
-            string windowName = string.Format(defaultResultWindowName, resultNumber);
+            string windowName = (e.NewWindow || this.mrbResult.IsNewChecked) ?
+                // Chceme nové okno
+                string.Format(defaultResultWindowName, ++resultNumber) :
+                this.mrbResult.GetCheckedName();
 
             ResultForm f = this.NewParentForm(typeof(ResultForm), windowName) as ResultForm;
 

@@ -179,6 +179,7 @@
     <Compile Include="Function.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\CreateContext.cs" />
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
     <Compile Include="Functions\Show.cs" />
     <Compile Include="Functions\Spectrum.cs" />

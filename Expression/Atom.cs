@@ -194,6 +194,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Spectrum());
             functions.Add(new Functions.FRegMatrixEval());
             functions.Add(new Functions.Show());
+            functions.Add(new Functions.CreateContext());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());

@@ -40,7 +40,7 @@ namespace PavelStransky.Forms {
         protected override void OnKeyDown(KeyEventArgs e) {
             base.OnKeyDown(e);
 
-            if(!e.Alt && e.Control && e.KeyValue == 13) {
+            if(!e.Alt && !e.Shift && e.KeyValue == 116) {
                 // Pokud je délka výbìru 0, spustíme aktuální pøíkaz, jinak spouštíme výbìr
                 if(this.SelectionLength == 0) {
                     int selectionStart = this.SelectionStart;
@@ -73,7 +73,7 @@ namespace PavelStransky.Forms {
                     this.SelectionLength = commandEnd - commandStart;
                 }
 
-                this.OnExecuteCommand(new ExecuteCommandEventArgs(this.SelectedText, e.Shift));
+                this.OnExecuteCommand(new ExecuteCommandEventArgs(this.SelectedText, e.Control));
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }

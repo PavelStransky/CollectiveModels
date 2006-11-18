@@ -144,6 +144,12 @@
     <Compile Include="ChildForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MultipleRadioButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MultipleRadioButton.Designer.cs">
+      <DependentUpon>MultipleRadioButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResultForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +186,10 @@
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultipleRadioButton.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MultipleRadioButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResultForm.resx">
       <DependentUpon>ResultForm.cs</DependentUpon>

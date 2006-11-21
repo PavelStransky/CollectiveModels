@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 
+using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
@@ -29,14 +30,25 @@ namespace PavelStransky.Expression.Functions {
 
 				return result;
 			}
-			
-			else if(item is Array) 
-				return this.EvaluateArray(depth, item as Array, arguments);
-			else
-				return this.BadTypeError(item, 0);
+
+            else if(item is LHOQuantumGCM) {
+                LHOQuantumGCM qgcm = item as LHOQuantumGCM;
+                Array result = new Array();
+
+                result.Add(new Vector(qgcm.EigenValue));
+                for(int i = 0; i < qgcm.EigenVector.Length; i++)
+                    result.Add(qgcm.EigenVector[i]);
+
+                return result;
+            }
+
+            else if(item is Array)
+                return this.EvaluateArray(depth, item as Array, arguments);
+            else
+                return this.BadTypeError(item, 0);
 		}
 
 		private const string help = "Vypoèítá systém vlastních hodnot a vektorù, vrací øadu vektorù, jejíž první prvek obsahuje vlastní hodnoty, zbytek prvkù vlastní vektory";
-		private const string parameters = "Matrix";
+		private const string parameters = "Matrix | QuantumSystem";
 	}
 }

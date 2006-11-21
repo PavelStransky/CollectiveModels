@@ -132,6 +132,8 @@ namespace PavelStransky.Forms {
             // 
             this.chkAsync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkAsync.AutoSize = true;
+            this.chkAsync.Checked = true;
+            this.chkAsync.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAsync.Location = new System.Drawing.Point(7, 285);
             this.chkAsync.Name = "chkAsync";
             this.chkAsync.Size = new System.Drawing.Size(125, 17);

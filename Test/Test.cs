@@ -18,11 +18,18 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusQuantumGCM1();
+            Test.PokusLHOQuantumGCM();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 21.11.2006
+        /// </summary>
+        public static void PokusLHOQuantumGCM() {
+            LHOQuantumGCM GCM = new LHOQuantumGCM(-1.2, -1, 1, 1, 1);
+        }
 
         /// <summary>
         /// QuantumGCM, 10.10.2006

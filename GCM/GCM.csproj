@@ -50,8 +50,10 @@
     <Compile Include="Classical\GCMBisectionFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quantum\AngularMatrixElement.cs" />
+    <Compile Include="Quantum\BasisCache.cs" />
     <Compile Include="Quantum\ClebshGordon.cs" />
     <Compile Include="Quantum\GammaLog.cs" />
+    <Compile Include="Quantum\LHOQuantumGCM.cs" />
     <Compile Include="Quantum\QuantumGCM.cs" />
     <Compile Include="Quantum\RadialMatrixElement.cs" />
     <Compile Include="Quantum\RAIndex.cs" />

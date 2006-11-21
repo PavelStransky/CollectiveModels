@@ -184,6 +184,7 @@
     <Compile Include="Functions\Context\NewContext.cs" />
     <Compile Include="Functions\Context\UseContext.cs" />
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCM.cs" />
     <Compile Include="Functions\Show.cs" />
     <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />
@@ -201,7 +202,7 @@
     <Compile Include="Functions\Dynamics\ExtendedCGCM1.cs" />
     <Compile Include="Functions\Dynamics\ExtendedCGCM2.cs" />
     <Compile Include="Functions\Dynamics\HH.cs" />
-    <Compile Include="Functions\Dynamics\QGCM.cs" />
+    <Compile Include="Functions\Quantum\QGCM.cs" />
     <Compile Include="Functions\Dynamics\SALIG.cs" />
     <Compile Include="Functions\Dynamics\SALIR.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryP.cs" />

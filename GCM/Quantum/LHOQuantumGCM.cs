@@ -245,8 +245,6 @@ namespace PavelStransky.GCM {
 		/// </summary>
         /// <param name="import">Import</param>
         public void Import(Import import) {
-            int numSteps = 0;
-
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

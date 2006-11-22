@@ -31,13 +31,13 @@ namespace PavelStransky.Expression.Functions {
 				return result;
 			}
 
-            else if(item is LHOQuantumGCM) {
-                LHOQuantumGCM qgcm = item as LHOQuantumGCM;
+            else if(item is IQuantumSystem) {
+                IQuantumSystem qs = item as IQuantumSystem;
                 Array result = new Array();
 
-                result.Add(new Vector(qgcm.EigenValue));
-                for(int i = 0; i < qgcm.EigenVector.Length; i++)
-                    result.Add(qgcm.EigenVector[i]);
+                result.Add(new Vector(qs.EigenValue));
+                for(int i = 0; i < qs.EigenVector.Length; i++)
+                    result.Add(qs.EigenVector[i]);
 
                 return result;
             }

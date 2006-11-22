@@ -94,19 +94,19 @@ namespace PavelStransky.Forms {
 
             for(int i = 0; i < lengthX; i++) {
                 for(int j = 0; j < lengthY; j++) {
-                    int m = (int)matrix[i, j];
+                    double m = matrix[i, j];
 
                     Color color;
                     if(m < 0) 
                         color = Color.FromArgb(
-                            (1 + m) * colorZero.R - m * colorMinus.R,
-                            (1 + m) * colorZero.G - m * colorMinus.G,
-                            (1 + m) * colorZero.B - m * colorMinus.B);
+                            (int)((1 + m) * colorZero.R - m * colorMinus.R),
+                            (int)((1 + m) * colorZero.G - m * colorMinus.G),
+                            (int)((1 + m) * colorZero.B - m * colorMinus.B));
                     else
                         color = Color.FromArgb(
-                            (1 - m) * colorZero.R + m * colorPlus.R,
-                            (1 - m) * colorZero.G + m * colorPlus.G,
-                            (1 - m) * colorZero.B + m * colorPlus.B);
+                            (int)((1 - m) * colorZero.R + m * colorPlus.R),
+                            (int)((1 - m) * colorZero.G + m * colorPlus.G),
+                            (int)((1 - m) * colorZero.B + m * colorPlus.B));
 
                     int i1 = i * pointSizeX;
                     int j1 = j * pointSizeY;

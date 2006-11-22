@@ -8,7 +8,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
-    public class LHOQuantumGCM : GCM, IExportable {
+    public class LHOQuantumGCM : GCM, IExportable, IQuantumSystem {
         private double hbar = 1.0E-1;	// [Js]
 
         // Koeficienty
@@ -17,14 +17,8 @@ namespace PavelStransky.GCM {
         // Parametr pro LHO
         private double a0;
 
-        // Hermitùv polynom
         private HermitPolynom hermit;
-        // Cache psi hodnot (Bazove vlnove funkce)
-        private BasisCache psiCache;
-        // Cache hodnot potencialu
-        private double[,] vCache;
-
-        Jacobi jacobi;
+        private Jacobi jacobi;
 
         /// <summary>
         /// Planckova konstanta [Js]
@@ -40,11 +34,6 @@ namespace PavelStransky.GCM {
         /// Parametr pro LHO [s^-1]
         /// </summary>
         public double A0 { get { return this.a0; } set { this.a0 = value; } }
-
-        /// <summary>
-        /// Meze pro integraci
-        /// </summary>
-        public double Range { get { return 15.0 / this.s; } }
 
         /// <summary>
         /// Prázdný konstruktor
@@ -77,26 +66,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vytvoøí cache
-        /// </summary>
-        /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
-        private void CreateCaches(int maxn, int numSteps) {
-            double range = this.Range;
-            double step = 2.0 * range / numSteps;
-
-            // Cachování bázových funkcí
-            this.hermit = new HermitPolynom(maxn);
-            this.psiCache = new BasisCache(-range, step, numSteps, maxn, this.Psi);
-
-            // Cachování potenciálu
-            this.vCache = new double[numSteps, numSteps];
-            for(int sy = 0; sy < numSteps; sy++)
-                for(int sx = 0; sx < numSteps; sx++)
-                    this.vCache[sx, sy] = this.V(-range + step * sx, -range + step * sy);
-        }
-
-        /// <summary>
         /// Provede výpoèet
         /// </summary>
         /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
@@ -104,12 +73,23 @@ namespace PavelStransky.GCM {
         /// <param name="writer">Wirter</param>
         public void Compute(int maxn, int numSteps, IOutputWriter writer) {
             double omega = this.Omega;
-            double step = 2.0 * this.Range / numSteps;
+            double range = 15.0 / this.s;
+            double step = 2.0 * range / numSteps;
 
             if(writer != null)
                 writer.WriteLine("Pøipravuji cache...");
 
-            this.CreateCaches(maxn, numSteps);
+            // Hermitùv polynom
+            this.hermit = new HermitPolynom(maxn);
+
+            // Cache psi hodnot (Bazove vlnove funkce)
+            BasisCache psiCache = new BasisCache(-range, step, numSteps, maxn, this.Psi);
+
+            // Cache hodnot potencialu
+            double[,] vCache = new double[numSteps, numSteps];
+            for(int sy = 0; sy < numSteps; sy++)
+                for(int sx = 0; sx < numSteps; sx++)
+                    vCache[sx, sy] = this.V(-range + step * sx, -range + step * sy);
 
             int max2 = maxn * maxn;
             Matrix m = new Matrix(max2, max2);
@@ -127,8 +107,8 @@ namespace PavelStransky.GCM {
                     double sum = 0;
                     for(int sy = 0; sy < numSteps; sy++)
                         for(int sx = 0; sx < numSteps; sx++)
-                            sum += this.psiCache[ix, sx] * this.psiCache[iy, sy] * this.vCache[sx, sy] * 
-                                this.psiCache[jx, sx] * this.psiCache[jy, sy];
+                            sum += psiCache[ix, sx] * psiCache[iy, sy] * vCache[sx, sy] * 
+                                psiCache[jx, sx] * psiCache[jy, sy];
 
                     sum *= step * step;
 
@@ -166,52 +146,48 @@ namespace PavelStransky.GCM {
         /// </summary>
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
 
-        /*
         /// <summary>
-        /// Vrátí matici 
+        /// Vrátí matici hustot pro vlastní funkce
         /// </summary>
-        /// <param name="eigenIndex"></param>
-        /// <returns></returns>
-        public Matrix EigenVectorDensity(int eigenIndex) {
-            Vector ev = jacobi.EigenVector[eigenIndex];
-            Matrix result = new Matrix(numSteps);
+        /// <param name="n">Index vlastní funce</param>
+        /// <param name="range">Rozmìry v jednotlivých rozmìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
+        public Matrix DensityMatrix(int n, Vector range) {
+            if(range.Length != 6)
+                throw new GCMException("Pro správné vytvoøení matice hustot vlastních vektorù je nutné, aby vstupní vektor mìl 6 prvkù!");
 
-            double Vmin = 0;
-            double range = this.Range;
-            double step = 2.0 * range / numSteps;
+            double minx = range[0]; double maxx = range[1]; 
+            int numx = (int)range[2];
+            double koefx = (maxx - minx) / (numx - 1);
+
+            double miny = range[3]; double maxy = range[4];
+            int numy = (int)range[5];
+            double koefy = (maxy - miny) / (numy - 1);
+
+            Vector ev = jacobi.EigenVector[n];
+            Matrix result = new Matrix(numx, numy);
 
             int length = ev.Length;
+            int sqrtlength = (int)System.Math.Round(System.Math.Sqrt(length));
+
             for(int i = 0; i < length; i++) {
-                int ix = i / maxn;
-                int iy = i % maxn;
-                double y = -range;
+                int ix = i / sqrtlength;
+                int iy = i % sqrtlength;
 
-                for(int c = 0; c < steps; c++) {
-
-                    double x = -range;
-
-                    for(int d = 0; d < steps; d++) {
-
-                        // d ~ x, c ~ y
-                        M[d, c] += PsiCached[ix].Value(x) * PsiCached[iy].Value(y) * v[i];
-                        x += dx;
-                        if(V(x, y) < Vmin) Vmin = V(x, y);
+                for(int sx = 0; sx < numx; sx++) {
+                    double x = minx + koefx * sx;
+                    for(int sy = 0; sy < numy; sy++) {
+                        double y = miny + koefy * sy;
+                        result[sx, sy] += this.Psi(ix, x) * this.Psi(iy, y) * ev[i];
                     }
-
-                    y += dx;
                 }
+            }
 
-            } // for (i = ...
+            for(int sx = 0; sx < numx; sx++)
+                for(int sy = 0; sy < numy; sy++)
+                    result[sx, sy] = result[sx, sy] * result[sx, sy];
 
-            //        Console.WriteLine("Vmin = {0}", Vmin);
-
-            for(int c = 0; c < steps; c++)
-                for(int d = 0; d < steps; d++)
-                    M[c, d] = Math.Max(M[c, d] * M[c, d], 0 * Math.Min(V(-range + c * dx, -range + d * dx) + 3, 5));
-            return M;
-
+            return result;
         }
-        */
 
         /// <summary>
         /// Funkce Psi_n (Formánek 2.286)
@@ -221,12 +197,9 @@ namespace PavelStransky.GCM {
         /// <returns></returns>
         private double Psi(int n, double x) {
             double xi = this.s * x;
-            return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * this.hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
+            return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
         }
-
-        private const int maxn = 25;        // max^2 je velikost vypocetni baze
-        private const int numSteps = 200;	// pocet bodu pri diskretizaci psi
-
+ 
         #region Implementace IExportable
 		/// <summary>
 		/// Uloží výsledky do souboru
@@ -241,14 +214,11 @@ namespace PavelStransky.GCM {
                 b.Write(this.C);
                 b.Write(this.K);
                 b.Write(this.A0);
-
-                b.Write(this.psiCache.MaxIndex);
             }
             else {
                 // Textovì
                 StreamWriter t = export.T;
                 t.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}", this.A, this.B, this.C, this.K, this.A0);
-                t.WriteLine(this.psiCache.MaxIndex);
             }
 
             export.Write(this.jacobi);
@@ -269,8 +239,6 @@ namespace PavelStransky.GCM {
                 this.C = b.ReadDouble();
                 this.K = b.ReadDouble();
                 this.a0 = b.ReadDouble();
-
-                numSteps = b.ReadInt32();
             }
             else {
                 // Textovì
@@ -282,13 +250,10 @@ namespace PavelStransky.GCM {
                 this.C = double.Parse(s[2]);
                 this.K = double.Parse(s[3]);
                 this.A0 = double.Parse(s[4]);
-
-                numSteps = int.Parse(t.ReadLine());
             }
 
             this.jacobi = import.Read() as Jacobi;
             this.RefreshConstants();
-            this.CreateCaches(maxn, numSteps);
         }
         #endregion
     }

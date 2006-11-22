@@ -47,6 +47,28 @@ namespace PavelStransky.Math {
     }
 
     /// <summary>
+    /// Interface pro kvantový systém
+    /// </summary>
+    public interface IQuantumSystem {
+        /// <summary>
+        /// Vlastní hodnota
+        /// </summary>
+        double[] EigenValue { get;}
+
+        /// <summary>
+        /// Vlastní vektor
+        /// </summary>
+        Vector[] EigenVector { get;}
+
+        /// <summary>
+        /// Matice s hustotou vlastní funkce
+        /// </summary>
+        /// <param name="n">Èíslo vlastní funkce</param>
+        /// <param name="range">Oblast hodnot k zhobrazení (seøazená ve tvaru minx, maxx, numx, ...)</param>
+        Matrix DensityMatrix(int n, Vector range);
+    }
+
+    /// <summary>
     /// Interface pro dynamický systém
     /// </summary>
     public interface IDynamicalSystem {

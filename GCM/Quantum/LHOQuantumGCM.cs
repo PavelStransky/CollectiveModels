@@ -186,6 +186,22 @@ namespace PavelStransky.GCM {
                 for(int sy = 0; sy < numy; sy++)
                     result[sx, sy] = result[sx, sy] * result[sx, sy];
 
+            // Normování
+            result = result * (1.0 / System.Math.Abs(result.MaxAbs()));
+
+            // Zakreslení ekvipotenciální kontury
+            PointVector[] pv = this.EquipotentialContours(this.EigenValue[n]);
+            for(int i = 0; i < pv.Length; i++) {
+                int pvlength = pv[i].Length;
+                for(int j = 0; j < pvlength; j++) {
+                    int sx = (int)((pv[i][j].X - minx) / koefx);
+                    int sy = (int)((pv[i][j].Y - miny) / koefy);
+
+                    if(sx >= 0 && sx < numx && sy >= 0 && sy < numy)
+                        result[sx, sy] = -1.0;
+                }
+            }
+
             return result;
         }
 
@@ -253,6 +269,7 @@ namespace PavelStransky.GCM {
             }
 
             this.jacobi = import.Read() as Jacobi;
+            this.hermit = new HermitPolynom(this.jacobi.EigenValue.Length);
             this.RefreshConstants();
         }
         #endregion

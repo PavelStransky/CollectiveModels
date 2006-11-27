@@ -349,9 +349,11 @@ namespace PavelStransky.Forms {
         }
 
         private void WriteInvoke(string s) {
+            this.txtResult.SuspendLayout();
             this.txtResult.Text = s;
             this.txtResult.SelectionStart = System.Math.Max(0, this.txtResult.Text.Length - 1);
             this.txtResult.ScrollToCaret();
+            this.txtResult.ResumeLayout();
         }
 
         #endregion

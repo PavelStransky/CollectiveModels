@@ -9,6 +9,7 @@ namespace PavelStransky.GCM {
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
     public class LHOQuantumGCM : GCM, IExportable, IQuantumSystem {
+        private const double epsilon = 1E-10;
         private double hbar = 1.0E-1;	// [Js]
 
         // Koeficienty
@@ -72,18 +73,21 @@ namespace PavelStransky.GCM {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Wirter</param>
         public void Compute(int maxn, int numSteps, IOutputWriter writer) {
-            double omega = this.Omega;
-            double range = 15.0 / this.s;
-            double step = 2.0 * range / numSteps;
+            if(numSteps == 0)
+                numSteps = 10 * maxn + 1;
 
             if(writer != null)
-                writer.WriteLine("Pøipravuji cache...");
+                writer.WriteLine(string.Format("Pøipravuji cache ({0} x {1})...", numSteps, numSteps));
 
             // Hermitùv polynom
             this.hermit = new HermitPolynom(maxn);
+            double omega = this.Omega;
+            double range = this.GetRange(maxn, epsilon);
+            double step = 2.0 * range / numSteps;
 
             // Cache psi hodnot (Bazove vlnove funkce)
             BasisCache psiCache = new BasisCache(-range, step, numSteps, maxn, this.Psi);
+            int[] psiCacheLimits = this.GetPsiCacheLimits(psiCache, epsilon);
 
             // Cache hodnot potencialu
             double[,] vCache = new double[numSteps, numSteps];
@@ -98,24 +102,32 @@ namespace PavelStransky.GCM {
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", max2, max2));
 
             for(int i = 0; i < max2; i++) {
-                for(int j = 0; j < max2; j++) {
+                for(int j = i; j < max2; j++) {
                     int ix = i / maxn;
                     int iy = i % maxn;
                     int jx = j / maxn;
                     int jy = j % maxn;
 
                     double sum = 0;
-                    for(int sy = 0; sy < numSteps; sy++)
-                        for(int sx = 0; sx < numSteps; sx++)
+
+                    int minsx = System.Math.Max(psiCacheLimits[ix], psiCacheLimits[jx]);
+                    int maxsx = numSteps - minsx;
+
+                    int minsy = System.Math.Max(psiCacheLimits[iy], psiCacheLimits[jy]);
+                    int maxsy = numSteps - minsy;
+
+                    for(int sy = minsy; sy < maxsy; sy++)
+                        for(int sx = minsx; sx < maxsx; sx++)
                             sum += psiCache[ix, sx] * psiCache[iy, sy] * vCache[sx, sy] * 
                                 psiCache[jx, sx] * psiCache[jy, sy];
 
                     sum *= step * step;
 
                     if(ix == jx && iy == jy)
-                        sum += this.hbar * omega * (0.5 + ix + iy);
+                       sum += this.hbar * omega * (1.0 + ix + iy);
 
                     m[i, j] = sum;
+                    m[j, i] = sum;
                 }
 
                 // Výpis na konzoli
@@ -127,13 +139,15 @@ namespace PavelStransky.GCM {
                 }
             }
 
-            writer.WriteLine();
+            if(writer != null)
+                writer.WriteLine();
+
+            DateTime startTime = DateTime.Now;
+            this.jacobi = new Jacobi(m, writer);
+            this.jacobi.SortAsc();
 
             if(writer != null)
-                writer.WriteLine("Diagonalizace...");
-
-            this.jacobi = new Jacobi(m);
-            this.jacobi.SortAsc();
+                writer.WriteLine((DateTime.Now - startTime).ToString());
         }
 
         /// <summary>
@@ -147,15 +161,15 @@ namespace PavelStransky.GCM {
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
 
         /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
+        /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
-        /// <param name="n">Index vlastní funce</param>
+        /// <param name="n">Index vlastní funkce</param>
         /// <param name="range">Rozmìry v jednotlivých rozmìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
-        public Matrix DensityMatrix(int n, Vector range) {
+        public Matrix EigenMatrix(int n, Vector range) {
             if(range.Length != 6)
                 throw new GCMException("Pro správné vytvoøení matice hustot vlastních vektorù je nutné, aby vstupní vektor mìl 6 prvkù!");
 
-            double minx = range[0]; double maxx = range[1]; 
+            double minx = range[0]; double maxx = range[1];
             int numx = (int)range[2];
             double koefx = (maxx - minx) / (numx - 1);
 
@@ -182,6 +196,20 @@ namespace PavelStransky.GCM {
                 }
             }
 
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí matici hustot pro vlastní funkce
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="range">Rozmìry v jednotlivých rozmìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
+        public Matrix DensityMatrix(int n, Vector range) {
+            Matrix result = this.EigenMatrix(n, range);
+            
+            int numx = result.LengthX;
+            int numy = result.LengthY;
+
             for(int sx = 0; sx < numx; sx++)
                 for(int sy = 0; sy < numy; sy++)
                     result[sx, sy] = result[sx, sy] * result[sx, sy];
@@ -190,6 +218,12 @@ namespace PavelStransky.GCM {
             result = result * (1.0 / System.Math.Abs(result.MaxAbs()));
 
             // Zakreslení ekvipotenciální kontury
+            double minx = range[0]; double maxx = range[1];
+            double koefx = (maxx - minx) / (numx - 1);
+
+            double miny = range[3]; double maxy = range[4];
+            double koefy = (maxy - miny) / (numy - 1);
+
             PointVector[] pv = this.EquipotentialContours(this.EigenValue[n]);
             for(int i = 0; i < pv.Length; i++) {
                 int pvlength = pv[i].Length;
@@ -215,11 +249,49 @@ namespace PavelStransky.GCM {
             double xi = this.s * x;
             return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
         }
- 
+
+        /// <summary>
+        /// Vrací parametr range podle dosahu nejvyšší použité vlastní funkce
+        /// </summary>
+        /// <param name="epsilon">Epsilon</param>
+        /// <param name="maxn">Maximální rank vlastní funkce</param>
+        private double GetRange(int maxn, double epsilon) {
+            // range je klasicky dosah oscilatoru, pridame urcitou rezervu
+            double range = System.Math.Sqrt(hbar * this.Omega * (maxn + 0.5) / this.a0);
+            range *= 5.0;
+
+            // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
+            double dx = range / (50.0 * maxn);
+            
+            while(System.Math.Abs(this.Psi(maxn, range)) < epsilon)
+                range -= dx;
+
+            //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
+            return range + 2 * dx;
+        }
+
+        /// <summary>
+        /// Vrací první indexy psiCache, které jsou vìtší než epsilon
+        /// </summary>
+        /// <param name="psiCache">psiCache</param>
+        /// <param name="epsilon">Epsilon</param>
+        private int[] GetPsiCacheLimits(BasisCache psiCache, double epsilon) {
+            int[] result = new int[psiCache.MaxN];
+
+            for(int i = 0; i < psiCache.MaxN; i++) {
+                int limit = 0;
+                while(limit < psiCache.MaxIndex && System.Math.Abs(psiCache[i, limit]) < epsilon)
+                    limit++;
+                result[i] = System.Math.Max(0, limit - 1);
+            }
+
+            return result;
+        }
+
         #region Implementace IExportable
-		/// <summary>
-		/// Uloží výsledky do souboru
-		/// </summary>
+        /// <summary>
+        /// Uloží výsledky do souboru
+        /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
             if(export.Binary) {

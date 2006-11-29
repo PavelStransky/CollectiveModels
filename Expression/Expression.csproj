@@ -185,10 +185,12 @@
     <Compile Include="Functions\Context\UseContext.cs" />
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
     <Compile Include="Functions\Quantum\DensityMatrix.cs" />
+    <Compile Include="Functions\Quantum\EVNumDiff.cs" />
     <Compile Include="Functions\Quantum\LHOQGCM.cs" />
     <Compile Include="Functions\Show.cs" />
     <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />
+    <Compile Include="Functions\SumSquare.cs" />
     <Compile Include="Functions\Time.cs" />
     <Compile Include="Functions\TimeNow.cs" />
     <Compile Include="Functions\Print.cs" />

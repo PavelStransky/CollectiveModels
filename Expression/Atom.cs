@@ -175,6 +175,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.SwapXY());
             functions.Add(new Functions.Sum());
             functions.Add(new Functions.SumAbs());
+            functions.Add(new Functions.SumSquare());
             functions.Add(new Functions.FnPrint());
             functions.Add(new Functions.PrintClear());
             functions.Add(new Functions.PrintLine());
@@ -186,6 +187,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Spectrum());
             functions.Add(new Functions.FRegMatrixEval());
             functions.Add(new Functions.Show());
+            functions.Add(new Functions.EVNumDiff());
 
             functions.Add(new Functions.NewContext());
             functions.Add(new Functions.GetContext());

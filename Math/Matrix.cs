@@ -655,9 +655,9 @@ namespace PavelStransky.Math {
 		}
 
 		/// <summary>
-		/// Spoèítá euklidovskou normu matice
+		/// Spoèítá druhou mocninu euklidovské normy matice
 		/// </summary>
-		public double EuklideanNorm() {
+		public double SquaredEuklideanNorm() {
 			double result = 0;
 
             int lengthX = this.LengthX;
@@ -667,8 +667,15 @@ namespace PavelStransky.Math {
 				for(int j = 0; j < lengthY; j++)
 					result += this[i, j] * this[i, j];
 
-			return System.Math.Sqrt(result);;
+			return result;
 		}
+
+        /// <summary>
+        /// Spoèítá euklidovskou normu matice
+        /// </summary>
+        public double EuklideanNorm() {
+            return System.Math.Abs(this.SquaredEuklideanNorm());
+        }
 
 		/// <summary>
 		/// Spoèítá absolutní normu matice

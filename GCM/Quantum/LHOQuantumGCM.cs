@@ -50,7 +50,7 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         public LHOQuantumGCM(double lambda, double a, double b, double c, double k)
-            : base((1 - lambda) * a, b, c, k) {
+            : base(a, b, c, k) {
             this.a0 = lambda * a;
 
             this.RefreshConstants();
@@ -91,9 +91,14 @@ namespace PavelStransky.GCM {
 
             // Cache hodnot potencialu
             double[,] vCache = new double[numSteps, numSteps];
-            for(int sy = 0; sy < numSteps; sy++)
-                for(int sx = 0; sx < numSteps; sx++)
-                    vCache[sx, sy] = this.V(-range + step * sx, -range + step * sy);
+            for(int sx = 0; sx < numSteps; sx++) {
+                double x = -range + step * sx;
+                for(int sy = 0; sy < numSteps; sy++) {
+                    double y = -range + step * sy;
+                    // Originální potenciál - potenciál báze
+                    vCache[sx, sy] = this.V(x, y) - this.a0 * (x * x + y * y);
+                }
+            }
 
             int max2 = maxn * maxn;
             Matrix m = new Matrix(max2, max2);
@@ -151,6 +156,11 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Nejvyšší použitý øád Hermitova polynomu
+        /// </summary>
+        public int MaxN { get { return this.hermit.MaxN; } }
+
+        /// <summary>
         /// Vlastní hodnoty
         /// </summary>
         public double[] EigenValue { get { return this.jacobi.EigenValue; } }
@@ -161,21 +171,50 @@ namespace PavelStransky.GCM {
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
 
         /// <summary>
+        /// Ze vstupního vektoru získá meze
+        /// </summary>
+        /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
+        /// <param name="minx">MinX</param>
+        /// <param name="maxx">MaxX</param>
+        /// <param name="numx">Poèet hodnot ve smìru x</param>
+        /// <param name="koefx">Krok ve smìru x</param>
+        /// <param name="miny">MinY</param>
+        /// <param name="maxy">MaxY</param>
+        /// <param name="numy">Poèet hodnot ve smìru y</param>
+        /// <param name="koefy">Krok ve smìru y</param>
+        private void VectorRange(Vector range, out double minx, out double maxx, out int numx, out double koefx, out double miny, out double maxy, out int numy, out double koefy) {
+            if(range.Length < 6) {
+                if(range.Length < 2)
+                    throw new GCMException("Pro správné vytvoøení matice hustot vlastních vektorù je nutné, aby vstupní vektor mìl alespoò 2 prvky (numx, numy)!");
+
+                double r = this.GetRange(this.hermit.MaxN, epsilon);
+                minx = -r; maxx = r;
+                numx = (int)range[0];
+
+                miny = -r; maxy = r;
+                numy = (int)range[1];
+            }
+            else {
+                minx = range[0]; maxx = range[1];
+                numx = (int)range[2];
+
+                miny = range[3]; maxy = range[4];
+                numy = (int)range[5];
+            }
+
+            koefx = (maxx - minx) / (numx - 1);
+            koefy = (maxy - miny) / (numy - 1);
+        }
+
+        /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
-        /// <param name="range">Rozmìry v jednotlivých rozmìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
+        /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public Matrix EigenMatrix(int n, Vector range) {
-            if(range.Length != 6)
-                throw new GCMException("Pro správné vytvoøení matice hustot vlastních vektorù je nutné, aby vstupní vektor mìl 6 prvkù!");
-
-            double minx = range[0]; double maxx = range[1];
-            int numx = (int)range[2];
-            double koefx = (maxx - minx) / (numx - 1);
-
-            double miny = range[3]; double maxy = range[4];
-            int numy = (int)range[5];
-            double koefy = (maxy - miny) / (numy - 1);
+            double minx, maxx, koefx, miny, maxy, koefy;
+            int numx, numy;
+            this.VectorRange(range, out minx, out maxx, out numx, out koefx, out miny, out maxy, out numy, out koefy);
 
             Vector ev = jacobi.EigenVector[n];
             Matrix result = new Matrix(numx, numy);
@@ -203,8 +242,10 @@ namespace PavelStransky.GCM {
         /// Vrátí matici hustot pro vlastní funkce
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
-        /// <param name="range">Rozmìry v jednotlivých rozmìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
+        /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public Matrix DensityMatrix(int n, Vector range) {
+            bool equipotential = (range.Length == 7 && range[6] > 0.0) ? true : false;
+
             Matrix result = this.EigenMatrix(n, range);
             
             int numx = result.LengthX;
@@ -214,25 +255,58 @@ namespace PavelStransky.GCM {
                 for(int sy = 0; sy < numy; sy++)
                     result[sx, sy] = result[sx, sy] * result[sx, sy];
 
-            // Normování
-            result = result * (1.0 / System.Math.Abs(result.MaxAbs()));
-
             // Zakreslení ekvipotenciální kontury
-            double minx = range[0]; double maxx = range[1];
-            double koefx = (maxx - minx) / (numx - 1);
+            if(equipotential) {
+                // Normování
+                result = result * (1.0 / System.Math.Abs(result.MaxAbs()));
 
-            double miny = range[3]; double maxy = range[4];
-            double koefy = (maxy - miny) / (numy - 1);
+                double minx, maxx, koefx, miny, maxy, koefy;
+                this.VectorRange(range, out minx, out maxx, out numx, out koefx, out miny, out maxy, out numy, out koefy);
 
-            PointVector[] pv = this.EquipotentialContours(this.EigenValue[n]);
-            for(int i = 0; i < pv.Length; i++) {
-                int pvlength = pv[i].Length;
-                for(int j = 0; j < pvlength; j++) {
-                    int sx = (int)((pv[i][j].X - minx) / koefx);
-                    int sy = (int)((pv[i][j].Y - miny) / koefy);
+                PointVector[] pv = this.EquipotentialContours(this.EigenValue[n]);
+                for(int i = 0; i < pv.Length; i++) {
+                    int pvlength = pv[i].Length;
+                    for(int j = 0; j < pvlength; j++) {
+                        int sx = (int)((pv[i][j].X - minx) / koefx);
+                        int sy = (int)((pv[i][j].Y - miny) / koefy);
 
-                    if(sx >= 0 && sx < numx && sy >= 0 && sy < numy)
-                        result[sx, sy] = -1.0;
+                        if(sx >= 0 && sx < numx && sy >= 0 && sy < numy)
+                            result[sx, sy] = -1.0;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Diference |H|psi> - E|psi>|^2 pro zadanou vlastní funkci
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
+        public Matrix NumericalDiff(int n, Vector range) {
+            Matrix em = this.EigenMatrix(n, range);
+
+            double minx, maxx, koefx, miny, maxy, koefy;
+            int numx, numy;
+            this.VectorRange(range, out minx, out maxx, out numx, out koefx, out miny, out maxy, out numy, out koefy);
+
+            Matrix result = new Matrix(numx, numy);
+
+            for(int sx = 1; sx < numx - 1; sx++) {
+                double x = minx + koefx * sx;
+                for(int sy = 1; sy < numy - 1; sy++) {
+                    double y = miny + koefy * sy;
+                    double laplace = (em[sx + 1, sy] + em[sx - 1, sy] + em[sx, sy - 1] + em[sx, sy + 1]
+                        - 4.0 * em[sx, sy]) / (koefx * koefy);
+
+                    //laplace = 1 / (dx * dx) * (
+                    //    -(M[i + 2, j] + M[i - 2, j] + M[i, j + 2] + M[i, j - 2]) / 12 +
+                    //    4 * (M[i + 1, j] + M[i - 1, j] + M[i, j + 1] + M[i, j - 1]) / 3 - 5 * M[i, j]
+                    //    ); //O(dx^4)
+
+                    result[sx, sy] = -hbar * hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * jacobi.EigenValue[n];
+                    result[sx, sy] *= result[sx, sy];
                 }
             }
 
@@ -339,7 +413,7 @@ namespace PavelStransky.GCM {
             }
 
             this.jacobi = import.Read() as Jacobi;
-            this.hermit = new HermitPolynom(this.jacobi.EigenValue.Length);
+            this.hermit = new HermitPolynom((int)System.Math.Sqrt(this.jacobi.EigenValue.Length));
             this.RefreshConstants();
         }
         #endregion

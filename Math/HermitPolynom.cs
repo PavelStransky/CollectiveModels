@@ -9,6 +9,11 @@ namespace PavelStransky.Math {
         private Matrix coefs;
 
         /// <summary>
+        /// Maximální øád Hermitova polynomu
+        /// </summary>
+        public int MaxN { get { return this.coefs.LengthX - 1; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="maxOrder">Øád polynomu</param>

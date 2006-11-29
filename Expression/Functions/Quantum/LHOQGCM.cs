@@ -55,7 +55,7 @@ namespace PavelStransky.Expression.Functions {
                 double lambda = (double)item;
 
                 int maxn = 25;
-                int numSteps = 200;
+                int numSteps = 0;               // 0 - numsteps je dopoèítáno automaticky
 
                 if(arguments.Count > 1) {
                     b = (double)arguments[1];

@@ -201,7 +201,7 @@
     <Compile Include="Functions\Dynamics\CGCMJ.cs" />
     <Compile Include="Functions\Dynamics\CIBM.cs" />
     <Compile Include="Functions\Dynamics\Energy.cs" />
-    <Compile Include="Functions\Dynamics\EnergyLevels.cs" />
+    <Compile Include="Functions\Quantum\EnergyLevels.cs" />
     <Compile Include="Functions\Dynamics\ExtendedCGCM1.cs" />
     <Compile Include="Functions\Dynamics\ExtendedCGCM2.cs" />
     <Compile Include="Functions\Dynamics\HH.cs" />

@@ -1,5 +1,7 @@
 using System;
 
+using PavelStransky.Math;
+
 namespace PavelStransky.GCM {
     /// <summary>
     /// Bázová funkce
@@ -11,11 +13,10 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Pøedvypoèítá hodnoty bázové funkce na zadané møížce
     /// </summary>
-    public class BasisCache {
-        private double minx, stepx;
+    public class BasisCache : Range {
         private double[,] cache;
-        private int maxn;
         private BasisFunction function;
+        private int maxn;
 
         /// <summary>
         /// Konstruktor
@@ -25,21 +26,36 @@ namespace PavelStransky.GCM {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="maxn">Maximální øád bázové funkce</param>
         /// <param name="function">Bázová funkce</param>
-        public BasisCache(double minx, double stepx, int numSteps, int maxn, BasisFunction function) {
-            this.minx = minx;
-            this.stepx = stepx;
+        public BasisCache(double minx, double maxx, int numSteps, int maxn, BasisFunction function)
+            : base(minx, maxx, numSteps) {
+            this.Create(maxn, function);
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="range">Meze parametrù</param>
+        /// <param name="maxn">Maximální øád bázové funkce</param>
+        /// <param name="function">Bázová funkce</param>
+        public BasisCache(Vector range, int maxn, BasisFunction function)
+            : base(range) {
+            this.Create(maxn, function);
+        }
+
+        /// <summary>
+        /// Vytvoøí cache
+        /// </summary>
+        /// <param name="maxn">Maximální øád bázové funkce</param>
+        /// <param name="function">Bázová funkce</param>
+        private void Create(int maxn, BasisFunction function) {
             this.maxn = maxn;
             this.function = function;
 
             this.cache = new double[maxn, numSteps];
 
-            for(int n = 0; n < maxn; n++) {
-                double x = minx;
-                for(int i = 0; i < numSteps; i++) {
-                    this.cache[n, i] = function(n, x);
-                    x += stepx;
-                }
-            }
+            for(int n = 0; n < maxn; n++)
+                for(int i = 0; i < numSteps; i++)
+                    this.cache[n, i] = function(n, this.GetX(i));
         }
 
         /// <summary>
@@ -54,25 +70,9 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrátí x k zadanému indexu
-        /// </summary>
-        /// <param name="i">Index cache</param>
-        public double GetX(int i) {
-            return this.minx + this.stepx * i;
-        }
-
-        /// <summary>
-        /// Vrátí index cache k zadanému x
-        /// </summary>
-        /// <param name="x">X</param>
-        public int GetIndex(double x) {
-            return (int)System.Math.Round((x - this.minx) / this.stepx);
-        }
-
-        /// <summary>
         /// Maximální index cache
         /// </summary>
-        public int MaxIndex { get { return this.cache.GetLength(1); } }
+        public int MaxIndex { get { return this.cache.GetLength(1) - 1; } }
 
         /// <summary>
         /// Maximální cachovaný øád bázové funkce
@@ -87,11 +87,49 @@ namespace PavelStransky.GCM {
         /// <returns></returns>
         public double GetValue(int n, double x) {
             int i = this.GetIndex(x);
-            
+
             if(i < 0 || i > this.MaxIndex || n < 0 || n > this.maxn)
                 return this.function(n, x);
 
-            return cache[n, i];
+            return this.cache[n, i];
+        }
+
+        /// <summary>
+        /// Vrací první indexy cache, které jsou vìtší než epsilon
+        /// </summary>
+        /// <param name="epsilon">Epsilon</param>
+        public int[] GetLowerLimits(double epsilon) {
+            int[] result = new int[this.maxn];
+
+            int maxIndex = this.MaxIndex;
+
+            for(int i = 0; i < this.maxn; i++) {
+                int limit = 0;
+                while(limit <= maxIndex && System.Math.Abs(this.cache[i, limit]) < epsilon)
+                    limit++;
+                result[i] = System.Math.Max(0, limit - 1);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrací poslední indexy cache, které jsou vìtší než epsilon
+        /// </summary>
+        /// <param name="epsilon">Epsilon</param>
+        public int[] GetUpperLimits(double epsilon) {
+            int[] result = new int[this.maxn];
+
+            int maxIndex = this.MaxIndex;
+
+            for(int i = 0; i < this.maxn; i++) {
+                int limit = maxIndex;
+                while(limit >= 0 && System.Math.Abs(this.cache[i, limit]) < epsilon)
+                    limit--;
+                result[i] = System.Math.Max(maxIndex, limit + 1);
+            }
+
+            return result;
         }
     }
 }

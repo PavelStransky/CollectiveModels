@@ -24,7 +24,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Planckova konstanta [Js]
         /// </summary>
-        public double Hbar { get { return this.hbar; } set { this.hbar = value; } }
+        public double Hbar { get { return this.hbar; } }
 
         /// <summary>
         /// Úhlová frekvence LHO [J*m^-2]
@@ -44,14 +44,14 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="lambda">Parametr LHO</param>
+        /// <param name="a0">Parametr LHO</param>
         /// <param name="a">Parametr A</param>
         /// <param name="b">Parametr B</param>
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
-        public LHOQuantumGCM(double lambda, double a, double b, double c, double k)
+        public LHOQuantumGCM(double a, double b, double c, double k, double a0)
             : base(a, b, c, k) {
-            this.a0 = lambda * a;
+            this.a0 = a0;
 
             this.RefreshConstants();
         }
@@ -83,11 +83,13 @@ namespace PavelStransky.GCM {
             this.hermit = new HermitPolynom(maxn);
             double omega = this.Omega;
             double range = this.GetRange(maxn, epsilon);
-            double step = 2.0 * range / numSteps;
 
             // Cache psi hodnot (Bazove vlnove funkce)
-            BasisCache psiCache = new BasisCache(-range, step, numSteps, maxn, this.Psi);
-            int[] psiCacheLimits = this.GetPsiCacheLimits(psiCache, epsilon);
+            BasisCache psiCache = new BasisCache(-range, range, numSteps, maxn, this.Psi);
+            int[] psiCacheLowerLimits = psiCache.GetLowerLimits(epsilon);
+            int[] psiCacheUpperLimits = psiCache.GetUpperLimits(epsilon);
+
+            double step = psiCache.StepX;
 
             // Cache hodnot potencialu
             double[,] vCache = new double[numSteps, numSteps];
@@ -115,11 +117,11 @@ namespace PavelStransky.GCM {
 
                     double sum = 0;
 
-                    int minsx = System.Math.Max(psiCacheLimits[ix], psiCacheLimits[jx]);
-                    int maxsx = numSteps - minsx;
+                    int minsx = System.Math.Max(psiCacheLowerLimits[ix], psiCacheLowerLimits[jx]);
+                    int maxsx = System.Math.Min(psiCacheUpperLimits[ix], psiCacheUpperLimits[jx]);
 
-                    int minsy = System.Math.Max(psiCacheLimits[iy], psiCacheLimits[jy]);
-                    int maxsy = numSteps - minsy;
+                    int minsy = System.Math.Max(psiCacheLowerLimits[iy], psiCacheLowerLimits[jy]);
+                    int maxsy = System.Math.Min(psiCacheUpperLimits[iy], psiCacheUpperLimits[jy]);
 
                     for(int sy = minsy; sy < maxsy; sy++)
                         for(int sx = minsx; sx < maxsx; sx++)
@@ -135,7 +137,7 @@ namespace PavelStransky.GCM {
                     m[j, i] = sum;
                 }
 
-                // Výpis na konzoli
+                // Výpis teèky na konzoli
                 if(writer != null) {
                     if(i % maxn == 0 && i != 0)
                         writer.WriteLine();
@@ -171,71 +173,49 @@ namespace PavelStransky.GCM {
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
 
         /// <summary>
-        /// Ze vstupního vektoru získá meze
-        /// </summary>
-        /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru minx, maxx, numx, ...)</param>
-        /// <param name="minx">MinX</param>
-        /// <param name="maxx">MaxX</param>
-        /// <param name="numx">Poèet hodnot ve smìru x</param>
-        /// <param name="koefx">Krok ve smìru x</param>
-        /// <param name="miny">MinY</param>
-        /// <param name="maxy">MaxY</param>
-        /// <param name="numy">Poèet hodnot ve smìru y</param>
-        /// <param name="koefy">Krok ve smìru y</param>
-        private void VectorRange(Vector range, out double minx, out double maxx, out int numx, out double koefx, out double miny, out double maxy, out int numy, out double koefy) {
-            if(range.Length < 6) {
-                if(range.Length < 2)
-                    throw new GCMException("Pro správné vytvoøení matice hustot vlastních vektorù je nutné, aby vstupní vektor mìl alespoò 2 prvky (numx, numy)!");
-
-                double r = this.GetRange(this.hermit.MaxN, epsilon);
-                minx = -r; maxx = r;
-                numx = (int)range[0];
-
-                miny = -r; maxy = r;
-                numy = (int)range[1];
-            }
-            else {
-                minx = range[0]; maxx = range[1];
-                numx = (int)range[2];
-
-                miny = range[3]; maxy = range[4];
-                numy = (int)range[5];
-            }
-
-            koefx = (maxx - minx) / (numx - 1);
-            koefy = (maxy - miny) / (numy - 1);
-        }
-
-        /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
-        /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public Matrix EigenMatrix(int n, Vector range) {
-            double minx, maxx, koefx, miny, maxy, koefy;
-            int numx, numy;
-            this.VectorRange(range, out minx, out maxx, out numx, out koefx, out miny, out maxy, out numy, out koefy);
-
+        /// <param name="rx">Rozmìry ve smìru x</param>
+        /// <param name="ry">Rozmìry ve smìru y</param>
+        private Matrix EigenMatrix(int n, Range rx, Range ry) {
             Vector ev = jacobi.EigenVector[n];
-            Matrix result = new Matrix(numx, numy);
+            Matrix result = new Matrix(rx.Num, ry.Num);
 
-            int length = ev.Length;
-            int sqrtlength = (int)System.Math.Round(System.Math.Sqrt(length));
+            int sqrlength = ev.Length;
+            int length = (int)System.Math.Round(System.Math.Sqrt(sqrlength));
 
-            for(int i = 0; i < length; i++) {
-                int ix = i / sqrtlength;
-                int iy = i % sqrtlength;
+            BasisCache cachex = new BasisCache(rx, this.MaxN, this.Psi);
+            BasisCache cachey = new BasisCache(ry, this.MaxN, this.Psi);
 
-                for(int sx = 0; sx < numx; sx++) {
-                    double x = minx + koefx * sx;
-                    for(int sy = 0; sy < numy; sy++) {
-                        double y = miny + koefy * sy;
-                        result[sx, sy] += this.Psi(ix, x) * this.Psi(iy, y) * ev[i];
-                    }
-                }
+            for(int i = 0; i < sqrlength; i++) {
+                int ix = i / length;
+                int iy = i % length;
+
+                for(int sx = 0; sx < rx.Num; sx++) 
+                    for(int sy = 0; sy < rx.Num; sy++) 
+                        result[sx, sy] += cachex[ix, sx] * cachey[iy, sy] * ev[i];
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Zkontroluje, zda je range úplný a pøípadnì doplní
+        /// </summary>
+        /// <param name="range">Vstupní rozmìry</param>
+        /// <returns>Výstupní rozmìry</returns>
+        private Range ParseRange(Vector range) {
+            if(range == null)
+                return new Range(this.GetRange(this.MaxN, epsilon), this.MaxN);
+
+            if(range.Length == 1)
+                return new Range(this.GetRange(this.MaxN, epsilon), (int)range[0]);
+
+            if(range.Length == 2)
+                return new Range(range[0], (int)range[1]);
+
+            return new Range(range);
         }
 
         /// <summary>
@@ -243,34 +223,29 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public Matrix DensityMatrix(int n, Vector range) {
-            bool equipotential = (range.Length == 7 && range[6] > 0.0) ? true : false;
+        public Matrix DensityMatrix(int n, params Vector[] range) {
+            Range rx = this.ParseRange(range.Length > 0 ? range[0] : null);
+            Range ry = this.ParseRange(range.Length > 1 ? range[1] : null);
 
-            Matrix result = this.EigenMatrix(n, range);
+            Matrix result = this.EigenMatrix(n, rx, ry);
             
-            int numx = result.LengthX;
-            int numy = result.LengthY;
-
-            for(int sx = 0; sx < numx; sx++)
-                for(int sy = 0; sy < numy; sy++)
+            for(int sx = 0; sx < rx.Num; sx++)
+                for(int sy = 0; sy < ry.Num; sy++)
                     result[sx, sy] = result[sx, sy] * result[sx, sy];
 
             // Zakreslení ekvipotenciální kontury
-            if(equipotential) {
+            if(range.Length > 2) {
                 // Normování
                 result = result * (1.0 / System.Math.Abs(result.MaxAbs()));
-
-                double minx, maxx, koefx, miny, maxy, koefy;
-                this.VectorRange(range, out minx, out maxx, out numx, out koefx, out miny, out maxy, out numy, out koefy);
 
                 PointVector[] pv = this.EquipotentialContours(this.EigenValue[n]);
                 for(int i = 0; i < pv.Length; i++) {
                     int pvlength = pv[i].Length;
                     for(int j = 0; j < pvlength; j++) {
-                        int sx = (int)((pv[i][j].X - minx) / koefx);
-                        int sy = (int)((pv[i][j].Y - miny) / koefy);
+                        int sx = rx.GetIndex(pv[i][j].X);
+                        int sy = ry.GetIndex(pv[i][j].Y);
 
-                        if(sx >= 0 && sx < numx && sy >= 0 && sy < numy)
+                        if(sx >= 0 && sx < vr.NumX && sy >= 0 && sy < vr.NumY)
                             result[sx, sy] = -1.0;
                     }
                 }
@@ -285,17 +260,14 @@ namespace PavelStransky.GCM {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="range">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public Matrix NumericalDiff(int n, Vector range) {
+            VectorRangeXY vr = new VectorRangeXY(range, this.GetRange(this.MaxN, epsilon), this.MaxN);
             Matrix em = this.EigenMatrix(n, range);
-
-            double minx, maxx, koefx, miny, maxy, koefy;
-            int numx, numy;
-            this.VectorRange(range, out minx, out maxx, out numx, out koefx, out miny, out maxy, out numy, out koefy);
 
             Matrix result = new Matrix(numx, numy);
 
-            for(int sx = 1; sx < numx - 1; sx++) {
-                double x = minx + koefx * sx;
-                for(int sy = 1; sy < numy - 1; sy++) {
+            for(int sx = 1; sx < vr.NumX - 1; sx++) {
+                double x = vr.GetX(sx);
+                for(int sy = 1; sy < vr.NumY - 1; sy++) {
                     double y = miny + koefy * sy;
                     double laplace = (em[sx + 1, sy] + em[sx - 1, sy] + em[sx, sy - 1] + em[sx, sy + 1]
                         - 4.0 * em[sx, sy]) / (koefx * koefy);
@@ -342,24 +314,6 @@ namespace PavelStransky.GCM {
 
             //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
             return range + 2 * dx;
-        }
-
-        /// <summary>
-        /// Vrací první indexy psiCache, které jsou vìtší než epsilon
-        /// </summary>
-        /// <param name="psiCache">psiCache</param>
-        /// <param name="epsilon">Epsilon</param>
-        private int[] GetPsiCacheLimits(BasisCache psiCache, double epsilon) {
-            int[] result = new int[psiCache.MaxN];
-
-            for(int i = 0; i < psiCache.MaxN; i++) {
-                int limit = 0;
-                while(limit < psiCache.MaxIndex && System.Math.Abs(psiCache[i, limit]) < epsilon)
-                    limit++;
-                result[i] = System.Math.Max(0, limit - 1);
-            }
-
-            return result;
         }
 
         #region Implementace IExportable

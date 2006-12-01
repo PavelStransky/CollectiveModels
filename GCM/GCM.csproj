@@ -57,6 +57,7 @@
     <Compile Include="Quantum\QuantumGCM.cs" />
     <Compile Include="Quantum\RadialMatrixElement.cs" />
     <Compile Include="Quantum\RAIndex.cs" />
+    <Compile Include="Quantum\Range.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Math\Math.csproj">

@@ -64,8 +64,8 @@ namespace PavelStransky.Math {
         /// Matice s hustotou vlastní funkce
         /// </summary>
         /// <param name="n">Èíslo vlastní funkce</param>
-        /// <param name="range">Oblast hodnot k zhobrazení (seøazená ve tvaru minx, maxx, numx, ...)</param>
-        Matrix DensityMatrix(int n, Vector range);
+        /// <param name="interval">Oblast hodnot k zhobrazení (seøazená ve tvaru minx, maxx, numx, ...)</param>
+        Matrix DensityMatrix(int n, params Vector[] interval);
     }
 
     /// <summary>

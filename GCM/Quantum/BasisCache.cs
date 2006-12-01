@@ -13,7 +13,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Pøedvypoèítá hodnoty bázové funkce na zadané møížce
     /// </summary>
-    public class BasisCache : Range {
+    public class BasisCache : DiscreteInterval {
         private double[,] cache;
         private BasisFunction function;
         private int maxn;
@@ -21,40 +21,18 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="minx">Minimální hodnota</param>
-        /// <param name="stepx">Krok</param>
-        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="interval">Meze parametrù</param>
         /// <param name="maxn">Maximální øád bázové funkce</param>
         /// <param name="function">Bázová funkce</param>
-        public BasisCache(double minx, double maxx, int numSteps, int maxn, BasisFunction function)
-            : base(minx, maxx, numSteps) {
-            this.Create(maxn, function);
-        }
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="range">Meze parametrù</param>
-        /// <param name="maxn">Maximální øád bázové funkce</param>
-        /// <param name="function">Bázová funkce</param>
-        public BasisCache(Vector range, int maxn, BasisFunction function)
-            : base(range) {
-            this.Create(maxn, function);
-        }
-
-        /// <summary>
-        /// Vytvoøí cache
-        /// </summary>
-        /// <param name="maxn">Maximální øád bázové funkce</param>
-        /// <param name="function">Bázová funkce</param>
-        private void Create(int maxn, BasisFunction function) {
+        public BasisCache(DiscreteInterval interval, int maxn, BasisFunction function)
+            : base(interval) {
             this.maxn = maxn;
             this.function = function;
 
-            this.cache = new double[maxn, numSteps];
+            this.cache = new double[maxn, this.Num];
 
             for(int n = 0; n < maxn; n++)
-                for(int i = 0; i < numSteps; i++)
+                for(int i = 0; i < this.Num; i++)
                     this.cache[n, i] = function(n, this.GetX(i));
         }
 

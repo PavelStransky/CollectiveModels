@@ -14,9 +14,12 @@ namespace PavelStransky.Expression.Functions {
         public override string Parameters { get { return parameters; } }
 
         protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 3);
+            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(Vector));
+
+            for(int i = 2; i < evaluatedArguments.Count; i++)
+                this.CheckArgumentsType(evaluatedArguments, i, typeof(Vector));
+
             return evaluatedArguments;
         }
 
@@ -24,9 +27,12 @@ namespace PavelStransky.Expression.Functions {
             if(item is LHOQuantumGCM) {
                 LHOQuantumGCM qs = item as LHOQuantumGCM;
                 int n = (int)arguments[1];
-                Vector range = arguments[2] as Vector;
 
-                return qs.NumericalDiff(n, range);
+                Vector[] interval = new Vector[arguments.Count - 2];
+                for(int i = 2; i < arguments.Count; i++)
+                    interval[i - 2] = arguments[i] as Vector;
+
+                return qs.NumericalDiff(n, interval);
             }
 
             else if(item is Array)

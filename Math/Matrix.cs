@@ -351,7 +351,7 @@ namespace PavelStransky.Math {
 
 			for(int i = 0; i < lengthX; i++)
 				for(int j = 0; j < lengthY; j++)
-					result[i, j] = this[j, i];
+					result[j, i] = this[i, j];
 
 			return result;
 		}

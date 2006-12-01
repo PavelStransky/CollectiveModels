@@ -10,7 +10,7 @@ namespace PavelStransky.GCM {
     /// </summary>
     public class LHOQuantumGCM : GCM, IExportable, IQuantumSystem {
         private const double epsilon = 1E-10;
-        private double hbar = 1.0E-1;	// [Js]
+        private double hbar;                    // [Js]
 
         // Koeficienty
         private double s, n;
@@ -50,8 +50,21 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         public LHOQuantumGCM(double a, double b, double c, double k, double a0)
+            : this(a, b, c, k, a0, 0.1) { }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="a0">Parametr LHO</param>
+        /// <param name="a">Parametr A</param>
+        /// <param name="b">Parametr B</param>
+        /// <param name="c">Parametr C</param>
+        /// <param name="k">Parametr D</param>
+        /// <param name="hbar">Planckova konstanta</param>
+        public LHOQuantumGCM(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k) {
             this.a0 = a0;
+            this.hbar = hbar;
 
             this.RefreshConstants();
         }
@@ -332,11 +345,13 @@ namespace PavelStransky.GCM {
                 b.Write(this.C);
                 b.Write(this.K);
                 b.Write(this.A0);
+                b.Write(this.hbar);
             }
             else {
                 // Textovì
                 StreamWriter t = export.T;
                 t.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}", this.A, this.B, this.C, this.K, this.A0);
+                t.WriteLine(this.hbar);
             }
 
             export.Write(this.jacobi);
@@ -355,6 +370,7 @@ namespace PavelStransky.GCM {
                 this.C = b.ReadDouble();
                 this.K = b.ReadDouble();
                 this.a0 = b.ReadDouble();
+                this.hbar = b.ReadDouble();
             }
             else {
                 // Textovì
@@ -365,7 +381,8 @@ namespace PavelStransky.GCM {
                 this.B = double.Parse(s[1]);
                 this.C = double.Parse(s[2]);
                 this.K = double.Parse(s[3]);
-                this.A0 = double.Parse(s[4]);
+                this.a0 = double.Parse(s[4]);
+                this.hbar = double.Parse(t.ReadLine());
             }
 
             this.jacobi = import.Read() as Jacobi;

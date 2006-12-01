@@ -44,13 +44,71 @@ namespace PavelStransky.Forms {
         // Poèátek výpoètu
         DateTime startTime = DateTime.Now;
 
-        // Probíhající výpoèet
-        private bool calculating;
+        // Probíhající výpoèet a pausa
+        private bool calculating = false;
+        private bool paused = false;
 
         /// <summary>
         /// True pro probíhající výpoèet
         /// </summary>
         public bool Calulating { get { return this.calculating; } }
+
+        /// <summary>
+        /// True, pokud byl výpoèet pozastaven
+        /// </summary>
+        public bool Paused { get { return this.paused; } }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        public ResultForm() {
+            this.InitializeComponent();
+        }
+
+        /// <summary>
+        /// Nastaví tlaèítka do daného stavu
+        /// </summary>
+        public void SetButtons() {
+            if(this.calculating) {
+                this.btRecalculate.Visible = false;
+                this.lblResult.Visible = false;
+                this.chkAsync.Visible = false;
+                this.lblComputing.Visible = true;
+
+                if(this.chkAsync.Checked) {
+                    if(this.paused) {
+                        this.btContinue.Visible = true;
+                        this.btInterrupt.Visible = false;
+                        this.btPause.Visible = false;
+                    }
+                    else {
+                        this.btContinue.Visible = false;
+                        this.btInterrupt.Visible = true;
+                        this.btPause.Visible = true;
+                    }
+                }
+                else {
+                    this.btContinue.Visible = false;
+                    this.btInterrupt.Visible = false;
+                    this.btPause.Visible = false;
+                }
+            }
+
+            else {
+                if(this.expression != null)
+                    this.btRecalculate.Visible = true;
+                else
+                    this.btRecalculate.Visible = false;
+
+                this.lblResult.Visible = true;
+                this.chkAsync.Visible = true;
+                this.lblComputing.Visible = false;
+
+                this.btContinue.Visible = false;
+                this.btInterrupt.Visible = false;
+                this.btPause.Visible = false;
+            }
+        }
 
         /// <summary>
         /// Výraz
@@ -62,22 +120,17 @@ namespace PavelStransky.Forms {
                 this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
                 this.calcThread.Priority = ThreadPriority.BelowNormal;
-
-                this.btRecalculate.Visible = true;
-                this.lblResult.Visible = true;
-                this.chkAsync.Visible = true;
-                this.lblComputing.Visible = false;
-                this.btInterrupt.Visible = false;
-                this.btPause.Visible = false;
-                this.btContinue.Visible = false;
+                this.SetButtons();
             }
             catch(Exception exc) {
+                this.expression = null;
+                this.calcThread = null;
                 this.CatchException(exc);
-                this.Close();
+                this.SetButtons();
             }		
         }
 
-#region Obsluha vlastních událostí
+        #region Obsluha vlastních událostí
         public event EventHandler CalcStarted;
         public event EventHandler CalcFinished;
         public event EventHandler CalcPaused;
@@ -96,7 +149,7 @@ namespace PavelStransky.Forms {
             if(this.CalcPaused != null)
                 this.CalcPaused(this, e);
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Zahájí výpoèet
@@ -107,23 +160,15 @@ namespace PavelStransky.Forms {
                 
                 // Nastavení ovládacích prvkù
                 this.txtResult.Clear();
-
                 this.SetCaption(captionCalculating);
-                this.btRecalculate.Visible = false;
-                this.lblResult.Visible = false;
-                this.chkAsync.Visible = false;
-                this.lblComputing.Visible = true;
-                this.btContinue.Visible = false;
+                this.SetButtons();
 
                 this.startTime = DateTime.Now;
 
                 this.OnCalcStarted(new EventArgs());
 
-                if(this.chkAsync.Checked) {
-                    this.btInterrupt.Visible = true;
-                    this.btPause.Visible = true;
+                if(this.chkAsync.Checked) 
                     this.calcThread.Start();
-                }
                 else
                     this.ThreadStart();
             }
@@ -178,16 +223,10 @@ namespace PavelStransky.Forms {
 				MessageBox.Show(this, exc.Message);
 
             this.calculating = false;
+            this.paused = false;
 
-            // Nastavení ovládacích prvkù
-            this.btRecalculate.Visible = true;
-            this.chkAsync.Visible = true;
-            this.btInterrupt.Visible = false;
-            this.btContinue.Visible = false;
-            this.btPause.Visible = false;
-            this.lblComputing.Visible = false;
-            this.lblResult.Visible = true;
             this.SetCaption(captionInterrupted);
+            this.SetButtons();
 
             this.OnCalcFinished(new EventArgs());
         }
@@ -199,15 +238,11 @@ namespace PavelStransky.Forms {
         private void FinishedCalculation(object result) {
             TimeSpan duration = DateTime.Now - this.startTime;
 
-            // Nastavení ovládacích prvkù
-            this.btRecalculate.Visible = true;
-            this.btInterrupt.Visible = false;
-            this.chkAsync.Visible = true;
-            this.btContinue.Visible = false;
-            this.btPause.Visible = false;
-            this.lblComputing.Visible = false;
-            this.lblResult.Visible = true;
+            this.calculating = false;
+            this.paused = false;
+
             this.SetCaption(captionFinished);
+            this.SetButtons();
 
             if(this.txtResult.Text != string.Empty)
                 this.txtResult.Text += newLine;
@@ -222,8 +257,6 @@ namespace PavelStransky.Forms {
 
                 this.txtResult.Text += s;
             }
-
-            this.calculating = false;
 
             this.OnCalcFinished(new EventArgs());
         }
@@ -250,13 +283,6 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Konstruktor
-        /// </summary>
-        public ResultForm() {
-            this.InitializeComponent();
-        }
-
-        /// <summary>
         /// Pøi uzavírání formuláøe
         /// </summary>
         protected override void OnFormClosing(FormClosingEventArgs e) {
@@ -276,7 +302,7 @@ namespace PavelStransky.Forms {
             if(this.calculating) {
                 DialogResult dialogResult = MessageBox.Show(this, string.Format(messageClose, this.Name), captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
-                if(dialogResult == DialogResult.Yes)
+                if(dialogResult == DialogResult.Yes) 
                     this.calcThread.Abort();
                 else
                     result = true;
@@ -300,8 +326,8 @@ namespace PavelStransky.Forms {
 
             // Nastavení ovládacích prvkù
             this.SetCaption(captionPaused);
-            this.btPause.Visible = false;
-            this.btContinue.Visible = true;
+            this.paused = true;
+            this.SetButtons();
 
             this.OnCalcPaused(new EventArgs());
         }
@@ -314,8 +340,8 @@ namespace PavelStransky.Forms {
 
             // Nastavení ovládacích prvkù
             this.SetCaption(captionCalculating);
-            this.btContinue.Visible = false;
-            this.btPause.Visible = true;
+            this.paused = false;
+            this.SetButtons();
 
             this.OnCalcStarted(new EventArgs());
         }

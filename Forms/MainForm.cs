@@ -34,6 +34,7 @@ namespace PavelStransky.Forms {
             this.InitializeComponent();
             this.Initialize();
             this.Show();
+            this.SetMenu();
 
             foreach(string fileName in this.openedFileNames)
                 if(fileName != null && fileName != string.Empty)
@@ -152,6 +153,8 @@ namespace PavelStransky.Forms {
             this.SetDialogProperties(editor.SaveFileDialog);
             editor.MdiParent = this;
             editor.Show();
+            editor.FormClosed += new FormClosedEventHandler(this.editor_FormClosed);
+            this.SetMenu();
         }
 
         /// <summary>
@@ -167,6 +170,7 @@ namespace PavelStransky.Forms {
         private void openFileDialog_FileOk(object sender, CancelEventArgs e) {
             WinMain.SetDirectoryFromFile(this.openFileDialog.FileName);
             this.Open(this.openFileDialog.FileName);
+            this.SetMenu();
         }
 
         /// <summary>
@@ -185,6 +189,7 @@ namespace PavelStransky.Forms {
                 import = new Import(fileName, true);
                 editor = import.Read() as Editor;
 
+                editor.FormClosed += new FormClosedEventHandler(this.editor_FormClosed);
                 editor.MdiParent = this;
                 editor.Show();
 
@@ -246,6 +251,45 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Nastaví menu podle stavu otevøených oken
+        /// </summary>
+        public void SetMenu() {
+            this.SetMenu(null);
+        }
+
+        /// <summary>
+        /// Nastaví menu podle stavu otevøených oken
+        /// </summary>
+        /// <param name="closed">Právì uzavírané okno (již uvažujeme, že je uzavøené)</param>
+        private void SetMenu(Editor closed) {
+            bool isEditor = false;
+
+            // Hledáme otevøený editor
+            for(int i = 0; i < this.MdiChildren.Length; i++) {
+                Editor editor = this.MdiChildren[i] as Editor;
+                if(editor != null && editor != closed) {
+                    isEditor = true;
+                    break;
+                }
+            }
+
+            if(isEditor) {
+                this.mnWindow.Visible = true;
+                this.mnFileClose.Visible = true;
+                this.mnFileSave.Visible = true;
+                this.mnFileSaveAs.Visible = true;
+                this.mnFileSeparator1.Visible = true;
+            }
+            else {
+                this.mnWindow.Visible = false;
+                this.mnFileClose.Visible = false;
+                this.mnFileSave.Visible = false;
+                this.mnFileSaveAs.Visible = false;
+                this.mnFileSeparator2.Visible = false;
+            }
+        }
+
+        /// <summary>
         /// Uložit
         /// </summary>
         private void mnFileSave_Click(object sender, EventArgs e) {
@@ -267,6 +311,7 @@ namespace PavelStransky.Forms {
         private void mnFileClose_Click(object sender, EventArgs e) {
             Editor editor = this.FindActiveMdiEditor(this.ActiveMdiChild);
             editor.Close();
+            this.SetMenu();
         }
 
         /// <summary>
@@ -293,6 +338,13 @@ namespace PavelStransky.Forms {
                 rk.SetValue(string.Format(registryKeyOpenedFile, i++), fileName);
         }
         #endregion
+
+        /// <summary>
+        /// Uzavøení editoru - pøípadné skrytí menu
+        /// </summary>
+        void editor_FormClosed(object sender, FormClosedEventArgs e) {
+            this.SetMenu(sender as Editor);
+        }
 
         #region Menu Nastavení
         /// <summary>

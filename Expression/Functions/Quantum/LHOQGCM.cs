@@ -93,6 +93,6 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string help = "Vytvoøí LHOQuantumGCM tøídu pro dané parametry";
-        private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [MaxN (int); [hbar (double); [Lambda (double); [NumSteps - dìlení møíže (int)]]]]]";
+        private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [MaxN (int); [hbar (double); [A0 (double); [NumSteps - dìlení møíže (int)]]]]]";
     }
 }

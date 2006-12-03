@@ -122,6 +122,7 @@ namespace PavelStransky.GCM {
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", max2, max2));
 
             DateTime startTime = DateTime.Now;
+            DateTime startTime1 = startTime;
 
             for(int i = 0; i < max2; i++) {
                 for(int j = i; j < max2; j++) {
@@ -156,8 +157,10 @@ namespace PavelStransky.GCM {
                 if(writer != null) {
                     if(i % maxn == 0) {
                         if(i != 0)
-                            writer.WriteLine();
+                            writer.WriteLine((DateTime.Now - startTime1).ToString());
+
                         writer.Write(i);
+                        startTime1 = DateTime.Now;
                     }
 
                     writer.Write(".");

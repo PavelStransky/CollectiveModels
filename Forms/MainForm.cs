@@ -34,12 +34,12 @@ namespace PavelStransky.Forms {
             this.InitializeComponent();
             this.Initialize();
             this.Show();
-            this.SetMenu();
 
             foreach(string fileName in this.openedFileNames)
                 if(fileName != null && fileName != string.Empty)
                     this.Open(fileName);
 
+            this.SetMenu();
             this.openedFileNames.Clear();
         }
 

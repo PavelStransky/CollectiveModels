@@ -121,6 +121,8 @@ namespace PavelStransky.GCM {
             if(writer != null)
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", max2, max2));
 
+            DateTime startTime = DateTime.Now;
+
             for(int i = 0; i < max2; i++) {
                 for(int j = i; j < max2; j++) {
                     int ix = i / maxn;
@@ -152,17 +154,23 @@ namespace PavelStransky.GCM {
 
                 // Výpis teèky na konzoli
                 if(writer != null) {
-                    if(i % maxn == 0 && i != 0)
-                        writer.WriteLine();
+                    if(i % maxn == 0) {
+                        if(i != 0)
+                            writer.WriteLine();
+                        writer.Write(i);
+                    }
 
                     writer.Write(".");
                 }
             }
 
-            if(writer != null)
+            if(writer != null) {
                 writer.WriteLine();
+                writer.WriteLine((DateTime.Now - startTime).ToString());
+            }
 
-            DateTime startTime = DateTime.Now;
+            startTime = DateTime.Now;
+
             this.jacobi = new Jacobi(m, writer);
             this.jacobi.SortAsc();
 

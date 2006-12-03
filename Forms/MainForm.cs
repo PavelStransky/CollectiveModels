@@ -52,6 +52,7 @@ namespace PavelStransky.Forms {
             this.Initialize();
             this.Show();
             this.Open(fileName);
+            this.SetMenu();
 
             this.openedFileNames.Clear();
         }

@@ -25,7 +25,7 @@ namespace PavelStransky.Forms {
         private bool modified = false;
 
         // Èíslo výsledkového formuláøe
-        private static int resultNumber = 0;
+        private int resultNumber = 0;
 
         /// <summary>
         /// Kontext
@@ -429,10 +429,13 @@ namespace PavelStransky.Forms {
         /// Pøi žádosti o spuštìní pøíkazu
         /// </summary>
         private void txtCommand_ExecuteCommand(object sender, PavelStransky.Forms.ExecuteCommandEventArgs e) {
-            string windowName = (e.NewWindow || this.mrbResult.IsNewChecked) ?
-                // Chceme nové okno
-                string.Format(defaultResultWindowName, ++resultNumber) :
-                this.mrbResult.GetCheckedName();
+            string windowName = null;
+            if(!e.NewWindow && !this.mrbResult.IsNewChecked)
+                windowName = this.mrbResult.GetCheckedName();
+
+            // Chceme nové okno
+            if(windowName == null)
+                windowName = string.Format(defaultResultWindowName, ++this.resultNumber);
 
             ResultForm f = this.NewParentForm(typeof(ResultForm), windowName) as ResultForm;
 
@@ -507,7 +510,7 @@ namespace PavelStransky.Forms {
             // Binárnì
             BinaryWriter b = export.B;
             b.Write((this.MdiParent as MainForm).RegistryEntryName);
-            b.Write(1);                 // Rezervované
+            b.Write(2);                 // Rezervované
 
             b.Write(this.Location.X);
             b.Write(this.Location.Y);
@@ -516,6 +519,7 @@ namespace PavelStransky.Forms {
 
             b.Write(this.txtCommand.Rtf);
             b.Write(this.txtCommand.SelectionStart);
+            b.Write(this.resultNumber);
 
             export.Write(this.context);
         }
@@ -539,6 +543,9 @@ namespace PavelStransky.Forms {
 
             this.txtCommand.Rtf = b.ReadString();
             this.txtCommand.SelectionStart = b.ReadInt32();
+
+            if(import.VersionNumber >= 2)
+                this.resultNumber = b.ReadInt32();
 
             if(import.VersionNumber >= 1)
                 this.context = import.Read() as Context;

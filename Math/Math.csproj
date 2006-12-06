@@ -142,6 +142,7 @@
     <Compile Include="Spline.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SymMatrix.cs" />
     <Compile Include="Vector.cs">
       <SubType>Code</SubType>
     </Compile>

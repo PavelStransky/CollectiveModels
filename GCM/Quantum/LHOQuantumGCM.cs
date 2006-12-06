@@ -159,7 +159,7 @@ namespace PavelStransky.GCM {
                         if(i != 0)
                             writer.WriteLine((DateTime.Now - startTime1).ToString());
 
-                        writer.Write(i);
+                        writer.Write(i / maxn);
                         startTime1 = DateTime.Now;
                     }
 

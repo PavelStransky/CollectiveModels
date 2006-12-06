@@ -14,8 +14,9 @@ namespace PavelStransky.Math {
 		// |
 		// |	// rozmìry
 		// v
-		// X
+        // X
 
+        #region Konstruktory
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -44,9 +45,11 @@ namespace PavelStransky.Math {
 		/// <param name="item">Pole [x,y] s prvky matice</param>
 		public Matrix(double [,] item) {
 			this.item = item;
-		}
+        }
+        #endregion
 
-		/// <summary>
+        #region Vlastnosti
+        /// <summary>
 		/// Poèet øádkù matice
 		/// </summary>
 		public int LengthX {get {return this.item.GetLength(0);}}
@@ -71,15 +74,22 @@ namespace PavelStransky.Math {
 		/// <summary>
 		/// Je matice ètvercová?
 		/// </summary>
-		public bool IsSquare {get {return this.LengthX == this.LengthY;}}
+		public bool IsSquare {get {return this.LengthX == this.LengthY;} }
+        #endregion
 
-		/// <summary>
+        /// <summary>
+        /// Indexer
+        /// </summary>
+        public double this[int i, int j] { get { return this.item[i, j]; } set { this.item[i, j] = value; } }
+
+        /// <summary>
 		/// Rozmìr jako funkce GetLength
 		/// </summary>
 		/// <param name="dim">Dimenze</param>
-		public int GetLength(int dim) {return this.item.GetLength(dim);}
+		public int GetLength(int dim) {return this.item.GetLength(dim); }
 
-		/// <summary>
+        #region Operátory
+        /// <summary>
 		/// Seète dvì matice stejných rozmìrù
 		/// </summary>
 		public static Matrix operator +(Matrix m1, Matrix m2) {
@@ -252,12 +262,8 @@ namespace PavelStransky.Math {
 				for(int j = 0; j < lengthY; j++)
 					result += this[i, j];
 			return (int)(result / System.Math.Pow(10, System.Math.Ceiling(System.Math.Log10(result))) * ((double)int.MaxValue - (double)int.MinValue) + int.MinValue);
-		}
-
-		/// <summary>
-		/// Indexer
-		/// </summary>
-		public double this [int i, int j] {get {return this.item[i, j];} set {this.item[i, j] = value;}}
+        }
+        #endregion
 
 		/// <summary>
 		/// Stopa
@@ -464,71 +470,6 @@ namespace PavelStransky.Math {
 			for(int i = 0; i < lengthX; i++)
 				this[i,j] = v[i];
 		}
-
-		#region Implementace IExportable
-		/// <summary>
-		/// Uloží obsah matice do souboru
-		/// </summary>
-		/// <param name="export">Export</param>
-		public void Export(Export export) {
-            int lengthX = this.LengthX;
-            int lengthY = this.LengthY;
-
-            if(export.Binary) {
-                // Binárnì
-                BinaryWriter b = export.B;
-                b.Write(lengthX);
-                b.Write(lengthY);
-                for(int i = 0; i < lengthX; i++)
-                    for(int j = 0; j < lengthY; j++)
-                        b.Write(this[i, j]);
-            }
-            else {
-                // Textovì
-                StreamWriter t = export.T;
-                t.WriteLine("{0}\t{1}", lengthX, lengthY);
-                for(int i = 0; i < lengthX; i++) {
-                    for(int j = 0; j < lengthY; j++)
-                        t.Write("{0}\t", this[i, j]);
-                    t.WriteLine();
-                }
-            }
-		}
-		
-		/// <summary>
-		/// Naète obsah matice ze souboru
-		/// </summary>
-        /// <param name="import">Import</param>
-        public void Import(Import import) {
-            if(import.Binary) {
-                // Binárnì
-                BinaryReader b = import.B;
-                int lengthX = b.ReadInt32();
-                int lengthY = b.ReadInt32();
-
-                this.item = new double[lengthX, lengthY];
-                for(int i = 0; i < lengthX; i++)
-                    for(int j = 0; j < lengthY; j++)
-                        this[i, j] = b.ReadDouble();
-            }
-            else {
-                // Textovì
-                StreamReader t = import.T;
-                string line = t.ReadLine();
-                string[] s = line.Split('\t');
-                int lengthX = int.Parse(s[0]);
-                int lengthY = int.Parse(s[1]);
-
-                this.item = new double[lengthX, lengthY];
-                for(int i = 0; i < lengthX; i++) {
-                    line = t.ReadLine();
-                    s = line.Split('\t');
-                    for(int j = 0; j < lengthY; j++)
-                        this[i, j] = double.Parse(s[j]);
-                }
-            }
-        }
-		#endregion
 
         /// <summary>
         /// Souèet všech prvkù
@@ -876,6 +817,71 @@ namespace PavelStransky.Math {
 			return this[index[0], index[1]];
 		}
 		#endregion
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah matice do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+            if(export.Binary) {
+                // Binárnì
+                BinaryWriter b = export.B;
+                b.Write(lengthX);
+                b.Write(lengthY);
+                for(int i = 0; i < lengthX; i++)
+                    for(int j = 0; j < lengthY; j++)
+                        b.Write(this[i, j]);
+            }
+            else {
+                // Textovì
+                StreamWriter t = export.T;
+                t.WriteLine("{0}\t{1}", lengthX, lengthY);
+                for(int i = 0; i < lengthX; i++) {
+                    for(int j = 0; j < lengthY; j++)
+                        t.Write("{0}\t", this[i, j]);
+                    t.WriteLine();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Naète obsah matice ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public void Import(Import import) {
+            if(import.Binary) {
+                // Binárnì
+                BinaryReader b = import.B;
+                int lengthX = b.ReadInt32();
+                int lengthY = b.ReadInt32();
+
+                this.item = new double[lengthX, lengthY];
+                for(int i = 0; i < lengthX; i++)
+                    for(int j = 0; j < lengthY; j++)
+                        this[i, j] = b.ReadDouble();
+            }
+            else {
+                // Textovì
+                StreamReader t = import.T;
+                string line = t.ReadLine();
+                string[] s = line.Split('\t');
+                int lengthX = int.Parse(s[0]);
+                int lengthY = int.Parse(s[1]);
+
+                this.item = new double[lengthX, lengthY];
+                for(int i = 0; i < lengthX; i++) {
+                    line = t.ReadLine();
+                    s = line.Split('\t');
+                    for(int j = 0; j < lengthY; j++)
+                        this[i, j] = double.Parse(s[j]);
+                }
+            }
+        }
+        #endregion
 
 		/// <summary>
 		/// Pøevede matici na øetìzec

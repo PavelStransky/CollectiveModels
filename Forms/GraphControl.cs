@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 using PavelStransky.Math;
@@ -36,6 +37,13 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="fName">Jméno souboru</param>
         void SaveGIF(string fName);
+
+        /// <summary>
+        /// Uloží graf jako obrázek v daném formátu.
+        /// Pokud se jedná o animaci, uloží ji sekvenènì ve tvaru fName00.ext
+        /// </summary>
+        /// <param name="fName">Jméno souboru</param>
+        void SavePicture(string fName);
     }
 
 	/// <summary>
@@ -134,6 +142,8 @@ namespace PavelStransky.Forms {
             this.saveFileDialogTxt.DefaultExt = WinMain.FileExtTxt;
             this.saveFileDialogGif.Filter = WinMain.FileFilterGif;
             this.saveFileDialogGif.DefaultExt = WinMain.FileExtGif;
+            this.saveFileDialogPicture.Filter = WinMain.FileFilterPicture;
+            this.saveFileDialogPicture.DefaultExt = WinMain.FileExtPicture;
         }
 
 		/// <summary>
@@ -196,6 +206,25 @@ namespace PavelStransky.Forms {
         private void saveFileDialogGif_FileOk(object sender, CancelEventArgs e) {
             WinMain.SetDirectoryFromFile(this.saveFileDialogGif.FileName);
             this.graphControl.SaveGIF(this.saveFileDialogGif.FileName);
+        }
+
+        /// <summary>
+        /// Položka menu Uložit jako obrázek...
+        /// </summary>
+        private void cmnSaveAsPicture_Click(object sender, EventArgs e) {
+            this.saveFileDialogPicture.InitialDirectory = WinMain.Directory;
+            if(this.saveFileDialogPicture.FileName == string.Empty)
+                this.saveFileDialogPicture.FileName = this.Parent.Text;
+
+            this.saveFileDialogPicture.ShowDialog();
+        }
+
+        /// <summary>
+        /// Uložení obrázku sekvenènì
+        /// </summary>
+        private void saveFileDialogPicture_FileOk(object sender, CancelEventArgs e) {
+            WinMain.SetDirectoryFromFile(this.saveFileDialogPicture.FileName);
+            this.graphControl.SavePicture(this.saveFileDialogPicture.FileName);
         }
 
         private const string paramTitle = "title";

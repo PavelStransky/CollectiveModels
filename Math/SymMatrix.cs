@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text;
-
+/*
 namespace PavelStransky.Math {
     /// <summary>
     /// Implementace operací se symetrickými maticemi
@@ -1152,23 +1152,5 @@ namespace PavelStransky.Math {
         private const string errorMessageSingular = "Matrix je singulární. Inverzi nelze spoèítat.";
         private const string errorMessageDifferentLength = "K provedení operace musí mít vektor stejnou délku jako odpovídající rozmìr matice.";
     }
-
-    /// <summary>
-    /// Výjimka ve tøídì Matrix
-    /// </summary>
-    public class MatrixException : ApplicationException {
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="message">Text chybového hlášení</param>
-        public MatrixException(string message) : base(errMessage + message) { }
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="message">Text chybového hlášení</param>
-        public MatrixException(string message, Exception innerException) : base(errMessage + message, innerException) { }
-
-        private const string errMessage = "Ve tøídì Matrix došlo k chybì: ";
-    }
 }
+*/

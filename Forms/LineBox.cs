@@ -20,8 +20,10 @@ namespace PavelStransky.Forms {
         // Èasovaè pro animace
         private System.Timers.Timer timer = new System.Timers.Timer();
 
-        // Èasovaè pro ukládání
-        private BackgroundWorker backgroundWorker = new BackgroundWorker();
+        // Èasovaè pro ukládání jako GIF
+        private BackgroundWorker backgroundWorkerSaveGif = new BackgroundWorker();
+        // Èasovaè pro ukládání jako sekvence obrázkù
+        private BackgroundWorker backgroundWorkerSavePicture = new BackgroundWorker();
 
         private int time, maxTime;
 
@@ -41,24 +43,81 @@ namespace PavelStransky.Forms {
 		/// Základní konstruktor
 		/// </summary>
 		public LineBox() : base() {
-            this.backgroundWorker.WorkerReportsProgress = true;
-            this.backgroundWorker.WorkerSupportsCancellation = true;
-            this.backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+            this.backgroundWorkerSaveGif.WorkerReportsProgress = true;
+            this.backgroundWorkerSaveGif.WorkerSupportsCancellation = true;
+            this.backgroundWorkerSaveGif.DoWork += new DoWorkEventHandler(backgroundWorkerSaveGif_DoWork);
+
+            this.backgroundWorkerSavePicture.WorkerReportsProgress = true;
+            this.backgroundWorkerSavePicture.WorkerSupportsCancellation = true;
+            this.backgroundWorkerSavePicture.DoWork += new DoWorkEventHandler(backgroundWorkerSavePicture_DoWork);
         }
 
         #region Uložení obrázku
+        /// <summary>
+        /// Uloží jako sekvenci obrázkù
+        /// </summary>
+        /// <param name="fName">Jméno souboru</param>
+        public void SavePicture(string fName) {
+            (this.Parent.Parent as GraphForm).NewProcess("Ukládání obrázku :", this.backgroundWorkerSavePicture, fName);
+        }
+
+        /// <summary>
+        /// Základní pracovní metoda, která ukládá obrázek
+        /// </summary>        
+        void backgroundWorkerSavePicture_DoWork(object sender, DoWorkEventArgs e) {
+            string fName = e.Argument as string;
+            int maxTime = this.graph.GetMaxLength();
+
+            if(fName.Length < 3 || fName.IndexOf('.') < 0)
+                throw new FormsException(string.Format(errorMessageBadFileName, fName));
+
+            string name = fName.Substring(0, fName.LastIndexOf('.'));
+            string extension = fName.Substring(name.Length + 1, fName.Length - name.Length).ToLower();
+            ImageFormat format = ImageFormat.Png;
+
+            if(extension == "gif")
+                format = ImageFormat.Gif;
+            else if(extension == "jpg" || extension == "jpeg")
+                format = ImageFormat.Jpeg;
+            else if(extension == "png")
+                format = ImageFormat.Png;
+
+            // Více obrázkù
+            if((bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate)) {
+                for(int time = 0; time < maxTime; time++) {
+                    System.Drawing.Image image = new Bitmap(this.Width, this.Height);
+                    this.PaintGraph(Graphics.FromImage(image), time);
+                    image.Save(string.Format("{0}{1}.{2}", name, time, extension), format);
+
+                    this.backgroundWorkerSavePicture.ReportProgress(time * 100 / maxTime);
+
+                    // Požadavek ukonèení procesu
+                    if(this.backgroundWorkerSavePicture.CancellationPending)
+                        break;
+                }
+            }
+            // Jeden obrázek
+            else {
+                System.Drawing.Image image = new Bitmap(this.Width, this.Height);
+                this.PaintGraph(Graphics.FromImage(image), maxTime);
+                image.Save(fName, format);
+
+                this.backgroundWorkerSaveGif.ReportProgress(100);
+            }
+        }
+
         /// <summary>
         /// Uloží jako GIF
         /// </summary>
         /// <param name="fName">Jméno souboru</param>
         public void SaveGIF(string fName) {
-            (this.Parent.Parent as GraphForm).NewProcess("Ukládání GIF :", this.backgroundWorker, fName);
+            (this.Parent.Parent as GraphForm).NewProcess("Ukládání GIF :", this.backgroundWorkerSaveGif, fName);
         }
 
         /// <summary>
         /// Základní pracovní metoda, která ukládá obrázek
         /// </summary>
-        void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+        private void backgroundWorkerSaveGif_DoWork(object sender, DoWorkEventArgs e) {
             string fName = e.Argument as string;
             int maxTime = this.graph.GetMaxLength();
 
@@ -118,10 +177,10 @@ namespace PavelStransky.Forms {
                     b.Write(buf1, 789, buf1.Length - 790); //Image data
 
                     m.SetLength(0);
-                    this.backgroundWorker.ReportProgress(time * 100 / maxTime);
+                    this.backgroundWorkerSaveGif.ReportProgress(time * 100 / maxTime);
 
                     // Požadavek ukonèení procesu
-                    if(this.backgroundWorker.CancellationPending)
+                    if(this.backgroundWorkerSaveGif.CancellationPending)
                         break;
                 }
 
@@ -136,7 +195,7 @@ namespace PavelStransky.Forms {
                 this.PaintGraph(Graphics.FromImage(image), maxTime);
                 image.Save(fName, ImageFormat.Gif);
 
-                this.backgroundWorker.ReportProgress(100);
+                this.backgroundWorkerSaveGif.ReportProgress(100);
             }
         }
         #endregion
@@ -679,5 +738,7 @@ namespace PavelStransky.Forms {
         private const bool defaultShowLabelY = false;
         private static Color defaultLabelColorY = defaultLineColorY;
         private const bool defaultShowAxeY = true;
+
+        private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }
 }

@@ -20,8 +20,10 @@ namespace PavelStransky.Forms {
         // Èasovaè pro animace
         private System.Timers.Timer timer = new System.Timers.Timer();
 
-        // Èasovaè pro ukládání
-        private BackgroundWorker backgroundWorker = new BackgroundWorker();
+        // Èasovaè pro ukládání jako (animovaný) GIF
+        private BackgroundWorker backgroundWorkerSaveGif = new BackgroundWorker();
+        // Èasovaè pro ukládání jako (sekvence) obrázkù
+        private BackgroundWorker backgroundWorkerSavePicture = new BackgroundWorker();
         // Èasovaè pro vytvoøení bitmap
         private BackgroundWorker backgroundWorkerCreate = new BackgroundWorker();
 
@@ -37,14 +39,18 @@ namespace PavelStransky.Forms {
 		public DensityBox() : base() {
 			this.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            this.backgroundWorker.WorkerReportsProgress = true;
-            this.backgroundWorker.WorkerSupportsCancellation = true;
-            this.backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+            this.backgroundWorkerSaveGif.WorkerReportsProgress = true;
+            this.backgroundWorkerSaveGif.WorkerSupportsCancellation = true;
+            this.backgroundWorkerSaveGif.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
 
             this.backgroundWorkerCreate.WorkerReportsProgress = true;
             this.backgroundWorkerCreate.WorkerSupportsCancellation = true;
             this.backgroundWorkerCreate.DoWork += new DoWorkEventHandler(backgroundWorkerCreate_DoWork);
             this.backgroundWorkerCreate.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorkerCreate_RunWorkerCompleted);
+
+            this.backgroundWorkerSavePicture.WorkerReportsProgress = true;
+            this.backgroundWorkerSavePicture.WorkerSupportsCancellation = true;
+            this.backgroundWorkerSavePicture.DoWork += new DoWorkEventHandler(backgroundWorkerSavePicture_DoWork);
         }
 
         #region Vytvoøení bitmap
@@ -144,11 +150,64 @@ namespace PavelStransky.Forms {
 
         #region Uložení obrázku
         /// <summary>
+        /// Uložení jako obrázku
+        /// </summary>
+        /// <param name="fName">Jméno souboru</param>
+        public void SavePicture(string fName) {
+            (this.Parent.Parent as GraphForm).NewProcess("Ukládání obrázku :", this.backgroundWorkerSavePicture, fName);
+        }
+
+        /// <summary>
+        /// Základní pracovní metoda, která ukládá obrázek
+        /// </summary>
+        void backgroundWorkerSavePicture_DoWork(object sender, DoWorkEventArgs e) {
+            string fName = e.Argument as string;
+            int count = this.graph.Count;
+
+            if(fName.Length < 3 || fName.IndexOf('.') < 0)
+                throw new FormsException(string.Format(errorMessageBadFileName, fName));
+
+            string name = fName.Substring(0, fName.LastIndexOf('.'));
+            string extension = fName.Substring(name.Length + 1, fName.Length - name.Length - 1).ToLower();
+            ImageFormat format = ImageFormat.Png;
+
+            if(extension == "gif")
+                format = ImageFormat.Gif;
+            else if(extension == "jpg" || extension == "jpeg")
+                format = ImageFormat.Jpeg;
+            else if(extension == "png")
+                format = ImageFormat.Png;
+
+            // Více obrázkù
+            if(count > 1) {
+                for(int i = 0; i < count; i++) {
+                    System.Drawing.Image image = this.bitmap[i];
+                    this.PaintGraph(Graphics.FromImage(image), i);
+                    image.Save(string.Format("{0}{1}.{2}", name, i, extension), format);
+
+                    this.backgroundWorkerSavePicture.ReportProgress(i * 100 / count);
+
+                    // Požadavek ukonèení procesu
+                    if(this.backgroundWorkerSavePicture.CancellationPending)
+                        break;
+                }
+            }
+            // Jeden obrázek
+            else {
+                System.Drawing.Image image = this.bitmap[0];
+                this.PaintGraph(Graphics.FromImage(image), 0);
+                image.Save(fName, format);
+
+                this.backgroundWorkerSaveGif.ReportProgress(100);
+            }
+        }
+        
+        /// <summary>
         /// Uloží jako GIF
         /// </summary>
         /// <param name="fname">Jméno souboru</param>
         public void SaveGIF(string fName) {
-            (this.Parent.Parent as GraphForm).NewProcess("Ukládání GIF :", this.backgroundWorker, fName);
+            (this.Parent.Parent as GraphForm).NewProcess("Ukládání GIF :", this.backgroundWorkerSaveGif, fName);
         }
 
         /// <summary>
@@ -215,10 +274,10 @@ namespace PavelStransky.Forms {
 
                     m.SetLength(0);
 
-                    if(this.backgroundWorker.CancellationPending)
+                    if(this.backgroundWorkerSaveGif.CancellationPending)
                         break;
 
-                    this.backgroundWorker.ReportProgress(i * 100 / count);
+                    this.backgroundWorkerSaveGif.ReportProgress(i * 100 / count);
                 }
 
                 b.Write((byte)0x3B); //Image terminator
@@ -232,7 +291,7 @@ namespace PavelStransky.Forms {
                 this.PaintGraph(Graphics.FromImage(image), 0);
                 image.Save(fName, ImageFormat.Gif);
 
-                this.backgroundWorker.ReportProgress(100);
+                this.backgroundWorkerSaveGif.ReportProgress(100);
             }
         }
         #endregion
@@ -373,5 +432,7 @@ namespace PavelStransky.Forms {
         private static Color defaultColorZero = Color.FromName("black");
         private static Color defaultColorPlus = Color.FromName("blue");
         private static Color defaultColorMinus = Color.FromName("red");
+
+        private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }
 }

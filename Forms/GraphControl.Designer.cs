@@ -30,6 +30,8 @@ namespace PavelStransky.Forms {
             this.saveFileDialogTxt = new System.Windows.Forms.SaveFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.saveFileDialogGif = new System.Windows.Forms.SaveFileDialog();
+            this.cmnSaveAsPicture = new System.Windows.Forms.MenuItem();
+            this.saveFileDialogPicture = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -47,7 +49,8 @@ namespace PavelStransky.Forms {
             // 
             this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.cmnSaveAsTxt,
-            this.cmnSaveAsGif});
+            this.cmnSaveAsGif,
+            this.cmnSaveAsPicture});
             // 
             // cmnSaveAsTxt
             // 
@@ -58,7 +61,7 @@ namespace PavelStransky.Forms {
             // cmnSaveAsGif
             // 
             this.cmnSaveAsGif.Index = 1;
-            this.cmnSaveAsGif.Text = "Uložit jako &GIF...";
+            this.cmnSaveAsGif.Text = "Uložit jako &GIF (animovaný)...";
             this.cmnSaveAsGif.Click += new System.EventHandler(this.cmnSaveAsGif_Click);
             // 
             // saveFileDialogTxt
@@ -69,12 +72,22 @@ namespace PavelStransky.Forms {
             // 
             this.saveFileDialogGif.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogGif_FileOk);
             // 
+            // cmnSaveAsPicture
+            // 
+            this.cmnSaveAsPicture.Index = 2;
+            this.cmnSaveAsPicture.Text = "Uložit jako obrázek (sekvenènì)...";
+            this.cmnSaveAsPicture.Click += new System.EventHandler(this.cmnSaveAsPicture_Click);
+            // 
+            // saveFileDialogPicture
+            // 
+            this.saveFileDialogPicture.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogPicture_FileOk);
+            // 
             // GraphControl
             // 
             this.ContextMenu = this.contextMenu;
             this.Controls.Add(this.lblTitle);
             this.Name = "GraphControl";
-            this.Size = new System.Drawing.Size(150, 170);
+            this.Size = new System.Drawing.Size(150, 190);
             this.ResumeLayout(false);
 
         }
@@ -87,5 +100,7 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.SaveFileDialog saveFileDialogGif;
         private System.Windows.Forms.MenuItem cmnSaveAsGif;
+        private System.Windows.Forms.MenuItem cmnSaveAsPicture;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogPicture;
     }
 }

@@ -27,9 +27,11 @@ namespace PavelStransky.Forms {
         public static string FileFilterTxt { get { return defaultFileFilterTxt; } }
         public static string FileFilterGif { get { return defaultFileFilterGif; } }
         public static string FileFilterGcm { get { return defaultFileFilterGcm; } }
+        public static string FileFilterPicture { get { return defaultFileFilterPicture; } }
         public static string FileExtGcm { get { return defaultFileExtGcm; } }
         public static string FileExtTxt { get { return defaultFileExtTxt; } }
         public static string FileExtGif { get { return defaultFileExtGif; } }
+        public static string FileExtPicture { get { return defaultFileExtPicture; } }
 
         /// <summary>
         /// The main entry point for the application.
@@ -44,10 +46,12 @@ namespace PavelStransky.Forms {
 
         private const string defaultFileFilterTxt = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
         private const string defaultFileFilterGif = "Obrázek (*.gif)|*.gif|Všechny soubory (*.*)|*.*";
+        private const string defaultFileFilterPicture = "Obrázek GIF (*.gif)|*.gif|Obrázek JPG (*.jpg)|*.jpg|Obrázek PNG (*.png)|*.png";
         private const string defaultFileFilterGcm = "Soubory historie (*.gcm)|*.gcm|Všechny soubory (*.*)|*.*";
         private const string defaultFileExtGcm = "gcm";
         private const string defaultFileExtTxt = "txt";
         private const string defaultFileExtGif = "gif";
+        private const string defaultFileExtPicture = "png";
         private const string defaultDirectory = "c:\\gcm";
     }
 }

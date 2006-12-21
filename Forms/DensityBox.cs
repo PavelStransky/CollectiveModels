@@ -65,8 +65,6 @@ namespace PavelStransky.Forms {
 
                 // Normování matice
                 Matrix matrix = this.GetMatrix(i);
-                matrix = matrix * (1.0 / System.Math.Abs(matrix.MaxAbs()));
-
                 this.bitmap[i] = this.CreateBitmap(i, matrix);
 
                 // Žádost o pøerušení procesu
@@ -86,21 +84,25 @@ namespace PavelStransky.Forms {
         private Bitmap CreateBitmap(int index, Matrix matrix) {
             int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
             int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
-
-            Bitmap result = new Bitmap(matrix.LengthX * pointSizeX, matrix.LengthY * pointSizeY);
+            bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
+            int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
 
             int sizeX = pointSizeX * matrix.LengthX;
             int sizeY = pointSizeY * matrix.LengthY;
             int lengthX = matrix.LengthX;
             int lengthY = matrix.LengthY;
 
+            Bitmap result = new Bitmap(sizeX + (legend ? legendWidth : 0), sizeY);
+
             Color colorPlus = (Color)this.graph.GetCurveParameter(index, paramColorPlus, defaultColorPlus);
             Color colorZero = (Color)this.graph.GetCurveParameter(index, paramColorZero, defaultColorZero);
             Color colorMinus = (Color)this.graph.GetCurveParameter(index, paramColorMinus, defaultColorMinus);
 
+            double maxAbs = System.Math.Abs(matrix.MaxAbs());
+
             for(int i = 0; i < lengthX; i++) {
                 for(int j = 0; j < lengthY; j++) {
-                    double m = matrix[i, j];
+                    double m = matrix[i, j] / maxAbs;
 
                     Color color;
                     if(m < 0) 
@@ -127,6 +129,38 @@ namespace PavelStransky.Forms {
                     break;
 
                 this.backgroundWorkerCreate.ReportProgress(i * 100 / lengthX);
+            }
+
+            // Vykreslení legendy
+            if(legend) {
+                for(int i = 5; i < legendWidth - 5; i++) {
+                    int intervalY = (sizeY - 50) / 2;
+                    for(int j = 0; j < intervalY; j++) {
+                        Color color = Color.FromArgb(
+                            ((1 - j) * colorZero.R + j * colorPlus.R) / intervalY,
+                            ((1 - j) * colorZero.G + j * colorPlus.G) / intervalY,
+                            ((1 - j) * colorZero.B + j * colorPlus.B) / intervalY);
+                        result.SetPixel(i + sizeX, intervalY - j + 25, color);
+                    }
+
+                    for(int j = 0; j < intervalY; j++) {
+                        Color color = Color.FromArgb(
+                            ((1 - j) * colorZero.R + j * colorMinus.R) / intervalY,
+                            ((1 - j) * colorZero.G + j * colorMinus.G) / intervalY,
+                            ((1 - j) * colorZero.B + j * colorMinus.B) / intervalY);
+                        result.SetPixel(i + sizeX, intervalY + j + 25, color);
+                    }
+                }
+
+                // Text
+                Graphics g = Graphics.FromImage(result);
+                string sMin = string.Format("-{0,4:0.000}", maxAbs);
+                string sMax = string.Format("{0,4:0.000}", maxAbs);
+                int fontHeight = (int)g.MeasureString(sMin, baseFont).Height;
+                int fontWidthMin = (int)g.MeasureString(sMin, baseFont).Width;
+                int fontWidthMax = (int)g.MeasureString(sMax, baseFont).Width;
+                g.DrawString(sMax, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMax) / 2, 20 - fontHeight);
+                g.DrawString(sMin, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMin) / 2, sizeY - 20);
             }
 
             return result;
@@ -399,13 +433,17 @@ namespace PavelStransky.Forms {
             Expression.Array labelsX = (Expression.Array)this.graph.GetCurveParameter(this.index, paramLabelsX, defaultLabelsX);
             Expression.Array labelsY = (Expression.Array)this.graph.GetCurveParameter(this.index, paramLabelsY, defaultLabelsY);
 
-            int i = m.LengthX * x / this.Width;
+            bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
+            int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
+
+            int i = m.LengthX * x / (this.Width - (legend ? legendWidth : 0));
             int j = m.LengthY * y / this.Height;
 
-            string tip = string.Format("({0}, {1}) = {2,4:F}",
+            string tip = i < m.LengthX ?
+                    string.Format("({0}, {1}) = {2,4:F}",
                     labelsX.Count > i ? labelsX[i] as string : i.ToString(),
                     labelsY.Count > j ? labelsY[j] as string : j.ToString(),
-                    m[i, j]);
+                    m[i, j]) : string.Empty;
 
             return tip;
         }
@@ -423,6 +461,8 @@ namespace PavelStransky.Forms {
         private const string paramColorZero = "colorzero";
         private const string paramColorPlus = "colorplus";
         private const string paramColorMinus = "colorminus";
+        private const string paramLegend = "legend";
+        private const string paramLegendWidth = "legendwidth";
 
         private static Expression.Array defaultLabelsX = new Expression.Array();
         private static Expression.Array defaultLabelsY = new Expression.Array();
@@ -432,6 +472,8 @@ namespace PavelStransky.Forms {
         private static Color defaultColorZero = Color.FromName("black");
         private static Color defaultColorPlus = Color.FromName("blue");
         private static Color defaultColorMinus = Color.FromName("red");
+        private const bool defaultLegend = true;
+        private const int defaultLegendWidth = 50;
 
         private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }

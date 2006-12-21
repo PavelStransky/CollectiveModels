@@ -58,6 +58,15 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Poèítá binomický koeficient (n k)
+        /// </summary>
+        /// <param name="x">Vstupní hodnota</param>
+        /// <remarks>Numerical Recipies in C, Chapter 6.1</remarks>
+        public static double BinomialCoeficient(double n, double k) {
+            return System.Math.Exp(LogFactorial(n) - LogFactorial(k) - LogFactorial(n - k));
+        }
+
+        /// <summary>
         /// Vrací ln(x!)
         /// </summary>
         /// <param name="x">Vstupní hodnota</param>

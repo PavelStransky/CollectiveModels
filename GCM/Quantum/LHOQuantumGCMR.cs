@@ -8,17 +8,21 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
-    public class LHOQuantumGCM : GCM, IExportable, IQuantumSystem {
+    public class LHOQuantumGCMR : GCM, IExportable, IQuantumSystem {
+
         private const double epsilon = 1E-8;
         private double hbar;                    // [Js]
 
         // Koeficienty
-        private double s, n;
+        private double s;
 
         // Parametr pro LHO
         private double a0;
+       
+        // Indexy báze
+        private LHOPolarIndex index;
 
-        private HermitPolynom hermit;
+        private LaguerrePolynom laguerr;
         private Jacobi jacobi;
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        public LHOQuantumGCM() { }
+        public LHOQuantumGCMR() { }
 
         /// <summary>
         /// Konstruktor
@@ -49,7 +53,7 @@ namespace PavelStransky.GCM {
         /// <param name="b">Parametr B</param>
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
-        public LHOQuantumGCM(double a, double b, double c, double k, double a0)
+        public LHOQuantumGCMR(double a, double b, double c, double k, double a0)
             : this(a, b, c, k, a0, 0.1) { }
 
         /// <summary>
@@ -61,7 +65,7 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         /// <param name="hbar">Planckova konstanta</param>
-        public LHOQuantumGCM(double a, double b, double c, double k, double a0, double hbar)
+        public LHOQuantumGCMR(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k) {
             this.a0 = a0;
             this.hbar = hbar;
@@ -75,79 +79,78 @@ namespace PavelStransky.GCM {
         private void RefreshConstants() {
             // Konstanty
             this.s = System.Math.Sqrt(this.K * this.Omega / this.hbar);      // xi = s*x (Formanek (2.283))
-            this.n = System.Math.Sqrt(System.Math.Sqrt(this.K * this.Omega / (System.Math.PI * this.hbar)));
-                                                        // sqrt(sqrt(M*omega/(pi*hbar))) (Formanek (2.286))
         }
 
         /// <summary>
         /// Provede výpoèet
         /// </summary>
-        /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
+        /// <param name="maxE">Nejvyšší energie v násobcích hbar * Omega</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Wirter</param>
-        public void Compute(int maxn, int numSteps, IOutputWriter writer) {
+        public void Compute(int maxE, int numSteps, IOutputWriter writer) {
+            this.index = new LHOPolarIndex(maxE);
+
             if(numSteps == 0)
-                numSteps = 10 * maxn + 1;
+                numSteps = 10 * this.index.MaxM + 1;
 
             if(writer != null)
                 writer.WriteLine(string.Format("Pøipravuji cache ({0} x {1})...", numSteps, numSteps));
 
-            // Hermitùv polynom
-            this.hermit = new HermitPolynom(maxn);
+            // Laguerrùv polynom
+            this.laguerr = new LaguerrePolynom(this.index.MaxN, this.index.MaxM);
             double omega = this.Omega;
-            double range = this.GetRange(maxn, epsilon);
+            double range = this.GetRange(epsilon);
 
             // Cache psi hodnot (Bazove vlnove funkce)
-            BasisCache psiCache = new BasisCache(new DiscreteInterval(range, numSteps), maxn, this.Psi);
+            BasisCache psiCache = new BasisCache(new DiscreteInterval(0.0, range, numSteps), this.index.Length, this.Psi);
             int[] psiCacheLowerLimits = psiCache.GetLowerLimits(epsilon);
             int[] psiCacheUpperLimits = psiCache.GetUpperLimits(epsilon);
 
             double step = psiCache.Step;
 
             // Cache hodnot potencialu
-            double[,] vCache = new double[numSteps, numSteps];
-            for(int sx = 0; sx < numSteps; sx++) {
-                double x = psiCache.GetX(sx);
-                for(int sy = 0; sy < numSteps; sy++) {
-                    double y = psiCache.GetX(sy);
-                    // Originální potenciál - potenciál báze
-                    vCache[sx, sy] = this.V(x, y) - this.a0 * (x * x + y * y);
-                }
+            double[] vCache1 = new double[numSteps];
+            double[] vCache2 = new double[numSteps];
+            for(int sb = 0; sb < numSteps; sb++) {
+                double beta = psiCache.GetX(sb);
+                double beta2 = beta * beta;
+                vCache1[sb] = beta2 * beta * ((this.A - this.A0) + this.C * beta2);
+                vCache2[sb] = 0.5 * this.B * beta2 * beta2;
             }
 
-            int max2 = maxn * maxn;
-            Matrix m = new Matrix(max2, max2);
+            int length = this.index.Length;
+            Matrix m = new Matrix(length);
 
             if(writer != null)
-                writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", max2, max2));
+                writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", length, length));
 
             DateTime startTime = DateTime.Now;
             DateTime startTime1 = startTime;
 
-            for(int i = 0; i < max2; i++) {
-                for(int j = i; j < max2; j++) {
-                    int ix = i / maxn;
-                    int iy = i % maxn;
-                    int jx = j / maxn;
-                    int jy = j % maxn;
+            for(int i = 0; i < length; i++) {
+                for(int j = i; j < length; j++) {
+                    int ni = this.index.N[i];
+                    int mi = this.index.M[i];
+                    int nj = this.index.N[j];
+                    int mj = this.index.M[j];
+
+                    // Výbìrové pravidlo
+                    if(mi != mj && System.Math.Abs(mi - mj) != 3)
+                        continue;
 
                     double sum = 0;
 
-                    int minsx = System.Math.Max(psiCacheLowerLimits[ix], psiCacheLowerLimits[jx]);
-                    int maxsx = System.Math.Min(psiCacheUpperLimits[ix], psiCacheUpperLimits[jx]);
+                    double[] vCache = vCache2;
+                    if(mi == mj)
+                        vCache = vCache1;
 
-                    int minsy = System.Math.Max(psiCacheLowerLimits[iy], psiCacheLowerLimits[jy]);
-                    int maxsy = System.Math.Min(psiCacheUpperLimits[iy], psiCacheUpperLimits[jy]);
-
-                    for(int sy = minsy; sy < maxsy; sy++)
-                        for(int sx = minsx; sx < maxsx; sx++)
-                            sum += psiCache[ix, sx] * psiCache[iy, sy] * vCache[sx, sy] * 
-                                psiCache[jx, sx] * psiCache[jy, sy];
+                    for(int sb = 0; sb < numSteps; sb++)
+                        sum += psiCache[i, sb] * vCache[sb] *psiCache[j, sb];
 
                     sum *= step * step;
 
-                    if(ix == jx && iy == jy)
-                       sum += this.hbar * omega * (1.0 + ix + iy);
+                    if(mi == mj && ni == nj)
+                        sum += this.hbar * omega * (1.0 + ni + ni + mi);
 
                     m[i, j] = sum;
                     m[j, i] = sum;
@@ -155,13 +158,11 @@ namespace PavelStransky.GCM {
 
                 // Výpis teèky na konzoli
                 if(writer != null) {
-                    if(i % maxn == 0) {
-                        if(i != 0)
-                            writer.WriteLine((DateTime.Now - startTime1).ToString());
+//                    if(i != 0)
+//                        writer.WriteLine((DateTime.Now - startTime1).ToString());
 
-                        writer.Write(i / maxn);
-                        startTime1 = DateTime.Now;
-                    }
+//                    writer.Write(i / length);
+//                    startTime1 = DateTime.Now;
 
                     writer.Write(".");
                 }
@@ -181,12 +182,9 @@ namespace PavelStransky.GCM {
                 writer.WriteLine((DateTime.Now - startTime).ToString());
                 writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", new Vector(this.jacobi.EigenValue).Sum()));
             }
-        }
 
-        /// <summary>
-        /// Nejvyšší použitý øád Hermitova polynomu
-        /// </summary>
-        public int MaxN { get { return this.hermit.MaxN; } }
+            new Vector(this.jacobi.EigenValue).ToString();
+        }
 
         /// <summary>
         /// Vlastní hodnoty
@@ -197,7 +195,7 @@ namespace PavelStransky.GCM {
         /// Vlastní vektory
         /// </summary>
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
-
+/*
         /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
@@ -208,19 +206,18 @@ namespace PavelStransky.GCM {
             Vector ev = jacobi.EigenVector[n];
             Matrix result = new Matrix(intx.Num, inty.Num);
 
-            int sqrlength = ev.Length;
-            int length = (int)System.Math.Round(System.Math.Sqrt(sqrlength));
+            int length = this.index.Length;
 
-            BasisCache cachex = new BasisCache(intx, this.MaxN, this.Psi);
-            BasisCache cachey = new BasisCache(inty, this.MaxN, this.Psi);
+            BasisCache cachex = new BasisCache(intx, length, this.Psi);
+            BasisCache cachey = new BasisCache(inty, length, this.Psi);
 
-            for(int i = 0; i < sqrlength; i++) {
-                int ix = i / length;
-                int iy = i % length;
+            for(int i = 0; i < length; i++) {
+                int ni = this.index.N[i];
+                int mi = this.index.M[i];
 
-                for(int sx = 0; sx < intx.Num; sx++) 
-                    for(int sy = 0; sy < inty.Num; sy++) 
-                        result[sx, sy] += cachex[ix, sx] * cachey[iy, sy] * ev[i];
+                for(int sx = 0; sx < intx.Num; sx++)
+                    for(int sy = 0; sy < inty.Num; sy++)
+                        result[sx, sy] += cachex[i, sx] * cachey[i, sy] * ev[i];
             }
 
             return result;
@@ -254,7 +251,7 @@ namespace PavelStransky.GCM {
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
 
             Matrix result = this.EigenMatrix(n, intx, inty);
-            
+
             for(int sx = 0; sx < intx.Num; sx++)
                 for(int sy = 0; sy < inty.Num; sy++)
                     result[sx, sy] = result[sx, sy] * result[sx, sy];
@@ -311,16 +308,26 @@ namespace PavelStransky.GCM {
 
             return result;
         }
+        */
+        /// <summary>
+        /// Radiální èást vlnové funkce
+        /// </summary>
+        /// <param name="n">Hlavní kvantové èíslo</param>
+        /// <param name="m">Spin</param>
+        /// <param name="x">Souøadnice</param>
+        private double Psi(int n, int m, double x) {
+            double xi2 = this.s * x; xi2 *= xi2;
+            double norm = System.Math.Sqrt(2.0 * SpecialFunctions.Factorial(n) / SpecialFunctions.Factorial(n + System.Math.Abs(m))) * System.Math.Pow(this.s, m + 1);
+            return norm * System.Math.Pow(x, m) * System.Math.Exp(-xi2 / 2) * laguerr.GetValue(n, m, xi2);
+        }
 
         /// <summary>
-        /// Funkce Psi_n (Formánek 2.286)
+        /// Radiální èást vlnové funkce
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="x"></param>
-        /// <returns></returns>
-        private double Psi(int n, double x) {
-            double xi = this.s * x;
-            return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
+        /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
+        /// <param name="x">Souøadnice</param>
+        private double Psi(int i, double x) {
+            return this.Psi(this.index.N[i], this.index.M[i], x);
         }
 
         /// <summary>
@@ -328,15 +335,15 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="epsilon">Epsilon</param>
         /// <param name="maxn">Maximální rank vlastní funkce</param>
-        private double GetRange(int maxn, double epsilon) {
+        private double GetRange(double epsilon) {
             // range je klasicky dosah oscilatoru, pridame urcitou rezervu
-            double range = System.Math.Sqrt(hbar * this.Omega * (maxn + 0.5) / this.a0);
+            double range = System.Math.Sqrt(hbar * this.Omega * this.index.MaxE / this.a0);
             range *= 5.0;
 
             // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
-            double dx = range / (50.0 * maxn);
-            
-            while(System.Math.Abs(this.Psi(maxn, range)) < epsilon)
+            double dx = range / (50.0 * this.index.MaxM);
+
+            while(System.Math.Abs(this.Psi(this.index.MaxN, this.index.MaxM, range)) < epsilon)
                 range -= dx;
 
             //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
@@ -367,11 +374,11 @@ namespace PavelStransky.GCM {
             }
 
             export.Write(this.jacobi);
-		}
+        }
 
-		/// <summary>
-		/// Naète výsledky ze souboru
-		/// </summary>
+        /// <summary>
+        /// Naète výsledky ze souboru
+        /// </summary>
         /// <param name="import">Import</param>
         public void Import(Import import) {
             if(import.Binary) {
@@ -398,9 +405,19 @@ namespace PavelStransky.GCM {
             }
 
             this.jacobi = import.Read() as Jacobi;
-            this.hermit = new HermitPolynom((int)System.Math.Sqrt(this.jacobi.EigenValue.Length));
+//            this.index = new LHOPolarIndex();
+//            this.laguerr = new LaguerrPolynom((int)System.Math.Sqrt(this.jacobi.EigenValue.Length));
             this.RefreshConstants();
         }
+        #endregion
+
+        #region IQuantumSystem Members
+
+
+        public Matrix DensityMatrix(int n, params Vector[] interval) {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
         #endregion
     }
 }

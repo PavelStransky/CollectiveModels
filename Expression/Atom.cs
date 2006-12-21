@@ -202,6 +202,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Abs());
             functions.Add(new Functions.Log());
             functions.Add(new Functions.Sqrt());
+            functions.Add(new Functions.Laguerre());
 
 			// Funkce vyžadující functions
 			functions.Add(new Functions.FNames(functions));

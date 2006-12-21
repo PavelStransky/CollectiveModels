@@ -11,18 +11,77 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Test {
 	/// <summary>
-	/// Summary description for Class1.
+	/// Summary description for Class Test.
 	/// </summary>
 	class Test {
 		private const string root = @"c:\gcm\";
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLHOQuantumGCM();
+            Test.PokusNumberPrecision();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 21.12.2006
+        /// </summary>
+        static void PokusNumberPrecision() {
+            Console.WriteLine("Double");
+            Console.WriteLine(sizeof(double));
+            Console.WriteLine(double.Epsilon);
+            Console.WriteLine(double.MinValue);
+            Console.WriteLine(double.MaxValue);
+
+            Console.WriteLine("Decimal");
+            Console.WriteLine(sizeof(decimal));
+            Console.WriteLine(decimal.MinValue);
+            Console.WriteLine(decimal.MaxValue);
+
+            Console.WriteLine("Long");
+            Console.WriteLine(sizeof(long));
+            Console.WriteLine(long.MinValue);
+            Console.WriteLine(long.MaxValue);
+
+            Console.WriteLine("Unsigned Long");
+            Console.WriteLine(sizeof(ulong));
+            Console.WriteLine(ulong.MinValue);
+            Console.WriteLine(ulong.MaxValue);
+        }
+
+        /// <summary>
+        /// 19.12.2006
+        /// </summary>
+        static void PokusLHOQuantumGCMR() {
+            LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
+            lho.Compute(100, 0, new ConsoleWriter());
+        }
+
+        /// <summary>
+        /// 19.12.2006
+        /// </summary>
+        public static void PokusLHOQuantumGCMRHladiny() {
+            for(int emax = 200; emax <= 200; emax++) {
+                int count = 0;
+                Console.Write("{0}\t", emax);
+                for(int n = 0; n <= (emax - 1) / 2; n++) {
+                    if(n != 0) {
+                        Console.WriteLine();
+                        Console.Write("  \t");
+                    }
+                    Console.Write("{0}\t", n);
+                    for(int m = 0; m <= emax - 1 - 2 * n; m += 3) {
+                        Console.Write("{0} ", m);
+                        count++;
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine(count);
+                Console.WriteLine();
+                Console.ReadLine();
+            }
+        }
 
         /// <summary>
         /// 21.11.2006

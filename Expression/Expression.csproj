@@ -115,6 +115,7 @@
     <Compile Include="Atom.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Atom.Functions.cs" />
     <Compile Include="BinaryOperators\ArrayAdd.cs">
       <SubType>Code</SubType>
     </Compile>

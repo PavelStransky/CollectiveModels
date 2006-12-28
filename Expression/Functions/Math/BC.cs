@@ -13,30 +13,17 @@ namespace PavelStransky.Expression.Functions {
         public override string Parameters { get { return parameters; } }
 
         protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
+            this.CheckArgumentsNumber(evaluatedArguments, 2);
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
             return evaluatedArguments;
         }
 
         protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is int)
-                return SpecialFunctions.Factorial((int)item);
-            else if(item is double)
-                return SpecialFunctions.Factorial((double)item);
-            else if(item is PointD)
-                return new PointD((item as PointD).X, SpecialFunctions.Factorial((item as PointD).Y));
-            else if(item is Vector)
-                return (item as Vector).Transform(SpecialFunctions.Factorial);
-            else if(item is PointVector)
-                return (item as PointVector).Transform(null, SpecialFunctions.Factorial);
-            else if(item is Matrix)
-                return (item as Matrix).Transform(SpecialFunctions.Factorial);
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
-            else
-                return this.BadTypeError(item, 0);
+            return SpecialFunctions.BinomialCoeficientI((int)arguments[0], (int)arguments[1]);
         }
 
-        private const string help = "Vrací faktoriál objektu v argumentu (po prvcích), u bodu nebo vektoru bodù dìlá absolutní hodnotu pouze z Y složky";
-        private const string parameters = "int | double | Point | Vector | PointVector | Matrix";
+        private const string help = "Vrací binomické èíslo";
+        private const string parameters = "int; int";
     }
 }

@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions {
 
         protected override object Evaluate(int depth, object item, ArrayList arguments) {
             if(item is int)
-                return SpecialFunctions.Factorial((int)item);
+                return SpecialFunctions.FactorialI((int)item);
             else if(item is double)
                 return SpecialFunctions.Factorial((double)item);
             else if(item is PointD)

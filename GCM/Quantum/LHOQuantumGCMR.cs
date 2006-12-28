@@ -22,7 +22,6 @@ namespace PavelStransky.GCM {
         // Indexy báze
         private LHOPolarIndex index;
 
-        private LaguerrePolynom laguerr;
         private Jacobi jacobi;
 
         /// <summary>
@@ -96,8 +95,6 @@ namespace PavelStransky.GCM {
             if(writer != null)
                 writer.WriteLine(string.Format("Pøipravuji cache ({0} x {1})...", numSteps, numSteps));
 
-            // Laguerrùv polynom
-            this.laguerr = new LaguerrePolynom(this.index.MaxN, this.index.MaxM);
             double omega = this.Omega;
             double range = this.GetRange(epsilon);
 
@@ -158,11 +155,15 @@ namespace PavelStransky.GCM {
 
                 // Výpis teèky na konzoli
                 if(writer != null) {
-//                    if(i != 0)
-//                        writer.WriteLine((DateTime.Now - startTime1).ToString());
-
-//                    writer.Write(i / length);
-//                    startTime1 = DateTime.Now;
+                    if(i != 0) {
+                        if(this.index.N[i - 1] != this.index.N[i]) {
+                            writer.WriteLine((DateTime.Now - startTime1).ToString());
+                            writer.Write(i / length);
+                            startTime1 = DateTime.Now;
+                        }
+                    }
+                    else
+                        writer.Write(i / length);
 
                     writer.Write(".");
                 }
@@ -173,17 +174,12 @@ namespace PavelStransky.GCM {
                 writer.WriteLine(string.Format("Stopa matice: {0}", m.Trace()));
             }
 
-            startTime = DateTime.Now;
-
             this.jacobi = new Jacobi(m, writer);
             this.jacobi.SortAsc();
 
             if(writer != null) {
-                writer.WriteLine((DateTime.Now - startTime).ToString());
                 writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", new Vector(this.jacobi.EigenValue).Sum()));
             }
-
-            new Vector(this.jacobi.EigenValue).ToString();
         }
 
         /// <summary>
@@ -195,7 +191,7 @@ namespace PavelStransky.GCM {
         /// Vlastní vektory
         /// </summary>
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
-/*
+        
         /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
@@ -318,7 +314,7 @@ namespace PavelStransky.GCM {
         private double Psi(int n, int m, double x) {
             double xi2 = this.s * x; xi2 *= xi2;
             double norm = System.Math.Sqrt(2.0 * SpecialFunctions.Factorial(n) / SpecialFunctions.Factorial(n + System.Math.Abs(m))) * System.Math.Pow(this.s, m + 1);
-            return norm * System.Math.Pow(x, m) * System.Math.Exp(-xi2 / 2) * laguerr.GetValue(n, m, xi2);
+            return norm * System.Math.Pow(x, m) * System.Math.Exp(-xi2 / 2) * SpecialFunctions.Laguerre(n, m, xi2);
         }
 
         /// <summary>

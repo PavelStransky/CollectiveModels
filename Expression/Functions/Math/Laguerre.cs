@@ -30,7 +30,7 @@ namespace PavelStransky.Expression.Functions {
         /// Vypoèítá logaritmus o základu logBase
         /// </summary>
         private double ComputeLaguerre(double x) {
-            return LaguerrePolynom.GetValueS(this.n, this.m, x);
+            return SpecialFunctions.Laguerre(this.n, this.m, x);
         }
 
         protected override object Evaluate(int depth, object item, ArrayList arguments) {

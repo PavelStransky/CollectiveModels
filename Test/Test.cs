@@ -18,11 +18,24 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusNumberPrecision();
+            Test.PokusLHOQuantumGCMR();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 22.12.2006
+        /// </summary>
+        static void PokusFactorialI() {
+            double f = 1;
+            for(int i = 1; i < 1000; i++) {
+                f *= i;
+                Console.WriteLine("{0} {1}", i, f);
+                if(double.IsInfinity(f))
+                    break;
+            }
+        }
 
         /// <summary>
         /// 21.12.2006
@@ -54,8 +67,10 @@ namespace PavelStransky.Test {
         /// 19.12.2006
         /// </summary>
         static void PokusLHOQuantumGCMR() {
-            LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
-            lho.Compute(100, 0, new ConsoleWriter());
+            LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.01);
+            lho.Compute(80, 0, new ConsoleWriter());
+            for(int i = 0; i < 100; i++)
+                Console.WriteLine(lho.EigenValue[i]);
         }
 
         /// <summary>
@@ -108,7 +123,6 @@ namespace PavelStransky.Test {
             ClassicalIBM ibm = new ClassicalIBM(0.7, -0.3);
             SALIContourGraph sali = new SALIContourGraph(ibm, 0);
             Matrix m = sali.Compute(0, 100, 100);
-
         }
 
         /// <summary>

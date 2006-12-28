@@ -7,6 +7,8 @@ namespace PavelStransky.Math {
     /// Tøída poèítající speciální funkce
     /// </summary>
     public class SpecialFunctions {
+        private static double[] factorial;
+
         /// <summary>
         /// Statický konstruktor
         /// </summary>
@@ -19,6 +21,13 @@ namespace PavelStransky.Math {
             gammaLogKoef[3] = -1.231739572450155;
             gammaLogKoef[4] = 0.1208650973866179E-2;
             gammaLogKoef[5] = -0.5395239384953e-5;
+
+            // Výpoèet bufferu factoriálù
+            factorial = new double[maxFactorial];
+            factorial[0] = 1;
+
+            for(int i = 1; i < maxFactorial; i++)
+                factorial[i] = factorial[i - 1] * i;
         }
 
         /// <summary>
@@ -49,12 +58,59 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Vrátí faktoriál z pøedvypoèítaných hodnot z bufferu
+        /// </summary>
+        /// <param name="i">Vstupní hodnota</param>
+        public static double FactorialI(int i) {
+            if(i < 0)
+                return double.NaN;
+            else if(i >= maxFactorial)
+                return double.PositiveInfinity;
+            else
+                return factorial[i];
+        }
+
+        /// <summary>
         /// Poèítá binomický koeficient (n k)
         /// </summary>
-        /// <param name="x">Vstupní hodnota</param>
+        /// <param name="n">Vstupní hodnota n</param>
+        /// <param name="k">Vstupní hodnota k</param>
         /// <remarks>Numerical Recipies in C, Chapter 6.1</remarks>
         public static double BinomialCoeficient(int n, int k) {
             return System.Math.Floor(0.5 + System.Math.Exp(LogFactorial(n) - LogFactorial(k) - LogFactorial(n - k)));
+        }
+
+        /// <summary>
+        /// Výpoèet binomického koeficientu (n k) pøímo
+        /// </summary>
+        /// <param name="n">Vstupní hodnota n</param>
+        /// <param name="k">Vstupní hodnota k</param>
+        public static double BinomialCoeficientI(int n, int k) {
+            double result = 1;
+            int nk = n - k;
+
+            if(k > nk) {
+                while(n > k && nk > 1)
+                    result *= (double)(n--) / (double)(nk--);
+
+                while(n > k)
+                    result *= n--;
+
+                while(nk > 1)
+                    result /= nk--;
+            }
+            else {
+                while(n > nk && k > 1)
+                    result *= (double)(n--) / (double)(k--);
+
+                while(n > nk)
+                    result *= n--;
+
+                while(k > 1)
+                    result /= k--;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -160,9 +216,42 @@ namespace PavelStransky.Math {
             return x < 0.0 ? -IncompleteGammaP(0.5, x * x) : IncompleteGammaP(0.5, x * x);
         }
 
+        /// <summary>
+        /// Laguerrùv polynom poèítaný rekuretním vzorcem
+        /// </summary>
+        /// <param name="n">Øád polynomu</param>
+        /// <param name="m">Stupeò polynomu</param>
+        /// <param name="x">Hodnota</param>
+        /// <remarks>
+        /// http://en.wikipedia.org/wiki/Laguerre_polynomials
+        /// http://mathworld.wolfram.com/LaguerrePolynomial.html
+        /// </remarks>
+        public static double Laguerre(int n, int m, double x) {
+            double d = 1;
+            double result = 0;
+
+            double lm2 = 1;
+            double lm1 = m + 1.0 - x;
+            double lm = lm1;
+
+            if(n == 0)
+                return lm2;
+            else if(n == 1)
+                return lm1;
+
+            for(int i = 2; i <= n; i++) {
+                lm = ((2 * i - 1 + m - x) * lm1 - (i - 1 + m) * lm2) / i;
+                lm2 = lm1;
+                lm1 = lm;
+            }
+
+            return lm;
+        }
+
         private static double[] gammaLogKoef;
         private const int maxIteration = 1000;
         private const double epsilon = 1E-10;
+        private const int maxFactorial = 171;
 
         private const string errorMessageIterationOverrun = "Pøekroèen poèet iterací ve funkci {0}.";
     }

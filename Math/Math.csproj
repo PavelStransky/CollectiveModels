@@ -116,7 +116,6 @@
     <Compile Include="Jacobi.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LaguerrePolynom.cs" />
     <Compile Include="Matrix.cs">
       <SubType>Code</SubType>
     </Compile>

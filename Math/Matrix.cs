@@ -28,7 +28,7 @@ namespace PavelStransky.Math {
 		/// <param name="lengthX">Délka X (poèet øádkù)</param>
 		/// <param name="lengthY">Délka Y (poèet sloupcù)</param>
 		public Matrix(int lengthX, int lengthY) {
-			this.item = new double[lengthX, lengthY];
+            this.item = new double[lengthX, lengthY];
 		}
 
 		/// <summary>
@@ -36,14 +36,14 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="length">Rozmìr</param>
 		public Matrix(int length) {
-			this.item = new double[length, length];
+            this.item = new double[length, length];
 		}
 
 		/// <summary>
 		/// Vytvoøí matici s referencí na prvky
 		/// </summary>
 		/// <param name="item">Pole [x,y] s prvky matice</param>
-		public Matrix(double [,] item) {
+        public Matrix(double[,] item) {
 			this.item = item;
         }
         #endregion

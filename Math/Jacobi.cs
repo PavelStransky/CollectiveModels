@@ -108,6 +108,9 @@ namespace PavelStransky.Math {
             if(writer != null)
                 writer.WriteLine("Jacobi:");
 
+            DateTime startTime = DateTime.Now;
+            DateTime startTime1 = startTime;
+
             do {
                 double sum = p.NondiagonalAbsSum();
                 if(sum <= epsilon) break;
@@ -165,9 +168,14 @@ namespace PavelStransky.Math {
                     this.eigenValue[i] = b[i];
 
                 if(writer != null)
-                    writer.WriteLine(string.Format("{0} {1}", iter, sum));
+                    writer.WriteLine(string.Format("{0} {1} {2}", iter, sum, DateTime.Now - startTime1));
+
+                startTime1 = DateTime.Now;
 
             } while(iter++ < jacobiMaxIteration);
+
+            if(writer != null)
+                writer.WriteLine(DateTime.Now - startTime);
         }
 
         /// <summary>

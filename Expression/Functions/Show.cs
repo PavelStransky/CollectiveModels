@@ -28,20 +28,20 @@ namespace PavelStransky.Expression.Functions {
                 name = (arguments[0] as Atom).Expression;
 
             int numColumns = 1;
-            if(evaluatedArguments[0] is Array)
-                numColumns = (int)System.Math.Sqrt((evaluatedArguments[0] as Array).Count - 1) + 1;
+            if(evaluatedArguments[0] is TArray)
+                numColumns = (int)System.Math.Sqrt((evaluatedArguments[0] as TArray).Count - 1) + 1;
             if(evaluatedArguments.Count > 1 && evaluatedArguments[1] is int)
                 numColumns = (int)evaluatedArguments[1];
             else if(evaluatedArguments.Count > 2 && evaluatedArguments[2] is int)
                 numColumns = (int)evaluatedArguments[2];
 
-            Array graph = null;
+            TArray graph = null;
             if(evaluatedArguments[0] is Graph) {
-                graph = new Array();
+                graph = new TArray();
                 graph.Add(evaluatedArguments[0]);
             }
-            else if(evaluatedArguments[0] is Array && (evaluatedArguments[0] as Array).ItemType == typeof(Graph))
-                graph = evaluatedArguments[0] as Array;
+            else if(evaluatedArguments[0] is TArray && (evaluatedArguments[0] as TArray).ItemType == typeof(Graph))
+                graph = evaluatedArguments[0] as TArray;
             else
                 this.BadTypeError(evaluatedArguments[0], 0);
 

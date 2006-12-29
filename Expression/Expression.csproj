@@ -191,6 +191,8 @@
     <Compile Include="Functions\Quantum\DensityMatrix.cs" />
     <Compile Include="Functions\Quantum\EVNumDiff.cs" />
     <Compile Include="Functions\Quantum\LHOQGCM.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
     <Compile Include="Functions\Show.cs" />
     <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />

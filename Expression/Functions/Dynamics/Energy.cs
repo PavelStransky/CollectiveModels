@@ -34,8 +34,8 @@ namespace PavelStransky.Expression.Functions {
                 IDynamicalSystem dynamicalSystem = arguments[1] as IDynamicalSystem;
                 return dynamicalSystem.E(item as Vector);
             }
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
             else
                 return this.BadTypeError(item, 0);
         }

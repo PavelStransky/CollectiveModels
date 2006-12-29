@@ -195,7 +195,7 @@ namespace PavelStransky.Forms {
                 editor.Show();
 
                 // Pokud máme správnou verzi, naèteme ostatní okna
-                if(import.VersionNumber >= 1) {
+                if(import.VersionNumber >= 3) {
                     int num = import.B.ReadInt32();
                     for(int i = 0; i < num; i++) {
                         object o = import.Read();

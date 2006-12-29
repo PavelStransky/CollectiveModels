@@ -24,7 +24,7 @@ namespace PavelStransky.Expression.Functions {
         public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
             this.CheckArgumentsNumber(arguments, 0);
 
-			Array result = new Array();
+			TArray result = new TArray();
 
 			foreach(string fName in functions.Keys)
 				result.Add(fName);

@@ -22,8 +22,8 @@ namespace PavelStransky.Expression.Functions {
                 return (item as PointVector).VectorY;
             else if(item is PointD)
                 return (item as PointD).Y;
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
             else
                 return this.BadTypeError(item, 0);			
 		}

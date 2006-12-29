@@ -38,8 +38,8 @@ namespace PavelStransky.Expression.BinaryOperators {
                 return this.EvaluateM((Matrix)left, right);
             else if(left is string)
                 return this.EvaluateS((string)left, right);
-            else if(left is Array)
-                return this.EvaluateA((Array)left, right);
+            else if(left is TArray)
+                return this.EvaluateA((TArray)left, right);
             else if(left is DateTime)
                 return this.EvaluateTime((DateTime)left, right);
             else
@@ -62,8 +62,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluateIM(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluateIS(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluateIA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluateIA(left, (TArray)right);
 			else
 				return this.UnknownType(left, right);
 		}
@@ -83,8 +83,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluateDMx(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluateDS(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluateDA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluateDA(left, (TArray)right);
 			else
 				return this.UnknownType(left, right);
 		}
@@ -104,8 +104,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluatePMx(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluatePS(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluatePA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluatePA(left, (TArray)right);
 			else
 				return this.UnknownType(left, right);
 		}
@@ -125,8 +125,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluateVMx(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluateVS(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluateVA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluateVA(left, (TArray)right);
 			else
 				return this.UnknownType(left, right);
 		}
@@ -146,8 +146,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluatePvMx(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluatePvS(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluatePvA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluatePvA(left, (TArray)right);
 			else
 				return this.UnknownType(left, right);
 		}
@@ -167,8 +167,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluateMMx(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluateMS(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluateMA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluateMA(left, (TArray)right);
 			else
 				return this.UnknownType(left, right);
 		}
@@ -188,8 +188,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluateSM(left, (Matrix)right);
 			else if(right is string)
 				return this.EvaluateSSx(left, (string)right);
-			else if(right is Array) 
-				return this.EvaluateSA(left, (Array)right);
+			else if(right is TArray) 
+				return this.EvaluateSA(left, (TArray)right);
 			else
 				return this.EvaluateSSx(left, right.ToString());
 		}
@@ -201,11 +201,11 @@ namespace PavelStransky.Expression.BinaryOperators {
                 return this.UnknownType(left, right);
         }
 
-		protected virtual object EvaluateA(Array left, object right) {
-			Array result = new Array();
+		protected virtual object EvaluateA(TArray left, object right) {
+			TArray result = new TArray();
 
-			if(right is Array) {
-				Array r = right as Array;
+			if(right is TArray) {
+				TArray r = right as TArray;
 
 				if(left.Count != r.Count)
 					throw new OperatorException(string.Format(errorMessageNotEqualLength, this.OperatorName, left.Count, r.Count));
@@ -249,8 +249,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateSSx(left.ToString(), right);
 		}
 
-		protected virtual object EvaluateIA(int left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluateIA(int left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateI(left, right[i]));
 			return result;
@@ -284,8 +284,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateSSx(left.ToString(), right);
 		}
 
-		protected virtual object EvaluateDA(double left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluateDA(double left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateD(left, right[i]));
 			return result;
@@ -319,8 +319,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateSSx(left.ToString(), right);
 		}
 
-		protected virtual object EvaluatePA(PointD left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluatePA(PointD left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateP(left, right[i]));
 			return result;
@@ -354,8 +354,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateSSx(left.ToString(), right);
 		}
 
-		protected virtual object EvaluateVA(Vector left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluateVA(Vector left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateV(left, right[i]));
 			return result;
@@ -389,8 +389,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateSSx(left.ToString(), right);
 		}
 
-		protected virtual object EvaluatePvA(PointVector left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluatePvA(PointVector left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluatePv(left, right[i]));
 			return result;
@@ -424,8 +424,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateSSx(left.ToString(), right);
 		}
 
-		protected virtual object EvaluateMA(Matrix left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluateMA(Matrix left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateM(left, right[i]));
 			return result;
@@ -459,8 +459,8 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.UnknownType(left, right);
 		}
 
-		protected virtual object EvaluateSA(string left, Array right) {
-			Array result = new Array();
+		protected virtual object EvaluateSA(string left, TArray right) {
+			TArray result = new TArray();
 			for(int i = 0; i < right.Count; i++)
 				result.Add(this.EvaluateS(left, right[i]));
 			return result;

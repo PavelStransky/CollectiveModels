@@ -15,12 +15,12 @@ namespace PavelStransky.Expression.Functions {
 
         protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Array));
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(TArray));
             return evaluatedArguments;
         }
 
         protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            Array array = item as Array;
+            TArray array = item as TArray;
 
             if(array.Count == 0)
                 return new Matrix(0);
@@ -57,7 +57,7 @@ namespace PavelStransky.Expression.Functions {
                 return m;
             }
 
-            else if(array.ItemTypeName == typeof(Array).FullName)
+            else if(array.ItemTypeName == typeof(TArray).FullName)
                 return this.EvaluateArray(depth, array, arguments);
 
             else

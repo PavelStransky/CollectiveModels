@@ -7,9 +7,9 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí LHOQuantumGCM tøídu
+    /// Vytvoøí LHOQuantumGCM tøídu (poèítanou v radiálních souøadnicích)
     /// </summary>
-    public class LHOQGCM : FunctionDefinition {
+    public class LHOQGCMR : FunctionDefinition {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
@@ -33,7 +33,7 @@ namespace PavelStransky.Expression.Functions {
                 this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
             }
 
-            if(evaluatedArguments.Count > 4) 
+            if(evaluatedArguments.Count > 4)
                 this.CheckArgumentsType(evaluatedArguments, 4, typeof(int));
 
             if(evaluatedArguments.Count > 5) {
@@ -48,7 +48,7 @@ namespace PavelStransky.Expression.Functions {
 
             if(evaluatedArguments.Count > 7)
                 this.CheckArgumentsType(evaluatedArguments, 7, typeof(int));
-            
+
             return evaluatedArguments;
         }
 
@@ -81,7 +81,7 @@ namespace PavelStransky.Expression.Functions {
                 if(arguments.Count > 7)
                     numSteps = (int)arguments[7];
 
-                LHOQuantumGCM qgcm = new LHOQuantumGCM((double)item, b, c, k, a0, hbar);
+                LHOQuantumGCMR qgcm = new LHOQuantumGCMR((double)item, b, c, k, a0, hbar);
                 qgcm.Compute(maxn, numSteps, this.writer);
                 return qgcm;
             }
@@ -92,7 +92,7 @@ namespace PavelStransky.Expression.Functions {
                 return this.BadTypeError(item, 0);
         }
 
-        private const string help = "Vytvoøí LHOQuantumGCM tøídu pro dané parametry";
+        private const string help = "Vytvoøí LHOQuantumGCMR tøídu pro dané parametry";
         private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [MaxN (int); [hbar (double); [A0 (double); [NumSteps - dìlení møíže (int)]]]]]";
     }
 }

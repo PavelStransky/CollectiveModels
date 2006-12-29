@@ -40,7 +40,7 @@ namespace PavelStransky.Expression.BinaryOperators {
 			return this.EvaluateArray(left, right);
 		}
 
-		protected override object EvaluateA(Array left, object right) {
+		protected override object EvaluateA(TArray left, object right) {
 			if(right is int) 
 				return this.EvaluateArray(left, (int)right);
 			else
@@ -48,7 +48,7 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		private object EvaluateArray(object left, int right) {
-			Array result = new Array();
+			TArray result = new TArray();
 			for(int i = 0; i < right; i++)
 				result.Add(left);
 			return result;

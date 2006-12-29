@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
 		public override string Parameters {get {return parameters;}}
 		
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			Array result = new Array();
+			TArray result = new TArray();
 			for(int i = 0; i < arguments.Count; i++)
 				result.Add(arguments[i]);
 			return result;

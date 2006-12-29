@@ -19,20 +19,20 @@ namespace PavelStransky.Expression.Functions {
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			if(item is Array) {
-				Array array = item as Array;
+			if(item is TArray) {
+				TArray array = item as TArray;
 
 				object result = null;
 				if(array.Count > 0)
 					result = this.Evaluate(depth + 1, array[0], arguments);
-				if(!(result is Array))
-					result = new Array();
-				(result as Array).Insert(0, array.GetType().FullName);
+				if(!(result is TArray))
+					result = new TArray();
+				(result as TArray).Insert(0, array.GetType().FullName);
 
 				return result;
 			}
 			else {
-				Array result = new Array();
+				TArray result = new TArray();
 				result.Add(item.GetType().FullName);
 				return result;
 			}

@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions {
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			int count = (int)arguments[1];
-			Array result = new Array();
+			TArray result = new TArray();
 			for(int i = 0; i < count; i++)
 				result.Add(item);
 

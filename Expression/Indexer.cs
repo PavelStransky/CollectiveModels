@@ -79,20 +79,20 @@ namespace PavelStransky.Expression {
 			this.CheckIndexType(ind, depth);
 
 			depth++;
-			if(item is Array) {
-				Array array = item as Array;
+			if(item is TArray) {
+				TArray array = item as TArray;
 
 				if(ind == null) {
-					Array result = new Array();
+					TArray result = new TArray();
 					for(int i = 0; i < array.Count; i++)
 						result.Add(this.Evaluate(context, depth, array[i]));
 					return result;
 				}
 				else if(ind is int)
 					return this.Evaluate(context, depth, array[(int)ind]);
-				else if(ind is Array) {
-					Array iArray = ind as Array;
-					Array result = new Array();
+				else if(ind is TArray) {
+					TArray iArray = ind as TArray;
+					TArray result = new TArray();
 					for(int i = 0; i < iArray.Count; i++)
 						result.Add(this.Evaluate(context, depth, array[(int)iArray[i]]));
 					return result;
@@ -108,8 +108,8 @@ namespace PavelStransky.Expression {
 					return item;
 				else if(ind is int)
 					return vector[(int)ind];
-				else if(ind is Array) {
-					Array iArray = ind as Array;
+				else if(ind is TArray) {
+					TArray iArray = ind as TArray;
 					Vector result = new Vector(iArray.Count);
 					for(int i = 0; i < iArray.Count; i++)
 						result[i] = vector[(int)iArray[i]];
@@ -126,8 +126,8 @@ namespace PavelStransky.Expression {
 					return item;
 				else if(ind is int)
 					return pv[(int)ind];
-				else if(ind is Array) {
-					Array iArray = ind as Array;
+				else if(ind is TArray) {
+					TArray iArray = ind as TArray;
 					PointVector result = new PointVector(iArray.Count);
 					for(int i = 0; i < iArray.Count; i++)
 						result[i] = pv[(int)iArray[i]];
@@ -164,8 +164,8 @@ namespace PavelStransky.Expression {
 					return matrix.GetColumnVector((int)indy);
 				else if(ind is int && indy is int)
 					return matrix[(int)ind, (int)indy];
-				else if(ind is Array) {
-					Array xArray = ind as Array;
+				else if(ind is TArray) {
+					TArray xArray = ind as TArray;
 
 					if(indy == null) {
 						Matrix result = new Matrix(xArray.Count, matrix.LengthY);
@@ -174,8 +174,8 @@ namespace PavelStransky.Expression {
 								result[i, j] = matrix[(int)xArray[i], j];
 						return result;
 					}
-					else if(indy is Array) {
-						Array yArray = indy as Array;
+					else if(indy is TArray) {
+						TArray yArray = indy as TArray;
 
 						Matrix result = new Matrix(xArray.Count, yArray.Count);
 						for(int i = 0; i < xArray.Count; i++)
@@ -194,8 +194,8 @@ namespace PavelStransky.Expression {
 					else
 						return this.BadIndexTypeError(indy, depth - 1);
 				}
-				else if(indy is Array) {
-					Array yArray = indy as Array;
+				else if(indy is TArray) {
+					TArray yArray = indy as TArray;
 
 					if(ind == null) {
 						Matrix result = new Matrix(matrix.LengthX, yArray.Count);
@@ -238,8 +238,8 @@ namespace PavelStransky.Expression {
 
 			if(takeMatrixY)
 				end = (item as Matrix).LengthY - 1;
-			else if(item is Array)
-				end = (item as Array).Count - 1;
+			else if(item is TArray)
+				end = (item as TArray).Count - 1;
 			else if(item is Vector)
 				end = (item as Vector).Length - 1;
 			else if(item is Matrix)
@@ -265,10 +265,10 @@ namespace PavelStransky.Expression {
 		/// <param name="index">Objekt s indexy</param>
 		/// <param name="depth">Hloubka</param>
 		private object CheckIndexType(object index, int depth) {
-			if(index != null && !(index is Array) && !(index is int))
+			if(index != null && !(index is TArray) && !(index is int))
 				return this.BadIndexTypeError(index, depth);
-			if(index is Array && (index as Array).ItemTypeName != typeof(int).FullName)
-				return this.BadIndexTypeError((index as Array)[0], depth);
+			if(index is TArray && (index as TArray).ItemTypeName != typeof(int).FullName)
+				return this.BadIndexTypeError((index as TArray)[0], depth);
 
 			return null;
 		}

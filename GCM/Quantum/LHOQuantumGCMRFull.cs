@@ -6,9 +6,81 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.GCM {
     /// <summary>
+    /// Tøída, která v sobì zapouzdøuje dvojice indexù - kvantových èísel n, m
+    /// pro bázi lineárního harmonického oscilátoru v polárních souøadnicích
+    /// </summary>
+    public class LHOPolarIndexFull {
+        private int[] indexn, indexm;
+        private int maxE;
+
+        // Maximální indexy
+        private int maxM, maxN;
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="maxE">Maximální energie v násobcích hbar * Omega</param>
+        public LHOPolarIndexFull(int maxE) {
+            this.maxE = maxE;
+
+            // Zjistíme poèet
+            int length = 0;
+            for(int n = 0; n <= (maxE - 1) / 2; n++)
+                for(int m = -(maxE - 1 - 2 * n); m <= maxE - 1 - 2 * n; m++)
+                    length++;
+
+            // Generujeme
+            this.indexn = new int[length];
+            this.indexm = new int[length];
+
+            int i = 0;
+            for(int n = 0; n <= (maxE - 1) / 2; n++) {
+                for(int m = -(maxE - 1 - 2 * n); m <= maxE - 1 - 2 * n; m++) {
+                    this.maxM = System.Math.Max(this.maxM, m);
+                    this.indexm[i] = m;
+                    this.indexn[i] = n;
+                    i++;
+                }
+            }
+
+            this.maxN = this.indexn[length - 1];
+        }
+
+        /// <summary>
+        /// Maximální energie (vyjádøená v násobcích hbar * Omega)
+        /// </summary>
+        public int MaxE { get { return this.maxE; } }
+
+        /// <summary>
+        /// Poèet prvkù
+        /// </summary>
+        public int Length { get { return this.indexn.Length; } }
+
+        /// <summary>
+        /// Kvantové èíslo N
+        /// </summary>
+        public int[] N { get { return this.indexn; } }
+
+        /// <summary>
+        /// Kvantové èíslo M
+        /// </summary>
+        public int[] M { get { return this.indexm; } }
+
+        /// <summary>
+        /// Maximální hodnota kvantového èísla N
+        /// </summary>
+        public int MaxN { get { return this.maxN; } }
+
+        /// <summary>
+        /// Maximální hodnota kvantového èísla M
+        /// </summary>
+        public int MaxM { get { return this.maxM; } }
+    }
+    
+    /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
-    public class LHOQuantumGCMR : GCM, IExportable, IQuantumSystem {
+    public class LHOQuantumGCMRFull : GCM, IExportable, IQuantumSystem {
 
         private const double epsilon = 1E-8;
         private double hbar;                    // [Js]
@@ -18,9 +90,9 @@ namespace PavelStransky.GCM {
 
         // Parametr pro LHO
         private double a0;
-       
+
         // Indexy báze
-        private LHOPolarIndex index;
+        private LHOPolarIndexFull index;
 
         private Jacobi jacobi;
 
@@ -42,7 +114,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        public LHOQuantumGCMR() { }
+        public LHOQuantumGCMRFull() { }
 
         /// <summary>
         /// Konstruktor
@@ -52,7 +124,7 @@ namespace PavelStransky.GCM {
         /// <param name="b">Parametr B</param>
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
-        public LHOQuantumGCMR(double a, double b, double c, double k, double a0)
+        public LHOQuantumGCMRFull(double a, double b, double c, double k, double a0)
             : this(a, b, c, k, a0, 0.1) { }
 
         /// <summary>
@@ -64,7 +136,7 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         /// <param name="hbar">Planckova konstanta</param>
-        public LHOQuantumGCMR(double a, double b, double c, double k, double a0, double hbar)
+        public LHOQuantumGCMRFull(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k) {
             this.a0 = a0;
             this.hbar = hbar;
@@ -87,7 +159,7 @@ namespace PavelStransky.GCM {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Wirter</param>
         public void Compute(int maxE, int numSteps, IOutputWriter writer) {
-            this.index = new LHOPolarIndex(maxE);
+            this.index = new LHOPolarIndexFull(maxE);
 
             if(numSteps == 0)
                 numSteps = 10 * this.index.MaxM + 1;
@@ -127,10 +199,9 @@ namespace PavelStransky.GCM {
             DateTime startTime = DateTime.Now;
 
             for(int i = 0; i < length; i++) {
-                int ni = this.index.N[i];
-                int mi = this.index.M[i];
-
                 for(int j = i; j < length; j++) {
+                    int ni = this.index.N[i];
+                    int mi = this.index.M[i];
                     int nj = this.index.N[j];
                     int mj = this.index.M[j];
 
@@ -150,7 +221,7 @@ namespace PavelStransky.GCM {
                     sum *= step;
 
                     if(mi == mj && ni == nj)
-                        sum += this.hbar * omega * (1.0 + ni + ni + mi);
+                        sum += this.hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
 
                     m[i, j] = sum;
                     m[j, i] = sum;
@@ -185,7 +256,7 @@ namespace PavelStransky.GCM {
         /// Vlastní vektory
         /// </summary>
         public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
-        
+
         /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
@@ -280,7 +351,7 @@ namespace PavelStransky.GCM {
 
             return result;
         }
-               
+
         /// <summary>
         /// Radiální èást vlnové funkce
         /// </summary>
@@ -289,11 +360,9 @@ namespace PavelStransky.GCM {
         /// <param name="x">Souøadnice</param>
         private double Psi(int n, int m, double x) {
             double xi2 = this.s * x; xi2 *= xi2;
-            double norm = System.Math.Sqrt(2.0 * SpecialFunctions.Factorial(n) / SpecialFunctions.Factorial(n + System.Math.Abs(m))) * System.Math.Pow(this.s, m + 1);
-            double l = SpecialFunctions.Laguerre(n, m, xi2);            
-            double result = norm * System.Math.Pow(x, m) * System.Math.Exp(-xi2 / 2.0) * l;
-
-            return result;
+            m = System.Math.Abs(m);
+            double norm = System.Math.Sqrt(2.0 * SpecialFunctions.FactorialI(n) / SpecialFunctions.FactorialI(n + m)) * System.Math.Pow(this.s, m + 1);
+            return norm * System.Math.Pow(x, m) * System.Math.Exp(-xi2 / 2) * SpecialFunctions.Laguerre(n, m, xi2);
         }
 
         /// <summary>
@@ -361,7 +430,7 @@ namespace PavelStransky.GCM {
             int maxE = (int)param.Get();
             this.jacobi = (Jacobi)param.Get();
 
-            this.index = new LHOPolarIndex(maxE);
+            this.index = new LHOPolarIndexFull(maxE);
             this.RefreshConstants();
         }
         #endregion

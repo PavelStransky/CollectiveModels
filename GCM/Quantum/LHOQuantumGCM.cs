@@ -349,24 +349,17 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
-            if(export.Binary) {
-                // Binárnì
-                BinaryWriter b = export.B;
-                b.Write(this.A);
-                b.Write(this.B);
-                b.Write(this.C);
-                b.Write(this.K);
-                b.Write(this.A0);
-                b.Write(this.hbar);
-            }
-            else {
-                // Textovì
-                StreamWriter t = export.T;
-                t.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}", this.A, this.B, this.C, this.K, this.A0);
-                t.WriteLine(this.hbar);
-            }
+            IEParam param = new IEParam();
 
-            export.Write(this.jacobi);
+            param.Add(this.A, "A");
+            param.Add(this.B, "B");
+            param.Add(this.C, "C");
+            param.Add(this.K, "K");
+            param.Add(this.A0, "A0");
+            param.Add(this.Hbar, "HBar");
+            param.Add(this.jacobi, "Jacobi");
+
+            param.Export(export);
 		}
 
 		/// <summary>
@@ -374,30 +367,16 @@ namespace PavelStransky.GCM {
 		/// </summary>
         /// <param name="import">Import</param>
         public void Import(Import import) {
-            if(import.Binary) {
-                // Binárnì
-                BinaryReader b = import.B;
-                this.A = b.ReadDouble();
-                this.B = b.ReadDouble();
-                this.C = b.ReadDouble();
-                this.K = b.ReadDouble();
-                this.a0 = b.ReadDouble();
-                this.hbar = b.ReadDouble();
-            }
-            else {
-                // Textovì
-                StreamReader t = import.T;
-                string line = t.ReadLine();
-                string[] s = line.Split('\t');
-                this.A = double.Parse(s[0]);
-                this.B = double.Parse(s[1]);
-                this.C = double.Parse(s[2]);
-                this.K = double.Parse(s[3]);
-                this.a0 = double.Parse(s[4]);
-                this.hbar = double.Parse(t.ReadLine());
-            }
+            IEParam param = new IEParam(import);
 
-            this.jacobi = import.Read() as Jacobi;
+            this.A = (double)param.Get(-1.0);
+            this.B = (double)param.Get(1.0);
+            this.C = (double)param.Get(1.0);
+            this.K = (double)param.Get(1.0);
+            this.A0 = (double)param.Get(1.0);
+            this.hbar = (double)param.Get(0.1);
+            this.jacobi = (Jacobi)param.Get();
+
             this.hermit = new HermitPolynom((int)System.Math.Sqrt(this.jacobi.EigenValue.Length));
             this.RefreshConstants();
         }

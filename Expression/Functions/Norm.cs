@@ -28,8 +28,8 @@ namespace PavelStransky.Expression.Functions {
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			if(item is Vector)
 				return (item as Vector).Norm((double)(int)arguments[1]);
-			else if(item is Array) 
-				return this.EvaluateArray(depth, item as Array, arguments);
+			else if(item is TArray) 
+				return this.EvaluateArray(depth, item as TArray, arguments);
 			else
 				return this.BadTypeError(item, 0);			
 		}

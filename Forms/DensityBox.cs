@@ -399,8 +399,8 @@ namespace PavelStransky.Forms {
         /// <param name="g">Graphics</param>
         /// <param name="index">Index k vykreslení</param>
         private void PaintGraph(Graphics g, int index) {
-            Expression.Array labelsX = (Expression.Array)this.graph.GetCurveParameter(index, paramLabelsX, defaultLabelsX);
-            Expression.Array labelsY = (Expression.Array)this.graph.GetCurveParameter(index, paramLabelsY, defaultLabelsY);
+            TArray labelsX = (TArray)this.graph.GetCurveParameter(index, paramLabelsX, defaultLabelsX);
+            TArray labelsY = (TArray)this.graph.GetCurveParameter(index, paramLabelsY, defaultLabelsY);
 
             float fontHeight = 1.2F * g.MeasureString(defaultMeasuredString, baseFont).Height;
             Matrix matrix = this.GetMatrix(index);
@@ -430,8 +430,8 @@ namespace PavelStransky.Forms {
         public string ToolTip(int x, int y) {
             Matrix m = this.GetMatrix(this.index);
 
-            Expression.Array labelsX = (Expression.Array)this.graph.GetCurveParameter(this.index, paramLabelsX, defaultLabelsX);
-            Expression.Array labelsY = (Expression.Array)this.graph.GetCurveParameter(this.index, paramLabelsY, defaultLabelsY);
+            TArray labelsX = (TArray)this.graph.GetCurveParameter(this.index, paramLabelsX, defaultLabelsX);
+            TArray labelsY = (TArray)this.graph.GetCurveParameter(this.index, paramLabelsY, defaultLabelsY);
 
             bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
             int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
@@ -464,8 +464,8 @@ namespace PavelStransky.Forms {
         private const string paramLegend = "legend";
         private const string paramLegendWidth = "legendwidth";
 
-        private static Expression.Array defaultLabelsX = new Expression.Array();
-        private static Expression.Array defaultLabelsY = new Expression.Array();
+        private static TArray defaultLabelsX = new TArray();
+        private static TArray defaultLabelsY = new TArray();
         private const double defaultInterval = 1000.0;
         private const int defaultPointSizeX = 3;
         private const int defaultPointSizeY = 3;

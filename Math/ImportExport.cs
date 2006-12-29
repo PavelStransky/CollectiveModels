@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 
 namespace PavelStransky.Math {
@@ -13,6 +13,12 @@ namespace PavelStransky.Math {
         private BinaryReader b;
 
         private bool binary;
+
+        // Parametry
+        private object[] param;
+        private string[] paramName;
+        private string[] paramComment;
+        private int paramIndex;
 
         // Informace o verzi
         private string versionName;
@@ -83,7 +89,7 @@ namespace PavelStransky.Math {
             else if(typeName == typeof(double).FullName)
                 result = binary ? b.ReadDouble() : double.Parse(t.ReadLine());
             else if(typeName == typeof(string).FullName)
-                result = binary ? b.ReadString() : t.ReadLine();
+                result = binary ? b.ReadString() : this.DecodeString(t.ReadLine());
             else if(typeName == typeof(bool).FullName)
                 result = binary ? b.ReadBoolean() : bool.Parse(t.ReadLine());
             else if(typeName == typeof(DateTime).FullName)
@@ -137,6 +143,14 @@ namespace PavelStransky.Math {
             this.f.Close();
         }
 
+        /// <summary>
+        /// Zakódovaný uložený øetìzec navrátí do pùvodního tvaru
+        /// </summary>
+        /// <param name="s">Øetìzec</param>
+        public string DecodeString(string s) {
+            return s.Replace("\\%n", "\n").Replace("\\%r", "\r").Replace("\\%t", "\t");
+        }
+
         private const string errorMessageCannotCreateObject = "Nepodaøilo se vytvoøit objekt typu {0}. Import se nezdaøil.";
         public const string nullString = "null";
     }
@@ -182,17 +196,34 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Zapíše objekt s komentáøem
+        /// </summary>
+        /// <param name="o">Objekt</param>
+        /// <param name="name">Název objektu</param>
+        /// <param name="comment">Komentáø</param>
+        public void Write(object o, string name, string comment) {
+            // Na první øádku zapíšeme typ
+            string typeName = (o == null) ? nullString : o.GetType().FullName;
+
+            if(binary) { 
+                b.Write(typeName);
+                b.Write(name);
+                b.Write(comment);
+            }
+            else 
+                t.WriteLine("{0}\t{1}\t{2}", typeName, this.EncodeString(name), this.EncodeString(comment));
+            this.Write(typeName, o);
+        }
+
+        /// <summary>
         /// Zapíše objekt
         /// </summary>
         /// <param name="o">Objekt</param>
         public void Write(object o) {
             // Na první øádku zapíšeme typ
             string typeName = (o == null) ? nullString : o.GetType().FullName;
-            if(binary)
-                b.Write(typeName);
-            else
-                t.WriteLine(typeName);
 
+            if(binary) b.Write(typeName); else t.WriteLine(typeName);
             this.Write(typeName, o);
         }
 
@@ -209,7 +240,7 @@ namespace PavelStransky.Math {
                 if(binary) b.Write((double)o); else t.WriteLine(o);
             }
             else if(o is string) {
-                if(binary) b.Write((string)o); else t.WriteLine(o);
+                if(binary) b.Write((string)o); else t.WriteLine(this.EncodeString((string)o));
             }
             else if(o is bool) {
                 if(binary) b.Write((bool)o); else t.WriteLine(o);
@@ -237,6 +268,14 @@ namespace PavelStransky.Math {
                 this.t.Close();
 
             this.f.Close();
+        }
+
+        /// <summary>
+        /// Z øetìzce odstraní znaky nových øádkù a tabulátory
+        /// </summary>
+        /// <param name="s">Øetìzec</param>
+        public string EncodeString(string s) {
+            return s.Replace("\n", "\\%n").Replace("\r", "\\%r").Replace("\t", "\\%t");
         }
 
         public const string errorMessageBadType = "Typ {0} neumím uložit. Uložení se nezdaøilo.";

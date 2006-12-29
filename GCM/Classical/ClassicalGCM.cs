@@ -205,19 +205,14 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="export">Export</param>
         public virtual void Export(Export export) {
-            if(export.Binary) {
-                // Binárnì
-                BinaryWriter b = export.B;
-                b.Write(this.A);
-                b.Write(this.B);
-                b.Write(this.C);
-                b.Write(this.K);
-            }
-            else {
-                // Textovì
-                StreamWriter t = export.T;
-                t.WriteLine("{0}\t{1}\t{2}\t{3}", this.A, this.B, this.C, this.K);
-            }
+            IEParam param = new IEParam();
+
+            param.Add(this.A, "A");
+            param.Add(this.B, "B");
+            param.Add(this.C, "C");
+            param.Add(this.K, "K");
+
+            param.Export(export);
         }
 
         /// <summary>
@@ -225,24 +220,12 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="import">Import</param>
         public virtual void Import(Import import) {
-            if(import.Binary) {
-                // Binárnì
-                BinaryReader b = import.B;
-                this.A = b.ReadDouble();
-                this.B = b.ReadDouble();
-                this.C = b.ReadDouble();
-                this.K = b.ReadDouble();
-            }
-            else {
-                // Textovì
-                StreamReader t = import.T;
-                string line = t.ReadLine();
-                string[] s = line.Split('\t');
-                this.A = double.Parse(s[0]);
-                this.B = double.Parse(s[1]);
-                this.C = double.Parse(s[2]);
-                this.K = double.Parse(s[3]);
-            }
+            IEParam param = new IEParam(import);
+
+            this.A = (double)param.Get(-1.0);
+            this.B = (double)param.Get(1.0);
+            this.C = (double)param.Get(1.0);
+            this.K = (double)param.Get(1.0);
         }
         #endregion
 

@@ -44,8 +44,8 @@ namespace PavelStransky.Expression.Functions {
 
 				return vector.Histogram((int)arguments[1], min, max);
 			}
-			else if(item is Array) 
-				return this.EvaluateArray(depth, item as Array, arguments);
+			else if(item is TArray) 
+				return this.EvaluateArray(depth, item as TArray, arguments);
 			else
 				return this.BadTypeError(item, 0);			
 		}

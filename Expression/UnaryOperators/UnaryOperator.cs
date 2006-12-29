@@ -28,8 +28,8 @@ namespace PavelStransky.Expression.UnaryOperators {
 				return this.EvaluateM((Matrix)item);
 			else if(item is string)
 				return this.EvaluateS((string)item);
-			else if(item is Array) 
-				return this.EvaluateA((Array)item);
+			else if(item is TArray) 
+				return this.EvaluateA((TArray)item);
 			else
 				return this.UnknownType(item);
 		}
@@ -63,8 +63,8 @@ namespace PavelStransky.Expression.UnaryOperators {
 			return this.UnknownType(item);
 		}
 
-		protected virtual object EvaluateA(Array item) {
-			Array result = new Array();
+		protected virtual object EvaluateA(TArray item) {
+			TArray result = new TArray();
 			for(int i = 0; i < item.Count; i++)
 				result.Add(this.Evaluate(item[i]));
 			return result;

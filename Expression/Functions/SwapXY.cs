@@ -22,8 +22,8 @@ namespace PavelStransky.Expression.Functions {
                 return (item as PointVector).SwapXY();
             else if(item is PointD)
                 return new PointD((item as PointD).Y, (item as PointD).X);
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
             else
                 return this.BadTypeError(item, 0);
         }

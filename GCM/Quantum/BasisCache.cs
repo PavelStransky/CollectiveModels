@@ -104,7 +104,7 @@ namespace PavelStransky.GCM {
                 int limit = maxIndex;
                 while(limit >= 0 && System.Math.Abs(this.cache[i, limit]) < epsilon)
                     limit--;
-                result[i] = System.Math.Max(maxIndex, limit + 1);
+                result[i] = System.Math.Min(maxIndex, limit + 1);
             }
 
             return result;

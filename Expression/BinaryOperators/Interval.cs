@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.BinaryOperators {
 		public override int Priority {get {return multiplePriority;}}
 
 		protected override object EvaluateII(int left, int right) {
-			Array result = new Array();
+			TArray result = new TArray();
 			if(left < right)
 				for(int i = left; i <= right; i++)
 					result.Add(i);

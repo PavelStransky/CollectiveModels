@@ -32,8 +32,8 @@ namespace PavelStransky.Expression.Functions {
 						result[i, j] = m[(int)rowsToGet[i], j];
 				return result;
 			}
-			else if(item is Array) 
-				return this.EvaluateArray(depth, item as Array, arguments);
+			else if(item is TArray) 
+				return this.EvaluateArray(depth, item as TArray, arguments);
 			else
 				return this.BadTypeError(item, 0);			
 		}

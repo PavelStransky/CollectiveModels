@@ -96,11 +96,16 @@ namespace PavelStransky.Math {
 		/// </summary>
 		public static Complex Exp(Complex c) {
 			double d = System.Math.Exp(c.re);
-			return new Complex(d*System.Math.Cos(c.im), d*System.Math.Sin(c.im));
+            return new Complex(d * System.Math.Cos(c.im), d * System.Math.Sin(c.im));
 		}
 
+        /// <summary>
+        /// Komplexní jednièka
+        /// </summary>
+        public static Complex I { get { return new Complex(0.0, 1.0); } }
+
 		/// <summary>
-		/// Vrátí velikost vektoru
+		/// Vrátí velikost komplexního èísla
 		/// </summary>
 		public double Norm {get {return System.Math.Sqrt(this.SquaredNorm);}}
 

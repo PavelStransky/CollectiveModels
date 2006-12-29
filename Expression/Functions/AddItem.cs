@@ -13,12 +13,12 @@ namespace PavelStransky.Expression.Functions {
 
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-			this.CheckArgumentsType(evaluatedArguments, 0, typeof(Array));			
+			this.CheckArgumentsType(evaluatedArguments, 0, typeof(TArray));			
 			return evaluatedArguments;
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			return ((item as Array).Clone() as Array).Add(arguments[1]);
+			return ((item as TArray).Clone() as TArray).Add(arguments[1]);
 		}
 
 		private const string help = "Na konec øady pøidá nový prvek";

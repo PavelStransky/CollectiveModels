@@ -4,7 +4,7 @@ namespace PavelStransky.Expression {
 	/// <summary>
 	/// Øada grafù
 	/// </summary>
-	public class GraphArray: Array {
+	public class GraphArray: TArray {
 		private int lengthX = 1;
 		private int lengthY = 1;
 

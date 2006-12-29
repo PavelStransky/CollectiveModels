@@ -14,16 +14,16 @@ namespace PavelStransky.Expression.Functions {
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 2);
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
-			this.CheckArgumentsType(evaluatedArguments, 0, typeof(Array));
-			this.CheckArgumentsType(evaluatedArguments, 1, typeof(Array));			
+			this.CheckArgumentsType(evaluatedArguments, 0, typeof(TArray));
+			this.CheckArgumentsType(evaluatedArguments, 1, typeof(TArray));			
 
 			return evaluatedArguments;
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			Array aIn = arguments[0] as Array;
-			Array aOrder = arguments[1] as Array;
-			Array result = new Array();
+			TArray aIn = arguments[0] as TArray;
+			TArray aOrder = arguments[1] as TArray;
+			TArray result = new TArray();
 
 			if(aIn.Count != aOrder.Count)
 				throw new FunctionDefinitionException(string.Format(errorMessageBadLength, this.Name),

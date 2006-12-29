@@ -32,7 +32,7 @@ namespace PavelStransky.Expression.Functions {
 					return this.BadTypeError(arguments[0], 0);
 			}
 			else {
-				Array result = new Array();
+				TArray result = new TArray();
 
 				foreach(FunctionDefinition f in functions.Values)
 					result.Add(f.Use);

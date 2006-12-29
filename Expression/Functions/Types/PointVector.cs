@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions {
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
 
 			if(evaluatedArguments.Count == 1)
-				this.CheckArgumentsType(evaluatedArguments, 0, typeof(Array));
+				this.CheckArgumentsType(evaluatedArguments, 0, typeof(TArray));
 
 			return evaluatedArguments;
 		}
@@ -26,9 +26,9 @@ namespace PavelStransky.Expression.Functions {
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			// Øada bodù
 			if(arguments.Count == 1) {
-				Array array = item as Array;
+				TArray array = item as TArray;
 
-				if(array.ItemTypeName == typeof(Array).FullName)
+				if(array.ItemTypeName == typeof(TArray).FullName)
 					return this.EvaluateArray(depth, array, arguments);
 				else if(array.ItemTypeName == typeof(PointD).FullName) {
 					PointVector result = new PointVector(array.Count);
@@ -43,9 +43,9 @@ namespace PavelStransky.Expression.Functions {
 			}
 			// Dva vektory
 			else {
-				if(item is Array) {
-					if(arguments[1] is Array) 
-						return this.EvaluateArray(depth, item as Array, arguments[1] as Array, arguments);
+				if(item is TArray) {
+					if(arguments[1] is TArray) 
+						return this.EvaluateArray(depth, item as TArray, arguments[1] as TArray, arguments);
 					else
 						return this.BadTypeError(arguments[1], 1);
 				}

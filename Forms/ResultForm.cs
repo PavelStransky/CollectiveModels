@@ -384,26 +384,32 @@ namespace PavelStransky.Forms {
 
         #endregion
 
+        /// <summary>
+        /// Zmìna zalamování
+        /// </summary>
+        private void chkWrap_CheckedChanged(object sender, EventArgs e) {
+            this.txtResult.WordWrap = this.chkWrap.Checked;
+            this.txtCommand.WordWrap = this.chkWrap.Checked;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží obsah formuáøe do souboru
         /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
-            // Musíme ukládat binárnì
-            if(!export.Binary)
-                throw new Exception("");
+            IEParam param = new IEParam();
 
-            // Binárnì
-            BinaryWriter b = export.B;
-            b.Write(this.Location.X);
-            b.Write(this.Location.Y);
-            b.Write(this.Size.Width);
-            b.Write(this.Size.Height);
+            param.Add(this.Location.X, "X");
+            param.Add(this.Location.Y, "Y");
+            param.Add(this.Size.Width, "Width");
+            param.Add(this.Size.Height, "Height");
 
-            b.Write(this.Name);
-            b.Write(this.txtCommand.Text);
-            b.Write(this.txtResult.Text);
+            param.Add(this.Name, "ResultName");
+            param.Add(this.txtCommand.Text, "Command");
+            param.Add(this.txtResult.Text, "Result");
+
+            param.Export(export);
         }
 
         /// <summary>
@@ -411,18 +417,15 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="import">Import</param>
         public void Import(PavelStransky.Math.Import import) {
-            // Musíme èíst binárnì
-            if(!import.Binary)
-                throw new Exception("");
+            IEParam param = new IEParam(import);
 
-            // Binárnì
-            BinaryReader b = import.B;
-            this.Location = new Point(b.ReadInt32(), b.ReadInt32());
-            this.Size = new Size(b.ReadInt32(), b.ReadInt32());
+            this.Location = new Point((int)param.Get(0), (int)param.Get(0));
+            this.Size = new Size((int)param.Get(this.Size.Width), (int)param.Get(this.Size.Height));
 
-            this.Name = b.ReadString();
-            this.txtCommand.Text = b.ReadString();
-            this.txtResult.Text = b.ReadString();
+            this.Name = (string)param.Get(string.Empty);
+
+            this.txtCommand.Text = (string)param.Get(string.Empty);
+            this.txtResult.Text = (string)param.Get(string.Empty);
 
             this.SetExpression(this.txtCommand.Text);
             this.Text = this.Name;

@@ -109,6 +109,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HermitPolynom.cs" />
+    <Compile Include="IEParam.cs" />
     <Compile Include="ImportExport.cs" />
     <Compile Include="Interfaces.cs">
       <SubType>Code</SubType>

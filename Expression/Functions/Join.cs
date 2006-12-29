@@ -16,12 +16,12 @@ namespace PavelStransky.Expression.Functions {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
 
 			ArrayList newArguments = new ArrayList();
-			if(evaluatedArguments[0] is Array) {
+			if(evaluatedArguments[0] is TArray) {
 				this.CheckArgumentsMaxNumber(evaluatedArguments, 1);
 				newArguments.Add(evaluatedArguments[0]);
 			}
 			else if(evaluatedArguments[0] is Vector) {
-				Array array = new Array(false);
+				TArray array = new TArray(false);
 				for(int i = 0; i < evaluatedArguments.Count; i++) {
 					this.CheckArgumentsType(evaluatedArguments, i, typeof(Vector));
 					array.Add(evaluatedArguments[i]);
@@ -35,7 +35,7 @@ namespace PavelStransky.Expression.Functions {
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			Array array = item as Array;
+			TArray array = item as TArray;
 
 			if(array.ItemTypeName == typeof(Vector).FullName) {
 				int newLength = 0;
@@ -69,7 +69,7 @@ namespace PavelStransky.Expression.Functions {
                 return result;
             }
 
-            else if(array.ItemTypeName == typeof(Array).FullName)
+            else if(array.ItemTypeName == typeof(TArray).FullName)
                 return this.EvaluateArray(depth, array, arguments);
             else
                 return this.BadTypeError(item, 0);

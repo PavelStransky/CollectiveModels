@@ -20,17 +20,17 @@ namespace PavelStransky.Expression.Functions
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			if(item is Vector) {
-				Array result = new Array();
+				TArray result = new TArray();
 				result.Add((item as Vector).Length);
 				return result;
 			}
 			else if(item is PointVector) {
-				Array result = new Array();
+				TArray result = new TArray();
 				result.Add((item as PointVector).Length);
 				return result;
 			}
 			else if(item is Matrix) {
-				Array result = new Array();
+				TArray result = new TArray();
 				Matrix m = item as Matrix;
 
 				result.Add(m.LengthX);
@@ -38,15 +38,15 @@ namespace PavelStransky.Expression.Functions
 
 				return result;
 			}
-			else if(item is Array) {
-				Array array = item as Array;
+			else if(item is TArray) {
+				TArray array = item as TArray;
 
 				object result = null;
 				if(array.Count > 0)
 					result = this.Evaluate(depth + 1, array[0], arguments);
-				if(!(result is Array))
-					result = new Array();
-				(result as Array).Insert(0, array.Count);
+				if(!(result is TArray))
+					result = new TArray();
+				(result as TArray).Insert(0, array.Count);
 
 				return result;
 			}

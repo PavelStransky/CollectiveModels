@@ -9,7 +9,7 @@ namespace PavelStransky.Expression {
 	/// <summary>
 	/// Øada - typová kontrola do objektu ArrayList
 	/// </summary>
-	public class Array: ArrayList, IExportable {
+	public class TArray: ArrayList, IExportable {
 		// Typ objektù v øadì (nastaví se poprvé, pak už zùstává nemìnný)
 		private Type type;
 		// Provádìní kontroly na stejnost pøidávaných objektù
@@ -29,7 +29,7 @@ namespace PavelStransky.Expression {
 		/// Konstruktor
 		/// </summary>
 		/// <param name="checkSize">Bude se kontrolovat velikost objektu</param>
-		public Array(bool checkSize) : base() {
+		public TArray(bool checkSize) : base() {
 			this.type = null;
 			this.checkSize = checkSize;
 		}
@@ -37,7 +37,7 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Konstruktor (velikost objektù se kontroluje implicitnì)
 		/// </summary>
-		public Array() : this(true) {}
+		public TArray() : this(false) {}
 
 		/// <summary>
 		/// Pøidá objekt na konec øady
@@ -178,9 +178,9 @@ namespace PavelStransky.Expression {
 					if(itemLengthX != thisLengthX && itemLengthY != thisLengthY)
 						errorMessage = string.Format(errorMessageBadSizeDetail, "{0}", "{1}", string.Format("{0} x {1}", itemLengthX, itemLengthY), string.Format("{0} x {1}", thisLengthX, thisLengthY));
 				}
-				else if(this.type == typeof(Array)) {
-					int itemLength = (item as Array).Count;
-					int thisLength = (this[0] as Array).Count;
+				else if(this.type == typeof(TArray)) {
+					int itemLength = (item as TArray).Count;
+					int thisLength = (this[0] as TArray).Count;
 					if(itemLength != thisLength)
 						errorMessage = string.Format(errorMessageBadSizeDetail, "{0}", "{1}", itemLength, thisLength);
 				}
@@ -206,7 +206,7 @@ namespace PavelStransky.Expression {
 		/// Klonování øady
 		/// </summary>
 		public override object Clone() {
-			Array result = new Array();
+			TArray result = new TArray();
 			foreach(object item in this)
 				result.Add(item);
 			return result;
@@ -215,7 +215,7 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Pøetypuje na øadu systému
 		/// </summary>
-		public static explicit operator System.Array(Array array) {
+		public static explicit operator System.Array(TArray array) {
 			if(array.type == null)
 				throw new ContextException(errorMessageArrayNotInitialized);
 
@@ -229,8 +229,8 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Pøetypuje øadu systému na naši øadu
 		/// </summary>
-		public static explicit operator Array(System.Array array) {
-			Array result = new Array();
+		public static explicit operator TArray(System.Array array) {
+			TArray result = new TArray();
 
 			for(int i = 0; i < array.Length; i++)
 				result.Add(array.GetValue(i));

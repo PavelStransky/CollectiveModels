@@ -38,7 +38,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="graphs">Objekt s daty</param>
         /// <param name="numColumns">Poèet sloupcù</param>
-        public void SetGraph(Expression.Array graphs, int numColumns) {
+        public void SetGraph(TArray graphs, int numColumns) {
             int count = graphs.Count;
             int numRows = (count - 1) / numColumns + 1;
 
@@ -196,24 +196,22 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
-            // Musíme ukládat binárnì
-            if(!export.Binary)
-                throw new Exception("");
-            
-            // Binárnì
-            BinaryWriter b = export.B;
-            b.Write(this.Location.X);
-            b.Write(this.Location.Y);
-            b.Write(this.Size.Width);
-            b.Write(this.Size.Height);
+            IEParam param = new IEParam();
 
-            b.Write(this.Name);
-            b.Write(this.numColumns);
+            param.Add(this.Location.X, "X");
+            param.Add(this.Location.Y, "Y");
+            param.Add(this.Size.Width, "Width");
+            param.Add(this.Size.Height, "Height");
+
+            param.Add(this.Name, "GraphName");
+            param.Add(this.numColumns, "NumColumns");
 
             int length = this.graphControl.Length;
-            b.Write(length);
+            param.Add(length);
             for(int i = 0; i < length; i++)
-                export.Write(this.graphControl[i].GetGraph());
+                param.Add(this.graphControl[i].GetGraph(), string.Format("GraphData{0}", i));
+
+            param.Export(export);
         }
 
         /// <summary>
@@ -221,23 +219,20 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="import">Import</param>
         public void Import(PavelStransky.Math.Import import) {
-            // Musíme èíst binárnì
-            if(!import.Binary)
-                throw new Exception("");
+            IEParam param = new IEParam(import);
 
-            // Binárnì
-            BinaryReader b = import.B;
-            this.Location = new Point(b.ReadInt32(), b.ReadInt32());
-            this.Size = new Size(b.ReadInt32(), b.ReadInt32());
+            this.Location = new Point((int)param.Get(0), (int)param.Get(0));
+            this.Size = new Size((int)param.Get(this.Size.Width), (int)param.Get(this.Size.Height));
 
-            this.Name = b.ReadString();
+            this.Name = (string)param.Get(string.Empty);
             this.Text = this.Name;
-            int numColumns = b.ReadInt32();
-            int length = b.ReadInt32();
+            this.numColumns = (int)param.Get(1);
 
-            Expression.Array graphs = new Expression.Array();
+            TArray graphs = new TArray();
+            int length = (int)param.Get(0);
             for(int i = 0; i < length; i++)
-                graphs.Add(import.Read());
+                graphs.Add(param.Get());
+
             this.SetGraph(graphs, numColumns);
         }
         #endregion

@@ -12,8 +12,8 @@ namespace PavelStransky.Expression.Functions {
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			int pdepth = (int)arguments[1];
 			if(depth < pdepth) {
-				if(item is Array)
-					return this.EvaluateArray(depth, item as Array, arguments);
+				if(item is TArray)
+					return this.EvaluateArray(depth, item as TArray, arguments);
 				else
 					return this.BadTypeError(item, 0);
 			}
@@ -32,14 +32,14 @@ namespace PavelStransky.Expression.Functions {
 		/// <param name="depth">Aktuální hloubka výpoètu</param>
 		/// <param name="array">Vstupní øada</param>
 		/// <param name="arguments">Parametry funkce</param>
-		protected Array EvaluateGoodDepthArray(int depth, Array array, ArrayList arguments) {
-			Array result = new Array();
+		protected TArray EvaluateGoodDepthArray(int depth, TArray array, ArrayList arguments) {
+			TArray result = new TArray();
 			depth++;
 
 			for(int i = 0; i < array.Count; i++) {
 				object o = this.EvaluateGoodDepth(depth, array[i], arguments);
 				if(o is double) 
-					result.Add(this.FullResult(new Array(), o));
+					result.Add(this.FullResult(new TArray(), o));
 				else
 					result.Add(o);
 			}
@@ -52,7 +52,7 @@ namespace PavelStransky.Expression.Functions {
 		/// </summary>
 		/// <param name="array">Øada s indexy</param>
 		/// <param name="o">Hodnota</param>
-		protected object [] FullResult(Array array, object o) {
+		protected object [] FullResult(TArray array, object o) {
 			object [] result = new object[2];
 			result[0] = array;
 			result[1] = o;

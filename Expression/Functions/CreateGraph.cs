@@ -33,26 +33,26 @@ namespace PavelStransky.Expression.Functions {
 
 			// Ve 2. parametru jsou vlastnosti jednotlivých køivek grafu. Pokud je zadán jen string,
 			// pak se použijí vlastnosti pro všechny køivky
-			Array itemParams = null;
+			TArray itemParams = null;
 			if(arguments.Count > 2 && arguments[2] != null) {
 				if(arguments[2] is string) {
 					int length = 1;
-					if(item is Array)
-						length = (item as Array).Count;
+					if(item is TArray)
+						length = (item as TArray).Count;
 
-					itemParams = new Array();
+					itemParams = new TArray();
 					for(int i = 0; i < length; i++)
 						itemParams.Add(arguments[2]);
 				}
-				else if(arguments[2] is Array && (arguments[2] as Array).ItemType == typeof(string))
-					itemParams = arguments[2] as Array;
+				else if(arguments[2] is TArray && (arguments[2] as TArray).ItemType == typeof(string))
+					itemParams = arguments[2] as TArray;
 				else
 					this.BadTypeError(arguments[2], 2);
 			}
 
 			object errors = null;
 			if(arguments.Count > 3 && arguments[3] != null) {
-				if((arguments[3] is Array && item is Array) || (arguments[3] is Vector && (item is Vector || item is PointVector)))
+				if((arguments[3] is TArray && item is TArray) || (arguments[3] is Vector && (item is Vector || item is PointVector)))
 					errors = arguments[3];
 				else
 					this.BadTypeError(arguments[3], 3);

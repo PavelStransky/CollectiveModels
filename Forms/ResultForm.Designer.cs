@@ -19,6 +19,7 @@ namespace PavelStransky.Forms {
             this.btContinue = new System.Windows.Forms.Button();
             this.btRecalculate = new System.Windows.Forms.Button();
             this.chkAsync = new System.Windows.Forms.CheckBox();
+            this.chkWrap = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblCommand
@@ -41,7 +42,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.ReadOnly = true;
             this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCommand.Size = new System.Drawing.Size(330, 130);
+            this.txtCommand.Size = new System.Drawing.Size(354, 130);
             this.txtCommand.TabIndex = 1;
             this.txtCommand.WordWrap = false;
             // 
@@ -66,7 +67,7 @@ namespace PavelStransky.Forms {
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(330, 106);
+            this.txtResult.Size = new System.Drawing.Size(354, 106);
             this.txtResult.TabIndex = 3;
             this.txtResult.WordWrap = false;
             // 
@@ -119,7 +120,7 @@ namespace PavelStransky.Forms {
             // btRecalculate
             // 
             this.btRecalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btRecalculate.Location = new System.Drawing.Point(244, 278);
+            this.btRecalculate.Location = new System.Drawing.Point(268, 278);
             this.btRecalculate.Name = "btRecalculate";
             this.btRecalculate.Size = new System.Drawing.Size(93, 28);
             this.btRecalculate.TabIndex = 8;
@@ -141,11 +142,24 @@ namespace PavelStransky.Forms {
             this.chkAsync.Text = "Poèítat asynchronnì";
             this.chkAsync.UseVisualStyleBackColor = true;
             // 
+            // chkWrap
+            // 
+            this.chkWrap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkWrap.AutoSize = true;
+            this.chkWrap.Location = new System.Drawing.Point(187, 285);
+            this.chkWrap.Name = "chkWrap";
+            this.chkWrap.Size = new System.Drawing.Size(76, 17);
+            this.chkWrap.TabIndex = 10;
+            this.chkWrap.Text = "Zalamovat";
+            this.chkWrap.UseVisualStyleBackColor = true;
+            this.chkWrap.CheckedChanged += new System.EventHandler(this.chkWrap_CheckedChanged);
+            // 
             // ResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 310);
+            this.ClientSize = new System.Drawing.Size(365, 310);
+            this.Controls.Add(this.chkWrap);
             this.Controls.Add(this.chkAsync);
             this.Controls.Add(this.btRecalculate);
             this.Controls.Add(this.btContinue);
@@ -177,5 +191,6 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.Button btContinue;
         private System.Windows.Forms.Button btRecalculate;
         private System.Windows.Forms.CheckBox chkAsync;
+        private System.Windows.Forms.CheckBox chkWrap;
     }
 }

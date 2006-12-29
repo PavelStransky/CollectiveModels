@@ -40,14 +40,14 @@ namespace PavelStransky.Expression.Functions {
                 if(equipotentials.Length == 1)
                     return equipotentials[0];
                 else {
-                    Array result = new Array();
+                    TArray result = new TArray();
                     for(int i = 0; i < equipotentials.Length; i++)
                         result.Add(equipotentials[i]);
                     return result;
                 }
             }
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
             else
                 return this.BadTypeError(item, 0);
         }

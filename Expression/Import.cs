@@ -24,8 +24,8 @@ namespace PavelStransky.Expression {
         /// <param name="typeName">Jméno typu objektu</param>
         /// <returns></returns>
         public override object CreateObject(string typeName) {
-            if(typeName == typeof(Array).FullName)
-                return new Array();
+            if(typeName == typeof(TArray).FullName)
+                return new TArray();
             else if(typeName == typeof(Context).FullName)
                 return new Context();
             else if(typeName == typeof(ClassicalGCM).FullName)
@@ -42,6 +42,10 @@ namespace PavelStransky.Expression {
                 return new Graph();
             else if(typeName == typeof(LHOQuantumGCM).FullName)
                 return new LHOQuantumGCM();
+            else if(typeName == typeof(LHOQuantumGCMR).FullName)
+                return new LHOQuantumGCMR();
+            else if(typeName == typeof(LHOQuantumGCMRFull).FullName)
+                return new LHOQuantumGCMRFull();
             else
                 return base.CreateObject(typeName);
         }

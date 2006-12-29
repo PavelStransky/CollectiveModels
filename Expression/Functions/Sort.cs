@@ -55,8 +55,8 @@ namespace PavelStransky.Expression.Functions {
 				}
 			}
 
-			else if(item is Array) {
-				Array array = item as Array;
+			else if(item is TArray) {
+				TArray array = item as TArray;
 
 				if(keys == null) {
 					if(array.ItemType == typeof(int) || array.ItemType == typeof(double) || array.ItemType == typeof(string)) {
@@ -64,7 +64,7 @@ namespace PavelStransky.Expression.Functions {
 						System.Array.Sort(a);
 						if(!asc)
 							System.Array.Reverse(a);
-						return (Array)a;
+						return (TArray)a;
 					}
 					else
 						return this.EvaluateArray(depth, array, arguments);
@@ -73,12 +73,12 @@ namespace PavelStransky.Expression.Functions {
 					if(keys is Vector) {
 						Vector vkeys = keys as Vector;
 						if(asc)
-							return (Array)vkeys.Sort((System.Array) array);
+							return (TArray)vkeys.Sort((System.Array) array);
 						else
-							return (Array)vkeys.SortDesc((System.Array) array);
+							return (TArray)vkeys.SortDesc((System.Array) array);
 					}
-					else if(keys is Array) {
-						Array akeys = keys as Array;
+					else if(keys is TArray) {
+						TArray akeys = keys as TArray;
 				
 						if(akeys.ItemType == typeof(int) || akeys.ItemType == typeof(double) || akeys.ItemType == typeof(string)) {
 							System.Array a = (System.Array)array;
@@ -86,9 +86,9 @@ namespace PavelStransky.Expression.Functions {
 							System.Array.Sort(k, a);
 							if(!asc)
 								System.Array.Reverse(a);
-							return (Array)a;
+							return (TArray)a;
 						}
-						else if(akeys.ItemType == typeof(Array) || akeys.ItemType == typeof(Vector)) 
+						else if(akeys.ItemType == typeof(TArray) || akeys.ItemType == typeof(Vector)) 
 							return this.EvaluateArray(depth, array, akeys, arguments);
 						else
 							return this.BadTypeError(akeys[0], 1);

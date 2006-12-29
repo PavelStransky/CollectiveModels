@@ -55,8 +55,8 @@ namespace PavelStransky.Expression.Functions {
                         array.Add(m[j, k]);
             }
 
-            else if(item is Array) {
-                foreach(object o in item as Array)
+            else if(item is TArray) {
+                foreach(object o in item as TArray)
                     if(!this.Add(array, o))
                         return false;
             }

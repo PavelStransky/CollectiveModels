@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
 
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsNumber(evaluatedArguments, 3);
-			this.CheckArgumentsType(evaluatedArguments, 0, typeof(Array));
+			this.CheckArgumentsType(evaluatedArguments, 0, typeof(TArray));
 			this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
 			this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
 
@@ -28,8 +28,8 @@ namespace PavelStransky.Expression.Functions {
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			if(item is Array) {
-				Array array = item as Array;
+			if(item is TArray) {
+				TArray array = item as TArray;
 				int h1 = (int)arguments[1];			// h1 < h2
 				int h2 = (int)arguments[2];
 				if(h1 == h2)
@@ -39,12 +39,12 @@ namespace PavelStransky.Expression.Functions {
 					return this.EvaluateArray(depth, array, arguments);
 				
 				// h1 == depth
-				Array a = array;
+				TArray a = array;
 				ArrayList lengths = new ArrayList();
 				lengths.Add(a.Count);
 				for(int i = h1; i < h2; i++) {
-					if(a.Count > 0 && a.ItemTypeName == typeof(Array).FullName) {
-						a = a[0] as Array;
+					if(a.Count > 0 && a.ItemTypeName == typeof(TArray).FullName) {
+						a = a[0] as TArray;
 						lengths.Add(a.Count);
 					}
 					else
@@ -53,7 +53,7 @@ namespace PavelStransky.Expression.Functions {
 
 				int length = a.Count;
 				ArrayList index = lengths.Clone() as ArrayList;
-				Array result = new Array();
+				TArray result = new TArray();
 				for(int j = 0; j < length; j++) {
 					index[lengths.Count - 1] = j;
 					result.Add(this.SetItem(1, array, index, lengths));
@@ -65,15 +65,15 @@ namespace PavelStransky.Expression.Functions {
 				return this.BadTypeError(item, 0);			
 		}
 
-		private object GetItem(int depth, Array array, ArrayList index) {
+		private object GetItem(int depth, TArray array, ArrayList index) {
 			if(depth < index.Count - 1)
-				return this.GetItem(depth + 1, array[(int)index[depth]] as Array, index);
+				return this.GetItem(depth + 1, array[(int)index[depth]] as TArray, index);
 			else
 				return array[(int)index[depth]];
 		}
 
-		private Array SetItem(int depth, Array array, ArrayList index, ArrayList lengths) {
-			Array result = new Array();
+		private TArray SetItem(int depth, TArray array, ArrayList index, ArrayList lengths) {
+			TArray result = new TArray();
 
 			if(depth < lengths.Count - 1) {
 				int length = (int)lengths[depth];

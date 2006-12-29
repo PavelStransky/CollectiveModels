@@ -27,8 +27,8 @@ namespace PavelStransky.Expression.Functions {
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			int pdepth = (int)arguments[1];
 			if(depth < pdepth) {
-				if(item is Array)
-					return this.EvaluateArray(depth, item as Array, arguments);
+				if(item is TArray)
+					return this.EvaluateArray(depth, item as TArray, arguments);
 				else
 					return this.BadTypeError(item, 0);
 			}

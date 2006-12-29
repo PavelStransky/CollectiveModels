@@ -503,25 +503,31 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
-            // Musíme ukládat binárnì
-            if(!export.Binary)
-                throw new Exception("");
+            // Hlavièka
+            if(export.Binary) {
+                export.B.Write((this.MdiParent as MainForm).RegistryEntryName);
+                export.B.Write(3);
+            }
+            else {
+                export.T.WriteLine((this.MdiParent as MainForm).RegistryEntryName);
+                export.T.WriteLine(3);
+            }
 
-            // Binárnì
-            BinaryWriter b = export.B;
-            b.Write((this.MdiParent as MainForm).RegistryEntryName);
-            b.Write(2);                 // Rezervované
+            IEParam param = new IEParam();
 
-            b.Write(this.Location.X);
-            b.Write(this.Location.Y);
-            b.Write(this.Size.Width);
-            b.Write(this.Size.Height);
+            param.Add(this.Location.X, "X");
+            param.Add(this.Location.Y, "Y");
+            param.Add(this.Size.Width, "Width");
+            param.Add(this.Size.Height, "Height");
 
-            b.Write(this.txtCommand.Rtf);
-            b.Write(this.txtCommand.SelectionStart);
-            b.Write(this.resultNumber);
+            param.Add(this.txtCommand.Rtf, "Text");
+            param.Add(this.txtCommand.SelectionStart, "SelectionStart");
+            param.Add(this.txtCommand.SelectionLength, "SelectionLength");
+            param.Add(this.resultNumber, "ResultNumber");
 
-            export.Write(this.context);
+            param.Add(this.context, "Context");
+
+            param.Export(export);
         }
 
         /// <summary>
@@ -529,26 +535,40 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="import">Import</param>
         public void Import(PavelStransky.Math.Import import) {
-            // Musíme èíst binárnì
-            if(!import.Binary)
-                throw new Exception("");
+            if(import.Binary) {
+                import.VersionName = import.B.ReadString();
+                import.VersionNumber = import.B.ReadInt32();
+            }
+            else {
+                import.VersionName = import.T.ReadLine();
+                import.VersionNumber = int.Parse(import.T.ReadLine());
+            }
 
-            // Binárnì
-            BinaryReader b = import.B;
-            import.VersionName = b.ReadString();                 // Oznaèení verze (zatím nekontrolujeme)
-            import.VersionNumber = b.ReadInt32();                // Èíslo verze
+            if(import.VersionNumber < 3) {
+                this.Location = new Point(import.B.ReadInt32(), import.B.ReadInt32());
+                this.Size = new Size(import.B.ReadInt32(), import.B.ReadInt32());
 
-            this.Location = new Point(b.ReadInt32(), b.ReadInt32());
-            this.Size = new Size(b.ReadInt32(), b.ReadInt32());
+                this.txtCommand.Rtf = import.B.ReadString();
+                this.txtCommand.SelectionStart = import.B.ReadInt32();
+                this.txtCommand.ScrollToCaret();
 
-            this.txtCommand.Rtf = b.ReadString();
-            this.txtCommand.SelectionStart = b.ReadInt32();
+                this.context = new Context();
+            }
+            else {
+                IEParam param = new IEParam(import);
 
-            if(import.VersionNumber >= 2)
-                this.resultNumber = b.ReadInt32();
+                this.Location = new Point((int)param.Get(0), (int)param.Get(0));
+                this.Size = new Size((int)param.Get(this.Size.Width), (int)param.Get(this.Size.Height));
 
-            if(import.VersionNumber >= 1)
-                this.context = import.Read() as Context;
+                this.txtCommand.Rtf = (string)param.Get(this.txtCommand.Rtf);
+                this.txtCommand.SelectionStart = (int)param.Get(0);
+                this.txtCommand.SelectionLength = (int)param.Get(0);
+                this.txtCommand.ScrollToCaret();
+
+                this.resultNumber = (int)param.Get(0);
+
+                this.context = (Context)param.Get();
+            }
 
             this.InitializeEvents(this.context);
         }

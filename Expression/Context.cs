@@ -117,8 +117,8 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Jména všech objektù na kontextu
 		/// </summary>
-		public Array ObjectNames() {
-			Array retValue = new Array();
+		public TArray ObjectNames() {
+			TArray retValue = new TArray();
 			foreach(string key in this.objects.Keys)
 				retValue.Add(key);
 			return retValue;
@@ -168,37 +168,14 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="export">Export</param>
         public void Export(Export export) {
-            // Poèet objektù k záznamu
-            int num = 0;
+            IEParam param = new IEParam();
+
             foreach(Variable v in this.objects.Values)
-                if(v != null)
-                    num++;
+                if(v != null) {
+                    param.Add(v.Item, v.Name, v.Expression);
+                }
 
-            if(export.Binary) {
-                // Binárnì
-                BinaryWriter b = export.B;
-                b.Write(num);
-
-                foreach(Variable v in this.objects.Values)
-                    if(v != null) {
-                        b.Write(v.Name);
-                        b.Write(v.Expression);
-                        export.Write(v.Item);
-                    }
-            }
-            else {
-                // Textovì
-                StreamWriter t = export.T;
-                t.WriteLine(num);
-
-                foreach(Variable v in this.objects.Values)
-                    if(v != null) {
-                        t.WriteLine(v.Name);
-                        t.WriteLine(v.Expression);
-                        export.Write(v.Item);
-                        t.WriteLine(separator);
-                    }
-            }
+            param.Export(export);
         }
 
 		/// <summary>
@@ -208,40 +185,13 @@ namespace PavelStransky.Expression {
         public void Import(PavelStransky.Math.Import import) {
             this.Clear();
 
-            if(import.Binary) {
-                // Binárnì
-                BinaryReader b = import.B;
-                int num = b.ReadInt32();
+            IEParam param = new IEParam(import);
 
-                for(int i = 0; i < num; i++) {
-                    string name = b.ReadString();
-                    string e = b.ReadString();
-                    Assignment assignment = null;
-
-                    if(e != string.Empty) {
-                        assignment = new Assignment(e, null);
-                    }
-                    this.SetVariable(name, import.Read(), assignment);
-                }
-            }
-            else {
-                // Textovì
-                StreamReader t = import.T;
-                int num = int.Parse(t.ReadLine());
-
-                for(int i = 0; i < num; i++) {
-                    string name = t.ReadLine();
-                    string e = t.ReadLine();
-                    Assignment assignment = null;
-
-                    if(e != string.Empty)
-                        assignment = new Assignment(e, null);
-
-                    this.SetVariable(name, import.Read(), assignment);
-
-                    // Prázdná øádka s oddìlovaèem
-                    t.ReadLine();
-                }
+            int count = param.Count;
+            for(int i = 0; i < count; i++) {
+                string name, expression;
+                object o = param.Get(null, out name, out expression);
+                this.SetVariable(name, o, expression != string.Empty ? new Assignment(expression, null) : null);
             }
         }
 		#endregion

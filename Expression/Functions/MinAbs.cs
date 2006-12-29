@@ -20,8 +20,8 @@ namespace PavelStransky.Expression.Functions {
 				return (item as Vector).MinAbs();
 			else if(item is Matrix) 
 				return (item as Matrix).MinAbs();
-			else if(item is Array) {
-				Array result = this.EvaluateArray(depth, item as Array, arguments);
+			else if(item is TArray) {
+				TArray result = this.EvaluateArray(depth, item as TArray, arguments);
 				this.CheckResultLength(result, depth);
 				
 				int index = 0;

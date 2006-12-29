@@ -27,8 +27,8 @@ namespace PavelStransky.Expression.Functions {
                 return (int)((TimeSpan)item).TotalSeconds;
             else if(item is string)
                 return int.Parse(item as string);
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
             else
                 return this.BadTypeError(item, 0);
         }

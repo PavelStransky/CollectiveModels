@@ -30,8 +30,8 @@ namespace PavelStransky.Expression.Functions {
 			int inDepth = (int)arguments[4];
 
 			if(outDepth > depth) {
-				if(item is Array)
-					return this.EvaluateArray(depth, item as Array, arguments);
+				if(item is TArray)
+					return this.EvaluateArray(depth, item as TArray, arguments);
 				else
 					return this.BadTypeError(item, 0);
 			}
@@ -40,14 +40,14 @@ namespace PavelStransky.Expression.Functions {
 				object o = item;
 
 				for(int i = 0; i < inDepth - depth - 1; i++) {
-					if(o is Array && (o as Array).Count > 0)
-						o = (o as Array)[0];
+					if(o is TArray && (o as TArray).Count > 0)
+						o = (o as TArray)[0];
 					else
 						this.BadTypeError(o, 0);
 				}
 
-				if(o is Array)
-					numWindows = ((o as Array).Count - length) / interval + 1;
+				if(o is TArray)
+					numWindows = ((o as TArray).Count - length) / interval + 1;
 				else if(o is Vector)
 					numWindows = ((o as Vector).Length - length) / interval + 1;
 				else
@@ -56,7 +56,7 @@ namespace PavelStransky.Expression.Functions {
 				if(arguments.Count <= 5)
 					arguments.Add(null);
 
-				Array result = new Array();
+				TArray result = new TArray();
 				for(int i = 0; i < numWindows; i++) {
 					arguments[5] = i;
 					result.Add(this.Evaluate(depth + 1, item, arguments));
@@ -68,15 +68,15 @@ namespace PavelStransky.Expression.Functions {
 				int window = (int)arguments[5];
 
 				if(inDepth > depth) {
-					if(item is Array)
-						return this.EvaluateArray(depth, item as Array, arguments);
+					if(item is TArray)
+						return this.EvaluateArray(depth, item as TArray, arguments);
 					else
 						return this.BadTypeError(item, 0);
 				}
 				else {
-					if(item is Array) {
-						Array aIn = item as Array;
-						Array aOut = new Array();
+					if(item is TArray) {
+						TArray aIn = item as TArray;
+						TArray aOut = new TArray();
 
 						for(int k = 0; k < length; k++)
 							aOut.Add(aIn[k + window * interval]);

@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions {
 				Vector v = item as Vector;
 				int i = v.MaxAbsIndex();
 
-				Array index = new Array();
+				TArray index = new TArray();
 				index.Add(i);
 
 				return this.FullResult(index, v[i]);
@@ -29,14 +29,14 @@ namespace PavelStransky.Expression.Functions {
 				Matrix m = item as Matrix;
 				int [] i = m.MaxAbsIndex();
 
-				Array index = new Array();
+				TArray index = new TArray();
 				index.Add(i[0]);
 				index.Add(i[1]);
 
 				return this.FullResult(index, m[i[0], i[1]]);
 			}
-			else if(item is Array) {
-				Array array = this.EvaluateGoodDepthArray(depth, item as Array, arguments);
+			else if(item is TArray) {
+				TArray array = this.EvaluateGoodDepthArray(depth, item as TArray, arguments);
 				this.CheckResultLength(array, depth);
 
 				int ind = 0;
@@ -50,7 +50,7 @@ namespace PavelStransky.Expression.Functions {
 					}
 				}
 
-				Array index = (array[ind] as object [])[0] as Array;
+				TArray index = (array[ind] as object [])[0] as TArray;
 				index.Insert(0, ind);
 
 				max = (double)(array[ind] as object [])[1];

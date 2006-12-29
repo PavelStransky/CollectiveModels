@@ -48,9 +48,9 @@ namespace PavelStransky.Expression.Functions {
 				else
 					return this.BadTypeError(item, 0);
 			}
-			else if(arguments[1] is Array) {
-				if(item is Array) 
-					return this.EvaluateArray(depth, item as Array, arguments[1] as Array, arguments);
+			else if(arguments[1] is TArray) {
+				if(item is TArray) 
+					return this.EvaluateArray(depth, item as TArray, arguments[1] as TArray, arguments);
 				else
 					return this.BadTypeError(item, 0);
 			}

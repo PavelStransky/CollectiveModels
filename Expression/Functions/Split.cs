@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions {
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
 			if(item is Matrix) {
 				Matrix m = item as Matrix;
-				Array result = new Array();
+				TArray result = new TArray();
 
 				for(int i = 0; i < m.LengthX; i++)
 					for(int j = 0; j < m.LengthY; j++)
@@ -30,15 +30,15 @@ namespace PavelStransky.Expression.Functions {
 			}
 			else if(item is Vector) {
 				Vector v = item as Vector;
-				Array result = new Array();
+				TArray result = new TArray();
 
 				for(int i = 0; i < v.Length; i++)
 					result.Add(v[i]);
 
 				return result;
 			}
-			else if(item is Array)
-				return this.EvaluateArray(depth, item as Array, arguments);
+			else if(item is TArray)
+				return this.EvaluateArray(depth, item as TArray, arguments);
 			else
 				return this.BadTypeError(item, 0);
 		}

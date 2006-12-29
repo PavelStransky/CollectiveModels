@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions {
 			if(item is Matrix) {
 				Jacobi jacobi = new Jacobi(item as Matrix);
 				jacobi.SortAsc();
-				Array result = new Array();
+				TArray result = new TArray();
 
 				result.Add(new Vector(jacobi.EigenValue));
 				for(int i = 0; i < jacobi.EigenVector.Length; i++)
@@ -33,7 +33,7 @@ namespace PavelStransky.Expression.Functions {
 
             else if(item is IQuantumSystem) {
                 IQuantumSystem qs = item as IQuantumSystem;
-                Array result = new Array();
+                TArray result = new TArray();
 
                 result.Add(new Vector(qs.EigenValue));
                 for(int i = 0; i < qs.EigenVector.Length; i++)
@@ -42,8 +42,8 @@ namespace PavelStransky.Expression.Functions {
                 return result;
             }
 
-            else if(item is Array)
-                return this.EvaluateArray(depth, item as Array, arguments);
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
             else
                 return this.BadTypeError(item, 0);
 		}

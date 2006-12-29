@@ -4,12 +4,12 @@ using System.Drawing;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression {
-	/// <summary>
-	/// Tøída, která zapouzdøuje graf (urèuje jeho obsah, popø. další parametry)
-	/// </summary>
-	public class Graph: IExportable {
-		private Array item;
-        private Array errors;
+    /// <summary>
+    /// Tøída, která zapouzdøuje graf (urèuje jeho obsah, popø. další parametry)
+    /// </summary>
+    public class Graph : IExportable {
+        private TArray item;
+        private TArray errors;
 
         /// <summary>
         /// Styly spojnic bodù
@@ -21,20 +21,20 @@ namespace PavelStransky.Expression {
         /// </summary>
         public enum PointStyles { Circle, Square, None, HLines, VLines, FCircle, FSquare }
 
-		// Kontext a výraz celého grafu
-		private Context graphContext;
+        // Kontext a výraz celého grafu
+        private Context graphContext;
         // Kontexty jednotlivých køivek
         private Context[] itemContext;
 
-		/// <summary>
-		/// Prvek grafu
-		/// </summary>
-		public Array Item {get {return this.item;}}
+        /// <summary>
+        /// Prvek grafu
+        /// </summary>
+        public TArray Item { get { return this.item; } }
 
         /// <summary>
         /// Chyby grafu
         /// </summary>
-        public Array Errors { get { return this.errors; } }
+        public TArray Errors { get { return this.errors; } }
 
         /// <summary>
         /// Jsou zadané chyby?
@@ -51,11 +51,11 @@ namespace PavelStransky.Expression {
         /// Je promìnná PointVector?
         /// </summary>
         public bool IsPointVector { get { return this.Count > 0 ? this.item[0] is PointVector : false; } }
-        
+
         /// <summary>
         /// Poèet køivek grafu
         /// </summary>
-        public int Count { get { return (this.item as Array).Count; } }
+        public int Count { get { return (this.item as TArray).Count; } }
 
         /// <summary>
         /// Vrátí délku i - tého datového objektu
@@ -68,7 +68,7 @@ namespace PavelStransky.Expression {
                 else if(this.IsPointVector)
                     return (this.item[i] as PointVector).Length;
             }
-             
+
             return 0;
         }
 
@@ -96,36 +96,36 @@ namespace PavelStransky.Expression {
             }
         }
 
-		/// <summary>
-		/// Vrací hodnotu parametru a kontroluje, jestli má zadaný parametr správný typ
-		/// </summary>
-		/// <param name="name">Název parametru</param>
-		/// <param name="context">Kontext, na kterém se hledá</param>
-		/// <param name="def">Default hodnota</param>
-		/// <returns>Hodnota parametru, default, pokud parametr není zadán</returns>
-		private object GetParameter(Context context, string name, object def) {
-			if(context.Contains(name)) {
-				object item = context[name].Item;
+        /// <summary>
+        /// Vrací hodnotu parametru a kontroluje, jestli má zadaný parametr správný typ
+        /// </summary>
+        /// <param name="name">Název parametru</param>
+        /// <param name="context">Kontext, na kterém se hledá</param>
+        /// <param name="def">Default hodnota</param>
+        /// <returns>Hodnota parametru, default, pokud parametr není zadán</returns>
+        private object GetParameter(Context context, string name, object def) {
+            if(context.Contains(name)) {
+                object item = context[name].Item;
                 Type type = def.GetType();
 
                 // Barva
                 if(type == typeof(Color)) {
                     if(item is string)
                         return Color.FromName((string)item);
-                    else if(item is Array && (item as Array).Count == 3) {
-                        Array a = item as Array;
+                    else if(item is TArray && (item as TArray).Count == 3) {
+                        TArray a = item as TArray;
                         return Color.FromArgb((int)a[0], (int)a[1], (int)a[2]);
                     }
                     else if(item is int)
                         return ColorArray.GetColor((int)item);
                 }
 
-				else if(type == typeof(float)) {
-					if(item is double)
-						item = (float)(double)item;
-					else if(item is int)
-						item = (float)(int)item;
-				}
+                else if(type == typeof(float)) {
+                    if(item is double)
+                        item = (float)(double)item;
+                    else if(item is int)
+                        item = (float)(int)item;
+                }
 
                 else if(type == typeof(double)) {
                     if(item is int)
@@ -142,15 +142,15 @@ namespace PavelStransky.Expression {
                         item = (PointStyles)Enum.Parse(typeof(PointStyles), (string)item, true);
                 }
 
-				if(item.GetType() != type)
-					throw new ExpressionException(string.Format(errorMessageBadType, name),
-						string.Format(errorMessageBadTypeDetail, type.FullName, item.GetType().FullName, item.ToString()));
+                if(item.GetType() != type)
+                    throw new ExpressionException(string.Format(errorMessageBadType, name),
+                        string.Format(errorMessageBadTypeDetail, type.FullName, item.GetType().FullName, item.ToString()));
 
-				return item;
-			}
-			else
-				return def;
-		}
+                return item;
+            }
+            else
+                return def;
+        }
 
         /// <summary>
         /// Vrací hodnotu z obecných parametrù
@@ -181,20 +181,20 @@ namespace PavelStransky.Expression {
         public Graph() { }
 
         /// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="item">Data pro graf</param>
-		/// <param name="graphParams">Parametry celého grafu</param>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="item">Data pro graf</param>
+        /// <param name="graphParams">Parametry celého grafu</param>
         /// <param name="itemParams">Parametry jednotlivých køivek grafu</param>
         /// <param name="errors">Chyby køivek grafu</param>
-        public Graph(object item, string graphParams, Array itemParams, object errors) {
+        public Graph(object item, string graphParams, TArray itemParams, object errors) {
             // item bude vždy Array
-            if(item as Array == null) {
-                this.item = new Array();
+            if(item as TArray == null) {
+                this.item = new TArray();
                 this.item.Add(item);
             }
             else
-                this.item = item as Array;
+                this.item = item as TArray;
 
             this.errors = this.CreateErrorArray(errors);
 
@@ -214,20 +214,20 @@ namespace PavelStransky.Expression {
                     e.Evaluate(this.itemContext[i]);
                 }
             }
-		}
+        }
 
         /// <summary>
         /// Vytvoøí øadu s daty k chybovým úseèkám
         /// </summary>
         /// <param name="errors">Vstupní objekt s chybovými úseèkami</param>
-        private Array CreateErrorArray(object errors) {
+        private TArray CreateErrorArray(object errors) {
             int count = this.Count;
-            Array result = null;
+            TArray result = null;
 
             // Vytvoøení chybových úseèek
             if(this.IsVector || this.IsPointVector) {
                 // Máme øadu dat, ale jen jeden vektor s chybovými úseèkami - rozkopírujeme
-                if(errors != null && errors as Array == null) {
+                if(errors != null && errors as TArray == null) {
                     Vector v = errors as Vector;
 
                     if((v as object) == null)
@@ -235,27 +235,27 @@ namespace PavelStransky.Expression {
 
                     int length = v.Length;
 
-                    result = new Array();
+                    result = new TArray();
                     for(int i = 0; i < count; i++) {
                         int l = this.GetLength(i);
-                        if(l!= length)
+                        if(l != length)
                             throw new GraphException(errorMessageBadLength, string.Format(errorMessageBadLengthDetail, i, l, length));
 
                         result.Add(errors);
                     }
                 }
-                else if(errors as Array != null) {
-                    Array a = errors as Array;
+                else if(errors as TArray != null) {
+                    TArray a = errors as TArray;
 
                     if(a.ItemType != typeof(Vector))
                         throw new GraphException(errorMessageBadErrorType, string.Format(errorMessageBadErrorTypeDetail, a.ItemTypeName));
 
-                    int ecount = (errors as Array).Count;
-                    result = new Array();
+                    int ecount = (errors as TArray).Count;
+                    result = new TArray();
 
                     for(int i = 0; i < count; i++) {
                         int l = this.GetLength(i);
-                        Vector e = (i < ecount) ? (errors as Array)[i] as Vector : null;
+                        Vector e = (i < ecount) ? (errors as TArray)[i] as Vector : null;
 
                         if(e == null)
                             result.Add(new Vector(l));  // Pøidáme vektor se samými nulami
@@ -290,9 +290,9 @@ namespace PavelStransky.Expression {
             return result;
         }
 
-   		/// <summary>
-		/// Vrátí minimální a maximální hodnotu
-		/// </summary>
+        /// <summary>
+        /// Vrátí minimální a maximální hodnotu
+        /// </summary>
         /// <returns>Vektor se složkami (xmin, xmax, ymin, ymax)</returns>
         public Vector GetMinMax() {
             int count = this.Count;
@@ -300,7 +300,7 @@ namespace PavelStransky.Expression {
             double minX = 0.0, maxX = 0.0, minY = 0.0, maxY = 0.0;
 
             if(this.IsVector) {
-                Array a = this.item as Array;
+                TArray a = this.item as TArray;
 
                 minX = 0;
                 maxX = (a[0] as Vector).Length;
@@ -333,7 +333,7 @@ namespace PavelStransky.Expression {
             }
 
             else if(this.IsPointVector) {
-                Array a = this.item as Array;
+                TArray a = this.item as TArray;
 
                 PointVector pv = a[0] as PointVector;
                 minX = pv.MinX();
@@ -475,18 +475,18 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="export">Export</param>
         public virtual void Export(Export export) {
-            export.Write(this.item);
-            export.Write(this.graphContext);
+            IEParam param = new IEParam();
 
-            export.Write(this.errors);
+            param.Add(this.item, "Data");
+            param.Add(this.graphContext, "Parametry grafu");
+            param.Add(this.errors, "Chyby");
 
-            if(export.Binary)
-                export.B.Write(this.itemContext.Length);
-            else
-                export.T.WriteLine(this.itemContext.Length);
+            int length = this.itemContext.Length;
+            param.Add(length);
+            for(int i = 0; i < length; i++)
+                param.Add(this.itemContext[i], string.Format("Parametry køivky {0}", i));
 
-            for(int i = 0; i < this.itemContext.Length; i++)
-                export.Write(this.itemContext[i]);
+            param.Export(export);
         }
 
         /// <summary>
@@ -494,26 +494,23 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="import">Import</param>
         public virtual void Import(PavelStransky.Math.Import import) {
-            this.item = import.Read() as Array;
-            this.graphContext = import.Read() as Context;
+            IEParam param = new IEParam(import);
+            
+            this.item = (TArray)param.Get();
+            this.graphContext = (Context)param.Get();
+            this.errors = (TArray)param.Get();
 
-            this.errors = import.Read() as Array;
+            int length = (int)param.Get(0);
+            this.itemContext = new Context[length];
 
-            int count = 0;
-            if(import.Binary)
-                count = import.B.ReadInt32();
-            else
-                count = Int32.Parse(import.T.ReadLine());
-
-            this.itemContext = new Context[count];
-            for(int i = 0; i < count; i++)
-                this.itemContext[i] = import.Read() as Context;
+            for(int i = 0; i < length; i++)
+                this.itemContext[i] = (Context)param.Get();
         }
         #endregion
 
-		// Chyby
-		private const string errorMessageBadType = "Parametr {0} grafu má špatný typ.";
-		private const string errorMessageBadTypeDetail = "Požadovaný typ: {0}\nZadaný typ: {1}\nZadaná hodnota: {2}";
+        // Chyby
+        private const string errorMessageBadType = "Parametr {0} grafu má špatný typ.";
+        private const string errorMessageBadTypeDetail = "Požadovaný typ: {0}\nZadaný typ: {1}\nZadaná hodnota: {2}";
 
         private const string errorMessageBadErrorType = "Zadané chyby mají špatný typ.";
         private const string errorMessageBadErrorTypeDetail = "Požadovaný typ: Array of Vectors | Vector\nZadaný typ: {1}";
@@ -550,87 +547,3 @@ namespace PavelStransky.Expression {
         private const string errMessage = "V grafu došlo k chybì: ";
     }
 }
-/*
-		// Parametry grafu
-		private const string paramTitle = "title";
-		private const string paramShow = "show";
-
-		// Default hodnoty
-		private const bool defaultShow = true;
-
-        // Parametry grafu
-        private const string paramTitle = "title";
-        private const string paramShift = "shift";
-        private const string paramLineColor = "lcolor";
-        private const string paramLineStyle = "lstyle";
-        private const string paramLineWidth = "lwidth";
-        private const string paramPointColor = "pcolor";
-        private const string paramPointStyle = "pstyle";
-        private const string paramPointSize = "psize";
-        private const string paramShowLabel = "showlabel";
-        private const string paramLabelColor = "labelcolor";
-
-        private const string paramMinX = "minx";
-        private const string paramMaxX = "maxx";
-        private const string paramMinY = "miny";
-        private const string paramMaxY = "maxy";
-
-        // Osy
-        private const string paramTitleX = "titlex";
-        private const string paramLineColorX = "lcolorx";
-        private const string paramLineWidthX = "lwidthx";
-        private const string paramPointColorX = "pcolorx";
-        private const string paramPointStyleX = "pstylex";
-        private const string paramPointSizeX = "psizex";
-        private const string paramShowLabelX = "showlabelx";
-        private const string paramLabelColorX = "labelcolorx";
-        private const string paramShowAxeX = "showaxex";
-
-        private const string paramTitleY = "titley";
-        private const string paramLineColorY = "lcolory";
-        private const string paramLineWidthY = "lwidthy";
-        private const string paramPointColorY = "pcolory";
-        private const string paramPointStyleY = "pstyley";
-        private const string paramPointSizeY = "psizey";
-        private const string paramShowLabelY = "showlabely";
-        private const string paramLabelColorY = "labelcolory";
-        private const string paramShowAxeY = "showaxey";
-
-        // Default hodnoty
-        private const bool defaultShift = false;
-        private const string defaultLineColor = "blue";
-        private const string defaultLineStyle = "line";
-        private const float defaultLineWidth = 1.0F;
-        private const string defaultPointColor = "brown";
-        private const string defaultPointStyle = "circle";
-        private const int defaultPointSize = 2;
-        private const bool defaultShowLabel = true;
-        private const string defaultLabelColor = "black";
-
-        private const double defaultMinX = double.NaN;
-        private const double defaultMaxX = defaultMinX;
-        private const double defaultMinY = defaultMinX;
-        private const double defaultMaxY = defaultMinX;
-
-        private const string defaultTitleX = "X";
-        private const string defaultLineColorX = "red";
-        private const float defaultLineWidthX = 1.0F;
-        private const string defaultPointColorX = "red";
-        private const string defaultPointStyleX = "vlines";
-        private const int defaultPointSizeX = 5;
-        private const bool defaultShowLabelX = false;
-        private const string defaultLabelColorX = defaultLineColorX;
-        private const bool defaultShowAxeX = true;
-
-        private const string defaultTitleY = "Y";
-        private const string defaultLineColorY = "red";
-        private const float defaultLineWidthY = 1.0F;
-        private const string defaultPointColorY = "red";
-        private const string defaultPointStyleY = "hlines";
-        private const int defaultPointSizeY = 5;
-        private const bool defaultShowLabelY = false;
-        private const string defaultLabelColorY = defaultLineColorY;
-        private const bool defaultShowAxeY = true;
-
-         private const string paramShowLabels = "showlabels";
-        private const bool defaultShowLabels = true;*/

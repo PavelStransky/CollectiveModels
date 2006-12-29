@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions {
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
-			this.CheckArgumentsType(evaluatedArguments, 0, typeof(Array));
+			this.CheckArgumentsType(evaluatedArguments, 0, typeof(TArray));
 
 			if(evaluatedArguments.Count > 1) 
 				this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
@@ -24,7 +24,7 @@ namespace PavelStransky.Expression.Functions {
 		}
 
 		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			Array array = item as Array;
+			TArray array = item as TArray;
 
 			if(array.ItemTypeName == typeof(Vector).FullName) {
 				int shift = (int)arguments[1];
@@ -45,7 +45,7 @@ namespace PavelStransky.Expression.Functions {
 			}
 				
 				// Øada øad - pøejdeme o úroveò níž
-			else if(array.ItemTypeName == typeof(Array).FullName) 
+			else if(array.ItemTypeName == typeof(TArray).FullName) 
 				return this.EvaluateArray(depth, array, arguments);
 			else
 				return this.BadTypeError(array, 0);			

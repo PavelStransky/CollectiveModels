@@ -67,8 +67,8 @@ namespace PavelStransky.Test {
         /// 19.12.2006
         /// </summary>
         static void PokusLHOQuantumGCMR() {
-            LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
-            lho.Compute(70, 0, new ConsoleWriter());
+            LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 0.3, 0.02);
+            lho.Compute(50, 0, new ConsoleWriter());
             for(int i = 0; i < 100; i++)
                 Console.WriteLine(lho.EigenValue[i]);
         }

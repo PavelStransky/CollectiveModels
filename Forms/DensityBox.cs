@@ -86,6 +86,7 @@ namespace PavelStransky.Forms {
             int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
             bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
             int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
+            string title = (string)this.graph.GetCurveParameter(index, paramTitle, defaultTitle);
 
             int sizeX = pointSizeX * matrix.LengthX;
             int sizeY = pointSizeY * matrix.LengthY;
@@ -161,6 +162,12 @@ namespace PavelStransky.Forms {
                 int fontWidthMax = (int)g.MeasureString(sMax, baseFont).Width;
                 g.DrawString(sMax, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMax) / 2, 20 - fontHeight);
                 g.DrawString(sMin, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMin) / 2, sizeY - 20);
+            }
+
+            if(title != string.Empty) {
+                Graphics g = Graphics.FromImage(result);
+                int fontWidth = (int)g.MeasureString(title, baseFont).Width;
+                g.DrawString(title, baseFont, Brushes.Black, (sizeX - fontWidth) / 2, 5);
             }
 
             return result;
@@ -463,6 +470,7 @@ namespace PavelStransky.Forms {
         private const string paramColorMinus = "colorminus";
         private const string paramLegend = "legend";
         private const string paramLegendWidth = "legendwidth";
+        private const string paramTitle = "title";
 
         private static TArray defaultLabelsX = new TArray();
         private static TArray defaultLabelsY = new TArray();
@@ -474,6 +482,7 @@ namespace PavelStransky.Forms {
         private static Color defaultColorMinus = Color.FromName("red");
         private const bool defaultLegend = true;
         private const int defaultLegendWidth = 50;
+        private const string defaultTitle = "";
 
         private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }

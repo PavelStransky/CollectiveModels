@@ -92,7 +92,7 @@ namespace PavelStransky.Expression.Functions {
                 return this.BadTypeError(item, 0);
         }
 
-        private const string help = "Vytvoøí LHOQuantumGCMRFull tøídu pro dané parametry";
+        private const string help = "Vytvoøí LHOQuantumGCMRFull tøídu pro dané parametry (GCM poèítáno v radiálních souøadnicích, bereme úplnou bázi)";
         private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [MaxN (int); [hbar (double); [A0 (double); [NumSteps - dìlení møíže (int)]]]]]";
     }
 }

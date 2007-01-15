@@ -8,6 +8,7 @@ namespace PavelStransky.Math {
     /// </summary>
     public class SpecialFunctions {
         private static double[] factorial;
+        private static double[] factorialLog;
 
         /// <summary>
         /// Statický konstruktor
@@ -28,6 +29,12 @@ namespace PavelStransky.Math {
 
             for(int i = 1; i < maxFactorial; i++)
                 factorial[i] = factorial[i - 1] * i;
+
+            factorialLog = new double[maxFactorialLog];
+            factorialLog[0] = 0;
+
+            for(int i = 1; i < maxFactorialLog; i++)
+                factorialLog[i] = factorialLog[i - 1] + System.Math.Log(i);
         }
 
         /// <summary>
@@ -68,6 +75,25 @@ namespace PavelStransky.Math {
                 return double.PositiveInfinity;
             else
                 return factorial[i];
+        }
+
+        /// <summary>
+        /// Vrátí logaritmus faktoriálu z pøedvypoèítaných hodnot z bufferu
+        /// </summary>
+        /// <param name="i">Vstupní hodnota</param>
+        public static double FactorialILog(int i) {
+            if(i < 0)
+                return double.NaN;
+            else if(i >= maxFactorialLog) {
+                double result = factorialLog[maxFactorialLog - 1];
+
+                for(int j = maxFactorialLog; j <= i; i++)
+                    result += System.Math.Log(j);
+
+                return result;
+            }
+            else
+                return factorialLog[i];
         }
 
         /// <summary>
@@ -252,6 +278,7 @@ namespace PavelStransky.Math {
         private const int maxIteration = 1000;
         private const double epsilon = 1E-10;
         private const int maxFactorial = 171;
+        private const int maxFactorialLog = 1000;
 
         private const string errorMessageIterationOverrun = "Pøekroèen poèet iterací ve funkci {0}.";
     }

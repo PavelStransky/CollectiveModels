@@ -9,7 +9,6 @@ namespace PavelStransky.GCM {
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
     public class LHOQuantumGCMR : GCM, IExportable, IQuantumSystem {
-
         private const double epsilon = 1E-8;
         private double hbar;                    // [Js]
 
@@ -103,6 +102,7 @@ namespace PavelStransky.GCM {
 
             // Cache psi hodnot (Bazove vlnove funkce)
             BasisCache psiCache = new BasisCache(new DiscreteInterval(0.0, range, numSteps), this.index.Length, this.Psi);
+
             int[] psiCacheLowerLimits = psiCache.GetLowerLimits(epsilon);
             int[] psiCacheUpperLimits = psiCache.GetUpperLimits(epsilon);
 
@@ -150,7 +150,7 @@ namespace PavelStransky.GCM {
                     sum *= step;
 
                     if(mi == mj && ni == nj)
-                        sum += this.hbar * omega * (1.0 + ni + ni + mi);
+                        sum += this.hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
 
                     m[i, j] = sum;
                     m[j, i] = sum;
@@ -289,9 +289,17 @@ namespace PavelStransky.GCM {
         /// <param name="x">Souøadnice</param>
         private double Psi(int n, int m, double x) {
             double xi2 = this.s * x; xi2 *= xi2;
-            double norm = System.Math.Sqrt(2.0 * SpecialFunctions.Factorial(n) / SpecialFunctions.Factorial(n + System.Math.Abs(m))) * System.Math.Pow(this.s, m + 1);
-            double l = SpecialFunctions.Laguerre(n, m, xi2);            
-            double result = norm * System.Math.Pow(x, m) * System.Math.Exp(-xi2 / 2.0) * l;
+            m = System.Math.Abs(m);
+
+            double normLog = 0.5 * (System.Math.Log(2.0) + SpecialFunctions.FactorialILog(n) - SpecialFunctions.FactorialILog(n + m)) + (m + 1) * System.Math.Log(this.s);
+            double l = SpecialFunctions.Laguerre(n, m, xi2);
+
+            if(l == 0.0 || x == 0.0)
+                return 0.0;
+
+            double lLog = System.Math.Log(System.Math.Abs(l));
+            double result = normLog + m * System.Math.Log(x) - xi2 / 2.0 + lLog;
+            result = l < 0.0 ? -System.Math.Exp(result) : System.Math.Exp(result);
 
             return result;
         }

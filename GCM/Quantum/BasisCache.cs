@@ -34,6 +34,10 @@ namespace PavelStransky.GCM {
             for(int n = 0; n < maxn; n++)
                 for(int i = 0; i < this.Num; i++)
                     this.cache[n, i] = function(n, this.GetX(i));
+
+            Export e = new Export("c:\\exp.txt", false);
+            e.Write(new Matrix(this.cache));
+            e.Close();
         }
 
         /// <summary>

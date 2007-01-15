@@ -24,7 +24,7 @@ namespace PavelStransky.GCM {
             // Zjistíme poèet
             int length = 0;
             for(int n = 0; n <= (maxE - 1) / 2; n++)
-                for(int m = 0; m <= maxE - 1 - 2 * n; m += 3)
+                for(int m = (-(maxE - 1 - 2 * n) / 3) * 3; m <= maxE - 1 - 2 * n; m += 3)
                     length++;
 
             // Generujeme
@@ -33,7 +33,7 @@ namespace PavelStransky.GCM {
 
             int i = 0;
             for(int n = 0; n <= (maxE - 1) / 2; n++) {
-                for(int m = 0; m <= maxE - 1 - 2 * n; m += 3) {
+                for(int m = (-(maxE - 1 - 2 * n) / 3) * 3; m <= maxE - 1 - 2 * n; m += 3) {
                     this.maxM = System.Math.Max(this.maxM, m);
                     this.indexm[i] = m;
                     this.indexn[i] = n;

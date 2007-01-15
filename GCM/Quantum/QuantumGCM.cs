@@ -281,7 +281,7 @@ namespace PavelStransky.GCM {
             return s.ToString();
         }
 
-        public const double hbar = 0.000000000001;
+        public const double hbar = 0.1;
 //        public const double hbar = 0.6582183;
         //        public int maxI = 190;
     }

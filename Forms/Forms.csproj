@@ -132,7 +132,7 @@
       <DependentUpon>GraphForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Import.cs" />
-    <Compile Include="LineBox.cs">
+    <Compile Include="GraphBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -179,8 +179,8 @@
       <DependentUpon>GraphForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LineBox.resx">
-      <DependentUpon>LineBox.cs</DependentUpon>
+    <EmbeddedResource Include="GraphBox.resx">
+      <DependentUpon>GraphBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">

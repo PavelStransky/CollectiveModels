@@ -8,7 +8,7 @@ namespace PavelStransky.Expression {
     /// Tøída, která zapouzdøuje graf (urèuje jeho obsah, popø. další parametry)
     /// </summary>
     public class Graph : IExportable {
-        private TArray item;
+        private TArray item, background;
         private TArray errors;
 
         /// <summary>
@@ -30,6 +30,11 @@ namespace PavelStransky.Expression {
         /// Prvek grafu
         /// </summary>
         public TArray Item { get { return this.item; } }
+
+        /// <summary>
+        /// Pozadí - DensityGraph
+        /// </summary>
+        public TArray Background { get { return this.background; } }
 
         /// <summary>
         /// Chyby grafu
@@ -70,30 +75,6 @@ namespace PavelStransky.Expression {
             }
 
             return 0;
-        }
-
-        /// <summary>
-        /// Je graf èárový?
-        /// </summary>
-        public bool IsLineGraph {
-            get {
-                if(this.Count > 0 && (this.item[0] is Vector || this.item[0] is PointVector))
-                    return true;
-                else
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Je graf hustot?
-        /// </summary>
-        public bool IsDensityGraph {
-            get {
-                if(this.Count > 0 && this.item[0] is Matrix)
-                    return true;
-                else
-                    return false;
-            }
         }
 
         /// <summary>
@@ -184,17 +165,39 @@ namespace PavelStransky.Expression {
         /// Konstruktor
         /// </summary>
         /// <param name="item">Data pro graf</param>
+        /// <param name="background">Pozadí (densityGraph)</param>
         /// <param name="graphParams">Parametry celého grafu</param>
         /// <param name="itemParams">Parametry jednotlivých køivek grafu</param>
         /// <param name="errors">Chyby køivek grafu</param>
-        public Graph(object item, string graphParams, TArray itemParams, object errors) {
+        public Graph(object item, object background, string graphParams, TArray itemParams, object errors) {
             // item bude vždy Array
             if(item as TArray == null) {
                 this.item = new TArray();
-                this.item.Add(item);
+
+                if(background as TArray == null) {
+                    this.item.Add(item);
+                    this.background = new TArray();
+                    this.background.Add(background);
+                }
+                else {
+                    this.background = background as TArray;
+                    int count = this.background.Count;
+                    for(int i = 0; i < count; i++)
+                        this.item.Add(item);
+                }
             }
-            else
+            else {
                 this.item = item as TArray;
+
+                if(background as TArray == null) {
+                    this.background = new TArray();
+                    int count = this.item.Count;
+                    for(int i = 0; i < count; i++)
+                        this.background.Add(background);
+                }
+                else
+                    this.background = background;
+            }
 
             this.errors = this.CreateErrorArray(errors);
 

@@ -79,11 +79,19 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="group">Index skupiny køivky</param>
         /// <param name="i">Index køivky</param>
-        private Vector GetError(int group, int i) {
+        public Vector GetError(int group, int i) {
             if(group < this.NumGroups() && i < this.NumCurves(group))
                 return (this.errors[group] as TArray)[i] as Vector;
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Vrátí matici pozadí
+        /// </summary>
+        /// <param name="group">Index skupiny</param>
+        public Matrix GetMatrix(int group) {
+            return this.background[group] as Matrix;
         }
 
         /// <summary>
@@ -204,7 +212,7 @@ namespace PavelStransky.Expression {
         public object BackgroundParameter(int i, string name, object def) {
             // Nejdøíve koukáme, jestli parametr není v obecných 
             def = this.GetParameter(this.graphContext, name, def);
-            return this.GetParameter(this.backgroundContext[i], name, def);
+            return this.GetParameter(this.backgroundContext[i] as Context, name, def);
         }
 
         /// <summary>
@@ -213,111 +221,187 @@ namespace PavelStransky.Expression {
         public Graph() { }
 
         /// <summary>
-        /// Konstruktor
+        /// Ze zadaného objektu vytvoøí 2D TArray pole
         /// </summary>
         /// <param name="item">Data pro graf</param>
-        /// <param name="background">Pozadí (densityGraph)</param>
-        /// <param name="graphParams">Parametry celého grafu</param>
-        /// <param name="itemParams">Parametry jednotlivých køivek grafu</param>
-        /// <param name="errors">Chyby køivek grafu</param>
-        public Graph(object item, object background, string graphParams, TArray itemParams, TArray backgroundParams, object errors) {
-            // Data a chyby
+        private void CreateItemArray(object item) {
             this.item = new TArray();
-            this.errors = new TArray();
+
             if(item != null) {
                 if(item is PointVector || item is Vector) {
                     TArray a = new TArray();
                     a.Add(item);
                     this.item.Add(a);
-
-                    TArray e = new TArray();
-                    if(errors != null){ 
-                        if(errors is Vector) 
-                            e.Add(errors);
-                        else
-                            throw new GraphException(errorMessageBadErrorType);
-                    }
-                    else
-                        e.Add(null);
-                    this.errors.Add(a);
                 }
 
                 else if(item is TArray) {
                     Type t = (item as TArray).ItemType;
                     if(t == typeof(PointVector) || t == typeof(Vector)) {
                         this.item.Add(item);
-
-                        if(errors != null) {
-                            int count = (item as TArray).Count;
-
-                            if(errors is Vector) {
-                                TArray e = new TArray();
-                                int length = (errors as Vector).Length;
-
-                                for(int i = 0; i < count; i++) {
-                                    int li = ((item as TArray)[i] as PointVector).Length;
-                                    if(li == length)
-                                        e.Add(errors, (item as TArray).Count);
-                                    else
-                                        throw new GraphException(errorMessageBadLength,
-                                            string.Format(errorMessageBadLengthDetail, 0, i, li, length));
-                                }
-                                this.errors.Add(e);
-                            }
-                            else if(errors is TArray && (errors as TArray).ItemType == typeof(Vector)) {
-                                int ce = (errors as TArray).Count;
-                                TArray e = errors;
-
-                                for(int i = 0; i < count; i++) {
-                                    if(ce <= i)
-                                        e.Add(null);
-
-                                    int li = ((item as TArray)[i] as PointVector).Length;
-                                    PointVector pe = (errors as TArray)[i] as PointVector;
-                                    if(pe != null) {
-                                        int le = ((errors as TArray)[i] as PointVector).Length;
-                                        if(li != le)
-                                            throw new GraphException(errorMessageBadLength,
-                                                string.Format(errorMessageBadLengthDetail, 0, i, li, le));
-                                    }
-                                }
-
-                                this.errors.Add(e);
-                            }
-                        }
                     }
 
                     else if(t == typeof(TArray)) {
                         t = (item as TArray)[0].GetType();
                         if(t == typeof(PointVector) || t == typeof(Vector)) {
-                            this.item = item;
+                            this.item = item as TArray;
                         }
                     }
                 }
             }
 
-            // Pøevedeme na PointVectory
-            int nGroups = this.NumGroups();
+            // Pøevedeme Vectory na PointVectory
+            int nGroups = this.item.Count;
             for(int g = 0; g < nGroups; g++) {
-                TArray group = this.item[g];
-                int curves = group.Count;
-                for(int i = 0; i < curves; i++)
+                TArray group = this.item[g] as TArray;
+                int nCurves = group.Count;
+                for(int i = 0; i < nCurves; i++)
                     if(group[i] is Vector)
                         group[i] = new PointVector(group[i] as Vector);
             }
+        }
 
-            // Pozadí - musí jich být stejnì jako grup
+        /// <summary>
+        /// Ze zadaného objektu vytvoøí 2D TArray pole, které bude kopírovat pole s daty
+        /// Pokud nejsou pro køivku zadané chyby, prvek obsahuje null
+        /// </summary>
+        /// <param name="errors">Objekt s chybami</param>
+        private void CreateErrorArray(object errors) {
+            int nGroups = this.NumGroups();
+            this.errors = null;
+
+            // Rozkopírování na všechny køivky s kontrolou délky
+            if(errors != null && errors is Vector) {
+                this.errors = new TArray();
+                int le = (errors as Vector).Length;
+
+                for(int g = 0; g < nGroups; g++) {
+                    TArray group = this.item[g] as TArray;
+                    int nCurves = group.Count;
+
+                    for(int i = 0; i < nCurves; i++) {
+                        int li = (group[i] as PointVector).Length;
+
+                        if(li != le)
+                            throw new GraphException(errorMessageBadLength,
+                                string.Format(errorMessageBadLengthDetail, g, i, li, le));
+                    }
+
+                    TArray e = new TArray();
+                    e.Add(errors, nCurves);
+                    this.errors.Add(e);
+                }
+            }
+
+            else if(errors != null && errors is TArray) {
+                Type t = (errors as TArray).ItemType;
+
+                // Rozkopírování na všechny prvky skupiny
+                if(t == typeof(Vector)) {
+                    this.errors = new TArray();
+                    int cv = (errors as TArray).Count;
+
+                    for(int g = 0; g < nGroups; g++) {
+                        TArray group = this.item[g] as TArray;
+                        int nCurves = group.Count;
+
+                        if(g >= cv) {
+                            TArray e = new TArray();
+                            e.Add(null, nCurves);
+                            this.errors.Add(e);
+                        }
+                        else {
+                            Vector ev = (errors as TArray)[g] as Vector;
+                            int le = ev.Length;
+
+                            for(int i = 0; i < nCurves; i++) {
+                                int li = (group[i] as PointVector).Length;
+
+                                if(li != le)
+                                    throw new GraphException(errorMessageBadLength,
+                                        string.Format(errorMessageBadLengthDetail, g, i, li, le));
+                            }
+
+                            TArray e = new TArray();
+                            e.Add(errors, nCurves);
+                            this.errors.Add(e);
+                        }
+                    }
+                }
+
+                else if(t == typeof(TArray) && ((errors as TArray)[0] as TArray).ItemType == typeof(Vector)) {
+                    this.errors = new TArray();
+                    int ce = (errors as TArray).Count;
+
+                    for(int g = 0; g < nGroups; g++) {
+                        TArray group = this.item[g] as TArray;
+                        int nCurves = group.Count;
+
+                        if(g >= ce) {
+                            TArray e = new TArray();
+                            e.Add(null, nCurves);
+                            this.errors.Add(e);
+                        }
+                        else {
+                            TArray eGroup = (errors as TArray)[g] as TArray;
+                            int cce = eGroup.Count;
+
+                            TArray e = new TArray();
+
+                            for(int i = 0; i < nCurves; i++) {
+                                int li = (group[i] as PointVector).Length;
+
+                                if(i >= cce)
+                                    e.Add(null);
+                                else {
+                                    int le = (eGroup[i] as Vector).Length;
+
+                                    if(li != le)
+                                        throw new GraphException(errorMessageBadLength,
+                                            string.Format(errorMessageBadLengthDetail, g, i, li, le));
+
+                                    e.Add(eGroup[i]);
+                                }
+                            }
+
+                            this.errors.Add(e);
+                        }
+                    }
+                }
+            }
+
+            // Nemáme zadané žádné chyby
+            if(this.errors == null) {
+                this.errors = new TArray();
+                for(int g = 0; g < nGroups; g++) {
+                    TArray e = new TArray();
+                    e.Add(null, this.NumCurves(g));
+                    this.errors.Add(e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Ze zadaného objektu vytvoøí TArray pole
+        /// (prvkù bude stejnì, jako je grup vstupních dat, pøípadnì vstupní data rozkopíruje)
+        /// Pokud není pozadí, prvek obsahuje null
+        /// </summary>
+        /// <param name="background">Objekt s pozadím</param>
+        private void CreateBackgroundArray(object background) {
+            int nGroups = this.NumGroups();
             this.background = null;
+
             if(background != null) {
                 if(background is Matrix) {
                     this.background = new TArray();
                     this.background.Add(background, nGroups);
                 }
+
                 else if(background is TArray && (background as TArray).ItemType == typeof(Matrix)) {
                     this.background = background as TArray;
                     int nBack = this.background.Count;
                     if(nGroups == 1 && nBack > 1) {
                         this.item.Add(this.item[0], nBack - 1);
+                        this.errors.Add(this.errors[0], nBack - 1);
                         nGroups = this.NumGroups();
                     }
 
@@ -330,18 +414,38 @@ namespace PavelStransky.Expression {
                             TArray a = new TArray();
                             a.Add(null);
                             this.item.Add(a);
+
+                            TArray e = new TArray();
+                            e.Add(null);
+                            this.errors.Add(e);
                         }
                     }
                 }
             }
 
-            if(this.background == null)
+            if(this.background == null) {
+                this.background = new TArray();
                 this.background.Add(null, nGroups);
+            }
+        }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="item">Data pro graf</param>
+        /// <param name="background">Pozadí (densityGraph)</param>
+        /// <param name="graphParams">Parametry celého grafu</param>
+        /// <param name="itemParams">Parametry jednotlivých køivek grafu</param>
+        /// <param name="errors">Chyby køivek grafu</param>
+        public Graph(object item, object background, string graphParams, object itemParams, object backgroundParams, object errors) {
+            // Data
+            this.CreateItemArray(item);
             // Chyby
-            this.errors = this.CreateErrorArray(errors);
+            this.CreateErrorArray(errors);
+            // Pozadí
+            this.CreateBackgroundArray(background);
             
-            nGroups = this.NumGroups();
+            int nGroups = this.NumGroups();
 
             // Kontexty - pokud máme v kontextech pro øadu èi pro pozadí jen jednu hodnotu
             // (string), pøiøadíme ji ke kontextu grafu
@@ -371,7 +475,7 @@ namespace PavelStransky.Expression {
                     ip = itemParams as TArray;
                 if(ip != null){
                     if((ip as TArray).Count > g)
-                        ip = ip[g];
+                        ip = (ip as TArray)[g];
                     else
                         ip = null;
                 }
@@ -389,7 +493,7 @@ namespace PavelStransky.Expression {
 
                         string iip = null;
                         if((ip as TArray).Count > i)
-                            iip = ip[i] as string;
+                            iip = (ip as TArray)[i] as string;
 
                         if(iip != null && iip != string.Empty)
                             new Expression(iip).Evaluate(c);
@@ -405,81 +509,26 @@ namespace PavelStransky.Expression {
             for(int g = 0; g < nGroups; g++) {
                 Context c = new Context();
 
-                object bp = null;
+                string bp = null;
                 if(backgroundParams as TArray != null && (backgroundParams as TArray).Count > g)
-                    bp = (backgroundParams as TArray)[i] as string;
+                    bp = (backgroundParams as TArray)[g] as string;
 
                 if(bp != null && bp != string.Empty)
-                    (new Expression(bp as string)).Evaluate(c);
+                    (new Expression(bp)).Evaluate(c);
 
                 this.backgroundContext.Add(c);
             }
         }
 
         /// <summary>
-        /// Vytvoøí øadu s daty k chybovým úseèkám
+        /// Vrátí maximální délku vektoru ve skupinì
         /// </summary>
-        /// <param name="errors">Vstupní objekt s chybovými úseèkami</param>
-        private TArray CreateErrorArray(object errors) {
-            int count = this.Count;
-            TArray result = null;
-
-            // Vytvoøení chybových úseèek
-            if(this.IsVector || this.IsPointVector) {
-                // Máme øadu dat, ale jen jeden vektor s chybovými úseèkami - rozkopírujeme
-                if(errors != null && errors as TArray == null) {
-                    Vector v = errors as Vector;
-
-                    if((v as object) == null)
-                        throw new GraphException(errorMessageBadErrorType, string.Format(errorMessageBadErrorTypeDetail, errors.GetType().FullName));
-
-                    int length = v.Length;
-
-                    result = new TArray();
-                    for(int i = 0; i < count; i++) {
-                        int l = this.GetLength(i);
-                        if(l != length)
-                            throw new GraphException(errorMessageBadLength, string.Format(errorMessageBadLengthDetail, i, l, length));
-
-                        result.Add(errors);
-                    }
-                }
-                else if(errors as TArray != null) {
-                    TArray a = errors as TArray;
-
-                    if(a.ItemType != typeof(Vector))
-                        throw new GraphException(errorMessageBadErrorType, string.Format(errorMessageBadErrorTypeDetail, a.ItemTypeName));
-
-                    int ecount = (errors as TArray).Count;
-                    result = new TArray();
-
-                    for(int i = 0; i < count; i++) {
-                        int l = this.GetLength(i);
-                        Vector e = (i < ecount) ? (errors as TArray)[i] as Vector : null;
-
-                        if(e == null)
-                            result.Add(new Vector(l));  // Pøidáme vektor se samými nulami
-                        else {
-                            if(l != e.Length)
-                                throw new GraphException(errorMessageBadLength, string.Format(errorMessageBadLengthDetail, i, l, e.Length));
-
-                            result.Add(e);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Vrátí maximální délku vektoru
-        /// </summary>
-        public int GetMaxLength() {
+        /// <param name="group">Skupina</param>
+        public int GetMaxLength(int group) {
             int result = 0;
 
-            foreach(TArray a in this.item)
-                foreach(PointVector pv in a)
+            if(group < this.NumGroups())
+                foreach(PointVector pv in (this.item[group] as TArray))
                     result = System.Math.Max(pv.Length, result);
 
             return result;
@@ -500,9 +549,9 @@ namespace PavelStransky.Expression {
             TArray a = this.item[group] as TArray;
             TArray e = this.errors[group] as TArray;
 
-            int curves = a.Count;
+            int nCurves = a.Count;
 
-            if(curves == 0)
+            if(nCurves == 0)
                 return null;
 
             PointVector pv = a[0] as PointVector;
@@ -520,9 +569,9 @@ namespace PavelStransky.Expression {
                 maxY = pv.MaxY();
             }
 
-            for(int i = 1; i < count; i++) {
+            for(int i = 1; i < nCurves; i++) {
                 pv = a[i] as PointVector;
-                Vector ev = e[i] as Vector;
+                ev = e[i] as Vector;
 
                 minX = System.Math.Min(minX, pv.MinX());
                 maxX = System.Math.Max(maxX, pv.MaxX());
@@ -647,16 +696,14 @@ namespace PavelStransky.Expression {
             this.errors = (TArray)param.Get();
 
             this.graphContext = (Context)param.Get();
-            this.itemContext = (Context)param.Get();
-            this.backgroundContext = (Context)param.Get();
+            this.itemContext = (TArray)param.Get();
+            this.backgroundContext = (TArray)param.Get();
         }
         #endregion
 
         // Chyby
         private const string errorMessageBadType = "Parametr {0} grafu má špatný typ.";
         private const string errorMessageBadTypeDetail = "Požadovaný typ: {0}\nZadaný typ: {1}\nZadaná hodnota: {2}";
-
-        private const string errorMessageBadErrorType = "Zadané chyby mají špatný typ.";
 
         private const string errorMessageBadLength = "Chybná délka vektoru s chybovými úseèkami.";
         private const string errorMessageBadLengthDetail = "Index skupiny s daty: {0}\nIndex vektoru s daty: {1}\nDélka vektoru: {2}\nDélka vektoru s úseèkami: {3}";

@@ -8,35 +8,9 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
-    public class LHOQuantumGCMR : GCM, IExportable, IQuantumSystem {
-        private const double epsilon = 1E-8;
-        private double hbar;                    // [Js]
-
-        // Koeficienty
-        private double s;
-
-        // Parametr pro LHO
-        private double a0;
-       
+    public class LHOQuantumGCMR : LHOQuantumGCM {
         // Indexy báze
         private LHOPolarIndex index;
-
-        private Jacobi jacobi;
-
-        /// <summary>
-        /// Planckova konstanta [Js]
-        /// </summary>
-        public double Hbar { get { return this.hbar; } }
-
-        /// <summary>
-        /// Úhlová frekvence LHO [J*m^-2]
-        /// </summary>
-        public double Omega { get { return System.Math.Sqrt(2.0 * this.a0 / this.K); } }
-
-        /// <summary>
-        /// Parametr pro LHO [s^-1]
-        /// </summary>
-        public double A0 { get { return this.a0; } set { this.a0 = value; } }
 
         /// <summary>
         /// Prázdný konstruktor
@@ -52,7 +26,7 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         public LHOQuantumGCMR(double a, double b, double c, double k, double a0)
-            : this(a, b, c, k, a0, 0.1) { }
+            : base(a, b, c, k, a0) { }
 
         /// <summary>
         /// Konstruktor
@@ -64,28 +38,15 @@ namespace PavelStransky.GCM {
         /// <param name="k">Parametr D</param>
         /// <param name="hbar">Planckova konstanta</param>
         public LHOQuantumGCMR(double a, double b, double c, double k, double a0, double hbar)
-            : base(a, b, c, k) {
-            this.a0 = a0;
-            this.hbar = hbar;
-
-            this.RefreshConstants();
-        }
+            : base(a, b, c, k, a0, hbar) { }
 
         /// <summary>
-        /// Pøepoèítá konstanty s, n
-        /// </summary>
-        private void RefreshConstants() {
-            // Konstanty
-            this.s = System.Math.Sqrt(this.K * this.Omega / this.hbar);      // xi = s*x (Formanek (2.283))
-        }
-
-        /// <summary>
-        /// Provede výpoèet
+        /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
         /// <param name="maxE">Nejvyšší energie v násobcích hbar * Omega</param>
         /// <param name="numSteps">Poèet krokù</param>
-        /// <param name="writer">Wirter</param>
-        public void Compute(int maxE, int numSteps, IOutputWriter writer) {
+        /// <param name="writer">Writer</param>
+        public override Matrix HamiltonianMatrix(int maxE, int numSteps, IOutputWriter writer) {
             this.index = new LHOPolarIndex(maxE);
 
             if(numSteps == 0)
@@ -124,8 +85,6 @@ namespace PavelStransky.GCM {
             if(writer != null)
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", length, length));
 
-            DateTime startTime = DateTime.Now;
-
             for(int i = 0; i < length; i++) {
                 int ni = this.index.N[i];
                 int mi = this.index.M[i];
@@ -150,7 +109,7 @@ namespace PavelStransky.GCM {
                     sum *= step;
 
                     if(mi == mj && ni == nj)
-                        sum += this.hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
+                        sum += this.Hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
 
                     m[i, j] = sum;
                     m[j, i] = sum;
@@ -163,29 +122,9 @@ namespace PavelStransky.GCM {
                 }
             }
 
-            if(writer != null) {
-                writer.WriteLine((DateTime.Now - startTime).ToString());
-                writer.WriteLine(string.Format("Stopa matice: {0}", m.Trace()));
-            }
-
-            this.jacobi = new Jacobi(m, writer);
-            this.jacobi.SortAsc();
-
-            if(writer != null) {
-                writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", new Vector(this.jacobi.EigenValue).Sum()));
-            }
+            return m;
         }
 
-        /// <summary>
-        /// Vlastní hodnoty
-        /// </summary>
-        public double[] EigenValue { get { return this.jacobi.EigenValue; } }
-
-        /// <summary>
-        /// Vlastní vektory
-        /// </summary>
-        public Vector[] EigenVector { get { return this.jacobi.EigenVector; } }
-        
         /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
@@ -244,13 +183,36 @@ namespace PavelStransky.GCM {
 
             return new DiscreteInterval(range);
         }
+
+        /// <summary>
+        /// Vrací parametr range podle dosahu nejvyšší použité vlastní funkce
+        /// </summary>
+        /// <param name="epsilon">Epsilon</param>
+        /// <param name="maxn">Maximální rank vlastní funkce</param>
+        private double GetRange(double epsilon) {
+            // range je klasicky dosah oscilatoru, pridame urcitou rezervu
+            double range = System.Math.Sqrt(this.Hbar * this.Omega * this.index.MaxE / this.A0);
+            range *= 5.0;
+
+            // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
+            double dx = range / (50.0 * this.index.MaxM);
+
+            while(System.Math.Abs(this.Psi(this.index.MaxN, this.index.MaxM, range)) < epsilon)
+                range -= dx;
+
+            //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
+            return range + 2 * dx;
+        }
         
         /// <summary>
         /// Vrátí matici hustot pro vlastní funkce
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public Matrix DensityMatrix(int n, params Vector[] interval) {
+        public override Matrix DensityMatrix(int n, params Vector[] interval) {
+            if(!this.isComputed)
+                throw new GCMException(errorMessageNotComputed);
+
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
 
@@ -314,64 +276,25 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrací parametr range podle dosahu nejvyšší použité vlastní funkce
-        /// </summary>
-        /// <param name="epsilon">Epsilon</param>
-        /// <param name="maxn">Maximální rank vlastní funkce</param>
-        private double GetRange(double epsilon) {
-            // range je klasicky dosah oscilatoru, pridame urcitou rezervu
-            double range = System.Math.Sqrt(hbar * this.Omega * this.index.MaxE / this.a0);
-            range *= 5.0;
-
-            // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
-            double dx = range / (50.0 * this.index.MaxM);
-
-            while(System.Math.Abs(this.Psi(this.index.MaxN, this.index.MaxM, range)) < epsilon)
-                range -= dx;
-
-            //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
-            return range + 2 * dx;
-        }
-
-        #region Implementace IExportable
-        /// <summary>
-        /// Uloží výsledky do souboru
-        /// </summary>
-        /// <param name="export">Export</param>
-        public void Export(Export export) {
-            IEParam param = new IEParam();
-
-            param.Add(this.A, "A");
-            param.Add(this.B, "B");
-            param.Add(this.C, "C");
-            param.Add(this.K, "K");
-            param.Add(this.A0, "A0");
-            param.Add(this.Hbar, "HBar");
-            param.Add(this.index.MaxE, "MaxE");
-            param.Add(this.jacobi, "Jacobi");
-
-            param.Export(export);
-        }
-
-        /// <summary>
         /// Naète výsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Import import) {
-            IEParam param = new IEParam(import);
+        public override void Import(Import import) {
+            if(this.jacobi == null) {
+                this.index = null;
+                this.isComputed = false;
+            }
+            else {
+                int length = this.jacobi.EigenValue.Length;
+                for(int i = (int)System.Math.Sqrt(length); i < length; i++) {
+                    this.index = new LHOPolarIndex(i);
+                    if(this.index.Length == length)
+                        continue;
+                }
+                this.isComputed = true;
+            }
 
-            this.A = (double)param.Get(-1.0);
-            this.B = (double)param.Get(1.0);
-            this.C = (double)param.Get(1.0);
-            this.K = (double)param.Get(1.0);
-            this.A0 = (double)param.Get(1.0);
-            this.hbar = (double)param.Get(0.1);
-            int maxE = (int)param.Get();
-            this.jacobi = (Jacobi)param.Get();
-
-            this.index = new LHOPolarIndex(maxE);
             this.RefreshConstants();
         }
-        #endregion
     }
 }

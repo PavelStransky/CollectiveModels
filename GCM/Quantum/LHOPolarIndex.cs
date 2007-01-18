@@ -21,6 +21,14 @@ namespace PavelStransky.GCM {
         public LHOPolarIndex(int maxE) {
             this.maxE = maxE;
 
+            this.Compute();
+        }
+
+        /// <summary>
+        /// Provede naplnìní polí s indexy
+        /// </summary>
+        /// <param name="maxE">Maximální energie</param>
+        protected virtual void Compute(int maxE) {
             // Zjistíme poèet
             int length = 0;
             for(int n = 0; n <= (maxE - 1) / 2; n++)

@@ -36,10 +36,10 @@ namespace PavelStransky.Expression.Functions {
             if(item != null) {
                 Type t = item.GetType();
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = (item as TArray).ItemType;
 
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = ((item as TArray)[0] as TArray).ItemType;
 
                 if(t != typeof(Vector) || t != typeof(PointVector))
                     this.BadTypeError(item, 0);
@@ -63,13 +63,13 @@ namespace PavelStransky.Expression.Functions {
 			// Ve 3. parametru jsou vlastnosti jednotlivých køivek grafu
             object itemParams = null;
 			if(arguments.Count > 3 && arguments[3] != null) {
-                Type t = arguments[3].GetType;
+                Type t = arguments[3].GetType();
 
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = (arguments[3] as TArray).ItemType;
 
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = ((arguments[3] as TArray)[0] as TArray).ItemType;
 
                 if(t != typeof(string))
                     this.BadTypeError(item, 3);
@@ -80,13 +80,13 @@ namespace PavelStransky.Expression.Functions {
             // Ve 4. parametru jsou vlastnosti pozadí grafu
             object backgroundParams = null;
             if(arguments.Count > 4 && arguments[4] != null) {
-                Type t = arguments[4].GetType;
+                Type t = arguments[4].GetType();
 
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = (arguments[4] as TArray).ItemType;
 
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = ((arguments[4] as TArray)[0] as TArray).ItemType;
 
                 if(t != typeof(string))
                     this.BadTypeError(item, 4);
@@ -96,13 +96,14 @@ namespace PavelStransky.Expression.Functions {
             
             object errors = null;
 			if(arguments.Count > 5 && arguments[5] != null) {
-                Type t = arguments[5].GetType;
-                if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                Type t = arguments[5].GetType();
 
                 if(t == typeof(TArray))
-                    t = (t as TArray).ItemType;
+                    t = (arguments[5] as TArray).ItemType;
 
+                if(t == typeof(TArray))
+                    t = ((arguments[5] as TArray)[0] as TArray).ItemType; 
+                
                 if(t != typeof(Vector))
                     this.BadTypeError(item, 0);
 

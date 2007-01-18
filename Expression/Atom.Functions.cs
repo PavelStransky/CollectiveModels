@@ -104,6 +104,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.FRegMatrixEval());
             functions.Add(new Functions.Show());
             functions.Add(new Functions.EVNumDiff());
+            functions.Add(new Functions.NumNonzeroItems());
 
             functions.Add(new Functions.NewContext());
             functions.Add(new Functions.GetContext());
@@ -145,10 +146,12 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.EnergyLevels());
             functions.Add(new Functions.Energy());
             functions.Add(new Functions.Bounds());
-            functions.Add(new Functions.LHOQGCM());
+            functions.Add(new Functions.LHOQGCMC());
             functions.Add(new Functions.LHOQGCMR());
             functions.Add(new Functions.LHOQGCMRF());
             functions.Add(new Functions.DensityMatrix());
+            functions.Add(new Functions.ComputeSpectrum());
+            functions.Add(new Functions.HamiltonianMatrix());
 
             // Funkce IBM
             functions.Add(new Functions.CIBM());

@@ -471,7 +471,29 @@ namespace PavelStransky.Math {
 				this[i,j] = v[i];
 		}
 
+        /// <summary>
+        /// Poèet nenulových prvkù matice
+        /// </summary>
+        public int NumNonzeroItems() {
+            int result = 0;
 
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+            for(int i = 0; i < lengthX; i++)
+                for(int j = 0; j < lengthY; j++)
+                    if(this[i, j] != 0.0)
+                        result++;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Poèet prvkù matice
+        /// </summary>
+        public int NumItems() {
+            return this.LengthX * this.LengthY;
+        }
 
         /// <summary>
         /// Souèet všech prvkù

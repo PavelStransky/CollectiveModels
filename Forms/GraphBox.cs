@@ -42,20 +42,10 @@ namespace PavelStransky.Forms {
 		private int marginT = defaultMargin;
 		private int marginB = 3 * defaultMargin;
 
-        // True, pokud se bude animovat
-        private bool eval = false;
         // True, pokud se bude animovat èasový vývoj køivky
-        private bool evalCurves = false;
+        private bool eval = false;
         // Index vykreslovaných dat (pro animaci)
-        private int index, maxIndex;
-
-        /// <summary>
-        /// Matice
-        /// </summary>
-        /// <param name="i">Index dat</param>
-        private Matrix GetMatrix(int i) {
-            return this.graph.Item[i] as Matrix;
-        }
+        private int time, maxTime, group;
 
 		/// <summary>
 		/// Základní konstruktor
@@ -80,13 +70,13 @@ namespace PavelStransky.Forms {
         /// Základní pracovní metoda, která vytváøí bitmapu
         /// </summary>
         void backgroundWorkerCreate_DoWork(object sender, DoWorkEventArgs e) {
-            int count = this.graph.Count;
+            int nGroups = this.graph.NumGroups();
 
-            for(int i = 0; i < count; i++) {
-                this.backgroundWorkerCreate.ReportProgress(0, string.Format("Tvorba bitmapy {0} z {1}", i + 1, count));
+            for(int i = 0; i < nGroups; i++) {
+                this.backgroundWorkerCreate.ReportProgress(0, string.Format("Tvorba bitmapy {0} z {1}", i + 1, nGroups));
 
                 // Normování matice
-                Matrix matrix = this.GetMatrix(i);
+                Matrix matrix = this.graph.GetMatrix(i);
                 this.bitmap[i] = this.CreateBitmap(i, matrix);
 
                 // Žádost o pøerušení procesu
@@ -108,7 +98,7 @@ namespace PavelStransky.Forms {
             int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
             bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
             int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
-            string title = (string)this.graph.GetCurveParameter(index, paramTitle, defaultTitle);
+            string title = (string)this.graph.GetCurveParameter(index, index, paramTitle, defaultTitle);
 
             int sizeX = pointSizeX * matrix.LengthX;
             int sizeY = pointSizeY * matrix.LengthY;
@@ -117,9 +107,9 @@ namespace PavelStransky.Forms {
 
             Bitmap result = new Bitmap(sizeX + (legend ? legendWidth : 0), sizeY);
 
-            Color colorPlus = (Color)this.graph.GetCurveParameter(index, paramColorPlus, defaultColorPlus);
-            Color colorZero = (Color)this.graph.GetCurveParameter(index, paramColorZero, defaultColorZero);
-            Color colorMinus = (Color)this.graph.GetCurveParameter(index, paramColorMinus, defaultColorMinus);
+            Color colorPlus = (Color)this.graph.GetCurveParameter(index, index, paramColorPlus, defaultColorPlus);
+            Color colorZero = (Color)this.graph.GetCurveParameter(index, index, paramColorZero, defaultColorZero);
+            Color colorMinus = (Color)this.graph.GetCurveParameter(index, index, paramColorMinus, defaultColorMinus);
 
             double maxAbs = System.Math.Abs(matrix.MaxAbs());
 
@@ -200,7 +190,7 @@ namespace PavelStransky.Forms {
             if(this.backgroundWorkerCreate.CancellationPending)
                 return;
 
-            if(this.graph.Count > 1) {
+            if(this.graph.NumGroups() > 1) {
                 this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
                 this.timer.AutoReset = true;
                 this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
@@ -222,7 +212,7 @@ namespace PavelStransky.Forms {
         /// Základní pracovní metoda, která ukládá obrázek
         /// </summary>        
         void backgroundWorkerSavePicture_DoWork(object sender, DoWorkEventArgs e) {
-            string fName = e.Argument as string;
+/*            string fName = e.Argument as string;
 
             if(fName.Length < 3 || fName.IndexOf('.') < 0)
                 throw new FormsException(string.Format(errorMessageBadFileName, fName));
@@ -239,7 +229,7 @@ namespace PavelStransky.Forms {
                 format = ImageFormat.Png;
 
             // Více obrázkù - spojíme dohromady pøípady s èasovým vývojem køivky a s postupným vývojem pozadí
-            if(this.eval && (this.graph.Count > 1 || this.evalCurves)) {
+            if(this.eval && (this.graph.NumGroups() > 1 || this.evalCurves)) {
                 System.Drawing.Image image = null;
 
                 for(int i = 0; i < this.maxIndex; i++){
@@ -270,7 +260,7 @@ namespace PavelStransky.Forms {
 
                 this.backgroundWorkerSaveGif.ReportProgress(100);
             }
-        }
+*/        }
 
         /// <summary>
         /// Uloží jako GIF
@@ -284,7 +274,7 @@ namespace PavelStransky.Forms {
         /// Základní pracovní metoda, která ukládá obrázek
         /// </summary>
         private void backgroundWorkerSaveGif_DoWork(object sender, DoWorkEventArgs e) {
-            string fName = e.Argument as string;
+/*            string fName = e.Argument as string;
 
             // Více obrázkù - spojíme dohromady pøípady s èasovým vývojem køivky a s postupným vývojem pozadí
             if(this.eval && (this.graph.Count > 1 || this.evalCurves)) {
@@ -372,7 +362,7 @@ namespace PavelStransky.Forms {
 
                 this.backgroundWorkerSaveGif.ReportProgress(100);
             }
-        }
+ */       }
         #endregion
 
         /// <param name="graph">Objekt grafu</param>
@@ -401,15 +391,18 @@ namespace PavelStransky.Forms {
             this.marginB = (bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX) ? defaultMarginWithAxeB : defaultMargin;
 
             this.eval = (bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate);
-            this.evalCurves = (bool)this.graph.GetGeneralParameter(paramEvaluateCurves, defaultEvaluateCurves);
 
-            if(this.eval) {
-                this.index = 0;
+            this.group = 0;
 
-                if(this.evalCurves)
-                    this.maxIndex = this.graph.GetMaxLength();
-                else
-                    this.maxIndex = this.graph.Count;
+            if(this.eval || this.graph.NumGroups() > 1) {
+                if(this.eval) {
+                    this.time = 0;
+                    this.maxTime = this.graph.GetMaxLength(this.group);
+                }
+                else {
+                    this.time = -1;
+                    this.maxTime = -1;
+                }
 
                 this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
                 this.timer.AutoReset = true;
@@ -417,12 +410,11 @@ namespace PavelStransky.Forms {
                 this.timer.Start();
             }
             else {
-                this.index = -1;
-                this.maxIndex = this.graph.GetMaxLength();
+                this.time = -1;
+                this.maxTime = -1;
             }
 
             this.SetMinMax();
-
 			this.Invalidate();
 		}
 
@@ -430,11 +422,11 @@ namespace PavelStransky.Forms {
         /// Event èasovaèe - postupné vykreslování køivky
         /// </summary>
         void timer_Elapsed(object sender, ElapsedEventArgs e) {
-            if(this.index++ > this.maxIndex) {
+/*            if(this.index++ > this.maxIndex) {
                 this.timer.Stop();
                 this.index = -1;
             }
-
+*/
             this.Invalidate();
         }
 
@@ -442,7 +434,7 @@ namespace PavelStransky.Forms {
         /// Nastaví minimální a maximální hodnotu
         /// </summary>
         public void SetMinMax() {
-            Vector minmax = this.graph.GetMinMax();
+            Vector minmax = this.graph.GetMinMax(this.group);
 
             this.minX = (double)this.graph.GetGeneralParameter(paramMinX, minmax[0]);
             this.maxX = (double)this.graph.GetGeneralParameter(paramMaxX, minmax[1]);
@@ -483,15 +475,7 @@ namespace PavelStransky.Forms {
 		/// </summary>
 		protected override void OnPaint(PaintEventArgs e) {
 			base.OnPaint (e);
-
-            if(this.eval) {
-                if(this.evalCurves)
-                    this.PaintGraph(e.Graphics, -1, this.index);
-                else
-                    this.PaintGraph(e.Graphics, this.index, -1);
-            }
-            else
-                this.PaintGraph(e.Graphics, -1, -1);
+            this.PaintGraph(e.Graphics, this.group, this.time);
         }
 
         /// <summary>
@@ -499,14 +483,16 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="g">Graphics</param>
         /// <param name="time">Èas k vykreslení, -1 pro vykreslení všeho</param>
-        /// <param name="curve">Køivka k vykreslení, -1 pro vykreslení všech</param>
-        private void PaintGraph(Graphics g, int curve, int time){
+        /// <param name="group">Skupina køivek pro vykreslení</param>
+        private void PaintGraph(Graphics g, int group, int time){
             // Barva pozadí
             Color backgroundColor = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
             Brush backgroundBrush = (new Pen(backgroundColor)).Brush;
             g.FillRectangle(backgroundBrush, this.ClientRectangle);
 
-			if(this.graph.Count > 0) {
+            int nCurves = this.graph.NumCurves(group);
+
+			if(nCurves > 0) {
                 bool shift = (bool)this.graph.GetGeneralParameter(paramShift, defaultShift);
 
 				int stringHeight = (int)g.MeasureString("M", baseFont).Height;
@@ -525,22 +511,18 @@ namespace PavelStransky.Forms {
 					amplifyY = this.amplifyY;
 				}
 
-				for(int i = 0; i < this.graph.Count; i++) {
-                    // Vykreslujeme jen požadovanou køivku
-                    if(curve >= 0 && curve != i)
-                        continue;
-
+				for(int i = 0; i < nCurves; i++) {
 					if(shift)
-						offsetY = (i + 1) * (this.Height - this.marginT - this.marginB) / (this.graph.Count + 2) + this.marginT;
+						offsetY = (i + 1) * (this.Height - this.marginT - this.marginB) / (nCurves + 2) + this.marginT;
 
-					Point [] p = this.graph.PointArrayToDraw(i, offsetX, amplifyX, offsetY, amplifyY, time);
+					Point [] p = this.graph.PointArrayToDraw(group, i, offsetX, amplifyX, offsetY, amplifyY, time);
 
-                    Color lineColor = (Color)this.graph.GetCurveParameter(i, paramLineColor, defaultLineColor);
-                    float lineWidth = (float)this.graph.GetCurveParameter(i, paramLineWidth, defaultLineWidth);
-                    Graph.LineStyles lineStyle = (Graph.LineStyles)this.graph.GetCurveParameter(i, paramLineStyle, defaultLineStyle);
-                    Color pointColor = (Color)this.graph.GetCurveParameter(i, paramPointColor, defaultPointColor);
-                    Graph.PointStyles pointStyle = (Graph.PointStyles)this.graph.GetCurveParameter(i, paramPointStyle, defaultPointStyle);
-                    int pointSize = (int)this.graph.GetCurveParameter(i, paramPointSize, defaultPointSize);
+                    Color lineColor = (Color)this.graph.GetCurveParameter(group, i, paramLineColor, defaultLineColor);
+                    float lineWidth = (float)this.graph.GetCurveParameter(group, i, paramLineWidth, defaultLineWidth);
+                    Graph.LineStyles lineStyle = (Graph.LineStyles)this.graph.GetCurveParameter(group, i, paramLineStyle, defaultLineStyle);
+                    Color pointColor = (Color)this.graph.GetCurveParameter(group, i, paramPointColor, defaultPointColor);
+                    Graph.PointStyles pointStyle = (Graph.PointStyles)this.graph.GetCurveParameter(group, i, paramPointStyle, defaultPointStyle);
+                    int pointSize = (int)this.graph.GetCurveParameter(group, i, paramPointSize, defaultPointSize);
 
                     Pen linePen = new Pen(lineColor, lineWidth);
                     Pen pointPen = new Pen(pointColor);
@@ -548,8 +530,8 @@ namespace PavelStransky.Forms {
                     if(p.Length >= 2)
                         this.DrawLine(g, p, linePen, lineStyle);
 
-					if(this.graph.IsErrors) {
-						Point [] errorPoints = this.graph.GetErrorLines(i, offsetX, amplifyX, offsetY, amplifyY);
+					if(this.graph.GetError(group, i) != null) {
+						Point [] errorPoints = this.graph.GetErrorLines(group, i, offsetX, amplifyX, offsetY, amplifyY);
 						Point [] ep = new Point[2];
 						int length = errorPoints.Length / 2;
 
@@ -562,11 +544,11 @@ namespace PavelStransky.Forms {
 						this.DrawPoints(g, errorPoints, pointPen, Graph.PointStyles.HLines, 5);
 					}
 
-                    bool showLabels = (bool)this.graph.GetCurveParameter(i, paramShowLabel, defaultShowLabel);
+                    bool showLabels = (bool)this.graph.GetCurveParameter(group, i, paramShowLabel, defaultShowLabel);
 
 					if(showLabels) {
-                        Color labelColor = (Color)this.graph.GetCurveParameter(i, paramLabelColor, defaultLabelColor);
-                        string lineName = (string)this.graph.GetCurveParameter(i, paramLineName, defaultLineName);
+                        Color labelColor = (Color)this.graph.GetCurveParameter(group, i, paramLabelColor, defaultLabelColor);
+                        string lineName = (string)this.graph.GetCurveParameter(group, i, paramLineName, defaultLineName);
                         Brush labelBrush = (new Pen(labelColor)).Brush;
 						g.DrawString(lineName, baseFont, labelBrush, this.marginL, (float)(offsetY - stringHeight / 2.0)); 
 					}
@@ -576,16 +558,16 @@ namespace PavelStransky.Forms {
                     // První a poslední bod
                     if(p.Length > 0) {
                         Point[] lastPoint = new Point[1]; lastPoint[0] = p[p.Length - 1];
-                        Color lastPointColor = (Color)this.graph.GetCurveParameter(i, paramLastPointColor, defaultLastPointColor);
-                        Graph.PointStyles lastPointStyle = (Graph.PointStyles)this.graph.GetCurveParameter(i, paramLastPointStyle, defaultLastPointStyle);
-                        int lastPointSize = (int)this.graph.GetCurveParameter(i, paramLastPointSize, defaultLastPointSize);
+                        Color lastPointColor = (Color)this.graph.GetCurveParameter(group, i, paramLastPointColor, defaultLastPointColor);
+                        Graph.PointStyles lastPointStyle = (Graph.PointStyles)this.graph.GetCurveParameter(group, i, paramLastPointStyle, defaultLastPointStyle);
+                        int lastPointSize = (int)this.graph.GetCurveParameter(group, i, paramLastPointSize, defaultLastPointSize);
                         Pen lastPointPen = new Pen(lastPointColor);
                         this.DrawPoints(g, lastPoint, lastPointPen, lastPointStyle, lastPointSize);
 
                         Point[] firstPoint = new Point[1]; firstPoint[0] = p[0];
-                        Color firstPointColor = (Color)this.graph.GetCurveParameter(i, paramFirstPointColor, defaultFirstPointColor);
-                        Graph.PointStyles firstPointStyle = (Graph.PointStyles)this.graph.GetCurveParameter(i, paramFirstPointStyle, defaultFirstPointStyle);
-                        int firstPointSize = (int)this.graph.GetCurveParameter(i, paramFirstPointSize, defaultFirstPointSize);
+                        Color firstPointColor = (Color)this.graph.GetCurveParameter(group, i, paramFirstPointColor, defaultFirstPointColor);
+                        Graph.PointStyles firstPointStyle = (Graph.PointStyles)this.graph.GetCurveParameter(group, i, paramFirstPointStyle, defaultFirstPointStyle);
+                        int firstPointSize = (int)this.graph.GetCurveParameter(group, i, paramFirstPointSize, defaultFirstPointSize);
                         Pen firstPointPen = new Pen(firstPointColor);
                         this.DrawPoints(g, firstPoint, firstPointPen, firstPointStyle, firstPointSize);
                     }

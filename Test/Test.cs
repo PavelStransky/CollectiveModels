@@ -101,8 +101,8 @@ namespace PavelStransky.Test {
         /// <summary>
         /// 21.11.2006
         /// </summary>
-        public static void PokusLHOQuantumGCM() {
-            LHOQuantumGCM GCM = new LHOQuantumGCM(-1.2, -1, 1, 1, 1);
+        public static void PokusLHOQuantumGCMC() {
+            LHOQuantumGCM GCM = new LHOQuantumGCMC(-1.2, -1, 1, 1, 1);
         }
 
         /// <summary>

@@ -7,36 +7,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
-    public class LHOQuantumGCMRFull : GCM, IExportable, IQuantumSystem {
-        private const double epsilon = 1E-8;
-        private double hbar;                    // [Js]
-
-        // Koeficienty
-        private double s;
-
-        // Parametr pro LHO
-        private double a0;
-
-        // Indexy báze
-        private LHOPolarIndexFull index;
-
-        private Jacobi jacobi;
-
-        /// <summary>
-        /// Planckova konstanta [Js]
-        /// </summary>
-        public double Hbar { get { return this.hbar; } }
-
-        /// <summary>
-        /// Úhlová frekvence LHO [J*m^-2]
-        /// </summary>
-        public double Omega { get { return System.Math.Sqrt(2.0 * this.a0 / this.K); } }
-
-        /// <summary>
-        /// Parametr pro LHO [s^-1]
-        /// </summary>
-        public double A0 { get { return this.a0; } set { this.a0 = value; } }
-
+    public class LHOQuantumGCMRFull : LHOQuantumGCM {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -51,7 +22,7 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         public LHOQuantumGCMRFull(double a, double b, double c, double k, double a0)
-            : this(a, b, c, k, a0, 0.1) { }
+            : base(a, b, c, k, a0) { }
 
         /// <summary>
         /// Konstruktor
@@ -63,20 +34,7 @@ namespace PavelStransky.GCM {
         /// <param name="k">Parametr D</param>
         /// <param name="hbar">Planckova konstanta</param>
         public LHOQuantumGCMRFull(double a, double b, double c, double k, double a0, double hbar)
-            : base(a, b, c, k) {
-            this.a0 = a0;
-            this.hbar = hbar;
-
-            this.RefreshConstants();
-        }
-
-        /// <summary>
-        /// Pøepoèítá konstanty s, n
-        /// </summary>
-        private void RefreshConstants() {
-            // Konstanty
-            this.s = System.Math.Sqrt(this.K * this.Omega / this.hbar);      // xi = s*x (Formanek (2.283))
-        }
+            : base(a, b, c, k, a0, hbar) { }
 
         /// <summary>
         /// Provede výpoèet

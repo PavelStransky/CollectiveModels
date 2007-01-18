@@ -471,6 +471,8 @@ namespace PavelStransky.Math {
 				this[i,j] = v[i];
 		}
 
+
+
         /// <summary>
         /// Souèet všech prvkù
         /// </summary>

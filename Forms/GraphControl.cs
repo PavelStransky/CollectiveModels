@@ -72,55 +72,7 @@ namespace PavelStransky.Forms {
             this.lblTitle.Text = (string)graph.GetGeneralParameter(paramTitle, defaultTitle);
             this.toolTip.RemoveAll();
 
-            if(graph.IsLineGraph) {
-                if(this.graphControl is LineBox) {
-                    this.graphControl.SetGraph(graph);
-                }
-                else {
-                    this.SuspendLayout();
-                    if(this.Controls.Contains(this.graphControl as Control))
-                        this.Controls.Remove(this.graphControl as Control);
-                    
-                    LineBox lineBox = new LineBox();
-                    lineBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                    lineBox.Location = new Point(0, this.lblTitle.Height);
-                    lineBox.Size = new Size(this.Width, this.Height - lineBox.Top);
-                    lineBox.BackColor = System.Drawing.SystemColors.Window;
-                    lineBox.TabIndex = 0;
-                    lineBox.TabStop = false;
-                    lineBox.MouseMove += new MouseEventHandler(graphControl_MouseMove);
-                    this.Controls.Add(lineBox);
-                    this.graphControl = lineBox;
-                    lineBox.SetGraph(graph);
-
-                    this.ResumeLayout();
-                }
-            }
-            else if(graph.IsDensityGraph) {
-                if(this.graphControl is DensityBox) {
-                    this.graphControl.SetGraph(graph);
-                }
-                else {
-                    this.SuspendLayout();
-                    if(this.Controls.Contains(this.graphControl as Control))
-                        this.Controls.Remove(this.graphControl as Control);
-                    
-                    DensityBox densityBox = new DensityBox();
-                    densityBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                    densityBox.Location = new Point(0, this.lblTitle.Height);
-                    densityBox.Size = new Size(this.Width, this.Height - densityBox.Top);
-                    densityBox.BackColor = System.Drawing.SystemColors.Window;
-                    densityBox.TabIndex = 0;
-                    densityBox.TabStop = false;
-                    densityBox.MouseMove += new MouseEventHandler(graphControl_MouseMove);
-                    this.Controls.Add(densityBox);
-                    this.graphControl = densityBox;
-                    densityBox.SetGraph(graph);
-
-                    this.ResumeLayout();
-                }
-            }
-
+            this.graphControl.SetGraph(graph);
         }
 
         /// <summary>

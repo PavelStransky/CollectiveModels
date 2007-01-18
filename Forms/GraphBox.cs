@@ -27,13 +27,8 @@ namespace PavelStransky.Forms {
         // Èasovaè pro vytvoøení bitmap
         private BackgroundWorker backgroundWorkerCreate = new BackgroundWorker();
 
-        // Index vykreslovaných dat
-        private int index;
-
 		// Bitmapa, do které se obrázek pozadí vykreslí (kvùli rychlosti)
         private Bitmap[] bitmap;
-
-        private int time, maxTime;
 
 		// Zesílení køivek v ose Y
 		private double amplifyY = baseAmplifyY;
@@ -46,6 +41,21 @@ namespace PavelStransky.Forms {
 		private int marginR = defaultMargin;
 		private int marginT = defaultMargin;
 		private int marginB = 3 * defaultMargin;
+
+        // True, pokud se bude animovat
+        private bool eval = false;
+        // True, pokud se bude animovat èasový vývoj køivky
+        private bool evalCurves = false;
+        // Index vykreslovaných dat (pro animaci)
+        private int index, maxIndex;
+
+        /// <summary>
+        /// Matice
+        /// </summary>
+        /// <param name="i">Index dat</param>
+        private Matrix GetMatrix(int i) {
+            return this.graph.Item[i] as Matrix;
+        }
 
 		/// <summary>
 		/// Základní konstruktor
@@ -190,8 +200,6 @@ namespace PavelStransky.Forms {
             if(this.backgroundWorkerCreate.CancellationPending)
                 return;
 
-            this.index = 0;
-
             if(this.graph.Count > 1) {
                 this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
                 this.timer.AutoReset = true;
@@ -215,11 +223,6 @@ namespace PavelStransky.Forms {
         /// </summary>        
         void backgroundWorkerSavePicture_DoWork(object sender, DoWorkEventArgs e) {
             string fName = e.Argument as string;
-            int maxTime = this.graph.GetMaxLength();
-            int count = this.graph.Count;
-
-            bool eval = (bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate);
-            bool evalCurves = (bool)this.graph.GetGeneralParameter(paramEvaluateCurves, defaultEvaluateCurves);
 
             if(fName.Length < 3 || fName.IndexOf('.') < 0)
                 throw new FormsException(string.Format(errorMessageBadFileName, fName));
@@ -235,40 +238,34 @@ namespace PavelStransky.Forms {
             else if(extension == "png")
                 format = ImageFormat.Png;
 
-            // Více obrázkù
-            if(eval && (count > 1 || evalCurves)) {
-                // Vyvíjíme všechny køivky
-                if(evalCurves) {
-                    for(int time = 0; time < maxTime; time++) {
-                        System.Drawing.Image image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                        this.PaintAllGraph(Graphics.FromImage(image), time);
-                        image.Save(string.Format("{0}{1}.{2}", name, time, extension), format);
+            // Více obrázkù - spojíme dohromady pøípady s èasovým vývojem køivky a s postupným vývojem pozadí
+            if(this.eval && (this.graph.Count > 1 || this.evalCurves)) {
+                System.Drawing.Image image = null;
 
-                        this.backgroundWorkerSavePicture.ReportProgress(time * 100 / maxTime);
-
-                        // Požadavek ukonèení procesu
-                        if(this.backgroundWorkerSavePicture.CancellationPending)
-                            break;
+                for(int i = 0; i < this.maxIndex; i++){
+                    // Vyvíjíme všechny køivky
+                    if(this.evalCurves) {
+                        image = new Bitmap(this.bitmap[0], this.Width, this.Height);
+                        this.PaintGraph(Graphics.FromImage(image), -1, i);
                     }
-                }
-                else {
-                    for(int i = 0; i < count; i++) {
-                        System.Drawing.Image image = new Bitmap(this.bitmap[i], this.Width, this.Height);
-                        this.PaintGraph(Graphics.FromImage(image), i);
-
-                        image.Save(string.Format("{0}{1}.{2}", name, time, extension), format);
-                        this.backgroundWorkerSavePicture.ReportProgress(i * 100 / count);
-
-                        // Požadavek ukonèení procesu
-                        if(this.backgroundWorkerSavePicture.CancellationPending)
-                            break;
+                    else {
+                        image = new Bitmap(this.bitmap[i], this.Width, this.Height);
+                        this.PaintGraph(Graphics.FromImage(image), i, -1);
                     }
+
+                    image.Save(string.Format("{0}{1}.{2}", name, i, extension), format);
+
+                    this.backgroundWorkerSavePicture.ReportProgress(i * 100 / this.maxIndex);
+
+                    // Požadavek ukonèení procesu
+                    if(this.backgroundWorkerSavePicture.CancellationPending)
+                        break;       
                 }
             }
             // Jeden obrázek
             else {
                 System.Drawing.Image image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                this.PaintAllGraph(Graphics.FromImage(image), maxTime);
+                this.PaintGraph(Graphics.FromImage(image), -1, -1);
                 image.Save(fName, format);
 
                 this.backgroundWorkerSaveGif.ReportProgress(100);
@@ -288,13 +285,9 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void backgroundWorkerSaveGif_DoWork(object sender, DoWorkEventArgs e) {
             string fName = e.Argument as string;
-            int maxTime = this.graph.GetMaxLength();
-            int count = this.graph.Count;
 
-            bool eval = (bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate);
-            bool evalCurves = (bool)this.graph.GetGeneralParameter(paramEvaluateCurves, defaultEvaluateCurves);
-
-            if(eval && (count > 1 || evalCurves)) {
+            // Více obrázkù - spojíme dohromady pøípady s èasovým vývojem køivky a s postupným vývojem pozadí
+            if(this.eval && (this.graph.Count > 1 || this.evalCurves)) {
                 int interval = (int)(double)this.graph.GetGeneralParameter(paramInterval, defaultInterval) / 10;
 
                 MemoryStream m = new MemoryStream();
@@ -333,16 +326,23 @@ namespace PavelStransky.Forms {
                 buf3[6] = 255;                  // Transparent color index
                 buf3[7] = 0;                    // Block terminator
 
-                // Vyvíjíme všechny køivky
-                if(evalCurves) {
-                for(int time = 0; time < maxTime; time++) {
-                    System.Drawing.Image image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                    this.PaintAllGraph(Graphics.FromImage(image), time);
+                for(int i = 0; i < this.maxIndex; i++) {
+                    System.Drawing.Image image = null;
+
+                    if(this.evalCurves) {
+                        image = new Bitmap(this.bitmap[0], this.Width, this.Height);
+                        this.PaintGraph(Graphics.FromImage(image), -1, i);
+                    }
+                    else {
+                        image = new Bitmap(this.bitmap[i], this.Width, this.Height);
+                        this.PaintGraph(Graphics.FromImage(image), i, -1);
+                    }
+
                     image.Save(m, ImageFormat.Gif);
 
                     buf1 = m.ToArray();
 
-                    if(time == 0) {
+                    if(i == 0) {
                         //only write these the first time....
                         b.Write(buf1, 0, 781); //Header & global color table
                         b.Write(buf2, 0, 19); //Application extension
@@ -352,7 +352,7 @@ namespace PavelStransky.Forms {
                     b.Write(buf1, 789, buf1.Length - 790); //Image data
 
                     m.SetLength(0);
-                    this.backgroundWorkerSaveGif.ReportProgress(time * 100 / maxTime);
+                    this.backgroundWorkerSaveGif.ReportProgress(i * 100 / this.maxIndex);
 
                     // Požadavek ukonèení procesu
                     if(this.backgroundWorkerSaveGif.CancellationPending)
@@ -366,8 +366,8 @@ namespace PavelStransky.Forms {
             }
 
             else {
-                System.Drawing.Image image = new Bitmap(this.Width, this.Height);
-                this.PaintGraph(Graphics.FromImage(image), maxTime);
+                System.Drawing.Image image = new Bitmap(this.bitmap[0], this.Width, this.Height);
+                this.PaintGraph(Graphics.FromImage(image), -1, -1);
                 image.Save(fName, ImageFormat.Gif);
 
                 this.backgroundWorkerSaveGif.ReportProgress(100);
@@ -400,16 +400,26 @@ namespace PavelStransky.Forms {
             this.marginT = defaultMargin;
             this.marginB = (bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX) ? defaultMarginWithAxeB : defaultMargin;
 
-            if((bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate)) {
-                this.time = 0;
-                this.maxTime = this.graph.GetMaxLength();
+            this.eval = (bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate);
+            this.evalCurves = (bool)this.graph.GetGeneralParameter(paramEvaluateCurves, defaultEvaluateCurves);
+
+            if(this.eval) {
+                this.index = 0;
+
+                if(this.evalCurves)
+                    this.maxIndex = this.graph.GetMaxLength();
+                else
+                    this.maxIndex = this.graph.Count;
+
                 this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
                 this.timer.AutoReset = true;
                 this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
                 this.timer.Start();
             }
-            else
-                this.time = -1;
+            else {
+                this.index = -1;
+                this.maxIndex = this.graph.GetMaxLength();
+            }
 
             this.SetMinMax();
 
@@ -420,9 +430,9 @@ namespace PavelStransky.Forms {
         /// Event èasovaèe - postupné vykreslování køivky
         /// </summary>
         void timer_Elapsed(object sender, ElapsedEventArgs e) {
-            if(this.time++ > this.maxTime) {
+            if(this.index++ > this.maxIndex) {
                 this.timer.Stop();
-                this.time = -1;
+                this.index = -1;
             }
 
             this.Invalidate();
@@ -473,15 +483,24 @@ namespace PavelStransky.Forms {
 		/// </summary>
 		protected override void OnPaint(PaintEventArgs e) {
 			base.OnPaint (e);
-            this.PaintGraph(e.Graphics, this.time);
+
+            if(this.eval) {
+                if(this.evalCurves)
+                    this.PaintGraph(e.Graphics, -1, this.index);
+                else
+                    this.PaintGraph(e.Graphics, this.index, -1);
+            }
+            else
+                this.PaintGraph(e.Graphics, -1, -1);
         }
 
         /// <summary>
         /// Provede vykreslení grafu
         /// </summary>
         /// <param name="g">Graphics</param>
-        /// <param name="time">Èas k vykreslení</param>
-        private void PaintGraph(Graphics g, int time){
+        /// <param name="time">Èas k vykreslení, -1 pro vykreslení všeho</param>
+        /// <param name="curve">Køivka k vykreslení, -1 pro vykreslení všech</param>
+        private void PaintGraph(Graphics g, int curve, int time){
             // Barva pozadí
             Color backgroundColor = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
             Brush backgroundBrush = (new Pen(backgroundColor)).Brush;
@@ -507,6 +526,10 @@ namespace PavelStransky.Forms {
 				}
 
 				for(int i = 0; i < this.graph.Count; i++) {
+                    // Vykreslujeme jen požadovanou køivku
+                    if(curve >= 0 && curve != i)
+                        continue;
+
 					if(shift)
 						offsetY = (i + 1) * (this.Height - this.marginT - this.marginB) / (this.graph.Count + 2) + this.marginT;
 
@@ -843,6 +866,7 @@ namespace PavelStransky.Forms {
         private const string paramMaxY = "maxy";
 
         private const string paramEvaluate = "eval";
+        private const string paramEvaluateCurves = "evalcurves";
         private const string paramInterval = "interval";
 
         // Osy
@@ -866,8 +890,11 @@ namespace PavelStransky.Forms {
         private const string paramLabelColorY = "labelcolory";
         private const string paramShowAxeY = "showaxey";
 
-        private const bool defaultEvaluate = false;
-        private const double defaultInterval = 1000.0;
+        private const string paramColorZero = "colorzero";
+        private const string paramColorPlus = "colorplus";
+        private const string paramColorMinus = "colorminus";
+        private const string paramLegend = "legend";
+        private const string paramLegendWidth = "legendwidth";
 
         // Default hodnoty
         private const bool defaultShift = false;
@@ -913,6 +940,17 @@ namespace PavelStransky.Forms {
         private const bool defaultShowLabelY = false;
         private static Color defaultLabelColorY = defaultLineColorY;
         private const bool defaultShowAxeY = true;
+
+        private static Color defaultColorZero = Color.FromName("black");
+        private static Color defaultColorPlus = Color.FromName("blue");
+        private static Color defaultColorMinus = Color.FromName("red");
+        private const bool defaultLegend = true;
+        private const int defaultLegendWidth = 50;
+        private const string defaultTitle = "";
+
+        private const bool defaultEvaluate = false;
+        private const bool defaultEvaluateCurves = false;
+        private const double defaultInterval = 1000.0;
 
         private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }

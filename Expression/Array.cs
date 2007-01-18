@@ -53,12 +53,27 @@ namespace PavelStransky.Expression {
 			return base.Add(value);
 		}
 
-		/// <summary>
-		/// Pøidá objekt na zadaný index
-		/// </summary>
-		/// <param name="item">Objekt</param>
-		/// <param name="index">Index pøidávaného objektu</param>
-		public override void Insert(int index, object item) {
+        /// <summary>
+        /// Vloží danou hodnotu do øady n-krát
+        /// </summary>
+        /// <param name="value">Objekt</param>
+        /// <param name="n">Poèet opakování</param>
+        /// <returns>Index posledního pøidaného objektu</returns>
+        public int Add(object value, int n) {
+            int result = -1;
+
+            for(int i = 0; i < n; i++)
+                result = this.Add(value);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Pøidá objekt na zadaný index
+        /// </summary>
+        /// <param name="item">Objekt</param>
+        /// <param name="index">Index pøidávaného objektu</param>
+        public override void Insert(int index, object item) {
 			// Kontrola na typ
 			this.CheckType(item);
 			// Kontrola na velikost

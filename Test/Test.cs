@@ -37,7 +37,7 @@ namespace PavelStransky.Test {
 
             Console.WriteLine(m.ToString());
 
-            Vector v1 = PavelStransky.LaPack.LAPackDLL.dsyev(m);
+            Vector v1 = PavelStransky.DLLWrapper.LAPackDLL.dsyev(m);
             Vector v2 = new Vector((new Jacobi(m)).EigenValue);
             int x = 0;
         }

@@ -14,12 +14,6 @@ namespace PavelStransky.Math {
 
         private bool binary;
 
-        // Parametry
-        private object[] param;
-        private string[] paramName;
-        private string[] paramComment;
-        private int paramIndex;
-
         // Informace o verzi
         private string versionName;
         private int versionNumber;

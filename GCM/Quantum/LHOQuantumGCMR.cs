@@ -288,6 +288,8 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="import">Import</param>
         public override void Import(Import import) {
+            base.Import(import);
+
             if(this.jacobi == null) {
                 this.index = null;
                 this.isComputed = false;

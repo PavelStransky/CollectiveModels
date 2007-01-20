@@ -29,35 +29,29 @@ namespace PavelStransky.GCM {
             this.maxE = maxE;
 
             int mInc = full ? 1 : 3;
+            int mBound = ((maxE - 1) / mInc) * mInc;
 
             // Zjistíme poèet
             int length = 0;
-            for(int n = 0; n <= (maxE - 1) / 2; n++) {
-                int mMin = full ? -(maxE - 1 - 2 * n) : (-(maxE - 1 - 2 * n) / 3) * 3;
-                int mMax = maxE - 1 - 2 * n;
-
-                for(int m = mMin; m <= mMax; m += mInc)
+            for(int m = -mBound; m <= mBound; m += mInc)
+                for(int n = 0; n <= (maxE - 1 - System.Math.Abs(m)) / 2; n++)
                     length++;
-            }
 
             // Generujeme
             this.indexn = new int[length];
             this.indexm = new int[length];
 
             int i = 0;
-            for(int n = 0; n <= (maxE - 1) / 2; n++) {
-                int mMin = full ? -(maxE - 1 - 2 * n) : (-(maxE - 1 - 2 * n) / 3) * 3;
-                int mMax = maxE - 1 - 2 * n;
-
-                for(int m = mMin; m <= mMax; m += mInc) {
-                    this.maxM = System.Math.Max(this.maxM, m);
+            for(int m = -mBound; m <= mBound; m += mInc)
+                for(int n = 0; n <= (maxE - 1 - System.Math.Abs(m)) / 2; n++) {
                     this.indexm[i] = m;
                     this.indexn[i] = n;
                     i++;
                 }
-            }
 
-            this.maxN = this.indexn[length - 1];
+
+            this.maxM = mBound;
+            this.maxN = (maxE - 1) / 2;
         }
 
         /// <summary>

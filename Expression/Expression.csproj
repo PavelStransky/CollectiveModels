@@ -185,12 +185,15 @@
     <Compile Include="Functions\Context\NewContext.cs" />
     <Compile Include="Functions\Context\UseContext.cs" />
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianMatrix.cs" />
     <Compile Include="Functions\Math\BC.cs" />
     <Compile Include="Functions\Math\Factorial.cs" />
     <Compile Include="Functions\Math\Laguerre.cs" />
+    <Compile Include="Functions\NumNonzeroItems.cs" />
+    <Compile Include="Functions\Quantum\ComputeSpectrum.cs" />
     <Compile Include="Functions\Quantum\DensityMatrix.cs" />
     <Compile Include="Functions\Quantum\EVNumDiff.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCM.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
     <Compile Include="Functions\Show.cs" />

@@ -40,8 +40,8 @@ namespace PavelStransky.Expression {
                 return new ClassicalIBM();
             else if(typeName == typeof(Graph).FullName)
                 return new Graph();
-            else if(typeName == typeof(LHOQuantumGCM).FullName)
-                return new LHOQuantumGCM();
+            else if(typeName == typeof(LHOQuantumGCMC).FullName)
+                return new LHOQuantumGCMC();
             else if(typeName == typeof(LHOQuantumGCMR).FullName)
                 return new LHOQuantumGCMR();
             else if(typeName == typeof(LHOQuantumGCMRFull).FullName)

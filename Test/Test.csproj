@@ -102,6 +102,10 @@
       <Project>{1F119B82-E6B3-4FF0-A026-72AC1D452DA6}</Project>
       <Name>IBM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LAPack\LAPack.csproj">
+      <Project>{F6A2D63D-304C-48D8-8F93-DFA58DA31D63}</Project>
+      <Name>LAPack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Name>Math</Name>
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>

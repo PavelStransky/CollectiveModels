@@ -10,7 +10,7 @@ namespace PavelStransky.GCM {
     /// </summary>
     public class LHOQuantumGCMR : LHOQuantumGCM {
         // Indexy báze
-        private LHOPolarIndex index;
+        protected LHOPolarIndex index;
 
         /// <summary>
         /// Prázdný konstruktor
@@ -41,13 +41,21 @@ namespace PavelStransky.GCM {
             : base(a, b, c, k, a0, hbar) { }
 
         /// <summary>
+        /// Vytvoøí instanci tøídy LHOPolarIndex
+        /// </summary>
+        /// <param name="maxE">Maximální energie</param>
+        protected virtual void CreateIndex(int maxE) {
+            this.index = new LHOPolarIndex(maxE);
+        }
+
+        /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
         /// <param name="maxE">Nejvyšší energie v násobcích hbar * Omega</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
         public override Matrix HamiltonianMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            this.index = new LHOPolarIndex(maxE);
+            this.CreateIndex(maxE);
 
             if(numSteps == 0)
                 numSteps = 10 * this.index.MaxM + 1;

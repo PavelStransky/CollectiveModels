@@ -18,11 +18,29 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLHOQuantumGCMR();
+            Test.PokusLAPack();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 19.1.2006
+        /// </summary>
+        static void PokusLAPack() {
+            double[,] d = { { 1, 3, 2, 1, 1 }, 
+                            { 3, -1, 5, 0, 0 },
+                            {2,5,0,4,3},
+                            {1,0,4,-1,3},
+                            {1,0,3,3,0}};
+            Matrix m = new Matrix(d);
+
+            Console.WriteLine(m.ToString());
+
+            Vector v1 = PavelStransky.LaPack.LAPackDLL.dsyev(m);
+            Vector v2 = new Vector((new Jacobi(m)).EigenValue);
+            int x = 0;
+        }
 
         /// <summary>
         /// 22.12.2006

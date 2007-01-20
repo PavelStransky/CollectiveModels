@@ -7,7 +7,7 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí LHOQuantumGCM tøídu (poèítanou v radiálních souøadnicích)
+    /// Vytvoøí LHOQuantumGCMR tøídu (poèítanou v radiálních souøadnicích)
     /// </summary>
     public class LHOQGCMR : FunctionDefinition {
         public override string Help { get { return help; } }
@@ -33,21 +33,15 @@ namespace PavelStransky.Expression.Functions {
                 this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
             }
 
-            if(evaluatedArguments.Count > 4)
-                this.CheckArgumentsType(evaluatedArguments, 4, typeof(int));
+            if(evaluatedArguments.Count > 4) {
+                this.ConvertInt2Double(evaluatedArguments, 4);
+                this.CheckArgumentsType(evaluatedArguments, 4, typeof(double));
+            }
 
             if(evaluatedArguments.Count > 5) {
                 this.ConvertInt2Double(evaluatedArguments, 5);
                 this.CheckArgumentsType(evaluatedArguments, 5, typeof(double));
             }
-
-            if(evaluatedArguments.Count > 6) {
-                this.ConvertInt2Double(evaluatedArguments, 6);
-                this.CheckArgumentsType(evaluatedArguments, 6, typeof(double));
-            }
-
-            if(evaluatedArguments.Count > 7)
-                this.CheckArgumentsType(evaluatedArguments, 7, typeof(int));
 
             return evaluatedArguments;
         }
@@ -59,9 +53,7 @@ namespace PavelStransky.Expression.Functions {
                 double k = 1;
                 double a0 = (double)item;
 
-                int maxn = 25;
-                int numSteps = 0;               // 0 - numsteps je dopoèítáno automaticky
-                double hbar = 0.1;                 // defaultní hodnota
+                double hbar = 0.1;      // Default hodnota Planckovy konstanty
 
                 if(arguments.Count > 1) {
                     b = (double)arguments[1];
@@ -70,19 +62,12 @@ namespace PavelStransky.Expression.Functions {
                 }
 
                 if(arguments.Count > 4)
-                    maxn = (int)arguments[4];
+                    a0 = (double)arguments[4];
 
                 if(arguments.Count > 5)
                     hbar = (double)arguments[5];
 
-                if(arguments.Count > 6)
-                    a0 = (double)arguments[6];
-
-                if(arguments.Count > 7)
-                    numSteps = (int)arguments[7];
-
                 LHOQuantumGCMR qgcm = new LHOQuantumGCMR((double)item, b, c, k, a0, hbar);
-                qgcm.Compute(maxn, numSteps, this.writer);
                 return qgcm;
             }
 
@@ -93,6 +78,6 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string help = "Vytvoøí LHOQuantumGCMR tøídu pro dané parametry";
-        private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [MaxN (int); [hbar (double); [A0 (double); [NumSteps - dìlení møíže (int)]]]]]";
+        private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [A0 (double); [hbar (double)]]";
     }
 }

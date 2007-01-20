@@ -24,8 +24,8 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is LHOQuantumGCM) {
-                LHOQuantumGCM qs = item as LHOQuantumGCM;
+            if(item is LHOQuantumGCMC) {
+                LHOQuantumGCMC qs = item as LHOQuantumGCMC;
                 int n = (int)arguments[1];
 
                 Vector[] interval = new Vector[arguments.Count - 2];

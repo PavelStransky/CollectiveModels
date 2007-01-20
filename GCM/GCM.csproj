@@ -54,11 +54,10 @@
     <Compile Include="Quantum\ClebshGordon.cs" />
     <Compile Include="Quantum\GammaLog.cs" />
     <Compile Include="Quantum\LHOPolarIndex.cs" />
-    <Compile Include="Quantum\LHOPolarIndexFull.cs" />
     <Compile Include="Quantum\LHOQuantumGCM.cs" />
     <Compile Include="Quantum\LHOQuantumGCMC.cs" />
-    <Compile Include="Quantum\LHOQuantumGCMRFull.cs" />
     <Compile Include="Quantum\LHOQuantumGCMR.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRFull.cs" />
     <Compile Include="Quantum\QuantumGCM.cs" />
     <Compile Include="Quantum\RadialMatrixElement.cs" />
     <Compile Include="Quantum\RAIndex.cs" />

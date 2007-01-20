@@ -18,22 +18,27 @@ namespace PavelStransky.GCM {
         /// Konstruktor
         /// </summary>
         /// <param name="maxE">Maximální energie v násobcích hbar * Omega</param>
-        public LHOPolarIndex(int maxE) {
-            this.maxE = maxE;
-
-            this.Compute();
-        }
+        public LHOPolarIndex(int maxE) : this(maxE, false) { }
 
         /// <summary>
-        /// Provede naplnìní polí s indexy
+        /// Konstruktor
         /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        protected virtual void Compute(int maxE) {
+        /// <param name="maxE">Maximální energie v násobcích hbar * Omega</param>
+        /// <param name="full">Výpoèet pro plnou bázi</param>
+        public LHOPolarIndex(int maxE, bool full) {
+            this.maxE = maxE;
+
+            int mInc = full ? 1 : 3;
+
             // Zjistíme poèet
             int length = 0;
-            for(int n = 0; n <= (maxE - 1) / 2; n++)
-                for(int m = (-(maxE - 1 - 2 * n) / 3) * 3; m <= maxE - 1 - 2 * n; m += 3)
+            for(int n = 0; n <= (maxE - 1) / 2; n++) {
+                int mMin = full ? -(maxE - 1 - 2 * n) : (-(maxE - 1 - 2 * n) / 3) * 3;
+                int mMax = maxE - 1 - 2 * n;
+
+                for(int m = mMin; m <= mMax; m += mInc)
                     length++;
+            }
 
             // Generujeme
             this.indexn = new int[length];
@@ -41,7 +46,10 @@ namespace PavelStransky.GCM {
 
             int i = 0;
             for(int n = 0; n <= (maxE - 1) / 2; n++) {
-                for(int m = (-(maxE - 1 - 2 * n) / 3) * 3; m <= maxE - 1 - 2 * n; m += 3) {
+                int mMin = full ? -(maxE - 1 - 2 * n) : (-(maxE - 1 - 2 * n) / 3) * 3;
+                int mMax = maxE - 1 - 2 * n;
+
+                for(int m = mMin; m <= mMax; m += mInc) {
                     this.maxM = System.Math.Max(this.maxM, m);
                     this.indexm[i] = m;
                     this.indexn[i] = n;

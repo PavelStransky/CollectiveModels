@@ -305,7 +305,7 @@ namespace PavelStransky.Expression {
                         int nCurves = group.Count;
 
                         if(g >= cv) {
-                            TArray e = new TArray();
+                            TArray e = new TArray(typeof(PointVector));
                             e.Add(null, nCurves);
                             this.errors.Add(e);
                         }
@@ -337,7 +337,7 @@ namespace PavelStransky.Expression {
                         int nCurves = group.Count;
 
                         if(g >= ce) {
-                            TArray e = new TArray();
+                            TArray e = new TArray(typeof(PointVector));
                             e.Add(null, nCurves);
                             this.errors.Add(e);
                         }
@@ -345,7 +345,7 @@ namespace PavelStransky.Expression {
                             TArray eGroup = (errors as TArray)[g] as TArray;
                             int cce = eGroup.Count;
 
-                            TArray e = new TArray();
+                            TArray e = new TArray(typeof(PointVector));
 
                             for(int i = 0; i < nCurves; i++) {
                                 int li = (group[i] as PointVector).Length;
@@ -373,7 +373,7 @@ namespace PavelStransky.Expression {
             if(this.errors == null) {
                 this.errors = new TArray();
                 for(int g = 0; g < nGroups; g++) {
-                    TArray e = new TArray();
+                    TArray e = new TArray(typeof(PointVector));
                     e.Add(null, this.NumCurves(g));
                     this.errors.Add(e);
                 }
@@ -424,7 +424,7 @@ namespace PavelStransky.Expression {
             }
 
             if(this.background == null) {
-                this.background = new TArray();
+                this.background = new TArray(typeof(Matrix));
                 this.background.Add(null, nGroups);
             }
         }

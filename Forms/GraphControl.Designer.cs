@@ -90,6 +90,7 @@ namespace PavelStransky.Forms {
             this.Size = new System.Drawing.Size(150, 190);
             this.ResumeLayout(false);
 
+            this.ResumeLayout();
         }
         #endregion
 

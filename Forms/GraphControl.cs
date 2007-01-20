@@ -72,6 +72,19 @@ namespace PavelStransky.Forms {
             this.lblTitle.Text = (string)graph.GetGeneralParameter(paramTitle, defaultTitle);
             this.toolTip.RemoveAll();
 
+            if(this.graphControl == null) {
+                GraphicsBox graphicsBox = new GraphicsBox();
+                graphicsBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                graphicsBox.Location = new Point(0, this.lblTitle.Height);
+                graphicsBox.Size = new Size(this.Width, this.Height - graphicsBox.Top);
+                graphicsBox.BackColor = System.Drawing.SystemColors.Window;
+                graphicsBox.TabIndex = 0;
+                graphicsBox.TabStop = false;
+                graphicsBox.MouseMove += new MouseEventHandler(graphControl_MouseMove);
+                this.Controls.Add(graphicsBox);
+                this.graphControl = graphicsBox;
+            }
+
             this.graphControl.SetGraph(graph);
         }
 

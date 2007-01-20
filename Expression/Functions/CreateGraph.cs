@@ -41,7 +41,7 @@ namespace PavelStransky.Expression.Functions {
                 if(t == typeof(TArray))
                     t = ((item as TArray)[0] as TArray).ItemType;
 
-                if(t != typeof(Vector) || t != typeof(PointVector))
+                if(t != typeof(Vector) && t != typeof(PointVector))
                     this.BadTypeError(item, 0);
             }
 

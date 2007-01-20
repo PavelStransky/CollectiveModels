@@ -451,6 +451,7 @@
     <Compile Include="Indexer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MinMaxCache.cs" />
     <Compile Include="Operators\Operator.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -30,27 +30,35 @@ namespace PavelStransky.Forms {
 		// Bitmapa, do které se obrázek pozadí vykreslí (kvùli rychlosti)
         private Bitmap[] bitmap;
 
-		// Zesílení køivek v ose Y
-		private double amplifyY = baseAmplifyY;
+        // Minimalní a maximální hodnoty skupiny grafu
+        private MinMaxCache[] minMax;
 
-		// Minimální a maximální hodnota
-		private double minX, maxX, minY, maxY;
+        // Minimální a maximální hodnoty pozadí
+        private MinMaxCache[] minMaxB;
 
 		// Velikosti okrajù (aby graf nepøelézal a nedotýkal se)
-		private int marginL = 3 * defaultMargin;
-		private int marginR = defaultMargin;
-		private int marginT = defaultMargin;
-		private int marginB = 3 * defaultMargin;
+        private int marginL = 3 * defaultMargin;
+        private int marginR = defaultMargin;
+        private int marginT = defaultMargin;
+        private int marginB = 3 * defaultMargin;
 
         // True, pokud se bude animovat èasový vývoj køivky
-        private bool eval = false;
+        private bool evalCurve = false;
+        // True, pokud se bude animovat èasový vývoj skupiny
+        private bool evalGroup = false;
+
         // Index vykreslovaných dat (pro animaci)
-        private int time, maxTime, group;
+        private int time, group;
+
+        // Stisknuté levé tlaèítko myši
+        private bool leftMouseButton;
 
 		/// <summary>
 		/// Základní konstruktor
 		/// </summary>
 		public GraphicsBox() : base() {
+            this.SizeMode = PictureBoxSizeMode.StretchImage;
+
             this.backgroundWorkerSaveGif.WorkerReportsProgress = true;
             this.backgroundWorkerSaveGif.WorkerSupportsCancellation = true;
             this.backgroundWorkerSaveGif.DoWork += new DoWorkEventHandler(backgroundWorkerSaveGif_DoWork);
@@ -62,7 +70,6 @@ namespace PavelStransky.Forms {
             this.backgroundWorkerCreate.WorkerReportsProgress = true;
             this.backgroundWorkerCreate.WorkerSupportsCancellation = true;
             this.backgroundWorkerCreate.DoWork += new DoWorkEventHandler(backgroundWorkerCreate_DoWork);
-            this.backgroundWorkerCreate.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorkerCreate_RunWorkerCompleted);
         }
 
         #region Vytvoøení bitmap
@@ -72,50 +79,80 @@ namespace PavelStransky.Forms {
         void backgroundWorkerCreate_DoWork(object sender, DoWorkEventArgs e) {
             int nGroups = this.graph.NumGroups();
 
-            for(int i = 0; i < nGroups; i++) {
-                this.backgroundWorkerCreate.ReportProgress(0, string.Format("Tvorba bitmapy {0} z {1}", i + 1, nGroups));
+            for(int g = 0; g < nGroups; g++) {
+                this.backgroundWorkerCreate.ReportProgress(0, string.Format("Tvorba bitmapy {0} z {1}", g + 1, nGroups));
 
-                // Normování matice
-                Matrix matrix = this.graph.GetMatrix(i);
-                this.bitmap[i] = this.CreateBitmap(i, matrix);
+                Matrix matrix = this.graph.GetMatrix(g);
+
+                if(matrix.NumItems() > 0)
+                    this.bitmap[g] = this.CreateBitmap(g, matrix);
+                else
+                    this.bitmap = null;
 
                 // Žádost o pøerušení procesu
                 if(this.backgroundWorkerCreate.CancellationPending) 
                     break;
 
-                this.Image = this.bitmap[i];
-                this.Invalidate();
+                if(g == this.group && this.bitmap[g] != null) {
+                    this.Image = this.bitmap[g];
+                    this.Invalidate();
+                }
             }
         }
 
         /// <summary>
         /// Na základì matice a velikosti okna vytvoøí bitmapu;
         /// </summary>
-        /// <param name="index">Index matice</param>
+        /// <param name="group">Index skupiny</param>
         /// <param name="matrix">Matice k vykreslení</param>
-        private Bitmap CreateBitmap(int index, Matrix matrix) {
+        private Bitmap CreateBitmap(int group, Matrix matrix) {
             int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
             int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
             bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
             int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
-            string title = (string)this.graph.GetCurveParameter(index, index, paramTitle, defaultTitle);
 
-            int sizeX = pointSizeX * matrix.LengthX;
-            int sizeY = pointSizeY * matrix.LengthY;
             int lengthX = matrix.LengthX;
             int lengthY = matrix.LengthY;
 
-            Bitmap result = new Bitmap(sizeX + (legend ? legendWidth : 0), sizeY);
+            MinMaxCache mm = this.minMax[group];
+            MinMaxCache mmB = this.minMaxB[group];
 
-            Color colorPlus = (Color)this.graph.GetCurveParameter(index, index, paramColorPlus, defaultColorPlus);
-            Color colorZero = (Color)this.graph.GetCurveParameter(index, index, paramColorZero, defaultColorZero);
-            Color colorMinus = (Color)this.graph.GetCurveParameter(index, index, paramColorMinus, defaultColorMinus);
+            int iMin = (int)((mm.MinX - mmB.MinX) * lengthX / mmB.Width);
+            int iMax = (int)((mm.MaxX - mmB.MinX) * lengthX / mmB.Width);
+            int jMin = (int)((mm.MinY - mmB.MinY) * lengthY / mmB.Height);
+            int jMax = (int)((mm.MaxY - mmB.MinY) * lengthY / mmB.Height);
+
+            int lx = iMax - iMin;
+            int ly = jMax - jMin;
+
+            int sizeX = pointSizeX * lx;
+            int sizeY = pointSizeY * ly;
+            int marginXMin = sizeX * this.marginL / 1000 + 2;
+            int marginXMax = sizeX * this.marginR / 1000 + 1;
+            int marginYMin = sizeY * this.marginB / 1000 + 2;
+            int marginYMax = sizeY * this.marginT / 1000 + 1;
+
+            int id = iMin;
+            int jd = jMin;
+
+            iMin = System.Math.Max(0, iMin);
+            iMax = System.Math.Min(lengthX, iMax);
+            jMin = System.Math.Max(0, jMin);
+            jMax = System.Math.Min(lengthY, jMax);
+
+            Color colorBackground = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
+            Bitmap result = new Bitmap(sizeX + (legend ? legendWidth : 0) + marginXMin + marginXMax, sizeY + marginYMin + marginYMax);
+            Graphics.FromImage(result).FillRectangle(new Pen(colorBackground).Brush, 0, 0, result.Width, result.Height);
+
+            Color colorPlus = (Color)this.graph.GetBackgroundParameter(group, paramColorPlus, defaultColorPlus);
+            Color colorZero = (Color)this.graph.GetBackgroundParameter(group, paramColorZero, defaultColorZero);
+            Color colorMinus = (Color)this.graph.GetBackgroundParameter(group, paramColorMinus, defaultColorMinus);
 
             double maxAbs = System.Math.Abs(matrix.MaxAbs());
 
-            for(int i = 0; i < lengthX; i++) {
-                for(int j = 0; j < lengthY; j++) {
-                    double m = matrix[i, j] / maxAbs;
+            for(int i = iMin; i < iMax; i++) {
+                for(int j = jMin; j < jMax; j++) {
+                    double m = matrix[i, lengthY - j - 1] / maxAbs;
 
                     Color color;
                     if(m < 0) 
@@ -129,8 +166,8 @@ namespace PavelStransky.Forms {
                             (int)((1 - m) * colorZero.G + m * colorPlus.G),
                             (int)((1 - m) * colorZero.B + m * colorPlus.B));
 
-                    int i1 = i * pointSizeX;
-                    int j1 = j * pointSizeY;
+                    int i1 = (i - id) * pointSizeX + marginXMin;
+                    int j1 = (j - jd) * pointSizeY + marginYMax;
 
                     for(int k = 0; k < pointSizeX; k++)
                         for(int l = 0; l < pointSizeY; l++)
@@ -176,26 +213,7 @@ namespace PavelStransky.Forms {
                 g.DrawString(sMin, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMin) / 2, sizeY - 20);
             }
 
-            if(title != string.Empty) {
-                Graphics g = Graphics.FromImage(result);
-                int fontWidth = (int)g.MeasureString(title, baseFont).Width;
-                g.DrawString(title, baseFont, Brushes.Black, (sizeX - fontWidth) / 2, 5);
-            }
-
             return result;
-        }
-
-        void backgroundWorkerCreate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-            // Žádost o pøerušení procesu
-            if(this.backgroundWorkerCreate.CancellationPending)
-                return;
-
-            if(this.graph.NumGroups() > 1) {
-                this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
-                this.timer.AutoReset = true;
-                this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
-                this.timer.Start();
-            }
         }
         #endregion
 
@@ -390,31 +408,31 @@ namespace PavelStransky.Forms {
             this.marginT = defaultMargin;
             this.marginB = (bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX) ? defaultMarginWithAxeB : defaultMargin;
 
-            this.eval = (bool)this.graph.GetGeneralParameter(paramEvaluate, defaultEvaluate);
+            this.evalGroup = (bool)this.graph.GetGeneralParameter(paramEvaluateGroup, defaultEvaluateGroup);
+            this.evalCurve = (bool)this.graph.GetGeneralParameter(paramEvaluateCurve, defaultEvaluateCurve);
 
             this.group = 0;
 
-            if(this.eval || this.graph.NumGroups() > 1) {
-                if(this.eval) {
-                    this.time = 0;
-                    this.maxTime = this.graph.GetMaxLength(this.group);
-                }
-                else {
-                    this.time = -1;
-                    this.maxTime = -1;
-                }
+            this.SetMinMax();
 
+            int nGroups = this.graph.NumGroups();
+
+            this.bitmap = new Bitmap[nGroups];
+            (this.Parent.Parent as GraphForm).NewProcess(string.Empty, this.backgroundWorkerCreate);            
+
+            this.time = this.minMax[this.group].MaxLength;
+
+            if(this.evalGroup || nGroups > 1) {
+                if(this.evalCurve) 
+                    this.time = 1;
+
+                this.timer.Elapsed -= timer_Elapsed;
                 this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
                 this.timer.AutoReset = true;
                 this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
                 this.timer.Start();
             }
-            else {
-                this.time = -1;
-                this.maxTime = -1;
-            }
 
-            this.SetMinMax();
 			this.Invalidate();
 		}
 
@@ -422,52 +440,148 @@ namespace PavelStransky.Forms {
         /// Event èasovaèe - postupné vykreslování køivky
         /// </summary>
         void timer_Elapsed(object sender, ElapsedEventArgs e) {
-/*            if(this.index++ > this.maxIndex) {
-                this.timer.Stop();
-                this.index = -1;
+            int nGroups = this.graph.NumGroups();
+            bool moveGroup = this.evalGroup;
+            bool changed = moveGroup;
+
+            if(this.evalCurve) {
+                this.time++;
+                if(this.time > this.minMax[this.group].MaxLength) {
+                    this.time = 1;
+                    moveGroup = true;
+                }
+                changed = true;
             }
-*/
-            this.Invalidate();
+
+            if(moveGroup) {
+                this.group = (this.group + 1) % nGroups;
+
+                if(!this.evalCurve)
+                    this.time = this.minMax[this.group].MaxLength;
+            }
+
+            if(changed)
+                this.Invalidate();
         }
 
         /// <summary>
-        /// Nastaví minimální a maximální hodnotu
+        /// Nastaví pole s minimálními a maximálními hodnotami
         /// </summary>
         public void SetMinMax() {
-            Vector minmax = this.graph.GetMinMax(this.group);
+            int nGroups = this.graph.NumGroups();
+            this.minMax = new MinMaxCache[nGroups];
+            this.minMaxB = new MinMaxCache[nGroups];
 
-            this.minX = (double)this.graph.GetGeneralParameter(paramMinX, minmax[0]);
-            this.maxX = (double)this.graph.GetGeneralParameter(paramMaxX, minmax[1]);
-            this.minY = (double)this.graph.GetGeneralParameter(paramMinY, minmax[2]);
-            this.maxY = (double)this.graph.GetGeneralParameter(paramMaxY, minmax[3]);
+            for(int g = 0; g < nGroups; g++) {
+                Vector minmax = this.graph.GetMinMax(g);
+
+                if(!object.Equals(minmax, null)) {
+                    minmax[0] = (double)this.graph.GetGeneralParameter(paramMinX, minmax[0]);
+                    minmax[1] = (double)this.graph.GetGeneralParameter(paramMaxX, minmax[1]);
+                    minmax[2] = (double)this.graph.GetGeneralParameter(paramMinY, minmax[2]);
+                    minmax[3] = (double)this.graph.GetGeneralParameter(paramMaxY, minmax[3]);
+                }
+                else {
+                    minmax = new Vector(4);
+
+                    minmax[0] = (double)this.graph.GetGeneralParameter(paramMinX, defaultMinX);
+                    minmax[1] = (double)this.graph.GetGeneralParameter(paramMaxX, defaultMaxX);
+                    minmax[2] = (double)this.graph.GetGeneralParameter(paramMinY, defaultMinY);
+                    minmax[3] = (double)this.graph.GetGeneralParameter(paramMaxY, defaultMaxY);
+                }
+
+                Vector minmaxB = new Vector(4);
+                minmaxB[0] = (double)this.graph.GetBackgroundParameter(group, paramMinXBackground, minmax[0]);
+                minmaxB[1] = (double)this.graph.GetBackgroundParameter(group, paramMaxXBackground, minmax[1]);
+                minmaxB[2] = (double)this.graph.GetBackgroundParameter(group, paramMinYBackground, minmax[2]);
+                minmaxB[3] = (double)this.graph.GetBackgroundParameter(group, paramMaxYBackground, minmax[3]);
+
+                Matrix m = this.graph.GetMatrix(g);
+                if(m.NumItems() > 0) {
+                    if(double.IsNaN(minmaxB[0]))
+                        minmaxB[0] = 0;
+                    if(double.IsNaN(minmaxB[1]))
+                        minmaxB[1] = m.LengthX;
+                    if(double.IsNaN(minmaxB[2]))
+                        minmaxB[2] = 0;
+                    if(double.IsNaN(minmaxB[3]))
+                        minmaxB[3] = m.LengthY;
+
+                    if(double.IsNaN(minmax[0]))
+                        minmax[0] = minmaxB[0];
+                    if(double.IsNaN(minmax[1]))
+                        minmax[1] = minmaxB[1];
+                    if(double.IsNaN(minmax[2]))
+                        minmax[2] = minmaxB[2];
+                    if(double.IsNaN(minmax[3]))
+                        minmax[3] = minmaxB[3];
+                }
+
+                this.minMax[g] = new MinMaxCache(minmax, this.graph.GetMaxLength(g));
+                this.minMaxB[g] = new MinMaxCache(minmaxB);
+            }
         }
 
-		/// <summary>
+        /// <summary>
+        /// Šíøka bez okrajù
+        /// </summary>
+        private int WidthWM { get { return (int)(this.Width * (1.0 - (this.marginL + this.marginR) / 1000.0)); } }
+
+        /// <summary>
+        /// Výška bez okrajù
+        /// </summary>
+        private int HeightWM { get { return (int)(this.Height * (1.0 - (this.marginT + this.marginB) / 1000.0)); } }
+
+        /// <summary>
+        /// Velikost horního okraje v pixelech
+        /// </summary>
+        private int AbsMarginT { get { return this.marginT * this.Height / 1000; } }
+
+        /// <summary>
+        /// Velikost dolního okraje v pixelech
+        /// </summary>
+        private int AbsMarginB { get { return this.marginB * this.Height / 1000; } }
+
+        /// <summary>
+        /// Velikost levého okraje v pixelech
+        /// </summary>
+        private int AbsMarginL { get { return this.marginL * this.Width / 1000; } }
+
+        /// <summary>
+        /// Velikost pravého okraje v pixelech
+        /// </summary>
+        private int AbsMarginR { get { return this.marginR * this.Width / 1000; } }
+        
+        /// <summary>
 		/// Vypoèítá offset takový, aby se celý graf právì vešel do okna
 		/// </summary>
-		private double GetFitOffsetY() {
-			return this.maxY * (this.Height - this.marginT - this.marginB) / (this.maxY - this.minY) + this.marginT;
+        /// <param name="group">Index skupiny grafu</param>
+		private double GetFitOffsetY(int group) {
+			return this.minMax[group].MaxY * this.HeightWM / this.minMax[group].Height + this.AbsMarginT;
 		}
 
 		/// <summary>
 		/// Vypoèítá offset takový, aby se celý graf právì vešel do okna
 		/// </summary>
-		private double GetFitOffsetX() {
-			return -this.minX * (this.Width - this.marginL - this.marginR) / (this.maxX - this.minX) + this.marginL;
+        /// <param name="group">Index skupiny grafu</param>
+        private double GetFitOffsetX(int group) {
+            return -this.minMax[group].MinX * this.WidthWM / this.minMax[group].Width + this.AbsMarginL;
 		}
 
 		/// <summary>
 		/// Vypoèítá zvìtšení takové, aby se celý graf právì vešel do okna
 		/// </summary>
-		private double GetFitAmplifyY() {
-			return (this.Height - this.marginT - this.marginB) / (this.maxY - this.minY);
+        /// <param name="group">Index skupiny grafu</param>
+        private double GetFitAmplifyY(int group) {
+            return this.HeightWM / this.minMax[group].Height;
 		}
 
 		/// <summary>
 		/// Vypoèítá zvìtšení takové, aby se celý graf právì vešel do okna
 		/// </summary>
-		private double GetFitAmplifyX() {
-			return (this.Width -  this.marginL - this.marginR) / (this.maxX - this.minX);
+        /// <param name="group">Index skupiny grafu</param>
+        private double GetFitAmplifyX(int group) {
+            return this.WidthWM / this.minMax[group].Width;
 		}
 
 		/// <summary>
@@ -484,38 +598,40 @@ namespace PavelStransky.Forms {
         /// <param name="g">Graphics</param>
         /// <param name="time">Èas k vykreslení, -1 pro vykreslení všeho</param>
         /// <param name="group">Skupina køivek pro vykreslení</param>
-        private void PaintGraph(Graphics g, int group, int time){
+        private void PaintGraph(Graphics g, int group, int time) {
             // Barva pozadí
-            Color backgroundColor = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
-            Brush backgroundBrush = (new Pen(backgroundColor)).Brush;
-            g.FillRectangle(backgroundBrush, this.ClientRectangle);
+            if(this.Image == null) {
+                Color backgroundColor = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
+                Brush backgroundBrush = (new Pen(backgroundColor)).Brush;
+                g.FillRectangle(backgroundBrush, this.ClientRectangle);
+            }
+
+            bool shift = (bool)this.graph.GetGeneralParameter(paramShift, defaultShift);
+
+            double offsetX = this.GetFitOffsetX(group);
+            double amplifyX = this.GetFitAmplifyX(group);
+            double offsetY;
+            double amplifyY;
+
+            if(!shift) {
+                offsetY = this.GetFitOffsetY(group);
+                amplifyY = this.GetFitAmplifyY(group);
+            }
+            else {
+                offsetY = 0.0;
+                amplifyY = baseAmplifyY;
+            }
 
             int nCurves = this.graph.NumCurves(group);
 
-			if(nCurves > 0) {
-                bool shift = (bool)this.graph.GetGeneralParameter(paramShift, defaultShift);
+            if(nCurves > 0) {
+                int stringHeight = (int)g.MeasureString("M", baseFont).Height;
 
-				int stringHeight = (int)g.MeasureString("M", baseFont).Height;
+                for(int i = 0; i < nCurves; i++) {
+                    if(shift)
+                        offsetY = (i + 1) * this.HeightWM / (nCurves + 2) + this.AbsMarginT;
 
-                double offsetX = this.GetFitOffsetX();
-                double amplifyX = this.GetFitAmplifyX();
-				double offsetY;
-				double amplifyY;
-
-				if(!shift) {
-					offsetY = this.GetFitOffsetY();
-					amplifyY = this.GetFitAmplifyY();
-				}
-				else {
-					offsetY = 0.0;
-					amplifyY = this.amplifyY;
-				}
-
-				for(int i = 0; i < nCurves; i++) {
-					if(shift)
-						offsetY = (i + 1) * (this.Height - this.marginT - this.marginB) / (nCurves + 2) + this.marginT;
-
-					Point [] p = this.graph.PointArrayToDraw(group, i, offsetX, amplifyX, offsetY, amplifyY, time);
+                    Point[] p = this.graph.PointArrayToDraw(group, i, offsetX, amplifyX, offsetY, amplifyY, time);
 
                     Color lineColor = (Color)this.graph.GetCurveParameter(group, i, paramLineColor, defaultLineColor);
                     float lineWidth = (float)this.graph.GetCurveParameter(group, i, paramLineWidth, defaultLineWidth);
@@ -526,32 +642,33 @@ namespace PavelStransky.Forms {
 
                     Pen linePen = new Pen(lineColor, lineWidth);
                     Pen pointPen = new Pen(pointColor);
-                    
+
                     if(p.Length >= 2)
                         this.DrawLine(g, p, linePen, lineStyle);
 
-					if(this.graph.GetError(group, i) != null) {
-						Point [] errorPoints = this.graph.GetErrorLines(group, i, offsetX, amplifyX, offsetY, amplifyY);
-						Point [] ep = new Point[2];
-						int length = errorPoints.Length / 2;
+                    // Chybové úseèky
+                    if(this.graph.IsErrors(group, i)) {
+                        Point[] errorPoints = this.graph.GetErrorLines(group, i, offsetX, amplifyX, offsetY, amplifyY);
+                        Point[] ep = new Point[2];
+                        int length = errorPoints.Length / 2;
 
-						for(int j = 0; j < length; j++) {
-							ep[0] = errorPoints[2 * j];
-							ep[1] = errorPoints[2 * j + 1];
-							this.DrawLine(g, ep, pointPen, Graph.LineStyles.Line);
-						}
+                        for(int j = 0; j < length; j++) {
+                            ep[0] = errorPoints[2 * j];
+                            ep[1] = errorPoints[2 * j + 1];
+                            this.DrawLine(g, ep, pointPen, Graph.LineStyles.Line);
+                        }
 
-						this.DrawPoints(g, errorPoints, pointPen, Graph.PointStyles.HLines, 5);
-					}
+                        this.DrawPoints(g, errorPoints, pointPen, Graph.PointStyles.HLines, 5);
+                    }
 
                     bool showLabels = (bool)this.graph.GetCurveParameter(group, i, paramShowLabel, defaultShowLabel);
 
-					if(showLabels) {
+                    if(showLabels) {
                         Color labelColor = (Color)this.graph.GetCurveParameter(group, i, paramLabelColor, defaultLabelColor);
                         string lineName = (string)this.graph.GetCurveParameter(group, i, paramLineName, defaultLineName);
                         Brush labelBrush = (new Pen(labelColor)).Brush;
-						g.DrawString(lineName, baseFont, labelBrush, this.marginL, (float)(offsetY - stringHeight / 2.0)); 
-					}
+                        g.DrawString(lineName, baseFont, labelBrush, this.AbsMarginL, (float)(offsetY - stringHeight / 2.0));
+                    }
 
                     this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
 
@@ -571,92 +688,91 @@ namespace PavelStransky.Forms {
                         Pen firstPointPen = new Pen(firstPointColor);
                         this.DrawPoints(g, firstPoint, firstPointPen, firstPointStyle, firstPointSize);
                     }
-				}
+                }
+            }
+            bool showAxeX = (bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX);
+            bool showAxeY = (bool)this.graph.GetGeneralParameter(paramShowAxeY, defaultShowAxeY);
 
-                bool showAxeX = (bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX);
-                bool showAxeY = (bool)this.graph.GetGeneralParameter(paramShowAxeY, defaultShowAxeY);
+            // X - ová osa
+            if(showAxeX) {
+                int y = this.Height - this.AbsMarginB;
 
-				// X - ová osa
-				if(showAxeX) {
-					int y = this.Height - this.marginB;
+                Point[] line = new Point[2];
+                line[0] = new Point(this.AbsMarginL, y);
+                line[1] = new Point(this.Width - this.AbsMarginR, y);
 
-					Point [] line = new Point[2];
-					line[0] = new Point(this.marginL, y);
-					line[1] = new Point(this.Width - this.marginR, y);
+                Color labelColorX = (Color)this.graph.GetGeneralParameter(paramLabelColorX, defaultLabelColorX);
+                float lineWidthX = (float)this.graph.GetGeneralParameter(paramLineWidthX, defaultLineWidthX);
+                Pen linePen = new Pen(labelColorX, lineWidthX);
 
-                    Color labelColorX = (Color)this.graph.GetGeneralParameter(paramLabelColorX, defaultLabelColorX);
-                    float lineWidthX = (float)this.graph.GetGeneralParameter(paramLineWidthX, defaultLineWidthX);
-                    Pen linePen = new Pen(labelColorX, lineWidthX);
+                Color pointColorX = (Color)this.graph.GetGeneralParameter(paramPointColorX, defaultPointColorX);
+                Pen pointPen = new Pen(pointColorX);
 
-                    Color pointColorX = (Color)this.graph.GetGeneralParameter(paramPointColorX, defaultPointColorX);
-                    Pen pointPen = new Pen(pointColorX);
+                Graph.PointStyles pointStyleX = (Graph.PointStyles)this.graph.GetGeneralParameter(paramPointStyleX, defaultPointStyleX);
+                int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
 
-                    Graph.PointStyles pointStyleX = (Graph.PointStyles)this.graph.GetGeneralParameter(paramPointStyleX, defaultPointStyleX);
-                    int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
+                this.DrawLine(g, line, linePen, Graph.LineStyles.Line);
 
-					this.DrawLine(g, line, linePen, Graph.LineStyles.Line);
+                int smallIntervals;
+                int smallIntervalsOffset;
+                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, this.WidthWM, this.minMax[group].MinX, this.minMax[group].MaxX);
 
-					int smallIntervals;
-					int smallIntervalsOffset;
-					Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, this.Width - this.marginL - this.marginR, this.minX, this.maxX);
+                Brush numBrush = linePen.Brush;
+                Point[] p = new Point[v.Length];
+                for(int i = 0; i < v.Length; i++) {
+                    p[i] = new Point((int)(v[i] * amplifyX + offsetX), y);
+                    if(((i - smallIntervalsOffset) % smallIntervals) != 0)
+                        continue;
 
-					Brush numBrush = linePen.Brush;
-					Point [] p = new Point[v.Length];
-					for(int i = 0; i < v.Length; i++) {
-						p[i] = new Point((int)(v[i] * amplifyX + offsetX), y);
-						if(((i - smallIntervalsOffset) % smallIntervals) != 0)
-							continue;
-
-						string numString = v[i].ToString();
-						float nsWidth = g.MeasureString(numString, baseFont).Width;
-						g.DrawString(numString, baseFont, numBrush, p[i].X - (int)(nsWidth / 2), y + 5); 
-					}
+                    string numString = v[i].ToString();
+                    float nsWidth = g.MeasureString(numString, baseFont).Width;
+                    g.DrawString(numString, baseFont, numBrush, p[i].X - (int)(nsWidth / 2), y + 5);
+                }
 
 
-                    this.DrawPoints(g, p, pointPen, pointStyleX, pointSizeX, smallIntervals, smallIntervalsOffset, 
-                        pointStyleX, pointSizeX / 2);
-				}
+                this.DrawPoints(g, p, pointPen, pointStyleX, pointSizeX, smallIntervals, smallIntervalsOffset,
+                    pointStyleX, pointSizeX / 2);
+            }
 
-				// Y - ová osa
-				if(showAxeY && !shift) {
-					int x = this.marginL;
+            // Y - ová osa
+            if(showAxeY && !shift) {
+                int x = this.AbsMarginL;
 
-					Point [] line = new Point[2];
-					line[0] = new Point(x, this.marginT);
-					line[1] = new Point(x, this.Height - this.marginB);
-					
-                    Color labelColorY = (Color)this.graph.GetGeneralParameter(paramLabelColorY, defaultLabelColorY);
-                    float lineWidthY = (float)this.graph.GetGeneralParameter(paramLineWidthY, defaultLineWidthY);
-                    Pen linePen = new Pen(labelColorY, lineWidthY);
+                Point[] line = new Point[2];
+                line[0] = new Point(x, this.AbsMarginT);
+                line[1] = new Point(x, this.Height - this.AbsMarginB);
 
-                    Color pointColorY = (Color)this.graph.GetGeneralParameter(paramPointColorY, defaultPointColorY);
-                    Pen pointPen = new Pen(pointColorY);
-                    
-                    Graph.PointStyles pointStyleY = (Graph.PointStyles)this.graph.GetGeneralParameter(paramPointStyleY, defaultPointStyleY);
-                    int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
+                Color labelColorY = (Color)this.graph.GetGeneralParameter(paramLabelColorY, defaultLabelColorY);
+                float lineWidthY = (float)this.graph.GetGeneralParameter(paramLineWidthY, defaultLineWidthY);
+                Pen linePen = new Pen(labelColorY, lineWidthY);
 
-					this.DrawLine(g, line, linePen, Graph.LineStyles.Line);
+                Color pointColorY = (Color)this.graph.GetGeneralParameter(paramPointColorY, defaultPointColorY);
+                Pen pointPen = new Pen(pointColorY);
 
-					int smallIntervals;
-					int smallIntervalsOffset;
-					Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, this.Height - this.marginT - this.marginB, this.minY, this.maxY);
+                Graph.PointStyles pointStyleY = (Graph.PointStyles)this.graph.GetGeneralParameter(paramPointStyleY, defaultPointStyleY);
+                int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
 
-					Brush numBrush = linePen.Brush;
-					Point [] p = new Point[v.Length];
-					for(int i = 0; i < v.Length; i++) {
-						p[i] = new Point(x, (int)(-v[i] * amplifyY + offsetY));
-						if(((i - smallIntervalsOffset) % smallIntervals) != 0)
-							continue;
+                this.DrawLine(g, line, linePen, Graph.LineStyles.Line);
 
-						string numString = v[i].ToString();
-						SizeF nsSize = g.MeasureString(numString, baseFont);
-						g.DrawString(numString, baseFont, numBrush, x - nsSize.Width - 5, p[i].Y - nsSize.Height / 2);
-					}
+                int smallIntervals;
+                int smallIntervalsOffset;
+                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, this.HeightWM, this.minMax[group].MinY, this.minMax[group].MaxY);
 
-					this.DrawPoints(g, p, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
-				}
-			}
-		}
+                Brush numBrush = linePen.Brush;
+                Point[] p = new Point[v.Length];
+                for(int i = 0; i < v.Length; i++) {
+                    p[i] = new Point(x, (int)(-v[i] * amplifyY + offsetY));
+                    if(((i - smallIntervalsOffset) % smallIntervals) != 0)
+                        continue;
+
+                    string numString = v[i].ToString();
+                    SizeF nsSize = g.MeasureString(numString, baseFont);
+                    g.DrawString(numString, baseFont, numBrush, x - nsSize.Width - 5, p[i].Y - nsSize.Height / 2);
+                }
+
+                this.DrawPoints(g, p, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
+            }
+        }
 
 		/// <summary>
 		/// Vytvoøí body, ve kterých bude label na ose
@@ -793,13 +909,22 @@ namespace PavelStransky.Forms {
         /// <param name="x">X - ová souøadnice myši</param>
         /// <param name="y">Y - ová souøadnice myši</param>
         public string ToolTip(int x, int y) {
-            double offsetX = this.GetFitOffsetX();
-            double amplifyX = this.GetFitAmplifyX();
-            double offsetY = this.GetFitOffsetY();
-            double amplifyY = this.GetFitAmplifyY();
+            double offsetX = this.GetFitOffsetX(this.group);
+            double amplifyX = this.GetFitAmplifyX(this.group);
+            double offsetY = this.GetFitOffsetY(this.group);
+            double amplifyY = this.GetFitAmplifyY(this.group);
 
             double xl = (x - offsetX) / amplifyX;
             double yl = -(y - offsetY) / amplifyY;
+
+            Matrix m = this.graph.GetMatrix(this.group);
+            if(m.NumItems() > 0) {
+                double id = (xl - this.minMaxB[this.group].MinX) * m.LengthX / this.minMaxB[this.group].Width;
+                double jd = (yl - this.minMaxB[this.group].MinY) * m.LengthY / this.minMaxB[this.group].Height;
+
+                if(id >= 0.0 && id < m.LengthX && jd >= 0.0 && jd < m.LengthY)
+                    return string.Format("({0,5:F}, {1,5:F}) = {2,5:F}", xl, yl, m[(int)id, (int)jd]);
+            }
 
             return string.Format("({0,5:F}, {1,5:F})", xl, yl);
         }
@@ -807,16 +932,82 @@ namespace PavelStransky.Forms {
 		/// <summary>
 		/// Pøi zmìnì velikosti
 		/// </summary>
-		protected override void OnSizeChanged(EventArgs e) {
-			base.OnSizeChanged (e);
-			this.Invalidate();
-		}
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+            this.Invalidate();
+        }
+
+        /// <summary>
+        /// Zmìna skupiny
+        /// </summary>
+        protected override void OnMouseWheel(MouseEventArgs e) {
+            base.OnMouseWheel(e);
+
+            // S tlaèítkem vyvíjíme køivku
+            if(this.leftMouseButton) {
+                int newTime = this.time + System.Math.Sign(e.Delta);
+                int maxTime = this.minMax[this.group].MaxLength;
+                if(newTime <= 0)
+                    newTime = 1;
+                else if(newTime > maxTime)
+                    newTime = maxTime;
+                this.time = newTime;
+            }
+
+            else {
+                int nGroups = this.graph.NumGroups();
+                int newGroup = this.group + System.Math.Sign(e.Delta);
+                if(newGroup < 0)
+                    newGroup = 0;
+                if(newGroup >= nGroups)
+                    newGroup = nGroups - 1;
+                this.group = newGroup;
+
+                if(this.evalCurve)
+                    this.time = 1;
+                else
+                    this.time = this.minMax[this.group].MaxLength;
+            }
+
+            this.Invalidate();
+        }
+
+        /// <summary>
+        /// Stisk tlaèítka myši
+        /// </summary>
+        protected override void OnMouseDown(MouseEventArgs e) {
+            base.OnMouseDown(e);
+
+            if(e.Button == MouseButtons.Left)
+                this.leftMouseButton = true;
+        }
+
+        /// <summary>
+        /// Uvolnìní tlaèítka myši
+        /// </summary>
+        protected override void OnMouseUp(MouseEventArgs e) {
+            base.OnMouseUp(e);
+
+            if(e.Button == MouseButtons.Left)
+                this.leftMouseButton = false;
+        }
+
+        /// <summary>
+        /// Musíme nastavit focus, jinak nefunguje OnMouseWheel
+        /// </summary>
+        protected override void OnMouseMove(MouseEventArgs e) {
+            base.OnMouseMove(e);
+
+            if(!this.Focused)
+                this.Focus();
+        }
 
 		private Font baseFont = new Font("Arial", 8);
 		private const double baseAmplifyY = 8;
-		private const int defaultMargin = 8;
-		private const int defaultMarginWithAxeL = 40;
-		private const int defaultMarginWithAxeB = 20;
+        // Okraj v promilích
+		private const int defaultMargin = 20;
+		private const int defaultMarginWithAxeL = 70;
+		private const int defaultMarginWithAxeB = 100;
 		// Interval mezi dvìma body s èísly na ose (v obrazových bodech)
 		private const int axePointInterval = 50;
         private const double multiplierMinMax = 0.02;
@@ -847,8 +1038,8 @@ namespace PavelStransky.Forms {
         private const string paramMinY = "miny";
         private const string paramMaxY = "maxy";
 
-        private const string paramEvaluate = "eval";
-        private const string paramEvaluateCurves = "evalcurves";
+        private const string paramEvaluateGroup = "evalgroup";
+        private const string paramEvaluateCurve = "evalcurve";
         private const string paramInterval = "interval";
 
         // Osy
@@ -877,6 +1068,12 @@ namespace PavelStransky.Forms {
         private const string paramColorMinus = "colorminus";
         private const string paramLegend = "legend";
         private const string paramLegendWidth = "legendwidth";
+
+        // Pozadí
+        private const string paramMinXBackground = "minxb";
+        private const string paramMaxXBackground = "maxxb";
+        private const string paramMinYBackground = "minyb";
+        private const string paramMaxYBackground = "maxyb";
 
         // Default hodnoty
         private const bool defaultShift = false;
@@ -926,13 +1123,18 @@ namespace PavelStransky.Forms {
         private static Color defaultColorZero = Color.FromName("black");
         private static Color defaultColorPlus = Color.FromName("blue");
         private static Color defaultColorMinus = Color.FromName("red");
-        private const bool defaultLegend = true;
+        private const bool defaultLegend = false;
         private const int defaultLegendWidth = 50;
         private const string defaultTitle = "";
 
-        private const bool defaultEvaluate = false;
-        private const bool defaultEvaluateCurves = false;
+        private const bool defaultEvaluateGroup = false;
+        private const bool defaultEvaluateCurve = false;
         private const double defaultInterval = 1000.0;
+
+        private const double defaultMinXBackground = double.NaN;
+        private const double defaultMaxXBackground = defaultMinX;
+        private const double defaultMinYBackground = defaultMinX;
+        private const double defaultMaxYBackground = defaultMinX;
 
         private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }

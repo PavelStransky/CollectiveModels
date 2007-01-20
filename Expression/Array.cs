@@ -34,6 +34,14 @@ namespace PavelStransky.Expression {
 			this.checkSize = checkSize;
 		}
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="type">Typ øady</param>
+        public TArray(Type type) : this() {
+            this.type = type;
+        }
+
 		/// <summary>
 		/// Konstruktor (velikost objektù se kontroluje implicitnì)
 		/// </summary>

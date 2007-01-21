@@ -43,7 +43,7 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.GenArray());
 			functions.Add(new Functions.GetColumns());
 			functions.Add(new Functions.GetRows());
-			functions.Add(new Functions.CreateGraph());
+			functions.Add(new Functions.FnGraph());
 			functions.Add(new Functions.FnImport());
 			functions.Add(new Functions.Join());
 			functions.Add(new Functions.Length());
@@ -106,7 +106,8 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.EVNumDiff());
             functions.Add(new Functions.NumNonzeroItems());
 
-            functions.Add(new Functions.NewContext());
+            // Kontext
+            functions.Add(new Functions.FnContext());
             functions.Add(new Functions.GetContext());
             functions.Add(new Functions.UseContext());
             functions.Add(new Functions.SetContext());
@@ -158,6 +159,9 @@ namespace PavelStransky.Expression {
 
             // Henon - Heiles
             functions.Add(new Functions.HH());
+
+            // Aliasy
+            functions.Add(new Functions.CreateGraph());
         }
 
         protected static readonly Operators.Operators unaryOperators;

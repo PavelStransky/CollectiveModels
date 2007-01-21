@@ -232,24 +232,22 @@ namespace PavelStransky.Expression {
         private void CreateItemArray(object item) {
             this.item = new TArray();
 
-            if(item != null) {
-                if(item is PointVector || item is Vector) {
-                    TArray a = new TArray();
-                    a.Add(item);
-                    this.item.Add(a);
+            if(item is PointVector || item is Vector) {
+                TArray a = new TArray();
+                a.Add(item);
+                this.item.Add(a);
+            }
+
+            else if(item is TArray) {
+                Type t = (item as TArray).ItemType;
+                if(t == typeof(PointVector) || t == typeof(Vector)) {
+                    this.item.Add(item);
                 }
 
-                else if(item is TArray) {
-                    Type t = (item as TArray).ItemType;
+                else if(t == typeof(TArray)) {
+                    t = ((item as TArray)[0] as TArray).ItemType;
                     if(t == typeof(PointVector) || t == typeof(Vector)) {
-                        this.item.Add(item);
-                    }
-
-                    else if(t == typeof(TArray)) {
-                        t = ((item as TArray)[0] as TArray).ItemType;
-                        if(t == typeof(PointVector) || t == typeof(Vector)) {
-                            this.item = item as TArray;
-                        }
+                        this.item = item as TArray;
                     }
                 }
             }
@@ -275,7 +273,7 @@ namespace PavelStransky.Expression {
             this.errors = null;
 
             // Rozkopírování na všechny køivky s kontrolou délky
-            if(errors != null && errors is Vector) {
+            if(errors is Vector) {
                 this.errors = new TArray();
                 int le = (errors as Vector).Length;
 
@@ -297,7 +295,7 @@ namespace PavelStransky.Expression {
                 }
             }
 
-            else if(errors != null && errors is TArray) {
+            else if(errors is TArray) {
                 Type t = (errors as TArray).ItemType;
 
                 // Rozkopírování na všechny prvky skupiny
@@ -395,37 +393,35 @@ namespace PavelStransky.Expression {
             int nGroups = this.NumGroups();
             this.background = null;
 
-            if(background != null) {
-                if(background is Matrix) {
-                    this.background = new TArray();
+            if(background is Matrix) {
+                this.background = new TArray();
 
-                    if(nGroups == 0) {
-                        this.background.Add(background);
-                        this.item.Add(new TArray(typeof(PointVector)));
-                        this.errors.Add(new TArray(typeof(Vector)));
-                    }
-                    else
-                        this.background.Add(background, nGroups);
+                if(nGroups == 0) {
+                    this.background.Add(background);
+                    this.item.Add(new TArray(typeof(PointVector)));
+                    this.errors.Add(new TArray(typeof(Vector)));
+                }
+                else
+                    this.background.Add(background, nGroups);
+            }
+
+            else if(background is TArray && (background as TArray).ItemType == typeof(Matrix)) {
+                this.background = background as TArray;
+                int nBack = this.background.Count;
+                if(nGroups == 1 && nBack > 1) {
+                    this.item.Add(this.item[0], nBack - 1);
+                    this.errors.Add(this.errors[0], nBack - 1);
+                    nGroups = this.NumGroups();
                 }
 
-                else if(background is TArray && (background as TArray).ItemType == typeof(Matrix)) {
-                    this.background = background as TArray;
-                    int nBack = this.background.Count;
-                    if(nGroups == 1 && nBack > 1) {
-                        this.item.Add(this.item[0], nBack - 1);
-                        this.errors.Add(this.errors[0], nBack - 1);
-                        nGroups = this.NumGroups();
-                    }
+                int limit = System.Math.Max(nGroups, nBack);
 
-                    int limit = System.Math.Max(nGroups, nBack);
-
-                    for(int i = 0; i < limit; i++) {
-                        if(i >= nBack)
-                            this.background.Add(new Matrix(0));
-                        else if(i >= nGroups) {
-                            this.item.Add(new TArray(typeof(PointVector)));
-                            this.errors.Add(new TArray(typeof(Vector)));
-                        }
+                for(int i = 0; i < limit; i++) {
+                    if(i >= nBack)
+                        this.background.Add(new Matrix(0));
+                    else if(i >= nGroups) {
+                        this.item.Add(new TArray(typeof(PointVector)));
+                        this.errors.Add(new TArray(typeof(Vector)));
                     }
                 }
             }
@@ -441,10 +437,11 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="item">Data pro graf</param>
         /// <param name="background">Pozadí (densityGraph)</param>
+        /// <param name="errors">Chyby køivek grafu</param>
         /// <param name="graphParams">Parametry celého grafu</param>
         /// <param name="itemParams">Parametry jednotlivých køivek grafu</param>
-        /// <param name="errors">Chyby køivek grafu</param>
-        public Graph(object item, object background, string graphParams, object itemParams, object backgroundParams, object errors) {
+        /// <param name="backgroundParams">Parametry pozadí</param>
+        public Graph(object item, object background, object errors, object graphParams, object itemParams, object backgroundParams) {
             // Data
             this.CreateItemArray(item);
             // Chyby
@@ -454,33 +451,59 @@ namespace PavelStransky.Expression {
             
             int nGroups = this.NumGroups();
 
-            // Kontexty - pokud máme v kontextech pro øadu èi pro pozadí jen jednu hodnotu
-            // (string), pøiøadíme ji ke kontextu grafu
-            if(graphParams == null)
-                graphParams = string.Empty;
-            if(itemParams != null && itemParams is string) {
-                graphParams = (string)graphParams + (string)itemParams;
-                itemParams = null;
+            // Parametry grafu
+            this.graphContext = null;
+            if(graphParams is string && graphParams as string != string.Empty) {
+                this.graphContext = new Context();
+                (new Expression(graphParams as string)).Evaluate(this.graphContext);
             }
-            if(backgroundParams != null && backgroundParams is string) {
-                graphParams = (string)graphParams + (string)backgroundParams;
-                backgroundParams = null;
-            }   
+            else if(graphParams is Context)
+                this.graphContext = graphParams as Context;
+            if(this.graphContext == null)
+                this.graphContext = new Context();
 
-            this.graphContext = new Context();
-            if(graphParams != null && graphParams != string.Empty) {
-                Expression e = new Expression(graphParams);
-                e.Evaluate(this.graphContext);
+            // Parametry køivek - nejprve vše pøevedeme na kontexty
+            if(itemParams is string && itemParams as string != string.Empty){
+                Context c = new Context();
+                (new Expression(itemParams as string)).Evaluate(c);
+                itemParams = c;
             }
 
+            else if(itemParams is TArray) {
+                int inGroups = (itemParams as TArray).Count;
+
+                for(int g = 0; g < inGroups; g++) {
+                    object ip = (itemParams as TArray)[g];
+                    if(ip is string && ip as string != string.Empty) {
+                        Context c = new Context();
+                        (new Expression(ip as string)).Evaluate(c);
+                        (itemParams as TArray)[g] = c;
+                    }
+
+                    else if(ip is TArray) {
+                        int inCurves = (ip as TArray).Count;
+
+                        for(int i = 0; i < inCurves; i++) {
+                            object iip = (ip as TArray)[i];
+                            if(iip is string && iip as string != string.Empty) {
+                                Context c = new Context();
+                                (new Expression(ip as string)).Evaluate(c);
+                                (ip as TArray)[i] = c;
+                            }
+                        }                          
+                    }
+                }
+            }
+
+            // Nyní zaøadíme
             this.itemContext = new TArray();
             for(int g = 0; g < nGroups; g++) {
                 int curves = this.NumCurves(g);
 
                 object ip = null;
-                if(itemParams != null)
-                    ip = itemParams as TArray;
-                if(ip != null){
+                if(itemParams != null) 
+                    ip = itemParams;
+                if(ip is TArray) {
                     if((ip as TArray).Count > g)
                         ip = (ip as TArray)[g];
                     else
@@ -488,26 +511,23 @@ namespace PavelStransky.Expression {
                 }
 
                 TArray ca = new TArray();
-                if(ip is string && ip as string != string.Empty)
-                {
-                    Context c = new Context();
-                    (new Expression(ip as string)).Evaluate(c);
-                    ca.Add(c, curves);
-                }
+
+                if(ip is Context) 
+                    ca.Add(ip, curves);
+
                 else if(ip is TArray) {
                     for(int i = 0; i < curves; i++) {
-                        Context c = new Context();
-
-                        string iip = null;
+                        Context iip = null;
                         if((ip as TArray).Count > i)
-                            iip = (ip as TArray)[i] as string;
+                            iip = (ip as TArray)[i] as Context;
 
-                        if(iip != null && iip != string.Empty)
-                            new Expression(iip).Evaluate(c);
-
-                        ca.Add(c);
+                        if(iip is Context)
+                            ca.Add(iip);
+                        else
+                            ca.Add(new Context());
                     }
                 }
+
                 else {
                     Context c = new Context();
                     ca.Add(c, curves);
@@ -516,18 +536,37 @@ namespace PavelStransky.Expression {
                 this.itemContext.Add(ca);
             }
 
+            // Parametry pozadí - pøevod na kontexty
+            if(backgroundParams is string && backgroundParams as string != string.Empty) {
+                Context c = new Context();
+                (new Expression(backgroundParams as string)).Evaluate(c);
+                itemParams = c;
+            }
+
+            else if(backgroundParams is TArray) {
+                int bnGroups = (backgroundParams as TArray).Count;
+
+                for(int g = 0; g < bnGroups; g++) {
+                    object bp = (backgroundParams as TArray)[g];
+                    if(bp is string && bp as string != string.Empty) {
+                        Context c = new Context();
+                        (new Expression(bp as string)).Evaluate(c);
+                        (backgroundParams as TArray)[g] = c;
+                    }
+                }
+            }            
+            
+            // Zaøazení
             this.backgroundContext = new TArray();
             for(int g = 0; g < nGroups; g++) {
                 Context c = new Context();
 
-                string bp = null;
-                if(backgroundParams as TArray != null && (backgroundParams as TArray).Count > g)
-                    bp = (backgroundParams as TArray)[g] as string;
-
-                if(bp != null && bp != string.Empty)
-                    (new Expression(bp)).Evaluate(c);
-
-                this.backgroundContext.Add(c);
+                if(backgroundParams is Context)
+                    this.backgroundContext.Add(backgroundParams);
+                else if(backgroundParams is TArray && (backgroundParams as TArray).Count > g)
+                    this.backgroundContext.Add((backgroundParams as TArray)[g]);
+                else
+                    this.backgroundContext.Add(new Context());
             }
         }
 

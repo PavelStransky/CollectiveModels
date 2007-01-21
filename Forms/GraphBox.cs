@@ -87,7 +87,7 @@ namespace PavelStransky.Forms {
                 if(matrix.NumItems() > 0)
                     this.bitmap[g] = this.CreateBitmap(g, matrix);
                 else
-                    this.bitmap = null;
+                    this.bitmap[g] = null;
 
                 // é·dost o p¯eruöenÌ procesu
                 if(this.backgroundWorkerCreate.CancellationPending) 
@@ -106,10 +106,10 @@ namespace PavelStransky.Forms {
         /// <param name="group">Index skupiny</param>
         /// <param name="matrix">Matice k vykreslenÌ</param>
         private Bitmap CreateBitmap(int group, Matrix matrix) {
-            int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
-            int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
-            bool legend = (bool)this.graph.GetGeneralParameter(paramLegend, defaultLegend);
-            int legendWidth = (int)this.graph.GetGeneralParameter(paramLegendWidth, defaultLegendWidth);
+            int pointSizeX = (int)this.graph.GetBackgroundParameter(group, paramPointSizeX, defaultPointSizeX);
+            int pointSizeY = (int)this.graph.GetBackgroundParameter(group, paramPointSizeY, defaultPointSizeY);
+            bool legend = (bool)this.graph.GetBackgroundParameter(group, paramLegend, defaultLegend);
+            int legendWidth = (int)this.graph.GetBackgroundParameter(group, paramLegendWidth, defaultLegendWidth);
 
             int lengthX = matrix.LengthX;
             int lengthY = matrix.LengthY;
@@ -125,11 +125,20 @@ namespace PavelStransky.Forms {
             int lx = iMax - iMin;
             int ly = jMax - jMin;
 
-            int sizeX = pointSizeX * lx;
-            int sizeY = pointSizeY * ly;
-            int marginXMin = sizeX * this.marginL / 1000 + 2;
+            int sizeX = (int)(pointSizeX * lx / (1.0 - (this.marginL + this.marginR) / 1000.0) + 0.5);
+            int sizeY = (int)(pointSizeY * ly / (1.0 - (this.marginT + this.marginB) / 1000.0) + 0.5);
+            int marginROld = this.marginR;
+
+            if(legend) {
+                double d = 1.0 - (this.marginL + this.marginR) / 1000.0;
+                this.marginR += (int)(1000.0 * d / (1.0 + lx * pointSizeX / (d * legendWidth)) + 0.5);
+                sizeX = (int)(pointSizeX * lx / (1.0 - (this.marginL + this.marginR) / 1000.0) + 0.5);
+            }
+
+            int marginXMaxOld = sizeX * marginROld / 1000 + 1;
+            int marginXMin = sizeX * this.marginL / 1000 + 1;
             int marginXMax = sizeX * this.marginR / 1000 + 1;
-            int marginYMin = sizeY * this.marginB / 1000 + 2;
+            int marginYMin = sizeY * this.marginB / 1000 + 1;
             int marginYMax = sizeY * this.marginT / 1000 + 1;
 
             int id = iMin;
@@ -141,14 +150,14 @@ namespace PavelStransky.Forms {
             jMax = System.Math.Min(lengthY, jMax);
 
             Color colorBackground = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
-            Bitmap result = new Bitmap(sizeX + (legend ? legendWidth : 0) + marginXMin + marginXMax, sizeY + marginYMin + marginYMax);
+            Bitmap result = new Bitmap(sizeX, sizeY);
             Graphics.FromImage(result).FillRectangle(new Pen(colorBackground).Brush, 0, 0, result.Width, result.Height);
 
             Color colorPlus = (Color)this.graph.GetBackgroundParameter(group, paramColorPlus, defaultColorPlus);
             Color colorZero = (Color)this.graph.GetBackgroundParameter(group, paramColorZero, defaultColorZero);
             Color colorMinus = (Color)this.graph.GetBackgroundParameter(group, paramColorMinus, defaultColorMinus);
 
-            double maxAbs = System.Math.Abs(matrix.MaxAbs());
+            double maxAbs = System.Math.Abs(this.minMaxB[group].MaxAbsValue);
 
             for(int i = iMin; i < iMax; i++) {
                 for(int j = jMin; j < jMax; j++) {
@@ -183,34 +192,24 @@ namespace PavelStransky.Forms {
 
             // VykreslenÌ legendy
             if(legend) {
-                for(int i = 5; i < legendWidth - 5; i++) {
-                    int intervalY = (sizeY - 50) / 2;
+                for(int i = marginXMaxOld; i < legendWidth - marginXMaxOld - 1; i++) {
+                    int intervalY = (sizeY - (3 * marginYMin + marginYMax)) / 2;
                     for(int j = 0; j < intervalY; j++) {
                         Color color = Color.FromArgb(
-                            ((1 - j) * colorZero.R + j * colorPlus.R) / intervalY,
-                            ((1 - j) * colorZero.G + j * colorPlus.G) / intervalY,
-                            ((1 - j) * colorZero.B + j * colorPlus.B) / intervalY);
-                        result.SetPixel(i + sizeX, intervalY - j + 25, color);
+                            ((intervalY - j) * colorZero.R + j * colorPlus.R) / intervalY,
+                            ((intervalY - j) * colorZero.G + j * colorPlus.G) / intervalY,
+                            ((intervalY - j) * colorZero.B + j * colorPlus.B) / intervalY);
+                        result.SetPixel(i + sizeX - marginXMax, intervalY - j + marginYMin + marginYMax, color);
                     }
 
                     for(int j = 0; j < intervalY; j++) {
                         Color color = Color.FromArgb(
-                            ((1 - j) * colorZero.R + j * colorMinus.R) / intervalY,
-                            ((1 - j) * colorZero.G + j * colorMinus.G) / intervalY,
-                            ((1 - j) * colorZero.B + j * colorMinus.B) / intervalY);
-                        result.SetPixel(i + sizeX, intervalY + j + 25, color);
+                            ((intervalY - j) * colorZero.R + j * colorMinus.R) / intervalY,
+                            ((intervalY - j) * colorZero.G + j * colorMinus.G) / intervalY,
+                            ((intervalY - j) * colorZero.B + j * colorMinus.B) / intervalY);
+                        result.SetPixel(i + sizeX - marginXMax, intervalY + j + marginYMin + marginYMax, color);
                     }
                 }
-
-                // Text
-                Graphics g = Graphics.FromImage(result);
-                string sMin = string.Format("-{0,4:0.000}", maxAbs);
-                string sMax = string.Format("{0,4:0.000}", maxAbs);
-                int fontHeight = (int)g.MeasureString(sMin, baseFont).Height;
-                int fontWidthMin = (int)g.MeasureString(sMin, baseFont).Width;
-                int fontWidthMax = (int)g.MeasureString(sMax, baseFont).Width;
-                g.DrawString(sMax, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMax) / 2, 20 - fontHeight);
-                g.DrawString(sMin, baseFont, Brushes.Black, sizeX + 5 + (legendWidth - fontWidthMin) / 2, sizeY - 20);
             }
 
             return result;
@@ -227,10 +226,24 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Vr·tÌ obr·zek pozadÌ p¯eökl·lovan˝ v nov˝ch rozmÏrech.
+        /// Pokud obr·zek pozadÌ neexistuje, vytvo¯Ì obr·zek pr·zdn˝
+        /// </summary>
+        /// <param name="group">Index skupiny</param>
+        private Image GetResizedImage(int group) {
+            Image result;
+            if(this.bitmap[group] != null)
+                result = new Bitmap(this.bitmap[group], this.Width, this.Height);
+            else
+                result = new Bitmap(this.Width, this.Height);
+            return result;
+        }
+
+        /// <summary>
         /// Z·kladnÌ pracovnÌ metoda, kter· ukl·d· obr·zek
         /// </summary>        
         void backgroundWorkerSavePicture_DoWork(object sender, DoWorkEventArgs e) {
-/*            string fName = e.Argument as string;
+            string fName = e.Argument as string;
 
             if(fName.Length < 3 || fName.IndexOf('.') < 0)
                 throw new FormsException(string.Format(errorMessageBadFileName, fName));
@@ -246,39 +259,60 @@ namespace PavelStransky.Forms {
             else if(extension == "png")
                 format = ImageFormat.Png;
 
-            // VÌce obr·zk˘ - spojÌme dohromady p¯Ìpady s Ëasov˝m v˝vojem k¯ivky a s postupn˝m v˝vojem pozadÌ
-            if(this.eval && (this.graph.NumGroups() > 1 || this.evalCurves)) {
-                System.Drawing.Image image = null;
+            int nGroups = this.graph.NumGroups();
 
-                for(int i = 0; i < this.maxIndex; i++){
-                    // VyvÌjÌme vöechny k¯ivky
-                    if(this.evalCurves) {
-                        image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                        this.PaintGraph(Graphics.FromImage(image), -1, i);
+            // Ukl·d·me vöechny obr·zky
+            if(this.evalGroup && nGroups > 1) {
+                for(int g = 0; g < nGroups; g++) {
+                    // VyvÌjÌme k¯ivky
+                    if(this.evalCurve) {
+                        int maxTime = this.minMax[g].MaxLength;
+                        for(int t = 0; t <= maxTime; t++) {
+                            Image image = this.GetResizedImage(g);
+                            this.PaintGraph(Graphics.FromImage(image), g, t);
+                            image.Save(string.Format("{0}{1}-{2}.{3}", name, g, t, extension), format);
+                        }
                     }
                     else {
-                        image = new Bitmap(this.bitmap[i], this.Width, this.Height);
-                        this.PaintGraph(Graphics.FromImage(image), i, -1);
+                        Image image = this.GetResizedImage(g);
+                        this.PaintGraph(Graphics.FromImage(image), g, -1);
+                        image.Save(string.Format("{0}{1}.{2}", name, g, extension), format);
                     }
 
-                    image.Save(string.Format("{0}{1}.{2}", name, i, extension), format);
-
-                    this.backgroundWorkerSavePicture.ReportProgress(i * 100 / this.maxIndex);
+                    this.backgroundWorkerSavePicture.ReportProgress(g * 100 / nGroups);
 
                     // Poûadavek ukonËenÌ procesu
                     if(this.backgroundWorkerSavePicture.CancellationPending)
-                        break;       
+                        break;
                 }
             }
-            // Jeden obr·zek
-            else {
-                System.Drawing.Image image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                this.PaintGraph(Graphics.FromImage(image), -1, -1);
-                image.Save(fName, format);
 
-                this.backgroundWorkerSaveGif.ReportProgress(100);
+                // Jeden obr·zek
+            else {
+                // VyvÌjÌme k¯ivky
+                if(this.evalCurve) {
+                    int maxTime = this.minMax[this.group].MaxLength;
+                    for(int t = 0; t <= maxTime; t++) {
+                        Image image = this.GetResizedImage(this.group);
+                        this.PaintGraph(Graphics.FromImage(image), this.group, t);
+                        image.Save(string.Format("{0}-{1}.{2}", name, t, extension), format);
+
+                        this.backgroundWorkerSavePicture.ReportProgress(t * 100 / maxTime);
+
+                        // Poûadavek ukonËenÌ procesu
+                        if(this.backgroundWorkerSavePicture.CancellationPending)
+                            break;
+                    }
+                }
+                else {
+                    Image image = this.GetResizedImage(this.group);
+                    this.PaintGraph(Graphics.FromImage(image), this.group, -1);
+                    image.Save(string.Format("{0}.{1}", name, extension), format);
+
+                    this.backgroundWorkerSavePicture.ReportProgress(100);
+                }
             }
-*/        }
+        }
 
         /// <summary>
         /// UloûÌ jako GIF
@@ -288,85 +322,124 @@ namespace PavelStransky.Forms {
             (this.Parent.Parent as GraphForm).NewProcess("Ukl·d·nÌ GIF :", this.backgroundWorkerSaveGif, fName);
         }
 
+        private static byte[] buf1, buf2, buf3;
+
+        /// <summary>
+        /// Statick˝ konstruktor
+        /// </summary>
+        static GraphicsBox() {
+            buf2 = new Byte[19];
+            buf3 = new Byte[8];
+            buf2[0] = 33;                   // extension introducer
+            buf2[1] = 255;                  // application extension
+            buf2[2] = 11;                   // size of block
+            buf2[3] = 78;                   // N
+            buf2[4] = 69;                   // E
+            buf2[5] = 84;                   // T
+            buf2[6] = 83;                   // S
+            buf2[7] = 67;                   // C
+            buf2[8] = 65;                   // A
+            buf2[9] = 80;                   // P
+            buf2[10] = 69;                  // E
+            buf2[11] = 50;                  // 2
+            buf2[12] = 46;                  // .
+            buf2[13] = 48;                  // 0
+            buf2[14] = 3;                   // Size of block
+            buf2[15] = 1;                   //
+            buf2[16] = 0;                   //
+            buf2[17] = 0;                   //
+            buf2[18] = 0;                   // Block terminator
+
+            buf3[0] = 33;                   // Extension introducer
+            buf3[1] = 249;                  // Graphic control extension
+            buf3[2] = 4;                    // Size of block
+            buf3[3] = 9;                    // Flags: reserved, disposal method, user input, transparent color
+            buf3[6] = 255;                  // Transparent color index
+            buf3[7] = 0;                    // Block terminator
+        }
+
+        /// <summary>
+        /// P¯id· GIF do pamÏùovÈho streamu
+        /// </summary>
+        private void AddGIF(MemoryStream m, BinaryWriter b, Image image, bool first) {
+            image.Save(m, ImageFormat.Gif);
+
+            if(first) {
+                //only write these the first time....
+                b.Write(buf1, 0, 781); //Header & global color table
+                b.Write(buf2, 0, 19); //Application extension
+                first = false;
+            }
+
+            b.Write(buf3, 0, 8); //Graphic extension
+            b.Write(buf1, 789, buf1.Length - 790); //Image data
+
+            m.SetLength(0);
+        }
+
         /// <summary>
         /// Z·kladnÌ pracovnÌ metoda, kter· ukl·d· obr·zek
         /// </summary>
         private void backgroundWorkerSaveGif_DoWork(object sender, DoWorkEventArgs e) {
-/*            string fName = e.Argument as string;
+            string fName = e.Argument as string;
+            int nGroups = this.graph.NumGroups();
 
-            // VÌce obr·zk˘ - spojÌme dohromady p¯Ìpady s Ëasov˝m v˝vojem k¯ivky a s postupn˝m v˝vojem pozadÌ
-            if(this.eval && (this.graph.Count > 1 || this.evalCurves)) {
-                int interval = (int)(double)this.graph.GetGeneralParameter(paramInterval, defaultInterval) / 10;
+            if(this.evalGroup || this.evalCurve) {
+                int interval = (int)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
+
+                buf3[4] = (byte)(interval % 256);// Delay time low byte
+                buf3[5] = (byte)(interval / 256);// Delay time high byte
 
                 MemoryStream m = new MemoryStream();
                 FileStream f = new FileStream(fName, FileMode.Create);
                 BinaryWriter b = new BinaryWriter(f);
 
-                byte[] buf1;
-                byte[] buf2 = new Byte[19];
-                byte[] buf3 = new Byte[8];
-                buf2[0] = 33;                   // extension introducer
-                buf2[1] = 255;                  // application extension
-                buf2[2] = 11;                   // size of block
-                buf2[3] = 78;                   // N
-                buf2[4] = 69;                   // E
-                buf2[5] = 84;                   // T
-                buf2[6] = 83;                   // S
-                buf2[7] = 67;                   // C
-                buf2[8] = 65;                   // A
-                buf2[9] = 80;                   // P
-                buf2[10] = 69;                  // E
-                buf2[11] = 50;                  // 2
-                buf2[12] = 46;                  // .
-                buf2[13] = 48;                  // 0
-                buf2[14] = 3;                   // Size of block
-                buf2[15] = 1;                   //
-                buf2[16] = 0;                   //
-                buf2[17] = 0;                   //
-                buf2[18] = 0;                   // Block terminator
+                bool first = true;
 
-                buf3[0] = 33;                   // Extension introducer
-                buf3[1] = 249;                  // Graphic control extension
-                buf3[2] = 4;                    // Size of block
-                buf3[3] = 9;                    // Flags: reserved, disposal method, user input, transparent color
-                buf3[4] = (byte)(interval % 256);// Delay time low byte
-                buf3[5] = (byte)(interval / 256);// Delay time high byte
-                buf3[6] = 255;                  // Transparent color index
-                buf3[7] = 0;                    // Block terminator
+                if(this.evalGroup && nGroups > 1) {
+                    for(int g = 0; g < nGroups; g++) {
+                        // VyvÌjÌme k¯ivky
+                        if(this.evalCurve) {
+                            int maxTime = this.minMax[g].MaxLength;
+                            for(int t = 0; t <= maxTime; t++) {
+                                Image image = this.GetResizedImage(g);
+                                this.PaintGraph(Graphics.FromImage(image), g, t);
+                                this.AddGIF(m, b, image, first);
+                                first = false;
+                            }
+                        }
+                        else {
+                            Image image = this.GetResizedImage(g);
+                            this.PaintGraph(Graphics.FromImage(image), g, -1);
+                            this.AddGIF(m, b, image, first);
+                            first = false;
+                        }
 
-                for(int i = 0; i < this.maxIndex; i++) {
-                    System.Drawing.Image image = null;
+                        this.backgroundWorkerSaveGif.ReportProgress(g * 100 / nGroups);
 
-                    if(this.evalCurves) {
-                        image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                        this.PaintGraph(Graphics.FromImage(image), -1, i);
+                        // Poûadavek ukonËenÌ procesu
+                        if(this.backgroundWorkerSaveGif.CancellationPending)
+                            break;
                     }
-                    else {
-                        image = new Bitmap(this.bitmap[i], this.Width, this.Height);
-                        this.PaintGraph(Graphics.FromImage(image), i, -1);
-                    }
-
-                    image.Save(m, ImageFormat.Gif);
-
-                    buf1 = m.ToArray();
-
-                    if(i == 0) {
-                        //only write these the first time....
-                        b.Write(buf1, 0, 781); //Header & global color table
-                        b.Write(buf2, 0, 19); //Application extension
-                    }
-
-                    b.Write(buf3, 0, 8); //Graphic extension
-                    b.Write(buf1, 789, buf1.Length - 790); //Image data
-
-                    m.SetLength(0);
-                    this.backgroundWorkerSaveGif.ReportProgress(i * 100 / this.maxIndex);
-
-                    // Poûadavek ukonËenÌ procesu
-                    if(this.backgroundWorkerSaveGif.CancellationPending)
-                        break;
                 }
+                else {
+                    // VyvÌjÌme k¯ivky
+                    if(this.evalCurve) {
+                        int maxTime = this.minMax[this.group].MaxLength;
+                        for(int t = 0; t <= maxTime; t++) {
+                            Image image = this.GetResizedImage(this.group);
+                            this.PaintGraph(Graphics.FromImage(image), this.group, t);
+                            this.AddGIF(m, b, image, first);
+                            first = false;
 
+                            this.backgroundWorkerSaveGif.ReportProgress(t * 100 / maxTime);
+
+                            // Poûadavek ukonËenÌ procesu
+                            if(this.backgroundWorkerSaveGif.CancellationPending)
+                                break;
+                        }
+                    }
+                }
                 b.Write((byte)0x3B); //Image terminator
                 b.Close();
                 f.Close();
@@ -374,13 +447,13 @@ namespace PavelStransky.Forms {
             }
 
             else {
-                System.Drawing.Image image = new Bitmap(this.bitmap[0], this.Width, this.Height);
-                this.PaintGraph(Graphics.FromImage(image), -1, -1);
+                Image image = this.GetResizedImage(this.group);
+                this.PaintGraph(Graphics.FromImage(image), this.group, -1);
                 image.Save(fName, ImageFormat.Gif);
 
                 this.backgroundWorkerSaveGif.ReportProgress(100);
             }
- */       }
+        }
         #endregion
 
         /// <param name="graph">Objekt grafu</param>
@@ -497,6 +570,8 @@ namespace PavelStransky.Forms {
                 minmaxB[3] = (double)this.graph.GetBackgroundParameter(group, paramMaxYBackground, minmax[3]);
 
                 Matrix m = this.graph.GetMatrix(g);
+                double maxAbs = 0.0;
+
                 if(m.NumItems() > 0) {
                     if(double.IsNaN(minmaxB[0]))
                         minmaxB[0] = 0;
@@ -515,10 +590,12 @@ namespace PavelStransky.Forms {
                         minmax[2] = minmaxB[2];
                     if(double.IsNaN(minmax[3]))
                         minmax[3] = minmaxB[3];
+
+                    maxAbs = m.MaxAbs();
                 }
 
                 this.minMax[g] = new MinMaxCache(minmax, this.graph.GetMaxLength(g));
-                this.minMaxB[g] = new MinMaxCache(minmaxB);
+                this.minMaxB[g] = new MinMaxCache(minmaxB, maxAbs);
             }
         }
 
@@ -772,6 +849,30 @@ namespace PavelStransky.Forms {
 
                 this.DrawPoints(g, p, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
             }
+
+            // Legenda
+            bool showLegend = (bool)this.graph.GetBackgroundParameter(group, paramLegend, defaultLegend);
+            if(showLegend && this.graph.GetMatrix(group).NumItems() > 0) {
+                Color colorPlus = (Color)this.graph.GetBackgroundParameter(group, paramColorPlus, defaultColorPlus);
+                Color colorMinus = (Color)this.graph.GetBackgroundParameter(group, paramColorMinus, defaultColorMinus);
+                Pen legendPlus = new Pen(colorPlus);
+                Pen legendMinus = new Pen(colorMinus);
+
+                double maxAbs = System.Math.Abs(this.minMaxB[group].MaxAbsValue);
+                string legendString1 = string.Format("{0,5:F}", maxAbs);
+                string legendString2 = string.Format("{0,5:F}", -maxAbs);
+                SizeF lSize1 = g.MeasureString(legendString1, baseFont);
+                SizeF lSize2 = g.MeasureString(legendString2, baseFont);
+
+                int x1 = this.WidthWM + this.AbsMarginL + (int)((this.AbsMarginR - lSize1.Width) / 2F);
+                int y1 = (int)(2 * this.AbsMarginT + this.AbsMarginB - 1.5F * lSize1.Height);
+
+                int x2 = this.WidthWM + this.AbsMarginL + (int)((this.AbsMarginR - lSize2.Width) / 2F);
+                int y2 = (int)(this.Height - 2 * this.AbsMarginB - this.AbsMarginT + 0.5F * lSize2.Height);
+
+                g.DrawString(legendString1, baseFont, legendPlus.Brush, x1, y1);
+                g.DrawString(legendString2, baseFont, legendMinus.Brush, x2, y2);
+            }
         }
 
 		/// <summary>
@@ -998,7 +1099,7 @@ namespace PavelStransky.Forms {
         protected override void OnMouseMove(MouseEventArgs e) {
             base.OnMouseMove(e);
 
-            if(!this.Focused)
+            if(!this.Focused && this.Parent.Focused)
                 this.Focus();
         }
 
@@ -1105,7 +1206,7 @@ namespace PavelStransky.Forms {
         private const float defaultLineWidthX = 1.0F;
         private static Color defaultPointColorX = Color.FromName("red");
         private const Graph.PointStyles defaultPointStyleX = Graph.PointStyles.VLines;
-        private const int defaultPointSizeX = 5;
+        private const int defaultPointSizeX = 3;
         private const bool defaultShowLabelX = false;
         private static Color defaultLabelColorX = defaultLineColorX;
         private const bool defaultShowAxeX = true;
@@ -1115,12 +1216,12 @@ namespace PavelStransky.Forms {
         private const float defaultLineWidthY = 1.0F;
         private static Color defaultPointColorY = Color.FromName("red");
         private const Graph.PointStyles defaultPointStyleY = Graph.PointStyles.HLines;
-        private const int defaultPointSizeY = 5;
+        private const int defaultPointSizeY = 3;
         private const bool defaultShowLabelY = false;
         private static Color defaultLabelColorY = defaultLineColorY;
         private const bool defaultShowAxeY = true;
 
-        private static Color defaultColorZero = Color.FromName("black");
+        private static Color defaultColorZero = Color.FromName("white");
         private static Color defaultColorPlus = Color.FromName("blue");
         private static Color defaultColorMinus = Color.FromName("red");
         private const bool defaultLegend = false;
@@ -1129,7 +1230,7 @@ namespace PavelStransky.Forms {
 
         private const bool defaultEvaluateGroup = false;
         private const bool defaultEvaluateCurve = false;
-        private const double defaultInterval = 1000.0;
+        private const int defaultInterval = 1000;
 
         private const double defaultMinXBackground = double.NaN;
         private const double defaultMaxXBackground = defaultMinX;

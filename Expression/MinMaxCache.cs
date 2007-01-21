@@ -9,26 +9,40 @@ namespace PavelStransky.Expression {
     public class MinMaxCache {
         private double minX, maxX, minY, maxY;
         private int maxLength;
+        private double maxAbsValue;
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="minmax">Vektor se 4 složkami (minX, maxX, minY, maxY)</param>
-        /// <param name="maxLength">Maximální délka vektoru k vykreslení ve skupinì</param>
-        public MinMaxCache(Vector minmax, int maxLength) {
+        public MinMaxCache(Vector minmax) {
             this.minX = minmax[0];
             this.maxX = minmax[1];
             this.minY = minmax[2];
             this.maxY = minmax[3];
-
-            this.maxLength = maxLength;
         }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="minmax">Vektor se 4 složkami (minX, maxX, minY, maxY)</param>
-        public MinMaxCache(Vector minmax) : this(minmax, 0) { }
+        /// <param name="maxLength">Maximální délka vektoru k vykreslení ve skupinì</param>
+        public MinMaxCache(Vector minmax, int maxLength)
+            : this(minmax) {
+            this.maxLength = maxLength;
+            this.maxAbsValue = 0.0;
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="minmax">Vektor se 4 složkami (minX, maxX, minY, maxY)</param>
+        /// <param name="maxAbsValue">Maximální hodnota</param>
+        public MinMaxCache(Vector minmax, double maxAbsValue)
+            : this(minmax) {
+            this.maxAbsValue = maxAbsValue;
+            this.maxLength = 0;
+        }
 
         /// <summary>
         /// Konstruktor
@@ -56,5 +70,6 @@ namespace PavelStransky.Expression {
         public double Height { get { return this.maxY - this.minY; } }
 
         public int MaxLength { get { return this.maxLength; } }
+        public double MaxAbsValue { get { return this.maxAbsValue; } }
     }
 }

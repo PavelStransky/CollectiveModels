@@ -24,7 +24,7 @@ namespace PavelStransky.Expression {
         /// <param name="typeName">Jméno typu objektu</param>
         /// <returns></returns>
         public override object CreateObject(string typeName) {
-            if(typeName == typeof(TArray).FullName)
+            if(typeName == typeof(TArray).FullName || typeName == "PavelStransky.Expression.Array")
                 return new TArray();
             else if(typeName == typeof(Context).FullName)
                 return new Context();

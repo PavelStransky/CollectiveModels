@@ -70,6 +70,9 @@ namespace PavelStransky.Forms {
             this.backgroundWorkerCreate.WorkerReportsProgress = true;
             this.backgroundWorkerCreate.WorkerSupportsCancellation = true;
             this.backgroundWorkerCreate.DoWork += new DoWorkEventHandler(backgroundWorkerCreate_DoWork);
+
+            this.timer.AutoReset = true;
+            this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
         }
 
         #region Vytvoøení bitmap
@@ -249,7 +252,7 @@ namespace PavelStransky.Forms {
                 throw new FormsException(string.Format(errorMessageBadFileName, fName));
 
             string name = fName.Substring(0, fName.LastIndexOf('.'));
-            string extension = fName.Substring(name.Length + 1, fName.Length - name.Length).ToLower();
+            string extension = fName.Substring(name.Length + 1, fName.Length - name.Length - 1).ToLower();
             ImageFormat format = ImageFormat.Png;
 
             if(extension == "gif")
@@ -499,10 +502,7 @@ namespace PavelStransky.Forms {
                 if(this.evalCurve) 
                     this.time = 1;
 
-                this.timer.Elapsed -= timer_Elapsed;
-                this.timer.Interval = (double)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
-                this.timer.AutoReset = true;
-                this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+                this.timer.Interval = (int)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
                 this.timer.Start();
             }
 
@@ -528,7 +528,11 @@ namespace PavelStransky.Forms {
 
             if(moveGroup) {
                 this.group = (this.group + 1) % nGroups;
-
+                if(this.bitmap[this.group] != null)
+                    this.Image = this.bitmap[this.group];
+                else
+                    this.Image = new Bitmap(1, 1);
+            
                 if(!this.evalCurve)
                     this.time = this.minMax[this.group].MaxLength;
             }
@@ -873,6 +877,18 @@ namespace PavelStransky.Forms {
                 g.DrawString(legendString1, baseFont, legendPlus.Brush, x1, y1);
                 g.DrawString(legendString2, baseFont, legendMinus.Brush, x2, y2);
             }
+
+            string subTitle = (string)this.graph.GetBackgroundParameter(group, paramSubTitle, defaultSubTitle);
+            if(subTitle != string.Empty) {
+                Color subTitleColor = (Color)this.graph.GetBackgroundParameter(group, paramSubTitleColor, defaultSubTitleColor);
+                Pen subTitlePen = new Pen(subTitleColor);
+                SizeF size = g.MeasureString(subTitle, baseFont);
+
+                int x = (int)((this.WidthWM - size.Width) / 2) + this.AbsMarginL;
+                int y = this.AbsMarginT;
+
+                g.DrawString(subTitle, baseFont, subTitlePen.Brush, x, y);
+            }
         }
 
 		/// <summary>
@@ -1170,6 +1186,9 @@ namespace PavelStransky.Forms {
         private const string paramLegend = "legend";
         private const string paramLegendWidth = "legendwidth";
 
+        private const string paramSubTitle = "subtitle";
+        private const string paramSubTitleColor = "stcolor";
+
         // Pozadí
         private const string paramMinXBackground = "minxb";
         private const string paramMaxXBackground = "maxxb";
@@ -1231,6 +1250,9 @@ namespace PavelStransky.Forms {
         private const bool defaultEvaluateGroup = false;
         private const bool defaultEvaluateCurve = false;
         private const int defaultInterval = 1000;
+
+        private const string defaultSubTitle = "";
+        private static Color defaultSubTitleColor = Color.FromName("black");
 
         private const double defaultMinXBackground = double.NaN;
         private const double defaultMaxXBackground = defaultMinX;

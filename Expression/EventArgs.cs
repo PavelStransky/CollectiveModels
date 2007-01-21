@@ -68,4 +68,30 @@ namespace PavelStransky.Expression
         /// </summary>
         public Context Context { get { return this.context; } }
     }
+
+    /// <summary>
+    /// Tøída k pøedávání jména souboru
+    /// </summary>
+    public class FileNameEventArgs : EventArgs {
+        // Jméno souboru
+        private string fileName;
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="fileName">Jméno souboru</param>
+        public FileNameEventArgs(string fileName) {
+            this.fileName = fileName;
+        }
+
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public FileNameEventArgs() { }
+
+        /// <summary>
+        /// Jméno souboru
+        /// </summary>
+        public string FileName { get { return this.fileName; } }
+    }
 }

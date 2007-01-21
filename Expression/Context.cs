@@ -28,12 +28,24 @@ namespace PavelStransky.Expression {
 		public event ExitEventHandler ExitRequest;
 
 		/// <summary>
-		/// Volá se pøi požadavku o graf
+		/// Volá se pøi požadavku o konec programu
 		/// </summary>
 		public void OnExitRequest(EventArgs e) {
 			if(this.ExitRequest != null)
 				this.ExitRequest(this, e);
 		}
+
+        // Žádost o uložení souboru
+        public delegate void FileNameEventHandler(object sender, FileNameEventArgs e);
+        public event FileNameEventHandler SaveRequest;
+
+        /// <summary>
+        /// Volá se pøi požadavku o uložení
+        /// </summary>
+        public void OnSaveRequest(FileNameEventArgs e) {
+            if(this.SaveRequest != null)
+                this.SaveRequest(this, e);
+        }
 
         // Vytvoøení kontextu
         public delegate void ContextEventHandler(object sender, ContextEventArgs e);

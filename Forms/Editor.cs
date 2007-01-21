@@ -91,6 +91,7 @@ namespace PavelStransky.Forms {
             context.GraphRequest += new Context.GraphRequestEventHandler(context_GraphRequest);
             context.NewContextRequest += new Context.ContextEventHandler(context_NewContextRequest);
             context.SetContextRequest += new Context.ContextEventHandler(context_SetContextRequest);
+            context.SaveRequest += new Context.FileNameEventHandler(context_SaveRequest);
         }
 
         /// <summary>
@@ -101,6 +102,30 @@ namespace PavelStransky.Forms {
             this.context = new Context();
             this.InitializeEvents(this.context);
             this.SetCaption();
+        }
+        
+        private delegate void SaveRequestDelegate(FileNameEventArgs e);
+
+        /// <summary>
+        /// Událost z kontextu - žádost o vytvoøení grafu
+        /// </summary>
+        private void context_SaveRequest(object sender, FileNameEventArgs e) {
+            // Spustíme ve vlastním threadu
+            this.Invoke(new SaveRequestDelegate(this.SaveFromContext), new object[] { e });
+        }
+
+        /// <summary>
+        /// Událost z kontextu - žádost o uložení
+        /// </summary>
+        private void SaveFromContext(FileNameEventArgs e) {
+            if(e.FileName != null && e.FileName != string.Empty) {
+                string fileName = e.FileName;
+                if(fileName.IndexOf(':') < 0)
+                    fileName = string.Format("{0}\\{1}", this.Directory, fileName);
+                this.Save(fileName);
+            }
+            else
+                this.Save();
         }
 
         /// <summary>

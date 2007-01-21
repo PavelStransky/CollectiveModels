@@ -192,23 +192,6 @@ namespace PavelStransky.GCM {
                 for(int sy = 0; sy < inty.Num; sy++)
                     result[sx, sy] = result[sx, sy] * result[sx, sy];
 
-            // Zakreslení ekvipotenciální kontury
-            if(interval.Length > 2) {
-                double maxAbs = System.Math.Abs(result.MaxAbs());
-
-                PointVector[] pv = this.EquipotentialContours(this.EigenValue[n]);
-                for(int i = 0; i < pv.Length; i++) {
-                    int pvlength = pv[i].Length;
-                    for(int j = 0; j < pvlength; j++) {
-                        int sx = intx.GetIndex(pv[i][j].X);
-                        int sy = inty.GetIndex(pv[i][j].Y);
-
-                        if(sx >= 0 && sx < intx.Num && sy >= 0 && sy < inty.Num)
-                            result[sx, sy] = -maxAbs;
-                    }
-                }
-            }
-
             return result;
         }
 

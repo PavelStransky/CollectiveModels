@@ -41,7 +41,7 @@ namespace PavelStransky.GCM {
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>
         /// <param name="maxE">Maximální energie</param>
-        protected virtual void CreateIndex(int maxE) {
+        protected override void CreateIndex(int maxE) {
             this.index = new LHOPolarIndex(maxE, true);
         }
     }

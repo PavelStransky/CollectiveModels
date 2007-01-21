@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
 
         public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
             ArrayList evaluatedArguments = this.EvaluateArguments(context, arguments, writer);
-			this.CheckArgumentsMinNumber(evaluatedArguments, 0);			
+			this.CheckArgumentsNumber(evaluatedArguments, 0);			
 			context.OnExitRequest(new EventArgs());
 
 			return null;

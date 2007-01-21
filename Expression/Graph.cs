@@ -232,34 +232,43 @@ namespace PavelStransky.Expression {
         private void CreateItemArray(object item) {
             this.item = new TArray();
 
-            if(item is PointVector || item is Vector) {
+            if(item is PointVector) {
                 TArray a = new TArray();
                 a.Add(item);
+                this.item.Add(a);
+            }
+            else if(item is Vector) {
+                TArray a = new TArray();
+                a.Add(new PointVector(item as Vector));
                 this.item.Add(a);
             }
 
             else if(item is TArray) {
                 Type t = (item as TArray).ItemType;
-                if(t == typeof(PointVector) || t == typeof(Vector)) {
+                if(t == typeof(PointVector))
                     this.item.Add(item);
+
+                else if(t == typeof(Vector)) {
+                    TArray a = new TArray();
+                    foreach(Vector v in item as TArray)
+                        a.Add(new PointVector(v));
+                    this.item.Add(a);
                 }
 
                 else if(t == typeof(TArray)) {
                     t = ((item as TArray)[0] as TArray).ItemType;
-                    if(t == typeof(PointVector) || t == typeof(Vector)) {
+                    if(t == typeof(PointVector))
                         this.item = item as TArray;
+
+                    else if(t == typeof(Vector)) {
+                        foreach(TArray ta in item as TArray) {
+                            TArray a = new TArray();
+                            foreach(Vector v in ta)
+                                a.Add(new PointVector(v));
+                            this.item.Add(a);
+                        }
                     }
                 }
-            }
-
-            // Pøevedeme Vectory na PointVectory
-            int nGroups = this.item.Count;
-            for(int g = 0; g < nGroups; g++) {
-                TArray group = this.item[g] as TArray;
-                int nCurves = group.Count;
-                for(int i = 0; i < nCurves; i++)
-                    if(group[i] is Vector)
-                        group[i] = new PointVector(group[i] as Vector);
             }
         }
 
@@ -471,28 +480,40 @@ namespace PavelStransky.Expression {
 
             else if(itemParams is TArray) {
                 int inGroups = (itemParams as TArray).Count;
+                TArray ipn = new TArray();
 
                 for(int g = 0; g < inGroups; g++) {
                     object ip = (itemParams as TArray)[g];
                     if(ip is string && ip as string != string.Empty) {
                         Context c = new Context();
                         (new Expression(ip as string)).Evaluate(c);
-                        (itemParams as TArray)[g] = c;
+                        ipn.Add(c);
                     }
+
+                    else if(ip is Context)
+                        ipn.Add(ip);
 
                     else if(ip is TArray) {
                         int inCurves = (ip as TArray).Count;
+                        TArray iipn = new TArray();
 
                         for(int i = 0; i < inCurves; i++) {
                             object iip = (ip as TArray)[i];
                             if(iip is string && iip as string != string.Empty) {
                                 Context c = new Context();
                                 (new Expression(ip as string)).Evaluate(c);
-                                (ip as TArray)[i] = c;
+                                iipn.Add(c);
                             }
-                        }                          
+
+                            else if(iip is Context)
+                                iipn.Add(iip);
+                        }
+
+                        ipn.Add(iipn);
                     }
                 }
+
+                itemParams = ipn;
             }
 
             // Nyní zaøadíme
@@ -545,15 +566,20 @@ namespace PavelStransky.Expression {
 
             else if(backgroundParams is TArray) {
                 int bnGroups = (backgroundParams as TArray).Count;
+                TArray bpn = new TArray();
 
                 for(int g = 0; g < bnGroups; g++) {
                     object bp = (backgroundParams as TArray)[g];
                     if(bp is string && bp as string != string.Empty) {
                         Context c = new Context();
                         (new Expression(bp as string)).Evaluate(c);
-                        (backgroundParams as TArray)[g] = c;
+                        bpn.Add(c);
                     }
+                    else if(bp is Context)
+                        bpn.Add(bp);
                 }
+
+                backgroundParams = bpn;
             }            
             
             // Zaøazení

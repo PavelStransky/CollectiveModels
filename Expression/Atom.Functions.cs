@@ -39,6 +39,7 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.EigenSystem());
 			functions.Add(new Functions.Eval());
 			functions.Add(new Functions.Exit());
+            functions.Add(new Functions.Save());
 			functions.Add(new Functions.FnExport());
 			functions.Add(new Functions.GenArray());
 			functions.Add(new Functions.GetColumns());

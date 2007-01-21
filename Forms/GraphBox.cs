@@ -1080,6 +1080,11 @@ namespace PavelStransky.Forms {
                     newGroup = nGroups - 1;
                 this.group = newGroup;
 
+                if(this.bitmap[this.group] != null)
+                    this.Image = this.bitmap[this.group];
+                else
+                    this.Image = new Bitmap(1, 1);
+
                 if(this.evalCurve)
                     this.time = 1;
                 else

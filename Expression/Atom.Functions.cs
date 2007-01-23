@@ -157,6 +157,8 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.ComputeSpectrum());
             functions.Add(new Functions.HamiltonianMatrix());
             functions.Add(new Functions.HamiltonianMatrixSize());
+            functions.Add(new Functions.EValues());
+            functions.Add(new Functions.EVectors());
 
             // Funkce IBM
             functions.Add(new Functions.CIBM());

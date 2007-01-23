@@ -45,7 +45,17 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="maxE">Maximální energie</param>
         protected virtual void CreateIndex(int maxE) {
-            this.index = new LHOPolarIndex(maxE);
+            if(this.index == null || this.index.MaxE != maxE)
+                this.index = new LHOPolarIndex(maxE);
+        }
+
+        /// <summary>
+        /// Velikost Hamiltonovy matice
+        /// </summary>
+        /// <param name="maxE">Maximální energie</param>
+        public override int HamiltonianMatrixSize(int maxE) {
+            this.CreateIndex(maxE);
+            return this.index.Length;
         }
 
         /// <summary>
@@ -125,7 +135,7 @@ namespace PavelStransky.GCM {
 
                 // Výpis teèky na konzoli
                 if(writer != null) {
-                    if(i != 0 && this.index.N[i - 1] != this.index.N[i])
+                    if(i != 0 && this.index.M[i - 1] != this.index.M[i])
                         writer.Write(".");
                 }
             }
@@ -197,7 +207,7 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="epsilon">Epsilon</param>
         /// <param name="maxn">Maximální rank vlastní funkce</param>
-        private double GetRange(double epsilon) {
+        protected double GetRange(double epsilon) {
             // range je klasicky dosah oscilatoru, pridame urcitou rezervu
             double range = System.Math.Sqrt(this.Hbar * this.Omega * this.index.MaxE / this.A0);
             range *= 5.0;
@@ -240,7 +250,7 @@ namespace PavelStransky.GCM {
         /// <param name="n">Hlavní kvantové èíslo</param>
         /// <param name="m">Spin</param>
         /// <param name="x">Souøadnice</param>
-        private double Psi(int n, int m, double x) {
+        protected double Psi(int n, int m, double x) {
             double xi2 = this.s * x; xi2 *= xi2;
             m = System.Math.Abs(m);
 
@@ -262,7 +272,7 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
         /// <param name="x">Souøadnice</param>
-        private double Psi(int i, double x) {
+        protected double Psi(int i, double x) {
             return this.Psi(this.index.N[i], this.index.M[i], x);
         }
 

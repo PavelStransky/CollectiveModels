@@ -58,12 +58,17 @@
     <Compile Include="Quantum\LHOQuantumGCMC.cs" />
     <Compile Include="Quantum\LHOQuantumGCMR.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRFull.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRL.cs" />
     <Compile Include="Quantum\QuantumGCM.cs" />
     <Compile Include="Quantum\RadialMatrixElement.cs" />
     <Compile Include="Quantum\RAIndex.cs" />
     <Compile Include="Quantum\DiscreteInterval.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DLLWrapper\DLLWrapper.csproj">
+      <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
+      <Name>DLLWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Name>Math</Name>

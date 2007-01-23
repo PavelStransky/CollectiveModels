@@ -36,8 +36,11 @@ namespace PavelStransky.Expression.Functions {
                 TArray result = new TArray();
 
                 result.Add(new Vector(qs.EigenValue));
-                for(int i = 0; i < qs.EigenVector.Length; i++)
-                    result.Add(qs.EigenVector[i]);
+                for(int i = 0; i < qs.EigenValue.Length; i++)
+                    if(qs.EigenVector == null)
+                        result.Add(qs.EigenVector[i]);
+                    else
+                        result.Add(new Vector(qs.EigenValue));
 
                 return result;
             }

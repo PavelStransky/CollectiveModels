@@ -57,6 +57,14 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Velikost Hamiltonovy matice
+        /// </summary>
+        /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
+        public override int HamiltonianMatrixSize(int maxn) {
+            return maxn * maxn;
+        }
+
+        /// <summary>
         /// Napoèítá Hamiltonovu matici v bázi LHO 1Dx1D oscilátoru
         /// </summary>
         /// <param name="maxn">Nejvyšší øád bázových funkcí</param>

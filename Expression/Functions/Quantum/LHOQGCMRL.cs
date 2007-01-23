@@ -8,8 +8,9 @@ using PavelStransky.GCM;
 namespace PavelStransky.Expression.Functions {
     /// <summary>
     /// Vytvoøí LHOQuantumGCMR tøídu (poèítanou v radiálních souøadnicích)
+    /// pomocí knihovny LAPACK
     /// </summary>
-    public class LHOQGCMR : FunctionDefinition {
+    public class LHOQGCMRL : FunctionDefinition {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
@@ -67,7 +68,7 @@ namespace PavelStransky.Expression.Functions {
                 if(arguments.Count > 5)
                     hbar = (double)arguments[5];
 
-                LHOQuantumGCMR qgcm = new LHOQuantumGCMR((double)item, b, c, k, a0, hbar);
+                LHOQuantumGCMRL qgcm = new LHOQuantumGCMRL((double)item, b, c, k, a0, hbar);
                 return qgcm;
             }
 
@@ -77,7 +78,7 @@ namespace PavelStransky.Expression.Functions {
                 return this.BadTypeError(item, 0);
         }
 
-        private const string help = "Vytvoøí LHOQuantumGCMR tøídu pro dané parametry";
+        private const string help = "Vytvoøí LHOQuantumGCMRL tøídu pro dané parametry";
         private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [A0 (double); [hbar (double)]]";
     }
 }

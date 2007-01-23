@@ -92,6 +92,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\DLLWrapper\DLLWrapper.csproj">
+      <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
+      <Name>DLLWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Expression\Expression.csproj">
       <Name>Expression</Name>
       <Project>{32A09091-75AC-4F78-BB4D-8721DAD0E1CE}</Project>

@@ -8,6 +8,7 @@ using PavelStransky.IBM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 using PavelStransky.GCM;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Test {
 	/// <summary>
@@ -18,16 +19,59 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLAPack();
+            Test.PokusLAPack3();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
 
         /// <summary>
+        /// Tøetí pokus
+        /// </summary>
+        static void PokusLAPack3() {
+            int length = 10000;
+            Matrix m1 = new Matrix(length);
+            SymmetricBandMatrix m2 = new SymmetricBandMatrix(length, 3);
+
+            Random r = new Random(1000);
+
+            for(int i = 0; i < 3; i++)
+                for(int j = 0; j < length - i; j++) {
+                    double d = r.NextDouble();
+                    m1[i + j, j] = d;
+                    m1[j, i + j] = d;
+                    m2[i + j, j] = d;
+                }
+
+//            Jacobi jacobi = new Jacobi(m1);
+//            jacobi.SortAsc();
+//            Vector v1 = new Vector(jacobi.EigenValue);
+            Vector v2 = new Vector(LAPackDLL.dsbevx(m2, 0, 100));
+//            Vector v3 = v2 - v1;
+        }
+
+        /// <summary>
+        /// 22.1.2006
+        /// </summary>
+        static void PokusLAPack2() {
+            LHOQuantumGCMRL l = new LHOQuantumGCMRL(-1, 1, 1, 1, 1, 0.1);
+            LHOQuantumGCMR r = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
+
+            Matrix m1 = l.HamiltonianMatrix(20, 1000, null);
+            Matrix m2 = r.HamiltonianMatrix(20, 1000, null);
+//            Matrix m3 = l.HamiltonianSBMatrix(20, 1000, null).GetBand();
+
+//            Export e = new Export("c:\\tmp3.txt", false);
+//            e.Write(m3);
+//            e.Close();
+
+            l.Compute(20, 1000, null);
+        }
+
+        /// <summary>
         /// 19.1.2006
         /// </summary>
-        static void PokusLAPack() {
+        static void PokusLAPack1() {
             double[,] d = { { 1, 3, 2, 1, 1 }, 
                             { 3, -1, 5, 0, 0 },
                             {2,5,0,4,3},
@@ -35,11 +79,19 @@ namespace PavelStransky.Test {
                             {1,0,3,3,0}};
             Matrix m = new Matrix(d);
 
-            Console.WriteLine(m.ToString());
+            int length = 100;
+            Random r = new Random();
+            m = new Matrix(length);
+            for(int i = 0; i < length; i++)
+                for(int j = 0; j < length; j++)
+                    m[i, j] = r.NextDouble();
+
+//            Console.WriteLine(m.ToString());
 
             Vector v1 = PavelStransky.DLLWrapper.LAPackDLL.dsyev(m);
-            Vector v2 = new Vector((new Jacobi(m)).EigenValue);
-            int x = 0;
+            Jacobi jacobi = new Jacobi(m);
+            jacobi.SortAsc();
+            Vector v2 = new Vector(jacobi.EigenValue);
         }
 
         /// <summary>

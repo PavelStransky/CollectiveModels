@@ -116,6 +116,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Atom.Functions.cs" />
+    <Compile Include="Functions\BandWidth.cs" />
     <Compile Include="BinaryOperators\ArrayAdd.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -194,9 +195,11 @@
     <Compile Include="Functions\Quantum\ComputeSpectrum.cs" />
     <Compile Include="Functions\Quantum\DensityMatrix.cs" />
     <Compile Include="Functions\Quantum\EVNumDiff.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianMatrixSize.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRL.cs" />
     <Compile Include="Functions\Show.cs" />
     <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />

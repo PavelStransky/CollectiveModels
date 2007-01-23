@@ -496,6 +496,32 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Šíøka pásu, pokud na matici pohlížíme jako na pásovou
+        /// </summary>
+        public int BandWidth() {
+            if(!this.IsSquare)
+                throw new MatrixException(errorMessageNotSquare);
+
+            int length = this.Length;
+            int lastNonZeroBand = 0;
+
+            for(int i = 0; i < length; i++) {
+                bool zeroBand = true;
+
+                for(int j = 0; j < length - i; j++) 
+                    if(this[i + j, j] != 0.0 || this[j, i + j] != 0.0) {
+                        zeroBand = false;
+                        break;
+                    }
+
+                if(!zeroBand)
+                    lastNonZeroBand = i;
+            }
+
+            return 2 * lastNonZeroBand + 1;
+        }
+
+        /// <summary>
         /// Souèet všech prvkù
         /// </summary>
         public double Sum() {

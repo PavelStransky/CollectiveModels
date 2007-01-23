@@ -87,6 +87,12 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Vrátí velikost Hamiltonovy matice v dané bázi
+        /// </summary>
+        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
+        public abstract int HamiltonianMatrixSize(int maxE);
+
+        /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
         /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
@@ -100,7 +106,7 @@ namespace PavelStransky.GCM {
         /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        public void Compute(int maxn, int numSteps, IOutputWriter writer) {
+        public virtual void Compute(int maxn, int numSteps, IOutputWriter writer) {
             DateTime startTime = DateTime.Now;
             Matrix h = this.HamiltonianMatrix(maxn, numSteps, writer);
 
@@ -123,12 +129,12 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Vlastní hodnoty
         /// </summary>
-        public double[] EigenValue { get { return this.isComputed ? this.jacobi.EigenValue : null; } }
+        public virtual double[] EigenValue { get { return this.isComputed ? this.jacobi.EigenValue : null; } }
 
         /// <summary>
         /// Vlastní vektory
         /// </summary>
-        public Vector[] EigenVector { get { return this.isComputed ? this.jacobi.EigenVector : null; } }
+        public virtual Vector[] EigenVector { get { return this.isComputed ? this.jacobi.EigenVector : null; } }
 
         /// <summary>
         /// Vrátí matici hustot pro vlastní funkce

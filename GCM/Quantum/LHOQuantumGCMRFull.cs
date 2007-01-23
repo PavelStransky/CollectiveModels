@@ -42,7 +42,8 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="maxE">Maximální energie</param>
         protected override void CreateIndex(int maxE) {
-            this.index = new LHOPolarIndex(maxE, true);
+            if(this.index == null || this.index.MaxE != maxE)
+                this.index = new LHOPolarIndex(maxE, true);
         }
     }
 }

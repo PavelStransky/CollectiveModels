@@ -11,8 +11,6 @@ namespace PavelStransky.GCM {
     /// pomocí knihovny LAPACK
     /// </summary>
     public class LHOQuantumGCMRL : LHOQuantumGCMR {
-        private double[] eigenValue;
-
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -142,61 +140,46 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        public override void Compute(int maxE, int numSteps, IOutputWriter writer) {
+        public override void Compute(int maxE, int numSteps, bool ev, int numev, IOutputWriter writer) {
+            if(this.isComputing)
+                throw new GCMException(errorMessageComputing);
+            this.isComputing = true;
+
             DateTime startTime = DateTime.Now;
 
             SymmetricBandMatrix m = this.HamiltonianSBMatrix(maxE, numSteps, writer);
 
             if(writer != null) {
                 writer.WriteLine((DateTime.Now - startTime).ToString());
+                writer.Write("Diagonalizace dsbevx...");
             }
 
             startTime = DateTime.Now;
 
-            this.eigenValue = LAPackDLL.dsbevx(m, 0, 1000);
+            if(numev <= 0 || numev > m.Length)
+                numev = m.Length;
+
+            Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
+            m.Dispose();
+
+            this.eigenValues = eigenSystem[0];
+            this.eigenValues.Length = numev;
+
+            if(ev) {
+                this.eigenVectors = new Vector[numev];
+                for(int i = 0; i < numev; i++)
+                    this.eigenVectors[i] = eigenSystem[i + 1];
+            }
+            else
+                this.eigenVectors = new Vector[0];
 
             if(writer != null) {
                 writer.WriteLine((DateTime.Now - startTime).ToString());
-                writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", new Vector(this.eigenValue).Sum()));
+                writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
             }
 
             this.isComputed = true;
-
-            m.Dispose();
-        }
-
-        /// <summary>
-        /// Vlastní hodnoty
-        /// </summary>
-        public override double[] EigenValue { get { return this.eigenValue; } }
-
-        /// <summary>
-        /// Vlastní vektory (NEFUNGUJE !!!)
-        /// </summary>
-        public override Vector[] EigenVector { get { return new Vector[this.eigenValue.Length]; } }
-
-        /// <summary>
-        /// Naète výsledky ze souboru
-        /// </summary>
-        /// <param name="import">Import</param>
-        public override void Import(Import import) {
-            base.Import(import);
-
-            if(this.jacobi == null) {
-                this.index = null;
-                this.isComputed = false;
-            }
-            else {
-                int length = this.jacobi.EigenValue.Length;
-                for(int i = (int)System.Math.Sqrt(length) / 2; i < length; i++) {
-                    this.index = new LHOPolarIndex(i);
-                    if(this.index.Length == length)
-                        break;
-                }
-                this.isComputed = true;
-            }
-
-            this.RefreshConstants();
+            this.isComputing = false;
         }
     }
 }

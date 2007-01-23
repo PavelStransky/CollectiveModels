@@ -21,10 +21,17 @@ namespace PavelStransky.GCM {
         // Epsilon
         protected const double epsilon = 1E-8;
 
-        protected Jacobi jacobi;
+        // Vlastní hodnoty
+        protected Vector eigenValues;
+
+        // Vlastní vektory
+        protected Vector[] eigenVectors = new Vector[0];
 
         // True, pokud bylo vypoèteno
         protected bool isComputed = false;
+
+        // True, pokud již probíhá výpoèet
+        protected bool isComputing = false;
 
         /// <summary>
         /// Planckova konstanta [Js]
@@ -105,8 +112,15 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
+        /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
         /// <param name="writer">Writer</param>
-        public virtual void Compute(int maxn, int numSteps, IOutputWriter writer) {
+        public virtual void Compute(int maxn, int numSteps, bool ev, int numev, IOutputWriter writer) {
+            if(this.isComputing)
+                throw new GCMException(errorMessageComputing);
+
+            this.isComputing = true;
+
             DateTime startTime = DateTime.Now;
             Matrix h = this.HamiltonianMatrix(maxn, numSteps, writer);
 
@@ -116,25 +130,50 @@ namespace PavelStransky.GCM {
                 writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
             }
 
-            this.jacobi = new Jacobi(h, writer);
-            this.jacobi.SortAsc();
+            Jacobi jacobi = new Jacobi(h, writer);
+            jacobi.SortAsc();
+
+            if(numev <= 0 || numev > jacobi.EigenValue.Length)
+                numev = jacobi.EigenValue.Length;
+
+            this.eigenValues = new Vector(jacobi.EigenValue);
+            this.eigenValues.Length = numev;
+
+            if(ev) {
+                this.eigenVectors = new Vector[numev];
+                for(int i = 0; i < numev; i++)
+                    this.eigenVectors[i] = jacobi.EigenVector[i];
+            }
+            else
+                this.eigenVectors = new Vector[0];
 
             if(writer != null) {
-                writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", new Vector(this.jacobi.EigenValue).Sum()));
+                writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
             }
 
             this.isComputed = true;
+            this.isComputing = false;
         }
 
         /// <summary>
         /// Vlastní hodnoty
         /// </summary>
-        public virtual double[] EigenValue { get { return this.isComputed ? this.jacobi.EigenValue : null; } }
+        public Vector GetEigenValues() {
+            return this.eigenValues;
+        }
 
         /// <summary>
-        /// Vlastní vektory
+        /// Vlastní vektor
         /// </summary>
-        public virtual Vector[] EigenVector { get { return this.isComputed ? this.jacobi.EigenVector : null; } }
+        /// <param name="i">Index vektoru</param>
+        public Vector GetEigenVector(int i) {
+            return this.eigenVectors[i];
+        }
+
+        /// <summary>
+        /// Poèet vlastních vektorù
+        /// </summary>
+        public int NumEV { get { return this.eigenVectors.Length; } }
 
         /// <summary>
         /// Vrátí matici hustot pro vlastní funkce
@@ -145,10 +184,15 @@ namespace PavelStransky.GCM {
 
         #region Implementace IExportable
         /// <summary>
+        /// Pøidá další parametry pro uložení
+        /// </summary>
+        protected virtual void Export(IEParam param) { }
+
+        /// <summary>
         /// Uloží výsledky do souboru
         /// </summary>
         /// <param name="export">Export</param>
-        public virtual void Export(Export export) {
+        public void Export(Export export) {
             IEParam param = new IEParam();
 
             param.Add(this.A, "A");
@@ -157,16 +201,33 @@ namespace PavelStransky.GCM {
             param.Add(this.K, "K");
             param.Add(this.A0, "A0");
             param.Add(this.Hbar, "HBar");
-            param.Add(this.jacobi, "Jacobi");
+            param.Add(this.isComputed, "IsComputed");
+
+            if(this.isComputed) {
+                param.Add(this.eigenValues, "EigenValues");
+
+                int numEV = this.NumEV;
+                param.Add(numEV, "EigenVector Number");
+
+                for(int i = 0; i < numEV; i++)
+                    param.Add(this.eigenVectors[i]);
+            }
+
+            this.Export(param);
 
             param.Export(export);
 		}
 
-		/// <summary>
-		/// Naète výsledky ze souboru
-		/// </summary>
+        /// <summary>
+        /// Naètení dalších parametrù
+        /// </summary>
+        protected virtual void Import(IEParam param) { }
+
+        /// <summary>
+        /// Naète výsledky ze souboru
+        /// </summary>
         /// <param name="import">Import</param>
-        public virtual void Import(Import import) {
+        public void Import(Import import) {
             IEParam param = new IEParam(import);
 
             this.A = (double)param.Get(-1.0);
@@ -175,12 +236,25 @@ namespace PavelStransky.GCM {
             this.K = (double)param.Get(1.0);
             this.A0 = (double)param.Get(1.0);
             this.hbar = (double)param.Get(0.1);
-            this.jacobi = (Jacobi)param.Get();
+            this.isComputed = (bool)param.Get(false);
+
+            if(this.isComputed) {
+                this.eigenValues = (Vector)param.Get(null);
+
+                int numEV = (int)param.Get(0);
+                this.eigenVectors = new Vector[numEV];
+
+                for(int i = 0; i < numEV; i++)
+                    this.eigenVectors[i] = (Vector)param.Get();
+            }
+
+            this.Import(param);
 
             this.RefreshConstants();
         }
         #endregion
 
         protected const string errorMessageNotComputed = "Energetické spektrum ještì nebylo vypoèteno.";
+        protected const string errorMessageComputing = "Nad daným objektem LHOQuantumGCM již probíhá výpoèet.";
     }
 }

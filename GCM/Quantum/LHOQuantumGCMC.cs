@@ -161,7 +161,7 @@ namespace PavelStransky.GCM {
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
         private Matrix EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
-            Vector ev = jacobi.EigenVector[n];
+            Vector ev = this.eigenVectors[n];
             Matrix result = new Matrix(intx.Num, inty.Num);
 
             int sqrlength = ev.Length;
@@ -231,7 +231,7 @@ namespace PavelStransky.GCM {
                     //    4 * (M[i + 1, j] + M[i - 1, j] + M[i, j + 1] + M[i, j - 1]) / 3 - 5 * M[i, j]
                     //    ); //O(dx^4)
 
-                    result[sx, sy] = -this.Hbar * this.Hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * this.jacobi.EigenValue[n];
+                    result[sx, sy] = -this.Hbar * this.Hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * this.eigenValues[n];
                     result[sx, sy] *= result[sx, sy];
                 }
             }
@@ -285,24 +285,17 @@ namespace PavelStransky.GCM {
         /// <returns></returns>
         private double Psi(int n, double x) {
             double xi = this.s * x;
-            return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
+            return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * this.hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
         }
 
-        /// <summary>
-        /// Provede import
-        /// </summary>
-        /// <param name="import">Import funkcí</param>
-        public override void Import(Import import) {
-            base.Import(import);
+        protected override void Export(IEParam param) {
+            if(this.isComputed)
+                param.Add(this.hermit.MaxN, "Order of Hermit Polynom");
+        }
 
-            if(this.jacobi == null) {
-                this.hermit = null;
-                this.isComputed = false;
-            }
-            else {
-                this.hermit = new HermitPolynom((int)System.Math.Sqrt(this.jacobi.EigenValue.Length));
-                this.isComputed = true;
-            }
+        protected override void Import(IEParam param) {
+            if(this.isComputed)
+                this.hermit = new HermitPolynom((int)param.Get(10));
         }
     }
 }

@@ -19,11 +19,28 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLAPack3();
+            Test.PokusLAPack4();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Ètvrtý pokus
+        /// </summary>
+        static void PokusLAPack4() {
+            ConsoleWriter w = new ConsoleWriter();
+
+            LHOQuantumGCMR l1 = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
+            LHOQuantumGCMRL l2 = new LHOQuantumGCMRL(-1, 1, 1, 1, 1, 0.1);
+
+            l1.Compute(30, 1000, true, 100, w);
+            l2.Compute(30, 1000, true, 100, w);
+
+            Vector v1 = l1.GetEigenVector(0);
+            Vector v2 = l2.GetEigenVector(0);
+            Vector v = v2 + v1;
+        }
 
         /// <summary>
         /// Tøetí pokus
@@ -46,7 +63,7 @@ namespace PavelStransky.Test {
 //            Jacobi jacobi = new Jacobi(m1);
 //            jacobi.SortAsc();
 //            Vector v1 = new Vector(jacobi.EigenValue);
-            Vector v2 = new Vector(LAPackDLL.dsbevx(m2, 0, 100));
+            Vector v2 = LAPackDLL.dsbevx(m2, false, 0, 100)[0];
 //            Vector v3 = v2 - v1;
         }
 
@@ -65,7 +82,7 @@ namespace PavelStransky.Test {
 //            e.Write(m3);
 //            e.Close();
 
-            l.Compute(20, 1000, null);
+            l.Compute(20, 1000, true, 0, null);
         }
 
         /// <summary>
@@ -138,9 +155,9 @@ namespace PavelStransky.Test {
         /// </summary>
         static void PokusLHOQuantumGCMR() {
             LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 0.3, 0.02);
-            lho.Compute(50, 0, new ConsoleWriter());
+            lho.Compute(50, 0, false, 0, new ConsoleWriter());
             for(int i = 0; i < 100; i++)
-                Console.WriteLine(lho.EigenValue[i]);
+                Console.WriteLine(lho.GetEigenValues()[i]);
         }
 
         /// <summary>

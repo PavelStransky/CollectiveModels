@@ -261,57 +261,77 @@ namespace PavelStransky.DLLWrapper {
         /// Nalezne vlastní pásové matice
         /// </summary>
         /// <param name="band">Matice v pásovém tvaru</param>
+        /// <param name="ev">True, pokud chceme poèítat i vlastní vektory</param>
         /// <param name="iMin">Minimální vlastní hodnota</param>
         /// <param name="iMax">Maximální vlastní hodnota</param>
-        public static double[] dsbevx(SymmetricBandMatrix band, int iMin, int iMax) {
-            char jobz = 'N';
-            char range = 'A';
+        public static Vector[] dsbevx(SymmetricBandMatrix band, bool ev, int iMin, int iMax) {
+            char jobz = ev ? 'V' : 'N';
+            char range = 'I';
             char uplo = 'U';
 
             int n = band.Length;
             int kd = band.NumSD;
-            double *aab = band.GetItem();
-            double* ab = Memory.NewDouble(n * (kd + 1));
-            for(int i = 0; i < kd + 1; i++) {
-                for(int j = 0; j < n; j++) {
-                    ab[j * (kd + 1) + i] = aab[i * n + j];
-                }
-            }
-            ab = aab;
+            double *ab = band.GetItem();
 
             int ldab = kd + 1;
+
+            double vl, vu;
+            int il = iMin + 1, iu = iMax;
+
+            // ! IL musí být vìtší než 0
+            if(il <= 0)
+                il = 1;
+            if(iu > n)
+                iu = n;
 
             // Pro jobz == 'N' nepoøebujeme
             double* q = null;
             int ldq = 0;
             int* ifail = null;
 
-            double vl, vu;
-            int il = 0, iu = 0;
+            int ldz = 1;
+
+            if(ev) {
+                ldq = n;
+                q = Memory.NewDouble(n * n);
+                ifail = Memory.NewInt(n);
+                ldz = n;
+            }
+
+            double* z = Memory.NewDouble(ldz * (iu - il + 1));
 
             double abstol = 0;
 
             int m = 0;
             double* w = Memory.NewDouble(n);
 
-            double* z = Memory.NewDouble(n);
-            int ldz = 1;
-
             double* work = Memory.NewDouble(7 * n);
             int* iwork = Memory.NewInt(5 * n);
 
             int info = 0;
 
-            double[] result = null;
+            Vector[] result = null;
 
             try {
                 dsbevx_(&jobz, &range, &uplo, &n, &kd, ab, &ldab, q, &ldq,
                     &vl, &vu, &il, &iu, &abstol, &m, w, z, &ldz, work, iwork, ifail, &info);
 
-                result = new double[m];
+                if(ev)
+                    result = new Vector[m + 1];
+                else
+                    result = new Vector[1];
+
+                result[0] = new Vector(m);
 
                 for(int i = 0; i < m; i++)
-                    result[i] = w[i];
+                    result[0][i] = w[i];
+
+                if(ev)
+                    for(int i = 0; i < m; i++) {
+                        result[i + 1] = new Vector(n);
+                        for(int j = 0; j < n; j++)
+                            result[i + 1][j] = z[i * ldz + j];
+                    }
             }
             finally {
                 Memory.Delete(w);

@@ -51,14 +51,19 @@ namespace PavelStransky.Math {
     /// </summary>
     public interface IQuantumSystem {
         /// <summary>
-        /// Vlastní hodnota
+        /// Vlastní hodnoty
         /// </summary>
-        double[] EigenValue { get;}
+        Vector GetEigenValues();
 
         /// <summary>
-        /// Vlastní vektor
+        /// Vlastní vektory
         /// </summary>
-        Vector[] EigenVector { get;}
+        Vector GetEigenVector(int i);
+
+        /// <summary>
+        /// Poèet vlastních vektorù
+        /// </summary>
+        int NumEV { get;}
 
         /// <summary>
         /// Matice s hustotou vlastní funkce

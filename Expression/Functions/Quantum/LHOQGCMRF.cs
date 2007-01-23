@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions {
 
         protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 8);
+            this.CheckArgumentsMaxNumber(evaluatedArguments, 6);
 
             if(evaluatedArguments[0] is int)
                 evaluatedArguments[0] = (double)(int)evaluatedArguments[0];
@@ -41,14 +41,6 @@ namespace PavelStransky.Expression.Functions {
                 this.CheckArgumentsType(evaluatedArguments, 5, typeof(double));
             }
 
-            if(evaluatedArguments.Count > 6) {
-                this.ConvertInt2Double(evaluatedArguments, 6);
-                this.CheckArgumentsType(evaluatedArguments, 6, typeof(double));
-            }
-
-            if(evaluatedArguments.Count > 7)
-                this.CheckArgumentsType(evaluatedArguments, 7, typeof(int));
-
             return evaluatedArguments;
         }
 
@@ -59,8 +51,6 @@ namespace PavelStransky.Expression.Functions {
                 double k = 1;
                 double a0 = (double)item;
 
-                int maxn = 25;
-                int numSteps = 0;               // 0 - numsteps je dopoèítáno automaticky
                 double hbar = 0.1;                 // defaultní hodnota
 
                 if(arguments.Count > 1) {
@@ -70,19 +60,12 @@ namespace PavelStransky.Expression.Functions {
                 }
 
                 if(arguments.Count > 4)
-                    maxn = (int)arguments[4];
+                    a0 = (double)arguments[4];
 
                 if(arguments.Count > 5)
                     hbar = (double)arguments[5];
 
-                if(arguments.Count > 6)
-                    a0 = (double)arguments[6];
-
-                if(arguments.Count > 7)
-                    numSteps = (int)arguments[7];
-
                 LHOQuantumGCMRFull qgcm = new LHOQuantumGCMRFull((double)item, b, c, k, a0, hbar);
-                qgcm.Compute(maxn, numSteps, this.writer);
                 return qgcm;
             }
 
@@ -93,6 +76,6 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string help = "Vytvoøí LHOQuantumGCMRFull tøídu pro dané parametry (GCM poèítáno v radiálních souøadnicích, bereme úplnou bázi)";
-        private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [MaxN (int); [hbar (double); [A0 (double); [NumSteps - dìlení møíže (int)]]]]]";
+        private const string parameters = "A (double) | Array of A (double); [B (double); C (double); K (double); [A0 (double); [hbar (double)]]]]";
     }
 }

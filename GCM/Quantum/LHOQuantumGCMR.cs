@@ -150,7 +150,7 @@ namespace PavelStransky.GCM {
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
         private Complex[,] EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
-            Vector ev = jacobi.EigenVector[n];
+            Vector ev = this.eigenVectors[n];
 
             Complex[,] result = new Complex[intx.Num, inty.Num];
             for(int sx = 0; sx < intx.Num; sx++)
@@ -276,28 +276,14 @@ namespace PavelStransky.GCM {
             return this.Psi(this.index.N[i], this.index.M[i], x);
         }
 
-        /// <summary>
-        /// Naète výsledky ze souboru
-        /// </summary>
-        /// <param name="import">Import</param>
-        public override void Import(Import import) {
-            base.Import(import);
+        protected override void Export(IEParam param) {
+            if(this.isComputed)
+                param.Add(this.index.MaxE, "Maximum Energy of Basis Functions");
+        }
 
-            if(this.jacobi == null) {
-                this.index = null;
-                this.isComputed = false;
-            }
-            else {
-                int length = this.jacobi.EigenValue.Length;
-                for(int i = (int)System.Math.Sqrt(length) / 2; i < length; i++) {
-                    this.index = new LHOPolarIndex(i);
-                    if(this.index.Length == length)
-                        break;
-                }
-                this.isComputed = true;
-            }
-
-            this.RefreshConstants();
+        protected override void Import(IEParam param) {
+            if(this.isComputed)
+                this.CreateIndex((int)param.Get(10));
         }
     }
 }

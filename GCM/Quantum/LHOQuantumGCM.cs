@@ -230,25 +230,27 @@ namespace PavelStransky.GCM {
         public void Import(Import import) {
             IEParam param = new IEParam(import);
 
-            this.A = (double)param.Get(-1.0);
-            this.B = (double)param.Get(1.0);
-            this.C = (double)param.Get(1.0);
-            this.K = (double)param.Get(1.0);
-            this.A0 = (double)param.Get(1.0);
-            this.hbar = (double)param.Get(0.1);
-            this.isComputed = (bool)param.Get(false);
+            if(import.VersionNumber >= 4) {
+                this.A = (double)param.Get(-1.0);
+                this.B = (double)param.Get(1.0);
+                this.C = (double)param.Get(1.0);
+                this.K = (double)param.Get(1.0);
+                this.A0 = (double)param.Get(1.0);
+                this.hbar = (double)param.Get(0.1);
+                this.isComputed = (bool)param.Get(false);
 
-            if(this.isComputed) {
-                this.eigenValues = (Vector)param.Get(null);
+                if(this.isComputed) {
+                    this.eigenValues = (Vector)param.Get(null);
 
-                int numEV = (int)param.Get(0);
-                this.eigenVectors = new Vector[numEV];
+                    int numEV = (int)param.Get(0);
+                    this.eigenVectors = new Vector[numEV];
 
-                for(int i = 0; i < numEV; i++)
-                    this.eigenVectors[i] = (Vector)param.Get();
+                    for(int i = 0; i < numEV; i++)
+                        this.eigenVectors[i] = (Vector)param.Get();
+                }
+
+                this.Import(param);
             }
-
-            this.Import(param);
 
             this.RefreshConstants();
         }

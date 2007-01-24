@@ -531,11 +531,11 @@ namespace PavelStransky.Forms {
             // Hlavièka
             if(export.Binary) {
                 export.B.Write((this.MdiParent as MainForm).RegistryEntryName);
-                export.B.Write(3);
+                export.B.Write(4);
             }
             else {
                 export.T.WriteLine((this.MdiParent as MainForm).RegistryEntryName);
-                export.T.WriteLine(3);
+                export.T.WriteLine(4);
             }
 
             IEParam param = new IEParam();
@@ -577,7 +577,15 @@ namespace PavelStransky.Forms {
                 this.txtCommand.SelectionStart = import.B.ReadInt32();
                 this.txtCommand.ScrollToCaret();
 
-                this.context = new Context();
+                try {
+                    this.context = new Context();
+                }
+                catch(Exception e) {
+                    this.context = new Context();
+                    DialogResult result = MessageBox.Show(this,
+                        string.Format(messageContextError, e.Message),
+                        captionContextError, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             else {
                 IEParam param = new IEParam(import);
@@ -614,6 +622,9 @@ namespace PavelStransky.Forms {
 
         private const string messageClose = "V oknì {0} probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
         private const string captionClose = "Varování";
+
+        private const string messageContextError = "Nepodaøilo se otevøít kontext.\n\nPodrobnosti: {0}";
+        private const string captionContextError = "Chyba!";
 
         private const string messageCalculationRunning = "V aktuálním oknì probíhá výpoèet, nelze spustit nový výpoèet!";
         private const string defaultResultWindowName = "Result{0}";

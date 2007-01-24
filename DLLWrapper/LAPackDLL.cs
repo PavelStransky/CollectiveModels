@@ -338,6 +338,8 @@ namespace PavelStransky.DLLWrapper {
                 Memory.Delete(z);
                 Memory.Delete(work);
                 Memory.Delete(iwork);
+                Memory.Delete(q);
+                Memory.Delete(ifail);
             }
 
             return result;

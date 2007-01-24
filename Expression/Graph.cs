@@ -766,14 +766,16 @@ namespace PavelStransky.Expression {
         /// <param name="import">Import</param>
         public virtual void Import(PavelStransky.Math.Import import) {
             IEParam param = new IEParam(import);
-            
-            this.item = (TArray)param.Get();
-            this.background = (TArray)param.Get();
-            this.errors = (TArray)param.Get();
 
-            this.graphContext = (Context)param.Get();
-            this.itemContext = (TArray)param.Get();
-            this.backgroundContext = (TArray)param.Get();
+            if(import.VersionNumber >= 4) {
+                this.item = (TArray)param.Get();
+                this.background = (TArray)param.Get();
+                this.errors = (TArray)param.Get();
+
+                this.graphContext = (Context)param.Get();
+                this.itemContext = (TArray)param.Get();
+                this.backgroundContext = (TArray)param.Get();
+            }
         }
         #endregion
 

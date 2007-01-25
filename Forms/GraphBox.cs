@@ -1128,7 +1128,7 @@ namespace PavelStransky.Forms {
 		private const double baseAmplifyY = 8;
         // Okraj v promilích
 		private const int defaultMargin = 20;
-		private const int defaultMarginWithAxeL = 70;
+		private const int defaultMarginWithAxeL = 120;
 		private const int defaultMarginWithAxeB = 100;
 		// Interval mezi dvìma body s èísly na ose (v obrazových bodech)
 		private const int axePointInterval = 50;

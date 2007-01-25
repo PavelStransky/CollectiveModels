@@ -92,6 +92,14 @@ namespace PavelStransky.Forms {
             context.NewContextRequest += new Context.ContextEventHandler(context_NewContextRequest);
             context.SetContextRequest += new Context.ContextEventHandler(context_SetContextRequest);
             context.SaveRequest += new Context.FileNameEventHandler(context_SaveRequest);
+            context.Changed += new Context.ChangedEventHandler(context_Changed);
+        }
+
+        /// <summary>
+        /// Zmìna na kontextu
+        /// </summary>
+        void context_Changed(object sender, EventArgs e) {
+            this.Modified = true;
         }
 
         /// <summary>

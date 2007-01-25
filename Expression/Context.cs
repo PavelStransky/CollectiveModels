@@ -11,7 +11,19 @@ namespace PavelStransky.Expression {
 	/// </summary>
 	public class Context: IExportable {
 		#region Události - žádosti pro vnìjší objekt
-		// Žádost o graf
+        // Zmìna na kontextu
+        public delegate void ChangedEventHandler(object sender, EventArgs e);
+        public event ChangedEventHandler Changed;
+
+        /// <summary>
+        /// Volá se pøi zmìnì na kontextu
+        /// </summary>
+        public void OnChange(EventArgs e) {
+            if(this.Changed != null)
+                this.Changed(this, e);
+        }
+
+        // Žádost o graf
 		public delegate void GraphRequestEventHandler(object sender, GraphRequestEventArgs e);
 		public event GraphRequestEventHandler GraphRequest;
 
@@ -96,6 +108,8 @@ namespace PavelStransky.Expression {
 				// Jinak ji musíme vytvoøit
 				this.objects.Add(name, retValue = new Variable(this, name, item, assignment));
 
+            this.OnChange(new EventArgs());
+
 			return retValue;
 		}
 
@@ -113,7 +127,8 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		public void Clear() {
 			this.objects.Clear();
-		}
+            this.OnChange(new EventArgs());
+        }
 
 		/// <summary>
 		/// Vymaže promìnnou daného názvu
@@ -124,7 +139,9 @@ namespace PavelStransky.Expression {
 				this.objects.Remove(name);
 			else
 				throw new ContextException(string.Format(errorMessageNoObject, name));
-		}
+        
+            this.OnChange(new EventArgs());
+        }
 
 		/// <summary>
 		/// Jména všech objektù na kontextu

@@ -74,8 +74,13 @@ namespace PavelStransky.GCM {
             if(numSteps == 0)
                 numSteps = 10 * maxn + 1;
 
-            if(writer != null)
+            DateTime startTime = DateTime.Now;
+
+            if(writer != null) {
+                writer.WriteLine("Hamiltonova matice");
+                writer.Indent(1);
                 writer.WriteLine(string.Format("Pøipravuji cache ({0} x {1})...", numSteps, numSteps));
+            }
 
             // Hermitùv polynom
             this.hermit = new HermitPolynom(maxn);
@@ -106,7 +111,7 @@ namespace PavelStransky.GCM {
             if(writer != null)
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", max2, max2));
 
-            DateTime startTime = DateTime.Now;
+            DateTime startTime1 = DateTime.Now;
 
             for(int i = 0; i < max2; i++) {
                 for(int j = i; j < max2; j++) {
@@ -141,7 +146,7 @@ namespace PavelStransky.GCM {
                 if(writer != null) {
                     if(i % maxn == 0) {
                         if(i != 0)
-                            writer.WriteLine((DateTime.Now - startTime).ToString());
+                            writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
 
                         writer.Write(i / maxn);
                         startTime = DateTime.Now;
@@ -149,6 +154,12 @@ namespace PavelStransky.GCM {
 
                     writer.Write(".");
                 }
+            }
+
+            if(writer != null){
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
+                writer.Indent(-1);
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
 
             return m;

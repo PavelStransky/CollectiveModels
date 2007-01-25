@@ -100,6 +100,19 @@ namespace PavelStransky.DLLWrapper {
             return this.item; 
         }
 
+        /// <summary>
+        /// Stopa matice
+        /// </summary>
+        public double Trace() {
+            int length = this.Length;
+            double result = 0.0;
+
+            for(int i = 0; i < length; i++)
+                result += this.item[this.numSD * (i + 1) + i];
+
+            return result;
+        }
+
         #region Destrukce
         public void Dispose() {
             this.Dispose(true);

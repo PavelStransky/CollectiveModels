@@ -118,23 +118,31 @@ namespace PavelStransky.GCM {
         public virtual void Compute(int maxn, int numSteps, bool ev, int numev, IOutputWriter writer) {
             if(this.isComputing)
                 throw new GCMException(errorMessageComputing);
-
             this.isComputing = true;
 
+            if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxn))
+                numev = this.HamiltonianMatrixSize(maxn);
+
             DateTime startTime = DateTime.Now;
+
+            if(writer != null) {
+                writer.WriteLine(string.Format("{0} ({1}): Výpoèet {2} vlastních hodnot{3}.",
+                    this.GetType().Name,
+                    startTime,
+                    numev, 
+                    ev ? " a vektorù" : string.Empty));
+                writer.Indent(1);
+            }
+
             Matrix h = this.HamiltonianMatrix(maxn, numSteps, writer);
 
             if(writer != null) {
-                writer.WriteLine((DateTime.Now - startTime).ToString());
                 writer.WriteLine(string.Format("Stopa matice: {0}", h.Trace()));
                 writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
             }
 
             Jacobi jacobi = new Jacobi(h, writer);
             jacobi.SortAsc();
-
-            if(numev <= 0 || numev > jacobi.EigenValue.Length)
-                numev = jacobi.EigenValue.Length;
 
             this.eigenValues = new Vector(jacobi.EigenValue);
             this.eigenValues.Length = numev;
@@ -149,6 +157,8 @@ namespace PavelStransky.GCM {
 
             if(writer != null) {
                 writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
+                writer.Indent(-1);
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
 
             this.isComputed = true;

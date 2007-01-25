@@ -187,5 +187,11 @@ namespace PavelStransky.Math {
         /// Vyèistí výstup
         /// </summary>
         void Clear();
+
+        /// <summary>
+        /// Provede odsazení
+        /// </summary>
+        /// <param name="i">Velikost odsazení (kladné pøidá, záporné ubere)</param>
+        int Indent(int i);
     }
 }

@@ -167,6 +167,7 @@ namespace PavelStransky.Forms {
 
                 this.OnCalcStarted(new EventArgs());
 
+                this.indent = 0;
                 if(this.chkAsync.Checked) 
                     this.calcThread.Start();
                 else
@@ -246,7 +247,7 @@ namespace PavelStransky.Forms {
 
             if(this.txtResult.Text != string.Empty)
                 this.txtResult.Text += newLine;
-            this.txtResult.Text += string.Format(timeText, this.GetTimeLengthString(duration));
+            this.txtResult.Text += string.Format(timeText, SpecialFormat.Format(duration));
 
             if(result != null) {
                 if(result is Variable)
@@ -267,19 +268,6 @@ namespace PavelStransky.Forms {
         /// <param name="captionText">Text titulku</param>
         private void SetCaption(string captionText) {
             this.Text = string.Format(captionFormat, this.Name, captionText);
-        }
-
-        /// <summary>
-        /// Vrátí dobu výpoètu jako øetìzec
-        /// </summary>
-        /// <param name="span">Èasový interval jako TimeSpan</param>
-        private string GetTimeLengthString(TimeSpan span) {
-            if(span.Hours > 0)
-                return string.Format("{0}:{1,2:00}:{2,2:00}", span.Hours, span.Minutes, span.Seconds);
-            else if(span.Minutes > 0)
-                return string.Format("{0}:{1,2:00}", span.Minutes, span.Seconds);
-            else
-                return string.Format("{0}.{1,2:00}s", span.Seconds, span.Milliseconds / 10);
         }
 
         /// <summary>
@@ -355,31 +343,52 @@ namespace PavelStransky.Forms {
         }
 
         #region IOutputWriter Members
+        private int indent = 0;
+        private bool lineStart = true;
+
+        public int Indent(int indent) {
+            this.indent += indent;
+            if(this.indent < 0)
+                this.indent = 0;
+            return indent;
+        }
+
         public void Clear() {
             this.Invoke(new WriteDelegate(this.WriteInvoke), string.Empty);
         }
 
         public void Write(object o) {
-            string s = this.txtResult.Text + o.ToString();
-            this.Invoke(new WriteDelegate(this.WriteInvoke), s);
+            StringBuilder s = new StringBuilder(this.txtResult.Text);
+            if(this.lineStart) {
+                s.Append(' ', this.indent);
+            }
+            s.Append(o);
+            this.Invoke(new WriteDelegate(this.WriteInvoke), s.ToString());
+
+            this.lineStart = false;
         }
 
         public void WriteLine() {
-            string s = this.txtResult.Text + newLine;
-            this.Invoke(new WriteDelegate(this.WriteInvoke), s);
+            StringBuilder s = new StringBuilder(this.txtResult.Text);
+            s.Append(newLine);
+            this.Invoke(new WriteDelegate(this.WriteInvoke), s.ToString());
+            this.lineStart = true;
         }
 
         public void WriteLine(object o) {
-            string s = this.txtResult.Text + o.ToString() + newLine;
-            this.Invoke(new WriteDelegate(this.WriteInvoke), s);
+            StringBuilder s = new StringBuilder(this.txtResult.Text);
+            if(this.lineStart)
+                s.Append(' ', this.indent);
+            s.Append(o.ToString());
+            s.Append(newLine);
+            this.Invoke(new WriteDelegate(this.WriteInvoke), s.ToString());
+            this.lineStart = true;
         }
 
         private void WriteInvoke(string s) {
-            this.txtResult.SuspendLayout();
             this.txtResult.Text = s;
             this.txtResult.SelectionStart = System.Math.Max(0, this.txtResult.Text.Length - 1);
             this.txtResult.ScrollToCaret();
-            this.txtResult.ResumeLayout();
         }
 
         #endregion

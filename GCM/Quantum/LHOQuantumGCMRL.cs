@@ -61,9 +61,11 @@ namespace PavelStransky.GCM {
             if(numSteps == 0)
                 numSteps = 10 * this.index.MaxM + 1;
 
+            DateTime startTime = DateTime.Now;
+
             if(writer != null) {
-                writer.WriteLine(string.Format("Maximální (n, m) = ({0}, {1})", this.index.MaxN, this.index.MaxM));
-                writer.WriteLine(string.Format("Velikost báze: {0}", this.index.Length));
+                writer.WriteLine("Hamiltonova matice");
+                writer.Indent(1);
                 writer.WriteLine(string.Format("Pøipravuji cache potenciálu ({0})...", numSteps));
             }
 
@@ -97,7 +99,7 @@ namespace PavelStransky.GCM {
                 writer.WriteLine(string.Format("Poèet blokù: {0}, velikost bloku: {1}", blockNum, blockSize));
             }
 
-            DateTime startTime = DateTime.Now;
+            DateTime startTime1 = DateTime.Now;
 
             BasisCache cache2 = new BasisCache(interval, 0, System.Math.Min(blockSize, this.index.Length), this.Psi);
             BasisCache cache1 = cache2;
@@ -184,9 +186,14 @@ namespace PavelStransky.GCM {
                 cache1 = cache2;
 
                 if(writer != null) {
-                    writer.WriteLine((DateTime.Now - startTime).ToString());
-                    startTime = DateTime.Now;
+                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
+                    startTime1 = DateTime.Now;
                 }               
+            }
+
+            if(writer != null) {
+                writer.Indent(-1);
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
 
             return m;
@@ -203,22 +210,36 @@ namespace PavelStransky.GCM {
                 throw new GCMException(errorMessageComputing);
             this.isComputing = true;
 
+            if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxE))
+                numev = this.HamiltonianMatrixSize(maxE);
+
             DateTime startTime = DateTime.Now;
+
+            if(writer != null) {
+                writer.WriteLine(string.Format("{0} ({1}): Výpoèet {2} vlastních hodnot{3}.",
+                    this.GetType().Name, 
+                    startTime,                    
+                    numev,
+                    ev ? " a vektorù" : string.Empty));
+                writer.Indent(1);
+                writer.WriteLine(string.Format("Maximální (n, m) = ({0}, {1})", this.index.MaxN, this.index.MaxM));
+                writer.WriteLine(string.Format("Velikost báze: {0}", this.index.Length));
+            }
 
             SymmetricBandMatrix m = this.HamiltonianSBMatrix(maxE, numSteps, writer);
 
             if(writer != null) {
-                writer.WriteLine((DateTime.Now - startTime).ToString());
-                writer.Write("Diagonalizace dsbevx...");
+                writer.WriteLine(string.Format("Stopa matice: {0}", m.Trace()));
+                writer.Write("Diagonalizace dsbevx... ");
             }
 
-            startTime = DateTime.Now;
-
-            if(numev <= 0 || numev > m.Length)
-                numev = m.Length;
+            DateTime startTime1 = DateTime.Now;
 
             Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
             m.Dispose();
+
+            if(writer != null) 
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
 
             this.eigenValues = eigenSystem[0];
             this.eigenValues.Length = numev;
@@ -232,8 +253,9 @@ namespace PavelStransky.GCM {
                 this.eigenVectors = new Vector[0];
 
             if(writer != null) {
-                writer.WriteLine((DateTime.Now - startTime).ToString());
                 writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
+                writer.Indent(-1);
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
 
             this.isComputed = true;

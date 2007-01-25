@@ -95,10 +95,19 @@ namespace PavelStransky.Forms {
             context.Changed += new Context.ChangedEventHandler(context_Changed);
         }
 
+        private delegate void ChangedDelegate();
+
         /// <summary>
         /// Zmìna na kontextu
         /// </summary>
         void context_Changed(object sender, EventArgs e) {
+            this.Invoke(new ChangedDelegate(this.ModifiedFromContext));
+        }
+
+        /// <summary>
+        /// Zmìnu na kontextu spouštíme ve vlastním vláknì
+        /// </summary>
+        private void ModifiedFromContext() {
             this.Modified = true;
         }
 

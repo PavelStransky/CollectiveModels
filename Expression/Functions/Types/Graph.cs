@@ -103,7 +103,7 @@ namespace PavelStransky.Expression.Functions {
                 if(t == typeof(TArray))
                     t = ((arguments[4] as TArray)[0] as TArray).ItemType;
 
-                if(t != typeof(string) || t != typeof(Context))
+                if(t != typeof(string) && t != typeof(Context))
                     this.BadTypeError(item, 4);
 
                 itemParams = arguments[4];

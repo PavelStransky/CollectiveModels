@@ -525,8 +525,10 @@ namespace PavelStransky.Expression {
                 if(itemParams != null) 
                     ip = itemParams;
                 if(ip is TArray) {
-                    if((ip as TArray).Count > g)
-                        ip = (ip as TArray)[g];
+                    if((ip as TArray).Count > g) {
+                        if((ip as TArray)[g] is TArray)
+                            ip = (ip as TArray)[g];
+                    }
                     else
                         ip = null;
                 }

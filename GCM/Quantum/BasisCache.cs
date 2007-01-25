@@ -16,7 +16,7 @@ namespace PavelStransky.GCM {
     public class BasisCache : DiscreteInterval {
         private double[,] cache;
         private BasisFunction function;
-        private int maxn;
+        private int minn, maxn;
 
         /// <summary>
         /// Konstruktor
@@ -25,15 +25,26 @@ namespace PavelStransky.GCM {
         /// <param name="maxn">Maximální øád bázové funkce</param>
         /// <param name="function">Bázová funkce</param>
         public BasisCache(DiscreteInterval interval, int maxn, BasisFunction function)
-            : base(interval) {
+            : this(interval, 0, maxn, function) { }
+
+        /// <summary>
+        /// Konstruktor (cache pouze v intervalu minn, maxn)
+        /// </summary>
+        /// <param name="interval">Meze parametrù</param>
+        /// <param name="maxn">Minimální øád bázové funkce</param>
+        /// <param name="maxn">Maximální øád bázové funkce</param>
+        /// <param name="function">Bázová funkce</param>
+        public BasisCache(DiscreteInterval interval, int minn, int maxn, BasisFunction function) :base(interval) {
+            this.minn = minn;
             this.maxn = maxn;
             this.function = function;
 
-            this.cache = new double[maxn, this.Num];
+            this.cache = new double[(maxn - minn), this.Num];
 
-            for(int n = 0; n < maxn; n++)
+            for(int n = minn; n < maxn; n++)
                 for(int i = 0; i < this.Num; i++)
-                    this.cache[n, i] = function(n, this.GetX(i));
+                    this.cache[n - minn, i] = function(n, this.GetX(i));
+
         }
 
         /// <summary>
@@ -43,7 +54,7 @@ namespace PavelStransky.GCM {
         /// <param name="i">Index cache</param>
         public double this[int n, int i] {
             get {
-                return this.cache[n, i];
+                return this.cache[n - this.minn, i];
             }
         }
 
@@ -51,6 +62,11 @@ namespace PavelStransky.GCM {
         /// Maximální index cache
         /// </summary>
         public int MaxIndex { get { return this.cache.GetLength(1) - 1; } }
+
+        /// <summary>
+        /// Minimální cachovaný øád bázové funkce
+        /// </summary>
+        public int MinN { get { return this.minn; } }
 
         /// <summary>
         /// Maximální cachovaný øád bázové funkce
@@ -66,10 +82,10 @@ namespace PavelStransky.GCM {
         public double GetValue(int n, double x) {
             int i = this.GetIndex(x);
 
-            if(i < 0 || i > this.MaxIndex || n < 0 || n > this.maxn)
+            if(i < 0 || i > this.MaxIndex || n < this.minn || n >= this.maxn)
                 return this.function(n, x);
 
-            return this.cache[n, i];
+            return this.cache[n - this.minn, i];
         }
 
         /// <summary>
@@ -77,11 +93,11 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="epsilon">Epsilon</param>
         public int[] GetLowerLimits(double epsilon) {
-            int[] result = new int[this.maxn];
+            int[] result = new int[this.maxn - this.minn];
 
             int maxIndex = this.MaxIndex;
 
-            for(int i = 0; i < this.maxn; i++) {
+            for(int i = 0; i < this.maxn - this.minn; i++) {
                 int limit = 0;
                 while(limit <= maxIndex && System.Math.Abs(this.cache[i, limit]) < epsilon)
                     limit++;
@@ -96,11 +112,11 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="epsilon">Epsilon</param>
         public int[] GetUpperLimits(double epsilon) {
-            int[] result = new int[this.maxn];
+            int[] result = new int[this.maxn - this.minn];
 
             int maxIndex = this.MaxIndex;
 
-            for(int i = 0; i < this.maxn; i++) {
+            for(int i = 0; i < this.maxn - this.minn; i++) {
                 int limit = maxIndex;
                 while(limit >= 0 && System.Math.Abs(this.cache[i, limit]) < epsilon)
                     limit--;

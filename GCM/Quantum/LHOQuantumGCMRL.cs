@@ -64,71 +64,129 @@ namespace PavelStransky.GCM {
             if(writer != null) {
                 writer.WriteLine(string.Format("Maximální (n, m) = ({0}, {1})", this.index.MaxN, this.index.MaxM));
                 writer.WriteLine(string.Format("Velikost báze: {0}", this.index.Length));
-                writer.WriteLine(string.Format("Pøipravuji cache ({0})...", numSteps));
+                writer.WriteLine(string.Format("Pøipravuji cache potenciálu ({0})...", numSteps));
             }
 
             double omega = this.Omega;
             double range = this.GetRange(epsilon);
 
             // Cache psi hodnot (Bazove vlnove funkce)
-            BasisCache psiCache = new BasisCache(new DiscreteInterval(0.0, range, numSteps), this.index.Length, this.Psi);
+            DiscreteInterval interval = new DiscreteInterval(0.0, range, numSteps);
 
-            int[] psiCacheLowerLimits = psiCache.GetLowerLimits(epsilon);
-            int[] psiCacheUpperLimits = psiCache.GetUpperLimits(epsilon);
-
-            double step = psiCache.Step;
+            double step = interval.Step;
 
             // Cache hodnot potencialu
             double[] vCache1 = new double[numSteps];
             double[] vCache2 = new double[numSteps];
             for(int sb = 0; sb < numSteps; sb++) {
-                double beta = psiCache.GetX(sb);
+                double beta = interval.GetX(sb);
                 double beta2 = beta * beta;
                 vCache1[sb] = beta2 * beta * ((this.A - this.A0) + this.C * beta2);
                 vCache2[sb] = 0.5 * this.B * beta2 * beta2;
             }
 
             int length = this.index.Length;
-            SymmetricBandMatrix m = new SymmetricBandMatrix(length, maxE - 2);
+            int bandWidth = maxE - 2;
+            SymmetricBandMatrix m = new SymmetricBandMatrix(length, bandWidth);
 
-            if(writer != null)
+            int blockSize = bandWidth + 1;
+            int blockNum = length / blockSize + 1;
+
+            if(writer != null) {
                 writer.WriteLine(string.Format("Pøíprava pásové matice H ({0} x {1})", length, maxE - 2));
+                writer.WriteLine(string.Format("Poèet blokù: {0}, velikost bloku: {1}", blockNum, blockSize));
+            }
 
-            for(int i = 0; i < length; i++) {
-                int ni = this.index.N[i];
-                int mi = this.index.M[i];
+            DateTime startTime = DateTime.Now;
 
-                for(int j = i; j < length; j++) {
-                    int nj = this.index.N[j];
-                    int mj = this.index.M[j];
+            BasisCache cache2 = new BasisCache(interval, 0, System.Math.Min(blockSize, this.index.Length), this.Psi);
+            BasisCache cache1 = cache2;
 
-                    // Výbìrové pravidlo
-                    if(mi != mj && System.Math.Abs(mi - mj) != 3)
-                        continue;
+            for(int k = 0; k < blockNum; k++) {
+                int i0 = k * blockSize;
+                int i1 = System.Math.Min((k + 1) * blockSize, this.index.Length);
+                int i2 = System.Math.Min((k + 2) * blockSize, this.index.Length);
 
-                    double sum = 0;
-
-                    double[] vCache = vCache2;
-                    if(mi == mj)
-                        vCache = vCache1;
-
-                    for(int sb = 0; sb < numSteps; sb++)
-                        sum += psiCache[i, sb] * vCache[sb] * psiCache[j, sb];
-
-                    sum *= step;
-
-                    if(mi == mj && ni == nj)
-                        sum += this.Hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
-
-                    // Již je symetrické
-                    m[i, j] = sum;
-                }
-
-                // Výpis teèky na konzoli
                 if(writer != null) {
-                    if(i != 0 && this.index.M[i - 1] != this.index.M[i])
-                        writer.Write(".");
+                    writer.Write(k);
+                    writer.Write(" D");
                 }
+
+                // Diagonální blok
+                for(int i = i0; i < i1; i++) {
+                    int ni = this.index.N[i];
+                    int mi = this.index.M[i];
+
+                    for(int j = i; j < i1; j++) {
+                        int nj = this.index.N[j];
+                        int mj = this.index.M[j];
+
+                        // Výbìrové pravidlo
+                        if(mi != mj && System.Math.Abs(mi - mj) != 3)
+                            continue;
+
+                        double sum = 0;
+
+                        double[] vCache = vCache2;
+                        if(mi == mj)
+                            vCache = vCache1;
+
+                        for(int sb = 0; sb < numSteps; sb++) 
+                            sum += cache1[i, sb] * vCache[sb] * cache1[j, sb];
+
+                        sum *= step;
+
+                        if(mi == mj && ni == nj)
+                            sum += this.Hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
+
+                        // Již je symetrické
+                        m[i, j] = sum;
+                    }
+                }
+
+                if(writer != null)
+                    writer.Write('C');
+
+                cache2 = new BasisCache(interval, i1, i2, this.Psi);
+
+                if(writer != null)
+                    writer.Write("N ");
+
+                // Nediagonální blok
+                for(int i = i0; i < i1; i++) {
+                    int ni = this.index.N[i];
+                    int mi = this.index.M[i];
+
+                    for(int j = i1; j < i2; j++) {
+                        int nj = this.index.N[j];
+                        int mj = this.index.M[j];
+
+                        // Výbìrové pravidlo
+                        if(mi != mj && System.Math.Abs(mi - mj) != 3)
+                            continue;
+
+                        double sum = 0;
+
+                        double[] vCache = vCache2;
+                        if(mi == mj)
+                            vCache = vCache1;
+
+                        for(int sb = 0; sb < numSteps; sb++)
+                            sum += cache1[i, sb] * vCache[sb] * cache2[j, sb];
+
+                        sum *= step;
+
+                        // Již je symetrické
+                        m[i, j] = sum;
+                    }
+                }
+
+                cache1 = cache2;
+
+                if(writer != null) {
+                    writer.WriteLine((DateTime.Now - startTime).ToString());
+                    startTime = DateTime.Now;
+                }               
             }
 
             return m;

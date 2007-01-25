@@ -100,6 +100,14 @@ namespace PavelStransky.GCM {
         public abstract int HamiltonianMatrixSize(int maxE);
 
         /// <summary>
+        /// Stopa Hamiltonovy matice
+        /// </summary>
+        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
+        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="writer">Writer</param>
+        public abstract double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer);
+
+        /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
         /// <param name="maxE">Nejvyšší øád bázových funkcí</param>

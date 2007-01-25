@@ -40,6 +40,69 @@ namespace PavelStransky.GCM {
             : base(a, b, c, k, a0, hbar) { }
 
         /// <summary>
+        /// Stopa Hamiltonovy matice
+        /// </summary>
+        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
+        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="writer">Writer</param>
+        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
+            double result = 0.0;
+
+            this.CreateIndex(maxE);
+
+            if(numSteps == 0)
+                numSteps = 10 * this.index.MaxM + 1;
+
+            DateTime startTime = DateTime.Now;
+
+            if(writer != null) 
+                writer.Write("Stopa Hamiltonovy matice...");
+
+            double omega = this.Omega;
+            double range = this.GetRange(epsilon);
+
+            // Cache psi hodnot (Bazove vlnove funkce)
+            DiscreteInterval interval = new DiscreteInterval(0.0, range, numSteps);
+
+            double step = interval.Step;
+
+            // Cache hodnot potencialu
+            double[] vCache = new double[numSteps];
+            for(int sb = 0; sb < numSteps; sb++) {
+                double beta = interval.GetX(sb);
+                double beta2 = beta * beta;
+                vCache[sb] = beta2 * beta * ((this.A - this.A0) + this.C * beta2);
+            }
+
+            int length = this.index.Length;
+
+            // Diagonála
+            for(int i = 0; i < length; i++) {
+                int n = this.index.N[i];
+                int m = this.index.M[i];
+
+                double sum = 0.0;
+
+                for(int sb = 0; sb < numSteps; sb++) {
+                    double x = interval.GetX(sb);
+                    double psi = this.Psi(i, x);
+                    sum += psi * psi * vCache[sb];
+                }
+
+                sum *= step;
+                sum += this.Hbar * omega * (1.0 + n + n + System.Math.Abs(m));
+
+                result += sum;
+            }
+                
+            if(writer != null) 
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+
+            return result;
+
+        }
+
+        /// <summary>
         /// Vypoèítá Hamiltonovu matici
         /// </summary>
         /// <param name="maxE">Nejvyšší energie bázových funkcí</param>

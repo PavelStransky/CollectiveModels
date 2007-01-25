@@ -65,6 +65,16 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Stopa Hamiltonovy matice
+        /// </summary>
+        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
+        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="writer">Writer</param>
+        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        /// <summary>
         /// Napoèítá Hamiltonovu matici v bázi LHO 1Dx1D oscilátoru
         /// </summary>
         /// <param name="maxn">Nejvyšší øád bázových funkcí</param>

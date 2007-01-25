@@ -59,6 +59,16 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Stopa Hamiltonovy matice
+        /// </summary>
+        /// <param name="maxE">Nejvyšší energie v násobcích hbar * Omega</param>
+        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="writer">Writer</param>
+        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
         /// <param name="maxE">Nejvyšší energie v násobcích hbar * Omega</param>

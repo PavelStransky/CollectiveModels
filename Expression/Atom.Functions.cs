@@ -107,6 +107,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.EVNumDiff());
             functions.Add(new Functions.NumNonzeroItems());
             functions.Add(new Functions.BandWidth());
+            functions.Add(new Functions.Trace());
 
             // Kontext
             functions.Add(new Functions.FnContext());
@@ -159,6 +160,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.HamiltonianMatrixSize());
             functions.Add(new Functions.EValues());
             functions.Add(new Functions.EVectors());
+            functions.Add(new Functions.HamiltonianMatrixTrace());
 
             // Funkce IBM
             functions.Add(new Functions.CIBM());

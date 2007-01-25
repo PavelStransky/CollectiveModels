@@ -198,6 +198,7 @@
     <Compile Include="Functions\Quantum\DensityMatrix.cs" />
     <Compile Include="Functions\Quantum\EVNumDiff.cs" />
     <Compile Include="Functions\Quantum\HamiltonianMatrixSize.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianMatrixTrace.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Functions\Math\ArcTan.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Trace.cs" />
     <Compile Include="Functions\Types\Array.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -480,6 +482,9 @@
     <Compile Include="Variable.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -182,6 +182,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Alias\CreateGraph.cs" />
+    <Compile Include="Functions\Context\GetVar.cs" />
     <Compile Include="Functions\Context\SetContext.cs" />
     <Compile Include="Functions\Context\GetContext.cs" />
     <Compile Include="Functions\Context\Context.cs" />
@@ -483,9 +484,6 @@
     <Compile Include="Variable.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

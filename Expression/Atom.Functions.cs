@@ -114,6 +114,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.GetContext());
             functions.Add(new Functions.UseContext());
             functions.Add(new Functions.SetContext());
+            functions.Add(new Functions.GetVar());
 
 			functions.Add(new Functions.PC());
 			functions.Add(new Functions.Symmetry());

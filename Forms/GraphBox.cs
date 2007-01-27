@@ -567,6 +567,16 @@ namespace PavelStransky.Forms {
                     minmax[3] = (double)this.graph.GetGeneralParameter(paramMaxY, defaultMaxY);
                 }
 
+                // Minimální a maximální hodnoty nesmí být stejné
+                if(minmax[0] == minmax[1]) {
+                    minmax[0] = 0.0;
+                    minmax[1] *= 2.0;
+                }
+                if(minmax[2] == minmax[3]) {
+                    minmax[2] = 0.0;
+                    minmax[3] *= 2.0;
+                }
+
                 Vector minmaxB = new Vector(4);
                 minmaxB[0] = (double)this.graph.GetBackgroundParameter(group, paramMinXBackground, minmax[0]);
                 minmaxB[1] = (double)this.graph.GetBackgroundParameter(group, paramMaxXBackground, minmax[1]);

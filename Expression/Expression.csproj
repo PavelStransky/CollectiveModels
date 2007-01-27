@@ -437,6 +437,7 @@
     <Compile Include="Functions\Use.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\UserFunction.cs" />
     <Compile Include="Functions\Var.cs">
       <SubType>Code</SubType>
     </Compile>

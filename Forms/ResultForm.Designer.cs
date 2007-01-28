@@ -67,16 +67,17 @@ namespace PavelStransky.Forms {
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(354, 106);
+            this.txtResult.Size = new System.Drawing.Size(354, 102);
             this.txtResult.TabIndex = 3;
             this.txtResult.WordWrap = false;
             // 
             // btInterrupt
             // 
             this.btInterrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btInterrupt.Location = new System.Drawing.Point(95, 278);
+            this.btInterrupt.Location = new System.Drawing.Point(89, 271);
+            this.btInterrupt.Margin = new System.Windows.Forms.Padding(0);
             this.btInterrupt.Name = "btInterrupt";
-            this.btInterrupt.Size = new System.Drawing.Size(86, 28);
+            this.btInterrupt.Size = new System.Drawing.Size(86, 22);
             this.btInterrupt.TabIndex = 4;
             this.btInterrupt.Text = "Pøerušit";
             this.btInterrupt.UseVisualStyleBackColor = true;
@@ -96,9 +97,9 @@ namespace PavelStransky.Forms {
             // btPause
             // 
             this.btPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btPause.Location = new System.Drawing.Point(7, 278);
+            this.btPause.Location = new System.Drawing.Point(7, 271);
             this.btPause.Name = "btPause";
-            this.btPause.Size = new System.Drawing.Size(82, 29);
+            this.btPause.Size = new System.Drawing.Size(82, 22);
             this.btPause.TabIndex = 6;
             this.btPause.Text = "Pozastavit";
             this.btPause.UseVisualStyleBackColor = true;
@@ -108,9 +109,10 @@ namespace PavelStransky.Forms {
             // btContinue
             // 
             this.btContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btContinue.Location = new System.Drawing.Point(7, 278);
+            this.btContinue.Location = new System.Drawing.Point(7, 271);
+            this.btContinue.Margin = new System.Windows.Forms.Padding(0);
             this.btContinue.Name = "btContinue";
-            this.btContinue.Size = new System.Drawing.Size(82, 28);
+            this.btContinue.Size = new System.Drawing.Size(82, 22);
             this.btContinue.TabIndex = 7;
             this.btContinue.Text = "Pokraèovat";
             this.btContinue.UseVisualStyleBackColor = true;
@@ -119,10 +121,10 @@ namespace PavelStransky.Forms {
             // 
             // btRecalculate
             // 
-            this.btRecalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btRecalculate.Location = new System.Drawing.Point(268, 278);
+            this.btRecalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btRecalculate.Location = new System.Drawing.Point(7, 288);
             this.btRecalculate.Name = "btRecalculate";
-            this.btRecalculate.Size = new System.Drawing.Size(93, 28);
+            this.btRecalculate.Size = new System.Drawing.Size(126, 22);
             this.btRecalculate.TabIndex = 8;
             this.btRecalculate.Text = "Znovu spoèítat";
             this.btRecalculate.UseVisualStyleBackColor = true;
@@ -135,7 +137,7 @@ namespace PavelStransky.Forms {
             this.chkAsync.AutoSize = true;
             this.chkAsync.Checked = true;
             this.chkAsync.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAsync.Location = new System.Drawing.Point(7, 285);
+            this.chkAsync.Location = new System.Drawing.Point(8, 270);
             this.chkAsync.Name = "chkAsync";
             this.chkAsync.Size = new System.Drawing.Size(125, 17);
             this.chkAsync.TabIndex = 9;
@@ -146,7 +148,7 @@ namespace PavelStransky.Forms {
             // 
             this.chkWrap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkWrap.AutoSize = true;
-            this.chkWrap.Location = new System.Drawing.Point(187, 285);
+            this.chkWrap.Location = new System.Drawing.Point(285, 270);
             this.chkWrap.Name = "chkWrap";
             this.chkWrap.Size = new System.Drawing.Size(76, 17);
             this.chkWrap.TabIndex = 10;
@@ -158,7 +160,7 @@ namespace PavelStransky.Forms {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 310);
+            this.ClientSize = new System.Drawing.Size(365, 315);
             this.Controls.Add(this.chkWrap);
             this.Controls.Add(this.chkAsync);
             this.Controls.Add(this.btRecalculate);

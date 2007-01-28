@@ -569,12 +569,32 @@ namespace PavelStransky.Forms {
 
                 // Minimální a maximální hodnoty nesmí být stejné
                 if(minmax[0] == minmax[1]) {
-                    minmax[0] = 0.0;
-                    minmax[1] *= 2.0;
+                    if(minmax[0] < 0.0) {
+                        minmax[0] *= 2.0;
+                        minmax[1] = 0.0;
+                    }
+                    else if(minmax[0] > 0) {
+                        minmax[0] = 0.0;
+                        minmax[1] *= 2.0;
+                    }
+                    else {
+                        minmax[0] = -1.0;
+                        minmax[1] = 1.0;
+                    }
                 }
                 if(minmax[2] == minmax[3]) {
-                    minmax[2] = 0.0;
-                    minmax[3] *= 2.0;
+                    if(minmax[2] < 0.0) {
+                        minmax[2] *= 2.0;
+                        minmax[3] = 0.0;
+                    }
+                    else if(minmax[2] > 0) {
+                        minmax[2] = 0.0;
+                        minmax[3] *= 2.0;
+                    }
+                    else {
+                        minmax[2] = -1.0;
+                        minmax[3] = 1.0;
+                    }
                 }
 
                 Vector minmaxB = new Vector(4);

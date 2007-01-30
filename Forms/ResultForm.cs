@@ -228,11 +228,12 @@ namespace PavelStransky.Forms {
 
             try {
                 object result = this.expression.Evaluate(context);
-
+                this.timerInfo.Stop();
                 // Po skonèení výpoètu
                 this.Invoke(new FinishedCalculationDelegate(this.FinishedCalculation), result);
             }
             catch(Exception exc) {
+                this.timerInfo.Stop();
                 try {
                     if(exc.InnerException is ThreadAbortException && !this.calculating)
                         return;

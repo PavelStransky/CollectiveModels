@@ -1092,7 +1092,8 @@ namespace PavelStransky.Forms {
 
             // S tlaèítkem vyvíjíme køivku
             if(this.leftMouseButton) {
-                int newTime = this.time + System.Math.Sign(e.Delta);
+                int scrollStep = (int)this.graph.GetGeneralParameter(paramScrollStep, defaultScrollStep);
+                int newTime = this.time + scrollStep * System.Math.Sign(e.Delta);
                 int maxTime = this.minMax[this.group].MaxLength;
                 if(newTime <= 0)
                     newTime = 1;
@@ -1193,6 +1194,7 @@ namespace PavelStransky.Forms {
         private const string paramEvaluateGroup = "evalgroup";
         private const string paramEvaluateCurve = "evalcurve";
         private const string paramInterval = "interval";
+        private const string paramScrollStep = "scrollstep";
 
         // Osy
         private const string paramTitleX = "titlex";
@@ -1285,6 +1287,7 @@ namespace PavelStransky.Forms {
         private const bool defaultEvaluateGroup = false;
         private const bool defaultEvaluateCurve = false;
         private const int defaultInterval = 1000;
+        private const int defaultScrollStep = 5;
 
         private const string defaultSubTitle = "";
         private static Color defaultSubTitleColor = Color.FromName("black");

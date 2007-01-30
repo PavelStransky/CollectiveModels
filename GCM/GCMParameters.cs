@@ -58,7 +58,7 @@ namespace PavelStransky.GCM {
             this.c = c;
             this.k = k;
 
-            if(this.c <= 0)
+            if(!(this.c > 0 || (this.a > 0 && this.b == 0.0 && this.c == 0.0)))
                 throw new Exception("Program umí poèítat pouze pøípady s C > 0");
         }
    }

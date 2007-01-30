@@ -108,6 +108,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.NumNonzeroItems());
             functions.Add(new Functions.BandWidth());
             functions.Add(new Functions.Trace());
+            functions.Add(new Functions.Smooth());
 
             // Kontext
             functions.Add(new Functions.FnContext());

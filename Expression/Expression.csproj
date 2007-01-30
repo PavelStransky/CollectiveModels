@@ -205,6 +205,7 @@
     <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRL.cs" />
     <Compile Include="Functions\Show.cs" />
+    <Compile Include="Functions\Smooth.cs" />
     <Compile Include="Functions\Spectrum.cs" />
     <Compile Include="Functions\Rand.cs" />
     <Compile Include="Functions\SumSquare.cs" />

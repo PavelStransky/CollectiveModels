@@ -905,10 +905,28 @@ namespace PavelStransky.Math {
 			return System.Math.Abs(result);
 		}
 
-		/// <summary>
-		/// Pøevede vektor na øetìzec
-		/// </summary>
-		public override string ToString() {
+        /// <summary>
+        /// Provede jednoduché vyhlazení vektoru
+        /// </summary>
+        public Vector Smooth() {
+            int length = this.Length;
+            if(length <= 1)
+                return this.Clone() as Vector;
+
+            Vector result = new Vector(length);
+
+            result[0] = (3.0 * this[0] + this[1]) / 4.0; ;
+            for(int i = 1; i < length - 1; i++) 
+                result[i] = (this[i - 1] + 2.0 * this[i] + this[i + 1]) / 4.0;
+            result[length - 1] = (this[length - 2] + 3.0 * this[length - 1]) / 4.0;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Pøevede vektor na øetìzec
+        /// </summary>
+        public override string ToString() {
 			StringBuilder s = new StringBuilder();
 
 			for(int i = 0; i < this.Length; i++) 

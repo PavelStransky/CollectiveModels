@@ -74,6 +74,10 @@ namespace PavelStransky.Forms {
                 this.lblResult.Visible = false;
                 this.chkAsync.Visible = false;
                 this.lblComputing.Visible = true;
+                this.lblStartTime.Visible = true;
+                this.lblLblStartTime.Visible = true;
+                this.lblDuration.Visible = true;
+                this.lblLblDuration.Visible = true;
 
                 if(this.chkAsync.Checked) {
                     if(this.paused) {
@@ -104,6 +108,11 @@ namespace PavelStransky.Forms {
                 this.chkAsync.Visible = true;
                 this.lblComputing.Visible = false;
 
+                this.lblStartTime.Visible = false;
+                this.lblLblStartTime.Visible = false;
+                this.lblDuration.Visible = false;
+                this.lblLblDuration.Visible = false;
+
                 this.btContinue.Visible = false;
                 this.btInterrupt.Visible = false;
                 this.btPause.Visible = false;
@@ -128,6 +137,29 @@ namespace PavelStransky.Forms {
                 this.CatchException(exc);
                 this.SetButtons();
             }		
+        }
+
+        /// <summary>
+        /// Nastaví vše pro zobrazení èasu spuštìní a doby výpoètu (vèetnì timeru)
+        /// </summary>
+        public void SetStartTime() {
+            this.startTime = DateTime.Now;
+            this.lblStartTime.Text = this.startTime.ToString("g");
+            this.lblDuration.Text = string.Empty;
+
+            this.timerInfo.Interval = 1000;
+            this.timerInfo.Start();
+        }
+
+        /// <summary>
+        /// Tiknutí pro informaci o dobì trvání výpoètu
+        /// </summary>
+        private void timerInfo_Tick(object sender, EventArgs e) {
+            TimeSpan duration = DateTime.Now - this.startTime;
+            if(this.timerInfo.Interval != 60000 && duration.Hours != 0)
+                this.timerInfo.Interval = 60000;
+            duration.Subtract(new TimeSpan(0, 0, 0, 0, duration.Milliseconds));
+            this.lblDuration.Text = SpecialFormat.Format(duration);
         }
 
         #region Obsluha vlastních událostí
@@ -163,8 +195,7 @@ namespace PavelStransky.Forms {
                 this.SetCaption(captionCalculating);
                 this.SetButtons();
 
-                this.startTime = DateTime.Now;
-
+                this.SetStartTime();
                 this.OnCalcStarted(new EventArgs());
 
                 this.indent = 0;

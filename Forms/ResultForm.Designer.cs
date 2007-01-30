@@ -9,6 +9,7 @@ namespace PavelStransky.Forms {
         /// the contents of this method with the code editor.
         /// </summary>
         protected void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.lblCommand = new System.Windows.Forms.Label();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.lblResult = new System.Windows.Forms.Label();
@@ -20,6 +21,11 @@ namespace PavelStransky.Forms {
             this.btRecalculate = new System.Windows.Forms.Button();
             this.chkAsync = new System.Windows.Forms.CheckBox();
             this.chkWrap = new System.Windows.Forms.CheckBox();
+            this.lblLblStartTime = new System.Windows.Forms.Label();
+            this.lblStartTime = new System.Windows.Forms.Label();
+            this.lblLblDuration = new System.Windows.Forms.Label();
+            this.lblDuration = new System.Windows.Forms.Label();
+            this.timerInfo = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // lblCommand
@@ -156,11 +162,61 @@ namespace PavelStransky.Forms {
             this.chkWrap.UseVisualStyleBackColor = true;
             this.chkWrap.CheckedChanged += new System.EventHandler(this.chkWrap_CheckedChanged);
             // 
+            // lblLblStartTime
+            // 
+            this.lblLblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblLblStartTime.AutoSize = true;
+            this.lblLblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblLblStartTime.Location = new System.Drawing.Point(5, 297);
+            this.lblLblStartTime.Name = "lblLblStartTime";
+            this.lblLblStartTime.Size = new System.Drawing.Size(107, 13);
+            this.lblLblStartTime.TabIndex = 11;
+            this.lblLblStartTime.Text = "Zaèátek výpoètu:";
+            // 
+            // lblStartTime
+            // 
+            this.lblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblStartTime.AutoSize = true;
+            this.lblStartTime.Location = new System.Drawing.Point(106, 297);
+            this.lblStartTime.Name = "lblStartTime";
+            this.lblStartTime.Size = new System.Drawing.Size(52, 13);
+            this.lblStartTime.TabIndex = 12;
+            this.lblStartTime.Text = "StartTime";
+            // 
+            // lblLblDuration
+            // 
+            this.lblLblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblLblDuration.AutoSize = true;
+            this.lblLblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblLblDuration.Location = new System.Drawing.Point(200, 297);
+            this.lblLblDuration.Name = "lblLblDuration";
+            this.lblLblDuration.Size = new System.Drawing.Size(41, 13);
+            this.lblLblDuration.TabIndex = 13;
+            this.lblLblDuration.Text = "Doba:";
+            // 
+            // lblDuration
+            // 
+            this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDuration.AutoSize = true;
+            this.lblDuration.Location = new System.Drawing.Point(235, 297);
+            this.lblDuration.Name = "lblDuration";
+            this.lblDuration.Size = new System.Drawing.Size(47, 13);
+            this.lblDuration.TabIndex = 14;
+            this.lblDuration.Text = "Duration";
+            // 
+            // timerInfo
+            // 
+            this.timerInfo.Tick += new System.EventHandler(this.timerInfo_Tick);
+            // 
             // ResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 315);
+            this.Controls.Add(this.lblDuration);
+            this.Controls.Add(this.lblLblDuration);
+            this.Controls.Add(this.lblStartTime);
+            this.Controls.Add(this.lblLblStartTime);
             this.Controls.Add(this.chkWrap);
             this.Controls.Add(this.chkAsync);
             this.Controls.Add(this.btRecalculate);
@@ -194,5 +250,11 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.Button btRecalculate;
         private System.Windows.Forms.CheckBox chkAsync;
         private System.Windows.Forms.CheckBox chkWrap;
+        private System.Windows.Forms.Label lblLblStartTime;
+        private System.Windows.Forms.Label lblStartTime;
+        private System.Windows.Forms.Label lblLblDuration;
+        private System.Windows.Forms.Label lblDuration;
+        private System.Windows.Forms.Timer timerInfo;
+        private System.ComponentModel.IContainer components;
     }
 }

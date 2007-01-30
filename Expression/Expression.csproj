@@ -188,6 +188,7 @@
     <Compile Include="Functions\Context\Context.cs" />
     <Compile Include="Functions\Context\UseContext.cs" />
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
+    <Compile Include="Functions\Dynamics\PotentialRoots.cs" />
     <Compile Include="Functions\Quantum\EValues.cs" />
     <Compile Include="Functions\Quantum\EVectors.cs" />
     <Compile Include="Functions\Quantum\HamiltonianMatrix.cs" />

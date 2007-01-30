@@ -142,6 +142,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.CGCMJ());
             functions.Add(new Functions.QGCM());
             functions.Add(new Functions.Equipotential());
+            functions.Add(new Functions.PotentialRoots());
             functions.Add(new Functions.TrajectoryM());
             functions.Add(new Functions.TrajectoryP());
             functions.Add(new Functions.InitialCondition());

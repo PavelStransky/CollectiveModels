@@ -86,7 +86,7 @@ namespace PavelStransky.GCM {
                 for(int sb = 0; sb < numSteps; sb++) {
                     double x = interval.GetX(sb);
                     double psi = this.Psi(i, x);
-                    sum += psi * psi * vCache[sb];
+                    sum += psi * vCache[sb] * psi;
                 }
 
                 sum *= step;

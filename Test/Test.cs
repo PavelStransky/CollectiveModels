@@ -19,11 +19,22 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLAPack4();
+            Test.PokusLaguerre();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Pokus na Laguerrovy polynomy vysokého øádu
+        /// </summary>
+        static void PokusLaguerre() {
+            double l = 0.0;
+            double e = 0.0;
+            SpecialFunctions.Laguerre(out l, out e, 3, 5, 3.0);
+            double l1 = l * System.Math.Exp(e);
+            double l2 = SpecialFunctions.Laguerre(3, 5, 3.0);
+        }
 
         /// <summary>
         /// Ètvrtý pokus

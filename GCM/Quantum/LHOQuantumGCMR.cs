@@ -265,13 +265,15 @@ namespace PavelStransky.GCM {
             m = System.Math.Abs(m);
 
             double normLog = 0.5 * (System.Math.Log(2.0) + SpecialFunctions.FactorialILog(n) - SpecialFunctions.FactorialILog(n + m)) + (m + 1) * System.Math.Log(this.s);
-            double l = SpecialFunctions.Laguerre(n, m, xi2);
+            double l = 0.0;
+            double e = 0.0;
+            SpecialFunctions.Laguerre(out l, out e, n, m, xi2);
 
             if(l == 0.0 || x == 0.0)
                 return 0.0;
 
             double lLog = System.Math.Log(System.Math.Abs(l));
-            double result = normLog + m * System.Math.Log(x) - xi2 / 2.0 + lLog;
+            double result = normLog + m * System.Math.Log(x) - xi2 / 2.0 + lLog + e;
             result = l < 0.0 ? -System.Math.Exp(result) : System.Math.Exp(result);
 
             return result;

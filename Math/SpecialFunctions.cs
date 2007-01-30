@@ -271,6 +271,45 @@ namespace PavelStransky.Math {
             return lm;
         }
 
+        /// <summary>
+        /// Vrací logaritmus Laguerrova polynomu
+        /// </summary>
+        /// <param name="result">Výsledek (základ)</param>
+        /// <param name="exp">Exponent - výsledné èíslo získáme jako result * Math.Exp(exp)</param>
+        /// <param name="n">Øád polynomu</param>
+        /// <param name="m">Stupeò polynomu</param>
+        /// <param name="x">Hodnota</param>
+        public static void Laguerre(out double result, out double exp, int n, int m, double x) {
+            double lm2 = 1;
+            double lm1 = m + 1.0 - x;
+
+            result = lm1;
+            exp = 0.0;
+
+            if(n == 0) {
+                result = lm2;
+                return;
+            }
+            else if(n == 1)
+                return;
+
+            for(int i = 2; i <= n; i++) {
+                result = ((2 * i - 1 + m - x) * lm1 - (i - 1 + m) * lm2) / i;
+                double abs = System.Math.Abs(result);
+                // Pokud je abs malé, nemùžeme dìlat logaritmus - nenormujeme
+                if(abs == 0.0)
+                    abs = 1.0;
+                
+                exp += System.Math.Log(abs);
+
+                result /= abs;
+                lm2 = lm1 / abs;
+                lm1 = result;
+            }
+
+            return;
+        }
+
         private static double[] gammaLogKoef;
         private const int maxIteration = 1000;
         private const double epsilon = 1E-10;

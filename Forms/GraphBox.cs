@@ -736,8 +736,6 @@ namespace PavelStransky.Forms {
             int nCurves = this.graph.NumCurves(group);
 
             if(nCurves > 0) {
-                int stringHeight = (int)g.MeasureString("M", baseFont).Height;
-
                 for(int i = 0; i < nCurves; i++) {
                     if(shift)
                         offsetY = (i + 1) * this.HeightWM / (nCurves + 2) + this.AbsMarginT;
@@ -778,7 +776,9 @@ namespace PavelStransky.Forms {
                         Color labelColor = (Color)this.graph.GetCurveParameter(group, i, paramLabelColor, defaultLabelColor);
                         string lineName = (string)this.graph.GetCurveParameter(group, i, paramLineName, defaultLineName);
                         Brush labelBrush = (new Pen(labelColor)).Brush;
-                        g.DrawString(lineName, baseFont, labelBrush, this.AbsMarginL, (float)(offsetY - stringHeight / 2.0));
+                        Font font = new Font(baseFontFamilyName, (int)this.graph.GetCurveParameter(group, i, paramLabelFontSize, defaultLabelFontSize));
+                        float stringHeight = g.MeasureString(lineName, font).Height;
+                        g.DrawString(lineName, font, labelBrush, this.AbsMarginL, (float)(offsetY - stringHeight / 2.0));
                     }
 
                     this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
@@ -812,15 +812,17 @@ namespace PavelStransky.Forms {
                 line[0] = new Point(this.AbsMarginL, y);
                 line[1] = new Point(this.Width - this.AbsMarginR, y);
 
-                Color labelColorX = (Color)this.graph.GetGeneralParameter(paramLabelColorX, defaultLabelColorX);
+                Color lineColorX = (Color)this.graph.GetGeneralParameter(paramLineColorX, defaultLineColorX);
                 float lineWidthX = (float)this.graph.GetGeneralParameter(paramLineWidthX, defaultLineWidthX);
-                Pen linePen = new Pen(labelColorX, lineWidthX);
+                Pen linePen = new Pen(lineColorX, lineWidthX);
 
                 Color pointColorX = (Color)this.graph.GetGeneralParameter(paramPointColorX, defaultPointColorX);
-                Pen pointPen = new Pen(pointColorX);
+                Pen pointPen = new Pen(pointColorX, lineWidthX);
 
                 Graph.PointStyles pointStyleX = (Graph.PointStyles)this.graph.GetGeneralParameter(paramPointStyleX, defaultPointStyleX);
                 int pointSizeX = (int)this.graph.GetGeneralParameter(paramPointSizeX, defaultPointSizeX);
+
+                Font font = new Font(baseFontFamilyName, (int)this.graph.GetGeneralParameter(paramFontSizeX, defaultFontSizeX), FontStyle.Bold);
 
                 this.DrawLine(g, line, linePen, Graph.LineStyles.Line);
 
@@ -836,8 +838,8 @@ namespace PavelStransky.Forms {
                         continue;
 
                     string numString = v[i].ToString();
-                    float nsWidth = g.MeasureString(numString, baseFont).Width;
-                    g.DrawString(numString, baseFont, numBrush, p[i].X - (int)(nsWidth / 2), y + 5);
+                    float nsWidth = g.MeasureString(numString, font).Width;
+                    g.DrawString(numString, font, numBrush, p[i].X - (int)(nsWidth / 2), y + 5);
                 }
 
 
@@ -853,15 +855,17 @@ namespace PavelStransky.Forms {
                 line[0] = new Point(x, this.AbsMarginT);
                 line[1] = new Point(x, this.Height - this.AbsMarginB);
 
-                Color labelColorY = (Color)this.graph.GetGeneralParameter(paramLabelColorY, defaultLabelColorY);
+                Color lineColorY = (Color)this.graph.GetGeneralParameter(paramLineColorY, defaultLineColorY);
                 float lineWidthY = (float)this.graph.GetGeneralParameter(paramLineWidthY, defaultLineWidthY);
-                Pen linePen = new Pen(labelColorY, lineWidthY);
+                Pen linePen = new Pen(lineColorY, lineWidthY);
 
                 Color pointColorY = (Color)this.graph.GetGeneralParameter(paramPointColorY, defaultPointColorY);
-                Pen pointPen = new Pen(pointColorY);
+                Pen pointPen = new Pen(pointColorY, lineWidthY);
 
                 Graph.PointStyles pointStyleY = (Graph.PointStyles)this.graph.GetGeneralParameter(paramPointStyleY, defaultPointStyleY);
                 int pointSizeY = (int)this.graph.GetGeneralParameter(paramPointSizeY, defaultPointSizeY);
+
+                Font font = new Font(baseFontFamilyName, (int)this.graph.GetGeneralParameter(paramFontSizeY, defaultFontSizeY), FontStyle.Bold);
 
                 this.DrawLine(g, line, linePen, Graph.LineStyles.Line);
 
@@ -877,8 +881,8 @@ namespace PavelStransky.Forms {
                         continue;
 
                     string numString = v[i].ToString();
-                    SizeF nsSize = g.MeasureString(numString, baseFont);
-                    g.DrawString(numString, baseFont, numBrush, x - nsSize.Width - 5, p[i].Y - nsSize.Height / 2);
+                    SizeF nsSize = g.MeasureString(numString, font);
+                    g.DrawString(numString, font, numBrush, x - nsSize.Width - 5, p[i].Y - nsSize.Height / 2);
                 }
 
                 this.DrawPoints(g, p, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
@@ -892,11 +896,13 @@ namespace PavelStransky.Forms {
                 Pen legendPlus = new Pen(colorPlus);
                 Pen legendMinus = new Pen(colorMinus);
 
+                Font font = new Font(baseFontFamilyName, (int)this.graph.GetBackgroundParameter(group, paramLegendFontSize, defaultLegendFontSize));
+
                 double maxAbs = System.Math.Abs(this.minMaxB[group].MaxAbsValue);
                 string legendString1 = string.Format("{0,5:F}", maxAbs);
                 string legendString2 = string.Format("{0,5:F}", -maxAbs);
-                SizeF lSize1 = g.MeasureString(legendString1, baseFont);
-                SizeF lSize2 = g.MeasureString(legendString2, baseFont);
+                SizeF lSize1 = g.MeasureString(legendString1, font);
+                SizeF lSize2 = g.MeasureString(legendString2, font);
 
                 int x1 = this.WidthWM + this.AbsMarginL + (int)((this.AbsMarginR - lSize1.Width) / 2F);
                 int y1 = (int)(2 * this.AbsMarginT + this.AbsMarginB - 1.5F * lSize1.Height);
@@ -904,20 +910,21 @@ namespace PavelStransky.Forms {
                 int x2 = this.WidthWM + this.AbsMarginL + (int)((this.AbsMarginR - lSize2.Width) / 2F);
                 int y2 = (int)(this.Height - 2 * this.AbsMarginB - this.AbsMarginT + 0.5F * lSize2.Height);
 
-                g.DrawString(legendString1, baseFont, legendPlus.Brush, x1, y1);
-                g.DrawString(legendString2, baseFont, legendMinus.Brush, x2, y2);
+                g.DrawString(legendString1, font, legendPlus.Brush, x1, y1);
+                g.DrawString(legendString2, font, legendMinus.Brush, x2, y2);
             }
 
             string subTitle = (string)this.graph.GetBackgroundParameter(group, paramSubTitle, defaultSubTitle);
             if(subTitle != string.Empty) {
                 Color subTitleColor = (Color)this.graph.GetBackgroundParameter(group, paramSubTitleColor, defaultSubTitleColor);
                 Pen subTitlePen = new Pen(subTitleColor);
-                SizeF size = g.MeasureString(subTitle, baseFont);
+                Font font = new Font(baseFontFamilyName, (int)this.graph.GetBackgroundParameter(group, paramSubTitleFontSize, defaultSubTitleFontSize), FontStyle.Bold);
+                SizeF size = g.MeasureString(subTitle, font);
 
                 int x = (int)((this.WidthWM - size.Width) / 2) + this.AbsMarginL;
                 int y = this.AbsMarginT;
 
-                g.DrawString(subTitle, baseFont, subTitlePen.Brush, x, y);
+                g.DrawString(subTitle, font, subTitlePen.Brush, x, y);
             }
         }
 
@@ -1155,7 +1162,7 @@ namespace PavelStransky.Forms {
                 this.Focus();
         }
 
-		private Font baseFont = new Font("Arial", 8);
+		private string baseFontFamilyName = "Arial";
 		private const double baseAmplifyY = 8;
         // Okraj v promilích
 		private const int defaultMargin = 20;
@@ -1177,6 +1184,7 @@ namespace PavelStransky.Forms {
         private const string paramPointSize = "psize";
         private const string paramShowLabel = "showlabel";
         private const string paramLabelColor = "labelcolor";
+        private const string paramLabelFontSize = "labelfsize";
         private const string paramBackgroundColor = "bcolor";
 
         private const string paramFirstPointColor = "fpcolor";
@@ -1205,6 +1213,7 @@ namespace PavelStransky.Forms {
         private const string paramPointSizeX = "psizex";
         private const string paramShowLabelX = "showlabelx";
         private const string paramLabelColorX = "labelcolorx";
+        private const string paramFontSizeX = "fsizex";
         private const string paramShowAxeX = "showaxex";
 
         private const string paramTitleY = "titley";
@@ -1215,6 +1224,7 @@ namespace PavelStransky.Forms {
         private const string paramPointSizeY = "psizey";
         private const string paramShowLabelY = "showlabely";
         private const string paramLabelColorY = "labelcolory";
+        private const string paramFontSizeY = "fsizey";
         private const string paramShowAxeY = "showaxey";
 
         private const string paramColorZero = "colorzero";
@@ -1222,9 +1232,11 @@ namespace PavelStransky.Forms {
         private const string paramColorMinus = "colorminus";
         private const string paramLegend = "legend";
         private const string paramLegendWidth = "legendwidth";
+        private const string paramLegendFontSize = "legendfsize";
 
         private const string paramSubTitle = "subtitle";
         private const string paramSubTitleColor = "stcolor";
+        private const string paramSubTitleFontSize = "stfsize";
 
         // Pozadí
         private const string paramMinXBackground = "minxb";
@@ -1242,14 +1254,15 @@ namespace PavelStransky.Forms {
         private const int defaultPointSize = 2;
         private const bool defaultShowLabel = true;
         private static Color defaultLabelColor = Color.FromName("black");
+        private const int defaultLabelFontSize = 8;
         private const string defaultLineName = "";
         private static Color defaultBackgroundColor = Color.FromName("white");
 
         private static Color defaultFirstPointColor = Color.FromName("darkred");
-        private static Graph.PointStyles defaultFirstPointStyle = Graph.PointStyles.FCircle;
+        private static Graph.PointStyles defaultFirstPointStyle = Graph.PointStyles.None;
         private const int defaultFirstPointSize = 5;
         private static Color defaultLastPointColor = Color.FromName("darkgreen");
-        private static Graph.PointStyles defaultLastPointStyle = Graph.PointStyles.FCircle;
+        private static Graph.PointStyles defaultLastPointStyle = Graph.PointStyles.None;
         private const int defaultLastPointSize = 5;
 
         private const double defaultMinX = double.NaN;
@@ -1265,6 +1278,7 @@ namespace PavelStransky.Forms {
         private const int defaultPointSizeX = 3;
         private const bool defaultShowLabelX = false;
         private static Color defaultLabelColorX = defaultLineColorX;
+        private const int defaultFontSizeX = 8;
         private const bool defaultShowAxeX = true;
 
         private const string defaultTitleY = "Y";
@@ -1275,6 +1289,7 @@ namespace PavelStransky.Forms {
         private const int defaultPointSizeY = 3;
         private const bool defaultShowLabelY = false;
         private static Color defaultLabelColorY = defaultLineColorY;
+        private const int defaultFontSizeY = defaultFontSizeX;
         private const bool defaultShowAxeY = true;
 
         private static Color defaultColorZero = Color.FromName("white");
@@ -1282,6 +1297,7 @@ namespace PavelStransky.Forms {
         private static Color defaultColorMinus = Color.FromName("red");
         private const bool defaultLegend = false;
         private const int defaultLegendWidth = 50;
+        private const int defaultLegendFontSize = 8;
         private const string defaultTitle = "";
 
         private const bool defaultEvaluateGroup = false;
@@ -1291,6 +1307,7 @@ namespace PavelStransky.Forms {
 
         private const string defaultSubTitle = "";
         private static Color defaultSubTitleColor = Color.FromName("black");
+        private const int defaultSubTitleFontSize = 10;
 
         private const double defaultMinXBackground = double.NaN;
         private const double defaultMaxXBackground = defaultMinX;

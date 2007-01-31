@@ -501,7 +501,7 @@ namespace PavelStransky.Expression {
                             object iip = (ip as TArray)[i];
                             if(iip is string && iip as string != string.Empty) {
                                 Context c = new Context();
-                                (new Expression(ip as string)).Evaluate(c);
+                                (new Expression(iip as string)).Evaluate(c);
                                 iipn.Add(c);
                             }
 

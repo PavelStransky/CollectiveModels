@@ -73,14 +73,14 @@ namespace PavelStransky.Forms {
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(354, 102);
+            this.txtResult.Size = new System.Drawing.Size(354, 155);
             this.txtResult.TabIndex = 3;
             this.txtResult.WordWrap = false;
             // 
             // btInterrupt
             // 
             this.btInterrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btInterrupt.Location = new System.Drawing.Point(89, 271);
+            this.btInterrupt.Location = new System.Drawing.Point(89, 324);
             this.btInterrupt.Margin = new System.Windows.Forms.Padding(0);
             this.btInterrupt.Name = "btInterrupt";
             this.btInterrupt.Size = new System.Drawing.Size(86, 22);
@@ -103,7 +103,7 @@ namespace PavelStransky.Forms {
             // btPause
             // 
             this.btPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btPause.Location = new System.Drawing.Point(7, 271);
+            this.btPause.Location = new System.Drawing.Point(7, 324);
             this.btPause.Name = "btPause";
             this.btPause.Size = new System.Drawing.Size(82, 22);
             this.btPause.TabIndex = 6;
@@ -115,7 +115,7 @@ namespace PavelStransky.Forms {
             // btContinue
             // 
             this.btContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btContinue.Location = new System.Drawing.Point(7, 271);
+            this.btContinue.Location = new System.Drawing.Point(7, 324);
             this.btContinue.Margin = new System.Windows.Forms.Padding(0);
             this.btContinue.Name = "btContinue";
             this.btContinue.Size = new System.Drawing.Size(82, 22);
@@ -128,7 +128,7 @@ namespace PavelStransky.Forms {
             // btRecalculate
             // 
             this.btRecalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btRecalculate.Location = new System.Drawing.Point(7, 288);
+            this.btRecalculate.Location = new System.Drawing.Point(7, 341);
             this.btRecalculate.Name = "btRecalculate";
             this.btRecalculate.Size = new System.Drawing.Size(126, 22);
             this.btRecalculate.TabIndex = 8;
@@ -143,7 +143,7 @@ namespace PavelStransky.Forms {
             this.chkAsync.AutoSize = true;
             this.chkAsync.Checked = true;
             this.chkAsync.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAsync.Location = new System.Drawing.Point(8, 270);
+            this.chkAsync.Location = new System.Drawing.Point(8, 323);
             this.chkAsync.Name = "chkAsync";
             this.chkAsync.Size = new System.Drawing.Size(125, 17);
             this.chkAsync.TabIndex = 9;
@@ -154,7 +154,7 @@ namespace PavelStransky.Forms {
             // 
             this.chkWrap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkWrap.AutoSize = true;
-            this.chkWrap.Location = new System.Drawing.Point(285, 270);
+            this.chkWrap.Location = new System.Drawing.Point(285, 323);
             this.chkWrap.Name = "chkWrap";
             this.chkWrap.Size = new System.Drawing.Size(76, 17);
             this.chkWrap.TabIndex = 10;
@@ -167,7 +167,7 @@ namespace PavelStransky.Forms {
             this.lblLblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLblStartTime.AutoSize = true;
             this.lblLblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLblStartTime.Location = new System.Drawing.Point(5, 297);
+            this.lblLblStartTime.Location = new System.Drawing.Point(5, 350);
             this.lblLblStartTime.Name = "lblLblStartTime";
             this.lblLblStartTime.Size = new System.Drawing.Size(107, 13);
             this.lblLblStartTime.TabIndex = 11;
@@ -177,7 +177,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStartTime.AutoSize = true;
-            this.lblStartTime.Location = new System.Drawing.Point(106, 297);
+            this.lblStartTime.Location = new System.Drawing.Point(106, 350);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(52, 13);
             this.lblStartTime.TabIndex = 12;
@@ -188,7 +188,7 @@ namespace PavelStransky.Forms {
             this.lblLblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLblDuration.AutoSize = true;
             this.lblLblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLblDuration.Location = new System.Drawing.Point(200, 297);
+            this.lblLblDuration.Location = new System.Drawing.Point(200, 350);
             this.lblLblDuration.Name = "lblLblDuration";
             this.lblLblDuration.Size = new System.Drawing.Size(41, 13);
             this.lblLblDuration.TabIndex = 13;
@@ -198,7 +198,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(235, 297);
+            this.lblDuration.Location = new System.Drawing.Point(235, 350);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(47, 13);
             this.lblDuration.TabIndex = 14;
@@ -212,7 +212,7 @@ namespace PavelStransky.Forms {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 315);
+            this.ClientSize = new System.Drawing.Size(365, 368);
             this.Controls.Add(this.lblDuration);
             this.Controls.Add(this.lblLblDuration);
             this.Controls.Add(this.lblStartTime);

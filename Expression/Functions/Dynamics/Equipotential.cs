@@ -37,14 +37,10 @@ namespace PavelStransky.Expression.Functions {
                 else
                     equipotentials = gcm.EquipotentialContours(e);
 
-                if(equipotentials.Length == 1)
-                    return equipotentials[0];
-                else {
-                    TArray result = new TArray();
-                    for(int i = 0; i < equipotentials.Length; i++)
-                        result.Add(equipotentials[i]);
-                    return result;
-                }
+                TArray result = new TArray();
+                for(int i = 0; i < equipotentials.Length; i++)
+                    result.Add(equipotentials[i]);
+                return result;
             }
             else if(item is TArray)
                 return this.EvaluateArray(depth, item as TArray, arguments);

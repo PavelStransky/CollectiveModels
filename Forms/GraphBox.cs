@@ -325,7 +325,7 @@ namespace PavelStransky.Forms {
             (this.Parent.Parent as GraphForm).NewProcess("Ukládání GIF :", this.backgroundWorkerSaveGif, fName);
         }
 
-        private static byte[] buf1, buf2, buf3;
+        private static byte[] buf2, buf3;
 
         /// <summary>
         /// Statický konstruktor
@@ -366,6 +366,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void AddGIF(MemoryStream m, BinaryWriter b, Image image, bool first) {
             image.Save(m, ImageFormat.Gif);
+            byte[] buf1 = m.ToArray();
 
             if(first) {
                 //only write these the first time....
@@ -388,7 +389,7 @@ namespace PavelStransky.Forms {
             int nGroups = this.graph.NumGroups();
 
             if(this.evalGroup || this.evalCurve) {
-                int interval = (int)this.graph.GetGeneralParameter(paramInterval, defaultInterval);
+                int interval = (int)this.graph.GetGeneralParameter(paramInterval, defaultInterval) / 10;
 
                 buf3[4] = (byte)(interval % 256);// Delay time low byte
                 buf3[5] = (byte)(interval / 256);// Delay time high byte
@@ -711,7 +712,7 @@ namespace PavelStransky.Forms {
         /// <param name="group">Skupina køivek pro vykreslení</param>
         private void PaintGraph(Graphics g, int group, int time) {
             // Barva pozadí
-            if(this.Image == null) {
+            if(this.bitmap[group] == null) {
                 Color backgroundColor = (Color)this.graph.GetGeneralParameter(paramBackgroundColor, defaultBackgroundColor);
                 Brush backgroundBrush = (new Pen(backgroundColor)).Brush;
                 g.FillRectangle(backgroundBrush, this.ClientRectangle);

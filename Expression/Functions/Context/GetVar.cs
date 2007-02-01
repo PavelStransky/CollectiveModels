@@ -15,13 +15,13 @@ namespace PavelStransky.Expression.Functions {
         public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
             this.CheckArgumentsMinNumber(arguments, 2);
 
-            Context result = Atom.EvaluateAtomObject(context, arguments[0]) as Context;
-            ArrayList args = new ArrayList(); args.Add(result); args.Add(arguments[1]);
+           ArrayList args = new ArrayList(); args.Add(Atom.EvaluateAtomObject(context, arguments[0])); args.Add(arguments[1]);
             this.CheckArgumentsType(args, 0, typeof(Context));
             this.CheckArgumentsType(args, 1, typeof(string));
 
-            string name = arguments[1] as string;
-            return result[name];
+            Context c = args[0] as Context;
+            string name = args[1] as string;
+            return c[name];
         }
 
         private const string help = "Z kontextu vrátí urèenou promìnnou.";

@@ -45,7 +45,7 @@ namespace PavelStransky.Expression.Functions {
             else
                 this.BadTypeError(evaluatedArguments[0], 0);
 
-            context.OnGraphRequest(new GraphRequestEventArgs(graph, name, numColumns));
+            context.OnEvent(new ContextEventArgs(ContextEventType.GraphRequest, graph, name, numColumns));
 
             return evaluatedArguments[0];
         }

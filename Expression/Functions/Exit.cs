@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
         public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
             ArrayList evaluatedArguments = this.EvaluateArguments(context, arguments, writer);
 			this.CheckArgumentsNumber(evaluatedArguments, 0);			
-			context.OnExitRequest(new EventArgs());
+			context.OnEvent(new ContextEventArgs(ContextEventType.Exit));
 
 			return null;
 		}

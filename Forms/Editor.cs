@@ -60,7 +60,9 @@ namespace PavelStransky.Forms {
                 return this.fileName;
             }
             set {
-                this.Directory = this.DirectoryFromFile(value);
+                if(Path.IsPathRooted(fileName))
+                    this.Directory = Path.GetDirectoryName(fileName);
+
                 this.fileName = value;
                 this.SetCaption();
             }
@@ -71,44 +73,18 @@ namespace PavelStransky.Forms {
         /// </summary>
         public string Directory {
             get {
-                if(this.context.Contains(directoryVariable) && this.context[directoryVariable].Item is string)
-                    return this.context[directoryVariable].Item as string;
-                else
-                    return string.Empty;
+                if(this.context.Directory != string.Empty)
+                    return this.context.Directory;
+                else {
+                    FileInfo f = new FileInfo(tmpFile);
+                    return f.DirectoryName;
+                }
             }
+
             set {
-                this.context.SetVariable(directoryVariable, value);
+                this.Context.Directory = value;
                 this.saveFileDialog.InitialDirectory = value;
             }
-        }
-
-        /// <summary>
-        /// Inicializuje eventy pro context
-        /// </summary>
-        /// <param name="context">Kontext</param>
-        private void InitializeEvents(Context context) {
-            context.ExitRequest += new Context.ExitEventHandler(context_ExitRequest);
-            context.GraphRequest += new Context.GraphRequestEventHandler(context_GraphRequest);
-            context.NewContextRequest += new Context.ContextEventHandler(context_NewContextRequest);
-            context.SetContextRequest += new Context.ContextEventHandler(context_SetContextRequest);
-            context.SaveRequest += new Context.FileNameEventHandler(context_SaveRequest);
-            context.Changed += new Context.ChangedEventHandler(context_Changed);
-        }
-
-        private delegate void ChangedDelegate();
-
-        /// <summary>
-        /// Zmìna na kontextu
-        /// </summary>
-        void context_Changed(object sender, EventArgs e) {
-            this.Invoke(new ChangedDelegate(this.ModifiedFromContext));
-        }
-
-        /// <summary>
-        /// Zmìnu na kontextu spouštíme ve vlastním vláknì
-        /// </summary>
-        private void ModifiedFromContext() {
-            this.Modified = true;
         }
 
         /// <summary>
@@ -120,75 +96,70 @@ namespace PavelStransky.Forms {
             this.InitializeEvents(this.context);
             this.SetCaption();
         }
-        
-        private delegate void SaveRequestDelegate(FileNameEventArgs e);
 
         /// <summary>
-        /// Událost z kontextu - žádost o vytvoøení grafu
+        /// Inicializuje eventy pro context
         /// </summary>
-        private void context_SaveRequest(object sender, FileNameEventArgs e) {
-            // Spustíme ve vlastním threadu
-            this.Invoke(new SaveRequestDelegate(this.SaveFromContext), new object[] { e });
+        /// <param name="context">Kontext</param>
+        private void InitializeEvents(Context context) {
+            context.ContextEvent += new Context.ContextEventHandler(context_ContextEvent);
+        }
+
+        private delegate void ContextEventDelegate(ContextEventArgs e);
+
+        /// <summary>
+        /// Událost na kontextu
+        /// </summary>
+        void context_ContextEvent(object sender, ContextEventArgs e) {
+            this.Invoke(new ContextEventDelegate(this.ContextEvent), e);
         }
 
         /// <summary>
-        /// Událost z kontextu - žádost o uložení
+        /// Událost na kontextu spouštíme ve vlastním vláknì
         /// </summary>
-        private void SaveFromContext(FileNameEventArgs e) {
-            if(e.FileName != null && e.FileName != string.Empty) {
-                string fileName = e.FileName;
-                if(fileName.IndexOf(':') < 0)
-                    fileName = string.Format("{0}\\{1}", this.Directory, fileName);
-                this.Save(fileName);
+        private void ContextEvent(ContextEventArgs e) {
+            switch(e.EventType) {
+                case ContextEventType.Change: 
+                    this.Modified = true; 
+                    break;
+
+                case ContextEventType.Save:
+                    string fileName = e.GetParam() as string;
+
+                    if(fileName != null && fileName != string.Empty)
+                        this.Save(fileName);
+                    else
+                        this.Save();
+
+                    break;
+
+                case ContextEventType.SetContext:
+                    this.context = e.GetParam() as Context;
+                    break;
+
+                case ContextEventType.NewContext:
+                    this.InitializeEvents(e.GetParam() as Context);
+                    break;
+
+                case ContextEventType.GraphRequest:
+                    TArray graphs = e.GetParam(0) as TArray;
+                    string name = e.GetParam(1) as string;
+                    int numColumns = (int)e.GetParam(2);
+
+                    GraphForm graphForm = this.NewParentForm(typeof(GraphForm), name) as GraphForm;
+                    graphForm.SetGraph(graphs, numColumns);
+
+                    graphForm.Show();
+                    this.Activate();
+
+                    break;
+
+                case ContextEventType.Exit:
+                    this.Close();
+                    break;
             }
-            else
-                this.Save();
+            
         }
-
-        /// <summary>
-        /// Událost z kontextu - žádost o uzavøení okna
-        /// </summary>
-        private void context_ExitRequest(object sender, EventArgs e) {
-            this.Close();
-        }
-
-        /// <summary>
-        /// Událost z kontextu - zmìna kontextu
-        /// </summary>
-        private void context_SetContextRequest(object sender, ContextEventArgs e) {
-            this.context = e.Context;
-        }
-
-        /// <summary>
-        /// Událost z kontextu - nový kontext (musíme nastavit eventy)
-        /// </summary>
-        void context_NewContextRequest(object sender, ContextEventArgs e) {
-            this.InitializeEvents(e.Context);
-        }
-
-        #region Obsluha grafu
-        private delegate void GraphRequestDelegate(GraphRequestEventArgs e);
-
-        /// <summary>
-        /// Událost z kontextu - žádost o vytvoøení grafu
-        /// </summary>
-        private void context_GraphRequest(object sender, GraphRequestEventArgs e) {
-            // Spustíme ve vlastním threadu
-            this.Invoke(new GraphRequestDelegate(this.CreateGraph), new object[] { e });
-        }
-
-        /// <summary>
-        /// Vytvoøení nového formuláøe musíme spustit ve vlastním threadu
-        /// </summary>
-        private void CreateGraph(GraphRequestEventArgs e) {
-            GraphForm graphForm = this.NewParentForm(typeof(GraphForm), e.Name) as GraphForm;
-            graphForm.SetGraph(e.Graphs, e.NumColumns);
-
-            graphForm.Show();
-            this.Activate();
-        }
-
-        #endregion
 
         /// <summary>
         /// Nastaví eventy všech ResultForms (je nutné po otevøení ze souboru)
@@ -379,8 +350,10 @@ namespace PavelStransky.Forms {
         /// <returns></returns>
         public bool Save() {
             if(this.fileName == null || this.fileName == string.Empty) {
-                if(this.saveFileDialog.ShowDialog() == DialogResult.OK)
+                if(this.saveFileDialog.ShowDialog() == DialogResult.OK) {
+                    this.Directory = Path.GetDirectoryName(saveFileDialog.FileName);
                     return this.Save(this.saveFileDialog.FileName);
+                }
                 else
                     return false;
             }
@@ -394,8 +367,10 @@ namespace PavelStransky.Forms {
         public bool SaveAs() {
             this.saveFileDialog.FileName = this.fileName;
 
-            if(this.saveFileDialog.ShowDialog() == DialogResult.OK)
+            if(this.saveFileDialog.ShowDialog() == DialogResult.OK) {
+                this.Directory = Path.GetDirectoryName(saveFileDialog.FileName);
                 return this.Save(this.saveFileDialog.FileName);
+            }
             else
                 return false;
         }
@@ -406,8 +381,16 @@ namespace PavelStransky.Forms {
         /// <param name="fileName">Jméno souboru</param>
         /// <returns>False, pokud se uložení nezdaøilo</returns>
         public bool Save(string fileName) {
+            // Upravení jména souboru
+            if(!Path.IsPathRooted(fileName))
+                fileName = Path.Combine(this.Directory, fileName);
+
+            if(!Path.HasExtension(fileName))
+                fileName = string.Format("{0}.{1}", fileName, WinMain.FileExtGcm);
+
             this.FileName = fileName;
             string fileNameSave = fileName + ".sav";
+
             Export export = null;
 
             try {
@@ -530,15 +513,6 @@ namespace PavelStransky.Forms {
                 (this.MdiParent as MainForm).OpenedFileNames.Add(this.fileName);
         }
 
-        /// <summary>
-        /// Podle názvu souboru urèí adresáø
-        /// </summary>
-        /// <param name="fileName">Název souboru s cestou</param>
-        private string DirectoryFromFile(string fileName) {
-            FileInfo f = new FileInfo(fileName);
-            return f.DirectoryName;
-        }
-
         #region Implementace IExportable
         /// <summary>
         /// Uloží obsah kontextu do souboru
@@ -624,8 +598,6 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        private const string directoryVariable = "_dir";
-
         private const string messageOpen = "Chcete, aby byly všechny pøíkazy historie po otevøení automaticky spuštìny?";
         private const string captionOpen = "Otevøení historie";
 
@@ -650,6 +622,8 @@ namespace PavelStransky.Forms {
         private const string titleFormatFile = "{1} {2}";
         private const string titleFormat = "{0} {2}";
         private const string asterisk = "*";
+
+        private const string tmpFile = "tmp.tmp";
 
         private const int margin = 8;
     }

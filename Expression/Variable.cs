@@ -5,18 +5,6 @@ namespace PavelStransky.Expression {
 	/// Promìnná
 	/// </summary>
 	public class Variable {
-		// Událost vyvolaná po zmìnì promìnné
-		public delegate void ChangeEventHandler(object sender, ChangeEventArgs e);
-		public event ChangeEventHandler Change;
-
-		/// <summary>
-		/// Volá se pøi zmìnì promìnné
-		/// </summary>
-		public void OnChange(ChangeEventArgs e) {
-			if(this.Change != null)
-				this.Change(this, e);
-		}
-
 		// Kontext, do kterého bude objekt uložen
 		protected Context context;
 		// Jméno objektu
@@ -51,16 +39,7 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Hodnota promìnné
 		/// </summary>
-		public object Item {
-			get {
-				return this.item;
-			}
-			set {
-				object oldItem = this.item;
-				this.item = value;
-				this.OnChange(new ChangeEventArgs(this.context, oldItem, this.item));
-			}
-		}
+        public object Item { get { return this.item; } set { this.item = value; } }
 
 		/// <summary>
 		/// Konstruktor

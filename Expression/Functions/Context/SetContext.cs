@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions {
             this.CheckArgumentsType(args, 0, typeof(Context));
 
             Context c = args[0] as Context;
-            context.OnSetContextRequest(new ContextEventArgs(c));
+            context.OnEvent(new ContextEventArgs(ContextEventType.SetContext, c));
             return c;
         }
 

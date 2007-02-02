@@ -17,10 +17,10 @@ namespace PavelStransky.Expression.Functions {
 
             if(evaluatedArguments.Count > 0) {
                 this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
-                context.OnSaveRequest(new FileNameEventArgs(evaluatedArguments[0] as string));
+                context.OnEvent(new ContextEventArgs(ContextEventType.Save, evaluatedArguments[0] as string));
             }
             else
-                context.OnSaveRequest(new FileNameEventArgs());
+                context.OnEvent(new ContextEventArgs(ContextEventType.Save));
 
             return null;
         }

@@ -1,7 +1,77 @@
 using System;
+using System.Collections;
 
 namespace PavelStransky.Expression
 {
+    /// <summary>
+    /// Možné události na kontextu
+    /// </summary>
+    public enum ContextEventType {
+        GraphRequest,
+        Change,
+        ChangeDirectory,
+        NewContext,
+        SetContext,
+        Save,
+        Exit
+    }
+
+    /// <summary>
+    /// Tøída k pøedávání informací o událostech na kontextu
+    /// </summary>
+    public class ContextEventArgs : EventArgs {
+        // Typ události
+        private ContextEventType eventType;
+        // Parametry
+        private ArrayList p = new ArrayList();
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="eventType">Typ události</param>
+        public ContextEventArgs(ContextEventType eventType) {
+            this.eventType = eventType;
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="eventType">Typ události</param>
+        /// <param name="p">Parametry</param>
+        public ContextEventArgs(ContextEventType eventType, params object[] p):this(eventType) {
+            for(int i = 0; i < p.Length; i++)
+                this.p.Add(p[i]);
+        }
+
+        /// <summary>
+        /// Typ události
+        /// </summary>
+        public ContextEventType EventType { get { return this.eventType; } }
+
+        /// <summary>
+        /// Poèet parametrù
+        /// </summary>
+        public int NumParams { get { return this.p.Count; } }
+
+        /// <summary>
+        /// Vrátí parametr
+        /// </summary>
+        /// <param name="i">Index parametru</param>
+        public object GetParam(int i) {
+            if(i < this.p.Count)
+                return this.p[i];
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Vrátí parametr
+        /// </summary>
+        public object GetParam() {
+            return this.GetParam(0);
+        }
+    }
+
 	/// <summary>
 	/// Tøída k pøedávání žádosti o vytvoøení nového grafu
 	/// </summary>
@@ -47,27 +117,6 @@ namespace PavelStransky.Expression
 		public object OldItem {get {return this.oldItem;}}
 		public object NewItem {get {return this.newItem;}}
 	}
-
-    /// <summary>
-    /// Tøída k pøedávání kontextu
-    /// </summary>
-    public class ContextEventArgs : EventArgs {
-        // Nový kontext
-        private Context context;
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="context">Nový kontext</param>
-        public ContextEventArgs(Context context) {
-            this.context = context;
-        }
-
-        /// <summary>
-        /// Nový kontext
-        /// </summary>
-        public Context Context { get { return this.context; } }
-    }
 
     /// <summary>
     /// Tøída k pøedávání jména souboru

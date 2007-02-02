@@ -14,8 +14,8 @@ namespace PavelStransky.Expression.Functions {
         public override string Parameters { get { return parameters; } }
 
         public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            Context result = new Context();
-            context.OnNewContextRequest(new ContextEventArgs(result));
+            Context result = new Context(context.Directory);
+            context.OnEvent(new ContextEventArgs(ContextEventType.NewContext, result));
 
             int count = arguments.Count;
 

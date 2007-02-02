@@ -10,84 +10,46 @@ namespace PavelStransky.Expression {
 	/// Kontext, ve kterém jsou uloženy všechny promìnné
 	/// </summary>
 	public class Context: IExportable {
-		#region Události - žádosti pro vnìjší objekt
+        private Hashtable objects = new Hashtable();
+        private string directory = string.Empty;
+        private static string fncDirectory = string.Empty;
+
+        #region Události - žádosti pro vnìjší objekt
         // Zmìna na kontextu
-        public delegate void ChangedEventHandler(object sender, EventArgs e);
-        public event ChangedEventHandler Changed;
-
-        /// <summary>
-        /// Volá se pøi zmìnì na kontextu
-        /// </summary>
-        public void OnChange(EventArgs e) {
-            if(this.Changed != null)
-                this.Changed(this, e);
-        }
-
-        // Žádost o graf
-		public delegate void GraphRequestEventHandler(object sender, GraphRequestEventArgs e);
-		public event GraphRequestEventHandler GraphRequest;
-
-        /// <summary>
-        /// Volá se pøi požadavku o graf
-        /// </summary>
-        public void OnGraphRequest(GraphRequestEventArgs e) {
-            if(this.GraphRequest != null)
-                this.GraphRequest(this, e);
-        }
-
-		// Žádost o ukonèení programu
-		public delegate void ExitEventHandler(object sender, EventArgs e);
-		public event ExitEventHandler ExitRequest;
-
-		/// <summary>
-		/// Volá se pøi požadavku o konec programu
-		/// </summary>
-		public void OnExitRequest(EventArgs e) {
-			if(this.ExitRequest != null)
-				this.ExitRequest(this, e);
-		}
-
-        // Žádost o uložení souboru
-        public delegate void FileNameEventHandler(object sender, FileNameEventArgs e);
-        public event FileNameEventHandler SaveRequest;
-
-        /// <summary>
-        /// Volá se pøi požadavku o uložení
-        /// </summary>
-        public void OnSaveRequest(FileNameEventArgs e) {
-            if(this.SaveRequest != null)
-                this.SaveRequest(this, e);
-        }
-
-        // Vytvoøení kontextu
         public delegate void ContextEventHandler(object sender, ContextEventArgs e);
-        public event ContextEventHandler NewContextRequest;
+        public event ContextEventHandler ContextEvent;
 
         /// <summary>
-        /// Volá se pøi vytvoøení nového kontextu
+        /// Volá se pøi jakékoliv události na kontextu
         /// </summary>
-        public void OnNewContextRequest(ContextEventArgs e) {
-            if(this.NewContextRequest != null)
-                this.NewContextRequest(this, e);
-        }
-
-        // Žádost o zmìnu kontextu
-        public event ContextEventHandler SetContextRequest;
-
-        /// <summary>
-        /// Volá se pøi žádosti o zmìnu kontextu
-        /// </summary>
-        public void OnSetContextRequest(ContextEventArgs e) {
-            if(this.SetContextRequest != null)
-                this.SetContextRequest(this, e);
+        public void OnEvent(ContextEventArgs e) {
+            if(this.ContextEvent != null)
+                this.ContextEvent(this, e);
         }
 		#endregion
 
-		private Hashtable objects;
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+		public Context() {}
 
-		public Context() {
-			this.objects = new Hashtable();
-		}
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="directory">Adresáø</param>
+        public Context(string directory) {
+            this.directory = directory;
+        }
+
+        /// <summary>
+        /// Adresáø
+        /// </summary>
+        public string Directory { get { return this.directory; } set { this.directory = value; } }
+
+        /// <summary>
+        /// Adresáø s funkcemi
+        /// </summary>
+        public static string FncDirectory { get { return fncDirectory; } set { fncDirectory = value; } }
 
 		/// <summary>
 		/// Pøidá promìnnou do kontextu. Pokud už existuje, nahradí ji
@@ -98,17 +60,27 @@ namespace PavelStransky.Expression {
 		public Variable SetVariable(string name, object item, Assignment assignment) {
 			Variable retValue = null;
 
-			if(this.objects.ContainsKey(name)) { 
-				// Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
-				retValue = this[name];
-				retValue.Item = item;
-				retValue.Assignment = assignment;
-			}
-			else 
-				// Jinak ji musíme vytvoøit
-				this.objects.Add(name, retValue = new Variable(this, name, item, assignment));
+            if(name == directoryVariable) {
+                this.directory = (string)item;
+                this.OnEvent(new ContextEventArgs(ContextEventType.ChangeDirectory, this.directory));
+            }
 
-            this.OnChange(new EventArgs());
+            else if(name == fncDirectoryVariable) 
+                fncDirectory = (string)item;
+
+            else if(this.objects.ContainsKey(name)) {
+                // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
+                retValue = this[name];
+                retValue.Item = item;
+                retValue.Assignment = assignment;
+                this.OnEvent(new ContextEventArgs(ContextEventType.Change));
+            }
+
+            else {
+                // Jinak ji musíme vytvoøit
+                this.objects.Add(name, retValue = new Variable(this, name, item, assignment));
+                this.OnEvent(new ContextEventArgs(ContextEventType.Change));
+            }
 
 			return retValue;
 		}
@@ -127,7 +99,7 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		public void Clear() {
 			this.objects.Clear();
-            this.OnChange(new EventArgs());
+            this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
 
 		/// <summary>
@@ -139,8 +111,8 @@ namespace PavelStransky.Expression {
 				this.objects.Remove(name);
 			else
 				throw new ContextException(string.Format(errorMessageNoObject, name));
-        
-            this.OnChange(new EventArgs());
+
+            this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
 
 		/// <summary>
@@ -159,6 +131,11 @@ namespace PavelStransky.Expression {
 		/// <param name="name">Jméno promìnné</param>
 		public Variable this[string name] {
 			get {
+                if(name == directoryVariable)
+                    return new Variable(this, name, this.directory, null);
+                else if(name == fncDirectoryVariable)
+                    return new Variable(this, name, fncDirectory, null);
+
 				Variable variable = this.objects[name] as Variable;
 				if(variable == null)
 					throw new ContextException(string.Format(errorMessageNoObject, name));
@@ -204,6 +181,7 @@ namespace PavelStransky.Expression {
                     param.Add(v.Item, v.Name, v.Expression);
                 }
 
+            param.Add(directory, directoryVariable);
             param.Export(export);
         }
 
@@ -220,14 +198,20 @@ namespace PavelStransky.Expression {
             for(int i = 0; i < count; i++) {
                 string name, expression;
                 object o = param.Get(null, out name, out expression);
-                this.SetVariable(name, o, expression != string.Empty ? new Assignment(expression, null) : null);
+                if(name == directoryVariable)
+                    this.directory = o as string;
+                else
+                    this.SetVariable(name, o, expression != string.Empty ? new Assignment(expression, null) : null);
             }
         }
 		#endregion
 
 		private const string errorMessageNoObject = "Objekt \"{0}\" nebyl nalezen.";
 		private const string separator = "-----------------------------------------------------------";
-	}
+
+        private const string directoryVariable = "_dir";
+        private const string fncDirectoryVariable = "_fncdir";
+    }
 
 	/// <summary>
 	/// Výjimka ve tøídì Context

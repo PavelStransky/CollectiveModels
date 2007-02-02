@@ -1,6 +1,6 @@
 using System;
+using System.IO;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -25,7 +25,15 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Vrací èi nastavuje aktuální adresáø
         /// </summary>
-        public string Directory { get { return this.openFileDialog.InitialDirectory; } set { this.openFileDialog.InitialDirectory = value; } }
+        public string Directory {
+            get {
+                if(openFileDialog.FileName == string.Empty)
+                    return openFileDialog.InitialDirectory;
+                else
+                    return Path.GetDirectoryName(openFileDialog.FileName);
+            }
+            set { this.openFileDialog.InitialDirectory = value; }
+        }
 
         /// <summary>
         /// Konstruktor
@@ -86,6 +94,14 @@ namespace PavelStransky.Forms {
 
             if(width is int && height is int && (int)width > 0 && (int)height > 0)
                 this.Size = new Size((int)width, (int)height);
+
+            object directory = rk.GetValue(registryKeyDirectory);
+            if(directory is string && directory as string != string.Empty)
+                this.Directory = directory as string;
+
+            object fncDirectory = rk.GetValue(registryKeyFncDirectory);
+            if(fncDirectory is string && fncDirectory as string != string.Empty)
+                Context.FncDirectory = fncDirectory as string;
 
             int i = 0;
             object openedFile;
@@ -152,6 +168,7 @@ namespace PavelStransky.Forms {
         private void New() {
             Editor editor = new Editor();
             this.SetDialogProperties(editor.SaveFileDialog);
+            editor.Directory = this.Directory;
             editor.MdiParent = this;
             editor.Show();
             editor.FormClosed += new FormClosedEventHandler(this.editor_FormClosed);
@@ -211,7 +228,7 @@ namespace PavelStransky.Forms {
                 editor.FileName = fileName;
                 editor.Modified = false;
                 editor.Activate();
-
+                import.Close();
             }
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
@@ -226,9 +243,6 @@ namespace PavelStransky.Forms {
 
                 if(editor != null)
                     editor.Close();
-            }
-            finally {
-                import.Close();
             }
         }
 
@@ -333,6 +347,8 @@ namespace PavelStransky.Forms {
             rk.SetValue(registryKeyPositionY, this.Location.Y);
             rk.SetValue(registryKeyWidth, this.Width);
             rk.SetValue(registryKeyHeight, this.Height);
+            rk.SetValue(registryKeyDirectory, this.Directory);
+            rk.SetValue(registryKeyFncDirectory, Context.FncDirectory);
 
             int i = 0;
             foreach(string fileName in this.openedFileNames)
@@ -429,5 +445,7 @@ namespace PavelStransky.Forms {
         private const string registryKeyWidth = "Width";
         private const string registryKeyHeight = "Height";
         private const string registryKeyOpenedFile = "OpenedFile{0}";
+        private const string registryKeyDirectory = "Directory";
+        private const string registryKeyFncDirectory = "FncDirectory";
     }
 }

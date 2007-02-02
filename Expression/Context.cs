@@ -181,7 +181,7 @@ namespace PavelStransky.Expression {
                     param.Add(v.Item, v.Name, v.Expression);
                 }
 
-            param.Add(directory, directoryVariable);
+            param.Add(directory, directoryVariable, null);
             param.Export(export);
         }
 

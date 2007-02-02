@@ -228,7 +228,6 @@ namespace PavelStransky.Forms {
                 editor.FileName = fileName;
                 editor.Modified = false;
                 editor.Activate();
-                import.Close();
             }
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
@@ -244,6 +243,11 @@ namespace PavelStransky.Forms {
                 if(editor != null)
                     editor.Close();
             }
+
+            try {
+                import.Close();
+            }
+            catch { }
         }
 
         /// <summary>

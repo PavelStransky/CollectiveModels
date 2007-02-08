@@ -24,6 +24,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mnMenu = new System.Windows.Forms.MainMenu(this.components);
             this.mnFile = new System.Windows.Forms.MenuItem();
             this.mnFileNew = new System.Windows.Forms.MenuItem();
@@ -43,6 +44,8 @@ namespace PavelStransky.Forms {
             this.mnArrangeIcons = new System.Windows.Forms.MenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.mnHideToTray = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // mnMenu
@@ -50,7 +53,8 @@ namespace PavelStransky.Forms {
             this.mnMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.mnFile,
             this.mnSettings,
-            this.mnWindow});
+            this.mnWindow,
+            this.mnHideToTray});
             // 
             // mnFile
             // 
@@ -164,11 +168,24 @@ namespace PavelStransky.Forms {
             // 
             this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
             // 
+            // trayIcon
+            // 
+            this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
+            this.trayIcon.Text = "Collective Models";
+            this.trayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseClick);
+            // 
+            // mnHideToTray
+            // 
+            this.mnHideToTray.Index = 3;
+            this.mnHideToTray.Text = "S&krýt";
+            this.mnHideToTray.Click += new System.EventHandler(this.mnHideToTray_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 713);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.Menu = this.mnMenu;
             this.Name = "MainForm";
@@ -198,5 +215,7 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.MenuItem mnFileSeparator1;
         private System.Windows.Forms.MenuItem mnSettings;
         private System.Windows.Forms.MenuItem mnSetttingsRegistry;
+        private System.Windows.Forms.NotifyIcon trayIcon;
+        private System.Windows.Forms.MenuItem mnHideToTray;
     }
 }

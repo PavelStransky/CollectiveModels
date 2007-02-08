@@ -12,6 +12,7 @@ using Microsoft.Win32;
 
 using PavelStransky.Math;
 using PavelStransky.Expression;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Forms {
     public partial class MainForm : Form {
@@ -434,6 +435,87 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
+        #region Menu Skrýt
+        // Priorita pøed minimalizováním
+        private ProcessPriority priority = ProcessPriority.Normal;
+
+        /// <summary>
+        /// Minimalizace do System Tray
+        /// </summary>
+        private void mnHideToTray_Click(object sender, EventArgs e) {
+            this.Hide();
+            this.trayIcon.Visible = true;
+
+            string text = this.trayIcon.Text;
+            int p = text.IndexOf(Environment.NewLine);
+            if(p >= 0)
+                text = text.Substring(0, p);
+
+            foreach(Form form in this.MdiChildren) 
+                if(form as Editor != null)
+                    text += Environment.NewLine + Path.GetFileName((form as Editor).FileName);
+
+            // Text mùže mít maximálnì 64 znakù
+            this.trayIcon.Text = text.Substring(0, System.Math.Min(text.Length, 64));
+
+            foreach(Form rf in this.MdiChildren) 
+                if(rf as ResultForm != null) {
+                    if((rf as ResultForm).Calculating) {
+                        (rf as ResultForm).CalcFinished += this.rf_CalcFinished;
+                        (rf as ResultForm).TxtResult.TextChanged += new EventHandler(TxtResult_TextChanged);
+                    }
+                }
+
+            // Nastavení priority
+            Process process = new Process();
+            this.priority = process.GetPriority();
+            process.SetPriority(ProcessPriority.Idle);
+        }
+
+        void TxtResult_TextChanged(object sender, EventArgs e) {
+            TextBox textBox = sender as TextBox;
+
+            if(textBox == null || !this.trayIcon.Visible)
+                return;
+
+            string text = textBox.Text;
+
+            int p = text.Length;
+            for(int i = 0; i < numBalloonLines && p > 0; i++)
+                p = text.LastIndexOf(Environment.NewLine, p - 1);
+
+            if(p > 0)
+                text = string.Format("{0}...{1}", text.Substring(0, text.IndexOf(Environment.NewLine) + Environment.NewLine.Length), text.Substring(p));
+           
+            if(text.Length > 0)
+                this.trayIcon.ShowBalloonTip(5000, "Probíhá výpoèet...", text, ToolTipIcon.Info);
+        }
+
+        // Ukonèení výpoètu
+        void rf_CalcFinished(object sender, FinishedEventArgs e) {
+            ResultForm rf = sender as ResultForm;
+
+            if(rf == null || !this.trayIcon.Visible)
+                return;
+
+            this.trayIcon.ShowBalloonTip(5000, "Dokonèen výpoèet", rf.TxtCommand.Text, ToolTipIcon.Info);
+        }
+
+        private void trayIcon_MouseClick(object sender, MouseEventArgs e) {
+            this.trayIcon.Visible = false;
+            this.Show();
+
+            // Nastavení priority
+            Process process = new Process();
+            if(process.GetPriority() == ProcessPriority.Idle)
+                process.SetPriority(this.priority);
+
+            foreach(Form rf in this.MdiChildren)
+                if(rf as ResultForm != null) 
+                    (rf as ResultForm).CalcFinished -= this.rf_CalcFinished;                
+        }
+        #endregion
+
         private const string commandEntryName = "{0}\\shell\\open\\command";
         private const string commandEntryFormat = "\"{0}\" \"%1\"";
         private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
@@ -451,5 +533,7 @@ namespace PavelStransky.Forms {
         private const string registryKeyOpenedFile = "OpenedFile{0}";
         private const string registryKeyDirectory = "Directory";
         private const string registryKeyFncDirectory = "FncDirectory";
+
+        private const int numBalloonLines = 3;
     }
 }

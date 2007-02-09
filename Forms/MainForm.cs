@@ -208,6 +208,7 @@ namespace PavelStransky.Forms {
                 import = new Import(fileName, true);
                 editor = import.Read() as Editor;
 
+                this.SetDialogProperties(editor.SaveFileDialog);
                 editor.FormClosed += new FormClosedEventHandler(this.editor_FormClosed);
                 editor.MdiParent = this;
                 editor.Show();

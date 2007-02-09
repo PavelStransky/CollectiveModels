@@ -598,9 +598,6 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        private const string messageOpen = "Chcete, aby byly všechny pøíkazy historie po otevøení automaticky spuštìny?";
-        private const string captionOpen = "Otevøení historie";
-
         private const string messageFileChanged = "Soubor '{0}' byl zmìnìn. Chcete zmìny uložit?";
         private const string messageChanged = "Data nejsou uložena. Chcete je uložit?";
         private const string captionFileChanged = "Uložení souboru";

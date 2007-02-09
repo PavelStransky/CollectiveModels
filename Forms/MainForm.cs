@@ -60,6 +60,7 @@ namespace PavelStransky.Forms {
         /// Inicializace instance nové GCM
         /// </summary>
         private void Initialize() {
+            this.Menu = this.mnMenu;
             this.SetDialogProperties(this.openFileDialog);
 
             this.mnSetttingsRegistry.Checked = WinMain.IsRegistered;
@@ -87,6 +88,18 @@ namespace PavelStransky.Forms {
             object openedFile;
             while((openedFile = WinMain.GetRegistryValue(string.Format(registryKeyOpenedFile, i++), true)) != null) 
                 this.openedFileNames.Add(openedFile);
+
+            object clearWriterInformation = WinMain.GetRegistryValue(registryKeyClearWriterInformation);
+            if(clearWriterInformation is string)
+                this.cmTrayClearWriter.Checked = bool.Parse(clearWriterInformation as string);
+
+            object actualInformation = WinMain.GetRegistryValue(registryKeyActualInformation);
+            if(actualInformation is string)
+                this.cmTrayActualInformation.Checked = bool.Parse(actualInformation as string);
+
+            object finishedInformation = WinMain.GetRegistryValue(registryKeyFinishedInformation);
+            if(finishedInformation is string)
+                this.cmTrayFinishInformation.Checked = bool.Parse(finishedInformation as string);
         }
 
         /// <summary>
@@ -313,6 +326,8 @@ namespace PavelStransky.Forms {
         /// Uložit
         /// </summary>
         private void mnFileSave_Click(object sender, EventArgs e) {
+            if(!this.mnFileSave.Visible)
+                return;
             Editor editor = this.FindActiveMdiEditor(this.ActiveMdiChild);
             editor.Save();
         }
@@ -351,6 +366,10 @@ namespace PavelStransky.Forms {
             WinMain.SetRegistryValue(registryKeyPositionY, this.Location.Y);
             WinMain.SetRegistryValue(registryKeyWidth, this.Width);
             WinMain.SetRegistryValue(registryKeyHeight, this.Height);
+
+            WinMain.SetRegistryValue(registryKeyActualInformation, this.cmTrayActualInformation.Checked);
+            WinMain.SetRegistryValue(registryKeyClearWriterInformation, this.cmTrayClearWriter.Checked);
+            WinMain.SetRegistryValue(registryKeyFinishedInformation, this.cmTrayFinishInformation.Checked);
 
             int i = 0;
             foreach(string fileName in this.openedFileNames)
@@ -399,6 +418,8 @@ namespace PavelStransky.Forms {
             this.Hide();
             this.trayIcon.Visible = true;
 
+            this.balloonText = string.Empty;
+
             string text = this.trayIcon.Text;
             int p = text.IndexOf(Environment.NewLine);
             if(p >= 0)
@@ -435,9 +456,26 @@ namespace PavelStransky.Forms {
                 return;
 
             string text = textBox.Text;
-            if(this.cmTrayClearWriter.Checked && text.Length >= balloonText.Length) {
-                this.balloonText = text;
-                return;
+            if(this.cmTrayClearWriter.Checked) {
+                if(text.Length >= this.balloonText.Length) {
+                    this.balloonText = text;
+                    return;
+                }
+                else {
+                    text = this.balloonText;
+                    this.balloonText = string.Empty;
+
+                    while(text.Substring(2) == Environment.NewLine)
+                        text = text.Substring(text.Length - 2);
+                    int p1 = text.IndexOf(Environment.NewLine);
+
+                    while(text.Substring(text.Length - 2) == Environment.NewLine)
+                        text = text.Substring(0, text.Length - 2);
+                    int p2 = text.LastIndexOf(Environment.NewLine);
+
+                    if(p1 > 0 && p1 != p2)
+                        text = string.Format("{0}...{1}", text.Substring(0, p1 + Environment.NewLine.Length), text.Substring(p2));
+                }
             }
 
             if(this.cmTrayActualInformation.Checked) {
@@ -447,12 +485,12 @@ namespace PavelStransky.Forms {
 
                 if(p > 0)
                     text = string.Format("{0}...{1}", text.Substring(0, text.IndexOf(Environment.NewLine) + Environment.NewLine.Length), text.Substring(p));
+
+                this.balloonText = text;
             }
             
             if(text.Length > 0)
                 this.trayIcon.ShowBalloonTip(5000, "Probíhá výpoèet...", text, ToolTipIcon.Info);
-
-            this.balloonText = text;
         }
 
         // Ukonèení výpoètu
@@ -519,6 +557,10 @@ namespace PavelStransky.Forms {
         private const string registryKeyWidth = "Width";
         private const string registryKeyHeight = "Height";
         private const string registryKeyOpenedFile = "OpenedFile{0}";
+
+        private const string registryKeyClearWriterInformation = "ClearRegistryInfo";
+        private const string registryKeyActualInformation = "ActualInfo";
+        private const string registryKeyFinishedInformation = "FinishedInfo";
 
         private const int numBalloonLines = 3;
     }

@@ -51,7 +51,6 @@ namespace PavelStransky.Forms {
             this.cmTrayActualInformation = new System.Windows.Forms.ToolStripMenuItem();
             this.cmTrayFinishInformation = new System.Windows.Forms.ToolStripMenuItem();
             this.cmTrayClearWriter = new System.Windows.Forms.ToolStripMenuItem();
-            this.sossiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmTray.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,6 +79,7 @@ namespace PavelStransky.Forms {
             // mnFileNew
             // 
             this.mnFileNew.Index = 0;
+            this.mnFileNew.Shortcut = System.Windows.Forms.Shortcut.CtrlN;
             this.mnFileNew.Text = "&Nové";
             this.mnFileNew.Click += new System.EventHandler(this.mnFileNew_Click);
             // 
@@ -204,6 +204,8 @@ namespace PavelStransky.Forms {
             this.cmTrayFinishInformation,
             this.cmTrayClearWriter});
             this.cmTray.Name = "cmTray";
+            this.cmTray.ShowCheckMargin = true;
+            this.cmTray.ShowImageMargin = false;
             this.cmTray.Size = new System.Drawing.Size(235, 92);
             // 
             // cmTrayActualInformation
@@ -215,8 +217,6 @@ namespace PavelStransky.Forms {
             // 
             // cmTrayFinishInformation
             // 
-            this.cmTrayFinishInformation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sossiToolStripMenuItem});
             this.cmTrayFinishInformation.Name = "cmTrayFinishInformation";
             this.cmTrayFinishInformation.Size = new System.Drawing.Size(234, 22);
             this.cmTrayFinishInformation.Text = "Informace o &ukonèení výpoètu";
@@ -228,12 +228,6 @@ namespace PavelStransky.Forms {
             this.cmTrayClearWriter.Size = new System.Drawing.Size(234, 22);
             this.cmTrayClearWriter.Text = "Informace pøi vymazání &writeru";
             this.cmTrayClearWriter.Click += new System.EventHandler(this.cmTrayClearWriter_Click);
-            // 
-            // sossiToolStripMenuItem
-            // 
-            this.sossiToolStripMenuItem.Name = "sossiToolStripMenuItem";
-            this.sossiToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.sossiToolStripMenuItem.Text = "&Sossi";
             // 
             // MainForm
             // 
@@ -277,6 +271,5 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.ToolStripMenuItem cmTrayActualInformation;
         private System.Windows.Forms.ToolStripMenuItem cmTrayFinishInformation;
         private System.Windows.Forms.ToolStripMenuItem cmTrayClearWriter;
-        private System.Windows.Forms.ToolStripMenuItem sossiToolStripMenuItem;
     }
 }

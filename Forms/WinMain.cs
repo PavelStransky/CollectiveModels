@@ -71,7 +71,7 @@ namespace PavelStransky.Forms {
                 Context.FncDirectory = defaultDirectory;
 
             object ps = GetRegistryValue(registryKeyPlaySounds);
-            if(ps is int && (int)ps == 0)
+            if(ps is string && !bool.Parse(ps as String))
                 playSounds = false;
             else
                 playSounds = true;
@@ -83,7 +83,7 @@ namespace PavelStransky.Forms {
         public static void SaveSettings(){
             SetRegistryValue(registryKeyDirectory, directory);
             SetRegistryValue(registryKeyFncDirectory, Context.FncDirectory);
-            SetRegistryValue(registryKeyPlaySounds, playSounds ? 1 : 0);
+            SetRegistryValue(registryKeyPlaySounds, playSounds);
         }
 
         /// <summary>

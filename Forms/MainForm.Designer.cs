@@ -37,15 +37,22 @@ namespace PavelStransky.Forms {
             this.mnExit = new System.Windows.Forms.MenuItem();
             this.mnSettings = new System.Windows.Forms.MenuItem();
             this.mnSetttingsRegistry = new System.Windows.Forms.MenuItem();
+            this.mnSettingsPlaySounds = new System.Windows.Forms.MenuItem();
             this.mnWindow = new System.Windows.Forms.MenuItem();
             this.MnCascade = new System.Windows.Forms.MenuItem();
             this.mnTileHorizontal = new System.Windows.Forms.MenuItem();
             this.mnTileVertical = new System.Windows.Forms.MenuItem();
             this.mnArrangeIcons = new System.Windows.Forms.MenuItem();
+            this.mnHideToTray = new System.Windows.Forms.MenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.mnHideToTray = new System.Windows.Forms.MenuItem();
+            this.cmTray = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmTrayActualInformation = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmTrayFinishInformation = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmTrayClearWriter = new System.Windows.Forms.ToolStripMenuItem();
+            this.sossiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmTray.SuspendLayout();
             this.SuspendLayout();
             // 
             // mnMenu
@@ -79,6 +86,7 @@ namespace PavelStransky.Forms {
             // mnFileOpen
             // 
             this.mnFileOpen.Index = 1;
+            this.mnFileOpen.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
             this.mnFileOpen.Text = "&Otevøít...";
             this.mnFileOpen.Click += new System.EventHandler(this.mnFileOpen_Click);
             // 
@@ -96,6 +104,7 @@ namespace PavelStransky.Forms {
             // mnFileSave
             // 
             this.mnFileSave.Index = 4;
+            this.mnFileSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
             this.mnFileSave.Text = "&Uložit";
             this.mnFileSave.Click += new System.EventHandler(this.mnFileSave_Click);
             // 
@@ -120,7 +129,8 @@ namespace PavelStransky.Forms {
             // 
             this.mnSettings.Index = 1;
             this.mnSettings.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.mnSetttingsRegistry});
+            this.mnSetttingsRegistry,
+            this.mnSettingsPlaySounds});
             this.mnSettings.Text = "&Nastavení";
             // 
             // mnSetttingsRegistry
@@ -128,6 +138,12 @@ namespace PavelStransky.Forms {
             this.mnSetttingsRegistry.Index = 0;
             this.mnSetttingsRegistry.Text = "&Registrace ve Windows";
             this.mnSetttingsRegistry.Click += new System.EventHandler(this.mnSetttingsRegistry_Click);
+            // 
+            // mnSettingsPlaySounds
+            // 
+            this.mnSettingsPlaySounds.Index = 1;
+            this.mnSettingsPlaySounds.Text = "&Pøehrávat zvuky";
+            this.mnSettingsPlaySounds.Click += new System.EventHandler(this.mnSettingsPlaySounds_Click);
             // 
             // mnWindow
             // 
@@ -164,21 +180,60 @@ namespace PavelStransky.Forms {
             this.mnArrangeIcons.Text = "Seøadit &ikony";
             this.mnArrangeIcons.Click += new System.EventHandler(this.mnArrangeIcons_Click);
             // 
+            // mnHideToTray
+            // 
+            this.mnHideToTray.Index = 3;
+            this.mnHideToTray.Text = "S&krýt";
+            this.mnHideToTray.Click += new System.EventHandler(this.mnHideToTray_Click);
+            // 
             // openFileDialog
             // 
             this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
             // 
             // trayIcon
             // 
+            this.trayIcon.ContextMenuStrip = this.cmTray;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
             this.trayIcon.Text = "Collective Models";
-            this.trayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseClick);
+            this.trayIcon.DoubleClick += new System.EventHandler(this.trayIcon_DoubleClick);
             // 
-            // mnHideToTray
+            // cmTray
             // 
-            this.mnHideToTray.Index = 3;
-            this.mnHideToTray.Text = "S&krýt";
-            this.mnHideToTray.Click += new System.EventHandler(this.mnHideToTray_Click);
+            this.cmTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmTrayActualInformation,
+            this.cmTrayFinishInformation,
+            this.cmTrayClearWriter});
+            this.cmTray.Name = "cmTray";
+            this.cmTray.Size = new System.Drawing.Size(235, 92);
+            // 
+            // cmTrayActualInformation
+            // 
+            this.cmTrayActualInformation.Name = "cmTrayActualInformation";
+            this.cmTrayActualInformation.Size = new System.Drawing.Size(234, 22);
+            this.cmTrayActualInformation.Text = "&Prùbìžné informace";
+            this.cmTrayActualInformation.Click += new System.EventHandler(this.cmTrayActualInformation_Click);
+            // 
+            // cmTrayFinishInformation
+            // 
+            this.cmTrayFinishInformation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sossiToolStripMenuItem});
+            this.cmTrayFinishInformation.Name = "cmTrayFinishInformation";
+            this.cmTrayFinishInformation.Size = new System.Drawing.Size(234, 22);
+            this.cmTrayFinishInformation.Text = "Informace o &ukonèení výpoètu";
+            this.cmTrayFinishInformation.Click += new System.EventHandler(this.cmTrayFinishInformation_Click);
+            // 
+            // cmTrayClearWriter
+            // 
+            this.cmTrayClearWriter.Name = "cmTrayClearWriter";
+            this.cmTrayClearWriter.Size = new System.Drawing.Size(234, 22);
+            this.cmTrayClearWriter.Text = "Informace pøi vymazání &writeru";
+            this.cmTrayClearWriter.Click += new System.EventHandler(this.cmTrayClearWriter_Click);
+            // 
+            // sossiToolStripMenuItem
+            // 
+            this.sossiToolStripMenuItem.Name = "sossiToolStripMenuItem";
+            this.sossiToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sossiToolStripMenuItem.Text = "&Sossi";
             // 
             // MainForm
             // 
@@ -187,9 +242,9 @@ namespace PavelStransky.Forms {
             this.ClientSize = new System.Drawing.Size(1016, 713);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
-            this.Menu = this.mnMenu;
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.cmTray.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -217,5 +272,11 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.MenuItem mnSetttingsRegistry;
         private System.Windows.Forms.NotifyIcon trayIcon;
         private System.Windows.Forms.MenuItem mnHideToTray;
+        private System.Windows.Forms.MenuItem mnSettingsPlaySounds;
+        private System.Windows.Forms.ContextMenuStrip cmTray;
+        private System.Windows.Forms.ToolStripMenuItem cmTrayActualInformation;
+        private System.Windows.Forms.ToolStripMenuItem cmTrayFinishInformation;
+        private System.Windows.Forms.ToolStripMenuItem cmTrayClearWriter;
+        private System.Windows.Forms.ToolStripMenuItem sossiToolStripMenuItem;
     }
 }

@@ -264,7 +264,8 @@ namespace PavelStransky.Forms {
         private void CatchException(Exception exc) {
             DetailException dexc = exc as DetailException;
 
-            soundFailure.Play();
+            if(WinMain.PlaySounds)
+                soundFailure.Play();
 
             if(dexc != null)
                 MessageBox.Show(this, string.Format("{0}\n\n{1}", dexc.Message, dexc.DetailMessage));
@@ -293,7 +294,8 @@ namespace PavelStransky.Forms {
             this.SetCaption(captionFinished);
             this.SetButtons();
 
-            soundSuccess.Play();
+            if(WinMain.PlaySounds)
+                soundSuccess.Play();
 
             if(this.txtResult.Text != string.Empty)
                 this.txtResult.Text += newLine;
@@ -505,25 +507,5 @@ namespace PavelStransky.Forms {
 
         private const string soundSuccessFile = "success.wav";
         private const string soundFailureFile = "failure.wav";
-    }
-
-    /// <summary>
-    /// Tøída pro pøedávání informací o skonèeném výpoètu
-    /// </summary>
-    public class FinishedEventArgs: EventArgs {
-        private bool successful;
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="successful"></param>
-        public FinishedEventArgs(bool successful) {
-            this.successful = successful;
-        }
-
-        /// <summary>
-        /// True, pokud byl výpoèet ukonèen úspìchem
-        /// </summary>
-        public bool Successful { get { return this.successful; } }
     }
 }

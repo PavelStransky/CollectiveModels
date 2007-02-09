@@ -8,8 +8,6 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
-using Microsoft.Win32;
-
 using PavelStransky.Math;
 using PavelStransky.Expression;
 using PavelStransky.DLLWrapper;
@@ -17,24 +15,12 @@ using PavelStransky.DLLWrapper;
 namespace PavelStransky.Forms {
     public partial class MainForm : Form {
         private ArrayList openedFileNames = new ArrayList();
+        private LastOpenedFiles lastOpenedFiles;
 
         /// <summary>
         /// Otevøené soubory pøi ukonèování aplikace
         /// </summary>
         public ArrayList OpenedFileNames { get { return this.openedFileNames; } }
-
-        /// <summary>
-        /// Vrací èi nastavuje aktuální adresáø
-        /// </summary>
-        public string Directory {
-            get {
-                if(openFileDialog.FileName == string.Empty)
-                    return openFileDialog.InitialDirectory;
-                else
-                    return Path.GetDirectoryName(openFileDialog.FileName);
-            }
-            set { this.openFileDialog.InitialDirectory = value; }
-        }
 
         /// <summary>
         /// Konstruktor
@@ -43,6 +29,10 @@ namespace PavelStransky.Forms {
             this.InitializeComponent();
             this.Initialize();
             this.Show();
+
+            this.lastOpenedFiles = new LastOpenedFiles(-1, this.mnFile);
+            this.lastOpenedFiles.Click += new FileNameEventHandler(lastOpenedFiles_Click);
+            this.FileOpened += new FileNameEventHandler(this.lastOpenedFiles.AddFile);
 
             foreach(string fileName in this.openedFileNames)
                 if(fileName != null && fileName != string.Empty)
@@ -72,17 +62,14 @@ namespace PavelStransky.Forms {
         private void Initialize() {
             this.SetDialogProperties(this.openFileDialog);
 
-            if(this.IsRegistered)
-                this.mnSetttingsRegistry.Checked = true;
-            else
-                this.mnSetttingsRegistry.Checked = false;
+            this.mnSetttingsRegistry.Checked = WinMain.IsRegistered;
+            this.mnSettingsPlaySounds.Checked = WinMain.PlaySounds;
 
             this.Text = Application.ProductName;
 
             // Naètení záznamù z registrù
-            RegistryKey rk = Application.UserAppDataRegistry;
-            object x = rk.GetValue(registryKeyPositionX);
-            object y = rk.GetValue(registryKeyPositionY);
+            object x = WinMain.GetRegistryValue(registryKeyPositionX);
+            object y = WinMain.GetRegistryValue(registryKeyPositionY);
             if(x is int && y is int && (int)x > 0 && (int)y > 0) {
                 this.StartPosition = FormStartPosition.Manual;
                 this.Location = new Point((int)x, (int)y);
@@ -90,27 +77,16 @@ namespace PavelStransky.Forms {
             else
                 this.StartPosition = FormStartPosition.WindowsDefaultLocation;
 
-            object width = rk.GetValue(registryKeyWidth);
-            object height = rk.GetValue(registryKeyHeight);
+            object width = WinMain.GetRegistryValue(registryKeyWidth);
+            object height = WinMain.GetRegistryValue(registryKeyHeight);
 
             if(width is int && height is int && (int)width > 0 && (int)height > 0)
                 this.Size = new Size((int)width, (int)height);
 
-            object directory = rk.GetValue(registryKeyDirectory);
-            if(directory is string && directory as string != string.Empty)
-                this.Directory = directory as string;
-
-            object fncDirectory = rk.GetValue(registryKeyFncDirectory);
-            if(fncDirectory is string && fncDirectory as string != string.Empty)
-                Context.FncDirectory = fncDirectory as string;
-
             int i = 0;
             object openedFile;
-            while((openedFile = rk.GetValue(string.Format(registryKeyOpenedFile, i))) != null) {
+            while((openedFile = WinMain.GetRegistryValue(string.Format(registryKeyOpenedFile, i++), true)) != null) 
                 this.openedFileNames.Add(openedFile);
-                rk.DeleteValue(string.Format(registryKeyOpenedFile, i));
-                i++;
-            }
         }
 
         /// <summary>
@@ -169,10 +145,13 @@ namespace PavelStransky.Forms {
         private void New() {
             Editor editor = new Editor();
             this.SetDialogProperties(editor.SaveFileDialog);
-            editor.Directory = this.Directory;
+            editor.Directory = WinMain.Directory;
             editor.MdiParent = this;
             editor.Show();
+
             editor.FormClosed += new FormClosedEventHandler(this.editor_FormClosed);
+            editor.FileSaved += new FileNameEventHandler(this.lastOpenedFiles.AddFile);
+
             this.SetMenu();
         }
 
@@ -193,6 +172,13 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Pøi vybrání položky ze seznamu naposledy otevøených souborù
+        /// </summary>
+        void lastOpenedFiles_Click(object sender, FileNameEventArgs e) {
+            this.Open(e.FileName);
+        }
+
+        /// <summary>
         /// Otevøe soubor
         /// </summary>
         /// <param name="fileName">Název souboru</param>
@@ -201,7 +187,7 @@ namespace PavelStransky.Forms {
             Editor editor = null;
 
             // Pøídání pøípony
-            if(fileName.Length < 3 || fileName.Substring(fileName.Length - 3, 3) != WinMain.FileExtGcm)
+            if(!Path.HasExtension(fileName))
                 fileName = string.Format("{0}.{1}", fileName, WinMain.FileExtGcm);
 
             try {
@@ -210,6 +196,7 @@ namespace PavelStransky.Forms {
 
                 this.SetDialogProperties(editor.SaveFileDialog);
                 editor.FormClosed += new FormClosedEventHandler(this.editor_FormClosed);
+                editor.FileSaved += new FileNameEventHandler(this.lastOpenedFiles.AddFile);
                 editor.MdiParent = this;
                 editor.Show();
 
@@ -230,6 +217,8 @@ namespace PavelStransky.Forms {
                 editor.FileName = fileName;
                 editor.Modified = false;
                 editor.Activate();
+
+                this.OnFileOpened(new FileNameEventArgs(fileName));
             }
             catch(DetailException e) {
                 MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
@@ -250,6 +239,16 @@ namespace PavelStransky.Forms {
                 import.Close();
             }
             catch { }
+        }
+
+        public event FileNameEventHandler FileOpened;
+
+        /// <summary>
+        /// Voláno po úspìšném otevøení souboru
+        /// </summary>
+        protected virtual void OnFileOpened(FileNameEventArgs e) {
+            if(this.FileOpened != null)
+                this.FileOpened(this, e);
         }
 
         /// <summary>
@@ -348,17 +347,18 @@ namespace PavelStransky.Forms {
         protected override void OnFormClosing(FormClosingEventArgs e) {
             base.OnFormClosing(e);
 
-            RegistryKey rk = Application.UserAppDataRegistry;
-            rk.SetValue(registryKeyPositionX, this.Location.X);
-            rk.SetValue(registryKeyPositionY, this.Location.Y);
-            rk.SetValue(registryKeyWidth, this.Width);
-            rk.SetValue(registryKeyHeight, this.Height);
-            rk.SetValue(registryKeyDirectory, this.Directory);
-            rk.SetValue(registryKeyFncDirectory, Context.FncDirectory);
+            WinMain.SetRegistryValue(registryKeyPositionX, this.Location.X);
+            WinMain.SetRegistryValue(registryKeyPositionY, this.Location.Y);
+            WinMain.SetRegistryValue(registryKeyWidth, this.Width);
+            WinMain.SetRegistryValue(registryKeyHeight, this.Height);
 
             int i = 0;
             foreach(string fileName in this.openedFileNames)
-                rk.SetValue(string.Format(registryKeyOpenedFile, i++), fileName);
+                WinMain.SetRegistryValue(string.Format(registryKeyOpenedFile, i++), fileName);
+
+            this.lastOpenedFiles.Save();
+
+            WinMain.SaveSettings();
         }
         #endregion
 
@@ -371,74 +371,26 @@ namespace PavelStransky.Forms {
 
         #region Menu Nastavení
         /// <summary>
-        /// Vytvoøí název aplikace pro registr Windows
-        /// </summary>
-        public string RegistryEntryName {
-            get {
-                string companyName = Application.CompanyName.Trim().Replace(" ", string.Empty);
-                string productName = Application.ProductName.Trim().Replace(" ", string.Empty);
-                string version = Application.ProductVersion; version = version.Substring(0, version.IndexOf('.'));
-                return string.Format("{0}.{1}.{2}", companyName, productName, version);
-            }
-        }
-
-        /// <summary>
-        /// Je program zaregistrován?
-        /// </summary>
-        private bool IsRegistered {
-            get {
-                string path = Application.ExecutablePath;
-                string keyName = this.RegistryEntryName;
-
-                // Existuje klíè v registrech?
-                RegistryKey rk = Registry.ClassesRoot.OpenSubKey(string.Format(commandEntryName, keyName));
-                if(rk == null)
-                    return false;
-                
-                // Existuje záznam s cestou?
-                string commandEntry = rk.GetValue(string.Empty) as string;
-                if(commandEntry == null || commandEntry == string.Empty)
-                    return false;
-
-                if(string.Format(commandEntryFormat, path) != commandEntry)
-                    return false;
-
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Registrace pøípony
         /// </summary>
         private void mnSetttingsRegistry_Click(object sender, EventArgs e) {
-            string path = Application.ExecutablePath;
-            string keyName = this.RegistryEntryName;
+            this.mnSetttingsRegistry.Checked = !this.mnSetttingsRegistry.Checked;
+            WinMain.Register(this.mnSetttingsRegistry.Checked);
+        }
 
-            // Podle stavu buï zaregistrujeme, nebo odregistrujeme
-            if(this.mnSetttingsRegistry.Checked) {
-                try {
-                    Registry.ClassesRoot.DeleteSubKeyTree(keyName);
-                    Registry.ClassesRoot.DeleteSubKeyTree('.' + WinMain.FileExtGcm);
-                }
-                catch(Exception) {
-                }
-
-                this.mnSetttingsRegistry.Checked = false;
-            }
-            else {
-                Registry.ClassesRoot.CreateSubKey('.' + WinMain.FileExtGcm).SetValue(string.Empty, keyName);
-                Registry.ClassesRoot.CreateSubKey(keyName).SetValue(string.Empty, programDescription);
-                Registry.ClassesRoot.CreateSubKey(string.Format("{0}\\DefaultIcon", keyName)).SetValue(string.Empty, string.Format("{0},0", path));
-                Registry.ClassesRoot.CreateSubKey(string.Format(commandEntryName, keyName)).SetValue(string.Empty, string.Format(commandEntryFormat, path));
-
-                this.mnSetttingsRegistry.Checked = true;
-            }
+        /// <summary>
+        /// Pøehrávat zvuky
+        /// </summary>
+        private void mnSettingsPlaySounds_Click(object sender, EventArgs e) {
+            this.mnSettingsPlaySounds.Checked = !this.mnSettingsPlaySounds.Checked;
+            WinMain.PlaySounds = this.mnSettingsPlaySounds.Checked;
         }
         #endregion
 
         #region Menu Skrýt
         // Priorita pøed minimalizováním
         private ProcessPriority priority = ProcessPriority.Normal;
+        private string balloonText = string.Empty;
 
         /// <summary>
         /// Minimalizace do System Tray
@@ -479,30 +431,43 @@ namespace PavelStransky.Forms {
             if(textBox == null || !this.trayIcon.Visible)
                 return;
 
+            if(!this.cmTrayActualInformation.Checked && !this.cmTrayClearWriter.Checked)
+                return;
+
             string text = textBox.Text;
+            if(this.cmTrayClearWriter.Checked && text.Length >= balloonText.Length) {
+                this.balloonText = text;
+                return;
+            }
 
-            int p = text.Length;
-            for(int i = 0; i < numBalloonLines && p > 0; i++)
-                p = text.LastIndexOf(Environment.NewLine, p - 1);
+            if(this.cmTrayActualInformation.Checked) {
+                int p = text.Length;
+                for(int i = 0; i < numBalloonLines && p > 0; i++)
+                    p = text.LastIndexOf(Environment.NewLine, p - 1);
 
-            if(p > 0)
-                text = string.Format("{0}...{1}", text.Substring(0, text.IndexOf(Environment.NewLine) + Environment.NewLine.Length), text.Substring(p));
-           
+                if(p > 0)
+                    text = string.Format("{0}...{1}", text.Substring(0, text.IndexOf(Environment.NewLine) + Environment.NewLine.Length), text.Substring(p));
+            }
+            
             if(text.Length > 0)
                 this.trayIcon.ShowBalloonTip(5000, "Probíhá výpoèet...", text, ToolTipIcon.Info);
+
+            this.balloonText = text;
         }
 
         // Ukonèení výpoètu
         void rf_CalcFinished(object sender, FinishedEventArgs e) {
+            this.balloonText = string.Empty;
             ResultForm rf = sender as ResultForm;
 
             if(rf == null || !this.trayIcon.Visible)
                 return;
 
-            this.trayIcon.ShowBalloonTip(5000, "Dokonèen výpoèet", rf.TxtCommand.Text, ToolTipIcon.Info);
+            if(this.cmTrayFinishInformation.Checked)
+                this.trayIcon.ShowBalloonTip(10000, "Dokonèen výpoèet", rf.TxtCommand.Text, ToolTipIcon.Info);
         }
 
-        private void trayIcon_MouseClick(object sender, MouseEventArgs e) {
+        private void trayIcon_DoubleClick(object sender, EventArgs e) {
             this.trayIcon.Visible = false;
             this.Show();
 
@@ -515,11 +480,33 @@ namespace PavelStransky.Forms {
                 if(rf as ResultForm != null) 
                     (rf as ResultForm).CalcFinished -= this.rf_CalcFinished;                
         }
-        #endregion
 
-        private const string commandEntryName = "{0}\\shell\\open\\command";
-        private const string commandEntryFormat = "\"{0}\" \"%1\"";
-        private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
+        /// <summary>
+        /// Aktuální informace
+        /// </summary>
+        private void cmTrayActualInformation_Click(object sender, EventArgs e) {
+            this.cmTrayActualInformation.Checked = !this.cmTrayActualInformation.Checked;
+            if(this.cmTrayActualInformation.Checked && this.cmTrayClearWriter.Checked)
+                this.cmTrayClearWriter.Checked = false;
+        }
+
+        /// <summary>
+        /// Informace o ukonèení výpoètu
+        /// </summary>
+        private void cmTrayFinishInformation_Click(object sender, EventArgs e) {
+            this.cmTrayFinishInformation.Checked = !this.cmTrayFinishInformation.Checked;
+        }
+
+        /// <summary>
+        /// Informace pouze pøi vymazání writeru
+        /// </summary>
+        private void cmTrayClearWriter_Click(object sender, EventArgs e) {
+            this.cmTrayClearWriter.Checked = !this.cmTrayClearWriter.Checked;
+            if(this.cmTrayClearWriter.Checked && this.cmTrayActualInformation.Checked)
+                this.cmTrayActualInformation.Checked = false;
+        }
+
+        #endregion
 
         private const string messageFailedOpen = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
         private const string messageFailedOpenDetail = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
@@ -532,8 +519,6 @@ namespace PavelStransky.Forms {
         private const string registryKeyWidth = "Width";
         private const string registryKeyHeight = "Height";
         private const string registryKeyOpenedFile = "OpenedFile{0}";
-        private const string registryKeyDirectory = "Directory";
-        private const string registryKeyFncDirectory = "FncDirectory";
 
         private const int numBalloonLines = 3;
     }

@@ -446,7 +446,18 @@ namespace PavelStransky.Forms {
                 return false;
             }
 
+            this.OnFileSaved(new FileNameEventArgs(fileName));
             return true;
+        }
+
+        public event FileNameEventHandler FileSaved;
+
+        /// <summary>
+        /// Voláno pøi uložení souboru
+        /// </summary>
+        protected virtual void OnFileSaved(FileNameEventArgs e) {
+            if(this.FileSaved != null)
+                this.FileSaved(this, e);
         }
         #endregion
 
@@ -521,11 +532,11 @@ namespace PavelStransky.Forms {
         public void Export(Export export) {
             // Hlavièka
             if(export.Binary) {
-                export.B.Write((this.MdiParent as MainForm).RegistryEntryName);
+                export.B.Write(WinMain.RegistryEntryName);
                 export.B.Write(4);
             }
             else {
-                export.T.WriteLine((this.MdiParent as MainForm).RegistryEntryName);
+                export.T.WriteLine(WinMain.RegistryEntryName);
                 export.T.WriteLine(4);
             }
 

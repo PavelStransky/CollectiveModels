@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Process.cs" />
     <Compile Include="SymmetricBandMatrix.cs" />
     <Compile Include="LAPackDLL.cs" />
     <Compile Include="Memory.cs" />

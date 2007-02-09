@@ -108,7 +108,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Failure.WAV">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="gcm.ico" />
+    <Content Include="Success.WAV">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CommandTextBox.cs">
       <SubType>Component</SubType>

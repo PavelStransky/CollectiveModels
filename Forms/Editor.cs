@@ -171,7 +171,7 @@ namespace PavelStransky.Forms {
 
                 if(rf != null && rf.ParentEditor == this) {
                     rf.CalcStarted += new EventHandler(this.Editor_CalcStarted);
-                    rf.CalcFinished += new EventHandler(this.Editor_CalcFinished);
+                    rf.CalcFinished += new ResultForm.FinishedEventHandler(this.Editor_CalcFinished);
                     rf.CalcPaused += new EventHandler(this.Editor_CalcPaused);
                     rf.FormClosed += new FormClosedEventHandler(this.result_FormClosed);
                     this.mrbResult.Add(rf.Name, rf.Text);
@@ -217,7 +217,7 @@ namespace PavelStransky.Forms {
                 result = new ResultForm();
                 result.Location = new Point(this.MdiParent.Width - result.Size.Width - 2 * margin, margin);
                 (result as ResultForm).CalcStarted += new EventHandler(this.Editor_CalcStarted);
-                (result as ResultForm).CalcFinished += new EventHandler(this.Editor_CalcFinished);
+                (result as ResultForm).CalcFinished += new ResultForm.FinishedEventHandler(this.Editor_CalcFinished);
                 (result as ResultForm).CalcPaused += new EventHandler(this.Editor_CalcPaused);
                 result.FormClosed += new FormClosedEventHandler(this.result_FormClosed);
                 this.mrbResult.Add(name, name);
@@ -256,7 +256,7 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Konec výpoètu
         /// </summary>
-        private void Editor_CalcFinished(object sender, EventArgs e) {
+        private void Editor_CalcFinished(object sender, FinishedEventArgs e) {
             ResultForm r = sender as ResultForm;
 
             if(r != null)
@@ -299,7 +299,7 @@ namespace PavelStransky.Forms {
 
                 if(childForm != null && childForm.ParentEditor == this) {
                     ResultForm resultForm = childForm as ResultForm;
-                    if(resultForm != null && resultForm.Calulating) {
+                    if(resultForm != null && resultForm.Calculating) {
                         DialogResult result = MessageBox.Show(this,
                             string.Format(messageClose, resultForm.Name),
                             captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
@@ -464,7 +464,7 @@ namespace PavelStransky.Forms {
 
             ResultForm f = this.NewParentForm(typeof(ResultForm), windowName) as ResultForm;
 
-            if(f.Calulating) {
+            if(f.Calculating) {
                 f.Activate();
                 MessageBox.Show(this, messageCalculationRunning);
                 this.Activate();

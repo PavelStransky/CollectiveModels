@@ -41,6 +41,8 @@ namespace PavelStransky.Forms {
         /// <param name="text">Text</param>
         private delegate void WriteDelegate(string text);
 
+        private static SoundPlayer soundSuccess = new SoundPlayer(Path.Combine(Application.StartupPath, soundSuccessFile));
+        private static SoundPlayer soundFailure = new SoundPlayer(Path.Combine(Application.StartupPath, soundFailureFile));
         // Poèátek výpoètu
         DateTime startTime = DateTime.Now;
 
@@ -51,12 +53,22 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// True pro probíhající výpoèet
         /// </summary>
-        public bool Calulating { get { return this.calculating; } }
+        public bool Calculating { get { return this.calculating; } }
 
         /// <summary>
         /// True, pokud byl výpoèet pozastaven
         /// </summary>
         public bool Paused { get { return this.paused; } }
+
+        /// <summary>
+        /// Text pøíkazu, který se poèítá
+        /// </summary>
+        public TextBox TxtCommand { get { return this.txtCommand; } }
+
+        /// <summary>
+        /// Text výsledku
+        /// </summary>
+        public TextBox TxtResult { get { return this.txtResult; } }
 
         /// <summary>
         /// Konstruktor
@@ -163,8 +175,10 @@ namespace PavelStransky.Forms {
         }
 
         #region Obsluha vlastních událostí
+        public delegate void FinishedEventHandler(object sender, FinishedEventArgs e);
+
         public event EventHandler CalcStarted;
-        public event EventHandler CalcFinished;
+        public event FinishedEventHandler CalcFinished;
         public event EventHandler CalcPaused;
 
         protected virtual void OnCalcStarted(EventArgs e) {
@@ -172,7 +186,7 @@ namespace PavelStransky.Forms {
                 this.CalcStarted(this, e);
         }
 
-        protected virtual void OnCalcFinished(EventArgs e) {
+        protected virtual void OnCalcFinished(FinishedEventArgs e) {
             if(this.CalcFinished != null)
                 this.CalcFinished(this, e);
         }
@@ -250,6 +264,8 @@ namespace PavelStransky.Forms {
         private void CatchException(Exception exc) {
             DetailException dexc = exc as DetailException;
 
+            soundFailure.Play();
+
             if(dexc != null)
                 MessageBox.Show(this, string.Format("{0}\n\n{1}", dexc.Message, dexc.DetailMessage));
             else
@@ -261,7 +277,7 @@ namespace PavelStransky.Forms {
             this.SetCaption(captionInterrupted);
             this.SetButtons();
 
-            this.OnCalcFinished(new EventArgs());
+            this.OnCalcFinished(new FinishedEventArgs(false));
         }
 
         /// <summary>
@@ -277,6 +293,8 @@ namespace PavelStransky.Forms {
             this.SetCaption(captionFinished);
             this.SetButtons();
 
+            soundSuccess.Play();
+
             if(this.txtResult.Text != string.Empty)
                 this.txtResult.Text += newLine;
             this.txtResult.Text += string.Format(timeText, SpecialFormat.Format(duration));
@@ -290,8 +308,8 @@ namespace PavelStransky.Forms {
 
                 this.txtResult.Text += s;
             }
-
-            this.OnCalcFinished(new EventArgs());
+            
+            this.OnCalcFinished(new FinishedEventArgs(true));
         }
 
         /// <summary>
@@ -484,5 +502,28 @@ namespace PavelStransky.Forms {
         private const string captionFinished = "Hotovo";
         private const string captionInterrupted = "Pøerušeno";
         private const string captionPaused = "Pozastaveno";
+
+        private const string soundSuccessFile = "success.wav";
+        private const string soundFailureFile = "failure.wav";
+    }
+
+    /// <summary>
+    /// Tøída pro pøedávání informací o skonèeném výpoètu
+    /// </summary>
+    public class FinishedEventArgs: EventArgs {
+        private bool successful;
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="successful"></param>
+        public FinishedEventArgs(bool successful) {
+            this.successful = successful;
+        }
+
+        /// <summary>
+        /// True, pokud byl výpoèet ukonèen úspìchem
+        /// </summary>
+        public bool Successful { get { return this.successful; } }
     }
 }

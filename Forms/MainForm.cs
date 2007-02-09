@@ -467,10 +467,10 @@ namespace PavelStransky.Forms {
 
                     while(text.Substring(2) == Environment.NewLine)
                         text = text.Substring(text.Length - 2);
-                    int p1 = text.IndexOf(Environment.NewLine);
-
                     while(text.Substring(text.Length - 2) == Environment.NewLine)
                         text = text.Substring(0, text.Length - 2);
+
+                    int p1 = text.IndexOf(Environment.NewLine);
                     int p2 = text.LastIndexOf(Environment.NewLine);
 
                     if(p1 > 0 && p1 != p2)

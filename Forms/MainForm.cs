@@ -507,6 +507,10 @@ namespace PavelStransky.Forms {
         }
 
         private void trayIcon_MouseClick(object sender, MouseEventArgs e) {
+            // Zachytáváme pouze stisk levého tlaèítka myši
+            if(e.Button != MouseButtons.Left)
+                return;
+
             this.trayIcon.Visible = false;
             this.Show();
 

@@ -195,7 +195,7 @@ namespace PavelStransky.Forms {
             this.trayIcon.ContextMenuStrip = this.cmTray;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
             this.trayIcon.Text = "Collective Models";
-            this.trayIcon.DoubleClick += new System.EventHandler(this.trayIcon_DoubleClick);
+            this.trayIcon.Click += new System.EventHandler(this.trayIcon_Click);
             // 
             // cmTray
             // 
@@ -206,7 +206,7 @@ namespace PavelStransky.Forms {
             this.cmTray.Name = "cmTray";
             this.cmTray.ShowCheckMargin = true;
             this.cmTray.ShowImageMargin = false;
-            this.cmTray.Size = new System.Drawing.Size(235, 92);
+            this.cmTray.Size = new System.Drawing.Size(235, 70);
             // 
             // cmTrayActualInformation
             // 

@@ -26,13 +26,8 @@ namespace PavelStransky.Forms {
         /// Konstruktor
         /// </summary>
         public MainForm() {
-            this.InitializeComponent();
             this.Initialize();
             this.Show();
-
-            this.lastOpenedFiles = new LastOpenedFiles(-1, this.mnFile);
-            this.lastOpenedFiles.Click += new FileNameEventHandler(lastOpenedFiles_Click);
-            this.FileOpened += new FileNameEventHandler(this.lastOpenedFiles.AddFile);
 
             foreach(string fileName in this.openedFileNames)
                 if(fileName != null && fileName != string.Empty)
@@ -47,12 +42,12 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="fileName">Název souboru</param>
         public MainForm(string fileName) {
-            this.InitializeComponent();
             this.Initialize();
             this.Show();
-            this.Open(fileName);
-            this.SetMenu();
 
+            this.Open(fileName);
+
+            this.SetMenu();
             this.openedFileNames.Clear();
         }
 
@@ -60,6 +55,8 @@ namespace PavelStransky.Forms {
         /// Inicializace instance nové GCM
         /// </summary>
         private void Initialize() {
+            this.InitializeComponent();
+
             this.Menu = this.mnMenu;
             this.SetDialogProperties(this.openFileDialog);
 
@@ -100,6 +97,10 @@ namespace PavelStransky.Forms {
             object finishedInformation = WinMain.GetRegistryValue(registryKeyFinishedInformation);
             if(finishedInformation is string)
                 this.cmTrayFinishInformation.Checked = bool.Parse(finishedInformation as string);
+
+            this.lastOpenedFiles = new LastOpenedFiles(-1, this.mnFile);
+            this.lastOpenedFiles.Click += new FileNameEventHandler(lastOpenedFiles_Click);
+            this.FileOpened += new FileNameEventHandler(this.lastOpenedFiles.AddFile);
         }
 
         /// <summary>
@@ -311,7 +312,7 @@ namespace PavelStransky.Forms {
                 this.mnFileClose.Visible = true;
                 this.mnFileSave.Visible = true;
                 this.mnFileSaveAs.Visible = true;
-                this.mnFileSeparator1.Visible = true;
+                this.mnFileSeparator2.Visible = true;
             }
             else {
                 this.mnWindow.Visible = false;
@@ -505,7 +506,7 @@ namespace PavelStransky.Forms {
                 this.trayIcon.ShowBalloonTip(10000, "Dokonèen výpoèet", rf.TxtCommand.Text, ToolTipIcon.Info);
         }
 
-        private void trayIcon_DoubleClick(object sender, EventArgs e) {
+        private void trayIcon_Click(object sender, EventArgs e) {
             this.trayIcon.Visible = false;
             this.Show();
 

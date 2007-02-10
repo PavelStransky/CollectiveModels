@@ -506,7 +506,7 @@ namespace PavelStransky.Forms {
                 this.trayIcon.ShowBalloonTip(10000, "Dokonèen výpoèet", rf.TxtCommand.Text, ToolTipIcon.Info);
         }
 
-        private void trayIcon_Click(object sender, EventArgs e) {
+        private void trayIcon_MouseClick(object sender, MouseEventArgs e) {
             this.trayIcon.Visible = false;
             this.Show();
 

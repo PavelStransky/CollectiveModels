@@ -195,7 +195,7 @@ namespace PavelStransky.Forms {
             this.trayIcon.ContextMenuStrip = this.cmTray;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
             this.trayIcon.Text = "Collective Models";
-            this.trayIcon.Click += new System.EventHandler(this.trayIcon_Click);
+            this.trayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseClick);
             // 
             // cmTray
             // 

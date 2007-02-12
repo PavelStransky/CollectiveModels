@@ -189,7 +189,9 @@ namespace PavelStransky.Forms {
         /// Pøi vybrání položky ze seznamu naposledy otevøených souborù
         /// </summary>
         void lastOpenedFiles_Click(object sender, FileNameEventArgs e) {
+            WinMain.SetDirectoryFromFile(e.FileName);
             this.Open(e.FileName);
+            this.SetMenu();
         }
 
         /// <summary>

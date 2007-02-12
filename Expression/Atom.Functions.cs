@@ -99,6 +99,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.TimeNow());
             functions.Add(new Functions.FnTime());
             functions.Add(new Functions.FnRand());
+            functions.Add(new Functions.RandVector());
             functions.Add(new Functions.FnInt());
             functions.Add(new Functions.FnDouble());
             functions.Add(new Functions.Spectrum());
@@ -110,6 +111,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Trace());
             functions.Add(new Functions.Smooth());
             functions.Add(new Functions.SafeValue());
+            functions.Add(new Functions.RemoveBadPoints());
 
             // Kontext
             functions.Add(new Functions.FnContext());

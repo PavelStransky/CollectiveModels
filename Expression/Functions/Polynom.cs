@@ -15,48 +15,46 @@ namespace PavelStransky.Expression.Functions {
 
 		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsNumber(evaluatedArguments, 2);
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
 			return evaluatedArguments;
 		}
 
-		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			if(arguments[1] is Vector) {
-				Vector koefs = arguments[1] as Vector;
+        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+            Vector koefs = arguments[1] as Vector;
 
-				if(item is int)
-					return Polynom.GetValue(koefs, (int)item);
-				else if(item is double) 
-					return Polynom.GetValue(koefs, (double)item);
-				else if(item is Vector) {
-					Vector v = item as Vector;
+            if(item is int)
+                return Polynom.GetValue(koefs, (int)item);
+            
+            else if(item is double)
+                return Polynom.GetValue(koefs, (double)item);
+            
+            else if(item is Vector) {
+                Vector v = item as Vector;
 
-					Vector result = new Vector(v.Length);
-					for(int i = 0; i < result.Length; i++)
-						result[i] = Polynom.GetValue(koefs, v[i]);
+                Vector result = new Vector(v.Length);
+                for(int i = 0; i < result.Length; i++)
+                    result[i] = Polynom.GetValue(koefs, v[i]);
 
-					return result;
-				}
-				else if(item is Matrix) {
-					Matrix m = item as Matrix;
+                return result;
+            }
+            
+            else if(item is Matrix) {
+                Matrix m = item as Matrix;
 
-					Matrix result = new Matrix(m.LengthX, m.LengthY);
-					for(int i = 0; i < result.LengthX; i++)
-						for(int j = 0; j < result.LengthY; j++)
-							result[i, j] = Polynom.GetValue(koefs, m[i, j]);
+                Matrix result = new Matrix(m.LengthX, m.LengthY);
+                for(int i = 0; i < result.LengthX; i++)
+                    for(int j = 0; j < result.LengthY; j++)
+                        result[i, j] = Polynom.GetValue(koefs, m[i, j]);
 
-					return result;
-				}
-				else
-					return this.BadTypeError(item, 0);
-			}
-			else if(arguments[1] is TArray) {
-				if(item is TArray) 
-					return this.EvaluateArray(depth, item as TArray, arguments[1] as TArray, arguments);
-				else
-					return this.BadTypeError(item, 0);
-			}
-			else
-				return this.BadTypeError(arguments[1], 1);			
-		}
+                return result;
+            }
+         
+            else if(item is TArray)
+                return this.EvaluateArray(depth, item as TArray, arguments);
+            
+            else
+                return this.BadTypeError(item, 0);
+        }
 
 		private const string name = "polynom";
 		private const string help = "Vypoèítá hodnoty polynomu v daných bodech";

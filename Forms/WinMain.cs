@@ -70,6 +70,12 @@ namespace PavelStransky.Forms {
             else
                 Context.FncDirectory = defaultDirectory;
 
+            object gcDir = GetRegistryValue(registryKeyGlobalContextDirectory);
+            if(gcDir is string && gcDir as string != string.Empty)
+                Context.GlobalContextDirectory = gcDir as string;
+            else
+                Context.GlobalContextDirectory = defaultDirectory;
+
             object ps = GetRegistryValue(registryKeyPlaySounds);
             if(ps is string && !bool.Parse(ps as String))
                 playSounds = false;
@@ -83,6 +89,7 @@ namespace PavelStransky.Forms {
         public static void SaveSettings(){
             SetRegistryValue(registryKeyDirectory, directory);
             SetRegistryValue(registryKeyFncDirectory, Context.FncDirectory);
+            SetRegistryValue(registryKeyGlobalContextDirectory, Context.GlobalContextDirectory);
             SetRegistryValue(registryKeyPlaySounds, playSounds);
         }
 
@@ -192,6 +199,7 @@ namespace PavelStransky.Forms {
 
         private const string registryKeyDirectory = "Directory";
         private const string registryKeyFncDirectory = "FncDirectory";
+        private const string registryKeyGlobalContextDirectory = "GlobalContextDirectory";
         private const string registryKeyPlaySounds = "PlaySounds";
     }
 }

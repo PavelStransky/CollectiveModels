@@ -12,7 +12,9 @@ namespace PavelStransky.Expression {
 	public class Context: IExportable {
         private Hashtable objects = new Hashtable();
         private string directory = string.Empty;
+        
         private static string fncDirectory = string.Empty;
+        private static string globalContextDirectory = string.Empty;
 
         #region Události - žádosti pro vnìjší objekt
         // Zmìna na kontextu
@@ -51,6 +53,16 @@ namespace PavelStransky.Expression {
         /// </summary>
         public static string FncDirectory { get { return fncDirectory; } set { fncDirectory = value; } }
 
+        /// <summary>
+        /// Adresáø s globálním kontextem
+        /// </summary>
+        public static string GlobalContextDirectory { get { return globalContextDirectory; } set { globalContextDirectory = value; } }
+
+        /// <summary>
+        /// Jméno souboru s globálním kontextem
+        /// </summary>
+        public static string GlobalContextFileName { get { return Path.Combine(globalContextDirectory, globalContextFileName); } }
+
 		/// <summary>
 		/// Pøidá promìnnou do kontextu. Pokud už existuje, nahradí ji
 		/// </summary>
@@ -65,8 +77,11 @@ namespace PavelStransky.Expression {
                 this.OnEvent(new ContextEventArgs(ContextEventType.ChangeDirectory, this.directory));
             }
 
-            else if(name == fncDirectoryVariable) 
+            else if(name == fncDirectoryVariable)
                 fncDirectory = (string)item;
+
+            else if(name == globalContextDirectoryVariable)
+                globalContextDirectory = (string)item;
 
             else if(this.objects.ContainsKey(name)) {
                 // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
@@ -133,8 +148,12 @@ namespace PavelStransky.Expression {
 			get {
                 if(name == directoryVariable)
                     return new Variable(this, name, this.directory, null);
+
                 else if(name == fncDirectoryVariable)
                     return new Variable(this, name, fncDirectory, null);
+
+                else if(name == globalContextDirectoryVariable)
+                    return new Variable(this, name, globalContextDirectory, null);
 
 				Variable variable = this.objects[name] as Variable;
 				if(variable == null)
@@ -162,7 +181,8 @@ namespace PavelStransky.Expression {
                 s.Append(key);
                 s.Append(" (");
                 s.Append(this[key].Item.GetType().FullName);
-                s.Append(")\n");
+                s.Append(')');
+                s.Append(Environment.NewLine);
             }
 
             return s.ToString();
@@ -211,6 +231,8 @@ namespace PavelStransky.Expression {
 
         private const string directoryVariable = "_dir";
         private const string fncDirectoryVariable = "_fncdir";
+        private const string globalContextDirectoryVariable = "_gcdir";
+        private const string globalContextFileName = "global.ctx";
     }
 
 	/// <summary>

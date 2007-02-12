@@ -182,10 +182,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Alias\CreateGraph.cs" />
+    <Compile Include="Functions\Context\GetGlobalContext.cs" />
+    <Compile Include="Functions\Context\GetGlobalVar.cs" />
     <Compile Include="Functions\Context\GetVar.cs" />
     <Compile Include="Functions\Context\SetContext.cs" />
     <Compile Include="Functions\Context\GetContext.cs" />
     <Compile Include="Functions\Context\Context.cs" />
+    <Compile Include="Functions\Context\SetGlobalVar.cs" />
     <Compile Include="Functions\Context\UseContext.cs" />
     <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
     <Compile Include="Functions\Dynamics\PotentialRoots.cs" />

@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Parameters { get { return parameters; } }
 
         public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            this.CheckArgumentsMinNumber(arguments, 2);
+            this.CheckArgumentsNumber(arguments, 2);
 
            ArrayList args = new ArrayList(); args.Add(Atom.EvaluateAtomObject(context, arguments[0])); args.Add(arguments[1]);
             this.CheckArgumentsType(args, 0, typeof(Context));

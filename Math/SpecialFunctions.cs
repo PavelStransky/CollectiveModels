@@ -310,6 +310,23 @@ namespace PavelStransky.Math {
             return;
         }
 
+        /// <summary>
+        /// Hodnota Wignerova rozdìlení se støední hodnotou 1
+        /// </summary>
+        /// <param name="x">x</param>
+        public static double Wigner(double x) {
+            return System.Math.PI / 2.0 * x * System.Math.Exp(-System.Math.PI / 4.0 * x * x);
+        }
+
+        /// <summary>
+        /// Hodnota Poissonova rozdìlení se støední hodnotou 1
+        /// </summary>
+        /// <param name="x">x</param>
+        /// <remarks>M. L. Mehta, RMT 1967, p. 10, expression (1.1)</remarks>
+        public static double Poisson(double x) {
+            return System.Math.Exp(-x);
+        }
+
         private static double[] gammaLogKoef;
         private const int maxIteration = 1000;
         private const double epsilon = 1E-10;

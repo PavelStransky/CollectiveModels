@@ -88,6 +88,7 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.Var());
 			functions.Add(new Functions.Integrate());
 			functions.Add(new Functions.Wigner());
+            functions.Add(new Functions.Poisson());
 			functions.Add(new Functions.FnType());
             functions.Add(new Functions.SwapXY());
             functions.Add(new Functions.Sum());

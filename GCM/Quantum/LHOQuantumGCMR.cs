@@ -288,6 +288,30 @@ namespace PavelStransky.GCM {
             return this.Psi(this.index.N[i], this.index.M[i], x);
         }
 
+        /// <summary>
+        /// Vrátí èasovou støední hodnotu druhého integrálu - úhlového momentu -i * hbar * (d / d phi)
+        /// </summary>
+        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
+        public Vector GetSecondInvariant() {
+            if(!this.isComputed)
+                throw new GCMException(errorMessageNotComputed);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++)
+                    result[i] += ev[j] * ev[j] * System.Math.Abs(this.index.M[j]);
+
+                result[i] *= this.Hbar;
+            }
+
+            return result;
+        }
+
         protected override void Export(IEParam param) {
             if(this.isComputed)
                 param.Add(this.index.MaxE, "Maximum Energy of Basis Functions");

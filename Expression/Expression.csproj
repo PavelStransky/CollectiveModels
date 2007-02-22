@@ -209,6 +209,7 @@
     <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRL.cs" />
+    <Compile Include="Functions\Quantum\SecondInvariant.cs" />
     <Compile Include="Functions\RandVector.cs" />
     <Compile Include="Functions\RemoveBadPoints.cs" />
     <Compile Include="Functions\SafeValue.cs" />

@@ -8,7 +8,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
-    public class LHOQuantumGCMR : LHOQuantumGCM {
+    public class LHOQuantumGCMR: LHOQuantumGCM {
         // Indexy báze
         protected LHOPolarIndex index;
 
@@ -159,15 +159,17 @@ namespace PavelStransky.GCM {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
-        /// <remarks>Staèí poèítat reálné èásti (výsledná matice je reálná)</remarks>
-        private Matrix EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
+        private Complex[,] EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
             Vector ev = this.eigenVectors[n];
 
-            Matrix result = new Matrix(intx.Num, inty.Num);
+            Complex[,] result = new Complex[intx.Num, inty.Num];
+            for(int sx = 0; sx < intx.Num; sx++)
+                for(int sy = 0; sy < inty.Num; sy++)
+                    result[sx, sy] = new Complex();
 
             DiscreteInterval intr = new DiscreteInterval(0,
                 System.Math.Max(System.Math.Max(System.Math.Abs(intx.Min), System.Math.Abs(intx.Max)),
-                    System.Math.Max(System.Math.Abs(inty.Min), System.Math.Abs(inty.Max))), 
+                    System.Math.Max(System.Math.Abs(inty.Min), System.Math.Abs(inty.Max))),
                 intx.Num + inty.Num);
 
             int length = this.index.Length;
@@ -184,7 +186,7 @@ namespace PavelStransky.GCM {
                         double y = inty.GetX(sy);
                         double beta = System.Math.Sqrt(x * x + y * y);
                         double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
-                        result[sx, sy] += cache.GetValue(i, beta) * ev[i] * System.Math.Cos(mi * gamma); // *Complex.Exp(Complex.I * mi * gamma);
+                        result[sx, sy] += cache.GetValue(i, beta) * ev[i] * Complex.Exp(Complex.I * mi * gamma);
                     }
                 }
             }
@@ -229,12 +231,11 @@ namespace PavelStransky.GCM {
             //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
             return range + 2 * dx;
         }
-        
+
         /// <summary>
         /// Vrátí matici hustot pro vlastní funkce
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
-        /// <param name="initial">Poèáteèní podmínky (x0, y0, px0, py0)</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public override Matrix DensityMatrix(int n, params Vector[] interval) {
             if(!this.isComputed)
@@ -243,88 +244,6 @@ namespace PavelStransky.GCM {
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
 
-            Matrix result = this.EigenMatrix(n, intx, inty);
-
-            for(int sx = 0; sx < intx.Num; sx++)
-                for(int sy = 0; sy < inty.Num; sy++)
-                    result[sx, sy] *= result[sx, sy];
-
-            return result;
-        }
-/*
-        /// <summary>
-        /// Vrátí matice hustot po èasovém vývoji
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="initial">Poèáteèní podmínky (x0, y0, px0, py0)</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public Matrix Evolution(int n, Vector initial, params Vector[] interval) {
-            if(!this.isComputed)
-                throw new GCMException(errorMessageNotComputed);
-
-            DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
-            DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
-
-            Vector ev = this.eigenVectors[n];
-
-            int numSteps = 10 * this.index.MaxM + 1;
-            double range = this.GetRange(epsilon);
-            DiscreteInterval interval = new DiscreteInterval(0, range, numSteps);
-            double step = interval.Step;
-            int length = this.index.Length;
-
-            BasisCache cache = new BasisCache(interval, length, this.Psi);
-
-            Vector dcoef = new Vector(length);
-
-            for(int i = 0; i < length; i++) {
-                Vector ev = this.eigenVectors[i];
-
-                for(int sx = 0; sx < numSteps; sx++) {
-                    double x = interval.GetX(sx);
-
-                    for(int sy = 0; sy < numSteps; sy++) {
-                        double y = interval.GetX(sy);
-
-                        for(int k = 0; k < length; k++) {
-                            double beta = System.Math.Sqrt(x * x + y * y);
-                            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
-                            d += cache.GetValue(k, beta) * ev[k] * Complex.Exp(-Complex.I * mi * gamma);
-                        }
-                    }
-                }
-            }
-
-            Complex[,] result = new Complex[intx.Num, inty.Num];
-            for(int sx = 0; sx < intx.Num; sx++)
-                for(int sy = 0; sy < inty.Num; sy++)
-                    result[sx, sy] = new Complex();
-
-            DiscreteInterval intr = new DiscreteInterval(0,
-                System.Math.Max(System.Math.Max(System.Math.Abs(intx.Min), System.Math.Abs(intx.Max)),
-                    System.Math.Max(System.Math.Abs(inty.Min), System.Math.Abs(inty.Max))),
-                intx.Num + inty.Num);
-
-            int length = this.index.Length;
-
-            BasisCache cache = new BasisCache(intr, length, this.Psi);
-
-            for(int i = 0; i < length; i++) {
-                int ni = this.index.N[i];
-                int mi = this.index.M[i];
-
-                for(int sx = 0; sx < intx.Num; sx++) {
-                    double x = intx.GetX(sx);
-                    for(int sy = 0; sy < inty.Num; sy++) {
-                        double y = inty.GetX(sy);
-                        double beta = System.Math.Sqrt(x * x + y * y);
-                        double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
-                        result[sx, sy] += cache.GetValue(i, beta) * ev[i] * Complex.Exp(Complex.I * mi * gamma);
-                    }
-                }
-            }
-
-
             Complex[,] m = this.EigenMatrix(n, intx, inty);
             Matrix result = new Matrix(m.GetLength(0), m.GetLength(1));
 
@@ -332,8 +251,9 @@ namespace PavelStransky.GCM {
                 for(int sy = 0; sy < inty.Num; sy++)
                     result[sx, sy] = m[sx, sy].SquaredNorm;
 
+            return result;
         }
-*/
+
         /// <summary>
         /// Radiální èást vlnové funkce
         /// </summary>

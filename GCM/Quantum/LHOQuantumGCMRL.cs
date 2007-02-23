@@ -298,6 +298,8 @@ namespace PavelStransky.GCM {
 
             DateTime startTime1 = DateTime.Now;
 
+            // Musíme uvolnit co nejvíce pamìti
+            GC.Collect();
             Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
             m.Dispose();
 

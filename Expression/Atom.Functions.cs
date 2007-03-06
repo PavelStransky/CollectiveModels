@@ -172,6 +172,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.EVectors());
             functions.Add(new Functions.HamiltonianMatrixTrace());
             functions.Add(new Functions.SecondInvariant());
+            functions.Add(new Functions.EvenParity());
 
             // Funkce IBM
             functions.Add(new Functions.CIBM());

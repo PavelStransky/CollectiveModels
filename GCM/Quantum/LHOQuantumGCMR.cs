@@ -154,6 +154,37 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Vrátí indexy vlastních èísel, které mají sudou paritu
+        /// </summary>
+        public Vector EvenParity() {
+            int length = this.index.Length;
+            int num = this.eigenVectors.Length;
+
+            Vector result = new Vector(num);
+
+            for(int i = 0; i < length; i++) {
+                int ni = this.index.N[i];
+                int mi = this.index.M[i];
+
+                if(mi > 0)
+                    continue;
+
+                for(int j = i; j < length; j++) {
+                    int nj = this.index.N[j];
+                    int mj = this.index.M[j];
+
+                    if(ni == nj && mi == -mj) {
+                        for(int k = 0; k < num; k++)
+                            result[k] += System.Math.Abs(this.eigenVectors[k][i] + this.eigenVectors[k][j]);
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Vrátí matici <n|V|n> vlastní funkce n
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>

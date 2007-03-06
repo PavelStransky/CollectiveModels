@@ -195,6 +195,7 @@
     <Compile Include="Functions\Poisson.cs" />
     <Compile Include="Functions\Quantum\EValues.cs" />
     <Compile Include="Functions\Quantum\EVectors.cs" />
+    <Compile Include="Functions\Quantum\EvenParity.cs" />
     <Compile Include="Functions\Quantum\HamiltonianMatrix.cs" />
     <Compile Include="Functions\Math\BC.cs" />
     <Compile Include="Functions\Math\Factorial.cs" />

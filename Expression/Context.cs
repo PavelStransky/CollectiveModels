@@ -114,6 +114,7 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		public void Clear() {
 			this.objects.Clear();
+            GC.Collect();
             this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
 

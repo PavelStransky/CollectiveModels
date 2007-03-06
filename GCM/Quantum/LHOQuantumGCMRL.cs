@@ -273,6 +273,8 @@ namespace PavelStransky.GCM {
                 throw new GCMException(errorMessageComputing);
             this.isComputing = true;
 
+            GC.Collect();
+
             if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxE))
                 numev = this.HamiltonianMatrixSize(maxE);
 
@@ -293,13 +295,17 @@ namespace PavelStransky.GCM {
 
             if(writer != null) {
                 writer.WriteLine(string.Format("Stopa matice: {0}", m.Trace()));
-                writer.Write("Diagonalizace dsbevx... ");
+                writer.WriteLine("Èištìní pamìti...");
             }
-
-            DateTime startTime1 = DateTime.Now;
 
             // Musíme uvolnit co nejvíce pamìti
             GC.Collect();
+
+            if(writer != null) 
+                writer.Write("Diagonalizace dsbevx... ");
+
+            DateTime startTime1 = DateTime.Now;
+
             Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
             m.Dispose();
 

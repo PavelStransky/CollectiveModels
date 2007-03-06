@@ -310,36 +310,45 @@ namespace PavelStransky.DLLWrapper {
 
             int info = 0;
 
-            Vector[] result = null;
-
+            // Výpoèet
+            bool success = false;
             try {
                 dsbevx_(&jobz, &range, &uplo, &n, &kd, ab, &ldab, q, &ldq,
                     &vl, &vu, &il, &iu, &abstol, &m, w, z, &ldz, work, iwork, ifail, &info);
+                success = true;
+            }
+            finally{
+            Memory.Delete(work);
+            Memory.Delete(iwork);
+            Memory.Delete(q);
+            Memory.Delete(ifail);
+            }
 
-                if(ev)
-                    result = new Vector[m + 1];
-                else
-                    result = new Vector[1];
+            // Zpracování výsledkù
+            Vector[] result = null;
+            try {
+                if(success) {
+                    if(ev)
+                        result = new Vector[m + 1];
+                    else
+                        result = new Vector[1];
 
-                result[0] = new Vector(m);
+                    result[0] = new Vector(m);
 
-                for(int i = 0; i < m; i++)
-                    result[0][i] = w[i];
+                    for(int i = 0; i < m; i++)
+                        result[0][i] = w[i];
 
-                if(ev)
-                    for(int i = 0; i < m; i++) {
-                        result[i + 1] = new Vector(n);
-                        for(int j = 0; j < n; j++)
-                            result[i + 1][j] = z[i * ldz + j];
-                    }
+                    if(ev)
+                        for(int i = 0; i < m; i++) {
+                            result[i + 1] = new Vector(n);
+                            for(int j = 0; j < n; j++)
+                                result[i + 1][j] = z[i * ldz + j];
+                        }
+                }
             }
             finally {
                 Memory.Delete(w);
                 Memory.Delete(z);
-                Memory.Delete(work);
-                Memory.Delete(iwork);
-                Memory.Delete(q);
-                Memory.Delete(ifail);
             }
 
             return result;

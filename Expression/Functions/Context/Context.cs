@@ -13,27 +13,36 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            Context result = new Context(context.Directory);
-            context.OnEvent(new ContextEventArgs(ContextEventType.NewContext, result));
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            int count = evaluatedArguments.Count;
+
+            // První argument mùže být null
+            if(count > 0 && evaluatedArguments[0] != null)
+                this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
+
+            for(int i = 1; i < count; i++)
+                this.CheckArgumentsType(evaluatedArguments, i, typeof(string));
+        }
+
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            Context result = new Context(guider.Context.Directory);
+            guider.Context.OnEvent(new ContextEventArgs(ContextEventType.NewContext, result));
 
             int count = arguments.Count;
 
-            if(count > 1)
-                for(int i = 1; i < count; i++)
-                    if(arguments[i] is string && context.Contains(arguments[i] as string)) {
-                        Variable v = context[arguments[i] as string];
-                        result.SetVariable(v.Name, v.Item);
-                    }
+            for(int i = 1; i < count; i++) {
+                Variable v = guider.Context[arguments[i] as string];
+                result.SetVariable(v.Name, v.Item);
+            }
 
-            if(count > 0 && arguments[0] != null)
-                Atom.EvaluateAtomObject(result, arguments[0]);
+            if(count > 0 && arguments[0] != null) 
+                Atom.EvaluateAtomObject(new Guider(result), arguments[0]);
 
             return result;
         }
 
         private const string name = "context";
         private const string help = "Vytvoøí nový kontext.";
-        private const string parameters = "[Pøíkaz nového kontextu[; Promìnné kopírované z aktuálního kontextu]]";
+        private const string parameters = "[Pøíkazy nového kontextu (string);][Promìnné kopírované z aktuálního kontextu (string) ...]";
     }
 }

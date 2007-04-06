@@ -14,16 +14,12 @@ namespace PavelStransky.Expression.Functions {
 
         private int n, m;
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
 
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-
-            if(evaluatedArguments.Count > 2)
-                this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
-
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
         }
 
         /// <summary>
@@ -33,13 +29,15 @@ namespace PavelStransky.Expression.Functions {
             return SpecialFunctions.Laguerre(this.n, this.m, x);
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             this.n = (int)arguments[1];
 
             if(arguments.Count > 2)
                 this.m = (int)arguments[2];
             else
                 this.m = 0;
+
+            object item = arguments[0];
 
             if(item is int)
                 return this.ComputeLaguerre((int)item);
@@ -51,12 +49,8 @@ namespace PavelStransky.Expression.Functions {
                 return (item as Vector).Transform(this.ComputeLaguerre);
             else if(item is PointVector)
                 return (item as PointVector).Transform(null, this.ComputeLaguerre);
-            else if(item is Matrix)
+            else 
                 return (item as Matrix).Transform(this.ComputeLaguerre);
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
-            else
-                return this.BadTypeError(item, 0);
         }
 
         private const string help = "Vrací hodnotu Laguerrovy funkce, u bodu nebo vektoru bodù poèítá pouze u Y složky";

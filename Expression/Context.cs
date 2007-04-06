@@ -69,7 +69,7 @@ namespace PavelStransky.Expression {
 		/// <param name="name">Jméno promìnné</param>
 		/// <param name="item">Hodnota promìnné</param>
 		/// <param name="assignment">Výraz pro pøiøazení</param>
-		public Variable SetVariable(string name, object item, Assignment assignment) {
+		public Variable SetVariable(string name, object item) {
 			Variable retValue = null;
 
             if(name == directoryVariable) {
@@ -87,26 +87,16 @@ namespace PavelStransky.Expression {
                 // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
                 retValue = this[name];
                 retValue.Item = item;
-                retValue.Assignment = assignment;
                 this.OnEvent(new ContextEventArgs(ContextEventType.Change));
             }
 
             else {
                 // Jinak ji musíme vytvoøit
-                this.objects.Add(name, retValue = new Variable(this, name, item, assignment));
+                this.objects.Add(name, retValue = new Variable(name, item));
                 this.OnEvent(new ContextEventArgs(ContextEventType.Change));
             }
 
 			return retValue;
-		}
-
-		/// <summary>
-		/// Pøidá promìnnou do kontextu. Pokud už existuje, nahradí ji
-		/// </summary>
-		/// <param name="name">Jméno promìnné</param>
-		/// <param name="item">Hodnota promìnné</param>
-		public Variable SetVariable(string name, object item) {
-			return this.SetVariable(name, item, null);
 		}
 
 		/// <summary>
@@ -135,10 +125,12 @@ namespace PavelStransky.Expression {
 		/// Jména všech objektù na kontextu
 		/// </summary>
 		public TArray ObjectNames() {
-			TArray retValue = new TArray();
+			TArray result = new TArray(typeof(string), this.objects.Count);
+            int i = 0;
 			foreach(string key in this.objects.Keys)
-				retValue.Add(key);
-			return retValue;
+                result[i++] = key;
+
+            return result;
 		}
 
 		/// <summary>
@@ -148,13 +140,13 @@ namespace PavelStransky.Expression {
 		public Variable this[string name] {
 			get {
                 if(name == directoryVariable)
-                    return new Variable(this, name, this.directory, null);
+                    return new Variable(name, this.directory);
 
                 else if(name == fncDirectoryVariable)
-                    return new Variable(this, name, fncDirectory, null);
+                    return new Variable(name, fncDirectory);
 
                 else if(name == globalContextDirectoryVariable)
-                    return new Variable(this, name, globalContextDirectory, null);
+                    return new Variable(name, globalContextDirectory);
 
 				Variable variable = this.objects[name] as Variable;
 				if(variable == null)
@@ -199,7 +191,7 @@ namespace PavelStransky.Expression {
 
             foreach(Variable v in this.objects.Values)
                 if(v != null) {
-                    param.Add(v.Item, v.Name, v.Expression);
+                    param.Add(v.Item, v.Name, null);
                 }
 
             param.Add(directory, directoryVariable, null);
@@ -222,7 +214,7 @@ namespace PavelStransky.Expression {
                 if(name == directoryVariable)
                     this.directory = o as string;
                 else
-                    this.SetVariable(name, o, expression != string.Empty ? new Assignment(expression, null) : null);
+                    this.SetVariable(name, o);
             }
         }
 		#endregion

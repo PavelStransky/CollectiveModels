@@ -12,13 +12,14 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            this.CheckArgumentsNumber(arguments, 1);
-            ArrayList args = this.EvaluateArguments(context, arguments, writer);
-            this.CheckArgumentsType(args, 0, typeof(Context));
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsNumber(evaluatedArguments, 1);
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Context));
+        }
 
-            Context c = args[0] as Context;
-            context.OnEvent(new ContextEventArgs(ContextEventType.SetContext, c));
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            Context c = arguments[0] as Context;
+            guider.Context.OnEvent(new ContextEventArgs(ContextEventType.SetContext, c));
             return c;
         }
 

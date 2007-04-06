@@ -13,28 +13,26 @@ namespace PavelStransky.Expression.Functions {
         public override string Parameters { get { return parameters; } }
         public override string Name { get { return name; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 1);
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(int), typeof(double), typeof(string), typeof(TimeSpan));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is int)
-                return item;
-            else if(item is double)
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            object item = arguments[0];
+
+            if(item is double)
                 return (int)(double)item;
             else if(item is TimeSpan)
                 return (int)((TimeSpan)item).TotalSeconds;
             else if(item is string)
                 return int.Parse(item as string);
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
             else
-                return this.BadTypeError(item, 0);
+                return item;
         }
 
         private const string name = "int";
         private const string help = "Pøevede hodnoty na int";
-        private const string parameters = "int | double | TimeSpan | Array";
+        private const string parameters = "int | double | TimeSpan | string";
     }
 }

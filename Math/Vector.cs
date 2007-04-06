@@ -24,17 +24,29 @@ namespace PavelStransky.Math {
 		}
 
 		/// <summary>
-		/// Vytvoøí vektor s referencí na prvky
+		/// Konstruktor
 		/// </summary>
 		/// <param name="item">Pole s prvky vektoru</param>
-		public Vector(double [] item) {
-			this.item = item;
-		}
-        
-		/// <summary>
-		/// Poèet prvkù vektoru
-		/// </summary>
-		public int Length {
+        public Vector(double[] item) {
+            this.item = (double[])item.Clone();
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="item">Pole s prvky vektoru</param>
+        public Vector(int[] item) {
+            int length = item.Length;
+
+            this.item = new double[length];
+            for(int i = 0; i < length; i++)
+                this[i] = item[i];
+        }
+
+        /// <summary>
+        /// Poèet prvkù vektoru
+        /// </summary>
+        public int Length {
             get {
                 return this.item.Length;
             }
@@ -47,6 +59,21 @@ namespace PavelStransky.Math {
 
                 this.item = newItem;
             }
+        }
+
+        /// <summary>
+        /// Hledá daný prvek ve vektoru
+        /// </summary>
+        /// <param name="d">Hledané èíslo</param>
+        /// <returns>Nezáporné èíslo, pokud byl prvek nalezen, -1 v opaèném pøípadì.</returns>
+        public int Find(double d) {
+            int length = this.Length;
+
+            for(int i = 0; i < length; i++)
+                if(this[i] == d)
+                    return i;
+
+            return -1;
         }
 
         /// <summary>
@@ -357,6 +384,19 @@ namespace PavelStransky.Math {
 		public double this [int i] {get {return this.item[i];} set {this.item[i] = value;}}
 
         /// <summary>
+        /// Indexer pro více prvkù
+        /// </summary>
+        public Vector this[params int[] index] {
+            get {
+                int length = index.Length;
+                Vector result = new Vector(length);
+                for(int i = 0; i < length; i++)
+                    result[i] = this[index[i]];
+                return result;
+            }
+        }
+
+        /// <summary>
         /// První prvek vektoru
         /// </summary>
         public double FirstItem { get { return this[0]; } set { this[0] = value; } }
@@ -615,6 +655,31 @@ namespace PavelStransky.Math {
 		}		
 		#endregion
 
+        /// <summary>
+        /// Odstraní složky vektoru, které se vyskytují cícekrát
+        /// </summary>
+        public Vector RemoveDuplicity() {
+            Vector result = (Vector)this.Clone();
+            int length = this.Length;
+
+            int p = 0;
+
+            for(int i = 0; i < length; i++) {
+                double d = this[i];
+                bool found = false;
+                for(int j = 0; j < p; j++)
+                    if(result[j] == d) {
+                        found = true;
+                        break;
+                    }
+                if(!found) 
+                    result[p++] = d;
+            }
+
+            result.Length = p;
+
+            return result;
+        }
 
         /// <summary>
         /// Souèet prvkù vektoru mezy indexy iStart, iEnd

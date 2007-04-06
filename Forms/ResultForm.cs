@@ -137,7 +137,7 @@ namespace PavelStransky.Forms {
         /// <param name="command">Pøíkaz</param>
         public void SetExpression (string command) {
             try {
-                this.expression = new PavelStransky.Expression.Expression(command, this); 
+                this.expression = new PavelStransky.Expression.Expression(command); 
                 this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
                 this.calcThread.Priority = ThreadPriority.BelowNormal;
@@ -241,7 +241,8 @@ namespace PavelStransky.Forms {
             Context context = this.ParentEditor.Context;
 
             try {
-                object result = this.expression.Evaluate(context);
+                Guider guider = new Guider(context, this);
+                object result = this.expression.Evaluate(guider);
                 this.timerInfo.Stop();
                 // Po skonèení výpoètu
                 this.Invoke(new FinishedCalculationDelegate(this.FinishedCalculation), result);

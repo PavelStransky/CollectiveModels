@@ -13,22 +13,16 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 2);
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(LHOQuantumGCM));
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-            return evaluatedArguments;
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item as LHOQuantumGCM != null) {
-                int maxE = (int)arguments[1];
-                return (item as LHOQuantumGCM).HamiltonianMatrixSize(maxE);
-            }
-
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
-            else
-                return this.BadTypeError(item, 0);
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            LHOQuantumGCM item = arguments[0] as LHOQuantumGCM;
+            int maxE = (int)arguments[1];
+            return item.HamiltonianMatrixSize(maxE);
         }
 
         private const string help = "Vrátí rozmìry matice Hamiltoniánu v použité bázi";

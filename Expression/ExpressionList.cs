@@ -17,9 +17,8 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="expression">Výraz</param>
         /// <param name="parent">Rodiè</param>
-        /// <param name="writer">Writer pro textové výstupy</param>
-        public ExpressionList(string expression, Atom parent, IOutputWriter writer)
-            : base(expression, parent, writer) {
+        public ExpressionList(string expression, Atom parent)
+            : base(expression, parent) {
             string[] c = SplitArguments(this.expression);
 
             for(int i = 0; i < c.Length; i++) {
@@ -31,13 +30,13 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede zpracování
 		/// </summary>
-        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="guider">Prùvodce výpoètu</param>
         /// <returns>Výsledek výpoètu je vždy null</returns>
-		public override object Evaluate(Context context) {
+		public override object Evaluate(Guider guider) {
 			object retValue = null;
 
 			for(int i = 0; i < this.commands.Count; i++) 
-				retValue = EvaluateAtomObject(context, this.commands[i]);
+				retValue = EvaluateAtomObject(guider, this.commands[i]);
 			
 			return retValue;
 		}

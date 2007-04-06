@@ -64,11 +64,24 @@ namespace PavelStransky.Expression.UnaryOperators {
 		}
 
 		protected virtual object EvaluateA(TArray item) {
-			TArray result = new TArray();
-			for(int i = 0; i < item.Count; i++)
-				result.Add(this.Evaluate(item[i]));
-			return result;
-		}
+            TArray result = null;
+
+            item.ResetEnumerator();
+            int[] index = (int[])item.StartEnumIndex.Clone();
+            int[] lengths = item.Lengths;
+            int rank = item.Rank;
+
+            do {
+                object o = this.Evaluate(item[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, item.StartEnumIndex, item.EndEnumIndex));
+
+            return result;
+        }
 		#endregion
 
 		/// <summary>

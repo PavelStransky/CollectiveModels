@@ -13,7 +13,14 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            int count = evaluatedArguments.Count;
+
+            for(int i = 0; i < count; i++)
+                this.CheckArgumentsType(evaluatedArguments, i, typeof(string));
+        }
+
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             string fileName = Context.GlobalContextFileName;
             FileInfo fileInfo = new FileInfo(fileName);
 
@@ -28,8 +35,7 @@ namespace PavelStransky.Expression.Functions {
 
             int count = arguments.Count;
             for(int i = 0; i < count; i++) {
-                this.CheckArgumentsType(arguments, i, typeof(string));
-                Variable v = context[arguments[i] as string];
+                Variable v = guider.Context[arguments[i] as string];
                 c.SetVariable(v.Name, v.Item);
             }
 
@@ -37,10 +43,10 @@ namespace PavelStransky.Expression.Functions {
             export.Write(c);
             export.Close();
 
-            return null;
+            return c;
         }
 
         private const string help = "Do globálního kontextu uloží promìnné.";
-        private const string parameters = "[Promìnné kopírované z aktuálního kontextu]";
+        private const string parameters = "[Promìnné kopírované z aktuálního kontextu (string) ...]";
     }
 }

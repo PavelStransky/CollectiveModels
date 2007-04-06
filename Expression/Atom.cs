@@ -32,8 +32,6 @@ namespace PavelStransky.Expression {
 		protected string expression;
 		// Atom o úroveò výš (kvùli poèítání poètu krokù)
 		protected Atom parent;
-        // Kvùli všemožným výstupùm
-        protected IOutputWriter writer;
 
 		// Promìnné, které se vyskytují v èásti výrazu
 		protected ArrayList variables = new ArrayList();
@@ -61,17 +59,15 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="expression">Výraz funkce</param>
 		/// <param name="parent">Rodiè</param>
-        /// <param name="writer">Writer pro textové výstupy</param>
-		public Atom(string expression, Atom parent, IOutputWriter writer) {
-			this.Create(expression, parent, writer);
+		public Atom(string expression, Atom parent) {
+			this.Create(expression, parent);
 		}
 
 		/// <summary>
 		/// Vytvoøení objektu
 		/// </summary>
-		private void Create(string expression, Atom parent, IOutputWriter writer) {
+		private void Create(string expression, Atom parent) {
 			this.parent = parent;
-            this.writer = writer;
 			this.expression = RemoveComment(expression);
 			this.expression = RemoveNewLine(this.expression);
 			this.expression = RemoveOutsideBracket(this.expression).Trim();
@@ -79,12 +75,20 @@ namespace PavelStransky.Expression {
 			CheckSubstChar(this.expression);
 		}
 
+        /// <summary>
+        /// Provede výpoèet èásti výrazu
+        /// </summary>
+        /// <param name="context">Kontext</param>
+        public object Evaluate(Context context) {
+            return this.Evaluate(new Guider(context));
+        }
+
 		/// <summary>
 		/// Provede výpoèet èásti výrazu
 		/// </summary>
-        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="guider">Prùvodce výpoètu</param>
         /// <returns>Výsledek výpoètu</returns>
-		public virtual object Evaluate(Context context) {
+		public virtual object Evaluate(Guider guider) {
 			return null;
         }
 
@@ -521,22 +525,22 @@ namespace PavelStransky.Expression {
 
 			switch(ExpressionType(expression)) {
 				case ExpressionTypes.Transform:
-					retValue = new Transform(expression, this, this.writer);
+					retValue = new Transform(expression, this);
 					break;
 				case ExpressionTypes.Formula:
-					retValue = new Formula(expression, this, this.writer);
+					retValue = new Formula(expression, this);
 					break;
 				case ExpressionTypes.Function:
-					retValue = new Function(expression, this, this.writer);
+					retValue = new Function(expression, this);
 					break;
 				case ExpressionTypes.Assignment:
-					retValue = new Assignment(expression, this, this.writer);
+					retValue = new Assignment(expression, this);
 					break;
 				case ExpressionTypes.ExpressionList:
-					retValue = new ExpressionList(expression, this, this.writer);
+					retValue = new ExpressionList(expression, this);
 					break;
 				case ExpressionTypes.Indexer:
-					retValue = new Indexer(expression, this, this.writer);
+					retValue = new Indexer(expression, this);
 					break;
 				case ExpressionTypes.Int32:
 					retValue = Convert.ToInt32(expression);
@@ -577,6 +581,28 @@ namespace PavelStransky.Expression {
 			else
 				return null;
 		}
+
+        /// <summary>
+        /// Podle øetìzce urèí typ
+        /// </summary>
+        /// <param name="p">String s typem</param>
+        internal static Type ParseType(string p) {
+            p = p.Trim().ToLower();
+            if(p == "string")
+                return typeof(string);
+            else if(p == "int")
+                return typeof(int);
+            else if(p == "double")
+                return typeof(double);
+            else if(p == "vector")
+                return typeof(Vector);
+            else if(p == "array")
+                return typeof(TArray);
+            else if(p == "graph")
+                return typeof(Graph);
+
+            throw new ExpressionException(string.Format(errorMessageUnknownType, p));
+        }
 
 		/// <summary>
 		/// Pøevede logickou promìnnou zadanou v textovém øetìzci na typ bool
@@ -624,20 +650,19 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet dané èásti výrazu
 		/// </summary>
-		/// <param name="context">Kontext</param>
 		/// <param name="expression">Výraz funkce</param>
-		/// <param name="parent">Rodiè</param>
+		/// <param name="guider">Prùvodce výpoètu</param>
 		/// <returns>Objekt získaný výpoètem</returns>
-		public static object EvaluateAtomObject(Context context, object operand) {
+		public static object EvaluateAtomObject(Guider guider, object operand) {
 			object retValue;
 
 			if(operand is Atom) {
-				retValue = (operand as Atom).Evaluate(context);
+				retValue = (operand as Atom).Evaluate(guider);
 			}
 			else if(operand is string) {
 				string s = ParseString(operand as String);
 				if(s == null)
-					retValue = context[operand as string];
+					retValue = guider.Context[operand as string];
 				else
 					retValue = s;
 			}
@@ -697,5 +722,7 @@ namespace PavelStransky.Expression {
 
 		private const string errorMessageSubstChar = "Ve výrazu se nesmí vyskytovat znak '{0}'";
 		private const string errorMessageSubstCharDetail = "Výraz: {0}\nPozice: {1}";
-	}
+
+        private const string errorMessageUnknownType = "Unknown type {0}.";
+    }
 }

@@ -14,11 +14,14 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 3);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 6);
 
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
+            
             this.ConvertInt2Double(evaluatedArguments, 1);
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector), typeof(double));
 
             this.ConvertInt2Double(evaluatedArguments, 2);
             this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
@@ -35,11 +38,10 @@ namespace PavelStransky.Expression.Functions {
                 this.ConvertInt2Double(evaluatedArguments, 5);
                 this.CheckArgumentsType(evaluatedArguments, 5, typeof(double));
             }
-
-            return evaluatedArguments;
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IDynamicalSystem dynamicalSystem = arguments[0] is IDynamicalSystem;
             double t = (double)arguments[2];
             double precision = 0;
             double timeStep = 0;

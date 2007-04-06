@@ -13,21 +13,13 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 1);
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IQuantumSystem));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is IQuantumSystem) {
-                IQuantumSystem q = item as IQuantumSystem;
-                return q.GetEigenValues();
-            }
-
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
-            else
-                return this.BadTypeError(item, 0);
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            return (arguments[0] as IQuantumSystem).GetEigenValues();
         }
 
         private const string help = "Vrátí vypoèítané vlastní hodnoty kvantového systému";

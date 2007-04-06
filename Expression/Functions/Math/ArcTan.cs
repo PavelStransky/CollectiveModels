@@ -12,12 +12,15 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
-		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-			this.CheckArgumentsNumber(evaluatedArguments, 1);
-			return evaluatedArguments;
-		}
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsNumber(evaluatedArguments, 1);
+            this.CheckArgumentsType(evaluatedArguments, 0,
+                typeof(int), typeof(double), typeof(Vector), typeof(PointVector), typeof(PointD), typeof(Matrix));
+        }
 
-		protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            object item = arguments[0];
+
 			if(item is int)
 				return System.Math.Atan((int)item);
 			else if(item is double)
@@ -28,12 +31,8 @@ namespace PavelStransky.Expression.Functions {
 				return (item as Vector).Transform(new RealFunction(System.Math.Atan));
 			else if(item is PointVector)
 				return (item as PointVector).Transform(null, new RealFunction(System.Math.Atan));
-			else if(item is Matrix) 
-				return (item as Matrix).Transform(new RealFunction(System.Math.Atan));
-			else if(item is TArray) 
-				return this.EvaluateArray(depth, item as TArray, arguments);
 			else
-				return this.BadTypeError(item, 0);			
+				return (item as Matrix).Transform(new RealFunction(System.Math.Atan));
 		}
 
 		private const string help = "Vrací arctan objektu v argumentu (po prvcích), u bodu nebo vektoru bodù poèítá pouze u Y složky";

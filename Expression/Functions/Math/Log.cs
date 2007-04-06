@@ -14,16 +14,15 @@ namespace PavelStransky.Expression.Functions {
 
         private double logBase;
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsNumber(evaluatedArguments, 1);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
 
-            if(evaluatedArguments.Count > 1 && evaluatedArguments[1] != null) {
-                this.ConvertInt2Double(evaluatedArguments, 1);
-                this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-            }
+            this.ConvertInt2Double(evaluatedArguments, 1);
 
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 0,
+                typeof(int), typeof(double), typeof(Vector), typeof(PointVector), typeof(PointD), typeof(Matrix));
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
         }
 
         /// <summary>
@@ -41,7 +40,9 @@ namespace PavelStransky.Expression.Functions {
                 return System.Math.Log(x, this.logBase);
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            object item = arguments[0];
+
             if(arguments.Count > 1)
                 this.logBase = (double)arguments[1];
             else
@@ -57,12 +58,8 @@ namespace PavelStransky.Expression.Functions {
                 return (item as Vector).Transform(new RealFunction(this.ComputeLog));
             else if(item is PointVector)
                 return (item as PointVector).Transform(null, new RealFunction(this.ComputeLog));
-            else if(item is Matrix)
-                return (item as Matrix).Transform(new RealFunction(this.ComputeLog));
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
             else
-                return this.BadTypeError(item, 0);
+                return (item as Matrix).Transform(new RealFunction(this.ComputeLog));
         }
 
         private const string help = "Vrací logaritmus objektu v argumentu (po prvcích), u bodu nebo vektoru bodù dìlá logaritmus pouze z Y složky";

@@ -12,19 +12,20 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            this.CheckArgumentsNumber(arguments, 2);
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsNumber(evaluatedArguments, 2);
 
-           ArrayList args = new ArrayList(); args.Add(Atom.EvaluateAtomObject(context, arguments[0])); args.Add(arguments[1]);
-            this.CheckArgumentsType(args, 0, typeof(Context));
-            this.CheckArgumentsType(args, 1, typeof(string));
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Context));
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(string));
+        }
 
-            Context c = args[0] as Context;
-            string name = args[1] as string;
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            Context c = arguments[0] as Context;
+            string name = arguments[1] as string;
             return c[name];
         }
 
         private const string help = "Z kontextu vrátí urèenou promìnnou.";
-        private const string parameters = "Kontext; název promìnné";
+        private const string parameters = "Kontext; název promìnné (string)";
     }
 }

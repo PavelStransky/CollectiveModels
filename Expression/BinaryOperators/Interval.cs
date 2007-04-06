@@ -11,14 +11,18 @@ namespace PavelStransky.Expression.BinaryOperators {
 		public override int Priority {get {return multiplePriority;}}
 
 		protected override object EvaluateII(int left, int right) {
-			TArray result = new TArray();
-			if(left < right)
-				for(int i = left; i <= right; i++)
-					result.Add(i);
-			else
-				for(int i = left; i >= right; i--)
-					result.Add(i);
-			return result;
+            if(left < right) {
+                TArray result = new TArray(typeof(int), right - left + 1);
+                for(int i = left; i <= right; i++)
+                    result[i - left] = i;
+                return result;
+            }
+            else {
+                TArray result = new TArray(typeof(int), left - right + 1);
+                for(int i = left; i >= right; i--)
+                    result[left - i] = i;
+                return result;
+            }
 		}
 
 		private const string operatorName = "...";

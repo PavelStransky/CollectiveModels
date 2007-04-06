@@ -13,19 +13,17 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 		
-		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+		protected override void CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsNumber(evaluatedArguments, 2);
-			if(evaluatedArguments[0] is int)
-				evaluatedArguments[0] = (double)(int)evaluatedArguments[0];
-			if(evaluatedArguments[1] is int)
-				evaluatedArguments[1] = (double)(int)evaluatedArguments[1];
-			this.CheckArgumentsType(evaluatedArguments, 0, typeof(double));
-			this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
 
-			return evaluatedArguments;
+            this.ConvertInt2Double(evaluatedArguments, 0);
+            this.ConvertInt2Double(evaluatedArguments, 1);
+
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
 		}
 
-		protected override object Evaluate(int depth, object item, ArrayList arguments) {
+		protected override object EvaluateFn(Guider guider, ArrayList arguments) {
 			return new PointD((double)arguments[0], (double)arguments[1]);
 		}
 

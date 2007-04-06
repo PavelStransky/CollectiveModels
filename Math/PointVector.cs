@@ -436,6 +436,26 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
+        /// <summary>
+        /// Spojí vektory do jednoho
+        /// </summary>
+        /// <param name="vArray">Øada vektorù</param>
+        public static PointVector Join(PointVector[] vArray) {
+            // Poèet prvkù výsledného vektoru
+            int numItems = 0;
+            for(int i = 0; i < vArray.Length; i++)
+                numItems += vArray[i].Length;
+
+            PointVector result = new PointVector(numItems);
+
+            int item = 0;
+            for(int i = 0; i < vArray.Length; i++)
+                for(int j = 0; j < vArray[i].Length; j++)
+                    result[item++] = vArray[i][j];
+
+            return result;
+        }
+
 		/// <summary>
 		/// Vektor pøevede na textový øetìzec
 		/// </summary>

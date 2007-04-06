@@ -156,7 +156,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Vrátí indexy vlastních èísel, které mají sudou paritu
         /// </summary>
-        public Vector EvenParity() {
+        public Vector Parity() {
             int length = this.index.Length;
             int num = this.eigenVectors.Length;
 
@@ -180,6 +180,12 @@ namespace PavelStransky.GCM {
                     }
                 }
             }
+
+            for(int k = 0; k < num; k++)
+                if(result[k] > 1.0)
+                    result[k] = 1.0;
+                else
+                    result[k] = -1.0;
 
             return result;
         }

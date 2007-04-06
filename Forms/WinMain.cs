@@ -41,6 +41,7 @@ namespace PavelStransky.Forms {
         public static string FileExtGcm { get { return defaultFileExtGcm; } }
         public static string FileExtTxt { get { return defaultFileExtTxt; } }
         public static string FileExtGif { get { return defaultFileExtGif; } }
+        public static string FileExtWmf { get { return defaultFileExtWmf; } }
         public static string FileExtPicture { get { return defaultFileExtPicture; } }
 
         /// <summary>
@@ -185,11 +186,12 @@ namespace PavelStransky.Forms {
 
         private const string defaultFileFilterTxt = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
         private const string defaultFileFilterGif = "Obrázek (*.gif)|*.gif|Všechny soubory (*.*)|*.*";
-        private const string defaultFileFilterPicture = "Obrázek GIF (*.gif)|*.gif|Obrázek JPG (*.jpg)|*.jpg|Obrázek PNG (*.png)|*.png";
+        private const string defaultFileFilterPicture = "Obrázek GIF (*.gif)|*.gif|Obrázek JPG (*.jpg)|*.jpg|Obrázek PNG (*.png)|*.png|Obrázek WMF (*.wmf)|*.wmf";
         private const string defaultFileFilterGcm = "Soubory s daty (GCM) (*.gcm)|*.gcm|Všechny soubory (*.*)|*.*";
         private const string defaultFileExtGcm = "gcm";
         private const string defaultFileExtTxt = "txt";
         private const string defaultFileExtGif = "gif";
+        private const string defaultFileExtWmf = "wmf";
         private const string defaultFileExtPicture = "png";
         private const string defaultDirectory = "c:\\gcm";
 

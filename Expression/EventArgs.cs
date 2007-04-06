@@ -38,7 +38,8 @@ namespace PavelStransky.Expression
         /// </summary>
         /// <param name="eventType">Typ události</param>
         /// <param name="p">Parametry</param>
-        public ContextEventArgs(ContextEventType eventType, params object[] p):this(eventType) {
+        public ContextEventArgs(ContextEventType eventType, params object[] p)
+            : this(eventType) {
             for(int i = 0; i < p.Length; i++)
                 this.p.Add(p[i]);
         }

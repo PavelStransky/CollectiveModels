@@ -24,8 +24,8 @@ namespace PavelStransky.Expression
 		/// <param name="expression">Výraz funkce</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Function(string expression, Atom parent, IOutputWriter writer)
-            : base(expression, parent, writer) { 
+        public Function(string expression, Atom parent)
+            : base(expression, parent) { 
 			int pos = FindOpenBracketPosition(this.expression);
             string fncName = this.expression.Substring(0, pos).Trim().ToLower();
             if(functions.Contains(fncName))
@@ -48,13 +48,13 @@ namespace PavelStransky.Expression
     	/// <summary>
 		/// Provede výpoèet funkce
 		/// </summary>
-        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="guider">Prùvodce výpoètu</param>
         /// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate(Context context) {
+		public override object Evaluate(Guider guider) {
             object result = null;
 
             DateTime startTime = DateTime.Now; 			
-			result = this.function.Evaluate(context, this.arguments, this.writer);
+			result = this.function.Evaluate(guider, this.arguments);
 			return result;
 		}
 

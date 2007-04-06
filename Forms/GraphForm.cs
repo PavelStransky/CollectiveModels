@@ -22,7 +22,7 @@ namespace PavelStransky.Forms {
         private BackgroundWorker backgroundWorker;
 
         /// <summary>
-        /// Poèet sloucpù
+        /// Poèet sloucpù a øádek
         /// </summary>
         private int numColumns = 1;
 
@@ -39,7 +39,7 @@ namespace PavelStransky.Forms {
         /// <param name="graphs">Objekt s daty</param>
         /// <param name="numColumns">Poèet sloupcù</param>
         public void SetGraph(TArray graphs, int numColumns) {
-            int count = graphs.Count;
+            int count = graphs.Length;
             int numRows = (count - 1) / numColumns + 1;
 
             Rectangle r = this.ClientRectangle;
@@ -58,7 +58,7 @@ namespace PavelStransky.Forms {
             this.Controls.Add(this.progress);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.lblRestProcess);
-            
+
             for(int i = 0; i < count; i++) {
                 GraphControl gc = new GraphControl();
                 gc.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -228,10 +228,10 @@ namespace PavelStransky.Forms {
             this.Text = this.Name;
             this.numColumns = (int)param.Get(1);
 
-            TArray graphs = new TArray();
             int length = (int)param.Get(0);
+            TArray graphs = new TArray(typeof(Graph), length);
             for(int i = 0; i < length; i++)
-                graphs.Add(param.Get());
+                graphs[i] = param.Get();
 
             this.SetGraph(graphs, numColumns);
         }

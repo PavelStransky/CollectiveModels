@@ -21,19 +21,33 @@ namespace PavelStransky.GCM {
         public LHOPolarIndex(int maxE) : this(maxE, false) { }
 
         /// <summary>
+        /// Kontruktor
+        /// </summary>
+        /// <param name="maxE">Maximální energie v násobcích hbar * Omega</param>
+        /// <param name="full">Výpoèet pro plnou bázi</param>
+        public LHOPolarIndex(int maxE, bool full) : this(maxE, full, 0) { }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="maxE">Maximální energie v násobcích hbar * Omega</param>
         /// <param name="full">Výpoèet pro plnou bázi</param>
-        public LHOPolarIndex(int maxE, bool full) {
+        /// <param name="parity">0...Všechny stavy, 1...Liché stavy, 2...Sudé stavy</param>
+        public LHOPolarIndex(int maxE, bool full, int parity) {
             this.maxE = maxE;
 
             int mInc = full ? 1 : 3;
-            int mBound = ((maxE - 1) / mInc) * mInc;
+            int mBoundMax = ((maxE - 1) / mInc) * mInc;
+            int mBoundMin = -mBoundMax;
+
+            if(parity == 1)
+                mBoundMin = mInc;
+            else if(parity == 2)
+                mBoundMax = 0;
 
             // Zjistíme poèet
             int length = 0;
-            for(int m = -mBound; m <= mBound; m += mInc)
+            for(int m = mBoundMin; m <= mBoundMax; m += mInc)
                 for(int n = 0; n <= (maxE - 1 - System.Math.Abs(m)) / 2; n++)
                     length++;
 
@@ -42,7 +56,7 @@ namespace PavelStransky.GCM {
             this.indexm = new int[length];
 
             int i = 0;
-            for(int m = -mBound; m <= mBound; m += mInc)
+            for(int m = mBoundMin; m <= mBoundMax; m += mInc)
                 for(int n = 0; n <= (maxE - 1 - System.Math.Abs(m)) / 2; n++) {
                     this.indexm[i] = m;
                     this.indexn[i] = n;
@@ -50,7 +64,7 @@ namespace PavelStransky.GCM {
                 }
 
 
-            this.maxM = mBound;
+            this.maxM = System.Math.Max(mBoundMax, System.Math.Abs(mBoundMin));
             this.maxN = (maxE - 1) / 2;
         }
 

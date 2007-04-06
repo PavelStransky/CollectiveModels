@@ -13,16 +13,15 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 0);
-            return evaluatedArguments;
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             return new HenonHeiles();
         }
 
-        private const string help = "Vytvoøí Henon-Heiles tøídu pro dané parametry";
+        private const string help = "Vytvoøí Henon-Heiles tøídu";
         private const string parameters = "";
     }
 }

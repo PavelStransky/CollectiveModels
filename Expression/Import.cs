@@ -48,6 +48,10 @@ namespace PavelStransky.Expression {
                 return new LHOQuantumGCMRFull();
             else if(typeName == typeof(LHOQuantumGCMRL).FullName)
                 return new LHOQuantumGCMRL();
+            else if(typeName == typeof(LHOQuantumGCMRLO).FullName)
+                return new LHOQuantumGCMRLO();
+            else if(typeName == typeof(LHOQuantumGCMRLE).FullName)
+                return new LHOQuantumGCMRLE();
             else
                 return base.CreateObject(typeName);
         }

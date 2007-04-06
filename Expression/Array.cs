@@ -6,125 +6,461 @@ using System.Text;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression {
-	/// <summary>
-	/// Øada - typová kontrola do objektu ArrayList
-	/// </summary>
-	public class TArray: ArrayList, IExportable {
-		// Typ objektù v øadì (nastaví se poprvé, pak už zùstává nemìnný)
-		private Type type;
-		// Provádìní kontroly na stejnost pøidávaných objektù
-		private bool checkSize;
-
-		/// <summary>
-		/// Typ objektù v øadì
-		/// </summary>
-		public Type ItemType {get {return this.type;}}
-
-		/// <summary>
-		/// Název typu objektù v øadì
-		/// </summary>
-		public string ItemTypeName {get {return this.type.FullName;}}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="checkSize">Bude se kontrolovat velikost objektu</param>
-		public TArray(bool checkSize) : base() {
-			this.type = null;
-			this.checkSize = checkSize;
-		}
+    /// <summary>
+    /// Øada - typová kontrola do objektu ArrayList
+    /// </summary>
+    public class TArray: ICloneable, IExportable, IEnumerable {
+        private Array data;
+        private Type type;
 
         /// <summary>
-        /// Konstruktor
+        /// Testovací øada ve tvaru (000; 001; 010; ...)
         /// </summary>
-        /// <param name="type">Typ øady</param>
-        public TArray(Type type) : this() {
-            this.type = type;
-        }
+        /// <param name="i">Délky øady</param>
+        public static TArray TestArray(int[] i) {
+            TArray result = new TArray(typeof(int), i);
+            int rank = result.Rank;
 
-		/// <summary>
-		/// Konstruktor (velikost objektù se kontroluje implicitnì)
-		/// </summary>
-		public TArray() : this(false) {}
+            result.ResetEnumerator();
+            int[] index = (int[])result.startEnumIndex.Clone();
 
-		/// <summary>
-		/// Pøidá objekt na konec øady
-		/// </summary>
-		/// <param name="item">Objekt</param>
-		/// <returns>Index novì pøidaného objektu</returns>
-		public override int Add(object value) {
-			// Kontrola na typ
-			this.CheckType(value);
-			// Kontrola na velikost
-			this.CheckSize(value);
-
-			return base.Add(value);
-		}
-
-        /// <summary>
-        /// Vloží danou hodnotu do øady n-krát
-        /// </summary>
-        /// <param name="value">Objekt</param>
-        /// <param name="n">Poèet opakování</param>
-        /// <returns>Index posledního pøidaného objektu</returns>
-        public int Add(object value, int n) {
-            int result = -1;
-
-            for(int i = 0; i < n; i++)
-                result = this.Add(value);
+            do {
+                StringBuilder s = new StringBuilder();
+                for(int r = 0; r < rank; r++)
+                    s.Append(index[r] + 1);
+                result[index] = int.Parse(s.ToString());
+            }
+            while(TArray.MoveNext(rank, index, result.startEnumIndex, result.endEnumIndex));
 
             return result;
         }
 
         /// <summary>
-        /// Pøidá objekt na zadaný index
+        /// Konstruktor
         /// </summary>
-        /// <param name="item">Objekt</param>
-        /// <param name="index">Index pøidávaného objektu</param>
-        public override void Insert(int index, object item) {
-			// Kontrola na typ
-			this.CheckType(item);
-			// Kontrola na velikost
-			this.CheckSize(item);
+        /// <param name="type">Typ øady</param>
+        /// <param name="lengths">Délky øady</param>
+        public TArray(Type type, params int[] lengths) {
+            this.data = Array.CreateInstance(type, lengths);
+            this.type = type;
+            this.ResetEnumerator();
+        }
 
-			base.Insert(index, item);
-		}
-		
-		/// <summary>
-		/// Indexer
-		/// </summary>
-		/// 
-		public override object this[int i] {
-			get {
-				return base[i];
-			}
-			set {
-				this.CheckType(value);
-				this.CheckSize(value);
-				
-				base[i] = value;
-			}
-		}
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public TArray() {
+            this.data = null;
+            this.type = null;
+        }
 
-		#region Implementace IExportable
-		/// <summary>
-		/// Uloží obsah øady do souboru textovì
-		/// </summary>
-		/// <param name="export">Export</param>
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="i">Celoèíselné hodnoty</param>
+        public TArray(params int[] i) {
+            this.type = typeof(int);
+            this.data = (int[])i.Clone();
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="d">Hodnoty double</param>
+        public TArray(params double[] i) {
+            this.type = typeof(double);
+            this.data = (int[])i.Clone();
+        }
+
+        /// <summary>
+        /// Poèet rozmìrù øady
+        /// </summary>
+        public int Rank { get { return this.data.Rank; } }
+
+        /// <summary>
+        /// Je øada jednorozmìrná?
+        /// </summary>
+        public bool Is1D { get { return this.Rank == 1; } }
+
+        /// <summary>
+        /// Je øada dvourozmìrná?
+        /// </summary>
+        public bool Is2D { get { return this.Rank == 2; } }
+
+        /// <summary>
+        /// Typ prvku
+        /// </summary>
+        public Type GetItemType() {
+            return this.type;
+        }
+
+        /// <summary>
+        /// Dimenze øady
+        /// </summary>
+        public int[] Lengths {
+            get {
+                int rank = this.Rank;
+                int[] result = new int[rank];
+                for(int r = 0; r < rank; r++)
+                    result[r] = this.data.GetLength(r);
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Vrátí délku jednorozmìrné øady
+        /// </summary>
+        public int Length {
+            get {
+                if(!this.Is1D)
+                    throw new TArrayException(errorMessageBadRank,
+                        string.Format(errorMessageBadRankDetailL, this.Rank));
+                return this.GetLength(0);
+            }
+        }
+
+        /// <summary>
+        /// Vrátí délky pole jako string
+        /// </summary>
+        /// <param name="separator">Oddìlovaè</param>
+        public string LengthsString(string separator) {
+            int[] lengths = this.Lengths;
+            int rank = lengths.Length;
+
+            if(rank == 0)
+                return string.Empty;
+
+            StringBuilder result = new StringBuilder();
+            result.Append(lengths[0]);
+
+            for(int i = 1; i < rank; i++) {
+                result.Append(separator);
+                result.Append(lengths[i]);
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Vrátí délky pole jako string, jednotlivá èísla budou oddìlena èárkami
+        /// </summary>
+        /// <param name="separator">Oddìlovaè</param>
+        public string LengthsString() {
+            return this.LengthsString(", ");
+        }
+
+        /// <summary>
+        /// Poèet prvkù dané øady
+        /// </summary>
+        public int GetNumElements() {
+            int[] lengths = this.Lengths;
+            int result = 1;
+            for(int i = 0; i < lengths.Length; i++)
+                result *= lengths[i];
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí rozmìr v zadaném ranku
+        /// </summary>
+        /// <param name="rank">Rank</param>
+        public int GetLength(int rank) {
+            return this.data.GetLength(rank);
+        }
+
+        /// <summary>
+        /// Indexer pro více indexù
+        /// </summary>
+        /// <param name="index">Indexy</param>
+        public object this[params int[] index] {
+            get {
+                if(this.Rank == index.Length)
+                    return this.data.GetValue(index);
+                else
+                    throw new TArrayException(errorMessageBadRank, string.Format(errorMessageBadRankDetail, this.Rank, index.Length));
+            }
+            set {
+                if(this.Rank == index.Length)
+                    this.data.SetValue(value, index);
+                else
+                    throw new TArrayException(errorMessageBadRank, string.Format(errorMessageBadRankDetail, this.Rank, index.Length));
+            }
+        }
+
+        /// <summary>
+        /// Posun na další prvek
+        /// </summary>
+        /// <returns>True, pokud se posun povedl, false, pokud ne</returns>
+        public static bool MoveNext(int rank, int[] index, int[] startIndex, int[] endIndex) {
+            for(int r = rank - 1; r >= 0; r--) {
+                index[r]++;
+                if(index[r] > endIndex[r])
+                    index[r] = startIndex[r];
+                else
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// True, pokud jsou mají øady stejné dimenze
+        /// </summary>
+        /// <param name="a1">První øada</param>
+        /// <param name="a2">Druhá øada</param>
+        public static bool IsEqualDimension(TArray a1, TArray a2) {
+            int[] l1 = a1.Lengths;
+            int[] l2 = a2.Lengths;
+
+            if(l1.Length != l2.Length)
+                return false;
+
+            int l = l1.Length;
+            for(int i = 0; i < l; i++)
+                if(l1[i] != l2[i])
+                    return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Vrátí podmnožinu zadané øady
+        /// </summary>
+        /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
+        public TArray GetSubArray(int[][] inIndex) {
+            int length = inIndex.Length;
+
+            bool[] shrink = new bool[length];
+            for(int i = 0; i < length; i++)
+                shrink[i] = false;
+
+            return this.GetSubArray(inIndex, shrink);
+        }
+
+        /// <summary>
+        /// Vrátí podmnožinu zadané øady a provede kontrakci pøes zadané indexy
+        /// </summary>
+        /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
+        public TArray GetSubArray(int[][] inIndex, bool[] shrink) {
+            int rank = this.Rank;
+
+            inIndex = this.AddMissingIndexes(inIndex);
+
+            // Rozmìr nové øady (rozmìr pùvodní - kontrakce)
+            int rRank = rank;
+            for(int r = 0; r < rank; r++)
+                if(shrink[r])
+                    rRank--;
+
+            int[] lengths = new int[rRank];
+            int rr = 0;
+            for(int r = 0; r < rank; r++) {
+                if(shrink[r]) {
+                    int l = inIndex[r].Length;
+                    if(l != 1)
+                        throw new TArrayException(
+                            string.Format(errorMessageShrink, r),
+                            string.Format(errorMessageShrinkDetail, l));
+                }
+                else
+                    lengths[rr++] = inIndex[r].Length;
+            }
+
+            TArray result = new TArray(this.type, lengths);
+
+            int []startIndex = new int[rRank];
+            int[] endIndex = lengths;
+            for(int r = 0; r < rRank; r++)
+                endIndex[r]--;
+            int []index = new int[rRank];
+
+            int[] sourceIndexI = new int[rank];
+            int[] sourceIndex = new int[rank];
+
+            do {
+                for(int r = 0; r < rank; r++)
+                    sourceIndex[r] = inIndex[r][sourceIndexI[r]];
+
+                result[index] = this[sourceIndex];
+
+                for(int r = rank - 1; r >= 0; r--) {
+                    sourceIndexI[r]++;
+                    if(sourceIndexI[r] >= inIndex[r].Length)
+                        sourceIndexI[r] = 0;
+                    else
+                        break;
+                }
+
+            } while(TArray.MoveNext(rRank, index, startIndex, endIndex));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Pøidá do øady indexy chybìjících rozmìrù
+        /// </summary>
+        /// <param name="index">Vstupní indexy</param>
+        /// <returns>Výstupní indexy</returns>
+        private int[][] AddMissingIndexes(int[][] index) {
+            int rank = this.Rank;
+            int length = index.Length;
+
+            if(rank < length)
+                throw new TArrayException(errorMessageBadRank, string.Format(errorMessageBadRankDetail, rank, length));
+
+            int[][] result = index;
+
+            if(rank > length) {
+                result = new int[rank][];
+                for(int r = 0; r < length; r++)
+                    result[r] = index[r];
+                for(int r = length; r < rank; r++) {
+                    int l = this.GetLength(r);
+                    int[] ind = new int[l];
+                    for(int i = 0; i < l; i++)
+                        ind[i] = i;
+                    result[r] = ind;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Nastaví hodnotu øady pro zadané indexy
+        /// </summary>
+        /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
+        /// <param name="value">Pøiøazovaná hodnota</param>
+        public void SetValue(int[][] inIndex, Assignment.AssignmentFunction assignFn) {
+            int rank = this.Rank;
+
+            inIndex = this.AddMissingIndexes(inIndex);
+
+            int[] sourceIndexI = new int[rank];
+            int[] sourceIndex = new int[rank];
+
+            bool finish = false;
+
+            do {
+                for(int r = 0; r < rank; r++)
+                    sourceIndex[r] = inIndex[r][sourceIndexI[r]];
+
+                this[sourceIndex] = assignFn(this[sourceIndex]);
+
+                for(int r = rank - 1; r >= 0; r--) {
+                    sourceIndexI[r]++;
+                    if(sourceIndexI[r] >= inIndex[r].Length) {
+                        sourceIndexI[r] = 0;
+                        if(r == 0)
+                            finish = true;
+                    }
+                    else
+                        break;
+                }
+
+            } while(!finish);
+        }
+
+        /// <summary>
+        /// Pøetypování na vektor
+        /// </summary>
+        /// <param name="array">Øada</param>
+        public static explicit operator Vector(TArray array) {
+            if(!array.Is1D)
+                throw new TArrayException(errorMessageNot1D, string.Format(errorMessageNot1D, array.Rank));
+
+            if(array.type == typeof(double))
+                return new Vector((double[])array.data);
+            else if(array.type == typeof(int))
+                return new Vector((int[])array.data);
+            else
+                throw new TArrayException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double).FullName, array.type.FullName));
+        }
+
+        /// <summary>
+        /// Pøevede danou øadu na øadu vektorù
+        /// </summary>
+        public TArray CovertToVectors() {
+            if(this.type != typeof(int) && this.type != typeof(double))
+                throw new TArrayException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double).FullName, this.type.FullName));
+
+            int rank = this.Rank;
+            int r = rank - 1;
+
+            int[] startIndex = new int[r];
+            int[] endIndex = new int[r];
+            int[] lengths = new int[r];
+
+            for(int i = 0; i < r; i++) {
+                int l = this.data.GetLength(i);
+                lengths[i] = l;
+                startIndex[i] = 0;
+                endIndex[i] = l - 1;
+            }
+
+            TArray result = new TArray(typeof(Vector), lengths);
+
+            this.ResetEnumerator();
+            this.enumType = TArrayEnumType.Vector;
+
+            int[] index = (int[])result.startEnumIndex.Clone();
+
+            foreach(Vector v in this) {
+                result[index] = v;
+                if(!TArray.MoveNext(r, index, startIndex, endIndex))
+                    break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Všechny prvky øady smrskne do øady jednorozmìrné
+        /// </summary>
+        public TArray Deflate() {
+            int length = this.GetNumElements();
+            TArray result = new TArray(this.type, length);
+
+            int i = 0;
+            this.ResetEnumerator();
+            foreach(object o in this)
+                result[i++] = o;
+
+            return result;
+        }
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží obsah øady do souboru textovì
+        /// </summary>
+        /// <param name="export">Export</param>
         public void Export(Export export) {
-            // Pokud ještì nebyl zadán typ, uložíme string.Empty
-            string typeName = this.type != null ? this.type.FullName : string.Empty;
+            int rank = this.Rank;
+            int[] lengths = this.Lengths;
+            string typeName = this.type.FullName;
 
             if(export.Binary) {
                 // Binárnì
                 BinaryWriter b = export.B;
-                b.Write(this.Count);
+
+                b.Write(rank);
+                for(int i = 0; i < rank; i++)
+                    b.Write(lengths[i]);
+
                 b.Write(typeName);
             }
             else {
                 // Textovì
                 StreamWriter t = export.T;
-                t.WriteLine(this.Count);
+
+                t.WriteLine(rank);
+                for(int i = 0; i < rank; i++) {
+                    if(i != 0)
+                        t.Write('\t');
+                    t.Write(lengths[i]);
+                }
+                t.WriteLine();
+
                 t.WriteLine(typeName);
             }
 
@@ -132,141 +468,233 @@ namespace PavelStransky.Expression {
                 export.Write(typeName, o);
         }
 
-		/// <summary>
-		/// Naète obsah øady ze souboru textovì
-		/// </summary>
+        /// <summary>
+        /// Naète obsah øady ze souboru textovì
+        /// </summary>
         /// <param name="import">Import</param>
         public void Import(PavelStransky.Math.Import import) {
+            int rank = 0;
             string typeName = string.Empty;
-            int length = 0;
-            this.Clear();
+            int[] lengths;
 
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;
-                length = b.ReadInt32();
+                rank = b.ReadInt32();
+                lengths = new int[rank];
+                for(int r = 0; r < rank; r++)
+                    lengths[r] = b.ReadInt32();
+
                 typeName = b.ReadString();
             }
             else {
                 // Textovì
                 StreamReader t = import.T;
-                length = int.Parse(t.ReadLine());
+
+                rank = int.Parse(t.ReadLine());
+                lengths = new int[rank];
+                string[] line = t.ReadLine().Split('\t');
+
+                for(int r = 0; r < rank; r++)
+                    lengths[r] = int.Parse(line[r]);
+
                 typeName = t.ReadLine();
             }
 
-            if(length == 0)
-                this.type = null;
+            int[] startIndex = new int[rank];
+            int[] endIndex = (int[])lengths.Clone();
+            for(int r = 0; r < rank; r++)
+                endIndex[r]--;
+            int[] index = new int[rank];
 
-            for(int i = 0; i < length; i++)
-                this.Add(import.Read(typeName));
-            
+            object o = import.Read(typeName);
+            this.type = o.GetType();
+            this.data = Array.CreateInstance(this.type, lengths);
+            this[index] = o;
+
+            while(TArray.MoveNext(rank, index, startIndex, endIndex)) 
+                this[index] = import.Read(typeName);
+
+            this.ResetEnumerator();
         }
-		#endregion
+        #endregion
 
-		/// <summary>
-		/// Provede typovou kontrolu pøidávaného objektu
-		/// </summary>
-		/// <param name="item">Pøidávaný objekt</param>
-		private void CheckType(object item) {
-			if(this.type == null) {
-				this.type = item.GetType();
-			}
-			else {
-				if(this.type != item.GetType())
-					throw new ContextException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, item.GetType().FullName, this.type.FullName));
-			}
-		}
+        #region Implementace IEnumerable, IEnumerator
+        public enum TArrayEnumType { Value, Vector, Matrix }
 
-		/// <summary>
-		/// Provede kontrolu na velikost pøidávaného objektu
-		/// </summary>
-		/// <param name="item">Pøidávaný objekt</param>
-		/// <param name="name">Jméno</param>
-		private void CheckSize(object item) {
-			if(this.checkSize && this.Count > 0) {
-				string errorMessage = null;
+        private int[] startEnumIndex;
+        private int[] endEnumIndex;
+        private TArrayEnumType enumType;
 
-				// Zkontrolujeme objekty, které zkontrolovat umíme
-				if(this.type == typeof(Vector)) {
-					int itemLength = (item as Vector).Length;
-					int thisLength = (this[0] as Vector).Length;
-					if(itemLength != thisLength)
-						errorMessage = string.Format(errorMessageBadSizeDetail, "{0}", "{1}", itemLength, thisLength);
-				}
-				else if(this.type == typeof(Matrix)) {
-					int itemLengthX = (item as Matrix).LengthX;
-					int itemLengthY = (item as Matrix).LengthY;
-					int thisLengthX = (this[0] as Matrix).LengthX;
-					int thisLengthY = (this[0] as Matrix).LengthY;
-					if(itemLengthX != thisLengthX && itemLengthY != thisLengthY)
-						errorMessage = string.Format(errorMessageBadSizeDetail, "{0}", "{1}", string.Format("{0} x {1}", itemLengthX, itemLengthY), string.Format("{0} x {1}", thisLengthX, thisLengthY));
-				}
-				else if(this.type == typeof(TArray)) {
-					int itemLength = (item as TArray).Count;
-					int thisLength = (this[0] as TArray).Count;
-					if(itemLength != thisLength)
-						errorMessage = string.Format(errorMessageBadSizeDetail, "{0}", "{1}", itemLength, thisLength);
-				}
+        /// <summary>
+        /// Poèáteèní index pro enumerátor
+        /// </summary>
+        public int[] StartEnumIndex { get { return this.startEnumIndex; } }
 
-				if(errorMessage != null)
-					throw new ContextException(errorMessageBadSize, string.Format(errorMessage, this.type.FullName));
-			}
-		}
+        /// <summary>
+        /// Koncový index pro enumerátor
+        /// </summary>
+        public int[] EndEnumIndex { get { return this.endEnumIndex; } }
 
-		/// <summary>
-		/// Hodnota jako øetìzec
-		/// </summary>
-		public override string ToString() {
-			StringBuilder s = new StringBuilder();
-			for(int i = 0; i < this.Count; i++) {
-				s.Append(this[i].ToString());
-				s.Append('\n');
-			}
-			return s.ToString();
-		}
+        /// <summary>
+        /// Pøi vytvoøení øady nastaví enumerátory
+        /// </summary>
+        public void ResetEnumerator() {
+            int rank = this.Rank;
+            this.enumType = TArrayEnumType.Value;
+            this.startEnumIndex = new int[rank];
 
-		/// <summary>
-		/// Klonování øady
-		/// </summary>
-		public override object Clone() {
-			TArray result = new TArray();
-			foreach(object item in this)
-				result.Add(item);
-			return result;
-		}
+            this.endEnumIndex = this.Lengths;
+            for(int i = 0; i < rank; i++)
+                this.endEnumIndex[i]--;
+        }
 
-		/// <summary>
-		/// Pøetypuje na øadu systému
-		/// </summary>
-		public static explicit operator System.Array(TArray array) {
-			if(array.type == null)
-				throw new ContextException(errorMessageArrayNotInitialized);
+        /// <summary>
+        /// Nastaví enumerátor TArray
+        /// </summary>
+        /// <param name="enumType">Typ enumerátoru</param>
+        public void SetEnumerator(TArrayEnumType enumType) {
+            if(enumType == TArrayEnumType.Vector && this.type != typeof(double) && this.type != typeof(int))
+                throw new TArrayException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double), this.type));
 
-			System.Array result = System.Array.CreateInstance(array.type, array.Count);
-			for(int i = 0; i < result.Length; i++)
-				result.SetValue(array[i], i);
+            if(enumType == TArrayEnumType.Matrix) {
+                if(this.type != typeof(double) && this.type != typeof(int))
+                    throw new TArrayException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double), this.type));
+                if(this.Rank < 2)
+                    throw new TArrayException(errorMessageBadRank);
+            }
 
-			return result;
-		}
+            this.enumType = enumType;
+        }
 
-		/// <summary>
-		/// Pøetypuje øadu systému na naši øadu
-		/// </summary>
-		public static explicit operator TArray(System.Array array) {
-			TArray result = new TArray();
+        /// <summary>
+        /// Vrátí aktuální tøídu jako Enumerátor
+        /// </summary>
+        public IEnumerator GetEnumerator() {
+            return new TArrayEnumerator(this);
+        }
 
-			for(int i = 0; i < array.Length; i++)
-				result.Add(array.GetValue(i));
+        /// <summary>
+        /// Tøída implementující enumerátor
+        /// </summary>
+        private class TArrayEnumerator: IEnumerator {
+            private TArray array;
+            private int[] startEnumIndex;
+            private int[] endEnumIndex;
+            private int[] enumIndex;
+            private bool reseted;
+            private TArrayEnumType enumType = TArrayEnumType.Value;
+            private int rank;
 
-			return result;
-		}
+            /// <summary>
+            /// Konstruktor
+            /// </summary>
+            /// <param name="array">Objekt TArray</param>
+            public TArrayEnumerator(TArray array) {
+                this.array = array;
+                this.enumType = array.enumType;
 
-		private const string errorMessageArrayNotInitialized = "Øada nebyla inicializována, neznáme typ prvkù. Požadovanou operaci nelze provést.";
+                this.rank = array.Rank;
+                if(this.enumType == TArrayEnumType.Vector)
+                    this.rank -= 1;
+                else if(this.enumType == TArrayEnumType.Matrix)
+                    this.rank -= 2;
 
-		private const string errorMessageBadType = "Nový objekt pøidávaný do øady má s ostatními objekty nekonzistentní typ.";
-		private const string errorMessageBadTypeDetail = "\nTyp: {0}\nTyp øady: {1}";
+                this.startEnumIndex = new int[rank];
+                for(int r = 0; r < rank; r++)
+                    this.startEnumIndex[r] = array.startEnumIndex[r];
 
-		private const string errorMessageBadSize = "Nový objekt pøidávaný do øady nemá stejnou velikost jako ostatní objekty.";
-		private const string errorMessageBadSizeDetail = "\nTyp: {0}\nVelikost: {1}\nVelikost v øadì: {2}";
-	}
+                this.endEnumIndex = new int[rank];
+                for(int r = 0; r < rank; r++)
+                    this.endEnumIndex[r] = array.endEnumIndex[r];
+
+                this.enumIndex = (int[])this.startEnumIndex.Clone();
+                this.reseted = true;
+            }
+
+            public void Reset() {
+                this.enumIndex = (int[])this.startEnumIndex.Clone();
+                this.reseted = true;
+            }
+
+            public bool MoveNext() {
+                if(reseted) {
+                    reseted = false;
+                    return true;
+                }
+
+                return TArray.MoveNext(this.rank, this.enumIndex, this.startEnumIndex, this.endEnumIndex);
+            }
+
+            public object Current {
+                get {
+                    if(this.enumType == TArrayEnumType.Vector)
+                        return (Vector)(TArray)this.array[this.enumIndex];
+                    else
+                        return this.array[this.enumIndex];
+                }
+            }
+        }
+        #endregion
+
+        #region Implementace ICloneable
+        public object Clone() {
+            TArray result = new TArray();
+            result.data = (Array)this.data.Clone();
+            return result;
+        }
+        #endregion
+
+        /// <summary>
+        /// Øetìzec
+        /// </summary>
+        public override string ToString() {
+            StringBuilder result = new StringBuilder();
+            this.ResetEnumerator();
+            foreach(object o in this)
+                if(o == null)
+                    result.AppendLine("null");
+                else
+                    result.AppendLine(o.ToString());
+
+            return result.ToString();
+        }
+
+        private const string errorMessageNot1D = "For the considered operation the rank of the Array must be equals to 1.";
+        private const string errorMessageNot1DDetail = "Rank of the Array = {0}.";
+
+        private const string errorMessageBadType = "For the considered operation the array does not have the correct type.";
+        private static string errorMessageBadTypeDetail = "Requested type: {0}" + Environment.NewLine + "Current type: {1}";
+
+        private const string errorMessageBadRank = "The rank of the Array is invalid.";
+        private static string errorMessageBadRankDetail = "Rank is: {0}" + Environment.NewLine + "Number of indexes: {1}";
+        private static string errorMessageBadRankDetailL = "Rank is: {0} and must be 0 for the considered operation.";
+
+        private const string errorMessageShrink = "It is not possible to shrink in dimension {0}.";
+        private static string errorMessageShrinkDetail = "There must be only one element." + Environment.NewLine + "Number of elements: {0}";
+    }
+
+    /// <summary>
+    /// Výjimka pøi provádìní øady
+    /// </summary>
+    public class TArrayException: DetailException {
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="message">Text chybového hlášení</param>
+        public TArrayException(string message) : base(message) { }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="message">Text chybového hlášení</param>
+        public TArrayException(string message, Exception innerException) : base(message, innerException) { }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="message">Text chybového hlášení</param>
+        /// <param name="detailMessage">Detail chyby</param>
+        public TArrayException(string message, string detailMessage) : base(message, detailMessage) { }
+    }
 }

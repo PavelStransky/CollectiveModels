@@ -59,6 +59,8 @@
     <Compile Include="Quantum\LHOQuantumGCMR.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRFull.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRL.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRLE.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRLO.cs" />
     <Compile Include="Quantum\QuantumGCM.cs" />
     <Compile Include="Quantum\RadialMatrixElement.cs" />
     <Compile Include="Quantum\RAIndex.cs" />

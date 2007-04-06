@@ -12,28 +12,38 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            this.CheckArgumentsMinNumber(arguments, 2);
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
 
-            Context result = Atom.EvaluateAtomObject(context, arguments[0]) as Context;
-            ArrayList args = new ArrayList(); args.Add(result);
-            this.CheckArgumentsType(args, 0, typeof(Context));
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Context));
 
-            if(arguments[1] != null)
-                Atom.EvaluateAtomObject(result, arguments[1]);
+            int count = evaluatedArguments.Count;
+
+            // Pøíkazy mohou být null
+            if(count > 1 && evaluatedArguments[1] != null)
+                this.CheckArgumentsType(evaluatedArguments, 1, typeof(string));
+
+            for(int i = 2; i < count; i++)
+                this.CheckArgumentsType(evaluatedArguments, i, typeof(string));
+
+        }
+
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            Context result = arguments[0] as Context;
 
             int count = arguments.Count;
-            if(count > 2)
-                for(int i = 2; i < count; i++)
-                    if(arguments[i] is string && context.Contains(arguments[i] as string)) {
-                        Variable v = context[arguments[i] as string];
-                        result.SetVariable(v.Name, v.Item);
-                    }
+            for(int i = 2; i < count; i++) {
+                Variable v = guider.Context[arguments[i] as string];
+                result.SetVariable(v.Name, v.Item);
+            }
+
+            if(count > 1 && arguments[1] != null)
+                Atom.EvaluateAtomObject(new Guider(result), arguments[1]);
 
             return result;
         }
 
         private const string help = "Použije zadaný kontext k výpoètùm.";
-        private const string parameters = "Kontext; Pøíkazy[; Promìnné kopírované z aktuálního kontextu]";
+        private const string parameters = "Kontext; [Pøíkazy;][Promìnné kopírované z aktuálního kontextu...]";
     }
 }

@@ -12,14 +12,13 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 2);
             this.CheckArgumentsType(evaluatedArguments, 0, typeof(int));
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-            return evaluatedArguments;
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             return SpecialFunctions.BinomialCoeficientI((int)arguments[0], (int)arguments[1]);
         }
 

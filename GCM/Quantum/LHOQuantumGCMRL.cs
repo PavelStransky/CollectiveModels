@@ -118,7 +118,7 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        private SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
+        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
             this.CreateIndex(maxE);
 
             if(numSteps == 0)

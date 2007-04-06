@@ -9,7 +9,54 @@ namespace PavelStransky.Expression {
 	/// Tøída pro vyhodnocení indexování
 	/// </summary>
 	public class Indexer: Atom {
-		private object indexedItem;
+        /// <summary>
+        /// Tøída zapouzøující indexy spolu s indikátorem Shrinku
+        /// </summary>
+        private class Indexes {
+            private int[][] index;
+            private bool[] shrink;
+            private int rank;
+
+            /// <summary>
+            /// Indexy
+            /// </summary>
+            public int[][] Index { get { return this.index; } }
+
+            /// <summary>
+            /// True, pokud se v daném rozmìru dìlá shrink
+            /// </summary>
+            public bool[] Shrink { get { return this.shrink; } }
+
+            /// <summary>
+            /// Délka
+            /// </summary>
+            public int Rank { get { return this.rank; } }
+
+            /// <summary>
+            /// Kontruktor
+            /// </summary>
+            /// <param name="rank">Poèet øad indexù</param>
+            public Indexes(int rank) {
+                this.rank = rank;
+
+                this.index = new int[rank][];
+                this.shrink = new bool[rank];
+            }
+
+            /// <summary>
+            /// Nastaví jeden rank
+            /// </summary>
+            /// <param name="r">Rank</param>
+            /// <param name="index">Indexy ranku</param>
+            /// <param name="shrink">Bude se dìlat shrink?</param>
+            public void Set(int r, int[] index, bool shrink) {
+                this.index[r] = index;
+                this.shrink[r] = shrink;
+            }
+        }
+
+        // Objekt, který indexujeme
+        private object indexedItem;
 
 		// Indexy
 		private ArrayList indexes = new ArrayList();
@@ -22,8 +69,8 @@ namespace PavelStransky.Expression {
 		/// <param name="expression">Výraz funkce</param>
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
-        public Indexer(string expression, Atom parent, IOutputWriter writer)
-            : base(expression, parent, writer) {
+        public Indexer(string expression, Atom parent)
+            : base(expression, parent) {
             int pos = FindLastOpenIndexBracketPosition(this.expression);
 
             this.indexedItem = this.CreateAtomObject(RemoveOutsideBracket(this.expression.Substring(0, pos)).Trim().ToLower());
@@ -35,218 +82,183 @@ namespace PavelStransky.Expression {
             string[] a = SplitArguments(inds);
             for(int i = 0; i < a.Length; i++) {
                 string arg = RemoveOutsideBracket(a[i]).Trim();
+                
                 string endVariable = GetEndVariable();
                 this.endVariables.Add(endVariable);
                 arg = ReplaceEndVariable(arg, endVariable);
+
                 this.indexes.Add(this.CreateAtomObject(arg));
             }
         }
 
-		/// <summary>
+        #region Pøiøazení
+        // Pøiøazovací funkce z pøedchozí úrovnì
+        private Assignment.AssignmentFunction assignFn;
+        private Guider guider;
+
+        private object AssignFn(object o) {
+            try {
+                Indexes index = this.EvaluateIndexes(this.guider, o);
+
+                // Indexace
+                if(o is TArray) {
+                    if(index.Rank > (o as TArray).Rank)
+                        this.ManyIndexesError((o as TArray).Rank, index.Rank);
+                    (o as TArray).SetValue(index.Index, assignFn);
+                }
+
+                else if(o is Vector) {
+                    if(index.Rank != 1)
+                        this.ManyIndexesError(1, index.Rank);
+
+                    int[] i = index.Index[0];
+                    int l = i.Length;
+                    Vector v = o as Vector;
+
+                    for(int j = 0; j < l; j++) {
+                        object result = this.assignFn(v[i[j]]);
+                        v[i[j]] = (result is double) ? (double)result : (double)(int)result;
+                    }
+                }
+            }
+            catch(Exception e) {
+                throw e;
+            }
+            finally {
+                this.ClearEndVariables(this.guider.Context);
+            }
+
+            return o;
+        }
+
+        /// <summary>
+        /// Na zadaná místa indexeru pøiøadí danou hodnotu
+        /// </summary>
+        /// <param name="guider">Prùvodce výpoètu</param>
+        /// <param name="value">Hodnota</param>
+        public void Evaluate(Guider guider, Assignment.AssignmentFunction assignFn) {
+            this.assignFn = assignFn;
+            this.guider = guider;
+
+            if(indexedItem is Indexer) {
+                (indexedItem as Indexer).Evaluate(guider, this.AssignFn);
+            }
+            else {
+                this.AssignFn(EvaluateAtomObject(guider, this.indexedItem));
+            }
+        }
+        #endregion
+
+        /// <summary>
 		/// Provede výpoèet funkce
 		/// </summary>
-        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="guider">Prùvodce výpoètu</param>
         /// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate(Context context) {
+		public override object Evaluate(Guider guider) {
             object result = null;			
-			object indexed = EvaluateAtomObject(context, indexedItem);
 
 			try {
-				result = this.Evaluate(context, 0, indexed);
+                object o = EvaluateAtomObject(guider, indexedItem);
+
+                // Nejprve vypoèítáme všechny indexy
+                Indexes index = this.EvaluateIndexes(guider, o);
+
+                // Nyní indexace
+                if(o is Vector) {
+                    if(index.Rank > 1)
+                        this.ManyIndexesError(1, index.Rank);
+
+                    if(index.Shrink[0])
+                        result = (o as Vector)[index.Index[0][0]];
+                    else
+                        result = (o as Vector)[index.Index[0]];
+                }
+
+                else if(o is PointVector) {
+                    if(index.Rank > 1)
+                        this.ManyIndexesError(1, index.Rank);
+//                    result = (o as PointVector)[index[0]];
+                }
+                else if(o is TArray) {
+                    if(index.Rank > (o as TArray).Rank)
+                        this.ManyIndexesError((o as TArray).Rank, index.Rank);
+                    
+                    result = (o as TArray).GetSubArray(index.Index, index.Shrink);
+                }
 			}
 			catch(Exception e) {
 				throw e;
 			}
 			finally {
-				this.ClearEndVariables(context);
+				this.ClearEndVariables(guider.Context);
 			}
 
 			return result;
 		}
-		
-		/// <summary>
-		/// Provede vyhodnocení indexeru
-		/// </summary>
-        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
-        /// <param name="depth">Aktuální hloubka</param>
-		/// <param name="item">Prvek, který se vyhodnocuje</param>
-		private object Evaluate(Context context, int depth, object item) {
-			if(depth >= this.indexes.Count)
-				return item;
 
-			this.SetEndVariable(context, item, depth, false);
-			object ind = EvaluateAtomObject(context, this.indexes[depth]);
-			this.CheckIndexType(ind, depth);
+        /// <summary>
+        /// Provede výpoèet všech indexù
+        /// </summary>
+        /// <param name="guider">Prùvodce výpoètem</param>
+        /// <param name="o">Indexovaný object</param>
+        private Indexes EvaluateIndexes(Guider guider, object o) {
+            // Nejprve vypoèítáme všechny indexy
+            int count = this.indexes.Count;
+            Indexes index = new Indexes(count);
 
-			depth++;
-			if(item is TArray) {
-				TArray array = item as TArray;
+            for(int i = 0; i < count; i++) {
+                this.SetEndVariable(guider.Context, o, i);
+                object ind = EvaluateAtomObject(guider, this.indexes[i]);
 
-				if(ind == null) {
-					TArray result = new TArray();
-					for(int i = 0; i < array.Count; i++)
-						result.Add(this.Evaluate(context, depth, array[i]));
-					return result;
-				}
-				else if(ind is int)
-					return this.Evaluate(context, depth, array[(int)ind]);
-				else if(ind is TArray) {
-					TArray iArray = ind as TArray;
-					TArray result = new TArray();
-					for(int i = 0; i < iArray.Count; i++)
-						result.Add(this.Evaluate(context, depth, array[(int)iArray[i]]));
-					return result;
-				}
-			}
-			else if(item is Vector) {
-				if(depth < this.indexes.Count)
-					this.ManyIndexesError(depth, this.indexes.Count);
+                if(ind == null) {
+                    int length = this.GetLength(o, i);
+                    int[] ji = new int[length];
+                    for(int j = 0; j < length; j++)
+                        ji[j] = j;
 
-				Vector vector = item as Vector;
+                    index.Set(i, ji, false);
+                }
+                else
+                    this.ParseIndexes(ind, i, index);
+            }
 
-				if(ind == null) 
-					return item;
-				else if(ind is int)
-					return vector[(int)ind];
-				else if(ind is TArray) {
-					TArray iArray = ind as TArray;
-					Vector result = new Vector(iArray.Count);
-					for(int i = 0; i < iArray.Count; i++)
-						result[i] = vector[(int)iArray[i]];
-					return result;
-				}
-			}
-			else if(item is PointVector) {
-				if(depth < this.indexes.Count)
-					this.ManyIndexesError(depth, this.indexes.Count);
+            return index;
+        }
 
-				PointVector pv = item as PointVector;
+        /// <summary>
+        /// Vrátí délku objektu v zadané hloubce
+        /// </summary>
+        /// <param name="item">Objekt</param>
+        /// <param name="depth">Hloubka</param>
+        private int GetLength(object item, int depth) {
+            int length = 0;
 
-				if(ind == null) 
-					return item;
-				else if(ind is int)
-					return pv[(int)ind];
-				else if(ind is TArray) {
-					TArray iArray = ind as TArray;
-					PointVector result = new PointVector(iArray.Count);
-					for(int i = 0; i < iArray.Count; i++)
-						result[i] = pv[(int)iArray[i]];
-					return result;
-				}
-			}
-			else if(item is Matrix) {
-				// Tady pozor. 
-				// [;] - celá matice
-				// [2;] - øádek s indexem 2 jako vektor
-				// [1...2;] - matice s vybranými øádky
-				// (totéž pro sloupce)
-				// [1;3] - prvek s vybranými indexy
+            if(item is TArray)
+                length = (item as TArray).GetLength(depth);
+            else if(item is Vector)
+                length = (item as Vector).Length;
+            else if(item is Matrix) {
+                if(depth == 0)
+                    length = (item as Matrix).LengthX;
+                else
+                    length = (item as Matrix).LengthY;
+            }
+            else if(item is PointVector)
+                length = (item as PointVector).Length;
 
-				// Vypoèítáme druhý index
-				object indy = null;
-				if(depth < this.indexes.Count) {
-					this.SetEndVariable(context, item, depth, true);
-					indy = EvaluateAtomObject(context, this.indexes[depth]);
-					this.CheckIndexType(ind, depth);
-				}
-
-				depth++;
-				if(depth < this.indexes.Count)
-					this.ManyIndexesError(depth, this.indexes.Count);
-
-				Matrix matrix = item as Matrix;
-
-				if(ind == null && indy == null)
-					return matrix;
-				else if(ind is int && indy == null) 
-					return matrix.GetRowVector((int)ind);
-				else if(ind == null && indy is int)
-					return matrix.GetColumnVector((int)indy);
-				else if(ind is int && indy is int)
-					return matrix[(int)ind, (int)indy];
-				else if(ind is TArray) {
-					TArray xArray = ind as TArray;
-
-					if(indy == null) {
-						Matrix result = new Matrix(xArray.Count, matrix.LengthY);
-						for(int i = 0; i < xArray.Count; i++)
-							for(int j = 0; j < matrix.LengthY; j++)
-								result[i, j] = matrix[(int)xArray[i], j];
-						return result;
-					}
-					else if(indy is TArray) {
-						TArray yArray = indy as TArray;
-
-						Matrix result = new Matrix(xArray.Count, yArray.Count);
-						for(int i = 0; i < xArray.Count; i++)
-							for(int j = 0; j < yArray.Count; j++)
-								result[i, j] = matrix[(int)xArray[i], (int)yArray[j]];
-						return result;
-					}
-					else if(indy is int) {
-						int y = (int)indy;
-
-						Vector result = new Vector(xArray.Count);
-						for(int i = 0; i < xArray.Count; i++)
-							result[i] = matrix[(int)xArray[i], y];
-						return result;
-					}
-					else
-						return this.BadIndexTypeError(indy, depth - 1);
-				}
-				else if(indy is TArray) {
-					TArray yArray = indy as TArray;
-
-					if(ind == null) {
-						Matrix result = new Matrix(matrix.LengthX, yArray.Count);
-						for(int i = 0; i < matrix.LengthX; i++)
-							for(int j = 0; j < yArray.Count; j++)
-								result[i, j] = matrix[i, (int)yArray[j]];
-						return result;
-					}
-					else if(ind is int) {
-						int x = (int)ind;
-
-						Vector result = new Vector(yArray.Count);
-						for(int j = 0; j < yArray.Count; j++)
-							result[j] = matrix[x, (int)yArray[j]];
-						return result;
-					}
-				}
-
-				// Kvùli chybì
-				depth--;
-			}
-
-			return this.ManyIndexesError(depth - 1, this.indexes.Count);
-		}
+            return length;
+        }
 
 		/// <summary>
 		/// Nastaví na kontext pomocnou promìnnou s indexem posledního prvku øady
 		/// </summary>
         /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
         /// <param name="item">Objekt, jehož poslední index nastavujeme</param>
-		/// <param name="depth">Aktuální hloubka</param>
-		/// <param name="takeMatrixY">Item je matice a my budeme brát její druhý rozmìr</param>
+		/// <param name="depth">Hloubka</param>
 		/// <returns>Jméno nastavené promìnné, jinak null</returns>
-		private string SetEndVariable(Context context, object item, int depth, bool takeMatrixY) {
-			if(this.endVariables.Count < depth || this.endVariables[depth] == null)
-				return null;
-
+		private void SetEndVariable(Context context, object item, int depth) {
 			string endVariable = this.endVariables[depth] as string;
-			int end = 0;
-
-			if(takeMatrixY)
-				end = (item as Matrix).LengthY - 1;
-			else if(item is TArray)
-				end = (item as TArray).Count - 1;
-			else if(item is Vector)
-				end = (item as Vector).Length - 1;
-			else if(item is Matrix)
-				end = (item as Matrix).LengthX - 1;
-
-			context.SetVariable(endVariable, end);
-			return endVariable;	
+			context.SetVariable(endVariable, this.GetLength(item, depth) - 1);
 		}
 
 		/// <summary>
@@ -262,26 +274,46 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Kontroluje, zda indexy mají správný typ
 		/// </summary>
-		/// <param name="index">Objekt s indexy</param>
+		/// <param name="indexIn">Objekt s indexy</param>
 		/// <param name="depth">Hloubka</param>
-		private object CheckIndexType(object index, int depth) {
-			if(index != null && !(index is TArray) && !(index is int))
-				return this.BadIndexTypeError(index, depth);
-			if(index is TArray && (index as TArray).ItemTypeName != typeof(int).FullName)
-				return this.BadIndexTypeError((index as TArray)[0], depth);
+        /// <param name="indexOut">Výstup indexù</param>
+		private void ParseIndexes(object indexIn, int depth, Indexes indexOut) {            
+            if(indexIn is int) {
+                int[] i = new int[1];
+                i[0] = (int)indexIn;
+                indexOut.Set(depth, i, true);
 
-			return null;
-		}
+                return;
+            }
 
-		/// <summary>
-		/// Chyba pøi špatném typu indexù
-		/// </summary>
-		/// <param name="index">Objekt s indexy</param>
-		/// <param name="depth">Hloubka</param>
-		private object BadIndexTypeError(object index, int depth) {
-			throw new ExpressionException(string.Format(errorMessageBadIndexType, depth, index.GetType().FullName),
-				string.Format(errorMessageDetail, this.expression));
-		}
+            Type type = indexIn.GetType();
+            if(indexIn is TArray) {
+                TArray ta = indexIn as TArray;
+                type = ta.GetItemType();
+
+                if(type == typeof(int)) {
+                    if(!ta.Is1D)
+                        throw new ExpressionException(string.Format(errorMessageBadIndexRank, ta.Rank),
+                            string.Format(errorMessageDetail, this.expression));
+
+                    int length = ta.GetNumElements();
+                    int[] i = new int[length];
+                    
+                    int k = 0;
+                    ta.ResetEnumerator();
+                    foreach(int ti in ta) {
+                        i[k++] = ti;
+                    }
+
+                    indexOut.Set(depth, i, false);
+
+                    return;
+                }
+            }
+
+            throw new ExpressionException(string.Format(errorMessageBadIndexType, depth, type.FullName),
+                string.Format(errorMessageDetail, this.expression));
+        }
 
 		/// <summary>
 		/// Chyba pøi špatném typu indexù
@@ -322,6 +354,7 @@ namespace PavelStransky.Expression {
 		private const char endChar = '$';
 		private const string defaultEndVariable = "$end{0}";
 
+        private const string errorMessageBadIndexRank = "The indexing Array has {0} dimensions. Only 1 is required.";
 		private const string errorMessageManyIndexes = "Indexer má pøíliš mnoho indexù. Zadáno: {0}, požadováno maximálnì {1}.";
 		private const string errorMessageBadIndexType = "Index na pozici {0} má špatný typ '{1}'.";
 		private const string errorMessageDetail = "Výraz: {0}";

@@ -13,36 +13,18 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 2);
-
-            // Kontrola na dynamický systém
-            IDynamicalSystem dynamicalSystem = evaluatedArguments[0] as IDynamicalSystem;
-            if(dynamicalSystem == null)
-                this.BadTypeError(dynamicalSystem, 0);
-
-            this.ConvertInt2Double(evaluatedArguments, 1);
-
-            // Prohodí argumenty (abychom mohli poèítat energie i pro více poèáteèních podmínek najednou)
-            object ea = evaluatedArguments[1];
-            evaluatedArguments[1] = evaluatedArguments[0];
-            evaluatedArguments[0] = ea;
-
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IQuantumSystem));
+            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is double) {
-                IDynamicalSystem dynamicalSystem = arguments[1] as IDynamicalSystem;
-                return dynamicalSystem.Bounds((double)item);
-            }
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
-            else
-                return this.BadTypeError(item, 0);
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
+            return dynamicalSystem.Bounds((double)arguments[1]);
         }
 
         private const string help = "Pro zadaný dynamický systém a zadanou energii vrátí meze (horní odhad), ve kterých se øešení mùže pohybovat";
-        private const string parameters = "Dynamický systém; energie (double) | Array of double";
+        private const string parameters = "Dynamický systém; energie (double)";
     }
 }

@@ -116,13 +116,37 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Atom.Functions.cs" />
-    <Compile Include="Functions\BandWidth.cs" />
-    <Compile Include="BinaryOperators\ArrayAdd.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\ArrayGen.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="BinaryOperators\BoolOr.cs" />
+    <Compile Include="Functions\Context\Clear.cs" />
+    <Compile Include="Functions\Context\Context.cs" />
+    <Compile Include="Functions\Context\GetContext.cs" />
+    <Compile Include="Functions\Context\GetGlobalContext.cs" />
+    <Compile Include="Functions\Context\GetGlobalVar.cs" />
+    <Compile Include="Functions\Context\GetVar.cs" />
+    <Compile Include="Functions\Context\SetContext.cs" />
+    <Compile Include="Functions\Context\SetGlobalContext.cs" />
+    <Compile Include="Functions\Context\SetGlobalVar.cs" />
+    <Compile Include="Functions\Context\UseContext.cs" />
+    <Compile Include="Functions\Dynamics\Bounds.cs" />
+    <Compile Include="Functions\Dynamics\CGCM.cs" />
+    <Compile Include="Functions\Dynamics\CGCMJ.cs" />
+    <Compile Include="Functions\Dynamics\CIBM.cs" />
+    <Compile Include="Functions\Dynamics\Energy.cs" />
+    <Compile Include="Functions\Dynamics\Equipotential.cs" />
+    <Compile Include="Functions\Dynamics\ExtendedCGCM.cs" />
+    <Compile Include="Functions\Dynamics\ExtendedCGCM1.cs" />
+    <Compile Include="Functions\Dynamics\ExtendedCGCM2.cs" />
+    <Compile Include="Functions\Dynamics\HH.cs" />
+    <Compile Include="Functions\Dynamics\InitialCondition.cs" />
+    <Compile Include="Functions\Dynamics\Poincare.cs" />
+    <Compile Include="Functions\Dynamics\PotentialRoots.cs" />
+    <Compile Include="Functions\Dynamics\SALI.cs" />
+    <Compile Include="Functions\Dynamics\SALIG.cs" />
+    <Compile Include="Functions\Dynamics\SALIR.cs" />
+    <Compile Include="Functions\Dynamics\TrajectoryM.cs" />
+    <Compile Include="Functions\Dynamics\TrajectoryP.cs" />
+    <Compile Include="Functions\Graphics\Show.cs" />
+    <Compile Include="Functions\Matrix\BandWidth.cs" />
     <Compile Include="BinaryOperators\BinaryOperator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -181,109 +205,60 @@
     <Compile Include="Function.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Alias\CreateGraph.cs" />
-    <Compile Include="Functions\Context\GetGlobalContext.cs" />
-    <Compile Include="Functions\Context\GetGlobalVar.cs" />
-    <Compile Include="Functions\Context\GetVar.cs" />
-    <Compile Include="Functions\Context\SetContext.cs" />
-    <Compile Include="Functions\Context\GetContext.cs" />
-    <Compile Include="Functions\Context\Context.cs" />
-    <Compile Include="Functions\Context\SetGlobalVar.cs" />
-    <Compile Include="Functions\Context\UseContext.cs" />
-    <Compile Include="Functions\Dynamics\FRegMatrixEval.cs" />
-    <Compile Include="Functions\Dynamics\PotentialRoots.cs" />
-    <Compile Include="Functions\Poisson.cs" />
-    <Compile Include="Functions\Quantum\EValues.cs" />
-    <Compile Include="Functions\Quantum\EVectors.cs" />
-    <Compile Include="Functions\Quantum\EvenParity.cs" />
-    <Compile Include="Functions\Quantum\HamiltonianMatrix.cs" />
     <Compile Include="Functions\Math\BC.cs" />
     <Compile Include="Functions\Math\Factorial.cs" />
     <Compile Include="Functions\Math\Laguerre.cs" />
-    <Compile Include="Functions\NumNonzeroItems.cs" />
-    <Compile Include="Functions\Quantum\ComputeSpectrum.cs" />
-    <Compile Include="Functions\Quantum\DensityMatrix.cs" />
-    <Compile Include="Functions\Quantum\EVNumDiff.cs" />
-    <Compile Include="Functions\Quantum\HamiltonianMatrixSize.cs" />
-    <Compile Include="Functions\Quantum\HamiltonianMatrixTrace.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCMRL.cs" />
-    <Compile Include="Functions\Quantum\SecondInvariant.cs" />
-    <Compile Include="Functions\RandVector.cs" />
-    <Compile Include="Functions\RemoveBadPoints.cs" />
-    <Compile Include="Functions\SafeValue.cs" />
-    <Compile Include="Functions\Show.cs" />
-    <Compile Include="Functions\Smooth.cs" />
-    <Compile Include="Functions\Spectrum.cs" />
-    <Compile Include="Functions\Rand.cs" />
-    <Compile Include="Functions\SumSquare.cs" />
-    <Compile Include="Functions\Time.cs" />
-    <Compile Include="Functions\TimeNow.cs" />
-    <Compile Include="Functions\Print.cs" />
-    <Compile Include="Functions\PrintClear.cs" />
-    <Compile Include="Functions\PrintLine.cs" />
-    <Compile Include="Functions\SumAbs.cs" />
-    <Compile Include="Functions\Dynamics\Bounds.cs" />
-    <Compile Include="Functions\Dynamics\CGCMJ.cs" />
-    <Compile Include="Functions\Dynamics\CIBM.cs" />
-    <Compile Include="Functions\Dynamics\Energy.cs" />
-    <Compile Include="Functions\Quantum\EnergyLevels.cs" />
-    <Compile Include="Functions\Dynamics\ExtendedCGCM1.cs" />
-    <Compile Include="Functions\Dynamics\ExtendedCGCM2.cs" />
-    <Compile Include="Functions\Dynamics\HH.cs" />
-    <Compile Include="Functions\Quantum\QGCM.cs" />
-    <Compile Include="Functions\Dynamics\SALIG.cs" />
-    <Compile Include="Functions\Dynamics\SALIR.cs" />
-    <Compile Include="Functions\Dynamics\TrajectoryP.cs" />
     <Compile Include="Functions\Math\Abs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\AddItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Math\ArcTan.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Trace.cs" />
-    <Compile Include="Functions\Types\Array.cs">
+    <Compile Include="Functions\Matrix\CM.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Clear.cs">
+    <Compile Include="Functions\Quantum\ComputeSpectrum.cs" />
+    <Compile Include="Functions\Quantum\DensityMatrix.cs" />
+    <Compile Include="Functions\Quantum\EValues.cs" />
+    <Compile Include="Functions\Quantum\EVectors.cs" />
+    <Compile Include="Functions\Quantum\EVNumDiff.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianMatrix.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianMatrixSize.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianMatrixTrace.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCM.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRL.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRLE.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRLO.cs" />
+    <Compile Include="Functions\Quantum\Parity.cs" />
+    <Compile Include="Functions\Quantum\SecondInvariant.cs" />
+    <Compile Include="Functions\Vector\CumulHistogram.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\CM.cs">
+    <Compile Include="Functions\Matrix\DropColumns.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\CumulHistogram.cs">
+    <Compile Include="Functions\Matrix\DropRows.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\DropColumns.cs">
+    <Compile Include="Functions\Matrix\EigenSystem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\DropRows.cs">
+    <Compile Include="Functions\Program\Exit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\EigenSystem.cs">
+    <Compile Include="Functions\Program\Export.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Eval.cs">
+    <Compile Include="Functions\Help\FNames.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Exit.cs">
+    <Compile Include="Functions\Program\For.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Export.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\FNames.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\For.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\FullHelp.cs">
+    <Compile Include="Functions\Help\FullHelp.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\FunctionDefinition.cs">
@@ -292,186 +267,65 @@
     <Compile Include="Functions\FunctionDefinitionIE.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\FunctionDefinitionMinMax.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\FunctionDefinitionMinMaxIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Functions\FunctionDefinitions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Dynamics\CGCM.cs" />
-    <Compile Include="Functions\Dynamics\Equipotential.cs" />
-    <Compile Include="Functions\Dynamics\InitialCondition.cs" />
-    <Compile Include="Functions\Dynamics\Poincare.cs" />
-    <Compile Include="Functions\Dynamics\SALI.cs" />
-    <Compile Include="Functions\Dynamics\TrajectoryM.cs" />
-    <Compile Include="Functions\GenArray.cs">
+    <Compile Include="Functions\Matrix\GetColumns.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\GetColumns.cs">
+    <Compile Include="Functions\Matrix\GetRows.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\GetRows.cs">
+    <Compile Include="Functions\Vector\GetX.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\GetX.cs">
+    <Compile Include="Functions\Vector\GetY.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\GetY.cs">
+    <Compile Include="Functions\Help\Help.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Help.cs">
+    <Compile Include="Functions\Vector\Histogram.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Histogram.cs">
+    <Compile Include="Functions\Program\If.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\If.cs">
+    <Compile Include="Functions\Program\Import.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Import.cs">
+    <Compile Include="Functions\Vector\Integrate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Integrate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Join.cs">
+    <Compile Include="Functions\Vector\Join.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Length.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Types\Graph.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Functions\Math\Log.cs" />
     <Compile Include="Functions\Math\Sqrt.cs" />
+    <Compile Include="Functions\Test\TestArray.cs" />
+    <Compile Include="Functions\Types\Array.cs" />
+    <Compile Include="Functions\Types\MatrixColumn.cs" />
     <Compile Include="Functions\Types\Double.cs" />
+    <Compile Include="Functions\Types\Graph.cs" />
     <Compile Include="Functions\Types\Int.cs" />
-    <Compile Include="Functions\Types\Matrix.cs" />
-    <Compile Include="Functions\Max.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\MaxAbs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\MaxAbsIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\MaxIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Mean.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Min.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\MinAbs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\MinAbsIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\MinIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Norm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Normalize.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Objects.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\PC.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Permute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Types\Point.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Types\PointVector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Polynom.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Regression.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\SLength.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\SNormalize.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Sort.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\SortDesc.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Spacing.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Split.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\SplitColumns.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\SplitRows.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Types\String.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Sum.cs" />
-    <Compile Include="Functions\SwapDim.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\SwapXY.cs" />
-    <Compile Include="Functions\Symmetry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Transpose.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Type.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Use.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Functions\Types\MatrixRow.cs" />
+    <Compile Include="Functions\Types\New.cs" />
+    <Compile Include="Functions\Types\Point.cs" />
+    <Compile Include="Functions\Types\PointVector.cs" />
+    <Compile Include="Functions\Types\String.cs" />
+    <Compile Include="Functions\Types\Vector.cs" />
     <Compile Include="Functions\UserFunction.cs" />
-    <Compile Include="Functions\Var.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Types\Vector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Wigner.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Functions\Windows.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Graph.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GraphArray.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Import.cs" />
     <Compile Include="Indexer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Guider.cs" />
     <Compile Include="MinMaxCache.cs" />
     <Compile Include="Operators\Operator.cs">
       <SubType>Code</SubType>
@@ -479,7 +333,6 @@
     <Compile Include="Operators\Operators.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Save.cs" />
     <Compile Include="Transform.cs">
       <SubType>Code</SubType>
     </Compile>

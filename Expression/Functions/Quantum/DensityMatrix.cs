@@ -13,35 +13,30 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
+
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IQuantumSystem));
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
 
-            for(int i = 2; i < evaluatedArguments.Count; i++)
+            int count = evaluatedArguments.Count;
+            for(int i = 2; i < count; i++)
                 this.CheckArgumentsType(evaluatedArguments, i, typeof(Vector));
-
-            return evaluatedArguments;
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is IQuantumSystem) {
-                IQuantumSystem qs = item as IQuantumSystem;
-                int n = (int)arguments[1];
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IQuantumSystem qs = arguments[0] as IQuantumSystem;
+            int n = (int)arguments[1];
 
-                Vector[] interval = new Vector[arguments.Count - 2];
-                for(int i = 2; i < arguments.Count; i++)
-                    interval[i - 2] = arguments[i] as Vector;
+            int count = arguments.Count;
+            Vector[] interval = new Vector[count - 2];
+            for(int i = 2; i < count; i++)
+                interval[i - 2] = arguments[i] as Vector;
 
-                return qs.DensityMatrix(n, interval);
-            }
-
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
-            else
-                return this.BadTypeError(item, 0);
+            return qs.DensityMatrix(n, interval);
         }
 
         private const string help = "Vrátí matici hustot vlastní funkce";
-        private const string parameters = "QuantumSystem; èíslo vlastní funkce (int); oblast výpoètu (Vector, prvky (minx, maxx, numx, ...))";
+        private const string parameters = "IQuantumSystem; èíslo vlastní funkce (int); oblast výpoètu (Vector, prvky (minx, maxx, numx, ...))";
     }
 }

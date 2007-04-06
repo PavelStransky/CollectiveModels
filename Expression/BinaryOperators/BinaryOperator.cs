@@ -42,6 +42,8 @@ namespace PavelStransky.Expression.BinaryOperators {
                 return this.EvaluateA((TArray)left, right);
             else if(left is DateTime)
                 return this.EvaluateTime((DateTime)left, right);
+            else if(left is bool)
+                return this.EvaluateB((bool)left, right);
             else
                 return this.UnknownType(left, right);
 		}
@@ -194,6 +196,13 @@ namespace PavelStransky.Expression.BinaryOperators {
 				return this.EvaluateSSx(left, right.ToString());
 		}
 
+        protected virtual object EvaluateB(bool left, object right) {
+            if(right is bool)
+                return this.EvaluateBB(left, (bool)right);
+            else
+                return this.UnknownType(left, right);
+        }
+
         protected virtual object EvaluateTime(DateTime left, object right) {
             if(right is DateTime)
                 return this.EvaluateTimeTimex(left, (DateTime)right);
@@ -202,21 +211,43 @@ namespace PavelStransky.Expression.BinaryOperators {
         }
 
 		protected virtual object EvaluateA(TArray left, object right) {
-			TArray result = new TArray();
+			TArray result = null;
 
 			if(right is TArray) {
 				TArray r = right as TArray;
 
-				if(left.Count != r.Count)
-					throw new OperatorException(string.Format(errorMessageNotEqualLength, this.OperatorName, left.Count, r.Count));
+				if(!TArray.IsEqualDimension(left, r))
+					throw new OperatorException(string.Format(errorMessageNotEqualLength, this.OperatorName, left.LengthsString(), r.LengthsString()));
 
-				for(int i = 0; i < left.Count; i++)
-					result.Add(this.Evaluate(left[i], r[i]));
-			}
+                left.ResetEnumerator();
+                int[] index = (int[])left.StartEnumIndex.Clone();
+                int[] lengths = left.Lengths;
+                int rank = left.Rank;
+
+                do {
+                    object o = this.Evaluate(left[index], r[index]);
+                    if(result == null)
+                        result = new TArray(o.GetType(), lengths);
+
+                    result[index] = o;
+                }
+                while(TArray.MoveNext(rank, index, left.StartEnumIndex, left.EndEnumIndex));
+            }
 			else {
-				for(int i = 0; i < left.Count; i++)
-					result.Add(this.Evaluate(left[i], right));
-			}
+                left.ResetEnumerator();
+                int[] index = (int[])left.StartEnumIndex.Clone();
+                int[] lengths = left.Lengths;
+                int rank = left.Rank;
+
+                do {
+                    object o = this.Evaluate(left[index], right);
+                    if(result == null)
+                        result = new TArray(o.GetType(), lengths);
+
+                    result[index] = o;
+                }
+                while(TArray.MoveNext(rank, index, left.StartEnumIndex, left.EndEnumIndex));
+            }
 				
 			return result;
 		}
@@ -250,11 +281,24 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluateIA(int left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluateI(left, right[i]));
-			return result;
-		}
+			TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluateI(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
 
 		protected virtual object EvaluateDI(double left, int right) {
 			return this.EvaluateDDx(left, (double)right);
@@ -285,11 +329,24 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluateDA(double left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluateD(left, right[i]));
-			return result;
-		}
+            TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluateD(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
 
 		protected virtual object EvaluatePI(PointD left, int right) {
 			return this.EvaluatePDx(left, (double)right);
@@ -320,11 +377,24 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluatePA(PointD left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluateP(left, right[i]));
-			return result;
-		}
+            TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluateP(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
 
 		protected virtual object EvaluateVI(Vector left, int right) {
 			return this.EvaluateVDx(left, (double)right);
@@ -355,11 +425,24 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluateVA(Vector left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluateV(left, right[i]));
-			return result;
-		}
+            TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluateV(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
 
 		protected virtual object EvaluatePvI(PointVector left, int right) {
 			return this.EvaluatePvDx(left, (double)right);
@@ -390,11 +473,24 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluatePvA(PointVector left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluatePv(left, right[i]));
-			return result;
-		}
+            TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluatePv(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
 
 		protected virtual object EvaluateMI(Matrix left, int right) {
 			return this.EvaluateMDx(left, (double)right);
@@ -425,11 +521,24 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluateMA(Matrix left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluateM(left, right[i]));
-			return result;
-		}
+            TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluateM(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
 
 		protected virtual object EvaluateSI(string left, int right) {
 			return this.EvaluateSSx(left, right.ToString());
@@ -460,11 +569,28 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected virtual object EvaluateSA(string left, TArray right) {
-			TArray result = new TArray();
-			for(int i = 0; i < right.Count; i++)
-				result.Add(this.EvaluateS(left, right[i]));
-			return result;
-		}
+            TArray result = null;
+
+            right.ResetEnumerator();
+            int[] index = (int[])right.StartEnumIndex.Clone();
+            int[] lengths = right.Lengths;
+            int rank = right.Rank;
+
+            do {
+                object o = this.EvaluateS(left, right[index]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+
+                result[index] = o;
+            }
+            while(TArray.MoveNext(rank, index, right.StartEnumIndex, right.EndEnumIndex));
+
+            return result;
+        }
+
+        protected virtual object EvaluateBB(bool left, bool right) {
+            return this.UnknownType(left, right);
+        }
 
         protected virtual object EvaluateTimeTimex(DateTime left, DateTime right) {
             return this.UnknownType(left, right);

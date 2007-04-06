@@ -19,11 +19,26 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLaguerre();
+            Test.PokusTArray();
 
 			Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Pokus na novou implementaci øad (28.3.2007)
+        /// </summary>
+        static void PokusTArray() {
+            TArray ta = new TArray(typeof(double), 20);
+
+            ta[5] = 4;
+            ta[3] = 11;
+
+            object b = ta[4];
+            b = 4;
+
+            int x = 0;
+        }
 
         /// <summary>
         /// Pokus na Laguerrovy polynomy vysokého øádu
@@ -384,7 +399,7 @@ namespace PavelStransky.Test {
 				Console.WriteLine();
 			}
 
-			TArray array = new TArray();
+/*			TArray array = new TArray();
 			try {
 				array.Add(new Vector(10));
 				array.Add(new Vector(2));
@@ -395,7 +410,7 @@ namespace PavelStransky.Test {
 				Console.WriteLine(e.DetailMessage);
 				Console.WriteLine();
 			}
-		}
+*/		}
 
 		/// <summary>
 		/// Pokus na regulární výrazy kvùli parseru výrazù pro výpoèty, 14.09.2005

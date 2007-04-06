@@ -11,16 +11,31 @@ namespace PavelStransky.Expression.Functions {
 		public override string Name {get {return name;}}
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
-		
-		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			TArray result = new TArray();
-			for(int i = 0; i < arguments.Count; i++)
-				result.Add(arguments[i]);
-			return result;
-		}
 
-		private const string name = "array";
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
+
+            int count = evaluatedArguments.Count;
+            Type t = evaluatedArguments[0].GetType();
+
+            for(int i = 1; i < count; i++)
+                this.CheckArgumentsType(evaluatedArguments, i, t);
+        }
+
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            int count = arguments.Count;
+
+            Type t = arguments[0].GetType();
+            TArray result = new TArray(t, count);
+
+            for(int i = 0; i < count; i++)
+                result[i] = arguments[i];
+
+            return result;
+   		}
+
+        private const string name = "array";
 		private const string help = "Z argumentù funkce vytvoøí øadu (Array)";
-		private const string parameters = "[prvek1 [;prvek2 [; ...]]]";
+		private const string parameters = "prvky øady";
 	}
 }

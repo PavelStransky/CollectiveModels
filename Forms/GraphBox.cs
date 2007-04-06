@@ -261,6 +261,8 @@ namespace PavelStransky.Forms {
                 format = ImageFormat.Jpeg;
             else if(extension == "png")
                 format = ImageFormat.Png;
+            else if(extension == "wmf")
+                format = ImageFormat.Wmf;
 
             int nGroups = this.graph.NumGroups();
 

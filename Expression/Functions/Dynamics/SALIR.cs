@@ -13,47 +13,37 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
 
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
 
-            if(evaluatedArguments.Count > 2 && evaluatedArguments[2] != null) {
-                this.ConvertInt2Double(evaluatedArguments, 2);
-                this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
-            }
-
-            return evaluatedArguments;
+            this.ConvertInt2Double(evaluatedArguments, 2);
+            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item as IDynamicalSystem != null) {
-                IDynamicalSystem dynamicalSystem = item as IDynamicalSystem;
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
 
-                Vector ic;
-                if((arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom) {
-                    ic = (Vector)arguments[1];
-                }
-                else
-                    return this.BadTypeError(arguments[1], 1);
-
-                double precision = 0;
-                if(arguments.Count > 2 && arguments[2] != null)
-                    precision = (double)arguments[2];
-
-                SALI sali = new SALI(dynamicalSystem, precision);
-
-                if(sali.IsRegular(ic))
-                    return 1;
-                else
-                    return 0;
+            Vector ic;
+            if((arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom) {
+                ic = (Vector)arguments[1];
             }
-
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
             else
-                return this.BadTypeError(item, 0);
+                return this.BadTypeError(arguments[1], 1);
+
+            double precision = 0;
+            if(arguments.Count > 2 && arguments[2] != null)
+                precision = (double)arguments[2];
+
+            SALI sali = new SALI(dynamicalSystem, precision);
+
+            if(sali.IsRegular(ic))
+                return 1;
+            else
+                return 0;
         }
 
         private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;

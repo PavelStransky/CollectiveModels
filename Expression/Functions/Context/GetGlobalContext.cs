@@ -13,9 +13,11 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        public override object Evaluate(Context context, ArrayList arguments, IOutputWriter writer) {
-            this.CheckArgumentsNumber(arguments, 0);
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
+            this.CheckArgumentsNumber(evaluatedArguments, 0);
+        }
 
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             string fileName = Context.GlobalContextFileName;
             FileInfo fileInfo = new FileInfo(fileName);
 

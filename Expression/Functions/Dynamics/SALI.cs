@@ -7,7 +7,7 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vypoèítá náhodnì vybranou trajektorii s danou energií, resp. trajektorii s danou poèáteèní podmínkou a daným èasem
+    /// Vypoèítá SALI pro zadanou trajektorii
     /// </summary>
     public class FnSALI: FunctionDefinition {
         public override string Name { get { return name; } }
@@ -18,45 +18,33 @@ namespace PavelStransky.Expression.Functions {
             this.CheckArgumentsMinNumber(evaluatedArguments, 3);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
 
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
 
             this.ConvertInt2Double(evaluatedArguments, 2);
             this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
 
-            if(evaluatedArguments.Count > 3 && evaluatedArguments[3] != null) {
-                this.ConvertInt2Double(evaluatedArguments, 3);
-                this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
-            }
-
-            return evaluatedArguments;
+            this.ConvertInt2Double(evaluatedArguments, 3);
+            this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item as IDynamicalSystem != null) {
-                IDynamicalSystem dynamicalSystem = item as IDynamicalSystem;
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
 
-                Vector ic;
-                if((arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom) {
-                    ic = (Vector)arguments[1];
-                }
-                else
-                    return this.BadTypeError(arguments[1], 1);
-
-                double time = (double)arguments[2];
-
-                double precision = 0;
-                if(arguments.Count > 4 && arguments[4] != null)
-                    precision = (double)arguments[4];
-
-                SALI sali = new SALI(dynamicalSystem, precision);
-
-                return sali.TimeDependence(ic, time);
-            }
-
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
+            Vector ic;
+            if((arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom)
+                ic = (Vector)arguments[1];
             else
-                return this.BadTypeError(item, 0);
+                return this.BadTypeError(arguments[1], 1);
+
+            double time = (double)arguments[2];
+
+            double precision = 0;
+            if(arguments.Count > 4)
+                precision = (double)arguments[4];
+
+            SALI sali = new SALI(dynamicalSystem, precision);
+            return sali.TimeDependence(ic, time);
         }
 
         private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;

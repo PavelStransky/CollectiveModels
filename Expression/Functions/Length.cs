@@ -13,49 +13,33 @@ namespace PavelStransky.Expression.Functions
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
-		protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+		protected override void CheckArguments(ArrayList evaluatedArguments) {
 			this.CheckArgumentsNumber(evaluatedArguments, 1);
-			return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Vector), typeof(PointVector), typeof(Matrix), typeof(TArray));
 		}
 
-		protected override object Evaluate(int depth, object item, ArrayList arguments) {
-			if(item is Vector) {
-				TArray result = new TArray();
-				result.Add((item as Vector).Length);
-				return result;
-			}
-			else if(item is PointVector) {
-				TArray result = new TArray();
-				result.Add((item as PointVector).Length);
-				return result;
-			}
-			else if(item is Matrix) {
-				TArray result = new TArray();
-				Matrix m = item as Matrix;
+        protected override object EvaluateArray(Guider guider, ArrayList arguments) {
+            return this.EvaluateFn(guider, arguments);
+        }
 
-				result.Add(m.LengthX);
-				result.Add(m.LengthY);
+		protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            object item = arguments[0];
 
-				return result;
-			}
-			else if(item is TArray) {
-				TArray array = item as TArray;
+            if(item is Vector)
+                return new TArray((item as Vector).Length);
 
-				object result = null;
-				if(array.Count > 0)
-					result = this.Evaluate(depth + 1, array[0], arguments);
-				if(!(result is TArray))
-					result = new TArray();
-				(result as TArray).Insert(0, array.Count);
+            else if(item is PointVector)
+                return new TArray((item as PointVector).Length);
 
-				return result;
-			}
-			else
-				return 0;
+            else if(item is Matrix)
+                return new TArray((item as Matrix).LengthX, (item as Matrix).LengthY);
+
+            else 
+                return new TArray((item as TArray).Lengths);
 		}
 
-		private const string help = "Vrací rozmìry objektu (poèty prvkù v jednotlivých dimenzích) jako øadu; pokud je objekt skalár, vrací 0";
-		private const string parameters = "cokoliv";
+		private const string help = "Vrací rozmìry objektu (poèty prvkù v jednotlivých dimenzích) jako øadu";
+		private const string parameters = "Vector | PointVector | Matrix | TArray";
 	}
 
 }

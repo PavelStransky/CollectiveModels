@@ -26,7 +26,7 @@ namespace PavelStransky.Expression {
         // Kontexty jednotlivých køivek
         private TArray itemContext;
         // Kontexty jednotlivých pozadí
-        private TArray backgroundContext;
+        private TArray groupContext;
 
         /// <summary>
         /// Prvek grafu
@@ -44,12 +44,12 @@ namespace PavelStransky.Expression {
         public TArray Errors { get { return this.errors; } }
 
         /// <summary>
-        /// Poèet køivek grafu ve skupinì)
+        /// Poèet køivek grafu ve skupinì
         /// </summary>
         /// <param name="group">Èíslo skupiny køivky</param>
         public int NumCurves(int group) {
             if(group < this.NumGroups())
-                return (this.item[group] as TArray).Count;
+                return (this.item[group] as TArray).GetLength(0);
             else
                 return 0;
         }
@@ -59,7 +59,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <returns></returns>
         public int NumGroups() {
-            return this.item.Count;
+            return this.item.GetLength(0);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace PavelStransky.Expression {
         /// <param name="group">Index skupiny køivky</param>
         /// <param name="i">Index køivky</param>
         public Vector GetError(int group, int i) {
-            if(group < this.NumGroups() && i < this.NumCurves(group))
+            if(group < this.errors.Length && i < (this.errors[group] as TArray).Length)
                 return (this.errors[group] as TArray)[i] as Vector;
             else
                 return new Vector(0);
@@ -100,7 +100,10 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="group">Index skupiny</param>
         public Matrix GetMatrix(int group) {
-            return this.background[group] as Matrix;
+            if(group < this.background.Length)
+                return this.background[group] as Matrix;
+            else
+                return new Matrix(0);
         }
 
         /// <summary>
@@ -140,7 +143,8 @@ namespace PavelStransky.Expression {
                 if(type == typeof(Color)) {
                     if(item is string)
                         return Color.FromName((string)item);
-                    else if(item is TArray && (item as TArray).Count == 3) {
+                    else if(item is TArray && (item as TArray).Is1D && 
+                        (item as TArray).GetLength(0) == 3 && (item as TArray).GetItemType() == typeof(int)) {
                         TArray a = item as TArray;
                         return Color.FromArgb((int)a[0], (int)a[1], (int)a[2]);
                     }
@@ -203,7 +207,11 @@ namespace PavelStransky.Expression {
         public object GetCurveParameter(int group, int i, string name, object def) {
             // Nejdøíve koukáme, jestli parametr není v obecných 
             def = this.GetParameter(this.graphContext, name, def);
-            return this.GetParameter(this.GetCurveContext(group, i), name, def);
+
+            if(this.itemContext.Length < group && (this.itemContext[group] as TArray).Length < i)
+                return this.GetParameter(this.GetCurveContext(group, i), name, def);
+            else
+                return def;
         }
 
         /// <summary>
@@ -217,7 +225,11 @@ namespace PavelStransky.Expression {
         public object GetBackgroundParameter(int i, string name, object def) {
             // Nejdøíve koukáme, jestli parametr není v obecných 
             def = this.GetParameter(this.graphContext, name, def);
-            return this.GetParameter(this.backgroundContext[i] as Context, name, def);
+
+            if(this.groupContext.Length < i)
+                return this.GetParameter(this.groupContext[i] as Context, name, def);
+            else
+                return def;
         }
 
         /// <summary>
@@ -226,376 +238,22 @@ namespace PavelStransky.Expression {
         public Graph() { }
 
         /// <summary>
-        /// Ze zadaného objektu vytvoøí 2D TArray pole
-        /// </summary>
-        /// <param name="item">Data pro graf</param>
-        private void CreateItemArray(object item) {
-            this.item = new TArray();
-
-            if(item is PointVector) {
-                TArray a = new TArray();
-                a.Add(item);
-                this.item.Add(a);
-            }
-            else if(item is Vector) {
-                TArray a = new TArray();
-                a.Add(new PointVector(item as Vector));
-                this.item.Add(a);
-            }
-
-            else if(item is TArray) {
-                Type t = (item as TArray).ItemType;
-                if(t == typeof(PointVector))
-                    this.item.Add(item);
-
-                else if(t == typeof(Vector)) {
-                    TArray a = new TArray();
-                    foreach(Vector v in item as TArray)
-                        a.Add(new PointVector(v));
-                    this.item.Add(a);
-                }
-
-                else if(t == typeof(TArray)) {
-                    t = ((item as TArray)[0] as TArray).ItemType;
-                    if(t == typeof(PointVector))
-                        this.item = item as TArray;
-
-                    else if(t == typeof(Vector)) {
-                        foreach(TArray ta in item as TArray) {
-                            TArray a = new TArray();
-                            foreach(Vector v in ta)
-                                a.Add(new PointVector(v));
-                            this.item.Add(a);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ze zadaného objektu vytvoøí 2D TArray pole, které bude kopírovat pole s daty
-        /// Pokud nejsou pro køivku zadané chyby, prvek obsahuje Vector(0)
-        /// </summary>
-        /// <param name="errors">Objekt s chybami</param>
-        private void CreateErrorArray(object errors) {
-            int nGroups = this.NumGroups();
-            this.errors = null;
-
-            // Rozkopírování na všechny køivky s kontrolou délky
-            if(errors is Vector) {
-                this.errors = new TArray();
-                int le = (errors as Vector).Length;
-
-                for(int g = 0; g < nGroups; g++) {
-                    TArray group = this.item[g] as TArray;
-                    int nCurves = group.Count;
-
-                    for(int i = 0; i < nCurves; i++) {
-                        int li = (group[i] as PointVector).Length;
-
-                        if(li != le)
-                            throw new GraphException(errorMessageBadLength,
-                                string.Format(errorMessageBadLengthDetail, g, i, li, le));
-                    }
-
-                    TArray e = new TArray();
-                    e.Add(errors, nCurves);
-                    this.errors.Add(e);
-                }
-            }
-
-            else if(errors is TArray) {
-                Type t = (errors as TArray).ItemType;
-
-                // Rozkopírování na všechny prvky skupiny
-                if(t == typeof(Vector)) {
-                    this.errors = new TArray();
-                    int cv = (errors as TArray).Count;
-
-                    for(int g = 0; g < nGroups; g++) {
-                        TArray group = this.item[g] as TArray;
-                        int nCurves = group.Count;
-
-                        if(g >= cv) {
-                            TArray e = new TArray();
-                            e.Add(new Vector(0), nCurves);
-                            this.errors.Add(e);
-                        }
-                        else {
-                            Vector ev = (errors as TArray)[g] as Vector;
-                            int le = ev.Length;
-
-                            for(int i = 0; i < nCurves; i++) {
-                                int li = (group[i] as PointVector).Length;
-
-                                if(li != le)
-                                    throw new GraphException(errorMessageBadLength,
-                                        string.Format(errorMessageBadLengthDetail, g, i, li, le));
-                            }
-
-                            TArray e = new TArray();
-                            e.Add(errors, nCurves);
-                            this.errors.Add(e);
-                        }
-                    }
-                }
-
-                else if(t == typeof(TArray) && ((errors as TArray)[0] as TArray).ItemType == typeof(Vector)) {
-                    this.errors = new TArray();
-                    int ce = (errors as TArray).Count;
-
-                    for(int g = 0; g < nGroups; g++) {
-                        TArray group = this.item[g] as TArray;
-                        int nCurves = group.Count;
-
-                        if(g >= ce) {
-                            TArray e = new TArray();
-                            e.Add(new PointVector(0), nCurves);
-                            this.errors.Add(e);
-                        }
-                        else {
-                            TArray eGroup = (errors as TArray)[g] as TArray;
-                            int cce = eGroup.Count;
-
-                            TArray e = new TArray(typeof(PointVector));
-
-                            for(int i = 0; i < nCurves; i++) {
-                                int li = (group[i] as PointVector).Length;
-
-                                if(i >= cce)
-                                    e.Add(new Vector(0));
-                                else {
-                                    int le = (eGroup[i] as Vector).Length;
-
-                                    if(li != le)
-                                        throw new GraphException(errorMessageBadLength,
-                                            string.Format(errorMessageBadLengthDetail, g, i, li, le));
-
-                                    e.Add(eGroup[i]);
-                                }
-                            }
-
-                            this.errors.Add(e);
-                        }
-                    }
-                }
-            }
-
-            // Nemáme zadané žádné chyby
-            if(this.errors == null) {
-                this.errors = new TArray();
-                for(int g = 0; g < nGroups; g++) {
-                    TArray e = new TArray();
-                    e.Add(new Vector(0), this.NumCurves(g));
-                    this.errors.Add(e);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ze zadaného objektu vytvoøí TArray pole
-        /// (prvkù bude stejnì, jako je grup vstupních dat, pøípadnì vstupní data rozkopíruje)
-        /// Pokud není pozadí, prvek obsahuje Matrix(0)
-        /// </summary>
-        /// <param name="background">Objekt s pozadím</param>
-        private void CreateBackgroundArray(object background) {
-            int nGroups = this.NumGroups();
-            this.background = null;
-
-            if(background is Matrix) {
-                this.background = new TArray();
-
-                if(nGroups == 0) {
-                    this.background.Add(background);
-                    this.item.Add(new TArray(typeof(PointVector)));
-                    this.errors.Add(new TArray(typeof(Vector)));
-                }
-                else
-                    this.background.Add(background, nGroups);
-            }
-
-            else if(background is TArray && (background as TArray).ItemType == typeof(Matrix)) {
-                this.background = background as TArray;
-                int nBack = this.background.Count;
-                if(nGroups == 1 && nBack > 1) {
-                    this.item.Add(this.item[0], nBack - 1);
-                    this.errors.Add(this.errors[0], nBack - 1);
-                    nGroups = this.NumGroups();
-                }
-
-                int limit = System.Math.Max(nGroups, nBack);
-
-                for(int i = 0; i < limit; i++) {
-                    if(i >= nBack)
-                        this.background.Add(new Matrix(0));
-                    else if(i >= nGroups) {
-                        this.item.Add(new TArray(typeof(PointVector)));
-                        this.errors.Add(new TArray(typeof(Vector)));
-                    }
-                }
-            }
-
-            if(this.background == null) {
-                this.background = new TArray();
-                this.background.Add(new Matrix(0), nGroups);
-            }
-        }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="item">Data pro graf</param>
         /// <param name="background">Pozadí (densityGraph)</param>
         /// <param name="errors">Chyby køivek grafu</param>
-        /// <param name="graphParams">Parametry celého grafu</param>
-        /// <param name="itemParams">Parametry jednotlivých køivek grafu</param>
-        /// <param name="backgroundParams">Parametry pozadí</param>
-        public Graph(object item, object background, object errors, object graphParams, object itemParams, object backgroundParams) {
-            // Data
-            this.CreateItemArray(item);
-            // Chyby
-            this.CreateErrorArray(errors);
-            // Pozadí
-            this.CreateBackgroundArray(background);
-            
-            int nGroups = this.NumGroups();
+        /// <param name="graphContext">Parametry celého grafu</param>
+        /// <param name="itemContext">Parametry jednotlivých køivek grafu</param>
+        /// <param name="groupContext">Parametry skupin</param>
+        public Graph(TArray item, TArray background, TArray errors, Context graphContext, TArray groupContext, TArray itemContext) {
+            this.item = item;
+            this.background = background;
+            this.errors = errors;
 
-            // Parametry grafu
-            this.graphContext = null;
-            if(graphParams is string && graphParams as string != string.Empty) {
-                this.graphContext = new Context();
-                (new Expression(graphParams as string)).Evaluate(this.graphContext);
-            }
-            else if(graphParams is Context)
-                this.graphContext = graphParams as Context;
-            if(this.graphContext == null)
-                this.graphContext = new Context();
-
-            // Parametry køivek - nejprve vše pøevedeme na kontexty
-            if(itemParams is string && itemParams as string != string.Empty){
-                Context c = new Context();
-                (new Expression(itemParams as string)).Evaluate(c);
-                itemParams = c;
-            }
-
-            else if(itemParams is TArray) {
-                int inGroups = (itemParams as TArray).Count;
-                TArray ipn = new TArray();
-
-                for(int g = 0; g < inGroups; g++) {
-                    object ip = (itemParams as TArray)[g];
-                    if(ip is string && ip as string != string.Empty) {
-                        Context c = new Context();
-                        (new Expression(ip as string)).Evaluate(c);
-                        ipn.Add(c);
-                    }
-
-                    else if(ip is Context)
-                        ipn.Add(ip);
-
-                    else if(ip is TArray) {
-                        int inCurves = (ip as TArray).Count;
-                        TArray iipn = new TArray();
-
-                        for(int i = 0; i < inCurves; i++) {
-                            object iip = (ip as TArray)[i];
-                            if(iip is string && iip as string != string.Empty) {
-                                Context c = new Context();
-                                (new Expression(iip as string)).Evaluate(c);
-                                iipn.Add(c);
-                            }
-
-                            else if(iip is Context)
-                                iipn.Add(iip);
-                        }
-
-                        ipn.Add(iipn);
-                    }
-                }
-
-                itemParams = ipn;
-            }
-
-            // Nyní zaøadíme
-            this.itemContext = new TArray();
-            for(int g = 0; g < nGroups; g++) {
-                int curves = this.NumCurves(g);
-
-                object ip = null;
-                if(itemParams != null) 
-                    ip = itemParams;
-                if(ip is TArray) {
-                    if((ip as TArray).Count > g) {
-                        if((ip as TArray)[g] is TArray)
-                            ip = (ip as TArray)[g];
-                    }
-                    else
-                        ip = null;
-                }
-
-                TArray ca = new TArray();
-
-                if(ip is Context) 
-                    ca.Add(ip, curves);
-
-                else if(ip is TArray) {
-                    for(int i = 0; i < curves; i++) {
-                        Context iip = null;
-                        if((ip as TArray).Count > i)
-                            iip = (ip as TArray)[i] as Context;
-
-                        if(iip is Context)
-                            ca.Add(iip);
-                        else
-                            ca.Add(new Context());
-                    }
-                }
-
-                else {
-                    Context c = new Context();
-                    ca.Add(c, curves);
-                }
-
-                this.itemContext.Add(ca);
-            }
-
-            // Parametry pozadí - pøevod na kontexty
-            if(backgroundParams is string && backgroundParams as string != string.Empty) {
-                Context c = new Context();
-                (new Expression(backgroundParams as string)).Evaluate(c);
-                itemParams = c;
-            }
-
-            else if(backgroundParams is TArray) {
-                int bnGroups = (backgroundParams as TArray).Count;
-                TArray bpn = new TArray();
-
-                for(int g = 0; g < bnGroups; g++) {
-                    object bp = (backgroundParams as TArray)[g];
-                    if(bp is string && bp as string != string.Empty) {
-                        Context c = new Context();
-                        (new Expression(bp as string)).Evaluate(c);
-                        bpn.Add(c);
-                    }
-                    else if(bp is Context)
-                        bpn.Add(bp);
-                }
-
-                backgroundParams = bpn;
-            }            
-            
-            // Zaøazení
-            this.backgroundContext = new TArray();
-            for(int g = 0; g < nGroups; g++) {
-                Context c = new Context();
-
-                if(backgroundParams is Context)
-                    this.backgroundContext.Add(backgroundParams);
-                else if(backgroundParams is TArray && (backgroundParams as TArray).Count > g)
-                    this.backgroundContext.Add((backgroundParams as TArray)[g]);
-                else
-                    this.backgroundContext.Add(new Context());
-            }
+            this.graphContext = graphContext;
+            this.groupContext = groupContext;
+            this.itemContext = itemContext;
         }
 
         /// <summary>
@@ -627,13 +285,17 @@ namespace PavelStransky.Expression {
             TArray a = this.item[group] as TArray;
             TArray e = this.errors[group] as TArray;
 
-            int nCurves = a.Count;
+            int nCurves = a.Length;
 
             if(nCurves == 0)
                 return null;
 
             PointVector pv = a[0] as PointVector;
             Vector ev = e[0] as Vector;
+
+            if(pv.Length == 0)
+                return null;
+
             minX = pv.MinX();
             maxX = pv.MaxX();
 
@@ -730,7 +392,7 @@ namespace PavelStransky.Expression {
             PointVector curve = this.GetCurve(group, index);
 
             if(error.Length > 0 && curve.Length > 0) {
-                int length = curve.Length;
+                int length = System.Math.Min(curve.Length, error.Length);
                 result = new Point[2 * length];
 
                 for(int i = 0; i < length; i++) {
@@ -757,7 +419,7 @@ namespace PavelStransky.Expression {
 
             param.Add(this.graphContext, "Parametry grafu");
             param.Add(this.itemContext, "Parametry køivek");
-            param.Add(this.backgroundContext, "Parametry pozadí");
+            param.Add(this.groupContext, "Parametry pozadí");
 
             param.Export(export);
         }
@@ -776,7 +438,7 @@ namespace PavelStransky.Expression {
 
                 this.graphContext = (Context)param.Get();
                 this.itemContext = (TArray)param.Get();
-                this.backgroundContext = (TArray)param.Get();
+                this.groupContext = (TArray)param.Get();
             }
         }
         #endregion

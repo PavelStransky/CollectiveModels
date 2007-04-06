@@ -13,24 +13,20 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments) {
             this.CheckArgumentsNumber(evaluatedArguments, 1);
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IQuantumSystem));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item is IQuantumSystem) {
-                IQuantumSystem q = item as IQuantumSystem;
-                TArray result = new TArray();
-                for(int i = 0; i < q.NumEV; i++)
-                    result.Add(q.GetEigenVector(i));
-                return result;
-            }
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IQuantumSystem item = arguments[0] as IQuantumSystem;
 
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
-            else
-                return this.BadTypeError(item, 0);
+            int numEV = item.NumEV;
+            TArray result = new TArray(typeof(Vector), numEV);
+            for(int i = 0; i < numEV; i++)
+                result[i] = item.GetEigenVector(i);
+
+            return result;
         }
 
         private const string help = "Vrátí vypoèítané vlastní vektory kvantového systému";

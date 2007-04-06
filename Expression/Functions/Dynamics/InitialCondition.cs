@@ -18,36 +18,25 @@ namespace PavelStransky.Expression.Functions {
             this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
 
             this.ConvertInt2Double(evaluatedArguments, 1);
+            this.ConvertInt2Double(evaluatedArguments, 2);
+
+            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
             this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-
-            if(evaluatedArguments.Count > 2) {
-                this.ConvertInt2Double(evaluatedArguments, 2);
-                this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
-            }
-
-            return evaluatedArguments;
+            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
-            if(item as IDynamicalSystem != null) {
-                IDynamicalSystem dynamicalSystem = item as IDynamicalSystem;
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
 
-                double e = (double)arguments[1];
-
-                if(arguments.Count > 2) {
-                    double l = (double)arguments[2];
-                    return dynamicalSystem.IC(e, l);
-                }
-                else
-                    return dynamicalSystem.IC(e);
+            if(arguments.Count > 2) {
+                double l = (double)arguments[2];
+                return dynamicalSystem.IC(e, l);
             }
-            else if(item is TArray)
-                return this.EvaluateArray(depth, item as TArray, arguments);
             else
-                return this.BadTypeError(item, 0);
+                return dynamicalSystem.IC(e);
         }
 
         private const string help = "Nageneruje pro danou energii jednu poèáteèní podmínku a vrátí ji jako vektor (x, y, vx, vy)";
-        private const string parameters = "Dynamický systém; energie (double) [; úhlový moment]";
+        private const string parameters = "Dynamický systém; energie (double) [; úhlový moment (double)]";
     }
 }

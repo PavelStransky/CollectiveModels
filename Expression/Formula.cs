@@ -16,9 +16,8 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="expression">Výraz</param>
         /// <param name="parent">Rodiè</param>
-        /// <param name="writer">Writer pro textové výstupy</param>
-        public Formula(string expression, Atom parent, IOutputWriter writer)
-            : base(expression, parent, writer) {
+        public Formula(string expression, Atom parent)
+            : base(expression, parent) {
             this.expression = FillBracket(this.expression);
 
             string operatorName = string.Empty;
@@ -38,11 +37,11 @@ namespace PavelStransky.Expression {
 		/// <summary>
 		/// Provede výpoèet vzorce
 		/// </summary>
-        /// <param name="context">Kontext, na kterém se spouští výpoèet</param>
+        /// <param name="guider">Prùvodce výpoètem</param>
         /// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate(Context context) {
-			object left = EvaluateAtomObject(context, this.leftOperand);
-			object right = EvaluateAtomObject(context, this.rightOperand);
+		public override object Evaluate(Guider guider) {
+			object left = EvaluateAtomObject(guider, this.leftOperand);
+			object right = EvaluateAtomObject(guider, this.rightOperand);
 
 			return this.binaryOperator.Evaluate(left, right);
 		}

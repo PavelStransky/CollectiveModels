@@ -54,7 +54,8 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        protected override SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
+        /// <param name="trace">Calculates only trace of the matrix</param>
+        protected override SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer, bool trace) {
             this.CreateIndex(maxE);
 
             if(numSteps == 0)
@@ -126,6 +127,9 @@ namespace PavelStransky.GCM {
                         if(mi != mj && System.Math.Abs(mi - mj) != 3)
                             continue;
 
+                        if(trace && i != j)
+                            continue;
+
                         double sum = 0;
 
                         double[] vCache = vCache2;
@@ -155,45 +159,47 @@ namespace PavelStransky.GCM {
 
                 cache2 = new BasisCache(interval, i1, i2, this.Psi);
 
-                if(writer != null)
-                    writer.Write("N ");
+                if(!trace) {
+                    if(writer != null)
+                        writer.Write("N ");
 
-                // Nediagonální blok
-                for(int i = i0; i < i1; i++) {
-                    int ni = this.index.N[i];
-                    int mi = this.index.M[i];
+                    // Nediagonální blok
+                    for(int i = i0; i < i1; i++) {
+                        int ni = this.index.N[i];
+                        int mi = this.index.M[i];
 
-                    for(int j = i1; j < i2; j++) {
-                        int nj = this.index.N[j];
-                        int mj = this.index.M[j];
+                        for(int j = i1; j < i2; j++) {
+                            int nj = this.index.N[j];
+                            int mj = this.index.M[j];
 
-                        // Výbìrové pravidlo
-                        if(mi != mj && System.Math.Abs(mi - mj) != 3)
-                            continue;
+                            // Výbìrové pravidlo
+                            if(mi != mj && System.Math.Abs(mi - mj) != 3)
+                                continue;
 
-                        double sum = 0;
+                            double sum = 0;
 
-                        double[] vCache = vCache2;
-                        if(mi == mj)
-                            vCache = vCache1;
+                            double[] vCache = vCache2;
+                            if(mi == mj)
+                                vCache = vCache1;
 
-                        for(int sb = 0; sb < numSteps; sb++)
-                            sum += cache1[i, sb] * vCache[sb] * cache2[j, sb];
+                            for(int sb = 0; sb < numSteps; sb++)
+                                sum += cache1[i, sb] * vCache[sb] * cache2[j, sb];
 
-                        sum *= step;
+                            sum *= step;
 
-                        if(mi == 0 && mj == 0)
-                            sum *= 2.0;
+                            if(mi == 0 && mj == 0)
+                                sum *= 2.0;
 
-                        else if(mi == 0 || mj == 0)
-                            sum *= 1.6;
+                            else if(mi == 0 || mj == 0)
+                                sum *= 1.6;
 
-                        // Již je symetrické
-                        m[i, j] = sum;
+                            // Již je symetrické
+                            m[i, j] = sum;
+                        }
                     }
-                }
 
-                cache1 = cache2;
+                    cache1 = cache2;
+                }
 
                 if(writer != null) {
                     writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));

@@ -7,15 +7,15 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Z globálního kontextu vyzvedne promìnnou
+    /// Gets out a variable from the global context
     /// </summary>
     public class GetGlobalVar: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.GetGlobalVarHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+
+            this.SetParam(0, true, false, false, Messages.PVarName, Messages.PVarNameDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -25,8 +25,5 @@ namespace PavelStransky.Expression.Functions {
 
             return c[arguments[0] as string];
         }
-
-        private const string help = "Z globálního kontextu vrátí urèenou promìnnou.";
-        private const string parameters = "Název promìnné (string)";
     }
 }

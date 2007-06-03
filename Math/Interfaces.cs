@@ -8,6 +8,11 @@ namespace PavelStransky.Math {
     public delegate double RealFunction(double x);
 
     /// <summary>
+    /// Delegate - a real function of a real parameter and other parameters
+    /// </summary>
+    public delegate double RealFunctionWithParams(double x, params object[] p);
+
+    /// <summary>
     /// Delegát - Vektorová funkce vektorové promìnné
     /// </summary>
     /// <param name="rightSide">Vypoèítaná pravá strana</param>
@@ -148,18 +153,23 @@ namespace PavelStransky.Math {
         /// Tøídìní s klíèi
         /// </summary>
         /// <param name="keys">Klíèe</param>
-        object Sort(Vector keys);
+        object Sort(ISortable keys);
 
         /// <summary>
         /// Tøídìní s klíèi sestupnì
         /// </summary>
         /// <param name="keys">Klíèe</param>
-        object SortDesc(Vector keys);
+        object SortDesc(ISortable keys);
 
         /// <summary>
         /// Délka - poèet objektù k setøídìní
         /// </summary>
         int Length { get;}
+
+        /// <summary>
+        /// Keys for sorting
+        /// </summary>
+        Array GetKeys();
     }
 
     /// <summary>
@@ -170,18 +180,18 @@ namespace PavelStransky.Math {
         /// Vypíše daný objekt
         /// </summary>
         /// <param name="o">Objekt</param>
-        void Write(object o);
+        string Write(object o);
 
         /// <summary>
         /// Vypíše daný objekt a zalomí øádku
         /// </summary>
         /// <param name="o">Objekt</param>
-        void WriteLine(object o);
+        string WriteLine(object o);
 
         /// <summary>
         /// Zalomí øádku
         /// </summary>
-        void WriteLine();
+        string WriteLine();
 
         /// <summary>
         /// Vyèistí výstup

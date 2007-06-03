@@ -6,26 +6,22 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Vymaže promìnnou z kontextu
+	/// Delete the specified variable (all variables) from the context
 	/// </summary>
 	public class Clear: FunctionDefinition {
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string Help {get {return Messages.ClearHelp;}}
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, false, false, false, Messages.PVarName, Messages.PVarNameDescription, null, typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-			if(arguments.Count == 0)
+			if(arguments[0] == null)
 				guider.Context.Clear();
 			else
 				guider.Context.Clear(arguments[0] as string);
 			return null;
 		}
-
-		private const string help = "Vymaže promìnnou z kontextu";
-		private const string parameters = "promìnná (string)";
 	}
 }

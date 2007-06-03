@@ -13,10 +13,10 @@ namespace PavelStransky.Expression.Functions {
         public override string Parameters { get { return parameters; } }
         public override string Name { get { return name; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsNumber(evaluatedArguments, 1);
             this.ConvertInt2Double(evaluatedArguments, 0);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(double), typeof(TimeSpan), typeof(string));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(double), typeof(TimeSpan), typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

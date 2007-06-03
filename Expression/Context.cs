@@ -16,6 +16,9 @@ namespace PavelStransky.Expression {
         private static string fncDirectory = string.Empty;
         private static string globalContextDirectory = string.Empty;
 
+        private static string execDirectory = string.Empty;
+        private static string workingDirectory = string.Empty;
+
         #region Události - žádosti pro vnìjší objekt
         // Zmìna na kontextu
         public delegate void ContextEventHandler(object sender, ContextEventArgs e);
@@ -63,6 +66,16 @@ namespace PavelStransky.Expression {
         /// </summary>
         public static string GlobalContextFileName { get { return Path.Combine(globalContextDirectory, globalContextFileName); } }
 
+        /// <summary>
+        /// Directory with the main executable
+        /// </summary>
+        public static string ExecDirectory { get { return execDirectory; } set { execDirectory = value; } }
+
+        /// <summary>
+        /// Working directory
+        /// </summary>
+        public static string WorkingDirectory { get { return workingDirectory; } set { workingDirectory = value; } }
+
 		/// <summary>
 		/// Pøidá promìnnou do kontextu. Pokud už existuje, nahradí ji
 		/// </summary>
@@ -82,6 +95,15 @@ namespace PavelStransky.Expression {
 
             else if(name == globalContextDirectoryVariable)
                 globalContextDirectory = (string)item;
+
+            else if(name == execDirectoryVariable)
+                execDirectory = (string)item;
+
+            else if(name == workingDirectoryVariable)
+                workingDirectory = (string)item;
+
+            else if(name == piVariable)
+                throw new ContextException(string.Format(Messages.EMVarCannotBeSet, piVariable));
 
             else if(this.objects.ContainsKey(name)) {
                 // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
@@ -147,6 +169,15 @@ namespace PavelStransky.Expression {
 
                 else if(name == globalContextDirectoryVariable)
                     return new Variable(name, globalContextDirectory);
+
+                else if(name == execDirectoryVariable)
+                    return new Variable(name, execDirectory);
+
+                else if(name == workingDirectoryVariable)
+                    return new Variable(name, workingDirectory);
+
+                else if(name == piVariable)
+                    return new Variable(name, System.Math.PI);
 
 				Variable variable = this.objects[name] as Variable;
 				if(variable == null)
@@ -225,6 +256,9 @@ namespace PavelStransky.Expression {
         private const string directoryVariable = "_dir";
         private const string fncDirectoryVariable = "_fncdir";
         private const string globalContextDirectoryVariable = "_gcdir";
+        private const string execDirectoryVariable = "_execdir";
+        private const string workingDirectoryVariable = "_workingdir";
+        private const string piVariable = "_pi";
         private const string globalContextFileName = "global.ctx";
     }
 

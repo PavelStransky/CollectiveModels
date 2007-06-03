@@ -91,11 +91,14 @@ namespace PavelStransky.Expression {
             }
         }
 
-        #region Pøiøazení
+        #region Assignment
         // Pøiøazovací funkce z pøedchozí úrovnì
         private Assignment.AssignmentFunction assignFn;
         private Guider guider;
 
+        /// <summary>
+        /// Assignment function
+        /// </summary>
         private object AssignFn(object o) {
             try {
                 Indexes index = this.EvaluateIndexes(this.guider, o);
@@ -104,7 +107,20 @@ namespace PavelStransky.Expression {
                 if(o is TArray) {
                     if(index.Rank > (o as TArray).Rank)
                         this.ManyIndexesError((o as TArray).Rank, index.Rank);
-                    (o as TArray).SetValue(index.Index, assignFn);
+                    (o as TArray).SetValue(index.Index, this.assignFn);
+                }
+
+                else if(o is List) {
+                    if(index.Rank != 1)
+                        this.ManyIndexesError(1, index.Rank);
+
+                    int[] i = index.Index[0];
+                    int c = i.Length;
+
+                    List l = o as List;
+                    
+                    for(int j = 0; j < c; j++) 
+                        (l as ArrayList)[i[j]] = this.AssignFn(l[i[j]]);
                 }
 
                 else if(o is Vector) {
@@ -120,7 +136,22 @@ namespace PavelStransky.Expression {
                         v[i[j]] = (result is double) ? (double)result : (double)(int)result;
                     }
                 }
+
+                else if(o is PointVector) {
+                    if(index.Rank != 1)
+                        this.ManyIndexesError(1, index.Rank);
+
+                    int[] i = index.Index[0];
+                    int l = i.Length;
+                    PointVector pv = o as PointVector;
+
+                    for(int j = 0; j < l; j++){
+                        object result = this.assignFn(pv[i[j]]);
+                        pv[i[j]] = (PointD)result;
+                    }
+                }
             }
+
             catch(Exception e) {
                 throw e;
             }
@@ -140,8 +171,8 @@ namespace PavelStransky.Expression {
             this.assignFn = assignFn;
             this.guider = guider;
 
-            if(indexedItem is Indexer) {
-                (indexedItem as Indexer).Evaluate(guider, this.AssignFn);
+            if(this.indexedItem is Indexer) {
+                (this.indexedItem as Indexer).Evaluate(guider, this.AssignFn);
             }
             else {
                 this.AssignFn(EvaluateAtomObject(guider, this.indexedItem));
@@ -149,19 +180,22 @@ namespace PavelStransky.Expression {
         }
         #endregion
 
+        #region Getting
         /// <summary>
-		/// Provede výpoèet funkce
-		/// </summary>
-        /// <param name="guider">Prùvodce výpoètu</param>
-        /// <returns>Výsledek výpoètu</returns>
-		public override object Evaluate(Guider guider) {
-            object result = null;			
+        /// Delegát funkce, která provede výbìr prvku
+        /// </summary>
+        public delegate object GetFunction(object o);
+        private GetFunction getFn;
 
-			try {
-                object o = EvaluateAtomObject(guider, indexedItem);
+        /// <summary>
+        /// Getting function
+        /// </summary>
+        private object GetFn(object o) {
+            object result = null;
 
+            try {
                 // Nejprve vypoèítáme všechny indexy
-                Indexes index = this.EvaluateIndexes(guider, o);
+                Indexes index = this.EvaluateIndexes(this.guider, o);
 
                 // Nyní indexace
                 if(o is Vector) {
@@ -170,31 +204,155 @@ namespace PavelStransky.Expression {
 
                     if(index.Shrink[0])
                         result = (o as Vector)[index.Index[0][0]];
-                    else
-                        result = (o as Vector)[index.Index[0]];
+                    else {
+                        int[] ind = index.Index[0];
+                        int l = ind.Length;
+                        Vector v = new Vector(l);
+                        for(int i = 0; i < l; i++)
+                            v[i] = (o as Vector)[ind[i]];
+                        result = v;
+                    }
                 }
 
                 else if(o is PointVector) {
                     if(index.Rank > 1)
                         this.ManyIndexesError(1, index.Rank);
-//                    result = (o as PointVector)[index[0]];
+
+                    if(index.Shrink[0])
+                        result = (o as PointVector)[index.Index[0][0]];
+                    else {
+                        int[] ind = index.Index[0];
+                        int l = ind.Length;
+                        PointVector pv = new PointVector(l);
+
+                        for(int i = 0; i < l; i++)
+                            pv[i] = (o as PointVector)[ind[i]];
+
+                        result = pv;
+                    }
                 }
+
+                else if(o is Matrix) {
+                    if(index.Rank > 2)
+                        this.ManyIndexesError(2, index.Rank);
+
+                    // Only row index
+                    if(index.Rank == 1) {
+                        if(index.Shrink[0])
+                            return (o as Matrix).GetRowVector(index.Index[0][0]);
+                        else {
+                            int[] ind = index.Index[0];
+                            int lx = ind.Length;
+                            int ly = (o as Matrix).LengthY;
+                            Matrix m = new Matrix(lx, ly);
+                            for(int i = 0; i < lx; i++)
+                                m.SetRowVector(i, (o as Matrix).GetRowVector(ind[i]));
+                        }
+                    }
+                    // Both indexes
+                    else {
+                        if(index.Shrink[0] && index.Shrink[1])
+                            result = (o as Matrix)[index.Index[0][0], index.Index[1][0]];
+                        else if(index.Shrink[0]) {
+                            int indx1 = index.Index[0][0];
+                            int[] indy = index.Index[1];
+                            int l = indy.Length;
+
+                            Vector v = new Vector(l);
+                            for(int i = 0; i < l; i++)
+                                v[i] = (o as Matrix)[indx1, indy[i]];
+
+                            result = v;
+                        }
+                        else if(index.Shrink[1]) {
+                            int[] indx = index.Index[0];
+                            int indy1 = index.Index[1][0];
+                            int l = indx.Length;
+
+                            Vector v = new Vector(l);
+                            for(int i = 0; i < l; i++)
+                                v[i] = (o as Matrix)[indx[i], indy1];
+
+                            result = v;
+                        }
+                        else {
+                            int[] indx = index.Index[0];
+                            int[] indy = index.Index[1];
+                            int lx = indx.Length;
+                            int ly = indy.Length;
+
+                            Matrix m = new Matrix(lx, ly);
+                            for(int i = 0; i < lx; i++)
+                                for(int j = 0; j < ly; j++)
+                                    m[i, j] = (o as Matrix)[indx[i], indy[j]];
+
+                            result = m;
+                        }
+                    }
+                }
+
+                else if(o is List) {
+                    if(index.Rank > 1)
+                        this.ManyIndexesError(1, index.Rank);
+
+                    if(index.Shrink[0])
+                        result = this.getFn((o as List)[index.Index[0][0]]);
+                    else {
+                        int l = index.Index[0].Length;
+                        result = new List();
+                        for(int i = 0; i < l; i++)
+                            (result as List).Add(this.getFn((o as List)[index.Index[0][i]]));
+                    }
+                }
+
                 else if(o is TArray) {
                     if(index.Rank > (o as TArray).Rank)
                         this.ManyIndexesError((o as TArray).Rank, index.Rank);
-                    
-                    result = (o as TArray).GetSubArray(index.Index, index.Shrink);
-                }
-			}
-			catch(Exception e) {
-				throw e;
-			}
-			finally {
-				this.ClearEndVariables(guider.Context);
-			}
 
-			return result;
+                    result = (o as TArray).GetSubArray(index.Index, index.Shrink, this.getFn);
+                }
+            }
+            catch(Exception e) {
+                throw e;
+            }
+            finally {
+                this.ClearEndVariables(guider.Context);
+            }
+
+            return result;
+
+        }
+
+        /// <summary>
+        /// Function that provide getting
+        /// </summary>
+        private object EvaluateG(Guider guider, GetFunction getFn) {
+            this.getFn = getFn;
+            this.guider = guider;
+
+            if(this.indexedItem is Indexer)
+                return (this.indexedItem as Indexer).EvaluateG(guider, this.GetFn);
+            else {
+                return this.GetFn(EvaluateAtomObject(guider, this.indexedItem));
+            }
+        }
+
+        /// <summary>
+		/// Provede výpoèet funkce
+		/// </summary>
+        /// <param name="guider">Prùvodce výpoètu</param>
+        /// <returns>Výsledek výpoètu</returns>
+		public override object Evaluate(Guider guider) {
+            return this.EvaluateG(guider, this.BasicGetFn);
 		}
+
+        /// <summary>
+        /// Basic getting function
+        /// </summary>
+        private object BasicGetFn(object o) {
+            return o;
+        }
+        #endregion
 
         /// <summary>
         /// Provede výpoèet všech indexù

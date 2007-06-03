@@ -7,29 +7,25 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vypoèítá ekvipotenciální plochu GCM pro danou energii
+    /// For GCM system and given energy calculates equipotential line
     /// </summary>
     public class Equipotential: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.EquipotentialHelp; } }
 
-        protected override object CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
+        protected override void CreateParameters() {
+            this.NumParams(3);
 
-            this.ConvertInt2Double(evaluatedArguments, 1);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(PavelStransky.GCM.GCM));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
+            this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
+            this.SetParam(2, false, true, false, Messages.EquipotentialP3, Messages.EquipotentialP3Description, null, typeof(int));
         }
 
-        protected override object Evaluate(int depth, object item, ArrayList arguments) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             PavelStransky.GCM.GCM gcm = arguments[0] as PavelStransky.GCM.GCM;
             double e = (double)arguments[1];
 
             PointVector[] equipotentials;
-            if(arguments.Count > 2)
+            if(arguments[2] != null)
                 equipotentials = gcm.EquipotentialContours(e, (int)arguments[2]);
             else
                 equipotentials = gcm.EquipotentialContours(e);
@@ -40,8 +36,5 @@ namespace PavelStransky.Expression.Functions {
                 result[i] = equipotentials[i];
             return result;
         }
-
-        private const string help = "Vypoèítá ekvipotenciální plochu GCM pro zadanou energii";
-        private const string parameters = "GCM; energie (double) [; poèet bodù køivky (int)]";
     }
 }

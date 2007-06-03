@@ -7,19 +7,16 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Do globálního kontextu uloží promìnné
+    /// Sets a variable into the global context
     /// </summary>
     public class SetGlobalVar: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.SetGlobalVarHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            int count = evaluatedArguments.Count;
-
-            for(int i = 0; i < count; i++)
-                this.CheckArgumentsType(evaluatedArguments, i, typeof(string));
+        protected override void CreateParameters() {
+            this.NumParams(1, true);
+            this.SetParam(0, true, false, false, Messages.PVarName, Messages.PVarNameDescription, null);
         }
-
+        
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             string fileName = Context.GlobalContextFileName;
             FileInfo fileInfo = new FileInfo(fileName);
@@ -45,8 +42,5 @@ namespace PavelStransky.Expression.Functions {
 
             return c;
         }
-
-        private const string help = "Do globálního kontextu uloží promìnné.";
-        private const string parameters = "[Promìnné kopírované z aktuálního kontextu (string) ...]";
     }
 }

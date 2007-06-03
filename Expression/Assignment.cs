@@ -12,9 +12,6 @@ namespace PavelStransky.Expression {
         // Objekt, který pøiøazujeme
         private object rightSide;
 
-        // True, pokud je na levé stranì výrazu indexer
-        private bool isIndexer;
-
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -70,6 +67,9 @@ namespace PavelStransky.Expression {
         /// <returns>Výsledek výpoètu</returns>
         public override object Evaluate(Guider guider) {
             this.result = EvaluateAtomObject(guider, this.rightSide);
+            if(this.result as ICloneable != null)
+                this.result = (this.result as ICloneable).Clone();
+
             if(this.result != null) {
                 if(this.leftSide is string)
                     return guider.Context.SetVariable(this.leftSide as string, this.result);

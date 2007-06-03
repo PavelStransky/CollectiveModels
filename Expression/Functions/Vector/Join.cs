@@ -6,19 +6,15 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Øadu vektorù nebo vektorù bodù slouèí do jednoho vektoru
+    /// Array of Vectors or Array of PointVectors joins into one Vector
 	/// </summary>
 	public class Join: FunctionDefinition {
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string Help {get {return Messages.JoinHelp;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments) {
-			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Vector), typeof(PointVector));
-		}
+        protected override void CreateParameters() {
+            this.NumParams(1, true);
 
-        protected override object EvaluateArray(Guider guider, ArrayList arguments) {
-            return this.EvaluateFn(guider, arguments);
+            this.SetParam(0, true, true, false, Messages.JoinP1, Messages.JoinP1Description, null, typeof(Vector), typeof(PointVector), typeof(TArray));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -42,7 +38,7 @@ namespace PavelStransky.Expression.Functions {
                 return Vector.Join(vector);
             }
 
-            else {
+            else if(ta.GetItemType() == typeof(PointVector)) {
                 int length = ta.GetNumElements();
                 PointVector[] vector = new PointVector[length];
 
@@ -54,9 +50,8 @@ namespace PavelStransky.Expression.Functions {
 
                 return PointVector.Join(vector);
             }
-        }
 
-		private const string help = "Øadu vektorù nebo vektory slouèí do jednoho vektoru";
-		private const string parameters = "Vector | PointVector";
+            return null;
+        }
 	}
 }

@@ -399,9 +399,10 @@ namespace PavelStransky.Math {
 		}
 
 		/// <summary>
-		/// Transformace prvkù matice podle zadané transformaèní funkce
+        /// Transformation of the items of the matrix according to the specified transformation function
 		/// </summary>
-		public Matrix Transform(RealFunction function) {
+        /// <param name="function">Transformation function</param>
+        public Matrix Transform(RealFunction function) {
             int lengthX = this.LengthX;
             int lengthY = this.LengthY;
             Matrix result = new Matrix(lengthX, lengthY);
@@ -412,8 +413,25 @@ namespace PavelStransky.Math {
 
 			return result;
 		}
-		
-		/// <summary>
+
+        /// <summary>
+        /// Transformation of the items of the matrix according to the specified transformation function
+        /// </summary>
+        /// <param name="function">Transformation function</param>
+        /// <param name="p">Additional parameters for the transformation function</param>
+        public Matrix Transform(RealFunctionWithParams function, params object[] p) {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
+
+            for(int i = 0; i < lengthX; i++)
+                for(int j = 0; j < lengthY; j++)
+                    result[i, j] = function(this[i, j]);
+
+            return result;
+        }
+        
+        /// <summary>
 		/// Vrátí øádek matice jako vektor
 		/// </summary>
 		/// <param name="i">Index øádku</param>

@@ -1,0 +1,759 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbsHelp" xml:space="preserve">
+    <value>Absolute value</value>
+  </data>
+  <data name="ArcTanHelp" xml:space="preserve">
+    <value>Arcus tangens of the value</value>
+  </data>
+  <data name="BoundsHelp" xml:space="preserve">
+    <value>For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found</value>
+  </data>
+  <data name="CGCMHelp" xml:space="preserve">
+    <value>Creates a ClassicalGCM class (nonrotating case with simple kinetic term)</value>
+  </data>
+  <data name="CGCMJHelp" xml:space="preserve">
+    <value>Creates a ClassicalGCMJ class (case with nonzero angular momentum)</value>
+  </data>
+  <data name="CIBMHelp" xml:space="preserve">
+    <value>Creates a ClassicalIBM class</value>
+  </data>
+  <data name="ClearHelp" xml:space="preserve">
+    <value>Erase the variable (all variables if nothing is specified) from the context</value>
+  </data>
+  <data name="ContextHelp" xml:space="preserve">
+    <value>Creates a new context</value>
+  </data>
+  <data name="ContextP1Description" xml:space="preserve">
+    <value>Commands that will be run on the new context</value>
+  </data>
+  <data name="ContextP2Description" xml:space="preserve">
+    <value>Name of a variable that will be copied from actual context</value>
+  </data>
+  <data name="DeflateHelp" xml:space="preserve">
+    <value>Given array transforms into one dimensional array</value>
+  </data>
+  <data name="DeflateP1" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="DeflateP1Description" xml:space="preserve">
+    <value>Array to be deflated</value>
+  </data>
+  <data name="EMBadParamType" xml:space="preserve">
+    <value>Parameter "{0}" has bad type.</value>
+  </data>
+  <data name="EMBadParamTypeDetail" xml:space="preserve">
+    <value>Correct type: {0}\r\nEntered type: {1}</value>
+  </data>
+  <data name="EMFileNotExist" xml:space="preserve">
+    <value>The file you "{0}" have specified does not exist.</value>
+  </data>
+  <data name="EMNoFile" xml:space="preserve">
+    <value>You must specify the name of the file.</value>
+  </data>
+  <data name="EMNot1D" xml:space="preserve">
+    <value>For the considered operation the rank of the Array must be equals to 1.</value>
+  </data>
+  <data name="EMObligatoryParameter" xml:space="preserve">
+    <value>Parameter "{0}" (position {1}) of the function "{2}" is obligatory and cannot be omited.</value>
+  </data>
+  <data name="EMOperatorArrayLength" xml:space="preserve">
+    <value>Using the operator '{0}' between array requires the length  ({1}, {2}) to be equals.</value>
+  </data>
+  <data name="EMOperatorUnknownType" xml:space="preserve">
+    <value>It is not possible to use the operator '{0}' between these types: {1} {0} {2}.</value>
+  </data>
+  <data name="EMRankDetail" xml:space="preserve">
+    <value>Rank of the Array = {0}.</value>
+  </data>
+  <data name="EMVarCannotBeSet" xml:space="preserve">
+    <value>Variable "{0}" cannot be set.</value>
+  </data>
+  <data name="EMZeroLengthList" xml:space="preserve">
+    <value>The length of the list must not be zero.</value>
+  </data>
+  <data name="EnergyHelp" xml:space="preserve">
+    <value>For given dynamical system and position in the phase space calculates the energy</value>
+  </data>
+  <data name="EquipotentialHelp" xml:space="preserve">
+    <value>For GCM system and given energy calculates equipotential contour</value>
+  </data>
+  <data name="EquipotentialP3" xml:space="preserve">
+    <value>points</value>
+  </data>
+  <data name="EquipotentialP3Description" xml:space="preserve">
+    <value>Number of points of the equipotential contour</value>
+  </data>
+  <data name="ExtendedCGCM1Help" xml:space="preserve">
+    <value>Creates an ExtendedClassicalGCM class with mass proportional to beta^2</value>
+  </data>
+  <data name="ExtendedCGCM2Help" xml:space="preserve">
+    <value>Creates an ExtendedClassicalGCM class with kinetic term proportional to beta^2</value>
+  </data>
+  <data name="FactorialHelp" xml:space="preserve">
+    <value>Factorial of the value</value>
+  </data>
+  <data name="FFTSpectrumHelp" xml:space="preserve">
+    <value>Gives the spectrum of a vector using Fast Fourier Transform (FFT)</value>
+  </data>
+  <data name="FullHelpHelp" xml:space="preserve">
+    <value>Full help for the given function (including names and types of the parameters)</value>
+  </data>
+  <data name="GetContextHelp" xml:space="preserve">
+    <value>Returns actual context</value>
+  </data>
+  <data name="GetGlobalContextHelp" xml:space="preserve">
+    <value>Returns global context</value>
+  </data>
+  <data name="GetGlobalVarHelp" xml:space="preserve">
+    <value>Gets out a variable from the global context</value>
+  </data>
+  <data name="GetVarHelp" xml:space="preserve">
+    <value>Returns a variable from a given context</value>
+  </data>
+  <data name="HHHelp" xml:space="preserve">
+    <value>Creates a HenonHeiles class</value>
+  </data>
+  <data name="InitialConditionHelp" xml:space="preserve">
+    <value>For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector</value>
+  </data>
+  <data name="InitialConditionP3" xml:space="preserve">
+    <value>param</value>
+  </data>
+  <data name="InitialConditionP3Description" xml:space="preserve">
+    <value>Additional parameter (angular momentum)</value>
+  </data>
+  <data name="IntervalAHelp" xml:space="preserve">
+    <value>Creates points for interval (as an array)</value>
+  </data>
+  <data name="IntervalPVHelp" xml:space="preserve">
+    <value>Creates points for interval (in the form PointVector(0, interval points))</value>
+  </data>
+  <data name="IntervalVHelp" xml:space="preserve">
+    <value>Creates points for interval</value>
+  </data>
+  <data name="JoinHelp" xml:space="preserve">
+    <value>Array of vectors or array of pointVectors joins into one Vector</value>
+  </data>
+  <data name="JoinP1" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="JoinP1Description" xml:space="preserve">
+    <value>Data to be joined</value>
+  </data>
+  <data name="LaguerreHelp" xml:space="preserve">
+    <value>Value of the Laguerre polynomial</value>
+  </data>
+  <data name="LegendreHelp" xml:space="preserve">
+    <value>Value of the Legendre polynomial</value>
+  </data>
+  <data name="LengthHelp" xml:space="preserve">
+    <value>Returns length(s) or number of elements of a given object as an array</value>
+  </data>
+  <data name="LengthParameters" xml:space="preserve">
+    <value>Vector | PointVector | TArray | Matrix | List</value>
+  </data>
+  <data name="LogHelp" xml:space="preserve">
+    <value>Logarithm of the value (with specified base)</value>
+  </data>
+  <data name="NormHelp" xml:space="preserve">
+    <value>Norm of the vector</value>
+  </data>
+  <data name="NormP1" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="NormP1Description" xml:space="preserve">
+    <value>Vector which norm is calculated</value>
+  </data>
+  <data name="NormP2" xml:space="preserve">
+    <value>normpow</value>
+  </data>
+  <data name="NormP2Description" xml:space="preserve">
+    <value>Power of items</value>
+  </data>
+  <data name="PA" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="PADescription" xml:space="preserve">
+    <value>A parameter of GCM</value>
+  </data>
+  <data name="PAssociatedOrder" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="PAssociatedOrderDetail" xml:space="preserve">
+    <value>Associated order of the polynomial</value>
+  </data>
+  <data name="PB" xml:space="preserve">
+    <value>b</value>
+  </data>
+  <data name="PBase" xml:space="preserve">
+    <value>base</value>
+  </data>
+  <data name="PBaseDescription" xml:space="preserve">
+    <value>Base of the logarithm</value>
+  </data>
+  <data name="PBDescription" xml:space="preserve">
+    <value>B parameter of GCM</value>
+  </data>
+  <data name="PC" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="PCDescription" xml:space="preserve">
+    <value>C parameter of GCM</value>
+  </data>
+  <data name="PCommands" xml:space="preserve">
+    <value>commands</value>
+  </data>
+  <data name="PContext" xml:space="preserve">
+    <value>context</value>
+  </data>
+  <data name="PContextDescription" xml:space="preserve">
+    <value>Given context</value>
+  </data>
+  <data name="PDefaultValue" xml:space="preserve">
+    <value>default</value>
+  </data>
+  <data name="PDefaultValueDescription" xml:space="preserve">
+    <value>Default value of the variable</value>
+  </data>
+  <data name="PDynamicalSystem" xml:space="preserve">
+    <value>dynamicalsystem</value>
+  </data>
+  <data name="PDynamicalSystemDescription" xml:space="preserve">
+    <value>Dynamical system</value>
+  </data>
+  <data name="PEndingPoint" xml:space="preserve">
+    <value>endx</value>
+  </data>
+  <data name="PEndingPointDetail" xml:space="preserve">
+    <value>Ending point of the interval</value>
+  </data>
+  <data name="PEnergy" xml:space="preserve">
+    <value>energy</value>
+  </data>
+  <data name="PEnergyDescription" xml:space="preserve">
+    <value>Energy of the system</value>
+  </data>
+  <data name="PExtendedGCM" xml:space="preserve">
+    <value>p</value>
+  </data>
+  <data name="PExtendedGCMDescription" xml:space="preserve">
+    <value>Parameter extending mass coeficient</value>
+  </data>
+  <data name="PFnName" xml:space="preserve">
+    <value>fnname</value>
+  </data>
+  <data name="PFnNameDescription" xml:space="preserve">
+    <value>Name of a function</value>
+  </data>
+  <data name="PGamma" xml:space="preserve">
+    <value>gamma</value>
+  </data>
+  <data name="PGammaDetail" xml:space="preserve">
+    <value>Gamma coordinate of the GCM</value>
+  </data>
+  <data name="PGCM" xml:space="preserve">
+    <value>gcm</value>
+  </data>
+  <data name="PGCMDescription" xml:space="preserve">
+    <value>GCM class</value>
+  </data>
+  <data name="PGraph" xml:space="preserve">
+    <value>graph</value>
+  </data>
+  <data name="PGraphDescription" xml:space="preserve">
+    <value>Graph object (created usually by graph command)</value>
+  </data>
+  <data name="PGraphName" xml:space="preserve">
+    <value>graphname</value>
+  </data>
+  <data name="PGraphNameDescription" xml:space="preserve">
+    <value>Name of the graph (will be shown in the graph caption)</value>
+  </data>
+  <data name="PIBMChi" xml:space="preserve">
+    <value>chi</value>
+  </data>
+  <data name="PIBMChiDescription" xml:space="preserve">
+    <value>Chi parameter of IBM</value>
+  </data>
+  <data name="PIBMEta" xml:space="preserve">
+    <value>eta</value>
+  </data>
+  <data name="PIBMEtaDescription" xml:space="preserve">
+    <value>Eta parameter of IBM</value>
+  </data>
+  <data name="PiHelp" xml:space="preserve">
+    <value>Value of Pi number</value>
+  </data>
+  <data name="PK" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="PKDescription" xml:space="preserve">
+    <value>K (mass) parameter of GCM</value>
+  </data>
+  <data name="PNumberOfPoints" xml:space="preserve">
+    <value>numx</value>
+  </data>
+  <data name="PNumberOfPointsDetail" xml:space="preserve">
+    <value>Number of points in the interval</value>
+  </data>
+  <data name="PNumColumns" xml:space="preserve">
+    <value>ncolumns</value>
+  </data>
+  <data name="PNumColumnsDescription" xml:space="preserve">
+    <value>Number of columns in an array of graphs</value>
+  </data>
+  <data name="PoincareHelp" xml:space="preserve">
+    <value>Calculates a Poincaré section for given energy or trajectory given by its initial condition</value>
+  </data>
+  <data name="PoincareP2" xml:space="preserve">
+    <value>ic</value>
+  </data>
+  <data name="PoincareP2Description" xml:space="preserve">
+    <value>Initial condition of a trajectory or energy if the trajectory is randomly chosen</value>
+  </data>
+  <data name="PoincareP3" xml:space="preserve">
+    <value>points</value>
+  </data>
+  <data name="PoincareP3Description" xml:space="preserve">
+    <value>Number of points of the final section</value>
+  </data>
+  <data name="PoincareP4" xml:space="preserve">
+    <value>sectionplane</value>
+  </data>
+  <data name="PoincareP4Description" xml:space="preserve">
+    <value>Plane of the section</value>
+  </data>
+  <data name="PoincareP5" xml:space="preserve">
+    <value>c1</value>
+  </data>
+  <data name="PoincareP5Description" xml:space="preserve">
+    <value>First coordinate of the phase space which will be stored</value>
+  </data>
+  <data name="PoincareP6" xml:space="preserve">
+    <value>c2</value>
+  </data>
+  <data name="PoincareP6Description" xml:space="preserve">
+    <value>Second coordinate of the phase space which will be stored</value>
+  </data>
+  <data name="PoissonHelp" xml:space="preserve">
+    <value>Value of Poisson distribution</value>
+  </data>
+  <data name="PolynomHelp" xml:space="preserve">
+    <value>Data of input vector interprets as coeficients of polynom and return its value</value>
+  </data>
+  <data name="POrder" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="POrderDetail" xml:space="preserve">
+    <value>Order of the polynomial</value>
+  </data>
+  <data name="PotentialRootsHelp" xml:space="preserve">
+    <value>For GCM system solves the equation Potential == Given energy</value>
+  </data>
+  <data name="PPhaseSpacePosition" xml:space="preserve">
+    <value>psposition</value>
+  </data>
+  <data name="PPhaseSpacePositionDescription" xml:space="preserve">
+    <value>Position in the phase space</value>
+  </data>
+  <data name="PPolynomCoef" xml:space="preserve">
+    <value>pcoef</value>
+  </data>
+  <data name="PPolynomCoefDescription" xml:space="preserve">
+    <value>Coeficients of polynom</value>
+  </data>
+  <data name="PPrecision" xml:space="preserve">
+    <value>precision</value>
+  </data>
+  <data name="PPrecisionDescription" xml:space="preserve">
+    <value>Precision of the calculation</value>
+  </data>
+  <data name="PRungeKuttaDescription" xml:space="preserve">
+    <value>Method of Runge-Kutta calculation (Normal | Adapted | Energy)</value>
+  </data>
+  <data name="PRungeKuttaMethod" xml:space="preserve">
+    <value>rungekutta</value>
+  </data>
+  <data name="PSamplingRate" xml:space="preserve">
+    <value>sr</value>
+  </data>
+  <data name="PSamplingRateDescription" xml:space="preserve">
+    <value>Sampling rate of the signal</value>
+  </data>
+  <data name="PSCoef" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="PSCoefDescription" xml:space="preserve">
+    <value>Parameter s</value>
+  </data>
+  <data name="PSignal" xml:space="preserve">
+    <value>signal</value>
+  </data>
+  <data name="PSignalDescription" xml:space="preserve">
+    <value>Sampled signal </value>
+  </data>
+  <data name="PSizeX" xml:space="preserve">
+    <value>sizex</value>
+  </data>
+  <data name="PSizeXDescription" xml:space="preserve">
+    <value>Number of points in the X direction</value>
+  </data>
+  <data name="PSizeY" xml:space="preserve">
+    <value>sizey</value>
+  </data>
+  <data name="PSizeYDescription" xml:space="preserve">
+    <value>Number of points in the Y direction</value>
+  </data>
+  <data name="PSpacing" xml:space="preserve">
+    <value>spacing</value>
+  </data>
+  <data name="PSpacingDescription" xml:space="preserve">
+    <value>Distance of the neigbour components</value>
+  </data>
+  <data name="PStartingPoint" xml:space="preserve">
+    <value>startx</value>
+  </data>
+  <data name="PStartingPointDetail" xml:space="preserve">
+    <value>Starting point of the interval</value>
+  </data>
+  <data name="PTime" xml:space="preserve">
+    <value>time</value>
+  </data>
+  <data name="PTimeDescription" xml:space="preserve">
+    <value>Time of the evaluation</value>
+  </data>
+  <data name="PTimeStep" xml:space="preserve">
+    <value>timestep</value>
+  </data>
+  <data name="PTimeStepDescription" xml:space="preserve">
+    <value>Time step for the result</value>
+  </data>
+  <data name="PValue" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="PValueDescription" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="PVariable" xml:space="preserve">
+    <value>var</value>
+  </data>
+  <data name="PVariableDescription" xml:space="preserve">
+    <value>Variable</value>
+  </data>
+  <data name="PVarName" xml:space="preserve">
+    <value>varname</value>
+  </data>
+  <data name="PVarNameDescription" xml:space="preserve">
+    <value>Name of the variable</value>
+  </data>
+  <data name="PVector" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="PVectorDescription" xml:space="preserve">
+    <value>Vector</value>
+  </data>
+  <data name="PX" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="PXDetail" xml:space="preserve">
+    <value>Variable x</value>
+  </data>
+  <data name="RegressionHelp" xml:space="preserve">
+    <value>Polynomial regression of data</value>
+  </data>
+  <data name="RegressionP1" xml:space="preserve">
+    <value>pv</value>
+  </data>
+  <data name="RegressionP1Description" xml:space="preserve">
+    <value>Input data for the regression</value>
+  </data>
+  <data name="RemoveBadPointsHelp" xml:space="preserve">
+    <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
+  </data>
+  <data name="RWF5DLHOHelp" xml:space="preserve">
+    <value>Value of the radial part of basis wave function for 5D LHO</value>
+  </data>
+  <data name="SafeValueHelp" xml:space="preserve">
+    <value>Gets the value of the variable from the context; If there the variable does not exist, returns default value.</value>
+  </data>
+  <data name="SALIGHelp" xml:space="preserve">
+    <value>Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by SALI</value>
+  </data>
+  <data name="SALIHelp" xml:space="preserve">
+    <value>Calculates SALI dependence on time for given trajectory</value>
+  </data>
+  <data name="SALIRHelp" xml:space="preserve">
+    <value>Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)</value>
+  </data>
+  <data name="SetGlobalVarHelp" xml:space="preserve">
+    <value>Sets a variable into the global context</value>
+  </data>
+  <data name="ShowHelp" xml:space="preserve">
+    <value>Shows a graph</value>
+  </data>
+  <data name="SinHelp" xml:space="preserve">
+    <value>Sinus of the value</value>
+  </data>
+  <data name="SMCC_file" xml:space="preserve">
+    <value>If you do want to compute an effective interaction for coupled-cluster calculations you need to specify three files, one for the interaction itself, one for the kinetic energies of all sp orbits and one for sp data declarations. These files are in turn used as input to coupled-cluster calculations.</value>
+  </data>
+  <data name="SMCib_choice" xml:space="preserve">
+    <value>Here you specify if you wish to exclude CIB.</value>
+  </data>
+  <data name="SMCoulomb_included" xml:space="preserve">
+    <value>Determine if you wish to include the Coulomb interaction or not.</value>
+  </data>
+  <data name="SMCsb_choice" xml:space="preserve">
+    <value>Here you specify if you wish to exclude CSB.</value>
+  </data>
+  <data name="SMHbar_omega" xml:space="preserve">
+    <value>The oscillator energy in MeV (We can change a look, if there is some change)</value>
+  </data>
+  <data name="SMHf_iterations" xml:space="preserve">
+    <value>Determine whether you want to do Hartree-Fock or not. Options are 1) hf_iterations = 0 or 2) hf_iterations = 1 or any number larger than 0.</value>
+  </data>
+  <data name="SMHFrenorminteraction_file" xml:space="preserve">
+    <value>If you do Hartree-Fock, the new interaction is given by this file.</value>
+  </data>
+  <data name="SMHFspdata_file" xml:space="preserve">
+    <value>The new single-particle in case you do a Hartree-Fock calculation.</value>
+  </data>
+  <data name="SMJminmax" xml:space="preserve">
+    <value>For the NN interaction you need to define the min and max value of J for the partial waves. Typical values are 0 and 6. For the argonne interactions Jmax &lt;= 4. For waves greater than J_max, the Hamiltonian is set to zero in this version of the program.</value>
+  </data>
+  <data name="SMLab_lmax" xml:space="preserve">
+    <value>Define the maximum values of l for the model space. For square the model space 2n+l is entirely defined by lab_lmax.</value>
+  </data>
+  <data name="SMLab_nmax" xml:space="preserve">
+    <value>Define the maximum values of n for the model space. For square the model space 2n+l is entirely defined by lab_lmax.</value>
+  </data>
+  <data name="SMMass_nucleus" xml:space="preserve">
+    <value>Give the number of nucleons, recall that for nocore the results depend on A.</value>
+  </data>
+  <data name="SMMax_space" xml:space="preserve">
+    <value>If you do nocore, you need also to specify the cut in 2n+l for the huge space, use 200-300 for interactions like cdbonn or argonne  use 300.</value>
+  </data>
+  <data name="SMOrder_of_interaction" xml:space="preserve">
+    <value>You can also compute results to a given order in many-body perturbation theory, in this case to third order. For coupled-cluster you have to stay with first order.</value>
+  </data>
+  <data name="SMOutput_run" xml:space="preserve">
+    <value>output_run is prefixed to output file for optional printouts, tests etc.</value>
+  </data>
+  <data name="SMPauli_operator" xml:space="preserve">
+    <value>Specify the type of model space, three choices: square, triangular or wings. For the nocore calculation you can only use the triangular choice</value>
+  </data>
+  <data name="SMRenorminteraction_fileI" xml:space="preserve">
+    <value>Input file for the renormalized NN interaction.</value>
+  </data>
+  <data name="SMRenorminteraction_fileO" xml:space="preserve">
+    <value>Output file for the renormalized NN interaction.</value>
+  </data>
+  <data name="SMSpdata_fileI" xml:space="preserve">
+    <value>Input file for the set of single-particle orbits, this file can be further manipulated by the effective interaction part.</value>
+  </data>
+  <data name="SMSpdata_fileO" xml:space="preserve">
+    <value>Output file for the set of single-particle orbits, this file can be further manipulated by the effective interaction part.</value>
+  </data>
+  <data name="SMStartenergy_g" xml:space="preserve">
+    <value>If you do the g-matrix you need to specify the number of starting energies and their corresponding values. Typically you would use some 5 or more starting energies and they should all be smaller than the binding energy of the deuteron in order to avoid poles in the computation of G(w). The present code does not allow you to use positive starting energies. Typical start and end values are listed here. Based on the endpoints of the interval, the next values are generated by the simple algo first_value + interval*i where interval is just end-start/number of values.</value>
+  </data>
+  <data name="SMStartingEnergy" xml:space="preserve">
+    <value>You can compute the various diagrams for a given starting energy and then sum folded diagrams to infinite order. Typical starting energies for calculation should correspond to roughly the two-body energy of the valence nucleons. It should be negative since you are dealing with bound systems. If you choose just one  starting energy, then no folded diagrams are summed up.</value>
+  </data>
+  <data name="SMType_of_interaction" xml:space="preserve">
+    <value>Determine what kind of effective interaction you want and the type of calculation. If you type shell-model, the code will produce an effective interaction taylored to the Oslo shell-model code, separated in three files, one for the pp case, one for pn and one for nn. For coupled-cluster calculations you will produce a file containing the effective interaction, one containing the kinetic energy and one for the total single-particle energies. You can also compute the binding energy of various closed core nuclei. The options are thus  1) open-diagrams for shell-model, 2) coupled-cluster and 3) core-diagrams.</value>
+  </data>
+  <data name="SMType_of_pot" xml:space="preserve">
+    <value>Specify the type of NN interaction, here you can use Idaho-A, Idaho-B, CD-bonn, argonnev18, n3lo, argonnev8. There is an important point concerning the different interaction models. Idaho-A and Idaho-B have NO charge-symmetry (CSB) or charge-independence breaking terms (ISB). The Argonne potentials run only with full CSB and CIB. The N3LO and CD-bonn models allow you to run with or without one or both of these terms. NO CSB means that for a given set of qauntum numbers ( a specific partial wave) the neutron-neutron and proton-proton parts are identical. NO CIB  means that the proton-proton, neutron-neutron and proton-neutron interactions are equal. Isospin symmetry.</value>
+  </data>
+  <data name="SMType_of_renormv" xml:space="preserve">
+    <value>Determine the renormalization procedure you want to do, only one at the time.</value>
+  </data>
+  <data name="SMVeff_xx" xml:space="preserve">
+    <value>If you wan to compute an effective interaction for the Oslo shell-model codes, you need to define the names of three files, one for the proton-proton case one for the proton-neutron case and finally one for the neutron-neutron case.</value>
+  </data>
+  <data name="SMVlowk" xml:space="preserve">
+    <value>If you do Vlowk you need to specify the number of mesh points for the model space and the large space. You need also to define the cutoff for the model in space in fm^- 1 and the in principal infinite integration limit set it to 20 fm^-1.  Recall that the NN interactions is fitted up to 350 MeV.</value>
+  </data>
+  <data name="SortDescHelp" xml:space="preserve">
+    <value>Descending sort of the object (with keys according to the sorting will be done)</value>
+  </data>
+  <data name="SortHelp" xml:space="preserve">
+    <value>Ascending sort of the object (with keys according to the sorting will be done)</value>
+  </data>
+  <data name="SortParams" xml:space="preserve">
+    <value>Object to sort (Sortable) [; Keys (Sortable)]</value>
+  </data>
+  <data name="SpacingHelp" xml:space="preserve">
+    <value>Calculates neighbour spacing of vector components v_{i+j} - v_{i}</value>
+  </data>
+  <data name="SqrtHelp" xml:space="preserve">
+    <value>Square root of the value</value>
+  </data>
+  <data name="SumAbsHelp" xml:space="preserve">
+    <value>Sum of absolute values of all elements in the object</value>
+  </data>
+  <data name="SumHelp" xml:space="preserve">
+    <value>Sum of all elements in the object</value>
+  </data>
+  <data name="SumParameters" xml:space="preserve">
+    <value>int | double | TArray | Vector | Matrix</value>
+  </data>
+  <data name="SumSquareHelp" xml:space="preserve">
+    <value>Sum of squares of values of all elements in the object</value>
+  </data>
+  <data name="TimeHelp" xml:space="preserve">
+    <value>Returns the duration of the calculation</value>
+  </data>
+  <data name="TimeNowHelp" xml:space="preserve">
+    <value>Returns the current time</value>
+  </data>
+  <data name="TimeParameters" xml:space="preserve">
+    <value>Expression</value>
+  </data>
+  <data name="ToArrayEMNotTextFile" xml:space="preserve">
+    <value>Given file must be text file, not binary.</value>
+  </data>
+  <data name="ToArrayHelp" xml:space="preserve">
+    <value>Given non-array object change to an array.</value>
+  </data>
+  <data name="ToArrayParameters" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="TrajectoryMHelp" xml:space="preserve">
+    <value>For given energy or a trajectory given by its initial condition calculates the trajectory; the result is returned by a matrix in the form (time, x, y, ..., px, py, ...)</value>
+  </data>
+  <data name="TrajectoryPHelp" xml:space="preserve">
+    <value>    For given energy or a trajectory given by its initial condition calculates the trajectory; the x, y coordinates of the result is returned by a PointVector</value>
+  </data>
+  <data name="TypeHelp" xml:space="preserve">
+    <value>Type of the value</value>
+  </data>
+  <data name="VectorHelp" xml:space="preserve">
+    <value>Convert given data to a vector</value>
+  </data>
+  <data name="VectorParameters" xml:space="preserve">
+    <value>Items of vector (int | double | Vector | Matrix | Array | List)</value>
+  </data>
+  <data name="WignerHelp" xml:space="preserve">
+    <value>Value of Wigner distribution</value>
+  </data>
+</root>

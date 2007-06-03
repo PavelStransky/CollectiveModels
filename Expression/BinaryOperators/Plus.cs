@@ -8,7 +8,7 @@ namespace PavelStransky.Expression.BinaryOperators {
 	/// </summary>
 	public class Plus: BinaryOperator {
 		public override string OperatorName {get {return operatorName;}}
-		public override int Priority {get {return addPriority;}}
+        public override OperatorPriority Priority { get { return OperatorPriority.AddPriority; } }
 
 		protected override object EvaluateII(int left, int right) {
 			return left + right;
@@ -43,10 +43,6 @@ namespace PavelStransky.Expression.BinaryOperators {
 		}
 
 		protected override object EvaluateMMx(Matrix left, Matrix right) {
-			return left + right;
-		}
-
-		protected override object EvaluateSSx(string left, string right) {
 			return left + right;
 		}
 

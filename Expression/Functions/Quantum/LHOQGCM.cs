@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
     public abstract class LHOQGCM: FunctionDefinition {
         public override string Parameters { get { return parameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMaxNumber(evaluatedArguments, 6);
 
             this.ConvertInt2Double(evaluatedArguments, 0);
@@ -21,12 +21,12 @@ namespace PavelStransky.Expression.Functions {
             this.ConvertInt2Double(evaluatedArguments, 3);
             this.ConvertInt2Double(evaluatedArguments, 4);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 4, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 5, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 3, evaluateArray, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 4, evaluateArray, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 5, evaluateArray, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

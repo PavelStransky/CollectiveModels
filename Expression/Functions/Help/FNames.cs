@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions {
 
 		public override string Help {get {return help;}}
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsNumber(evaluatedArguments, 0);
         }
 

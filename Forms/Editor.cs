@@ -533,11 +533,11 @@ namespace PavelStransky.Forms {
             // Hlavièka
             if(export.Binary) {
                 export.B.Write(WinMain.RegistryEntryName);
-                export.B.Write(4);
+                export.B.Write(5);
             }
             else {
                 export.T.WriteLine(WinMain.RegistryEntryName);
-                export.T.WriteLine(4);
+                export.T.WriteLine(5);
             }
 
             IEParam param = new IEParam();

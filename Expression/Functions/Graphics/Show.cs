@@ -6,35 +6,24 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Zobrazí graf
+	/// Shows a graph
 	/// </summary>
 	public class Show: FunctionDefinition {
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string Help {get {return Messages.ShowHelp;}}
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
+        protected override void CreateParameters() {
+            this.NumParams(3);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Graph));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(string));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
-        }
-
-        protected override object EvaluateArray(Guider guider, ArrayList arguments) {
-            return this.EvaluateFn(guider, arguments);
+            this.SetParam(0, true, true, false, Messages.PGraph, Messages.PGraphDescription, null, typeof(Graph), typeof(TArray));
+            this.SetParam(1, false, true, false, Messages.PGraphName, Messages.PGraphNameDescription, "Graph", typeof(string));
+            this.SetParam(2, false, true, false, Messages.PNumColumns, Messages.PNumColumnsDescription, 1, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            string name = defaultName;
             int count = arguments.Count;
-            int numColumns = 1;
 
-            if(count > 1)
-                name = (string)arguments[1];
-
-            if(count > 2)
-                numColumns = (int)arguments[2];
+            string name = (string)arguments[1];
+            int numColumns = (int)arguments[2];
 
             TArray graph = null;
             if(arguments[0] is Graph) {
@@ -48,10 +37,5 @@ namespace PavelStransky.Expression.Functions {
 
             return graph;
         }
-
-        private const string defaultName = "Graph";
-
-		private const string help = "Zobrazí graf";
-		private const string parameters = "data k vykreslení (Graph) [; název grafu (string) [; poèet sloupcù (int)]";	
 	}
 }

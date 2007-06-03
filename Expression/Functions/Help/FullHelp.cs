@@ -6,6 +6,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
+    /// Full help for the given function (including names and types of the parameters)
 	/// Vrátí nápovìdu k zadané funkci (vèetnì užití)
 	/// </summary>
 	public class FullHelp: FunctionDefinition {
@@ -19,12 +20,11 @@ namespace PavelStransky.Expression.Functions {
 			this.functions = functions;
 		}
 
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string Help {get {return Messages.FullHelpHelp;}}
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, false, false, Messages.PFnName, Messages.PFnNameDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -12,17 +12,17 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments) {
+		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 2);
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
 
             this.ConvertInt2Double(evaluatedArguments, 2);
             this.ConvertInt2Double(evaluatedArguments, 3);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Vector));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
-			this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Vector));
+            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(double));
+            this.CheckArgumentsType(evaluatedArguments, 3, evaluateArray, typeof(double));
 		}
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

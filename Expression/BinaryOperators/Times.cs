@@ -8,7 +8,7 @@ namespace PavelStransky.Expression.BinaryOperators {
 	/// </summary>
 	public class Times: BinaryOperator {
 		public override string OperatorName {get {return operatorName;}}
-		public override int Priority {get {return multiplePriority;}}
+        public override OperatorPriority Priority { get { return OperatorPriority.MultiplePriority; } }
 
 		protected override object EvaluateII(int left, int right) {
 			return left * right;

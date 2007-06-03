@@ -143,10 +143,9 @@ namespace PavelStransky.Expression {
                 if(type == typeof(Color)) {
                     if(item is string)
                         return Color.FromName((string)item);
-                    else if(item is TArray && (item as TArray).Is1D && 
-                        (item as TArray).GetLength(0) == 3 && (item as TArray).GetItemType() == typeof(int)) {
-                        TArray a = item as TArray;
-                        return Color.FromArgb((int)a[0], (int)a[1], (int)a[2]);
+                    else if(item is Vector && (item as Vector).Length == 3) {
+                        Vector v = item as Vector;
+                        return Color.FromArgb((int)(255.0 * v[0]), (int)(255.0 * v[1]), (int)(255.0 * v[2]));
                     }
                     else if(item is int)
                         return ColorArray.GetColor((int)item);
@@ -208,7 +207,7 @@ namespace PavelStransky.Expression {
             // Nejdøíve koukáme, jestli parametr není v obecných 
             def = this.GetParameter(this.graphContext, name, def);
 
-            if(this.itemContext.Length < group && (this.itemContext[group] as TArray).Length < i)
+            if(this.itemContext.Length > group && (this.itemContext[group] as TArray).Length > i)
                 return this.GetParameter(this.GetCurveContext(group, i), name, def);
             else
                 return def;
@@ -226,7 +225,7 @@ namespace PavelStransky.Expression {
             // Nejdøíve koukáme, jestli parametr není v obecných 
             def = this.GetParameter(this.graphContext, name, def);
 
-            if(this.groupContext.Length < i)
+            if(this.groupContext.Length > i)
                 return this.GetParameter(this.groupContext[i] as Context, name, def);
             else
                 return def;
@@ -283,7 +282,7 @@ namespace PavelStransky.Expression {
                 return null;
 
             TArray a = this.item[group] as TArray;
-            TArray e = this.errors[group] as TArray;
+            TArray e = this.errors.Length > group ? this.errors[group] as TArray : null;
 
             int nCurves = a.Length;
 
@@ -291,7 +290,7 @@ namespace PavelStransky.Expression {
                 return null;
 
             PointVector pv = a[0] as PointVector;
-            Vector ev = e[0] as Vector;
+            Vector ev = (e != null && e.Length > 0) ? e[0] as Vector : null;
 
             if(pv.Length == 0)
                 return null;
@@ -299,7 +298,7 @@ namespace PavelStransky.Expression {
             minX = pv.MinX();
             maxX = pv.MaxX();
 
-            if(ev.Length > 0) {
+            if(ev != null && ev.Length > 0) {
                 Vector vy = pv.VectorY;
                 minY = (vy - ev).Min();
                 maxY = (vy + ev).Max();
@@ -311,12 +310,12 @@ namespace PavelStransky.Expression {
 
             for(int i = 1; i < nCurves; i++) {
                 pv = a[i] as PointVector;
-                ev = e[i] as Vector;
+                ev = (e != null && e.Length > i) ? e[i] as Vector : null;
 
                 minX = System.Math.Min(minX, pv.MinX());
                 maxX = System.Math.Max(maxX, pv.MaxX());
 
-                if(ev.Length > 0) {
+                if(ev != null && ev.Length > 0) {
                     Vector vy = pv.VectorY;
                     minY = System.Math.Min(minY, (vy - ev).Min());
                     maxY = System.Math.Max(maxY, (vy + ev).Max());

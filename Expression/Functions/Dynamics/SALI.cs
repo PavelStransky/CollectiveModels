@@ -7,50 +7,43 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vypoèítá SALI pro zadanou trajektorii
+    /// Calculates SALI dependence on time for given trajectory
     /// </summary>
     public class FnSALI: FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.SALIHelp; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 3);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
+        protected override void CreateParameters() {
+            this.NumParams(4);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
-
-            this.ConvertInt2Double(evaluatedArguments, 2);
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
-
-            this.ConvertInt2Double(evaluatedArguments, 3);
-            this.CheckArgumentsType(evaluatedArguments, 3, typeof(double));
+            this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
+            this.SetParam(1, true, true, true, Messages.PoincareP2, Messages.PoincareP2Description, null, typeof(Vector), typeof(double));
+            this.SetParam(2, true, true, true, Messages.PTime, Messages.PTimeDescription, null, typeof(int));
+            this.SetParam(3, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
 
             Vector ic;
-            if((arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom)
+
+            // Trajectory is generated randomly
+            if(arguments[1] is double) {
+                double e = (double)arguments[1];
+                ic = dynamicalSystem.IC(e);
+            }
+            else if(arguments[1] is Vector && (arguments[1] as Vector).Length / 2 == dynamicalSystem.DegreesOfFreedom)
                 ic = (Vector)arguments[1];
             else
                 return this.BadTypeError(arguments[1], 1);
 
             double time = (double)arguments[2];
-
-            double precision = 0;
-            if(arguments.Count > 4)
-                precision = (double)arguments[4];
+            double precision = (double)arguments[3];
 
             SALI sali = new SALI(dynamicalSystem, precision);
             return sali.TimeDependence(ic, time);
         }
 
-        private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;
-
         private const string name = "sali";
-        private const string help = "Vypoèítá závislost SALI pro jednu tajektorii na èase";
-        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector); èas (double) [; pøesnost výpoètu (double)]";
     }
 }

@@ -262,7 +262,7 @@ namespace PavelStransky.GCM {
             // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
             double dx = range / (50.0 * this.index.MaxM);
 
-            while(System.Math.Abs(this.Psi(this.index.MaxN, this.index.MaxM, range)) < epsilon)
+            while(System.Math.Abs(this.Psi(range, this.index.MaxN, this.index.MaxM)) < epsilon)
                 range -= dx;
 
             //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
@@ -297,14 +297,14 @@ namespace PavelStransky.GCM {
         /// <param name="n">Hlavní kvantové èíslo</param>
         /// <param name="m">Spin</param>
         /// <param name="x">Souøadnice</param>
-        protected double Psi(int n, int m, double x) {
+        protected double Psi(double x, int n, int m) {
             double xi2 = this.s * x; xi2 *= xi2;
             m = System.Math.Abs(m);
 
             double normLog = 0.5 * (System.Math.Log(2.0) + SpecialFunctions.FactorialILog(n) - SpecialFunctions.FactorialILog(n + m)) + (m + 1) * System.Math.Log(this.s);
             double l = 0.0;
             double e = 0.0;
-            SpecialFunctions.Laguerre(out l, out e, n, m, xi2);
+            SpecialFunctions.Laguerre(out l, out e, xi2, n, m);
 
             if(l == 0.0 || x == 0.0)
                 return 0.0;
@@ -321,8 +321,8 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
         /// <param name="x">Souøadnice</param>
-        protected double Psi(int i, double x) {
-            return this.Psi(this.index.N[i], this.index.M[i], x);
+        protected double Psi(double x, int i) {
+            return this.Psi(x, this.index.N[i], this.index.M[i]);
         }
 
         /// <summary>

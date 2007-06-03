@@ -7,24 +7,20 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Pro zadaný dynamický systém a energii urèí meze (vìtšinou horní odhad), ve kterých se mùže øešení pohybovat
+    /// For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found
     /// </summary>
     public class Bounds : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.BoundsHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 2);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IQuantumSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
+        protected override void CreateParameters() {
+            this.NumParams(2);
+            this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
             return dynamicalSystem.Bounds((double)arguments[1]);
         }
-
-        private const string help = "Pro zadaný dynamický systém a zadanou energii vrátí meze (horní odhad), ve kterých se øešení mùže pohybovat";
-        private const string parameters = "Dynamický systém; energie (double)";
     }
 }

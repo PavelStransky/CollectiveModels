@@ -335,17 +335,24 @@ namespace PavelStransky.Math {
 
         #region Tøídìní
         /// <summary>
+        /// Keys for sorting
+        /// </summary>
+        public Array GetKeys() {
+            return this.VectorY.GetKeys();
+        }
+
+        /// <summary>
 		/// Tøídìní podle X
 		/// </summary>
 		public PointVector SortX() {
-			return new PointVector(this.VectorX.Sort(this.item) as PointD []);
+            return this.Sort(this.VectorX) as PointVector;
 		}
 
 		/// <summary>
 		/// Tøídìní podle Y
 		/// </summary>
 		public PointVector SortY() {
-			return new PointVector(this.VectorY.Sort(this.item) as PointD []);
+            return this.Sort(this.VectorY) as PointVector;
         }
 
         /// <summary>
@@ -371,14 +378,16 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="keys">Klíèe</param>
         /// <returns></returns>
-        public object Sort(Vector keys) {
-            return new PointVector(keys.Sort(this.item) as PointD[]);
+        public object Sort(ISortable keys) {
+            PointVector result = this.Clone() as PointVector;
+            Array.Sort(keys.GetKeys(), result.item);
+            return result;
         }
 
         /// Použije klíèe k setøídìní vektoru sestupnì
         /// </summary>
         /// <param name="keys">Klíèe k setøídìní</param>
-        public object SortDesc(Vector keys) {
+        public object SortDesc(ISortable keys) {
             PointVector result = this.Sort(keys) as PointVector;
             System.Array.Reverse(result.item);
             return result;
@@ -414,14 +423,15 @@ namespace PavelStransky.Math {
 		}
 
 		/// <summary>
-		/// Provede transformaci všech složek vektoru podle daných funkcí
+		/// Perform the tranformation of all components of the vector
 		/// </summary>
-		/// <param name="fx">Transformaèní funkce x</param>
-		/// <param name="fy">Transformaèní funkce y</param>
+		/// <param name="fx">Transformation function x</param>
+		/// <param name="fy">Transformation function y</param>
 		public PointVector Transform(RealFunction fx, RealFunction fy) {
-			PointVector result = new PointVector(this.Length);
+            int length = this.Length;
+			PointVector result = new PointVector(length);
 
-			for(int i = 0; i < result.Length; i++) {
+			for(int i = 0; i < length; i++) {
 				if(fx != null)
 					result[i].X = fx(this[i].X);
 				else
@@ -436,6 +446,41 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
+        /// <summary>
+        /// Perform the tranformation of all components of the vector
+        /// </summary>
+        /// <param name="f">Transformation function y</param>
+        public PointVector Transform(RealFunction f) {
+            int length = this.Length;
+            PointVector result = new PointVector(length);
+
+            for(int i = 0; i < length; i++) {
+                double x = this[i].X;
+                result[i].X = this[i].X;
+                result[i].Y = f(this[i].Y);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Perform the tranformation of all components of the vector
+        /// </summary>
+        /// <param name="f">Transformation function y</param>
+        /// <param name="p">Additional parameters for the transformation function</param>
+        public PointVector Transform(RealFunctionWithParams f, params object[] p) {
+            int length = this.Length;
+            PointVector result = new PointVector(length);
+
+            for(int i = 0; i < length; i++) {
+                double x = this[i].X;
+                result[i].X = this[i].X;
+                result[i].Y = f(this[i].Y, p);
+            }
+
+            return result;
+        }
+        
         /// <summary>
         /// Spojí vektory do jednoho
         /// </summary>

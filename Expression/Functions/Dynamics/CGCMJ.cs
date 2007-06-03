@@ -7,15 +7,13 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí Classical GCM tøídu s nenulovým úhlovým momentem
+    /// Creates a ClassicalGCMJ class (case with nonzero angular momentum)
     /// </summary>
     public class CGCMJ: CGCM {
-        public override string Help { get { return help; } }
+        public override string Help { get { return Messages.CGCMJHelp; } }
 
         protected override object Create(double a, double b, double c, double k) {
             return new ClassicalGCMJ(a, b, c, k);
         }
-
-        private const string help = "Vytvoøí GCM tøídu s nenulovým úhlovým momentem";
     }
 }

@@ -291,7 +291,7 @@ namespace PavelStransky.GCM {
             // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
             double dx = range / (50.0 * this.MaxN);
 
-            while(System.Math.Abs(this.Psi(this.MaxN, range)) < epsilon)
+            while(System.Math.Abs(this.Psi(range, this.MaxN)) < epsilon)
                 range -= dx;
 
             //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
@@ -304,7 +304,7 @@ namespace PavelStransky.GCM {
         /// <param name="n"></param>
         /// <param name="x"></param>
         /// <returns></returns>
-        private double Psi(int n, double x) {
+        private double Psi(double x, int n) {
             double xi = this.s * x;
             return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * this.hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
         }

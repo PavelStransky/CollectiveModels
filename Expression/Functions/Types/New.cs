@@ -13,9 +13,9 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -39,18 +39,24 @@ namespace PavelStransky.Expression.Functions {
 
             else if(t == typeof(Vector)) {
                 this.CheckArgumentsMaxNumber(arguments, start + 2);
-                this.CheckArgumentsType(arguments, start + 1, typeof(int));
+                this.CheckArgumentsType(arguments, start + 1, false, typeof(int));
                 return new Vector((int)arguments[start + 1]);
+            }
+
+            else if(t == typeof(PointVector)) {
+                this.CheckArgumentsMaxNumber(arguments, start + 2);
+                this.CheckArgumentsType(arguments, start + 1, false, typeof(int));
+                return new PointVector((int)arguments[start + 1]);
             }
 
             else if(t == typeof(Matrix)) {
                 this.CheckArgumentsMaxNumber(arguments, start + 3);
-                this.CheckArgumentsType(arguments, start + 1, typeof(int));
+                this.CheckArgumentsType(arguments, start + 1, false, typeof(int));
                 int lengthX = (int)arguments[start + 1];
                 int lengthY = lengthX;
 
                 if(arguments.Count > start + 2) {
-                    this.CheckArgumentsType(arguments, start + 2, typeof(int));
+                    this.CheckArgumentsType(arguments, start + 2, false, typeof(int));
                     lengthY = (int)arguments[start + 2];
                 }
 
@@ -61,7 +67,7 @@ namespace PavelStransky.Expression.Functions {
                 int count = arguments.Count;
 
                 for(int i = start + 1; i < count; i++) {
-                    this.CheckArgumentsType(arguments, i, typeof(string), typeof(int));
+                    this.CheckArgumentsType(arguments, i, false, typeof(string), typeof(int));
                     if(arguments[i] is string) {
                         count = i - start - 1;
                         break;

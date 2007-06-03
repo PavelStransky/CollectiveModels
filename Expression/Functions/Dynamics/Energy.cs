@@ -7,17 +7,16 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Pro zadaný dynamický systém a zadané souøadnice a hybnosti spoèítá energii
+    /// For given dynamical system and position in the phase space calculates the energy
     /// </summary>
     public class Energy : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.EnergyHelp; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 2);
-            
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
+        protected override void CreateParameters() {
+            this.NumParams(2);
+
+            this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PEnergyDescription, null, typeof(IDynamicalSystem));
+            this.SetParam(1, true, true, false, Messages.PPhaseSpacePosition, Messages.PPhaseSpacePositionDescription, null, typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -25,8 +24,5 @@ namespace PavelStransky.Expression.Functions {
             Vector v = arguments[1] as Vector;
             return dynamicalSystem.E(v);
         }
-
-        private const string help = "Pro zadaný dynamický systém a zadané souøadnice a hybnosti vrátí energii systému.";
-        private const string parameters = "Dynamický systém; souøadnice a hybnosti (Vector)";
     }
 }

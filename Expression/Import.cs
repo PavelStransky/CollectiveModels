@@ -26,6 +26,8 @@ namespace PavelStransky.Expression {
         public override object CreateObject(string typeName) {
             if(typeName == typeof(TArray).FullName || typeName == "PavelStransky.Expression.Array")
                 return new TArray();
+            else if(typeName == typeof(List).FullName)
+                return new List();
             else if(typeName == typeof(Context).FullName)
                 return new Context();
             else if(typeName == typeof(ClassicalGCM).FullName)
@@ -52,6 +54,8 @@ namespace PavelStransky.Expression {
                 return new LHOQuantumGCMRLO();
             else if(typeName == typeof(LHOQuantumGCMRLE).FullName)
                 return new LHOQuantumGCMRLE();
+            else if(typeName == typeof(LHOQuantumGCM5D).FullName)
+                return new LHOQuantumGCM5D();
             else
                 return base.CreateObject(typeName);
         }

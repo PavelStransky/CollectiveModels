@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -106,9 +107,7 @@ namespace PavelStransky.Math {
         /// <param name="bounds">Vstupní meze</param>
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
-        private Vector ExactBounds(double e, int n1, int n2) {
-            Vector boundX = this.dynamicalSystem.Bounds(e);
-            
+        private Vector ExactBounds(Vector boundX, double e, int n1, int n2) {
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
             double kx = (boundX[1] - boundX[0]) / (n1 - 1);
             double x0 = boundX[0];
@@ -135,7 +134,7 @@ namespace PavelStransky.Math {
                     }
                 }
                 if(foundIC) {
-                    boundX[0] = kx * (i - 1) + x0;
+                    boundX[0] = kx * (i - 2) + x0;
                     break;
                 }
             }
@@ -218,7 +217,7 @@ namespace PavelStransky.Math {
         /// <param name="e">Energie</param>
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
-        public Matrix Compute(double e, int n1, int n2) {
+        public ArrayList Compute(double e, int n1, int n2) {
             return this.Compute(e, n1, n2, null);
         }
 
@@ -229,9 +228,11 @@ namespace PavelStransky.Math {
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
         /// <param name="writer">Výpis na konzoli</param>
-        public Matrix Compute(double e, int n1, int n2, IOutputWriter writer) {
+        public ArrayList Compute(double e, int n1, int n2, IOutputWriter writer) {
             // Výpoèet mezí
-            Vector boundX = this.ExactBounds(e, n1, n2);
+            Vector boundX = this.dynamicalSystem.Bounds(e);
+            boundX = this.ExactBounds(boundX, e, n1, n2);
+            boundX = this.ExactBounds(boundX, e, n1, n2);
 
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
             double kx = (boundX[1] - boundX[0]) / (n1 - 1);
@@ -244,8 +245,10 @@ namespace PavelStransky.Math {
 
             int regular = 0;        // Poèet regulárních trajektorií
             int total = 0;          // Celkový poèet trajektorií
-            Matrix result = new Matrix(n1, n2);
+            Matrix m = new Matrix(n1, n2);
             int[,] trPassed = new int[n1, n2];
+
+            DateTime startTime = DateTime.Now;
 
             for(int i = 0; i < n1; i++) {
                 for(int j = 0; j < n2; j++) {
@@ -270,7 +273,7 @@ namespace PavelStransky.Math {
                         bool[,] actPassed = new bool[n1, n2];
 
                         // Zaznamenáme i poèáteèní podmínku
-                        result[i, j] = sali;
+                        m[i, j] = sali;
                         trPassed[i, j]++;
                         actPassed[i, j] = true;
 
@@ -278,7 +281,7 @@ namespace PavelStransky.Math {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
                             if(n1x < n1 && n2x < n2 && !actPassed[n1x, n2x]) {
-                                result[n1x, n2x] += sali;
+                                m[n1x, n2x] += sali;
                                 trPassed[n1x, n2x]++;
                                 actPassed[n1x, n2x] = true;
                             }
@@ -286,29 +289,35 @@ namespace PavelStransky.Math {
                     }
                 }
 
-                if((i + 1) % 10 == 0 && writer != null)
-                    writer.WriteLine(string.Format("{0}, {1}", total, regular));
+                if((i + 1) % 10 == 0 && writer != null) {
+                    writer.WriteLine(string.Format("{0} ({1}, {2})", SpecialFormat.Format(DateTime.Now - startTime), total, regular));
+                }
             }
+
+            // Number of regular points
+            double nreg = 0.0;
+
+            // Total number of points
+            int ntot = 0;
 
             for(int i = 0; i < n1; i++)
                 for(int j = 0; j < n2; j++) {
-                    if(trPassed[i, j] != 0)
-                        result[i, j] /= trPassed[i, j];
-                    else {
-                        // Na první záporné pozici zobrazíme celkový poèet trajektorií
-                        if(total > 0) {
-                            result[i, j] = -1.0 / total;
-                            total = 0;
-                        }
-                        // Na druhé záporné pozici zobrazíme poèet regulárních trajektorií
-                        else if(regular > 0) {
-                            result[i, j] = -1.0 / regular;
-                            regular = 0;
-                        }
-                        else
-                            result[i, j] = -1;
+                    if(trPassed[i, j] != 0) {
+                        m[i, j] /= trPassed[i, j];
+                        ntot++;
+                        nreg += m[i, j];
                     }
+                    else
+                        m[i, j] = -1;
                 }
+
+            ArrayList result = new ArrayList();
+            result.Add(m);
+            result.Add(boundX);
+            result.Add(total);
+            result.Add(regular);
+            result.Add(ntot);
+            result.Add(nreg);
 
             return result;
         }

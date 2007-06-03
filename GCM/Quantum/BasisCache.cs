@@ -8,7 +8,7 @@ namespace PavelStransky.GCM {
     /// </summary>
     /// <param name="n">Øád bázové funkce</param>
     /// <param name="x">Promìnná</param>
-    public delegate double BasisFunction(int n, double x);
+    public delegate double BasisFunction(double x, int n);
 
     /// <summary>
     /// Pøedvypoèítá hodnoty bázové funkce na zadané møížce
@@ -43,7 +43,7 @@ namespace PavelStransky.GCM {
 
             for(int n = minn; n < maxn; n++)
                 for(int i = 0; i < this.Num; i++)
-                    this.cache[n - minn, i] = function(n, this.GetX(i));
+                    this.cache[n - minn, i] = function(this.GetX(i), n);
 
         }
 
@@ -83,7 +83,7 @@ namespace PavelStransky.GCM {
             int i = this.GetIndex(x);
 
             if(i < 0 || i > this.MaxIndex || n < this.minn || n >= this.maxn)
-                return this.function(n, x);
+                return this.function(x, n);
 
             return this.cache[n - this.minn, i];
         }

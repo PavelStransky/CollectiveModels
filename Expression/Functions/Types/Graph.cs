@@ -27,7 +27,7 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments) {
+		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 6);
 		}
@@ -42,7 +42,7 @@ namespace PavelStransky.Expression.Functions {
             bool oneBackground = true; // True, pokud máme pouze jedno pozadí (rozkopírovává se)
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 1, typeof(Matrix));
+                this.CheckArgumentsType(arguments, 1, true, typeof(Matrix));
 
                 // 1
                 if(item is Matrix) {
@@ -68,7 +68,7 @@ namespace PavelStransky.Expression.Functions {
             TArray data = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 0, typeof(TArray), typeof(Vector), typeof(PointVector));
+                this.CheckArgumentsType(arguments, 0, true, typeof(TArray), typeof(Vector), typeof(PointVector));
 
                 // 1
                 if(item is Vector || item is PointVector) {
@@ -162,7 +162,7 @@ namespace PavelStransky.Expression.Functions {
             TArray errors = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 1, typeof(TArray), typeof(Vector));
+                this.CheckArgumentsType(arguments, 1, false, typeof(TArray), typeof(Vector));
 
                 // 1
                 if(item is Vector) {
@@ -215,12 +215,15 @@ namespace PavelStransky.Expression.Functions {
 			Context graphParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 3, typeof(string), typeof(Context));
+                this.CheckArgumentsType(arguments, 3, false, typeof(string), typeof(Context));
                 if(item is Context)
                     graphParams = item as Context;
                 else {
                     graphParams = new Context();
-                    new Expression(item as string).Evaluate(guider.ChangeContext(graphParams));
+                    string s = item as string;
+                    s = s.Trim();
+                    if(s != string.Empty)
+                        new Expression(s).Evaluate(guider.ChangeContext(graphParams));
                 }
             }
             else
@@ -232,7 +235,7 @@ namespace PavelStransky.Expression.Functions {
             TArray groupParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 3, typeof(string), typeof(Context));
+                this.CheckArgumentsType(arguments, 3, false, typeof(string), typeof(Context));
 
                 if(item is string || item is Context) {
                     Context c = null;
@@ -240,7 +243,10 @@ namespace PavelStransky.Expression.Functions {
                         c = item as Context;
                     else {
                         c = new Context();
-                        new Expression(item as string).Evaluate(guider.ChangeContext(c));
+                        string s = item as string;
+                        s = s.Trim();
+                        if(s != string.Empty)
+                            new Expression(s).Evaluate(guider.ChangeContext(c));
                     }
                     groupParams = new TArray(typeof(Context), groupsI);
                     for(int g = 0; g < groupsI; g++)
@@ -257,7 +263,10 @@ namespace PavelStransky.Expression.Functions {
 
                         for(int g = 0; g < groups; g++) {
                             Context c = new Context();
-                            new Expression(itemt[g] as string).Evaluate(guider.ChangeContext(c));
+                            string s = itemt[g] as string;
+                            s = s.Trim();
+                            if(s != string.Empty)
+                                new Expression(s).Evaluate(guider.ChangeContext(c));
                             groupParams[g] = c;
                         }
                     }
@@ -275,7 +284,7 @@ namespace PavelStransky.Expression.Functions {
             TArray itemParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 0, typeof(TArray), typeof(string), typeof(Context));
+                this.CheckArgumentsType(arguments, 0, false, typeof(TArray), typeof(string), typeof(Context));
 
                 // 1
                 if(item is string || item is Context) {
@@ -284,7 +293,10 @@ namespace PavelStransky.Expression.Functions {
                         c = item as Context;
                     else {
                         c = new Context();
-                        new Expression(item as string).Evaluate(guider.ChangeContext(c));
+                        string s = item as string;
+                        s = s.Trim();
+                        if(s != string.Empty)
+                            new Expression(s).Evaluate(guider.ChangeContext(c));
                     }
 
                     for(int g = 0; g < groupsI; g++) {
@@ -309,7 +321,10 @@ namespace PavelStransky.Expression.Functions {
                             ct = new TArray(typeof(Context), length);
                             for(int i = 0; i < length; i++) {
                                 Context c = new Context();
-                                new Expression(itemt[i] as string).Evaluate(guider.ChangeContext(c));
+                                string s = itemt[i] as string;
+                                s = s.Trim();
+                                if(s != string.Empty)
+                                    new Expression(s).Evaluate(guider.ChangeContext(c));
                                 ct[i] = c;
                             }
                         }
@@ -336,7 +351,10 @@ namespace PavelStransky.Expression.Functions {
                                 TArray ct = new TArray(typeof(Context), length);
                                 for(int i = 0; i < length; i++) {
                                     Context c = new Context();
-                                    new Expression(itemt1[i] as string).Evaluate(guider.ChangeContext(c));
+                                    string s = itemt1[i] as string;
+                                    s = s.Trim();
+                                    if(s != string.Empty)
+                                        new Expression(s).Evaluate(guider.ChangeContext(c));
                                     ct[i] = c;
                                 }
 

@@ -19,11 +19,30 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusTArray();
+            Test.PokusDelay();
 
 			Console.Write("Hotovo.");
-			Console.ReadLine();
+//			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Pokus jen na zpoždìný výstup na konzoli 20.4.2007
+        /// </summary>
+        static void PokusDelay() {
+            double x = 0.0;
+            for(int i = 0; i < 100; i++) {
+                for(int j = 0; j < 10000000; j++)
+                    x += j;
+                Console.WriteLine(i);
+            }
+
+            for(int i = 0; i < 100; i++) {
+                for(int j = 0; j < 10000000; j++)
+                    x += j;
+                Console.Write(i);
+                Console.Write(' ');
+            }
+        }
 
         /// <summary>
         /// Pokus na novou implementaci øad (28.3.2007)
@@ -36,8 +55,6 @@ namespace PavelStransky.Test {
 
             object b = ta[4];
             b = 4;
-
-            int x = 0;
         }
 
         /// <summary>
@@ -48,7 +65,7 @@ namespace PavelStransky.Test {
             double e = 0.0;
             SpecialFunctions.Laguerre(out l, out e, 3, 5, 3.0);
             double l1 = l * System.Math.Exp(e);
-            double l2 = SpecialFunctions.Laguerre(3, 5, 3.0);
+            double l2 = SpecialFunctions.Laguerre(3.0, 3, 5);
         }
 
         /// <summary>
@@ -235,7 +252,7 @@ namespace PavelStransky.Test {
         public static void PokusSaliContourGraph() {
             ClassicalIBM ibm = new ClassicalIBM(0.7, -0.3);
             SALIContourGraph sali = new SALIContourGraph(ibm, 0);
-            Matrix m = sali.Compute(0, 100, 100);
+            Matrix m = sali.Compute(0, 100, 100)[0] as Matrix;
         }
 
         /// <summary>

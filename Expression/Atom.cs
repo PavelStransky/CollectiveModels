@@ -596,10 +596,14 @@ namespace PavelStransky.Expression {
                 return typeof(double);
             else if(p == "vector")
                 return typeof(Vector);
+            else if(p == "pointvector")
+                return typeof(PointVector);
             else if(p == "array")
                 return typeof(TArray);
             else if(p == "graph")
                 return typeof(Graph);
+            else if(p == "list")
+                return typeof(List);
 
             throw new ExpressionException(string.Format(errorMessageUnknownType, p));
         }

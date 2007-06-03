@@ -77,6 +77,9 @@ namespace PavelStransky.Forms {
             else
                 Context.GlobalContextDirectory = defaultDirectory;
 
+            Context.ExecDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            Context.WorkingDirectory = Application.UserAppDataPath;
+
             object ps = GetRegistryValue(registryKeyPlaySounds);
             if(ps is string && !bool.Parse(ps as String))
                 playSounds = false;

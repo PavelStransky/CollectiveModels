@@ -13,15 +13,15 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IQuantumSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(IQuantumSystem));
+            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
 
             int count = evaluatedArguments.Count;
             for(int i = 2; i < count; i++)
-                this.CheckArgumentsType(evaluatedArguments, i, typeof(Vector));
+                this.CheckArgumentsType(evaluatedArguments, i, evaluateArray, typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

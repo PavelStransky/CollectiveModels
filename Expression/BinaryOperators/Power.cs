@@ -10,7 +10,11 @@ namespace PavelStransky.Expression.BinaryOperators {
 	/// </summary>
 	public class Power: BinaryOperator {
 		public override string OperatorName {get {return operatorName;}}
-		public override int Priority {get {return powerPriority;}}
+        public override OperatorPriority Priority { get { return OperatorPriority.PowerPriority; } }
+
+        protected override object EvaluateII(int left, int right) {
+            return (int)System.Math.Pow(left, right);
+        }
 
 		protected override object EvaluateDDx(double left, double right) {
 			return System.Math.Pow(left, right);
@@ -89,6 +93,6 @@ namespace PavelStransky.Expression.BinaryOperators {
 		private const string errorMessageNotEqualLengthVector = "Pro použití operátoru '{0}' mezi vektory je nutné, aby jejich rozmìry ({1}, {2}) byly shodné.";
 		private const string errorMessageNotEqualLengthMatrix = "Pro použití operátoru '{0}' mezi maticemi je nutné, aby jejich rozmìry (({1},{2}), {{3},{4})) byly shodné.";
 
-		private const string operatorName = "^^";
+		private const string operatorName = "^";
 	}
 }

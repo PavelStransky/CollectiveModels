@@ -13,16 +13,16 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 5);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(LHOQuantumGCM));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCM));
 
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(bool));
-            this.CheckArgumentsType(evaluatedArguments, 3, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 4, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(bool));
+            this.CheckArgumentsType(evaluatedArguments, 3, evaluateArray, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 4, evaluateArray, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -42,7 +42,7 @@ namespace PavelStransky.Expression.Functions {
                 if(arguments.Count > 4 && arguments[4] != null) 
                     numSteps = (int)arguments[4];
 
-                item.Compute(maxE, numSteps, ev, numev, guider.Writer);
+                item.Compute(maxE, numSteps, ev, numev, guider);
 
                 return null;
         }

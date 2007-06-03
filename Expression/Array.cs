@@ -9,7 +9,7 @@ namespace PavelStransky.Expression {
     /// <summary>
     /// Øada - typová kontrola do objektu ArrayList
     /// </summary>
-    public class TArray: ICloneable, IExportable, IEnumerable {
+    public class TArray: ICloneable, IExportable, IEnumerable, ISortable {
         private Array data;
         private Type type;
 
@@ -112,11 +112,18 @@ namespace PavelStransky.Expression {
         /// </summary>
         public int Length {
             get {
-                if(!this.Is1D)
-                    throw new TArrayException(errorMessageBadRank,
-                        string.Format(errorMessageBadRankDetailL, this.Rank));
+                this.Check1D();
                 return this.GetLength(0);
             }
+        }
+
+        /// <summary>
+        /// Checks whether the array is 1D
+        /// </summary>
+        public void Check1D() {
+            if(!this.Is1D)
+                throw new TArrayException(Messages.EMNot1D,
+                    string.Format(Messages.EMRankDetail, this.Rank));
         }
 
         /// <summary>
@@ -224,10 +231,17 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
+        /// Basic getting function
+        /// </summary>
+        private object GetFunction(object o) {
+            return o;
+        }
+
+        /// <summary>
         /// Vrátí podmnožinu zadané øady
         /// </summary>
         /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
-        public TArray GetSubArray(int[][] inIndex) {
+        public object GetSubArray(int[][] inIndex) {
             int length = inIndex.Length;
 
             bool[] shrink = new bool[length];
@@ -241,16 +255,42 @@ namespace PavelStransky.Expression {
         /// Vrátí podmnožinu zadané øady a provede kontrakci pøes zadané indexy
         /// </summary>
         /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
-        public TArray GetSubArray(int[][] inIndex, bool[] shrink) {
+        /// <param name="shrink">Dimensions in which the result array will be shrinked</param>
+        public object GetSubArray(int[][] inIndex, bool[] shrink) {
+            return this.GetSubArray(inIndex, shrink, this.GetFunction);
+        }
+        
+        /// <summary>
+        /// Vrátí podmnožinu zadané øady a provede kontrakci pøes zadané indexy
+        /// </summary>
+        /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
+        /// <param name="shrink">Dimensions in which the result array will be shrinked</param>
+        public object GetSubArray(int[][] inIndex, bool[] shrink, Indexer.GetFunction getFn) {
             int rank = this.Rank;
 
             inIndex = this.AddMissingIndexes(inIndex);
+
+            bool[] oldShrink = shrink;
+            shrink = new bool[rank];
+            for(int r = 0; r < oldShrink.Length; r++)
+                shrink[r] = oldShrink[r];
+            for(int r = oldShrink.Length; r < rank; r++)
+                shrink[r] = false;
 
             // Rozmìr nové øady (rozmìr pùvodní - kontrakce)
             int rRank = rank;
             for(int r = 0; r < rank; r++)
                 if(shrink[r])
                     rRank--;
+
+            // All indexes are shrinked
+            if(rRank == 0) {
+                int[] indexS = new int[rank];
+                for(int r = 0; r < rank; r++)
+                    indexS[r] = inIndex[r][0];
+
+                return getFn(this[indexS]);
+            }
 
             int[] lengths = new int[rRank];
             int rr = 0;
@@ -266,10 +306,10 @@ namespace PavelStransky.Expression {
                     lengths[rr++] = inIndex[r].Length;
             }
 
-            TArray result = new TArray(this.type, lengths);
-
+            TArray result = null;
+            
             int []startIndex = new int[rRank];
-            int[] endIndex = lengths;
+            int[] endIndex = (int[])lengths.Clone();
             for(int r = 0; r < rRank; r++)
                 endIndex[r]--;
             int []index = new int[rRank];
@@ -281,7 +321,10 @@ namespace PavelStransky.Expression {
                 for(int r = 0; r < rank; r++)
                     sourceIndex[r] = inIndex[r][sourceIndexI[r]];
 
-                result[index] = this[sourceIndex];
+                object o = getFn(this[sourceIndex]);
+                if(result == null)
+                    result = new TArray(o.GetType(), lengths);
+                result[index] = o;
 
                 for(int r = rank - 1; r >= 0; r--) {
                     sourceIndexI[r]++;
@@ -366,8 +409,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="array">Øada</param>
         public static explicit operator Vector(TArray array) {
-            if(!array.Is1D)
-                throw new TArrayException(errorMessageNot1D, string.Format(errorMessageNot1D, array.Rank));
+            array.Check1D();
 
             if(array.type == typeof(double))
                 return new Vector((double[])array.data);
@@ -431,7 +473,7 @@ namespace PavelStransky.Expression {
 
         #region Implementace IExportable
         /// <summary>
-        /// Uloží obsah øady do souboru textovì
+        /// Uloží obsah øady do souboru
         /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
@@ -464,12 +506,13 @@ namespace PavelStransky.Expression {
                 t.WriteLine(typeName);
             }
 
+            this.ResetEnumerator();
             foreach(object o in this)
                 export.Write(typeName, o);
         }
 
         /// <summary>
-        /// Naète obsah øady ze souboru textovì
+        /// Naète obsah øady ze souboru
         /// </summary>
         /// <param name="import">Import</param>
         public void Import(PavelStransky.Math.Import import) {
@@ -477,30 +520,49 @@ namespace PavelStransky.Expression {
             string typeName = string.Empty;
             int[] lengths;
 
-            if(import.Binary) {
-                // Binárnì
-                BinaryReader b = import.B;
-                rank = b.ReadInt32();
-                lengths = new int[rank];
-                for(int r = 0; r < rank; r++)
-                    lengths[r] = b.ReadInt32();
-
-                typeName = b.ReadString();
+            // Stará verze (seznam)
+            if(import.VersionNumber < 5) {
+                rank = 1;
+                lengths = new int[1];
+                if(import.Binary) {
+                    // Binárnì
+                    BinaryReader b = import.B;
+                    lengths[0] = b.ReadInt32();
+                    typeName = b.ReadString();
+                }
+                else {
+                    // Textovì
+                    StreamReader t = import.T;
+                    lengths[0] = int.Parse(t.ReadLine());
+                    typeName = t.ReadLine();
+                }
             }
+                // Nejnovìjší verze
             else {
-                // Textovì
-                StreamReader t = import.T;
+                if(import.Binary) {
+                    // Binárnì
+                    BinaryReader b = import.B;
+                    rank = b.ReadInt32();
+                    lengths = new int[rank];
+                    for(int r = 0; r < rank; r++)
+                        lengths[r] = b.ReadInt32();
 
-                rank = int.Parse(t.ReadLine());
-                lengths = new int[rank];
-                string[] line = t.ReadLine().Split('\t');
+                    typeName = b.ReadString();
+                }
+                else {
+                    // Textovì
+                    StreamReader t = import.T;
 
-                for(int r = 0; r < rank; r++)
-                    lengths[r] = int.Parse(line[r]);
+                    rank = int.Parse(t.ReadLine());
+                    lengths = new int[rank];
+                    string[] line = t.ReadLine().Split('\t');
 
-                typeName = t.ReadLine();
+                    for(int r = 0; r < rank; r++)
+                        lengths[r] = int.Parse(line[r]);
+
+                    typeName = t.ReadLine();
+                }
             }
-
             int[] startIndex = new int[rank];
             int[] endIndex = (int[])lengths.Clone();
             for(int r = 0; r < rank; r++)
@@ -641,7 +703,44 @@ namespace PavelStransky.Expression {
         public object Clone() {
             TArray result = new TArray();
             result.data = (Array)this.data.Clone();
+            result.type = this.type;
             return result;
+        }
+        #endregion
+
+        #region ISortable Members
+        public object Sort() {
+            this.Check1D();
+
+            TArray result = this.Clone() as TArray;
+            Array.Sort(result.data);
+            return result;
+        }
+
+        public object SortDesc() {
+            TArray result = this.Sort() as TArray;
+            Array.Reverse(result.data);
+            return result;
+        }
+
+        public object Sort(ISortable keys) {
+            this.Check1D();
+
+            TArray result = this.Clone() as TArray;
+            Array.Sort(keys.GetKeys(), result.data);
+            return result;
+        }
+
+        public object SortDesc(ISortable keys) {
+            TArray result = this.Sort(keys) as TArray;
+            Array.Reverse(result.data);
+            return result;
+        }
+
+        public Array GetKeys() {
+            this.Check1D();
+
+            return this.data;
         }
         #endregion
 
@@ -659,9 +758,6 @@ namespace PavelStransky.Expression {
 
             return result.ToString();
         }
-
-        private const string errorMessageNot1D = "For the considered operation the rank of the Array must be equals to 1.";
-        private const string errorMessageNot1DDetail = "Rank of the Array = {0}.";
 
         private const string errorMessageBadType = "For the considered operation the array does not have the correct type.";
         private static string errorMessageBadTypeDetail = "Requested type: {0}" + Environment.NewLine + "Current type: {1}";

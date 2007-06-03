@@ -46,60 +46,29 @@ namespace PavelStransky.GCM {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
         public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
-            double result = 0.0;
-
-            this.CreateIndex(maxE);
-
-            if(numSteps == 0)
-                numSteps = 10 * this.index.MaxM + 1;
+            if(writer != null)
+                writer.Write(Messages.TraceHM);
 
             DateTime startTime = DateTime.Now;
+            double result = this.HamiltonianSBMatrix(maxE, numSteps, null, true).Trace();
 
-            if(writer != null) 
-                writer.Write("Stopa Hamiltonovy matice...");
-
-            double omega = this.Omega;
-            double range = this.GetRange(epsilon);
-
-            // Cache psi hodnot (Bazove vlnove funkce)
-            DiscreteInterval interval = new DiscreteInterval(0.0, range, numSteps);
-
-            double step = interval.Step;
-
-            // Cache hodnot potencialu
-            double[] vCache = new double[numSteps];
-            for(int sb = 0; sb < numSteps; sb++) {
-                double beta = interval.GetX(sb);
-                double beta2 = beta * beta;
-                vCache[sb] = beta2 * beta * ((this.A - this.A0) + this.C * beta2);
-            }
-
-            int length = this.index.Length;
-
-            // Diagonála
-            for(int i = 0; i < length; i++) {
-                int n = this.index.N[i];
-                int m = this.index.M[i];
-
-                double sum = 0.0;
-
-                for(int sb = 0; sb < numSteps; sb++) {
-                    double x = interval.GetX(sb);
-                    double psi = this.Psi(i, x);
-                    sum += psi * vCache[sb] * psi;
-                }
-
-                sum *= step;
-                sum += this.Hbar * omega * (1.0 + n + n + System.Math.Abs(m));
-
-                result += sum;
-            }
-                
-            if(writer != null) 
+            if(writer != null) {
+                writer.Write(result);
+                writer.Write(' ');
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+            }
 
             return result;
+        }
 
+        /// <summary>
+        /// Vypoèítá Hamiltonovu matici do tvaru pásové matice
+        /// </summary>
+        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
+        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="writer">Writer</param>
+        protected SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
+            return this.HamiltonianSBMatrix(maxE, numSteps, writer, false);
         }
 
         /// <summary>
@@ -118,7 +87,8 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
+        /// <param name="trace">Calculates only trace of the matrix</param>
+        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer, bool trace) {
             this.CreateIndex(maxE);
 
             if(numSteps == 0)
@@ -190,6 +160,10 @@ namespace PavelStransky.GCM {
                         if(mi != mj && System.Math.Abs(mi - mj) != 3)
                             continue;
 
+                        // Only trace
+                        if(trace && i != j)
+                            continue;
+
                         double sum = 0;
 
                         double[] vCache = vCache2;
@@ -214,35 +188,37 @@ namespace PavelStransky.GCM {
 
                 cache2 = new BasisCache(interval, i1, i2, this.Psi);
 
-                if(writer != null)
-                    writer.Write("N ");
+                if(!trace) {
+                    if(writer != null)
+                        writer.Write("N ");
 
-                // Nediagonální blok
-                for(int i = i0; i < i1; i++) {
-                    int ni = this.index.N[i];
-                    int mi = this.index.M[i];
+                    // Nediagonální blok
+                    for(int i = i0; i < i1; i++) {
+                        int ni = this.index.N[i];
+                        int mi = this.index.M[i];
 
-                    for(int j = i1; j < i2; j++) {
-                        int nj = this.index.N[j];
-                        int mj = this.index.M[j];
+                        for(int j = i1; j < i2; j++) {
+                            int nj = this.index.N[j];
+                            int mj = this.index.M[j];
 
-                        // Výbìrové pravidlo
-                        if(mi != mj && System.Math.Abs(mi - mj) != 3)
-                            continue;
+                            // Výbìrové pravidlo
+                            if(mi != mj && System.Math.Abs(mi - mj) != 3)
+                                continue;
 
-                        double sum = 0;
+                            double sum = 0;
 
-                        double[] vCache = vCache2;
-                        if(mi == mj)
-                            vCache = vCache1;
+                            double[] vCache = vCache2;
+                            if(mi == mj)
+                                vCache = vCache1;
 
-                        for(int sb = 0; sb < numSteps; sb++)
-                            sum += cache1[i, sb] * vCache[sb] * cache2[j, sb];
+                            for(int sb = 0; sb < numSteps; sb++)
+                                sum += cache1[i, sb] * vCache[sb] * cache2[j, sb];
 
-                        sum *= step;
+                            sum *= step;
 
-                        // Již je symetrické
-                        m[i, j] = sum;
+                            // Již je symetrické
+                            m[i, j] = sum;
+                        }
                     }
                 }
 

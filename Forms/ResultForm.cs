@@ -138,7 +138,7 @@ namespace PavelStransky.Forms {
         public void SetExpression (string command) {
             try {
                 this.expression = new PavelStransky.Expression.Expression(command); 
-                this.txtCommand.Text = command.Replace(newLine, "\n").Replace("\n", newLine);
+                this.txtCommand.Text = command.Replace(Environment.NewLine, "\n").Replace("\n", Environment.NewLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
                 this.calcThread.Priority = ThreadPriority.BelowNormal;
                 this.SetButtons();
@@ -242,6 +242,9 @@ namespace PavelStransky.Forms {
 
             try {
                 Guider guider = new Guider(context, this);
+                guider.ExecDir = Path.GetDirectoryName(Application.ExecutablePath);
+                guider.TmpDir = Application.UserAppDataPath;
+
                 object result = this.expression.Evaluate(guider);
                 this.timerInfo.Stop();
                 // Po skonèení výpoètu
@@ -299,15 +302,15 @@ namespace PavelStransky.Forms {
                 soundSuccess.Play();
 
             if(this.txtResult.Text != string.Empty)
-                this.txtResult.Text += newLine;
+                this.txtResult.Text += Environment.NewLine;
             this.txtResult.Text += string.Format(timeText, SpecialFormat.Format(duration));
 
             if(result != null) {
                 if(result is Variable)
                     result = (result as Variable).Item;
 
-                string s = newLine + newLine + result.GetType().FullName;
-                s += newLine + result.ToString().Replace("\r", string.Empty).Replace("\n", newLine);
+                string s = Environment.NewLine + Environment.NewLine + result.GetType().FullName;
+                s += Environment.NewLine + result.ToString().Replace("\r", string.Empty).Replace("\n", Environment.NewLine);
 
                 this.txtResult.Text += s;
             }
@@ -410,32 +413,40 @@ namespace PavelStransky.Forms {
             this.Invoke(new WriteDelegate(this.WriteInvoke), string.Empty);
         }
 
-        public void Write(object o) {
-            StringBuilder s = new StringBuilder(this.txtResult.Text);
+        public string Write(object o) {
+            StringBuilder sb = new StringBuilder(this.txtResult.Text);
+
             if(this.lineStart) {
-                s.Append(' ', this.indent);
+                sb.Append(' ', this.indent);
             }
-            s.Append(o);
-            this.Invoke(new WriteDelegate(this.WriteInvoke), s.ToString());
+            sb.Append(o);
+
+            this.Invoke(new WriteDelegate(this.WriteInvoke), sb.ToString());
 
             this.lineStart = false;
+
+            return o.ToString();
         }
 
-        public void WriteLine() {
-            StringBuilder s = new StringBuilder(this.txtResult.Text);
-            s.Append(newLine);
-            this.Invoke(new WriteDelegate(this.WriteInvoke), s.ToString());
+        public string WriteLine() {
+            StringBuilder sb = new StringBuilder(this.txtResult.Text);
+            sb.Append(Environment.NewLine);
+            this.Invoke(new WriteDelegate(this.WriteInvoke), sb.ToString());
             this.lineStart = true;
+            
+            return Environment.NewLine;
         }
 
-        public void WriteLine(object o) {
-            StringBuilder s = new StringBuilder(this.txtResult.Text);
+        public string WriteLine(object o) {
+            StringBuilder sb = new StringBuilder(this.txtResult.Text);
             if(this.lineStart)
-                s.Append(' ', this.indent);
-            s.Append(o.ToString());
-            s.Append(newLine);
-            this.Invoke(new WriteDelegate(this.WriteInvoke), s.ToString());
+                sb.Append(' ', this.indent);
+            sb.Append(o);
+            sb.Append(Environment.NewLine);
+            this.Invoke(new WriteDelegate(this.WriteInvoke), sb.ToString());
             this.lineStart = true;
+
+            return string.Format("{0}{1}", o.ToString(), Environment.NewLine);
         }
 
         private void WriteInvoke(string s) {
@@ -494,7 +505,6 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        private const string newLine = "\r\n";
         private const string timeText = "Doba výpoètu: {0}";
         private const string captionFormat = "{0} - {1}";
 

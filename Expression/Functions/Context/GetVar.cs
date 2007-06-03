@@ -6,17 +6,16 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Z kontextu vyzvedne promìnnou
+    /// Returns a variable from a given context
     /// </summary>
     public class GetVar : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.GetVarHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 2);
+        protected override void CreateParameters() {
+            this.NumParams(2);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(Context));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(string));
+            this.SetParam(0, true, true, false, Messages.PContext, Messages.PContextDescription, null, typeof(Context));
+            this.SetParam(1, true, false, false, Messages.PVarName, Messages.PVarNameDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -24,8 +23,5 @@ namespace PavelStransky.Expression.Functions {
             string name = arguments[1] as string;
             return c[name];
         }
-
-        private const string help = "Z kontextu vrátí urèenou promìnnou.";
-        private const string parameters = "Kontext; název promìnné (string)";
     }
 }

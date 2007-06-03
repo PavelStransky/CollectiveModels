@@ -7,36 +7,29 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Nageneruje náhodné poèáteèní podmínky pro jednu trajektorii se zadanou energií
+    /// For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector
     /// </summary>
     public class InitialCondition: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.InitialConditionHelp; } }
 
-        protected override ArrayList CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
+        protected override void CreateParameters() {
+            this.NumParams(3);
 
-            this.ConvertInt2Double(evaluatedArguments, 1);
-            this.ConvertInt2Double(evaluatedArguments, 2);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
+            this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
+            this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
+            this.SetParam(2, false, true, true, Messages.InitialConditionP3, Messages.InitialConditionP3Description, null, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
+            double e = (double)arguments[1];
 
-            if(arguments.Count > 2) {
+            if(arguments[2] != null) {
                 double l = (double)arguments[2];
                 return dynamicalSystem.IC(e, l);
             }
             else
                 return dynamicalSystem.IC(e);
         }
-
-        private const string help = "Nageneruje pro danou energii jednu poèáteèní podmínku a vrátí ji jako vektor (x, y, vx, vy)";
-        private const string parameters = "Dynamický systém; energie (double) [; úhlový moment (double)]";
     }
 }

@@ -7,15 +7,13 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí ExtendedClassicalGCM1 tøídu
+    /// Creates an ExtendedClassicalGCM class with mass proportional to beta^2
     /// </summary>
     public class ExtendedCGCM1 : FunctionDefinition {
-        public override string Help { get { return help; } }
+        public override string Help { get { return Messages.ExtendedCGCM1Help; } }
 
         protected virtual object Create(double a, double b, double c, double k, double p) {
             return new ExtendedClassicalGCM1(a, b, c, k, p);
         }
-
-        private const string help = "Vytvoøí tøídu rozšíøeného GCM (s hmotou závislou na beta^2)";
     }
 }

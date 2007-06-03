@@ -116,7 +116,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Atom.Functions.cs" />
+    <Compile Include="BinaryOperators\BoolAnd.cs" />
     <Compile Include="BinaryOperators\BoolOr.cs" />
+    <Compile Include="BinaryOperators\Join.cs" />
+    <Compile Include="FileData.cs" />
     <Compile Include="Functions\Context\Clear.cs" />
     <Compile Include="Functions\Context\Context.cs" />
     <Compile Include="Functions\Context\GetContext.cs" />
@@ -146,6 +149,15 @@
     <Compile Include="Functions\Dynamics\TrajectoryM.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryP.cs" />
     <Compile Include="Functions\Graphics\Show.cs" />
+    <Compile Include="Functions\Help\Use.cs" />
+    <Compile Include="Functions\List\Add.cs" />
+    <Compile Include="Functions\Math\Legendre.cs" />
+    <Compile Include="Functions\Math\MathFnD.cs" />
+    <Compile Include="Functions\Math\MathFnID.cs" />
+    <Compile Include="Functions\Math\Pi.cs" />
+    <Compile Include="Functions\Math\Poisson.cs" />
+    <Compile Include="Functions\Math\Sin.cs" />
+    <Compile Include="Functions\Math\Wigner.cs" />
     <Compile Include="Functions\Matrix\BandWidth.cs" />
     <Compile Include="BinaryOperators\BinaryOperator.cs">
       <SubType>Code</SubType>
@@ -217,6 +229,21 @@
     <Compile Include="Functions\Matrix\CM.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\MinMax\Max.cs" />
+    <Compile Include="Functions\MinMax\MaxAbs.cs" />
+    <Compile Include="Functions\MinMax\MaxAbsIndex.cs" />
+    <Compile Include="Functions\MinMax\MaxIndex.cs" />
+    <Compile Include="Functions\MinMax\Min.cs" />
+    <Compile Include="Functions\MinMax\MinAbs.cs" />
+    <Compile Include="Functions\MinMax\MinAbsIndex.cs" />
+    <Compile Include="Functions\MinMax\MinIndex.cs" />
+    <Compile Include="Functions\MinMax\MinMax.cs" />
+    <Compile Include="Functions\Parameters.cs" />
+    <Compile Include="Functions\Program\Print.cs" />
+    <Compile Include="Functions\Program\PrintClear.cs" />
+    <Compile Include="Functions\Program\PrintLine.cs" />
+    <Compile Include="Functions\Program\SafeValue.cs" />
+    <Compile Include="Functions\Program\Save.cs" />
     <Compile Include="Functions\Quantum\ComputeSpectrum.cs" />
     <Compile Include="Functions\Quantum\DensityMatrix.cs" />
     <Compile Include="Functions\Quantum\EValues.cs" />
@@ -226,6 +253,7 @@
     <Compile Include="Functions\Quantum\HamiltonianMatrixSize.cs" />
     <Compile Include="Functions\Quantum\HamiltonianMatrixTrace.cs" />
     <Compile Include="Functions\Quantum\LHOQGCM.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCM5D.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRF.cs" />
@@ -234,6 +262,29 @@
     <Compile Include="Functions\Quantum\LHOQGCMRLO.cs" />
     <Compile Include="Functions\Quantum\Parity.cs" />
     <Compile Include="Functions\Quantum\SecondInvariant.cs" />
+    <Compile Include="Functions\Test\RWF5DLHO.cs" />
+    <Compile Include="Functions\ShellModel\DataParams.cs" />
+    <Compile Include="Functions\ShellModel\VEffective.cs" />
+    <Compile Include="Functions\ShellModel\VRenorm.cs" />
+    <Compile Include="Functions\Sorting\Sort.cs" />
+    <Compile Include="Functions\Sorting\SortDesc.cs" />
+    <Compile Include="Functions\Sum\Sum.cs" />
+    <Compile Include="Functions\Sum\SumAbs.cs" />
+    <Compile Include="Functions\Sum\SumFn.cs" />
+    <Compile Include="Functions\Sum\SumSquare.cs" />
+    <Compile Include="Functions\Types\Deflate.cs" />
+    <Compile Include="Functions\Types\List.cs" />
+    <Compile Include="Functions\Types\ToArray.cs" />
+    <Compile Include="Functions\Types\Type.cs" />
+    <Compile Include="Functions\Unsorted\FnVal.cs" />
+    <Compile Include="Functions\Unsorted\IntervalA.cs" />
+    <Compile Include="Functions\Unsorted\IntervalV.cs" />
+    <Compile Include="Functions\Unsorted\IntervalPV.cs" />
+    <Compile Include="Functions\Math\Polynom.cs" />
+    <Compile Include="Functions\Unsorted\Regression.cs" />
+    <Compile Include="Functions\Unsorted\RemoveBadPoints.cs" />
+    <Compile Include="Functions\Unsorted\Time.cs" />
+    <Compile Include="Functions\Unsorted\TimeNow.cs" />
     <Compile Include="Functions\Vector\CumulHistogram.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -276,6 +327,7 @@
     <Compile Include="Functions\Matrix\GetRows.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Unsorted\FFTSpectrum.cs" />
     <Compile Include="Functions\Vector\GetX.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -300,7 +352,7 @@
     <Compile Include="Functions\Vector\Join.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Length.cs">
+    <Compile Include="Functions\Unsorted\Length.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Math\Log.cs" />
@@ -318,6 +370,7 @@
     <Compile Include="Functions\Types\String.cs" />
     <Compile Include="Functions\Types\Vector.cs" />
     <Compile Include="Functions\UserFunction.cs" />
+    <Compile Include="Functions\Vector\Norm.cs" />
     <Compile Include="Graph.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -326,6 +379,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Guider.cs" />
+    <Compile Include="List.cs" />
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <Compile Include="MinMaxCache.cs" />
     <Compile Include="Operators\Operator.cs">
       <SubType>Code</SubType>
@@ -333,6 +392,7 @@
     <Compile Include="Operators\Operators.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Vector\Spacing.cs" />
     <Compile Include="Transform.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -348,6 +408,21 @@
     <Compile Include="Variable.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Functions\ShellModel\veffective.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Functions\ShellModel\vrenorm.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

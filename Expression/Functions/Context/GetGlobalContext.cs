@@ -7,15 +7,10 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vrátí globální kontext
+    /// Returns global context
     /// </summary>
     public class GetGlobalContext: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
-
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 0);
-        }
+        public override string Help { get { return Messages.GetGlobalContextHelp; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             string fileName = Context.GlobalContextFileName;
@@ -32,8 +27,5 @@ namespace PavelStransky.Expression.Functions {
 
             return result;
         }
-
-        private const string help = "Vrátí globální kontext.";
-        private const string parameters = "";
     }
 }

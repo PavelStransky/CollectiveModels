@@ -7,31 +7,24 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vypoèítá koøeny rovnice potenciál == energie
+    /// For GCM system solves the equation Potential == Given energy
     /// </summary>
     public class PotentialRoots : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.PotentialRootsHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsNumber(evaluatedArguments, 3);
+        protected override void CreateParameters() {
+            this.NumParams(3);
 
-            this.ConvertInt2Double(evaluatedArguments, 1);
-            this.ConvertInt2Double(evaluatedArguments, 2);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(PavelStransky.GCM.GCM));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
+            this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
+            this.SetParam(2, false, true, true, Messages.PGamma, Messages.PGammaDetail, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             PavelStransky.GCM.GCM gcm = arguments[0] as PavelStransky.GCM.GCM;
             double e = (double)arguments[1];
             double gamma = (double)arguments[2];
-            return (item as PavelStransky.GCM.GCM).Roots(e, gamma);
+            return gcm.Roots(e, gamma);
         }
-
-        private const string help = "Vypoèítá koøeny rovnice potenciál == energie pro zadané gamma";
-        private const string parameters = "GCM; energie (double); gamma (double)";
     }
 }

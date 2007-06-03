@@ -48,13 +48,20 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="GCM.cs" />
     <Compile Include="Classical\GCMBisectionFunction.cs" />
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quantum\AngularMatrixElement.cs" />
     <Compile Include="Quantum\BasisCache.cs" />
     <Compile Include="Quantum\ClebshGordon.cs" />
     <Compile Include="Quantum\GammaLog.cs" />
+    <Compile Include="Quantum\LHO5DIndex.cs" />
     <Compile Include="Quantum\LHOPolarIndex.cs" />
     <Compile Include="Quantum\LHOQuantumGCM.cs" />
+    <Compile Include="Quantum\LHOQuantumGCM5D.cs" />
     <Compile Include="Quantum\LHOQuantumGCMC.cs" />
     <Compile Include="Quantum\LHOQuantumGCMR.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRFull.cs" />
@@ -75,6 +82,13 @@
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Name>Math</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

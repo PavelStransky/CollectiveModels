@@ -13,14 +13,14 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
         public override string Parameters { get { return parameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
             this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(LHOQuantumGCM));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCM));
 
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -31,7 +31,7 @@ namespace PavelStransky.Expression.Functions {
             if(arguments.Count > 2) 
                 numSteps = (int)arguments[2];
 
-            return item.HamiltonianMatrix(maxE, numSteps, guider.Writer);
+            return item.HamiltonianMatrix(maxE, numSteps, guider);
         }
 
         private const string help = "Vytvoøí matici Hamiltoniánu v použité bázi";

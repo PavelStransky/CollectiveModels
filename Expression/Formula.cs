@@ -51,26 +51,26 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="e">Výraz</param>
 		private static string FillBracket(string e) {
-			for(int i = 0; i <= BinaryOperators.BinaryOperator.MaxPriority; i++) {
-				MatchCollection matches = Regex.Matches(e, binaryOperators.OperatorPattern, RegexOptions.ExplicitCapture);
+            for(int i = (int)BinaryOperators.BinaryOperator.MaxPriority; i >= 0; i--) {
+                MatchCollection matches = Regex.Matches(e, binaryOperators.OperatorPattern, RegexOptions.ExplicitCapture);
 
-				int addIndex = 0;
-				foreach(Match match in matches) {
-					if(!binaryOperators.Contains(match.Value))
-						continue;
-					if(IsInString(e, match.Index + addIndex))
-						continue;
+                int addIndex = 0;
+                foreach(Match match in matches) {
+                    if(!binaryOperators.Contains(match.Value))
+                        continue;
+                    if(IsInString(e, match.Index + addIndex))
+                        continue;
 
-					if((binaryOperators[match.Value] as BinaryOperator).Priority == i) {
-						string left = e.Substring(0, match.Index + addIndex);
-						if(!IsInBracket(left)) {
-							int index = match.Index + addIndex + match.Length;
-							e = AddOpenBracket(left) + match.Value + AddCloseBracket(e.Substring(index, e.Length - index));
-							addIndex += 2;
-						}
-					}
-				}
-			}
+                    if(((int)(binaryOperators[match.Value] as BinaryOperator).Priority) == i) {
+                        string left = e.Substring(0, match.Index + addIndex);
+                        if(!IsInBracket(left)) {
+                            int index = match.Index + addIndex + match.Length;
+                            e = AddOpenBracket(left) + match.Value + AddCloseBracket(e.Substring(index, e.Length - index));
+                            addIndex += 2;
+                        }
+                    }
+                }
+            }
 
 			return RemoveOutsideBracket(e);
 		}
@@ -90,10 +90,10 @@ namespace PavelStransky.Expression {
 				if(IsInString(e, i))
 					continue;
 
-				if(e[i] == closeBracket) {
+				if(e[i] == closeBracket || e[i] == closeIndexBracket) {
 					numBracket++;
 				}
-				else if(e[i] == openBracket) {
+				else if(e[i] == openBracket || e[i] == openIndexBracket) {
 					if(numBracket == 0) 
 						break;
 					else
@@ -129,10 +129,10 @@ namespace PavelStransky.Expression {
 				if(IsInString(e, i))
 					continue;
 
-				if(e[i] == openBracket) {
+				if(e[i] == openBracket || e[i] == openIndexBracket) {
 					numBracket++;
 				}
-				else if(e[i] == closeBracket) {
+				else if(e[i] == closeBracket || e[i] == closeIndexBracket) {
 					if(numBracket == 0) 
 						break;
 					else

@@ -7,25 +7,19 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Pro 2D systém zobrazí Poincarého øez rovinou y = 0 okonturovaný podle SALI
+    /// Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by SALI
     /// </summary>
     public class SALIG: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.SALIGHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 4);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 5);
+        protected override void CreateParameters() {
+            this.NumParams(5);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
-
-            this.ConvertInt2Double(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 3, typeof(int));
-
-            this.ConvertInt2Double(evaluatedArguments, 4);
-            this.CheckArgumentsType(evaluatedArguments, 4, typeof(double));
+            this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
+            this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
+            this.SetParam(2, true, true, false, Messages.PSizeX, Messages.PSizeXDescription, null, typeof(int));
+            this.SetParam(3, true, true, false, Messages.PSizeY, Messages.PSizeYDescription, null, typeof(int));
+            this.SetParam(4, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -34,18 +28,15 @@ namespace PavelStransky.Expression.Functions {
             double e = (double)arguments[1];
             int sizex = (int)arguments[2];
             int sizey = (int)arguments[3];
-
-            double precision = 0.0;
-            if(arguments.Count > 4)
-                precision = (double)arguments[4];
+            double precision = (double)arguments[4];
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precision);
-            return sali.Compute(e, sizex, sizey, this.writer);
+            ArrayList a = sali.Compute(e, sizex, sizey, guider);
+
+            List result = new List();
+            result.AddRange(a);
+
+            return result;
         }
-
-        private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;
-
-        private const string help = "Pro 2D systém vrátí matici Poincarého øezu rovinou y = 0 okonturovaného podle SALI";
-        private const string parameters = "Dynamický systém; energie (double); rozmìr x (int); rozmìr y (int) [; pøesnost výpoètu (double)]";
     }
 }

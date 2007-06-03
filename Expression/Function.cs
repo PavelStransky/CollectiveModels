@@ -18,6 +18,9 @@ namespace PavelStransky.Expression
 		// Argumenty funkce
 		private ArrayList arguments = new ArrayList();
 
+        // True if the array will be treated like an array object
+        private bool evaluateArray = false;
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -28,6 +31,14 @@ namespace PavelStransky.Expression
             : base(expression, parent) { 
 			int pos = FindOpenBracketPosition(this.expression);
             string fncName = this.expression.Substring(0, pos).Trim().ToLower();
+
+            if(fncName[0] == evaluateArrayChar) {
+                fncName = fncName.Substring(1);
+                this.evaluateArray = true;
+            }
+            else
+                this.evaluateArray = false;
+
             if(functions.Contains(fncName))
                 this.function = functions[fncName];
             else if((this.function = Functions.UserFunction.CreateUserFunction(fncName)) == null)
@@ -54,10 +65,11 @@ namespace PavelStransky.Expression
             object result = null;
 
             DateTime startTime = DateTime.Now; 			
-			result = this.function.Evaluate(guider, this.arguments);
+			result = this.function.Evaluate(guider, this.arguments, this.evaluateArray);
 			return result;
 		}
 
         private const string errorMessageFunctionNotExists = "Funkce {0} neexistuje.";
+        private const char evaluateArrayChar = '!';
     }
 }

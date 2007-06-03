@@ -9,6 +9,7 @@ namespace PavelStransky.Math {
     public class SpecialFunctions {
         private static double[] factorial;
         private static double[] factorialLog;
+        private static double[] halfFactorialLog;
 
         /// <summary>
         /// Statický konstruktor
@@ -21,7 +22,7 @@ namespace PavelStransky.Math {
             gammaLogKoef[2] = 24.01409824083091;
             gammaLogKoef[3] = -1.231739572450155;
             gammaLogKoef[4] = 0.1208650973866179E-2;
-            gammaLogKoef[5] = -0.5395239384953e-5;
+            gammaLogKoef[5] = -0.5395239384953E-5;
 
             // Výpoèet bufferu factoriálù
             factorial = new double[maxFactorial];
@@ -35,6 +36,12 @@ namespace PavelStransky.Math {
 
             for(int i = 1; i < maxFactorialLog; i++)
                 factorialLog[i] = factorialLog[i - 1] + System.Math.Log(i);
+
+            halfFactorialLog = new double[maxHalfFactorialLog];
+            halfFactorialLog[0] = System.Math.Log(System.Math.Sqrt(System.Math.PI));
+
+            for(int i = 1; i < maxHalfFactorialLog; i++)
+                halfFactorialLog[i] = halfFactorialLog[i - 1] + System.Math.Log(i - 0.5);
         }
 
         /// <summary>
@@ -87,13 +94,32 @@ namespace PavelStransky.Math {
             else if(i >= maxFactorialLog) {
                 double result = factorialLog[maxFactorialLog - 1];
 
-                for(int j = maxFactorialLog; j <= i; i++)
+                for(int j = maxFactorialLog; j <= i; j++)
                     result += System.Math.Log(j);
 
                 return result;
             }
             else
                 return factorialLog[i];
+        }
+
+        /// <summary>
+        /// Vrátí logaritmus faktoriálu poloèíselné hodnoty z pøedvypoèítaných hodnot z bufferu
+        /// </summary>
+        /// <param name="i">Vstupní hodnota</param>
+        public static double HalfFactorialILog(int i) {
+            if(i < 0)
+                return double.NaN;
+            else if(i >= maxHalfFactorialLog) {
+                double result = halfFactorialLog[maxHalfFactorialLog - 1];
+
+                for(int j = maxHalfFactorialLog; j <= i; j++)
+                    result += System.Math.Log(j);
+
+                return result;
+            }
+            else
+                return halfFactorialLog[i];
         }
 
         /// <summary>
@@ -252,7 +278,7 @@ namespace PavelStransky.Math {
         /// http://en.wikipedia.org/wiki/Laguerre_polynomials
         /// http://mathworld.wolfram.com/LaguerrePolynomial.html
         /// </remarks>
-        public static double Laguerre(int n, int m, double x) {
+        public static double Laguerre(double x, int n, int m) {
             double lm2 = 1;
             double lm1 = m + 1.0 - x;
             double lm = lm1;
@@ -279,7 +305,7 @@ namespace PavelStransky.Math {
         /// <param name="n">Øád polynomu</param>
         /// <param name="m">Stupeò polynomu</param>
         /// <param name="x">Hodnota</param>
-        public static void Laguerre(out double result, out double exp, int n, int m, double x) {
+        public static void Laguerre(out double result, out double exp, double x, int n, double m) {
             double lm2 = 1;
             double lm1 = m + 1.0 - x;
 
@@ -311,6 +337,32 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Legendre polynomial
+        /// </summary>
+        /// <param name="n">Order of the polynomial</param>
+        /// <param name="x">Value</param>
+        public static double Legendre(double x, int n) {
+            double lm2 = 1;
+            double lm1 = x;
+
+            double result = lm1;
+
+            if(n == 0)
+                result = lm2;
+
+            else {
+                for(int i = 2; i <= n; i++) {
+                    result = ((2 * i - 1) * x * lm1 - (i - 1) * lm2) / i;
+
+                    lm2 = lm1;
+                    lm1 = result;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Hodnota Wignerova rozdìlení se støední hodnotou 1
         /// </summary>
         /// <param name="x">x</param>
@@ -332,6 +384,7 @@ namespace PavelStransky.Math {
         private const double epsilon = 1E-10;
         private const int maxFactorial = 171;
         private const int maxFactorialLog = 1000;
+        private const int maxHalfFactorialLog = 1000;
 
         private const string errorMessageIterationOverrun = "Pøekroèen poèet iterací ve funkci {0}.";
     }

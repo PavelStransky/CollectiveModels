@@ -132,9 +132,7 @@
     <Compile Include="Polynom.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Regression.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Regression.cs" />
     <Compile Include="RungeKutta.cs" />
     <Compile Include="RungeKuttaAdaptive.cs" />
     <Compile Include="RungeKuttaEnergy.cs" />

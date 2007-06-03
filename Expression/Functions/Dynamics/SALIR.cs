@@ -7,36 +7,35 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Urèí, zda trajektorie s danou poèáteèní podmínkou je regulární (1) nebo chaotická (0)
+    /// Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)
     /// </summary>
     public class SALIR: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.SALIRHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
+        protected override void CreateParameters() {
+            this.NumParams(3);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, typeof(IDynamicalSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, typeof(Vector));
-
-            this.ConvertInt2Double(evaluatedArguments, 2);
-            this.CheckArgumentsType(evaluatedArguments, 2, typeof(double));
+            this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
+            this.SetParam(1, true, true, true, Messages.PoincareP2, Messages.PoincareP2Description, null, typeof(Vector), typeof(double));
+            this.SetParam(2, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
 
             Vector ic;
-            if((arguments[1] as Vector).Length == 2 * dynamicalSystem.DegreesOfFreedom) {
-                ic = (Vector)arguments[1];
+
+            // Trajectory is generated randomly
+            if(arguments[1] is double) {
+                double e = (double)arguments[1];
+                ic = dynamicalSystem.IC(e);
             }
+            else if(arguments[1] is Vector && (arguments[1] as Vector).Length / 2 == dynamicalSystem.DegreesOfFreedom)
+                ic = (Vector)arguments[1];
             else
                 return this.BadTypeError(arguments[1], 1);
 
-            double precision = 0;
-            if(arguments.Count > 2 && arguments[2] != null)
-                precision = (double)arguments[2];
+            double precision = (double)arguments[2];
 
             SALI sali = new SALI(dynamicalSystem, precision);
 
@@ -45,10 +44,5 @@ namespace PavelStransky.Expression.Functions {
             else
                 return 0;
         }
-
-        private const RungeKuttaMethods defaultRKMethod = RungeKuttaMethods.Normal;
-
-        private const string help = "Vrátí 1, pokud je trejektorie podle SALI regulární, jinak vrátí 0";
-        private const string parameters = "Dynamický systém; poèáteèní podmínky (x, y, vx, vy) (Vector) [; pøesnost výpoètu (double)]]";
     }
 }

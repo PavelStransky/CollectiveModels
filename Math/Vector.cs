@@ -294,10 +294,10 @@ namespace PavelStransky.Math {
         }
         #endregion
 
-        /// <summary>
-        /// Operátor rovnosti
-        /// </summary>
-        public static bool operator ==(Vector v1, Vector v2) {
+		public override bool Equals(object obj) {
+            Vector v1 = this;
+            Vector v2 = obj as Vector;
+
 			if(v1.Length != v2.Length)
 				return false;
 
@@ -306,17 +306,6 @@ namespace PavelStransky.Math {
 					return false;
 
 			return true;
-		}
-
-		/// <summary>
-		/// Operátor nerovnosti
-		/// </summary>
-		public static bool operator !=(Vector v1, Vector v2) {
-			return !(v1 == v2);
-		}
-
-		public override bool Equals(object obj) {
-			return this == obj as Vector;
 		}
 
 		public override int GetHashCode() {
@@ -386,15 +375,15 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Indexer pro více prvkù
         /// </summary>
-        public Vector this[params int[] index] {
-            get {
-                int length = index.Length;
-                Vector result = new Vector(length);
-                for(int i = 0; i < length; i++)
-                    result[i] = this[index[i]];
-                return result;
-            }
-        }
+        //public Vector this[params int[] index] {
+        //    get {
+        //        int length = index.Length;
+        //        Vector result = new Vector(length);
+        //        for(int i = 0; i < length; i++)
+        //            result[i] = this[index[i]];
+        //        return result;
+        //    }
+        //}
 
         /// <summary>
         /// První prvek vektoru
@@ -477,6 +466,18 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
+		/// <summary>
+		/// Transformace složek vektoru podle zadané transformaèní funkce
+		/// </summary>
+        public Vector Transform(RealFunctionWithParams function, params object[] p) {
+            Vector result = new Vector(this.Length);
+
+            for(int i = 0; i < result.Length; i++)
+                result[i] = function(this[i], p);
+
+            return result;
+        }
+
 		#region Funkce Min, Max
 		/// <summary>
 		/// Vrací index nejvìtšího prvku vektoru
@@ -536,22 +537,22 @@ namespace PavelStransky.Math {
 		/// <summary>
 		/// Vrací index nejmenšího prvku vektoru
 		/// </summary>
-		public int MinIndex() {
-			if(this.Length == 0)
-				throw new VectorException(errorMessageNoData);
+        public int MinIndex() {
+            if(this.Length == 0)
+                throw new VectorException(errorMessageNoData);
 
-			int result = 0;
-			double min = this[0];
+            int result = 0;
+            double min = this[0];
 
-			for(int i = 1; i < this.Length; i++) {
-				if(min > this[i]) {
-					result = i;
-					min = this[i];
-				}
-			}
+            for(int i = 1; i < this.Length; i++) {
+                if(min > this[i]) {
+                    result = i;
+                    min = this[i];
+                }
+            }
 
-			return result;		
-		}
+            return result;
+        }
 
 		/// <summary>
 		/// Vrací hodnotu nejmenšího prvku
@@ -590,6 +591,13 @@ namespace PavelStransky.Math {
 		#endregion
 
 		#region Tøídìní
+        /// <summary>
+        /// Keys for sorting
+        /// </summary>
+        public Array GetKeys() {
+            return this.item.Clone() as Array;
+        }
+
 		/// <summary>
 		/// Jednoduché tøídìní vzestupnì
 		/// </summary>
@@ -612,48 +620,23 @@ namespace PavelStransky.Math {
 		/// Použije klíè k setøídìní vektoru
 		/// </summary>
 		/// <param name="keys">Klíèe k setøídìní</param>
-        public object Sort(Vector keys) {
-			Array result = this.item.Clone() as Array;
-			Array kv = keys.item.Clone() as Array;
-			Array.Sort(kv, result);
-			return new Vector(result as double []);
+        public object Sort(ISortable keys) {
+			Vector result = this.Clone() as Vector;
+			Array kv = keys.GetKeys();
+			Array.Sort(kv, result.item);
+			return result;
 		}
 
 		/// <summary>
 		/// Použije klíè k setøídìní vektoru sestupnì
 		/// </summary>
 		/// <param name="keys">Klíèe k setøídìní</param>
-        public object SortDesc(Vector keys) {
+        public object SortDesc(ISortable keys) {
 			Vector result = this.Sort(keys) as Vector;
 			Array.Reverse(result.item);
 			return result;
 		}
-
-		/// <summary>
-		/// Použije vektor jako klíè k setøídìní objektù
-		/// </summary>
-		/// <param name="toSort">Objekty k setøídìní</param>
-		public Array Sort(Array toSort) {
-			Array result = toSort.Clone() as Array;
-			Vector keysResult = this.Clone() as Vector;
-
-			Array.Sort(keysResult.item, result);
-			return result;
-		}
-		
-		/// <summary>
-		/// Použije vektor jako klíè k setøídìní objektù sestupnì
-		/// </summary>
-		/// <param name="toSort">Objekty k setøídìní</param>
-		public Array SortDesc(Array toSort) {
-			Array result = toSort.Clone() as Array;
-			Vector keysResult = this.Clone() as Vector;
-
-			Array.Sort(keysResult.item, result);
-			Array.Reverse(result);
-			return result;
-		}		
-		#endregion
+        #endregion
 
         /// <summary>
         /// Odstraní složky vektoru, které se vyskytují cícekrát
@@ -1000,7 +983,20 @@ namespace PavelStransky.Math {
 			return s.ToString();
 		}
 
-		private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
+        /// <summary>
+        /// Creates a complex vector from given vector
+        /// </summary>
+        public ComplexVector ToComplexVector() {
+            int length = this.Length;
+            ComplexVector result = new ComplexVector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i].Re = this[i];
+
+            return result;
+        }
+
+        private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
 		private const string errorMessageDifferentLength = "K provedení operace musí mít vektory stejnou délku.";
 		private const string errorMessageMatrixVector = "Pøi násobení matice a vektoru musí mít oba objekty kompatibilní rozmìry.";
 	}

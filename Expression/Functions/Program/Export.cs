@@ -13,17 +13,13 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return help; } }
 		public override string Parameters {get {return parameters;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments) {
+		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 2);
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
 
-			this.CheckArgumentsType(evaluatedArguments, 0, typeof(string));
-    		this.CheckArgumentsType(evaluatedArguments, 2, typeof(string));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(string));
+            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(string));
 		}
-
-        protected override object EvaluateArray(Guider guider, ArrayList arguments) {
-            return this.EvaluateFn(guider, arguments);
-        }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Export export = new Export((string)arguments[0], this.Binary(arguments, 2));

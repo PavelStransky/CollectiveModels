@@ -8,7 +8,7 @@ namespace PavelStransky.Expression.BinaryOperators {
 	/// </summary>
 	public class Interval: BinaryOperator {
 		public override string OperatorName {get {return operatorName;}}
-		public override int Priority {get {return multiplePriority;}}
+		public override OperatorPriority Priority {get {return OperatorPriority.IntervalPriority;}}
 
 		protected override object EvaluateII(int left, int right) {
             if(left < right) {

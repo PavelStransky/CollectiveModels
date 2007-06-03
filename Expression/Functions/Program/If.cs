@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
-        public override object Evaluate(Guider guider, ArrayList arguments) {
+        public override object Evaluate(Guider guider, ArrayList arguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(arguments, 2);
 			this.CheckArgumentsMaxNumber(arguments, 3);
 

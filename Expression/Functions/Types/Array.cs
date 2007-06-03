@@ -12,14 +12,14 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return help;}}
 		public override string Parameters {get {return parameters;}}
 
-        protected override void CheckArguments(ArrayList evaluatedArguments) {
+        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 1);
 
             int count = evaluatedArguments.Count;
             Type t = evaluatedArguments[0].GetType();
 
             for(int i = 1; i < count; i++)
-                this.CheckArgumentsType(evaluatedArguments, i, t);
+                this.CheckArgumentsType(evaluatedArguments, i, evaluateArray, t);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

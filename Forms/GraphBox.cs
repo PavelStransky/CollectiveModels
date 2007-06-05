@@ -183,7 +183,8 @@ namespace PavelStransky.Forms {
 
                     for(int k = 0; k < pointSizeX; k++)
                         for(int l = 0; l < pointSizeY; l++)
-                            result.SetPixel(i1 + k, j1 + l, color);
+                            if(i1 + k < sizeX && j1 + l < sizeY)
+                                result.SetPixel(i1 + k, j1 + l, color);
                 }
 
                 // Žádost o pøerušení procesu

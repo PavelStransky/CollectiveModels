@@ -171,6 +171,15 @@
   <data name="EMNot1D" xml:space="preserve">
     <value>For the considered operation the rank of the Array must be equals to 1.</value>
   </data>
+  <data name="EMNotEqualLength" xml:space="preserve">
+    <value>Lengths of the given objects must be equal.</value>
+  </data>
+  <data name="EMNotEqualLengthDetail" xml:space="preserve">
+    <value>Length of the first object: {0}\r\nLength of the second object: {1}</value>
+  </data>
+  <data name="EMNotEqualTypes" xml:space="preserve">
+    <value>The elements of the given list have not equal types.</value>
+  </data>
   <data name="EMObligatoryParameter" xml:space="preserve">
     <value>Parameter "{0}" (position {1}) of the function "{2}" is obligatory and cannot be omited.</value>
   </data>
@@ -249,6 +258,9 @@
   <data name="IntervalVHelp" xml:space="preserve">
     <value>Creates points for interval</value>
   </data>
+  <data name="JacobiHelp" xml:space="preserve">
+    <value>Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix</value>
+  </data>
   <data name="JoinHelp" xml:space="preserve">
     <value>Array of vectors or array of pointVectors joins into one Vector</value>
   </data>
@@ -272,6 +284,12 @@
   </data>
   <data name="LogHelp" xml:space="preserve">
     <value>Logarithm of the value (with specified base)</value>
+  </data>
+  <data name="MatrixColumnHelp" xml:space="preserve">
+    <value>Given vectors put onto columns of a matrix</value>
+  </data>
+  <data name="MatrixRowHelp" xml:space="preserve">
+    <value>Given vectors put onto rows of a matrix</value>
   </data>
   <data name="NormHelp" xml:space="preserve">
     <value>Norm of the vector</value>
@@ -332,6 +350,12 @@
   </data>
   <data name="PDefaultValueDescription" xml:space="preserve">
     <value>Default value of the variable</value>
+  </data>
+  <data name="PDiagonalValue" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="PDiagonalValueDescription" xml:space="preserve">
+    <value>Value(s) to be put onto diagonal</value>
   </data>
   <data name="PDynamicalSystem" xml:space="preserve">
     <value>dynamicalsystem</value>
@@ -407,6 +431,24 @@
   </data>
   <data name="PKDescription" xml:space="preserve">
     <value>K (mass) parameter of GCM</value>
+  </data>
+  <data name="PMatrixColumn" xml:space="preserve">
+    <value>column</value>
+  </data>
+  <data name="PMatrixColumnDescription" xml:space="preserve">
+    <value>Data for a column</value>
+  </data>
+  <data name="PMatrixRow" xml:space="preserve">
+    <value>row</value>
+  </data>
+  <data name="PMatrixRowDescription" xml:space="preserve">
+    <value>Data for a row</value>
+  </data>
+  <data name="PNonDiagonalValue" xml:space="preserve">
+    <value>nd</value>
+  </data>
+  <data name="PNonDiagonalValueDescription" xml:space="preserve">
+    <value>Value to be put instead of all nondiagonal elements</value>
   </data>
   <data name="PNumberOfPoints" xml:space="preserve">
     <value>numx</value>
@@ -528,11 +570,23 @@
   <data name="PSpacingDescription" xml:space="preserve">
     <value>Distance of the neigbour components</value>
   </data>
+  <data name="PSquareMatrix" xml:space="preserve">
+    <value>sqrmatrix</value>
+  </data>
+  <data name="PSquareMatrixDescription" xml:space="preserve">
+    <value>Square matrix</value>
+  </data>
   <data name="PStartingPoint" xml:space="preserve">
     <value>startx</value>
   </data>
   <data name="PStartingPointDetail" xml:space="preserve">
     <value>Starting point of the interval</value>
+  </data>
+  <data name="PSymmetricMatrix" xml:space="preserve">
+    <value>smatrix</value>
+  </data>
+  <data name="PSymmetricMatrixDescription" xml:space="preserve">
+    <value>Symmetrix matrix (in other hand the matrix will be symmetrized)</value>
   </data>
   <data name="PTime" xml:space="preserve">
     <value>time</value>
@@ -603,8 +657,14 @@
   <data name="SALIRHelp" xml:space="preserve">
     <value>Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)</value>
   </data>
+  <data name="SetDiagonalHelp" xml:space="preserve">
+    <value>Given value or Vector of values put onto diagonal of square matrix</value>
+  </data>
   <data name="SetGlobalVarHelp" xml:space="preserve">
     <value>Sets a variable into the global context</value>
+  </data>
+  <data name="SetNonDiagonalHelp" xml:space="preserve">
+    <value>Given value put onto nondiagonal elements of square matrix</value>
   </data>
   <data name="ShowHelp" xml:space="preserve">
     <value>Shows a graph</value>

@@ -235,7 +235,7 @@ namespace PavelStransky.Expression.Functions {
             TArray groupParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 3, false, typeof(string), typeof(Context));
+                this.CheckArgumentsType(arguments, 4, false, typeof(TArray), typeof(string), typeof(Context));
 
                 if(item is string || item is Context) {
                     Context c = null;
@@ -284,7 +284,7 @@ namespace PavelStransky.Expression.Functions {
             TArray itemParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 0, false, typeof(TArray), typeof(string), typeof(Context));
+                this.CheckArgumentsType(arguments, 5, false, typeof(TArray), typeof(string), typeof(Context));
 
                 // 1
                 if(item is string || item is Context) {

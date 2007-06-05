@@ -229,6 +229,8 @@
     <Compile Include="Functions\Matrix\CM.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Matrix\SetDiagonal.cs" />
+    <Compile Include="Functions\Matrix\SetNonDiagonal.cs" />
     <Compile Include="Functions\MinMax\Max.cs" />
     <Compile Include="Functions\MinMax\MaxAbs.cs" />
     <Compile Include="Functions\MinMax\MaxAbsIndex.cs" />
@@ -294,7 +296,7 @@
     <Compile Include="Functions\Matrix\DropRows.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\Matrix\EigenSystem.cs">
+    <Compile Include="Functions\Matrix\Jacobi.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Program\Exit.cs">

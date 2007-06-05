@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
     public class MathFnID: MathFnD {
         protected override void SetXParam() {
             this.SetParam(0, true, true, false, Messages.PX, Messages.PXDetail, null,
-                typeof(double), typeof(PointD), typeof(Vector), typeof(PointVector), typeof(Matrix));
+                typeof(int), typeof(double), typeof(PointD), typeof(Vector), typeof(PointVector), typeof(Matrix));
         }
 
         protected virtual int FnInt(int i, params object[] p) {

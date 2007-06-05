@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions {
             int count = evaluatedArguments.Count;
             for(int i = 0; i < count; i++) {
                 this.CheckArgumentsType(evaluatedArguments, i, true, 
-                    typeof(double), typeof(Vector), typeof(Matrix), typeof(List), typeof(int));
+                    typeof(TArray), typeof(double), typeof(Vector), typeof(Matrix), typeof(List), typeof(int));
             }
         }
 

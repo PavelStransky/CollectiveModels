@@ -89,5 +89,23 @@ namespace PavelStransky.Expression {
             result.AddRange(this);
             return result;
         }
+
+        /// <summary>
+        /// Checks whether all elements of the list has the same type; if not, throw an exception
+        /// </summary>
+        /// <returns>Type of the elements</returns>
+        public Type CheckOneType() {
+            Type t = null;
+            foreach(object o in this) {
+                if(o == null)
+                    continue;
+                if(t == null)
+                    t = o.GetType();
+                else if(t != o.GetType())
+                    throw new ExpressionException(Messages.EMNotEqualTypes);
+            }
+
+            return t;
+        }
     }
 }

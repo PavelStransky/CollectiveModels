@@ -31,10 +31,6 @@ namespace PavelStransky.Expression {
             binaryOperators.Add(new BinaryOperators.Join());
 
 			functions = new Functions.FunctionDefinitions();
-			functions.Add(new Functions.CM());
-			functions.Add(new Functions.DropColumns());
-			functions.Add(new Functions.DropRows());
-			functions.Add(new Functions.EigenSystem());
             functions.Add(new Functions.Exit());
 			functions.Add(new Functions.FnExport());
 			functions.Add(new Functions.GetColumns());
@@ -49,10 +45,18 @@ namespace PavelStransky.Expression {
 			functions.Add(new Functions.GetX());
 			functions.Add(new Functions.GetY());
 			functions.Add(new Functions.Integrate());
-            functions.Add(new Functions.BandWidth());
             functions.Add(new Functions.VRenorm());
             functions.Add(new Functions.Norm());
             functions.Add(new Functions.Spacing());
+
+            // Matrix
+            functions.Add(new Functions.BandWidth());
+            functions.Add(new Functions.CM());
+            functions.Add(new Functions.DropColumns());
+            functions.Add(new Functions.DropRows());
+            functions.Add(new Functions.FnJacobi());
+            functions.Add(new Functions.SetDiagonal());
+            functions.Add(new Functions.SetNonDiagonal());
 
             // Unsorted
             functions.Add(new Functions.IntervalA());
@@ -147,70 +151,6 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.MaxIndex());
             functions.Add(new Functions.MinAbsIndex());
             functions.Add(new Functions.MaxAbsIndex());
-
-            /*
-            functions.Add(new Functions.Save());
-            functions.Add(new Functions.FnPoint());
-            functions.Add(new Functions.GenArray());
-            functions.Add(new Functions.Eval());
-            functions.Add(new Functions.AddItem());
-            functions.Add(new Functions.FnArray());
-            functions.Add(new Functions.SLength());
-            functions.Add(new Functions.Norm());
-            functions.Add(new Functions.Normalize());
-            functions.Add(new Functions.SNormalize());
-            functions.Add(new Functions.Objects());
-            functions.Add(new Functions.Permute());
-            functions.Add(new Functions.Split());
-            functions.Add(new Functions.SplitColumns());
-            functions.Add(new Functions.SplitRows());
-            functions.Add(new Functions.String());
-            functions.Add(new Functions.Transpose());
-            functions.Add(new Functions.FnVector());
-            functions.Add(new Functions.FnMatrix());
-            functions.Add(new Functions.Windows());
-            functions.Add(new Functions.SwapDim());
-            functions.Add(new Functions.FnRegression());
-            functions.Add(new Functions.FnPolynom());
-            functions.Add(new Functions.FnPointVector());
-            functions.Add(new Functions.Sort());
-            functions.Add(new Functions.SortDesc());
-            functions.Add(new Functions.Min());
-            functions.Add(new Functions.MinAbs());
-            functions.Add(new Functions.MaxAbs());
-            functions.Add(new Functions.MinIndex());
-            functions.Add(new Functions.MaxIndex());
-            functions.Add(new Functions.MinAbsIndex());
-            functions.Add(new Functions.MaxAbsIndex());
-            functions.Add(new Functions.Spacing());
-            functions.Add(new Functions.Mean());
-            functions.Add(new Functions.Var()); 
-            functions.Add(new Functions.Wigner());
-            functions.Add(new Functions.Poisson());
-			functions.Add(new Functions.FnType());
-            functions.Add(new Functions.SwapXY());
-            functions.Add(new Functions.Sum());
-            functions.Add(new Functions.SumAbs());
-            functions.Add(new Functions.SumSquare());
-            functions.Add(new Functions.TimeNow());
-            functions.Add(new Functions.FnTime());
-            functions.Add(new Functions.FnRand());
-            functions.Add(new Functions.RandVector());
-            functions.Add(new Functions.FnInt());
-            functions.Add(new Functions.FnDouble());
-            functions.Add(new Functions.Spectrum());
-            functions.Add(new Functions.FRegMatrixEval());
-            functions.Add(new Functions.Show());
-            functions.Add(new Functions.EVNumDiff());
-            functions.Add(new Functions.NumNonzeroItems());
-            functions.Add(new Functions.Trace());
-            functions.Add(new Functions.Smooth());
-            functions.Add(new Functions.SafeValue());
-            functions.Add(new Functions.RemoveBadPoints());
-
-			functions.Add(new Functions.PC());
-			functions.Add(new Functions.Symmetry());
-            */
 
             // Standardní matematické funkce
 			functions.Add(new Functions.ArcTan());

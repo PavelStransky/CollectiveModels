@@ -604,6 +604,8 @@ namespace PavelStransky.Expression {
                 return typeof(Graph);
             else if(p == "list")
                 return typeof(List);
+            else if(p == "matrix")
+                return typeof(Matrix);
 
             throw new ExpressionException(string.Format(errorMessageUnknownType, p));
         }

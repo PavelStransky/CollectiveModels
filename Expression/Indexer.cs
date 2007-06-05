@@ -150,6 +150,26 @@ namespace PavelStransky.Expression {
                         pv[i[j]] = (PointD)result;
                     }
                 }
+
+                else if(o is Matrix) {
+                    if(index.Rank != 2)
+                        this.ManyIndexesError(2, index.Rank);
+
+                    int[] i = index.Index[0];
+                    int[] j = index.Index[1];
+                    int il = i.Length;
+                    int jl = j.Length;
+                    Matrix m = o as Matrix;
+
+                    for(int k = 0; k < il; k++)
+                        for(int l = 0; l < jl; l++) {
+                            object result = this.assignFn(m[i[k], j[l]]);
+                            if(result is int)
+                                m[i[k], j[l]] = (double)(int)result;
+                            else
+                                m[i[k], j[l]] = (double)result;
+                        }
+                }
             }
 
             catch(Exception e) {

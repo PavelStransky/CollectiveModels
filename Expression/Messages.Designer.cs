@@ -223,6 +223,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lengths of the given objects must be equal..
+        /// </summary>
+        internal static string EMNotEqualLength {
+            get {
+                return ResourceManager.GetString("EMNotEqualLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length of the first object: {0}\r\nLength of the second object: {1}.
+        /// </summary>
+        internal static string EMNotEqualLengthDetail {
+            get {
+                return ResourceManager.GetString("EMNotEqualLengthDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The elements of the given list have not equal types..
+        /// </summary>
+        internal static string EMNotEqualTypes {
+            get {
+                return ResourceManager.GetString("EMNotEqualTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter &quot;{0}&quot; (position {1}) of the function &quot;{2}&quot; is obligatory and cannot be omited..
         /// </summary>
         internal static string EMObligatoryParameter {
@@ -457,6 +484,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix.
+        /// </summary>
+        internal static string JacobiHelp {
+            get {
+                return ResourceManager.GetString("JacobiHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Array of vectors or array of pointVectors joins into one Vector.
         /// </summary>
         internal static string JoinHelp {
@@ -525,6 +561,24 @@ namespace PavelStransky.Expression {
         internal static string LogHelp {
             get {
                 return ResourceManager.GetString("LogHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Given vectors put onto columns of a matrix.
+        /// </summary>
+        internal static string MatrixColumnHelp {
+            get {
+                return ResourceManager.GetString("MatrixColumnHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Given vectors put onto rows of a matrix.
+        /// </summary>
+        internal static string MatrixRowHelp {
+            get {
+                return ResourceManager.GetString("MatrixRowHelp", resourceCulture);
             }
         }
         
@@ -705,6 +759,24 @@ namespace PavelStransky.Expression {
         internal static string PDefaultValueDescription {
             get {
                 return ResourceManager.GetString("PDefaultValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to d.
+        /// </summary>
+        internal static string PDiagonalValue {
+            get {
+                return ResourceManager.GetString("PDiagonalValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value(s) to be put onto diagonal.
+        /// </summary>
+        internal static string PDiagonalValueDescription {
+            get {
+                return ResourceManager.GetString("PDiagonalValueDescription", resourceCulture);
             }
         }
         
@@ -930,6 +1002,60 @@ namespace PavelStransky.Expression {
         internal static string PKDescription {
             get {
                 return ResourceManager.GetString("PKDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to column.
+        /// </summary>
+        internal static string PMatrixColumn {
+            get {
+                return ResourceManager.GetString("PMatrixColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data for a column.
+        /// </summary>
+        internal static string PMatrixColumnDescription {
+            get {
+                return ResourceManager.GetString("PMatrixColumnDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to row.
+        /// </summary>
+        internal static string PMatrixRow {
+            get {
+                return ResourceManager.GetString("PMatrixRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data for a row.
+        /// </summary>
+        internal static string PMatrixRowDescription {
+            get {
+                return ResourceManager.GetString("PMatrixRowDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nd.
+        /// </summary>
+        internal static string PNonDiagonalValue {
+            get {
+                return ResourceManager.GetString("PNonDiagonalValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value to be put instead of all nondiagonal elements.
+        /// </summary>
+        internal static string PNonDiagonalValueDescription {
+            get {
+                return ResourceManager.GetString("PNonDiagonalValueDescription", resourceCulture);
             }
         }
         
@@ -1294,6 +1420,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sqrmatrix.
+        /// </summary>
+        internal static string PSquareMatrix {
+            get {
+                return ResourceManager.GetString("PSquareMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Square matrix.
+        /// </summary>
+        internal static string PSquareMatrixDescription {
+            get {
+                return ResourceManager.GetString("PSquareMatrixDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to startx.
         /// </summary>
         internal static string PStartingPoint {
@@ -1308,6 +1452,24 @@ namespace PavelStransky.Expression {
         internal static string PStartingPointDetail {
             get {
                 return ResourceManager.GetString("PStartingPointDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to smatrix.
+        /// </summary>
+        internal static string PSymmetricMatrix {
+            get {
+                return ResourceManager.GetString("PSymmetricMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symmetrix matrix (in other hand the matrix will be symmetrized).
+        /// </summary>
+        internal static string PSymmetricMatrixDescription {
+            get {
+                return ResourceManager.GetString("PSymmetricMatrixDescription", resourceCulture);
             }
         }
         
@@ -1519,11 +1681,29 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Given value or Vector of values put onto diagonal of square matrix.
+        /// </summary>
+        internal static string SetDiagonalHelp {
+            get {
+                return ResourceManager.GetString("SetDiagonalHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sets a variable into the global context.
         /// </summary>
         internal static string SetGlobalVarHelp {
             get {
                 return ResourceManager.GetString("SetGlobalVarHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Given value put onto nondiagonal elements of square matrix.
+        /// </summary>
+        internal static string SetNonDiagonalHelp {
+            get {
+                return ResourceManager.GetString("SetNonDiagonalHelp", resourceCulture);
             }
         }
         

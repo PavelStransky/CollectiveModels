@@ -78,6 +78,14 @@ namespace PavelStransky.Math {
         #endregion
 
         /// <summary>
+        /// Checks whether the matrix is square one
+        /// </summary>
+        public void CheckSquare() {
+            if(!this.IsSquare)
+                throw new MatrixException(errorMessageNotSquare);
+        }
+
+        /// <summary>
         /// Indexer
         /// </summary>
         public double this[int i, int j] { get { return this.item[i, j]; } set { this.item[i, j] = value; } }
@@ -752,11 +760,29 @@ namespace PavelStransky.Math {
 			}
 		}
 
-		#region Funkce Min, Max
-		/// <summary>
-		/// Vrací index nejvìtšího prvku matice
-		/// </summary>
-		public int [] MaxIndex() {
+        /// <summary>
+        /// Symmetrize given matrix
+        /// </summary>
+        public Matrix Symmetrize() {
+            if(!this.IsSquare)
+                throw new MatrixException(errorMessageNotSquare);
+
+            int length = this.Length;
+            Matrix result = new Matrix(length);
+
+            for(int i = 0; i < length; i++)
+                for(int j = 0; j < length; j++)
+                    result[i, j] = 0.5 * (this[i, j] + this[j, i]);
+
+            return result;
+        }
+
+
+        #region Funkce Min, Max
+        /// <summary>
+        /// Vrací index nejvìtšího prvku matice
+        /// </summary>
+        public int[] MaxIndex() {
 			if(this.LengthX == 0 || this.LengthY == 0)
 				throw new MatrixException(errorMessageNoData);
 
@@ -1282,7 +1308,7 @@ namespace PavelStransky.Math {
 		private const string errorMessageMultiplication = "Pøi násobení matic musí mít matice kompatibilní rozmìry.";
 		private const string errorMessageSingular = "Matrix je singulární. Inverzi nelze spoèítat.";
 		private const string errorMessageDifferentLength = "K provedení operace musí mít vektor stejnou délku jako odpovídající rozmìr matice.";
-	}
+    }
 
 	/// <summary>
 	/// Výjimka ve tøídì Matrix

@@ -24,13 +24,24 @@ namespace PavelStransky.Expression.Functions {
 	/// </param>
 	public class FnGraph: FunctionDefinition {
         public override string Name { get { return name; } }
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string Help {get {return Messages.GraphHelp;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-			this.CheckArgumentsMaxNumber(evaluatedArguments, 6);
-		}
+        protected override void CreateParameters() {
+            this.NumParams(6);
+
+            this.SetParam(0, false, true, false, Messages.GraphP1, Messages.GraphP1Description, null,
+                typeof(TArray), typeof(Vector), typeof(PointVector));
+            this.SetParam(1, false, true, false, Messages.GraphP2, Messages.GraphP2Description, null,
+                typeof(TArray), typeof(Matrix));
+            this.SetParam(2, false, true, false, Messages.GraphP3, Messages.GraphP3Description, null,
+                typeof(TArray), typeof(Vector));
+            this.SetParam(3, false, true, false, Messages.GraphP4, Messages.GraphP4Description, null,
+                typeof(string), typeof(Context));
+            this.SetParam(4, false, true, false, Messages.GraphP5, Messages.GraphP5Description, null,
+                typeof(TArray), typeof(string), typeof(Context));
+            this.SetParam(5, false, true, false, Messages.GraphP6, Messages.GraphP6Description, null,
+                typeof(TArray), typeof(string), typeof(Context));
+        }
 
 		protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             // Druhý parametr - pozadí
@@ -42,8 +53,6 @@ namespace PavelStransky.Expression.Functions {
             bool oneBackground = true; // True, pokud máme pouze jedno pozadí (rozkopírovává se)
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 1, true, typeof(Matrix));
-
                 // 1
                 if(item is Matrix) {
                     background = new TArray(typeof(Matrix), 1);
@@ -68,8 +77,6 @@ namespace PavelStransky.Expression.Functions {
             TArray data = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 0, true, typeof(TArray), typeof(Vector), typeof(PointVector));
-
                 // 1
                 if(item is Vector || item is PointVector) {
                     TArray d = new TArray(typeof(PointVector), 1);
@@ -162,8 +169,6 @@ namespace PavelStransky.Expression.Functions {
             TArray errors = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 1, false, typeof(TArray), typeof(Vector));
-
                 // 1
                 if(item is Vector) {
                     errors = new TArray(typeof(TArray), groupsI);
@@ -215,7 +220,6 @@ namespace PavelStransky.Expression.Functions {
 			Context graphParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 3, false, typeof(string), typeof(Context));
                 if(item is Context)
                     graphParams = item as Context;
                 else {
@@ -235,8 +239,6 @@ namespace PavelStransky.Expression.Functions {
             TArray groupParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 4, false, typeof(TArray), typeof(string), typeof(Context));
-
                 if(item is string || item is Context) {
                     Context c = null;
                     if(item is Context)
@@ -284,8 +286,6 @@ namespace PavelStransky.Expression.Functions {
             TArray itemParams = null;
 
             if(item != null) {
-                this.CheckArgumentsType(arguments, 5, false, typeof(TArray), typeof(string), typeof(Context));
-
                 // 1
                 if(item is string || item is Context) {
                     Context c = null;
@@ -379,7 +379,5 @@ namespace PavelStransky.Expression.Functions {
 		}
 
         private const string name = "graph";
-		private const string help = "Vytvoøí graf";
-        private const string parameters = "[data k vykreslení (Vector | PointVector)]; [pozadí (Matrix)]; [chyby k bodùm (Vector)]; [parametry grafu (string | Context)]; [parametry skupin (string | Context))]; [parametry køivek (string | Context)]";	
 	}
 }

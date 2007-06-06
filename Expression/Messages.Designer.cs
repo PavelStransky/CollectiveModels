@@ -421,6 +421,123 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create graph.
+        /// </summary>
+        internal static string GraphHelp {
+            get {
+                return ResourceManager.GetString("GraphHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to data.
+        /// </summary>
+        internal static string GraphP1 {
+            get {
+                return ResourceManager.GetString("GraphP1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data for curves.
+        /// </summary>
+        internal static string GraphP1Description {
+            get {
+                return ResourceManager.GetString("GraphP1Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to background.
+        /// </summary>
+        internal static string GraphP2 {
+            get {
+                return ResourceManager.GetString("GraphP2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data for background (mesh graph).
+        /// </summary>
+        internal static string GraphP2Description {
+            get {
+                return ResourceManager.GetString("GraphP2Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to error.
+        /// </summary>
+        internal static string GraphP3 {
+            get {
+                return ResourceManager.GetString("GraphP3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error bars for data.
+        /// </summary>
+        internal static string GraphP3Description {
+            get {
+                return ResourceManager.GetString("GraphP3Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pglobal.
+        /// </summary>
+        internal static string GraphP4 {
+            get {
+                return ResourceManager.GetString("GraphP4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for the whole graph.
+        /// </summary>
+        internal static string GraphP4Description {
+            get {
+                return ResourceManager.GetString("GraphP4Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pgroups.
+        /// </summary>
+        internal static string GraphP5 {
+            get {
+                return ResourceManager.GetString("GraphP5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for groups of data.
+        /// </summary>
+        internal static string GraphP5Description {
+            get {
+                return ResourceManager.GetString("GraphP5Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pcurves.
+        /// </summary>
+        internal static string GraphP6 {
+            get {
+                return ResourceManager.GetString("GraphP6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for curves.
+        /// </summary>
+        internal static string GraphP6Description {
+            get {
+                return ResourceManager.GetString("GraphP6Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a HenonHeiles class.
         /// </summary>
         internal static string HHHelp {

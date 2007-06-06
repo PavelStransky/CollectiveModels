@@ -237,6 +237,45 @@
   <data name="GetVarHelp" xml:space="preserve">
     <value>Returns a variable from a given context</value>
   </data>
+  <data name="GraphHelp" xml:space="preserve">
+    <value>Create graph</value>
+  </data>
+  <data name="GraphP1" xml:space="preserve">
+    <value>data</value>
+  </data>
+  <data name="GraphP1Description" xml:space="preserve">
+    <value>Data for curves</value>
+  </data>
+  <data name="GraphP2" xml:space="preserve">
+    <value>background</value>
+  </data>
+  <data name="GraphP2Description" xml:space="preserve">
+    <value>Data for background (mesh graph)</value>
+  </data>
+  <data name="GraphP3" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="GraphP3Description" xml:space="preserve">
+    <value>Error bars for data</value>
+  </data>
+  <data name="GraphP4" xml:space="preserve">
+    <value>pglobal</value>
+  </data>
+  <data name="GraphP4Description" xml:space="preserve">
+    <value>Parameters for the whole graph</value>
+  </data>
+  <data name="GraphP5" xml:space="preserve">
+    <value>pgroups</value>
+  </data>
+  <data name="GraphP5Description" xml:space="preserve">
+    <value>Parameters for groups of data</value>
+  </data>
+  <data name="GraphP6" xml:space="preserve">
+    <value>pcurves</value>
+  </data>
+  <data name="GraphP6Description" xml:space="preserve">
+    <value>Parameters for curves</value>
+  </data>
   <data name="HHHelp" xml:space="preserve">
     <value>Creates a HenonHeiles class</value>
   </data>

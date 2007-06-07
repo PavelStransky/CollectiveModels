@@ -211,6 +211,8 @@ namespace PavelStransky.Forms {
             for(int i = 0; i < length; i++)
                 param.Add(this.graphControl[i].GetGraph(), string.Format("GraphData{0}", i));
 
+            param.Add(this.WindowState.ToString(), "WindowState");
+
             param.Export(export);
         }
 
@@ -232,6 +234,8 @@ namespace PavelStransky.Forms {
             TArray graphs = new TArray(typeof(Graph), length);
             for(int i = 0; i < length; i++)
                 graphs[i] = param.Get();
+
+            this.WindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), (string)param.Get(FormWindowState.Normal.ToString()), true);
 
             this.SetGraph(graphs, numColumns);
         }

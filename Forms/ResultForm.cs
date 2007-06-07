@@ -482,6 +482,8 @@ namespace PavelStransky.Forms {
             param.Add(this.txtCommand.Text, "Command");
             param.Add(this.txtResult.Text, "Result");
 
+            param.Add(this.WindowState.ToString(), "WindowState");
+
             param.Export(export);
         }
 
@@ -499,6 +501,8 @@ namespace PavelStransky.Forms {
 
             this.txtCommand.Text = (string)param.Get(string.Empty);
             this.txtResult.Text = (string)param.Get(string.Empty);
+
+            this.WindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), (string)param.Get(FormWindowState.Normal.ToString()), true);
 
             this.SetExpression(this.txtCommand.Text);
             this.Text = this.Name;

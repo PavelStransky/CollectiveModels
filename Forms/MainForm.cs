@@ -66,20 +66,31 @@ namespace PavelStransky.Forms {
             this.Text = Application.ProductName;
 
             // Naètení záznamù z registrù
-            object x = WinMain.GetRegistryValue(registryKeyPositionX);
-            object y = WinMain.GetRegistryValue(registryKeyPositionY);
-            if(x is int && y is int && (int)x > 0 && (int)y > 0) {
-                this.StartPosition = FormStartPosition.Manual;
-                this.Location = new Point((int)x, (int)y);
-            }
-            else
+            object windowState = WinMain.GetRegistryValue(registryKeyWindowState);
+            if(windowState is string)
+                this.WindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), (string)windowState, true);
+
+            if(this.WindowState == FormWindowState.Minimized) {
+                this.WindowState = FormWindowState.Normal;
                 this.StartPosition = FormStartPosition.WindowsDefaultLocation;
+            }
+            else {
+                object x = WinMain.GetRegistryValue(registryKeyPositionX);
+                object y = WinMain.GetRegistryValue(registryKeyPositionY);
 
-            object width = WinMain.GetRegistryValue(registryKeyWidth);
-            object height = WinMain.GetRegistryValue(registryKeyHeight);
+                if(x is int && y is int) {
+                    this.StartPosition = FormStartPosition.Manual;
+                    this.Location = new Point((int)x, (int)y);
+                }
+                else
+                    this.StartPosition = FormStartPosition.WindowsDefaultLocation;
 
-            if(width is int && height is int && (int)width > 0 && (int)height > 0)
-                this.Size = new Size((int)width, (int)height);
+                object width = WinMain.GetRegistryValue(registryKeyWidth);
+                object height = WinMain.GetRegistryValue(registryKeyHeight);
+
+                if(width is int && height is int)// && (int)width > 0 && (int)height > 0)
+                    this.Size = new Size((int)width, (int)height);
+            }
 
             int i = 0;
             object openedFile;
@@ -369,6 +380,7 @@ namespace PavelStransky.Forms {
             WinMain.SetRegistryValue(registryKeyPositionY, this.Location.Y);
             WinMain.SetRegistryValue(registryKeyWidth, this.Width);
             WinMain.SetRegistryValue(registryKeyHeight, this.Height);
+            WinMain.SetRegistryValue(registryKeyWindowState, this.WindowState.ToString());
 
             WinMain.SetRegistryValue(registryKeyActualInformation, this.cmTrayActualInformation.Checked);
             WinMain.SetRegistryValue(registryKeyClearWriterInformation, this.cmTrayClearWriter.Checked);
@@ -561,6 +573,7 @@ namespace PavelStransky.Forms {
 
         private const string registryKeyPositionX = "PositionX";
         private const string registryKeyPositionY = "PositionY";
+        private const string registryKeyWindowState = "WindowState";
         private const string registryKeyWidth = "Width";
         private const string registryKeyHeight = "Height";
         private const string registryKeyOpenedFile = "OpenedFile{0}";

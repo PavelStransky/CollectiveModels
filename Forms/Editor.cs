@@ -554,6 +554,8 @@ namespace PavelStransky.Forms {
 
             param.Add(this.context, "Context");
 
+            param.Add(this.WindowState.ToString(), "WindowState");
+
             param.Export(export);
         }
 
@@ -603,6 +605,8 @@ namespace PavelStransky.Forms {
                 this.resultNumber = (int)param.Get(0);
 
                 this.context = (Context)param.Get();
+
+                this.WindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), (string)param.Get(FormWindowState.Normal.ToString()), true);
             }
 
             this.InitializeEvents(this.context);

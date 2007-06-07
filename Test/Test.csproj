@@ -118,6 +118,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ConsoleWriter.cs" />
+    <Compile Include="RescueMemoryCard.cs" />
     <Compile Include="Test.cs">
       <SubType>Code</SubType>
     </Compile>

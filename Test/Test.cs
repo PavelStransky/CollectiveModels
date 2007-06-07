@@ -19,11 +19,16 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusDelay();
+            Test.RescueMC();
 
 			Console.Write("Hotovo.");
-//			Console.ReadLine();
+			Console.ReadLine();
 		}
+
+        static void RescueMC() {
+            RescueMemoryCard rc = new RescueMemoryCard();
+            rc.FindFileDates();
+        }
 
         /// <summary>
         /// Pokus jen na zpoždìný výstup na konzoli 20.4.2007

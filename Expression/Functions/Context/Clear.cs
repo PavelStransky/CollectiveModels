@@ -12,15 +12,17 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return Messages.ClearHelp;}}
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.NumParams(1, true);
             this.SetParam(0, false, false, false, Messages.PVarName, Messages.PVarNameDescription, null, typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-			if(arguments[0] == null)
+            if(arguments.Count == 0)
 				guider.Context.Clear();
 			else
-				guider.Context.Clear(arguments[0] as string);
+                foreach(string s in arguments)
+				    guider.Context.Clear(s);
+
 			return null;
 		}
 	}

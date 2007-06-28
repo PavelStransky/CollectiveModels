@@ -121,6 +121,7 @@
     <Compile Include="BinaryOperators\Join.cs" />
     <Compile Include="FileData.cs" />
     <Compile Include="Functions\Context\Clear.cs" />
+    <Compile Include="Functions\Context\ClearGlobal.cs" />
     <Compile Include="Functions\Context\Context.cs" />
     <Compile Include="Functions\Context\FDGlobalContext.cs" />
     <Compile Include="Functions\Context\GetContext.cs" />

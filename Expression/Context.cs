@@ -76,12 +76,35 @@ namespace PavelStransky.Expression {
         /// </summary>
         public static string WorkingDirectory { get { return workingDirectory; } set { workingDirectory = value; } }
 
-		/// <summary>
+        /// <summary>
+        /// Pøidá systémovou promìnnou do kontextu (nemusí mít platný název). Pokud už existuje, nahradí ji
+        /// </summary>
+        /// <param name="name">Jméno promìnné</param>
+        /// <param name="item">Hodnota promìnné</param>
+        public Variable SetSystemVariable(string name, object item) {
+            Variable retValue = null;
+
+            if(this.objects.ContainsKey(name)) {
+                // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
+                retValue = this[name];
+                retValue.Item = item;
+                this.OnEvent(new ContextEventArgs(ContextEventType.Change));
+            }
+
+            else {
+                // Jinak ji musíme vytvoøit
+                this.objects.Add(name, retValue = new Variable(name, item, false));
+                this.OnEvent(new ContextEventArgs(ContextEventType.Change));
+            }
+
+            return retValue;
+        }
+        
+        /// <summary>
 		/// Pøidá promìnnou do kontextu. Pokud už existuje, nahradí ji
 		/// </summary>
 		/// <param name="name">Jméno promìnné</param>
 		/// <param name="item">Hodnota promìnné</param>
-		/// <param name="assignment">Výraz pro pøiøazení</param>
 		public Variable SetVariable(string name, object item) {
 			Variable retValue = null;
 

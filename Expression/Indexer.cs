@@ -436,7 +436,7 @@ namespace PavelStransky.Expression {
 		/// <returns>Jméno nastavené promìnné, jinak null</returns>
 		private void SetEndVariable(Context context, object item, int depth) {
 			string endVariable = this.endVariables[depth] as string;
-			context.SetVariable(endVariable, this.GetLength(item, depth) - 1);
+			context.SetSystemVariable(endVariable, this.GetLength(item, depth) - 1);
 		}
 
 		/// <summary>

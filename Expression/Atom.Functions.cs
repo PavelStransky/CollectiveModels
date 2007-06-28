@@ -106,6 +106,7 @@ namespace PavelStransky.Expression {
 
             // Kontext
             functions.Add(new Functions.Clear());
+            functions.Add(new Functions.ClearGlobal());
             functions.Add(new Functions.FnContext());
             functions.Add(new Functions.GetContext());
             functions.Add(new Functions.UseContext());

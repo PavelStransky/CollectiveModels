@@ -133,6 +133,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Erase the variable from the global context.
+        /// </summary>
+        internal static string ClearGlobalHelp {
+            get {
+                return ResourceManager.GetString("ClearGlobalHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erase the variable (all variables if nothing is specified) from the context.
         /// </summary>
         internal static string ClearHelp {

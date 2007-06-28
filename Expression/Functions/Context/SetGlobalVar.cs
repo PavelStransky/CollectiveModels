@@ -2,43 +2,29 @@ using System;
 using System.IO;
 using System.Collections;
 
-using PavelStransky.Math;
 using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
     /// Sets a variable into the global context
     /// </summary>
-    public class SetGlobalVar: FunctionDefinition {
+    public class SetGlobalVar: FDGlobalContext {
         public override string Help { get { return Messages.SetGlobalVarHelp; } }
 
         protected override void CreateParameters() {
-            this.NumParams(1, true);
+            this.NumParams(2);
+
             this.SetParam(0, true, false, false, Messages.PVarName, Messages.PVarNameDescription, null);
+            this.SetParam(1, false, true, false, Messages.PValue, Messages.PValueDescription, null);
         }
         
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            string fileName = Context.GlobalContextFileName;
-            FileInfo fileInfo = new FileInfo(fileName);
+            Context c = this.GetGlobalContext();
 
-            Context c;
-            if(fileInfo.Exists) {
-                Import import = new Import(Context.GlobalContextFileName, true);
-                c = import.Read() as Context;
-                import.Close();
-            }
-            else
-                c = new Context();
+            Variable v = (arguments.Count > 1) ? new Variable(arguments[0] as string, arguments[1]) : guider.Context[arguments[0] as string];
+            c.SetVariable(v.Name, v.Item);
 
-            int count = arguments.Count;
-            for(int i = 0; i < count; i++) {
-                Variable v = guider.Context[arguments[i] as string];
-                c.SetVariable(v.Name, v.Item);
-            }
-
-            Export export = new Export(Context.GlobalContextFileName, true);
-            export.Write(c);
-            export.Close();
+            this.SetGlobalContext(c);
 
             return c;
         }

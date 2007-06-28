@@ -70,6 +70,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adds an element to the end of the list in the global context.
+        /// </summary>
+        internal static string AddGlobalHelp {
+            get {
+                return ResourceManager.GetString("AddGlobalHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds an element to the end of the list.
+        /// </summary>
+        internal static string AddHelp {
+            get {
+                return ResourceManager.GetString("AddHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arcus tangens of the value.
         /// </summary>
         internal static string ArcTanHelp {
@@ -192,6 +210,33 @@ namespace PavelStransky.Expression {
         internal static string EMBadParamTypeDetail {
             get {
                 return ResourceManager.GetString("EMBadParamTypeDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name &quot;{0}&quot; of a variable has not valid format..
+        /// </summary>
+        internal static string EMBadVariableName {
+            get {
+                return ResourceManager.GetString("EMBadVariableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name must not contain the character &quot;{0}&quot; at position {1}..
+        /// </summary>
+        internal static string EMBadVariableNameInvalidCharacter {
+            get {
+                return ResourceManager.GetString("EMBadVariableNameInvalidCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There must be no spaces in it..
+        /// </summary>
+        internal static string EMBadVariableNameNoSpace {
+            get {
+                return ResourceManager.GetString("EMBadVariableNameNoSpace", resourceCulture);
             }
         }
         
@@ -1101,6 +1146,24 @@ namespace PavelStransky.Expression {
         internal static string PiHelp {
             get {
                 return ResourceManager.GetString("PiHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to item.
+        /// </summary>
+        internal static string PItem {
+            get {
+                return ResourceManager.GetString("PItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item to be added to the end of the list.
+        /// </summary>
+        internal static string PItemDescription {
+            get {
+                return ResourceManager.GetString("PItemDescription", resourceCulture);
             }
         }
         

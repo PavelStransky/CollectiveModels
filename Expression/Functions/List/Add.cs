@@ -5,16 +5,17 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Na konec seznamu pøidá prvek
+    /// Adds an element to the end of the list
     /// </summary>
     public class FnAdd: FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.AddHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(List));
+        protected override void CreateParameters() {
+            this.NumParams(2, true);
+
+            this.SetParam(0, true, false, false, Messages.PVariable, Messages.PVariableDescription, null);
+            this.SetParam(1, true, true, false, Messages.PItem, Messages.PItemDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -31,7 +32,5 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string name = "add";
-        private const string help = "Na konec seznamu (List) pøidá prvek";
-        private const string parameters = "Seznam (List)[; pøidávané prvky]";
     }
 }

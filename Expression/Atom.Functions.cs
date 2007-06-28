@@ -70,6 +70,7 @@ namespace PavelStransky.Expression {
 
             // List
             functions.Add(new Functions.FnAdd());
+            functions.Add(new Functions.AddGlobal());
 
             // Program
             functions.Add(new Functions.FnPrint());

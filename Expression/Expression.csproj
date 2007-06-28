@@ -122,6 +122,7 @@
     <Compile Include="FileData.cs" />
     <Compile Include="Functions\Context\Clear.cs" />
     <Compile Include="Functions\Context\Context.cs" />
+    <Compile Include="Functions\Context\FDGlobalContext.cs" />
     <Compile Include="Functions\Context\GetContext.cs" />
     <Compile Include="Functions\Context\GetGlobalContext.cs" />
     <Compile Include="Functions\Context\GetGlobalVar.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Functions\Graphics\Show.cs" />
     <Compile Include="Functions\Help\Use.cs" />
     <Compile Include="Functions\List\Add.cs" />
+    <Compile Include="Functions\List\AddGlobal.cs" />
     <Compile Include="Functions\Math\Legendre.cs" />
     <Compile Include="Functions\Math\MathFnD.cs" />
     <Compile Include="Functions\Math\MathFnID.cs" />

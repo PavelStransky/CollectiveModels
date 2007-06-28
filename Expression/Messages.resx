@@ -120,6 +120,12 @@
   <data name="AbsHelp" xml:space="preserve">
     <value>Absolute value</value>
   </data>
+  <data name="AddGlobalHelp" xml:space="preserve">
+    <value>Adds an element to the end of the list in the global context</value>
+  </data>
+  <data name="AddHelp" xml:space="preserve">
+    <value>Adds an element to the end of the list</value>
+  </data>
   <data name="ArcTanHelp" xml:space="preserve">
     <value>Arcus tangens of the value</value>
   </data>
@@ -161,6 +167,15 @@
   </data>
   <data name="EMBadParamTypeDetail" xml:space="preserve">
     <value>Correct type: {0}\r\nEntered type: {1}</value>
+  </data>
+  <data name="EMBadVariableName" xml:space="preserve">
+    <value>The name "{0}" of a variable has not valid format.</value>
+  </data>
+  <data name="EMBadVariableNameInvalidCharacter" xml:space="preserve">
+    <value>The name must not contain the character "{0}" at position {1}.</value>
+  </data>
+  <data name="EMBadVariableNameNoSpace" xml:space="preserve">
+    <value>There must be no spaces in it.</value>
   </data>
   <data name="EMFileNotExist" xml:space="preserve">
     <value>The file you "{0}" have specified does not exist.</value>
@@ -464,6 +479,12 @@
   </data>
   <data name="PiHelp" xml:space="preserve">
     <value>Value of Pi number</value>
+  </data>
+  <data name="PItem" xml:space="preserve">
+    <value>item</value>
+  </data>
+  <data name="PItemDescription" xml:space="preserve">
+    <value>Item to be added to the end of the list</value>
   </data>
   <data name="PK" xml:space="preserve">
     <value>k</value>

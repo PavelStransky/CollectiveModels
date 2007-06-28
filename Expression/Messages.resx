@@ -141,6 +141,9 @@
   <data name="CIBMHelp" xml:space="preserve">
     <value>Creates a ClassicalIBM class</value>
   </data>
+  <data name="ClearGlobalHelp" xml:space="preserve">
+    <value>Erase the variable from the global context</value>
+  </data>
   <data name="ClearHelp" xml:space="preserve">
     <value>Erase the variable (all variables if nothing is specified) from the context</value>
   </data>

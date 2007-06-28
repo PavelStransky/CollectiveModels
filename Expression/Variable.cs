@@ -36,9 +36,10 @@ namespace PavelStransky.Expression {
                 char c = name[i];
 
                 if(!((c >= 'a' && c <= 'z')
-                    || (c >= 'A' && c <= 'Z')
+                    || (c >= 'A' && c <= 'Z') 
+                    || c == '_' 
                     || (i > 0 && ((c >= '1' && c <= '9')
-                        || c == '0' || c == '_' || c == '-'))))
+                        || c == '0' || c == '-'))))
                     throw new ExpressionException(string.Format(Messages.EMBadVariableName, name),
                         string.Format(Messages.EMBadVariableNameInvalidCharacter, c, i));
             }
@@ -48,12 +49,22 @@ namespace PavelStransky.Expression {
         /// Konstruktor
         /// </summary>
         /// <param name="name">Jméno objektu</param>
-        /// <param name="expression">Výraz</param>
-        public Variable(string name, object item) {
+        /// <param name="item">Hodnota</param>
+        /// <param name="checkName">Kontrola platného jména</param>
+        public Variable(string name, object item) : this(name, item, true) { }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="name">Jméno objektu</param>
+        /// <param name="item">Hodnota</param>
+        /// <param name="checkName">Kontrola platného jména</param>
+        public Variable(string name, object item, bool checkName) {
             if(name == string.Empty)
                 this.name = string.Format("{0}{1}", defaultName, count++);
             else {
-                this.CheckName(name);
+                if(checkName)
+                    this.CheckName(name);
                 this.name = name;
             }
 

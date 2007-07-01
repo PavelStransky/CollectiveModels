@@ -754,7 +754,16 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to `.
+        ///   Looks up a localized string similar to {0} Bytes.
+        /// </summary>
+        internal static string MsgBytes {
+            get {
+                return ResourceManager.GetString("MsgBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parsing....
         /// </summary>
         internal static string MsgParsing {
             get {
@@ -835,7 +844,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reading page of nucleus {0}....
+        ///   Looks up a localized string similar to Nucleus {0}....
         /// </summary>
         internal static string NuDatReadNucleusPage {
             get {

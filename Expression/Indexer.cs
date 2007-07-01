@@ -315,6 +315,15 @@ namespace PavelStransky.Expression {
                     if(index.Rank > 1)
                         this.ManyIndexesError(1, index.Rank);
 
+                    if(index.Rank == 0) {
+                        index = new Indexes(1);
+                        int c = (o as List).Count;
+                        int[] ind = new int[c];
+                        for(int i = 0; i < c; i++)
+                            ind[i] = i;
+                        index.Set(0, ind, false);
+                    }
+
                     if(index.Shrink[0])
                         result = this.getFn((o as List)[index.Index[0][0]]);
                     else {
@@ -423,6 +432,8 @@ namespace PavelStransky.Expression {
             }
             else if(item is PointVector)
                 length = (item as PointVector).Length;
+            else if(item is List)
+                length = (item as List).Count;
 
             return length;
         }

@@ -348,8 +348,11 @@
   <data name="MatrixRowHelp" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
   </data>
+  <data name="MsgBytes" xml:space="preserve">
+    <value>{0} Bytes</value>
+  </data>
   <data name="MsgParsing" xml:space="preserve">
-    <value>`</value>
+    <value>Parsing...</value>
   </data>
   <data name="MsgReadingPage" xml:space="preserve">
     <value>Reading page...</value>
@@ -376,7 +379,7 @@
     <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
   </data>
   <data name="NuDatReadNucleusPage" xml:space="preserve">
-    <value>Reading page of nucleus {0}...</value>
+    <value>Nucleus {0}...</value>
   </data>
   <data name="PA" xml:space="preserve">
     <value>a</value>

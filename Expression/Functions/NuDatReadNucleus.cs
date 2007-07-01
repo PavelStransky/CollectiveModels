@@ -64,6 +64,8 @@ namespace PavelStransky.Expression.Functions {
                     response.Close();
             }
 
+            guider.Write(string.Format(Messages.MsgBytes, pageContent.Length));
+            guider.Write(". ");
             guider.Write(Messages.MsgParsing);
 
             int next = 0;

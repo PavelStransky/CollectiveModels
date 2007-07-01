@@ -754,6 +754,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to `.
+        /// </summary>
+        internal static string MsgParsing {
+            get {
+                return ResourceManager.GetString("MsgParsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading page....
+        /// </summary>
+        internal static string MsgReadingPage {
+            get {
+                return ResourceManager.GetString("MsgReadingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Norm of the vector.
         /// </summary>
         internal static string NormHelp {
@@ -795,6 +813,33 @@ namespace PavelStransky.Expression {
         internal static string NormP2Description {
             get {
                 return ResourceManager.GetString("NormP2Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reads all known isotopes from http://www-nds.iaea.org.
+        /// </summary>
+        internal static string NuDatReadKnownIsotopesHelp {
+            get {
+                return ResourceManager.GetString("NuDatReadKnownIsotopesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org.
+        /// </summary>
+        internal static string NuDatReadNucleusHelp {
+            get {
+                return ResourceManager.GetString("NuDatReadNucleusHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading page of nucleus {0}....
+        /// </summary>
+        internal static string NuDatReadNucleusPage {
+            get {
+                return ResourceManager.GetString("NuDatReadNucleusPage", resourceCulture);
             }
         }
         
@@ -894,6 +939,15 @@ namespace PavelStransky.Expression {
         internal static string PCommands {
             get {
                 return ResourceManager.GetString("PCommands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commands to be calculated.
+        /// </summary>
+        internal static string PCommandsDescription {
+            get {
+                return ResourceManager.GetString("PCommandsDescription", resourceCulture);
             }
         }
         
@@ -1245,6 +1299,24 @@ namespace PavelStransky.Expression {
         internal static string PNonDiagonalValueDescription {
             get {
                 return ResourceManager.GetString("PNonDiagonalValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nucleus.
+        /// </summary>
+        internal static string PNucleus {
+            get {
+                return ResourceManager.GetString("PNucleus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Labeling of a nucleus.
+        /// </summary>
+        internal static string PNucleusDescription {
+            get {
+                return ResourceManager.GetString("PNucleusDescription", resourceCulture);
             }
         }
         
@@ -1699,6 +1771,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to uri.
+        /// </summary>
+        internal static string PURI {
+            get {
+                return ResourceManager.GetString("PURI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URI (link).
+        /// </summary>
+        internal static string PURIDescription {
+            get {
+                return ResourceManager.GetString("PURIDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to x.
         /// </summary>
         internal static string PValue {
@@ -1870,11 +1960,29 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sets a new context.
+        /// </summary>
+        internal static string SetContextHelp {
+            get {
+                return ResourceManager.GetString("SetContextHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given value or Vector of values put onto diagonal of square matrix.
         /// </summary>
         internal static string SetDiagonalHelp {
             get {
                 return ResourceManager.GetString("SetDiagonalHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets a new global context.
+        /// </summary>
+        internal static string SetGlobalContextHelp {
+            get {
+                return ResourceManager.GetString("SetGlobalContextHelp", resourceCulture);
             }
         }
         
@@ -2239,6 +2347,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tries to read text from specified URI.
+        /// </summary>
+        internal static string TestWWWHelp {
+            get {
+                return ResourceManager.GetString("TestWWWHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the duration of the calculation.
         /// </summary>
         internal static string TimeHelp {
@@ -2316,6 +2433,15 @@ namespace PavelStransky.Expression {
         internal static string TypeHelp {
             get {
                 return ResourceManager.GetString("TypeHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses the given context for specified calculations.
+        /// </summary>
+        internal static string UseContextHelp {
+            get {
+                return ResourceManager.GetString("UseContextHelp", resourceCulture);
             }
         }
         

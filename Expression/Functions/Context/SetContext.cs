@@ -6,17 +6,14 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Nastaví nový globální kontext
+    /// Sets a new context
     /// </summary>
     public class SetContext : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.SetContextHelp; } }
 
-
-
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Context));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PContext, Messages.PContextDescription, null, typeof(Context));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -24,8 +21,5 @@ namespace PavelStransky.Expression.Functions {
             guider.Context.OnEvent(new ContextEventArgs(ContextEventType.SetContext, c));
             return c;
         }
-
-        private const string help = "Nastaví nový globální kontext";
-        private const string parameters = "Kontext";
     }
 }

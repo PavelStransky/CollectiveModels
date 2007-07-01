@@ -348,6 +348,12 @@
   <data name="MatrixRowHelp" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
   </data>
+  <data name="MsgParsing" xml:space="preserve">
+    <value>`</value>
+  </data>
+  <data name="MsgReadingPage" xml:space="preserve">
+    <value>Reading page...</value>
+  </data>
   <data name="NormHelp" xml:space="preserve">
     <value>Norm of the vector</value>
   </data>
@@ -362,6 +368,15 @@
   </data>
   <data name="NormP2Description" xml:space="preserve">
     <value>Power of items</value>
+  </data>
+  <data name="NuDatReadKnownIsotopesHelp" xml:space="preserve">
+    <value>Reads all known isotopes from http://www-nds.iaea.org</value>
+  </data>
+  <data name="NuDatReadNucleusHelp" xml:space="preserve">
+    <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
+  </data>
+  <data name="NuDatReadNucleusPage" xml:space="preserve">
+    <value>Reading page of nucleus {0}...</value>
   </data>
   <data name="PA" xml:space="preserve">
     <value>a</value>
@@ -395,6 +410,9 @@
   </data>
   <data name="PCommands" xml:space="preserve">
     <value>commands</value>
+  </data>
+  <data name="PCommandsDescription" xml:space="preserve">
+    <value>Commands to be calculated</value>
   </data>
   <data name="PContext" xml:space="preserve">
     <value>context</value>
@@ -512,6 +530,12 @@
   </data>
   <data name="PNonDiagonalValueDescription" xml:space="preserve">
     <value>Value to be put instead of all nondiagonal elements</value>
+  </data>
+  <data name="PNucleus" xml:space="preserve">
+    <value>nucleus</value>
+  </data>
+  <data name="PNucleusDescription" xml:space="preserve">
+    <value>Labeling of a nucleus</value>
   </data>
   <data name="PNumberOfPoints" xml:space="preserve">
     <value>numx</value>
@@ -663,6 +687,12 @@
   <data name="PTimeStepDescription" xml:space="preserve">
     <value>Time step for the result</value>
   </data>
+  <data name="PURI" xml:space="preserve">
+    <value>uri</value>
+  </data>
+  <data name="PURIDescription" xml:space="preserve">
+    <value>URI (link)</value>
+  </data>
   <data name="PValue" xml:space="preserve">
     <value>x</value>
   </data>
@@ -720,8 +750,14 @@
   <data name="SALIRHelp" xml:space="preserve">
     <value>Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)</value>
   </data>
+  <data name="SetContextHelp" xml:space="preserve">
+    <value>Sets a new context</value>
+  </data>
   <data name="SetDiagonalHelp" xml:space="preserve">
     <value>Given value or Vector of values put onto diagonal of square matrix</value>
+  </data>
+  <data name="SetGlobalContextHelp" xml:space="preserve">
+    <value>Sets a new global context</value>
   </data>
   <data name="SetGlobalVarHelp" xml:space="preserve">
     <value>Sets a variable into the global context</value>
@@ -843,6 +879,9 @@
   <data name="SumSquareHelp" xml:space="preserve">
     <value>Sum of squares of values of all elements in the object</value>
   </data>
+  <data name="TestWWWHelp" xml:space="preserve">
+    <value>Tries to read text from specified URI</value>
+  </data>
   <data name="TimeHelp" xml:space="preserve">
     <value>Returns the duration of the calculation</value>
   </data>
@@ -869,6 +908,9 @@
   </data>
   <data name="TypeHelp" xml:space="preserve">
     <value>Type of the value</value>
+  </data>
+  <data name="UseContextHelp" xml:space="preserve">
+    <value>Uses the given context for specified calculations</value>
   </data>
   <data name="VectorHelp" xml:space="preserve">
     <value>Convert given data to a vector</value>

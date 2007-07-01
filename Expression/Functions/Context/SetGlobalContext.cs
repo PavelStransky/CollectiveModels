@@ -6,28 +6,20 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Nastaví nový globální kontext
+    /// Sets a new global context
     /// </summary>
-    public class SetGlobalContext: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+    public class SetGlobalContext: FDGlobalContext {
+        public override string Help { get { return Messages.SetGlobalContextHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Context));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PContext, Messages.PContextDescription, null, typeof(Context));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            string fileName = Context.GlobalContextFileName;
-
-            Export export = new Export(Context.GlobalContextFileName, true);
-            export.Write(arguments[0]);
-            export.Close();
-
-            return arguments[0];
+            Context c = arguments[0] as Context;
+            this.SetGlobalContext(c);
+            return c;
         }
-
-        private const string help = "Nastaví nový globální kontext";
-        private const string parameters = "Kontext";
     }
 }

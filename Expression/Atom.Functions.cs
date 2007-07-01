@@ -82,6 +82,7 @@ namespace PavelStransky.Expression {
             // Test
             functions.Add(new Functions.TestArray());
             functions.Add(new Functions.RWF5DLHO());
+            functions.Add(new Functions.TestWWW());
 
             // Graphics
             functions.Add(new Functions.Show());
@@ -193,6 +194,9 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.SALIG());
             functions.Add(new Functions.TrajectoryM());
             functions.Add(new Functions.TrajectoryP());
+
+            functions.Add(new Functions.NuDatReadKnownIsotopes());
+            functions.Add(new Functions.NuDatReadNucleus());
         }
 
         protected static readonly Operators.Operators unaryOperators;

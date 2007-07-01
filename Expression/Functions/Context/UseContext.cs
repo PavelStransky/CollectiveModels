@@ -6,26 +6,17 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Použije kontext k výpoètùm
+    /// Uses the given context for specified calculations
     /// </summary>
     public class UseContext : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.UseContextHelp; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
+        protected override void CreateParameters() {
+            this.NumParams(3, true);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Context));
-
-            int count = evaluatedArguments.Count;
-
-            // Pøíkazy mohou být null
-            if(count > 1 && evaluatedArguments[1] != null)
-                this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(string));
-
-            for(int i = 2; i < count; i++)
-                this.CheckArgumentsType(evaluatedArguments, i, evaluateArray, typeof(string));
-
+            this.SetParam(0, true, true, false, Messages.PContext, Messages.PContextDescription, null, typeof(Context));
+            this.SetParam(1, false, false, false, Messages.PCommands, Messages.PCommandsDescription, null);
+            this.SetParam(2, false, false, false, Messages.PVariable, Messages.PVariableDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -33,8 +24,10 @@ namespace PavelStransky.Expression.Functions {
 
             int count = arguments.Count;
             for(int i = 2; i < count; i++) {
-                Variable v = guider.Context[arguments[i] as string];
-                result.SetVariable(v.Name, v.Item);
+                if(arguments[i] != null) {
+                    Variable v = guider.Context[arguments[i] as string];
+                    result.SetVariable(v.Name, v.Item);
+                }
             }
 
             if(count > 1 && arguments[1] != null)
@@ -42,8 +35,5 @@ namespace PavelStransky.Expression.Functions {
 
             return result;
         }
-
-        private const string help = "Použije zadaný kontext k výpoètùm.";
-        private const string parameters = "Kontext; [Pøíkazy;][Promìnné kopírované z aktuálního kontextu...]";
     }
 }

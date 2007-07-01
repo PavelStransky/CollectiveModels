@@ -243,6 +243,8 @@
     <Compile Include="Functions\MinMax\MinAbsIndex.cs" />
     <Compile Include="Functions\MinMax\MinIndex.cs" />
     <Compile Include="Functions\MinMax\MinMax.cs" />
+    <Compile Include="Functions\NuDatReadKnownIsotopes.cs" />
+    <Compile Include="Functions\NuDatReadNucleus.cs" />
     <Compile Include="Functions\Parameters.cs" />
     <Compile Include="Functions\Program\Print.cs" />
     <Compile Include="Functions\Program\PrintClear.cs" />
@@ -277,6 +279,7 @@
     <Compile Include="Functions\Sum\SumAbs.cs" />
     <Compile Include="Functions\Sum\SumFn.cs" />
     <Compile Include="Functions\Sum\SumSquare.cs" />
+    <Compile Include="Functions\Test\TestWWW.cs" />
     <Compile Include="Functions\Types\Deflate.cs" />
     <Compile Include="Functions\Types\List.cs" />
     <Compile Include="Functions\Types\ToArray.cs" />

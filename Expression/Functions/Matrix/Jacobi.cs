@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
 	/// </summary>
 	public class FnJacobi: FunctionDefinition {
         public override string Name { get { return name; } }
-		public override string Help {get {return Messages.JacobiHelp;}}
+		public override string Help {get {return Messages.HelpJacobi;}}
 
         protected override void CreateParameters() {
             this.NumParams(1);

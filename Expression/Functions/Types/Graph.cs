@@ -24,22 +24,22 @@ namespace PavelStransky.Expression.Functions {
 	/// </param>
 	public class FnGraph: FunctionDefinition {
         public override string Name { get { return name; } }
-		public override string Help {get {return Messages.GraphHelp;}}
+		public override string Help {get {return Messages.HelpGraph;}}
 
         protected override void CreateParameters() {
             this.NumParams(6);
 
-            this.SetParam(0, false, true, false, Messages.GraphP1, Messages.GraphP1Description, null,
+            this.SetParam(0, false, true, false, Messages.P1Graph, Messages.P1GraphDescription, null,
                 typeof(TArray), typeof(Vector), typeof(PointVector));
-            this.SetParam(1, false, true, false, Messages.GraphP2, Messages.GraphP2Description, null,
+            this.SetParam(1, false, true, false, Messages.P2Graph, Messages.P2GraphDescription, null,
                 typeof(TArray), typeof(Matrix));
-            this.SetParam(2, false, true, false, Messages.GraphP3, Messages.GraphP3Description, null,
+            this.SetParam(2, false, true, false, Messages.P3Graph, Messages.P3GraphDescription, null,
                 typeof(TArray), typeof(Vector));
-            this.SetParam(3, false, true, false, Messages.GraphP4, Messages.GraphP4Description, null,
+            this.SetParam(3, false, true, false, Messages.P4Graph, Messages.P4GraphDescription, null,
                 typeof(string), typeof(Context));
-            this.SetParam(4, false, true, false, Messages.GraphP5, Messages.GraphP5Description, null,
+            this.SetParam(4, false, true, false, Messages.P5Graph, Messages.P5GraphDescription, null,
                 typeof(TArray), typeof(string), typeof(Context));
-            this.SetParam(5, false, true, false, Messages.GraphP6, Messages.GraphP6Description, null,
+            this.SetParam(5, false, true, false, Messages.P6Graph, Messages.P6GraphDescription, null,
                 typeof(TArray), typeof(string), typeof(Context));
         }
 

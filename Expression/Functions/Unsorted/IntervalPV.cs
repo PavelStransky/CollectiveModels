@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Creates points for interval (as pointvector)
     /// </summary>
     public class IntervalPV: IntervalV {
-        public override string Help { get { return Messages.IntervalPVHelp; } }
+        public override string Help { get { return Messages.HelpIntervalPV; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Vector v = base.EvaluateFn(guider, arguments) as Vector;

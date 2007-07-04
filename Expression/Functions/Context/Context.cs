@@ -10,12 +10,12 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public class FnContext : FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.ContextHelp; } }
+        public override string Help { get { return Messages.HelpContext; } }
 
         protected override void CreateParameters() {
             this.NumParams(2, true);
-            this.SetParam(0, false, false, false, Messages.PCommands, Messages.ContextP1Description, null, typeof(string));
-            this.SetParam(1, false, false, false, Messages.PVarName, Messages.ContextP2Description, null, typeof(string));
+            this.SetParam(0, false, false, false, Messages.PCommands, Messages.P1ContextDescription, null, typeof(string));
+            this.SetParam(1, false, false, false, Messages.PVarName, Messages.P2ContextDescription, null, typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

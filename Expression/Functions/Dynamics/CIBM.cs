@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Creates a ClassicalIBM class
     /// </summary>
     public class CIBM : FunctionDefinition {
-        public override string Help { get { return Messages.CIBMHelp; } }
+        public override string Help { get { return Messages.HelpCIBM; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

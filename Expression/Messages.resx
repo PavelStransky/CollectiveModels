@@ -117,53 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AbsHelp" xml:space="preserve">
-    <value>Absolute value</value>
-  </data>
-  <data name="AddGlobalHelp" xml:space="preserve">
-    <value>Adds an element to the end of the list in the global context</value>
-  </data>
-  <data name="AddHelp" xml:space="preserve">
-    <value>Adds an element to the end of the list</value>
-  </data>
-  <data name="ArcTanHelp" xml:space="preserve">
-    <value>Arcus tangens of the value</value>
-  </data>
-  <data name="BoundsHelp" xml:space="preserve">
-    <value>For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found</value>
-  </data>
-  <data name="CGCMHelp" xml:space="preserve">
-    <value>Creates a ClassicalGCM class (nonrotating case with simple kinetic term)</value>
-  </data>
-  <data name="CGCMJHelp" xml:space="preserve">
-    <value>Creates a ClassicalGCMJ class (case with nonzero angular momentum)</value>
-  </data>
-  <data name="CIBMHelp" xml:space="preserve">
-    <value>Creates a ClassicalIBM class</value>
-  </data>
   <data name="ClearGlobalHelp" xml:space="preserve">
     <value>Erase the variable from the global context</value>
-  </data>
-  <data name="ClearHelp" xml:space="preserve">
-    <value>Erase the variable (all variables if nothing is specified) from the context</value>
-  </data>
-  <data name="ContextHelp" xml:space="preserve">
-    <value>Creates a new context</value>
-  </data>
-  <data name="ContextP1Description" xml:space="preserve">
-    <value>Commands that will be run on the new context</value>
-  </data>
-  <data name="ContextP2Description" xml:space="preserve">
-    <value>Name of a variable that will be copied from actual context</value>
-  </data>
-  <data name="DeflateHelp" xml:space="preserve">
-    <value>Given array transforms into one dimensional array</value>
-  </data>
-  <data name="DeflateP1" xml:space="preserve">
-    <value>a</value>
-  </data>
-  <data name="DeflateP1Description" xml:space="preserve">
-    <value>Array to be deflated</value>
   </data>
   <data name="EMBadParamType" xml:space="preserve">
     <value>Parameter "{0}" has bad type.</value>
@@ -216,130 +171,106 @@
   <data name="EMZeroLengthList" xml:space="preserve">
     <value>The length of the list must not be zero.</value>
   </data>
-  <data name="EnergyHelp" xml:space="preserve">
+  <data name="HelpAbs" xml:space="preserve">
+    <value>Absolute value</value>
+  </data>
+  <data name="HelpAdd" xml:space="preserve">
+    <value>Adds an element to the end of the list</value>
+  </data>
+  <data name="HelpAddGlobal" xml:space="preserve">
+    <value>Adds an element to the end of the list in the global context</value>
+  </data>
+  <data name="HelpArcTan" xml:space="preserve">
+    <value>Arcus tangens of the value</value>
+  </data>
+  <data name="HelpBounds" xml:space="preserve">
+    <value>For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found</value>
+  </data>
+  <data name="HelpCGCM" xml:space="preserve">
+    <value>Creates a ClassicalGCM class (nonrotating case with simple kinetic term)</value>
+  </data>
+  <data name="HelpCGCMJ" xml:space="preserve">
+    <value>Creates a ClassicalGCMJ class (case with nonzero angular momentum)</value>
+  </data>
+  <data name="HelpCIBM" xml:space="preserve">
+    <value>Creates a ClassicalIBM class</value>
+  </data>
+  <data name="HelpClear" xml:space="preserve">
+    <value>Erase the variable (all variables if nothing is specified) from the context</value>
+  </data>
+  <data name="HelpContext" xml:space="preserve">
+    <value>Creates a new context</value>
+  </data>
+  <data name="HelpDeflate" xml:space="preserve">
+    <value>Given array transforms into one dimensional array</value>
+  </data>
+  <data name="HelpEnergy" xml:space="preserve">
     <value>For given dynamical system and position in the phase space calculates the energy</value>
   </data>
-  <data name="EquipotentialHelp" xml:space="preserve">
+  <data name="HelpEquipotential" xml:space="preserve">
     <value>For GCM system and given energy calculates equipotential contour</value>
   </data>
-  <data name="EquipotentialP3" xml:space="preserve">
-    <value>points</value>
-  </data>
-  <data name="EquipotentialP3Description" xml:space="preserve">
-    <value>Number of points of the equipotential contour</value>
-  </data>
-  <data name="ExtendedCGCM1Help" xml:space="preserve">
+  <data name="HelpExtendedCGCM1" xml:space="preserve">
     <value>Creates an ExtendedClassicalGCM class with mass proportional to beta^2</value>
   </data>
-  <data name="ExtendedCGCM2Help" xml:space="preserve">
+  <data name="HelpExtendedCGCM2" xml:space="preserve">
     <value>Creates an ExtendedClassicalGCM class with kinetic term proportional to beta^2</value>
   </data>
-  <data name="FactorialHelp" xml:space="preserve">
+  <data name="HelpFactorial" xml:space="preserve">
     <value>Factorial of the value</value>
   </data>
-  <data name="FFTSpectrumHelp" xml:space="preserve">
+  <data name="HelpFFTSpectrum" xml:space="preserve">
     <value>Gives the spectrum of a vector using Fast Fourier Transform (FFT)</value>
   </data>
-  <data name="FullHelpHelp" xml:space="preserve">
+  <data name="HelpFullHelp" xml:space="preserve">
     <value>Full help for the given function (including names and types of the parameters)</value>
   </data>
-  <data name="GetContextHelp" xml:space="preserve">
+  <data name="HelpGetContext" xml:space="preserve">
     <value>Returns actual context</value>
   </data>
-  <data name="GetGlobalContextHelp" xml:space="preserve">
+  <data name="HelpGetGlobalContext" xml:space="preserve">
     <value>Returns global context</value>
   </data>
-  <data name="GetGlobalVarHelp" xml:space="preserve">
+  <data name="HelpGetGlobalVar" xml:space="preserve">
     <value>Gets out a variable from the global context</value>
   </data>
-  <data name="GetVarHelp" xml:space="preserve">
+  <data name="HelpGetVar" xml:space="preserve">
     <value>Returns a variable from a given context</value>
   </data>
-  <data name="GraphHelp" xml:space="preserve">
+  <data name="HelpGraph" xml:space="preserve">
     <value>Create graph</value>
   </data>
-  <data name="GraphP1" xml:space="preserve">
-    <value>data</value>
-  </data>
-  <data name="GraphP1Description" xml:space="preserve">
-    <value>Data for curves</value>
-  </data>
-  <data name="GraphP2" xml:space="preserve">
-    <value>background</value>
-  </data>
-  <data name="GraphP2Description" xml:space="preserve">
-    <value>Data for background (mesh graph)</value>
-  </data>
-  <data name="GraphP3" xml:space="preserve">
-    <value>error</value>
-  </data>
-  <data name="GraphP3Description" xml:space="preserve">
-    <value>Error bars for data</value>
-  </data>
-  <data name="GraphP4" xml:space="preserve">
-    <value>pglobal</value>
-  </data>
-  <data name="GraphP4Description" xml:space="preserve">
-    <value>Parameters for the whole graph</value>
-  </data>
-  <data name="GraphP5" xml:space="preserve">
-    <value>pgroups</value>
-  </data>
-  <data name="GraphP5Description" xml:space="preserve">
-    <value>Parameters for groups of data</value>
-  </data>
-  <data name="GraphP6" xml:space="preserve">
-    <value>pcurves</value>
-  </data>
-  <data name="GraphP6Description" xml:space="preserve">
-    <value>Parameters for curves</value>
-  </data>
-  <data name="HHHelp" xml:space="preserve">
+  <data name="HelpHH" xml:space="preserve">
     <value>Creates a HenonHeiles class</value>
   </data>
-  <data name="InitialConditionHelp" xml:space="preserve">
+  <data name="HelpInitialCondition" xml:space="preserve">
     <value>For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector</value>
   </data>
-  <data name="InitialConditionP3" xml:space="preserve">
-    <value>param</value>
-  </data>
-  <data name="InitialConditionP3Description" xml:space="preserve">
-    <value>Additional parameter (angular momentum)</value>
-  </data>
-  <data name="IntervalAHelp" xml:space="preserve">
+  <data name="HelpIntervalA" xml:space="preserve">
     <value>Creates points for interval (as an array)</value>
   </data>
-  <data name="IntervalPVHelp" xml:space="preserve">
+  <data name="HelpIntervalPV" xml:space="preserve">
     <value>Creates points for interval (in the form PointVector(0, interval points))</value>
   </data>
-  <data name="IntervalVHelp" xml:space="preserve">
+  <data name="HelpIntervalV" xml:space="preserve">
     <value>Creates points for interval</value>
   </data>
-  <data name="JacobiHelp" xml:space="preserve">
+  <data name="HelpJacobi" xml:space="preserve">
     <value>Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix</value>
   </data>
-  <data name="JoinHelp" xml:space="preserve">
+  <data name="HelpJoin" xml:space="preserve">
     <value>Array of vectors or array of pointVectors joins into one Vector</value>
   </data>
-  <data name="JoinP1" xml:space="preserve">
-    <value>v</value>
-  </data>
-  <data name="JoinP1Description" xml:space="preserve">
-    <value>Data to be joined</value>
-  </data>
-  <data name="LaguerreHelp" xml:space="preserve">
+  <data name="HelpLaguerre" xml:space="preserve">
     <value>Value of the Laguerre polynomial</value>
   </data>
-  <data name="LegendreHelp" xml:space="preserve">
+  <data name="HelpLegendre" xml:space="preserve">
     <value>Value of the Legendre polynomial</value>
   </data>
-  <data name="LengthHelp" xml:space="preserve">
+  <data name="HelpLength" xml:space="preserve">
     <value>Returns length(s) or number of elements of a given object as an array</value>
   </data>
-  <data name="LengthParameters" xml:space="preserve">
-    <value>Vector | PointVector | TArray | Matrix | List</value>
-  </data>
-  <data name="LogHelp" xml:space="preserve">
+  <data name="HelpLog" xml:space="preserve">
     <value>Logarithm of the value (with specified base)</value>
   </data>
   <data name="MatrixColumnHelp" xml:space="preserve">
@@ -348,11 +279,8 @@
   <data name="MatrixRowHelp" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
   </data>
-  <data name="MsgBytes" xml:space="preserve">
-    <value>{0} Bytes</value>
-  </data>
   <data name="MsgParsing" xml:space="preserve">
-    <value>Parsing...</value>
+    <value>`</value>
   </data>
   <data name="MsgReadingPage" xml:space="preserve">
     <value>Reading page...</value>
@@ -379,7 +307,73 @@
     <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
   </data>
   <data name="NuDatReadNucleusPage" xml:space="preserve">
-    <value>Nucleus {0}...</value>
+    <value>Reading page of nucleus {0}...</value>
+  </data>
+  <data name="P1ContextDescription" xml:space="preserve">
+    <value>Commands that will be run on the new context</value>
+  </data>
+  <data name="P1Deflate" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="P1DeflateDescription" xml:space="preserve">
+    <value>Array to be deflated</value>
+  </data>
+  <data name="P1Graph" xml:space="preserve">
+    <value>data</value>
+  </data>
+  <data name="P1GraphDescription" xml:space="preserve">
+    <value>Data for curves</value>
+  </data>
+  <data name="P1Join" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="P1JoinDescription" xml:space="preserve">
+    <value>Data to be joined</value>
+  </data>
+  <data name="P2ContextDescription" xml:space="preserve">
+    <value>Name of a variable that will be copied from actual context</value>
+  </data>
+  <data name="P2Graph" xml:space="preserve">
+    <value>background</value>
+  </data>
+  <data name="P2GraphDescription" xml:space="preserve">
+    <value>Data for background (mesh graph)</value>
+  </data>
+  <data name="P3Equipotential" xml:space="preserve">
+    <value>points</value>
+  </data>
+  <data name="P3EquipotentialDescription" xml:space="preserve">
+    <value>Number of points of the equipotential contour</value>
+  </data>
+  <data name="P3Graph" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="P3GraphDescription" xml:space="preserve">
+    <value>Error bars for data</value>
+  </data>
+  <data name="P3InitialCondition" xml:space="preserve">
+    <value>param</value>
+  </data>
+  <data name="P3InitialConditionDescription" xml:space="preserve">
+    <value>Additional parameter (angular momentum)</value>
+  </data>
+  <data name="P4Graph" xml:space="preserve">
+    <value>pglobal</value>
+  </data>
+  <data name="P4GraphDescription" xml:space="preserve">
+    <value>Parameters for the whole graph</value>
+  </data>
+  <data name="P5Graph" xml:space="preserve">
+    <value>pgroups</value>
+  </data>
+  <data name="P5GraphDescription" xml:space="preserve">
+    <value>Parameters for groups of data</value>
+  </data>
+  <data name="P6Graph" xml:space="preserve">
+    <value>pcurves</value>
+  </data>
+  <data name="P6GraphDescription" xml:space="preserve">
+    <value>Parameters for curves</value>
   </data>
   <data name="PA" xml:space="preserve">
     <value>a</value>

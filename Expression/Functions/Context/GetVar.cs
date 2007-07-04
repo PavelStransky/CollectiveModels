@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Returns a variable from a given context
     /// </summary>
     public class GetVar : FunctionDefinition {
-        public override string Help { get { return Messages.GetVarHelp; } }
+        public override string Help { get { return Messages.HelpGetVar; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

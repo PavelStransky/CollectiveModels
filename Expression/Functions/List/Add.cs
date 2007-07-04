@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public class FnAdd: FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.AddHelp; } }
+        public override string Help { get { return Messages.HelpAdd; } }
 
         protected override void CreateParameters() {
             this.NumParams(2, true);

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// For given dynamical system and position in the phase space calculates the energy
     /// </summary>
     public class Energy : FunctionDefinition {
-        public override string Help { get { return Messages.EnergyHelp; } }
+        public override string Help { get { return Messages.HelpEnergy; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

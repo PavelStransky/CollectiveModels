@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
 	/// ArcTan
 	/// </summary>
 	public class ArcTan: MathFnD {
-		public override string Help {get {return Messages.ArcTanHelp;}}
+		public override string Help {get {return Messages.HelpArcTan;}}
 
         protected override double FnDouble(double x, params object[] p) {
             return System.Math.Atan(x);

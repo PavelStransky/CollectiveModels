@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Factorial
     /// </summary>
     public class Factorial : MathFnD {
-        public override string Help { get { return Messages.FactorialHelp; } }
+        public override string Help { get { return Messages.HelpFactorial; } }
 
         protected override double FnDouble(double x, params object[] p) {
             return SpecialFunctions.Factorial(x);

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found
     /// </summary>
     public class Bounds : FunctionDefinition {
-        public override string Help { get { return Messages.BoundsHelp; } }
+        public override string Help { get { return Messages.HelpBounds; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

@@ -61,146 +61,11 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Absolute value.
-        /// </summary>
-        internal static string AbsHelp {
-            get {
-                return ResourceManager.GetString("AbsHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adds an element to the end of the list in the global context.
-        /// </summary>
-        internal static string AddGlobalHelp {
-            get {
-                return ResourceManager.GetString("AddGlobalHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adds an element to the end of the list.
-        /// </summary>
-        internal static string AddHelp {
-            get {
-                return ResourceManager.GetString("AddHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Arcus tangens of the value.
-        /// </summary>
-        internal static string ArcTanHelp {
-            get {
-                return ResourceManager.GetString("ArcTanHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found.
-        /// </summary>
-        internal static string BoundsHelp {
-            get {
-                return ResourceManager.GetString("BoundsHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creates a ClassicalGCM class (nonrotating case with simple kinetic term).
-        /// </summary>
-        internal static string CGCMHelp {
-            get {
-                return ResourceManager.GetString("CGCMHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creates a ClassicalGCMJ class (case with nonzero angular momentum).
-        /// </summary>
-        internal static string CGCMJHelp {
-            get {
-                return ResourceManager.GetString("CGCMJHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creates a ClassicalIBM class.
-        /// </summary>
-        internal static string CIBMHelp {
-            get {
-                return ResourceManager.GetString("CIBMHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Erase the variable from the global context.
         /// </summary>
         internal static string ClearGlobalHelp {
             get {
                 return ResourceManager.GetString("ClearGlobalHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Erase the variable (all variables if nothing is specified) from the context.
-        /// </summary>
-        internal static string ClearHelp {
-            get {
-                return ResourceManager.GetString("ClearHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creates a new context.
-        /// </summary>
-        internal static string ContextHelp {
-            get {
-                return ResourceManager.GetString("ContextHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Commands that will be run on the new context.
-        /// </summary>
-        internal static string ContextP1Description {
-            get {
-                return ResourceManager.GetString("ContextP1Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name of a variable that will be copied from actual context.
-        /// </summary>
-        internal static string ContextP2Description {
-            get {
-                return ResourceManager.GetString("ContextP2Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Given array transforms into one dimensional array.
-        /// </summary>
-        internal static string DeflateHelp {
-            get {
-                return ResourceManager.GetString("DeflateHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to a.
-        /// </summary>
-        internal static string DeflateP1 {
-            get {
-                return ResourceManager.GetString("DeflateP1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Array to be deflated.
-        /// </summary>
-        internal static string DeflateP1Description {
-            get {
-                return ResourceManager.GetString("DeflateP1Description", resourceCulture);
             }
         }
         
@@ -358,380 +223,308 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Absolute value.
+        /// </summary>
+        internal static string HelpAbs {
+            get {
+                return ResourceManager.GetString("HelpAbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds an element to the end of the list.
+        /// </summary>
+        internal static string HelpAdd {
+            get {
+                return ResourceManager.GetString("HelpAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds an element to the end of the list in the global context.
+        /// </summary>
+        internal static string HelpAddGlobal {
+            get {
+                return ResourceManager.GetString("HelpAddGlobal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arcus tangens of the value.
+        /// </summary>
+        internal static string HelpArcTan {
+            get {
+                return ResourceManager.GetString("HelpArcTan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found.
+        /// </summary>
+        internal static string HelpBounds {
+            get {
+                return ResourceManager.GetString("HelpBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a ClassicalGCM class (nonrotating case with simple kinetic term).
+        /// </summary>
+        internal static string HelpCGCM {
+            get {
+                return ResourceManager.GetString("HelpCGCM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a ClassicalGCMJ class (case with nonzero angular momentum).
+        /// </summary>
+        internal static string HelpCGCMJ {
+            get {
+                return ResourceManager.GetString("HelpCGCMJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a ClassicalIBM class.
+        /// </summary>
+        internal static string HelpCIBM {
+            get {
+                return ResourceManager.GetString("HelpCIBM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erase the variable (all variables if nothing is specified) from the context.
+        /// </summary>
+        internal static string HelpClear {
+            get {
+                return ResourceManager.GetString("HelpClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a new context.
+        /// </summary>
+        internal static string HelpContext {
+            get {
+                return ResourceManager.GetString("HelpContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Given array transforms into one dimensional array.
+        /// </summary>
+        internal static string HelpDeflate {
+            get {
+                return ResourceManager.GetString("HelpDeflate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For given dynamical system and position in the phase space calculates the energy.
         /// </summary>
-        internal static string EnergyHelp {
+        internal static string HelpEnergy {
             get {
-                return ResourceManager.GetString("EnergyHelp", resourceCulture);
+                return ResourceManager.GetString("HelpEnergy", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to For GCM system and given energy calculates equipotential contour.
         /// </summary>
-        internal static string EquipotentialHelp {
+        internal static string HelpEquipotential {
             get {
-                return ResourceManager.GetString("EquipotentialHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to points.
-        /// </summary>
-        internal static string EquipotentialP3 {
-            get {
-                return ResourceManager.GetString("EquipotentialP3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number of points of the equipotential contour.
-        /// </summary>
-        internal static string EquipotentialP3Description {
-            get {
-                return ResourceManager.GetString("EquipotentialP3Description", resourceCulture);
+                return ResourceManager.GetString("HelpEquipotential", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Creates an ExtendedClassicalGCM class with mass proportional to beta^2.
         /// </summary>
-        internal static string ExtendedCGCM1Help {
+        internal static string HelpExtendedCGCM1 {
             get {
-                return ResourceManager.GetString("ExtendedCGCM1Help", resourceCulture);
+                return ResourceManager.GetString("HelpExtendedCGCM1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Creates an ExtendedClassicalGCM class with kinetic term proportional to beta^2.
         /// </summary>
-        internal static string ExtendedCGCM2Help {
+        internal static string HelpExtendedCGCM2 {
             get {
-                return ResourceManager.GetString("ExtendedCGCM2Help", resourceCulture);
+                return ResourceManager.GetString("HelpExtendedCGCM2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Factorial of the value.
         /// </summary>
-        internal static string FactorialHelp {
+        internal static string HelpFactorial {
             get {
-                return ResourceManager.GetString("FactorialHelp", resourceCulture);
+                return ResourceManager.GetString("HelpFactorial", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Gives the spectrum of a vector using Fast Fourier Transform (FFT).
         /// </summary>
-        internal static string FFTSpectrumHelp {
+        internal static string HelpFFTSpectrum {
             get {
-                return ResourceManager.GetString("FFTSpectrumHelp", resourceCulture);
+                return ResourceManager.GetString("HelpFFTSpectrum", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Full help for the given function (including names and types of the parameters).
         /// </summary>
-        internal static string FullHelpHelp {
+        internal static string HelpFullHelp {
             get {
-                return ResourceManager.GetString("FullHelpHelp", resourceCulture);
+                return ResourceManager.GetString("HelpFullHelp", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Returns actual context.
         /// </summary>
-        internal static string GetContextHelp {
+        internal static string HelpGetContext {
             get {
-                return ResourceManager.GetString("GetContextHelp", resourceCulture);
+                return ResourceManager.GetString("HelpGetContext", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Returns global context.
         /// </summary>
-        internal static string GetGlobalContextHelp {
+        internal static string HelpGetGlobalContext {
             get {
-                return ResourceManager.GetString("GetGlobalContextHelp", resourceCulture);
+                return ResourceManager.GetString("HelpGetGlobalContext", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Gets out a variable from the global context.
         /// </summary>
-        internal static string GetGlobalVarHelp {
+        internal static string HelpGetGlobalVar {
             get {
-                return ResourceManager.GetString("GetGlobalVarHelp", resourceCulture);
+                return ResourceManager.GetString("HelpGetGlobalVar", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Returns a variable from a given context.
         /// </summary>
-        internal static string GetVarHelp {
+        internal static string HelpGetVar {
             get {
-                return ResourceManager.GetString("GetVarHelp", resourceCulture);
+                return ResourceManager.GetString("HelpGetVar", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Create graph.
         /// </summary>
-        internal static string GraphHelp {
+        internal static string HelpGraph {
             get {
-                return ResourceManager.GetString("GraphHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to data.
-        /// </summary>
-        internal static string GraphP1 {
-            get {
-                return ResourceManager.GetString("GraphP1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data for curves.
-        /// </summary>
-        internal static string GraphP1Description {
-            get {
-                return ResourceManager.GetString("GraphP1Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to background.
-        /// </summary>
-        internal static string GraphP2 {
-            get {
-                return ResourceManager.GetString("GraphP2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data for background (mesh graph).
-        /// </summary>
-        internal static string GraphP2Description {
-            get {
-                return ResourceManager.GetString("GraphP2Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to error.
-        /// </summary>
-        internal static string GraphP3 {
-            get {
-                return ResourceManager.GetString("GraphP3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error bars for data.
-        /// </summary>
-        internal static string GraphP3Description {
-            get {
-                return ResourceManager.GetString("GraphP3Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pglobal.
-        /// </summary>
-        internal static string GraphP4 {
-            get {
-                return ResourceManager.GetString("GraphP4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameters for the whole graph.
-        /// </summary>
-        internal static string GraphP4Description {
-            get {
-                return ResourceManager.GetString("GraphP4Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pgroups.
-        /// </summary>
-        internal static string GraphP5 {
-            get {
-                return ResourceManager.GetString("GraphP5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameters for groups of data.
-        /// </summary>
-        internal static string GraphP5Description {
-            get {
-                return ResourceManager.GetString("GraphP5Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pcurves.
-        /// </summary>
-        internal static string GraphP6 {
-            get {
-                return ResourceManager.GetString("GraphP6", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parameters for curves.
-        /// </summary>
-        internal static string GraphP6Description {
-            get {
-                return ResourceManager.GetString("GraphP6Description", resourceCulture);
+                return ResourceManager.GetString("HelpGraph", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Creates a HenonHeiles class.
         /// </summary>
-        internal static string HHHelp {
+        internal static string HelpHH {
             get {
-                return ResourceManager.GetString("HHHelp", resourceCulture);
+                return ResourceManager.GetString("HelpHH", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector.
         /// </summary>
-        internal static string InitialConditionHelp {
+        internal static string HelpInitialCondition {
             get {
-                return ResourceManager.GetString("InitialConditionHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to param.
-        /// </summary>
-        internal static string InitialConditionP3 {
-            get {
-                return ResourceManager.GetString("InitialConditionP3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Additional parameter (angular momentum).
-        /// </summary>
-        internal static string InitialConditionP3Description {
-            get {
-                return ResourceManager.GetString("InitialConditionP3Description", resourceCulture);
+                return ResourceManager.GetString("HelpInitialCondition", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Creates points for interval (as an array).
         /// </summary>
-        internal static string IntervalAHelp {
+        internal static string HelpIntervalA {
             get {
-                return ResourceManager.GetString("IntervalAHelp", resourceCulture);
+                return ResourceManager.GetString("HelpIntervalA", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Creates points for interval (in the form PointVector(0, interval points)).
         /// </summary>
-        internal static string IntervalPVHelp {
+        internal static string HelpIntervalPV {
             get {
-                return ResourceManager.GetString("IntervalPVHelp", resourceCulture);
+                return ResourceManager.GetString("HelpIntervalPV", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Creates points for interval.
         /// </summary>
-        internal static string IntervalVHelp {
+        internal static string HelpIntervalV {
             get {
-                return ResourceManager.GetString("IntervalVHelp", resourceCulture);
+                return ResourceManager.GetString("HelpIntervalV", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix.
         /// </summary>
-        internal static string JacobiHelp {
+        internal static string HelpJacobi {
             get {
-                return ResourceManager.GetString("JacobiHelp", resourceCulture);
+                return ResourceManager.GetString("HelpJacobi", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Array of vectors or array of pointVectors joins into one Vector.
         /// </summary>
-        internal static string JoinHelp {
+        internal static string HelpJoin {
             get {
-                return ResourceManager.GetString("JoinHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to v.
-        /// </summary>
-        internal static string JoinP1 {
-            get {
-                return ResourceManager.GetString("JoinP1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data to be joined.
-        /// </summary>
-        internal static string JoinP1Description {
-            get {
-                return ResourceManager.GetString("JoinP1Description", resourceCulture);
+                return ResourceManager.GetString("HelpJoin", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Value of the Laguerre polynomial.
         /// </summary>
-        internal static string LaguerreHelp {
+        internal static string HelpLaguerre {
             get {
-                return ResourceManager.GetString("LaguerreHelp", resourceCulture);
+                return ResourceManager.GetString("HelpLaguerre", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Value of the Legendre polynomial.
         /// </summary>
-        internal static string LegendreHelp {
+        internal static string HelpLegendre {
             get {
-                return ResourceManager.GetString("LegendreHelp", resourceCulture);
+                return ResourceManager.GetString("HelpLegendre", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Returns length(s) or number of elements of a given object as an array.
         /// </summary>
-        internal static string LengthHelp {
+        internal static string HelpLength {
             get {
-                return ResourceManager.GetString("LengthHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vector | PointVector | TArray | Matrix | List.
-        /// </summary>
-        internal static string LengthParameters {
-            get {
-                return ResourceManager.GetString("LengthParameters", resourceCulture);
+                return ResourceManager.GetString("HelpLength", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Logarithm of the value (with specified base).
         /// </summary>
-        internal static string LogHelp {
+        internal static string HelpLog {
             get {
-                return ResourceManager.GetString("LogHelp", resourceCulture);
+                return ResourceManager.GetString("HelpLog", resourceCulture);
             }
         }
         
@@ -754,16 +547,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Bytes.
-        /// </summary>
-        internal static string MsgBytes {
-            get {
-                return ResourceManager.GetString("MsgBytes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parsing....
+        ///   Looks up a localized string similar to `.
         /// </summary>
         internal static string MsgParsing {
             get {
@@ -844,11 +628,209 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nucleus {0}....
+        ///   Looks up a localized string similar to Reading page of nucleus {0}....
         /// </summary>
         internal static string NuDatReadNucleusPage {
             get {
                 return ResourceManager.GetString("NuDatReadNucleusPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commands that will be run on the new context.
+        /// </summary>
+        internal static string P1ContextDescription {
+            get {
+                return ResourceManager.GetString("P1ContextDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to a.
+        /// </summary>
+        internal static string P1Deflate {
+            get {
+                return ResourceManager.GetString("P1Deflate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Array to be deflated.
+        /// </summary>
+        internal static string P1DeflateDescription {
+            get {
+                return ResourceManager.GetString("P1DeflateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to data.
+        /// </summary>
+        internal static string P1Graph {
+            get {
+                return ResourceManager.GetString("P1Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data for curves.
+        /// </summary>
+        internal static string P1GraphDescription {
+            get {
+                return ResourceManager.GetString("P1GraphDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to v.
+        /// </summary>
+        internal static string P1Join {
+            get {
+                return ResourceManager.GetString("P1Join", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data to be joined.
+        /// </summary>
+        internal static string P1JoinDescription {
+            get {
+                return ResourceManager.GetString("P1JoinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of a variable that will be copied from actual context.
+        /// </summary>
+        internal static string P2ContextDescription {
+            get {
+                return ResourceManager.GetString("P2ContextDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to background.
+        /// </summary>
+        internal static string P2Graph {
+            get {
+                return ResourceManager.GetString("P2Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data for background (mesh graph).
+        /// </summary>
+        internal static string P2GraphDescription {
+            get {
+                return ResourceManager.GetString("P2GraphDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to points.
+        /// </summary>
+        internal static string P3Equipotential {
+            get {
+                return ResourceManager.GetString("P3Equipotential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of points of the equipotential contour.
+        /// </summary>
+        internal static string P3EquipotentialDescription {
+            get {
+                return ResourceManager.GetString("P3EquipotentialDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to error.
+        /// </summary>
+        internal static string P3Graph {
+            get {
+                return ResourceManager.GetString("P3Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error bars for data.
+        /// </summary>
+        internal static string P3GraphDescription {
+            get {
+                return ResourceManager.GetString("P3GraphDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to param.
+        /// </summary>
+        internal static string P3InitialCondition {
+            get {
+                return ResourceManager.GetString("P3InitialCondition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Additional parameter (angular momentum).
+        /// </summary>
+        internal static string P3InitialConditionDescription {
+            get {
+                return ResourceManager.GetString("P3InitialConditionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pglobal.
+        /// </summary>
+        internal static string P4Graph {
+            get {
+                return ResourceManager.GetString("P4Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for the whole graph.
+        /// </summary>
+        internal static string P4GraphDescription {
+            get {
+                return ResourceManager.GetString("P4GraphDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pgroups.
+        /// </summary>
+        internal static string P5Graph {
+            get {
+                return ResourceManager.GetString("P5Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for groups of data.
+        /// </summary>
+        internal static string P5GraphDescription {
+            get {
+                return ResourceManager.GetString("P5GraphDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pcurves.
+        /// </summary>
+        internal static string P6Graph {
+            get {
+                return ResourceManager.GetString("P6Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for curves.
+        /// </summary>
+        internal static string P6GraphDescription {
+            get {
+                return ResourceManager.GetString("P6GraphDescription", resourceCulture);
             }
         }
         

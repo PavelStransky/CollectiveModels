@@ -10,14 +10,14 @@ namespace PavelStransky.Expression.Functions {
     /// For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector
     /// </summary>
     public class InitialCondition: FunctionDefinition {
-        public override string Help { get { return Messages.InitialConditionHelp; } }
+        public override string Help { get { return Messages.HelpInitialCondition; } }
 
         protected override void CreateParameters() {
             this.NumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
-            this.SetParam(2, false, true, true, Messages.InitialConditionP3, Messages.InitialConditionP3Description, null, typeof(double));
+            this.SetParam(2, false, true, true, Messages.P3InitialCondition, Messages.P3InitialConditionDescription, null, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions
 	/// Returns length(s) of given object as an array
 	/// </summary>
 	public class Length: FunctionDefinition {
-		public override string Help {get {return Messages.LengthHelp;}}
+		public override string Help {get {return Messages.HelpLength;}}
 		public override string Parameters {get {return Messages.LengthParameters;}}
 
 		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {

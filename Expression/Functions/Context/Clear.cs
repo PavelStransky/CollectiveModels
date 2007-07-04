@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
 	/// Delete the specified variable (all variables) from the context
 	/// </summary>
 	public class Clear: FunctionDefinition {
-		public override string Help {get {return Messages.ClearHelp;}}
+		public override string Help {get {return Messages.HelpClear;}}
 
         protected override void CreateParameters() {
             this.NumParams(1, true);

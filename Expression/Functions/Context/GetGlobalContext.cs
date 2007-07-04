@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Returns global context
     /// </summary>
     public class GetGlobalContext: FunctionDefinition {
-        public override string Help { get { return Messages.GetGlobalContextHelp; } }
+        public override string Help { get { return Messages.HelpGetGlobalContext; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             string fileName = Context.GlobalContextFileName;

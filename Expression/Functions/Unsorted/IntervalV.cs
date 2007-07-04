@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Creates points for interval
     /// </summary>
     public class IntervalV: FunctionDefinition {
-        public override string Help { get { return Messages.IntervalVHelp; } }
+        public override string Help { get { return Messages.HelpIntervalV; } }
 
         protected override void CreateParameters() {
             this.NumParams(3);

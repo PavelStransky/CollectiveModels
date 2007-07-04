@@ -9,12 +9,12 @@ namespace PavelStransky.Expression.Functions {
     /// Array of Vectors or Array of PointVectors joins into one Vector
 	/// </summary>
 	public class Join: FunctionDefinition {
-		public override string Help {get {return Messages.JoinHelp;}}
+		public override string Help {get {return Messages.HelpJoin;}}
 
         protected override void CreateParameters() {
             this.NumParams(1, true);
 
-            this.SetParam(0, true, true, false, Messages.JoinP1, Messages.JoinP1Description, null, typeof(Vector), typeof(PointVector), typeof(TArray));
+            this.SetParam(0, true, true, false, Messages.P1Join, Messages.P1JoinDescription, null, typeof(Vector), typeof(PointVector), typeof(TArray));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

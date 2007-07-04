@@ -6,7 +6,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Vytvoøí øadu s názvy všech zaregistrovaných funkcí
+    /// Returns an array with names of all registered functions
 	/// </summary>
 	public class FNames: FunctionDefinition {
 		private FunctionDefinitions functions;

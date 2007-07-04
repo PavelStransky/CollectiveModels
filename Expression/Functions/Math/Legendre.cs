@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Value of the Legendre polynomial
     /// </summary>
     public class Legendre: MathFnD {
-        public override string Help { get { return Messages.LaguerreHelp; } }
+        public override string Help { get { return Messages.HelpLaguerre; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

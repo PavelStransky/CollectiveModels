@@ -10,14 +10,14 @@ namespace PavelStransky.Expression.Functions {
     /// For GCM system and given energy calculates equipotential line
     /// </summary>
     public class Equipotential: FunctionDefinition {
-        public override string Help { get { return Messages.EquipotentialHelp; } }
+        public override string Help { get { return Messages.HelpEquipotential; } }
 
         protected override void CreateParameters() {
             this.NumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
-            this.SetParam(2, false, true, false, Messages.EquipotentialP3, Messages.EquipotentialP3Description, null, typeof(int));
+            this.SetParam(2, false, true, false, Messages.P3Equipotential, Messages.P3EquipotentialDescription, null, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

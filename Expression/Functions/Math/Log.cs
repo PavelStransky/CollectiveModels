@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Logarithm of the value (with specified base)
     /// </summary>
     public class Log: MathFnD {
-        public override string Help { get { return Messages.LogHelp; } }
+        public override string Help { get { return Messages.HelpLog; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

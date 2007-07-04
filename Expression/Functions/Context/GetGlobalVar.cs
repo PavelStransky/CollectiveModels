@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Gets out a variable from the global context
     /// </summary>
     public class GetGlobalVar: FunctionDefinition {
-        public override string Help { get { return Messages.GetGlobalVarHelp; } }
+        public override string Help { get { return Messages.HelpGetGlobalVar; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);

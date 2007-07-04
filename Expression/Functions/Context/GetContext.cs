@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Returns actual context
     /// </summary>
     public class GetContext : FunctionDefinition {
-        public override string Help { get { return Messages.GetContextHelp; } }
+        public override string Help { get { return Messages.HelpGetContext; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             return guider.Context;

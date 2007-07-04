@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Creates points for interval (as array)
     /// </summary>
     public class IntervalA: IntervalV {
-        public override string Help { get { return Messages.IntervalAHelp; } }
+        public override string Help { get { return Messages.HelpIntervalA; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             int num = (int)arguments[2];

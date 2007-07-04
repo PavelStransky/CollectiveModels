@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions {
 			this.functions = functions;
 		}
 
-		public override string Help {get {return Messages.FullHelpHelp;}}
+		public override string Help {get {return Messages.HelpFullHelp;}}
 
         protected override void CreateParameters() {
             this.NumParams(1);

@@ -8,7 +8,7 @@ namespace PavelStransky.Expression.Functions {
     /// Adds an element to the end of the list in the global context
     /// </summary>
     public class AddGlobal: FDGlobalContext {
-        public override string Help { get { return Messages.AddGlobalHelp; } }
+        public override string Help { get { return Messages.HelpAddGlobal; } }
 
         protected override void CreateParameters() {
             this.NumParams(2, true);

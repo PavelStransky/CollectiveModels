@@ -9,12 +9,12 @@ namespace PavelStransky.Expression.Functions {
     /// Given array transforms into one dimensional array
     /// </summary>
     public class Deflate: FunctionDefinition {
-        public override string Help { get { return Messages.DeflateHelp; } }
+        public override string Help { get { return Messages.HelpDeflate; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);
 
-            this.SetParam(0, true, true, false, Messages.DeflateP1, Messages.DeflateP1Description, null, typeof(TArray));
+            this.SetParam(0, true, true, false, Messages.P1Deflate, Messages.P1DeflateDescription, null, typeof(TArray));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

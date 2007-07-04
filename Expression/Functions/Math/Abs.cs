@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
 	/// Absolute value
 	/// </summary>
 	public class Abs: MathFnID {
-		public override string Help {get {return Messages.AbsHelp;}}
+		public override string Help {get {return Messages.HelpAbs;}}
 
         protected override int FnInt(int i, params object[] p) {
             return System.Math.Abs(i);

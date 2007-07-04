@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Creates ClassicalGCM class
     /// </summary>
     public class CGCM : FunctionDefinition {
-        public override string Help { get { return Messages.CGCMHelp; } }
+        public override string Help { get { return Messages.HelpCGCM; } }
 
         protected override void CreateParameters() {
             this.NumParams(4);

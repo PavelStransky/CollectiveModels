@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// does not exist, returns default value
     /// </summary>
     public class SafeValue : FunctionDefinition {
-        public override string Help { get { return Messages.SafeValueHelp; } }
+        public override string Help { get { return Messages.HelpSafeValue; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

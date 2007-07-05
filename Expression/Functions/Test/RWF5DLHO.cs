@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Test - value of the radial part of basis wave function for 5D LHO
     /// </summary>
     public class RWF5DLHO: MathFnD {
-        public override string Help { get { return Messages.RWF5DLHOHelp; } }
+        public override string Help { get { return Messages.HelpRWF5DLHO; } }
 
         protected override void CreateParameters() {
             this.NumParams(4);

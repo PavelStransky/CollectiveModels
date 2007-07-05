@@ -8,11 +8,11 @@ namespace PavelStransky.Expression.Functions {
     /// Creates array from some non-array types
     /// </summary>
     public class ToArray: FunctionDefinition {
-        public override string Help { get { return Messages.ToArrayHelp; } }
-        public override string Parameters { get { return Messages.ToArrayParameters; } }
+        public override string Help { get { return Messages.HelpToArray; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PToArray1, Messages.PToArray1Description, null, typeof(FileData), typeof(List));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
         protected override void CreateParameters() {
             this.NumParams(1);
 
-            this.SetParam(0, true, true, false, Messages.P1Deflate, Messages.P1DeflateDescription, null, typeof(TArray));
+            this.SetParam(0, true, true, false, Messages.PDeflate1, Messages.PDeflate1Description, null, typeof(TArray));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
 	/// </summary>
 	public class FnPolynom: MathFnD {
 		public override string Name {get {return name;}}
-		public override string Help {get {return Messages.PolynomHelp;}}
+		public override string Help {get {return Messages.HelpPolynom;}}
 
         protected override void CreateParameters() {
             this.NumParams(2);

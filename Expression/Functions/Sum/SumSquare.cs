@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Sum squares of the values of all elements
     /// </summary>
     public class SumSquare: SumFn {
-        public override string Help { get { return Messages.SumSquareHelp; } }
+        public override string Help { get { return Messages.HelpSumSquare; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object item = arguments[0];

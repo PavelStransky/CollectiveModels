@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Deletes specified variable (all variables) from the global context
     /// </summary>
     public class ClearGlobal: FDGlobalContext {
-        public override string Help { get { return Messages.ClearGlobalHelp; } }
+        public override string Help { get { return Messages.HelpClearGlobal; } }
 
         protected override void CreateParameters() {
             this.NumParams(1, true);

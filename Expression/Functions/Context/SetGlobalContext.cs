@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Sets a new global context
     /// </summary>
     public class SetGlobalContext: FDGlobalContext {
-        public override string Help { get { return Messages.SetGlobalContextHelp; } }
+        public override string Help { get { return Messages.HelpSetGlobalContext; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);

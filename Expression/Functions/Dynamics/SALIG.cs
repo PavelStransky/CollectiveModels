@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by SALI
     /// </summary>
     public class SALIG: FunctionDefinition {
-        public override string Help { get { return Messages.SALIGHelp; } }
+        public override string Help { get { return Messages.HelpSALIG; } }
 
         protected override void CreateParameters() {
             this.NumParams(5);

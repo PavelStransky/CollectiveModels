@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Value of Poisson distribution
     /// </summary>
     public class Poisson: MathFnD {
-        public override string Help { get { return Messages.PoissonHelp; } }
+        public override string Help { get { return Messages.HelpPoisson; } }
 
         protected override double FnDouble(double x, params object[] p) {
             return SpecialFunctions.Poisson(x);

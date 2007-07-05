@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
 	/// Shows a graph
 	/// </summary>
 	public class Show: FunctionDefinition {
-		public override string Help {get {return Messages.ShowHelp;}}
+		public override string Help {get {return Messages.HelpShow;}}
 
         protected override void CreateParameters() {
             this.NumParams(3);

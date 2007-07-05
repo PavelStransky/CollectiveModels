@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Descending sort
     /// </summary>
     public class SortDesc: FunctionDefinition {
-        public override string Help { get { return Messages.SortDescHelp; } }
+        public override string Help { get { return Messages.HelpSortDesc; } }
         public override string Parameters { get { return Messages.SortParams; } }
 
         protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {

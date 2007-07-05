@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Uses the given context for specified calculations
     /// </summary>
     public class UseContext : FunctionDefinition {
-        public override string Help { get { return Messages.UseContextHelp; } }
+        public override string Help { get { return Messages.HelpUseContext; } }
 
         protected override void CreateParameters() {
             this.NumParams(3, true);

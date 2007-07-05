@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
 	/// Calculates neighbour spacing v_{i+j} - v_{i}
 	/// </summary>
 	public class Spacing: FunctionDefinition {
-		public override string Help {get {return Messages.SpacingHelp;}}
+		public override string Help {get {return Messages.HelpSpacing;}}
 
         protected override void CreateParameters() {
             this.NumParams(2);

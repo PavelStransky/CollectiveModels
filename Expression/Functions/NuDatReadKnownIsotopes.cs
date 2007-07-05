@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.Functions {
     /// Reads all known isotopes from http://www-nds.iaea.org
     /// </summary>
     public class NuDatReadKnownIsotopes: FunctionDefinition {
-        public override string Help { get { return Messages.NuDatReadKnownIsotopesHelp; } }
+        public override string Help { get { return Messages.HelpNuDatReadKnownIsotopes; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             UriBuilder ub = new UriBuilder();

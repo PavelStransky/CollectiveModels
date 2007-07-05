@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions {
         protected override void CreateParameters() {
             this.NumParams(2);
 
-            this.SetParam(0, true, true, false, Messages.RegressionP1, Messages.RegressionP1Description, null, typeof(PointVector));
+            this.SetParam(0, true, true, false, Messages.P1Regression, Messages.P1RegressionDescription, null, typeof(PointVector));
             this.SetParam(1, true, true, false, Messages.POrder, Messages.POrderDetail, null, typeof(int));
         }
 

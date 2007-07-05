@@ -10,13 +10,13 @@ namespace PavelStransky.Expression.Functions {
     /// Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)
     /// </summary>
     public class SALIR: FunctionDefinition {
-        public override string Help { get { return Messages.SALIRHelp; } }
+        public override string Help { get { return Messages.HelpSALIR; } }
 
         protected override void CreateParameters() {
             this.NumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
-            this.SetParam(1, true, true, true, Messages.PoincareP2, Messages.PoincareP2Description, null, typeof(Vector), typeof(double));
+            this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
             this.SetParam(2, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }
 

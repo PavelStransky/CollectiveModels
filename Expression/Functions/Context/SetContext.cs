@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Sets a new context
     /// </summary>
     public class SetContext : FunctionDefinition {
-        public override string Help { get { return Messages.SetContextHelp; } }
+        public override string Help { get { return Messages.HelpSetContext; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);

@@ -11,13 +11,13 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public class FnSALI: FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.SALIHelp; } }
+        public override string Help { get { return Messages.HelpSALI; } }
 
         protected override void CreateParameters() {
             this.NumParams(4);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
-            this.SetParam(1, true, true, true, Messages.PoincareP2, Messages.PoincareP2Description, null, typeof(Vector), typeof(double));
+            this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
             this.SetParam(2, true, true, true, Messages.PTime, Messages.PTimeDescription, null, typeof(int));
             this.SetParam(3, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }

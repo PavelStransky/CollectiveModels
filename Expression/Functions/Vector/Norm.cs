@@ -9,13 +9,13 @@ namespace PavelStransky.Expression.Functions {
 	/// Norm of the vector
 	/// </summary>
 	public class Norm: FunctionDefinition {
-		public override string Help {get {return Messages.NormHelp;}}
+		public override string Help {get {return Messages.HelpNorm;}}
 
         protected override void CreateParameters() {
             this.NumParams(2);
 
-            this.SetParam(0, true, true, false, Messages.NormP1, Messages.NormP1Description, null, typeof(Vector));
-            this.SetParam(1, false, true, true, Messages.NormP2, Messages.NormP2Description, 2.0, typeof(double));
+            this.SetParam(0, true, true, false, Messages.P1Norm, Messages.P1NormDescription, null, typeof(Vector));
+            this.SetParam(1, false, true, true, Messages.P2Norm, Messages.P2NormDescription, 2.0, typeof(double));
         }	
 
 		protected override object EvaluateFn(Guider guider, ArrayList arguments) {

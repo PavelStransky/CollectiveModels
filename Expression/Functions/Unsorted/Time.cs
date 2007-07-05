@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public class FnTime : FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.TimeHelp; } }
+        public override string Help { get { return Messages.HelpTime; } }
         public override string Parameters { get { return Messages.TimeParameters; } }
 
         protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) { }

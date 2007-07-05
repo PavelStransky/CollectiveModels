@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// For GCM system solves the equation Potential == Given energy
     /// </summary>
     public class PotentialRoots : FunctionDefinition {
-        public override string Help { get { return Messages.PotentialRootsHelp; } }
+        public override string Help { get { return Messages.HelpPotentialRoots; } }
 
         protected override void CreateParameters() {
             this.NumParams(3);

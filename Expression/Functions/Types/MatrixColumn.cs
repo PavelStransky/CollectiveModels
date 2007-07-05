@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Given vectors put onto columns of a matrix
     /// </summary>
     public class MatrixColumn: FunctionDefinition {
-        public override string Help { get { return Messages.MatrixColumnHelp; } }
+        public override string Help { get { return Messages.HelpMatrixColumn; } }
 
         protected override void CreateParameters() {
             this.NumParams(1, true);

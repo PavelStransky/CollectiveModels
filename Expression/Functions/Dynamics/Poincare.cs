@@ -10,17 +10,17 @@ namespace PavelStransky.Expression.Functions {
     /// Calculates a Poincaré section for given energy or trajectory given by its initial condition
     /// </summary>
     public class Poincare: FunctionDefinition {
-        public override string Help { get { return Messages.PoincareHelp; } }
+        public override string Help { get { return Messages.HelpPoincare; } }
 
         protected override void CreateParameters() {
             this.NumParams(8);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
-            this.SetParam(1, true, true, true, Messages.PoincareP2, Messages.PoincareP2Description, null, typeof(Vector), typeof(double));
-            this.SetParam(2, true, true, false, Messages.PoincareP3, Messages.PoincareP3Description, null, typeof(int));
-            this.SetParam(3, true, true, false, Messages.PoincareP4, Messages.PoincareP4Description, null, typeof(Vector));
-            this.SetParam(4, true, true, false, Messages.PoincareP5, Messages.PoincareP5Description, null, typeof(int));
-            this.SetParam(5, true, true, false, Messages.PoincareP6, Messages.PoincareP6Description, null, typeof(int));
+            this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
+            this.SetParam(2, true, true, false, Messages.P3Poincare, Messages.P3PoincareDescription, null, typeof(int));
+            this.SetParam(3, true, true, false, Messages.P4Poincare, Messages.P4PoincareDescription, null, typeof(Vector));
+            this.SetParam(4, true, true, false, Messages.P5Poincare, Messages.P5PoincareDescription, null, typeof(int));
+            this.SetParam(5, true, true, false, Messages.P6Poincare, Messages.P6PoincareDescription, null, typeof(int));
             this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
             this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }

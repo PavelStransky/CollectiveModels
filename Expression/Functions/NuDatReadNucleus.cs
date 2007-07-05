@@ -23,7 +23,7 @@ namespace PavelStransky.Expression.Functions {
             Unknown
         }
 
-        public override string Help { get { return Messages.NuDatReadNucleusHelp; } }
+        public override string Help { get { return Messages.HelpNuDatReadNucleus; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);

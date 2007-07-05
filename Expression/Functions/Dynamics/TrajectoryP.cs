@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.Functions {
     /// the x, y coordinates of the result is returned by a PointVector
     /// </summary>
     public class TrajectoryP: TrajectoryM {
-        public override string Help { get { return Messages.TrajectoryPHelp; } }
+        public override string Help { get { return Messages.HelpTrajectoryP; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Matrix m = base.EvaluateFn(guider, arguments) as Matrix;

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Given value put onto nondiagonal elements of square matrix
     /// </summary>
     public class SetNonDiagonal: FunctionDefinition {
-        public override string Help { get { return Messages.SetNonDiagonalHelp; } }
+        public override string Help { get { return Messages.HelpSetNonDiagonal; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

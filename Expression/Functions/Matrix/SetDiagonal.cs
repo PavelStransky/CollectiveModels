@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Given value or Vector of values put onto diagonal of square matrix
     /// </summary>
     public class SetDiagonal: FunctionDefinition {
-        public override string Help { get { return Messages.SetDiagonalHelp; } }
+        public override string Help { get { return Messages.HelpSetDiagonal; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

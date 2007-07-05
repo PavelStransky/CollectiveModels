@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
 	/// </summary>
 	public class FnType: FunctionDefinition {
 		public override string Name {get {return name;}}
-		public override string Help {get {return Messages.TypeHelp;}}
+		public override string Help {get {return Messages.HelpType;}}
 
         protected override void CreateParameters() {
             this.NumParams(1);

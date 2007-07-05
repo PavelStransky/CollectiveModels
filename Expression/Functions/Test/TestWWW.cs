@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// Tries to read text from specified URI
     /// </summary>
     public class TestWWW: FunctionDefinition {
-        public override string Help { get { return Messages.TestWWWHelp; } }
+        public override string Help { get { return Messages.HelpTestWWW; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);

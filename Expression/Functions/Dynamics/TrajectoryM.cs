@@ -11,13 +11,13 @@ namespace PavelStransky.Expression.Functions {
     /// the result is returned by a matrix in the form (time, x, y, ..., px, py, ...)
     /// </summary>
     public class TrajectoryM: FunctionDefinition {
-        public override string Help { get { return Messages.TrajectoryMHelp; } }
+        public override string Help { get { return Messages.HelpTrajectoryM; } }
 
         protected override void CreateParameters() {
             this.NumParams(6);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
-            this.SetParam(1, true, true, true, Messages.PoincareP2, Messages.PoincareP2Description, null, typeof(Vector), typeof(double));
+            this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
             this.SetParam(2, true, true, true, Messages.PTime, Messages.PTimeDescription, null, typeof(double));
             this.SetParam(3, false, true, true, Messages.PTimeStep, Messages.PTimeStepDescription, 0.0, typeof(double));
             this.SetParam(4, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));

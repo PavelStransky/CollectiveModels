@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
 
         protected override void CreateParameters() {
             this.NumParams(2, true);
-            this.SetParam(0, false, false, false, Messages.PCommands, Messages.P1ContextDescription, null, typeof(string));
+            this.SetParam(0, false, false, false, Messages.PCommands, Messages.PContext1Description, null, typeof(string));
             this.SetParam(1, false, false, false, Messages.PVarName, Messages.P2ContextDescription, null, typeof(string));
         }
 

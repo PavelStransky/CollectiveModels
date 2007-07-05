@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public class FnVector: FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.VectorHelp; } }
+        public override string Help { get { return Messages.HelpVector; } }
         public override string Parameters { get { return Messages.VectorParameters; } }
 
         protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {

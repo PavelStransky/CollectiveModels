@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Removes bad points (NaN, Infinity) from Vector or PointVector
     /// </summary>
     public class RemoveBadPoints: FunctionDefinition {
-        public override string Help { get { return Messages.RemoveBadPointsHelp; } }
+        public override string Help { get { return Messages.HelpRemoveBadPoints; } }
 
         protected override void CreateParameters() {
             this.NumParams(1);

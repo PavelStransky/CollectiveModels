@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Sum all elements
     /// </summary>
     public class Sum : SumFn {
-        public override string Help { get { return Messages.SumHelp; } }
+        public override string Help { get { return Messages.HelpSum; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object item = arguments[0];

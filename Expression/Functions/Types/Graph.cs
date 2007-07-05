@@ -29,7 +29,7 @@ namespace PavelStransky.Expression.Functions {
         protected override void CreateParameters() {
             this.NumParams(6);
 
-            this.SetParam(0, false, true, false, Messages.P1Graph, Messages.P1GraphDescription, null,
+            this.SetParam(0, false, true, false, Messages.PGraph1, Messages.P1GraphDescription, null,
                 typeof(TArray), typeof(Vector), typeof(PointVector));
             this.SetParam(1, false, true, false, Messages.P2Graph, Messages.P2GraphDescription, null,
                 typeof(TArray), typeof(Matrix));

@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Square root
     /// </summary>
     public class Sqrt: MathFnD {
-        public override string Help { get { return Messages.SqrtHelp; } }
+        public override string Help { get { return Messages.HelpSqrt; } }
 
         protected override double FnDouble(double x, params object[] p) {
             return System.Math.Sqrt(x);

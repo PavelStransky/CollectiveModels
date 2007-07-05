@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ClearGlobalHelp" xml:space="preserve">
-    <value>Erase the variable from the global context</value>
-  </data>
   <data name="EMBadParamType" xml:space="preserve">
     <value>Parameter "{0}" has bad type.</value>
   </data>
@@ -198,6 +195,9 @@
   <data name="HelpClear" xml:space="preserve">
     <value>Erase the variable (all variables if nothing is specified) from the context</value>
   </data>
+  <data name="HelpClearGlobal" xml:space="preserve">
+    <value>Erase the variable from the global context</value>
+  </data>
   <data name="HelpContext" xml:space="preserve">
     <value>Creates a new context</value>
   </data>
@@ -273,11 +273,125 @@
   <data name="HelpLog" xml:space="preserve">
     <value>Logarithm of the value (with specified base)</value>
   </data>
-  <data name="MatrixColumnHelp" xml:space="preserve">
+  <data name="HelpMatrixColumn" xml:space="preserve">
     <value>Given vectors put onto columns of a matrix</value>
   </data>
-  <data name="MatrixRowHelp" xml:space="preserve">
+  <data name="HelpMatrixRow" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
+  </data>
+  <data name="HelpNorm" xml:space="preserve">
+    <value>Norm of the vector</value>
+  </data>
+  <data name="HelpNuDatReadKnownIsotopes" xml:space="preserve">
+    <value>Reads all known isotopes from http://www-nds.iaea.org</value>
+  </data>
+  <data name="HelpNuDatReadNucleus" xml:space="preserve">
+    <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
+  </data>
+  <data name="HelpPi" xml:space="preserve">
+    <value>Value of Pi number</value>
+  </data>
+  <data name="HelpPoincare" xml:space="preserve">
+    <value>Calculates a Poincaré section for given energy or trajectory given by its initial condition</value>
+  </data>
+  <data name="HelpPoisson" xml:space="preserve">
+    <value>Value of Poisson distribution</value>
+  </data>
+  <data name="HelpPolynom" xml:space="preserve">
+    <value>Data of input vector interprets as coeficients of polynom and return its value</value>
+  </data>
+  <data name="HelpPotentialRoots" xml:space="preserve">
+    <value>For GCM system solves the equation Potential == Given energy</value>
+  </data>
+  <data name="HelpRemoveBadPoints" xml:space="preserve">
+    <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
+  </data>
+  <data name="HelpRWF5DLHO" xml:space="preserve">
+    <value>Value of the radial part of basis wave function for 5D LHO</value>
+  </data>
+  <data name="HelpSafeValue" xml:space="preserve">
+    <value>Gets the value of the variable from the context; If there the variable does not exist, returns default value.</value>
+  </data>
+  <data name="HelpSALI" xml:space="preserve">
+    <value>Calculates SALI dependence on time for given trajectory</value>
+  </data>
+  <data name="HelpSALIG" xml:space="preserve">
+    <value>Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by SALI</value>
+  </data>
+  <data name="HelpSALIR" xml:space="preserve">
+    <value>Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)</value>
+  </data>
+  <data name="HelpSetContext" xml:space="preserve">
+    <value>Sets a new context</value>
+  </data>
+  <data name="HelpSetDiagonal" xml:space="preserve">
+    <value>Given value or Vector of values put onto diagonal of square matrix</value>
+  </data>
+  <data name="HelpSetGlobalContext" xml:space="preserve">
+    <value>Sets a new global context</value>
+  </data>
+  <data name="HelpSetGlobalVar" xml:space="preserve">
+    <value>Sets a variable into the global context</value>
+  </data>
+  <data name="HelpSetNonDiagonal" xml:space="preserve">
+    <value>Given value put onto nondiagonal elements of square matrix</value>
+  </data>
+  <data name="HelpShow" xml:space="preserve">
+    <value>Shows a graph</value>
+  </data>
+  <data name="HelpSin" xml:space="preserve">
+    <value>Sinus of the value</value>
+  </data>
+  <data name="HelpSort" xml:space="preserve">
+    <value>Ascending sort of the object (with keys according to the sorting will be done)</value>
+  </data>
+  <data name="HelpSortDesc" xml:space="preserve">
+    <value>Descending sort of the object (with keys according to the sorting will be done)</value>
+  </data>
+  <data name="HelpSpacing" xml:space="preserve">
+    <value>Calculates neighbour spacing of vector components v_{i+j} - v_{i}</value>
+  </data>
+  <data name="HelpSqrt" xml:space="preserve">
+    <value>Square root of the value</value>
+  </data>
+  <data name="HelpSum" xml:space="preserve">
+    <value>Sum of all elements in the object</value>
+  </data>
+  <data name="HelpSumAbs" xml:space="preserve">
+    <value>Sum of absolute values of all elements in the object</value>
+  </data>
+  <data name="HelpSumSquare" xml:space="preserve">
+    <value>Sum of squares of values of all elements in the object</value>
+  </data>
+  <data name="HelpTestWWW" xml:space="preserve">
+    <value>Tries to read text from specified URI</value>
+  </data>
+  <data name="HelpTime" xml:space="preserve">
+    <value>Returns the duration of the calculation</value>
+  </data>
+  <data name="HelpTimeNow" xml:space="preserve">
+    <value>Returns the current time</value>
+  </data>
+  <data name="HelpToArray" xml:space="preserve">
+    <value>Given non-array object change to an array.</value>
+  </data>
+  <data name="HelpTrajectoryM" xml:space="preserve">
+    <value>For given energy or a trajectory given by its initial condition calculates the trajectory; the result is returned by a matrix in the form (time, x, y, ..., px, py, ...)</value>
+  </data>
+  <data name="HelpTrajectoryP" xml:space="preserve">
+    <value>    For given energy or a trajectory given by its initial condition calculates the trajectory; the x, y coordinates of the result is returned by a PointVector</value>
+  </data>
+  <data name="HelpType" xml:space="preserve">
+    <value>Type of the value</value>
+  </data>
+  <data name="HelpUseContext" xml:space="preserve">
+    <value>Uses the given context for specified calculations</value>
+  </data>
+  <data name="HelpVector" xml:space="preserve">
+    <value>Convert given data to a vector</value>
+  </data>
+  <data name="HelpWigner" xml:space="preserve">
+    <value>Value of Wigner distribution</value>
   </data>
   <data name="MsgParsing" xml:space="preserve">
     <value>`</value>
@@ -285,41 +399,8 @@
   <data name="MsgReadingPage" xml:space="preserve">
     <value>Reading page...</value>
   </data>
-  <data name="NormHelp" xml:space="preserve">
-    <value>Norm of the vector</value>
-  </data>
-  <data name="NormP1" xml:space="preserve">
-    <value>v</value>
-  </data>
-  <data name="NormP1Description" xml:space="preserve">
-    <value>Vector which norm is calculated</value>
-  </data>
-  <data name="NormP2" xml:space="preserve">
-    <value>normpow</value>
-  </data>
-  <data name="NormP2Description" xml:space="preserve">
-    <value>Power of items</value>
-  </data>
-  <data name="NuDatReadKnownIsotopesHelp" xml:space="preserve">
-    <value>Reads all known isotopes from http://www-nds.iaea.org</value>
-  </data>
-  <data name="NuDatReadNucleusHelp" xml:space="preserve">
-    <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
-  </data>
   <data name="NuDatReadNucleusPage" xml:space="preserve">
     <value>Reading page of nucleus {0}...</value>
-  </data>
-  <data name="P1ContextDescription" xml:space="preserve">
-    <value>Commands that will be run on the new context</value>
-  </data>
-  <data name="P1Deflate" xml:space="preserve">
-    <value>a</value>
-  </data>
-  <data name="P1DeflateDescription" xml:space="preserve">
-    <value>Array to be deflated</value>
-  </data>
-  <data name="P1Graph" xml:space="preserve">
-    <value>data</value>
   </data>
   <data name="P1GraphDescription" xml:space="preserve">
     <value>Data for curves</value>
@@ -330,6 +411,18 @@
   <data name="P1JoinDescription" xml:space="preserve">
     <value>Data to be joined</value>
   </data>
+  <data name="P1Norm" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="P1NormDescription" xml:space="preserve">
+    <value>Vector which norm is calculated</value>
+  </data>
+  <data name="P1Regression" xml:space="preserve">
+    <value>pv</value>
+  </data>
+  <data name="P1RegressionDescription" xml:space="preserve">
+    <value>Input data for the regression</value>
+  </data>
   <data name="P2ContextDescription" xml:space="preserve">
     <value>Name of a variable that will be copied from actual context</value>
   </data>
@@ -338,6 +431,18 @@
   </data>
   <data name="P2GraphDescription" xml:space="preserve">
     <value>Data for background (mesh graph)</value>
+  </data>
+  <data name="P2Norm" xml:space="preserve">
+    <value>normpow</value>
+  </data>
+  <data name="P2NormDescription" xml:space="preserve">
+    <value>Power of items</value>
+  </data>
+  <data name="P2Poincare" xml:space="preserve">
+    <value>ic</value>
+  </data>
+  <data name="P2PoincareDescription" xml:space="preserve">
+    <value>Initial condition of a trajectory or energy if the trajectory is randomly chosen</value>
   </data>
   <data name="P3Equipotential" xml:space="preserve">
     <value>points</value>
@@ -357,11 +462,23 @@
   <data name="P3InitialConditionDescription" xml:space="preserve">
     <value>Additional parameter (angular momentum)</value>
   </data>
+  <data name="P3Poincare" xml:space="preserve">
+    <value>points</value>
+  </data>
+  <data name="P3PoincareDescription" xml:space="preserve">
+    <value>Number of points of the final section</value>
+  </data>
   <data name="P4Graph" xml:space="preserve">
     <value>pglobal</value>
   </data>
   <data name="P4GraphDescription" xml:space="preserve">
     <value>Parameters for the whole graph</value>
+  </data>
+  <data name="P4Poincare" xml:space="preserve">
+    <value>sectionplane</value>
+  </data>
+  <data name="P4PoincareDescription" xml:space="preserve">
+    <value>Plane of the section</value>
   </data>
   <data name="P5Graph" xml:space="preserve">
     <value>pgroups</value>
@@ -369,11 +486,23 @@
   <data name="P5GraphDescription" xml:space="preserve">
     <value>Parameters for groups of data</value>
   </data>
+  <data name="P5Poincare" xml:space="preserve">
+    <value>c1</value>
+  </data>
+  <data name="P5PoincareDescription" xml:space="preserve">
+    <value>First coordinate of the phase space which will be stored</value>
+  </data>
   <data name="P6Graph" xml:space="preserve">
     <value>pcurves</value>
   </data>
   <data name="P6GraphDescription" xml:space="preserve">
     <value>Parameters for curves</value>
+  </data>
+  <data name="P6Poincare" xml:space="preserve">
+    <value>c2</value>
+  </data>
+  <data name="P6PoincareDescription" xml:space="preserve">
+    <value>Second coordinate of the phase space which will be stored</value>
   </data>
   <data name="PA" xml:space="preserve">
     <value>a</value>
@@ -414,6 +543,9 @@
   <data name="PContext" xml:space="preserve">
     <value>context</value>
   </data>
+  <data name="PContext1Description" xml:space="preserve">
+    <value>Commands that will be run on the new context</value>
+  </data>
   <data name="PContextDescription" xml:space="preserve">
     <value>Given context</value>
   </data>
@@ -422,6 +554,12 @@
   </data>
   <data name="PDefaultValueDescription" xml:space="preserve">
     <value>Default value of the variable</value>
+  </data>
+  <data name="PDeflate1" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="PDeflate1Description" xml:space="preserve">
+    <value>Array to be deflated</value>
   </data>
   <data name="PDiagonalValue" xml:space="preserve">
     <value>d</value>
@@ -474,6 +612,9 @@
   <data name="PGraph" xml:space="preserve">
     <value>graph</value>
   </data>
+  <data name="PGraph1" xml:space="preserve">
+    <value>data</value>
+  </data>
   <data name="PGraphDescription" xml:space="preserve">
     <value>Graph object (created usually by graph command)</value>
   </data>
@@ -494,9 +635,6 @@
   </data>
   <data name="PIBMEtaDescription" xml:space="preserve">
     <value>Eta parameter of IBM</value>
-  </data>
-  <data name="PiHelp" xml:space="preserve">
-    <value>Value of Pi number</value>
   </data>
   <data name="PItem" xml:space="preserve">
     <value>item</value>
@@ -546,53 +684,11 @@
   <data name="PNumColumnsDescription" xml:space="preserve">
     <value>Number of columns in an array of graphs</value>
   </data>
-  <data name="PoincareHelp" xml:space="preserve">
-    <value>Calculates a Poincaré section for given energy or trajectory given by its initial condition</value>
-  </data>
-  <data name="PoincareP2" xml:space="preserve">
-    <value>ic</value>
-  </data>
-  <data name="PoincareP2Description" xml:space="preserve">
-    <value>Initial condition of a trajectory or energy if the trajectory is randomly chosen</value>
-  </data>
-  <data name="PoincareP3" xml:space="preserve">
-    <value>points</value>
-  </data>
-  <data name="PoincareP3Description" xml:space="preserve">
-    <value>Number of points of the final section</value>
-  </data>
-  <data name="PoincareP4" xml:space="preserve">
-    <value>sectionplane</value>
-  </data>
-  <data name="PoincareP4Description" xml:space="preserve">
-    <value>Plane of the section</value>
-  </data>
-  <data name="PoincareP5" xml:space="preserve">
-    <value>c1</value>
-  </data>
-  <data name="PoincareP5Description" xml:space="preserve">
-    <value>First coordinate of the phase space which will be stored</value>
-  </data>
-  <data name="PoincareP6" xml:space="preserve">
-    <value>c2</value>
-  </data>
-  <data name="PoincareP6Description" xml:space="preserve">
-    <value>Second coordinate of the phase space which will be stored</value>
-  </data>
-  <data name="PoissonHelp" xml:space="preserve">
-    <value>Value of Poisson distribution</value>
-  </data>
-  <data name="PolynomHelp" xml:space="preserve">
-    <value>Data of input vector interprets as coeficients of polynom and return its value</value>
-  </data>
   <data name="POrder" xml:space="preserve">
     <value>n</value>
   </data>
   <data name="POrderDetail" xml:space="preserve">
     <value>Order of the polynomial</value>
-  </data>
-  <data name="PotentialRootsHelp" xml:space="preserve">
-    <value>For GCM system solves the equation Potential == Given energy</value>
   </data>
   <data name="PPhaseSpacePosition" xml:space="preserve">
     <value>psposition</value>
@@ -648,6 +744,18 @@
   <data name="PSizeYDescription" xml:space="preserve">
     <value>Number of points in the Y direction</value>
   </data>
+  <data name="PSort1" xml:space="preserve">
+    <value>item</value>
+  </data>
+  <data name="PSort1Description" xml:space="preserve">
+    <value>Object to be sorted</value>
+  </data>
+  <data name="PSort2" xml:space="preserve">
+    <value>keys</value>
+  </data>
+  <data name="PSort2Description" xml:space="preserve">
+    <value>Keys for sorting</value>
+  </data>
   <data name="PSpacing" xml:space="preserve">
     <value>spacing</value>
   </data>
@@ -683,6 +791,12 @@
   </data>
   <data name="PTimeStepDescription" xml:space="preserve">
     <value>Time step for the result</value>
+  </data>
+  <data name="PToArray1" xml:space="preserve">
+    <value>item</value>
+  </data>
+  <data name="PToArray1Description" xml:space="preserve">
+    <value>Object to be converted to array</value>
   </data>
   <data name="PURI" xml:space="preserve">
     <value>uri</value>
@@ -722,51 +836,6 @@
   </data>
   <data name="RegressionHelp" xml:space="preserve">
     <value>Polynomial regression of data</value>
-  </data>
-  <data name="RegressionP1" xml:space="preserve">
-    <value>pv</value>
-  </data>
-  <data name="RegressionP1Description" xml:space="preserve">
-    <value>Input data for the regression</value>
-  </data>
-  <data name="RemoveBadPointsHelp" xml:space="preserve">
-    <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
-  </data>
-  <data name="RWF5DLHOHelp" xml:space="preserve">
-    <value>Value of the radial part of basis wave function for 5D LHO</value>
-  </data>
-  <data name="SafeValueHelp" xml:space="preserve">
-    <value>Gets the value of the variable from the context; If there the variable does not exist, returns default value.</value>
-  </data>
-  <data name="SALIGHelp" xml:space="preserve">
-    <value>Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by SALI</value>
-  </data>
-  <data name="SALIHelp" xml:space="preserve">
-    <value>Calculates SALI dependence on time for given trajectory</value>
-  </data>
-  <data name="SALIRHelp" xml:space="preserve">
-    <value>Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)</value>
-  </data>
-  <data name="SetContextHelp" xml:space="preserve">
-    <value>Sets a new context</value>
-  </data>
-  <data name="SetDiagonalHelp" xml:space="preserve">
-    <value>Given value or Vector of values put onto diagonal of square matrix</value>
-  </data>
-  <data name="SetGlobalContextHelp" xml:space="preserve">
-    <value>Sets a new global context</value>
-  </data>
-  <data name="SetGlobalVarHelp" xml:space="preserve">
-    <value>Sets a variable into the global context</value>
-  </data>
-  <data name="SetNonDiagonalHelp" xml:space="preserve">
-    <value>Given value put onto nondiagonal elements of square matrix</value>
-  </data>
-  <data name="ShowHelp" xml:space="preserve">
-    <value>Shows a graph</value>
-  </data>
-  <data name="SinHelp" xml:space="preserve">
-    <value>Sinus of the value</value>
   </data>
   <data name="SMCC_file" xml:space="preserve">
     <value>If you do want to compute an effective interaction for coupled-cluster calculations you need to specify three files, one for the interaction itself, one for the kinetic energies of all sp orbits and one for sp data declarations. These files are in turn used as input to coupled-cluster calculations.</value>
@@ -849,73 +918,7 @@
   <data name="SMVlowk" xml:space="preserve">
     <value>If you do Vlowk you need to specify the number of mesh points for the model space and the large space. You need also to define the cutoff for the model in space in fm^- 1 and the in principal infinite integration limit set it to 20 fm^-1.  Recall that the NN interactions is fitted up to 350 MeV.</value>
   </data>
-  <data name="SortDescHelp" xml:space="preserve">
-    <value>Descending sort of the object (with keys according to the sorting will be done)</value>
-  </data>
-  <data name="SortHelp" xml:space="preserve">
-    <value>Ascending sort of the object (with keys according to the sorting will be done)</value>
-  </data>
-  <data name="SortParams" xml:space="preserve">
-    <value>Object to sort (Sortable) [; Keys (Sortable)]</value>
-  </data>
-  <data name="SpacingHelp" xml:space="preserve">
-    <value>Calculates neighbour spacing of vector components v_{i+j} - v_{i}</value>
-  </data>
-  <data name="SqrtHelp" xml:space="preserve">
-    <value>Square root of the value</value>
-  </data>
-  <data name="SumAbsHelp" xml:space="preserve">
-    <value>Sum of absolute values of all elements in the object</value>
-  </data>
-  <data name="SumHelp" xml:space="preserve">
-    <value>Sum of all elements in the object</value>
-  </data>
-  <data name="SumParameters" xml:space="preserve">
-    <value>int | double | TArray | Vector | Matrix</value>
-  </data>
-  <data name="SumSquareHelp" xml:space="preserve">
-    <value>Sum of squares of values of all elements in the object</value>
-  </data>
-  <data name="TestWWWHelp" xml:space="preserve">
-    <value>Tries to read text from specified URI</value>
-  </data>
-  <data name="TimeHelp" xml:space="preserve">
-    <value>Returns the duration of the calculation</value>
-  </data>
-  <data name="TimeNowHelp" xml:space="preserve">
-    <value>Returns the current time</value>
-  </data>
-  <data name="TimeParameters" xml:space="preserve">
-    <value>Expression</value>
-  </data>
   <data name="ToArrayEMNotTextFile" xml:space="preserve">
     <value>Given file must be text file, not binary.</value>
-  </data>
-  <data name="ToArrayHelp" xml:space="preserve">
-    <value>Given non-array object change to an array.</value>
-  </data>
-  <data name="ToArrayParameters" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="TrajectoryMHelp" xml:space="preserve">
-    <value>For given energy or a trajectory given by its initial condition calculates the trajectory; the result is returned by a matrix in the form (time, x, y, ..., px, py, ...)</value>
-  </data>
-  <data name="TrajectoryPHelp" xml:space="preserve">
-    <value>    For given energy or a trajectory given by its initial condition calculates the trajectory; the x, y coordinates of the result is returned by a PointVector</value>
-  </data>
-  <data name="TypeHelp" xml:space="preserve">
-    <value>Type of the value</value>
-  </data>
-  <data name="UseContextHelp" xml:space="preserve">
-    <value>Uses the given context for specified calculations</value>
-  </data>
-  <data name="VectorHelp" xml:space="preserve">
-    <value>Convert given data to a vector</value>
-  </data>
-  <data name="VectorParameters" xml:space="preserve">
-    <value>Items of vector (int | double | Vector | Matrix | Array | List)</value>
-  </data>
-  <data name="WignerHelp" xml:space="preserve">
-    <value>Value of Wigner distribution</value>
   </data>
 </root>

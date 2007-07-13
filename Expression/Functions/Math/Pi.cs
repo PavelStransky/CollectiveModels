@@ -11,10 +11,6 @@ namespace PavelStransky.Expression.Functions {
     public class Pi: FunctionDefinition {
         public override string Help { get { return Messages.HelpPi; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 0);
-        }
-
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             return System.Math.PI;
         }

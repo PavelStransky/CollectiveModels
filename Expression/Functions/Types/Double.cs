@@ -6,17 +6,16 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vrátí hodnoty jako double
+    /// Converts given value to a double precision number
     /// </summary>
     public class FnDouble : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpDouble; } }
         public override string Name { get { return name; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.ConvertInt2Double(evaluatedArguments, 0);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(double), typeof(TimeSpan), typeof(string));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, true, Messages.PValue, Messages.PValueDescription, null,
+                typeof(double), typeof(string), typeof(TimeSpan));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -31,7 +30,5 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string name = "double";
-        private const string help = "Pøevede hodnoty na double";
-        private const string parameters = "int | double | TimeSpan";
     }
 }

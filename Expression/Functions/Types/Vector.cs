@@ -11,14 +11,11 @@ namespace PavelStransky.Expression.Functions {
     public class FnVector: FunctionDefinition {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpVector; } }
-        public override string Parameters { get { return Messages.VectorParameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            int count = evaluatedArguments.Count;
-            for(int i = 0; i < count; i++) {
-                this.CheckArgumentsType(evaluatedArguments, i, true, 
-                    typeof(TArray), typeof(double), typeof(Vector), typeof(Matrix), typeof(List), typeof(int));
-            }
+        protected override void CreateParameters() {
+            this.NumParams(1, true);
+            this.SetParam(0, false, true, true, Messages.PItem, Messages.PItemVectorDescription, null,
+                typeof(TArray), typeof(double), typeof(int), typeof(Matrix), typeof(List), typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

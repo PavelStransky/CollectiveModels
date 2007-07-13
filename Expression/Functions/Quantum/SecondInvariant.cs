@@ -7,22 +7,18 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vrátí druhý invariant
+    /// Returns the second invariant of a quantum system
     /// </summary>
     public class SecondInvariant: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpSecondInvariant; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCMR));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, typeof(LHOQuantumGCMR));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             return (arguments[0] as LHOQuantumGCMR).GetSecondInvariant();
         }
-        
-        private const string help = "Vrátí druhý invariant kvantového systému";
-        private const string parameters = "LHOQuantumGCMR";
     }
 }

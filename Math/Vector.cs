@@ -769,7 +769,7 @@ namespace PavelStransky.Math {
 		}
 
 		/// <summary>
-		/// Vrátí histogram náhodného vektoru
+		/// Vrátí histogram vektoru
 		/// </summary>
 		/// <param name="intervals">Poèet intervalù</param>
 		/// <param name="min">Poèáteèní hodnota, od které se histogram poèítá</param>
@@ -796,13 +796,40 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
-		/// <summary>
-		/// Vrátí hustotu náhodného vektoru
-		/// </summary>
-		/// <param name="intervals">Poèet intervalù</param>
-		/// <param name="minX">Poèáteèní bod intervalu, od kterého se hustota poèítá</param>
-		/// <param name="maxX">Koneèný bod intervalu, do kterého se hustota poèítá</param>
-		public PointVector Density(int intervals, double minX, double maxX) {
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="interval">Points of the interval</param>
+        /// <returns></returns>
+        public PointVector Histogram(Vector interval) {
+            int lengthR = interval.Length - 1;
+            int length = this.Length;
+
+            PointVector result = new PointVector(lengthR);
+
+            for(int i = 0; i < lengthR; i++) {
+                double minx = interval[i];
+                double maxx = interval[i + 1];
+                result[i].X = 0.5 * (minx + maxx);
+
+                for(int j = 0; j < length; j++) {
+                    double x = this[j];
+
+                    if(x >= minx && x < maxx)
+                        result[i].Y++;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí hustotu vektoru
+        /// </summary>
+        /// <param name="intervals">Poèet intervalù</param>
+        /// <param name="minX">Poèáteèní bod intervalu, od kterého se hustota poèítá</param>
+        /// <param name="maxX">Koneèný bod intervalu, do kterého se hustota poèítá</param>
+        public PointVector Density(int intervals, double minX, double maxX) {
 			PointVector result = this.Histogram(intervals, minX, maxX);
 			return result * new PointD(1, 1.0 / result.Integrate());
 		}

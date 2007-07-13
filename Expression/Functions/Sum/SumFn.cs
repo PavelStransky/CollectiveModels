@@ -9,11 +9,9 @@ namespace PavelStransky.Expression.Functions {
     /// Parent for all sum functions
     /// </summary>
     public class SumFn: FunctionDefinition {
-        public override string Parameters { get { return Messages.SumParameters; } }
-
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 1, true,
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PMultiDimensions, Messages.PMultiDimensionsDescription, null,
                 typeof(Vector), typeof(double), typeof(int), typeof(Matrix));
         }
     }

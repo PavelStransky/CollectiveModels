@@ -18,14 +18,6 @@ namespace PavelStransky.Expression.Functions {
             this.SetParam(1, false, true, false, Messages.PSort2, Messages.PSort2Description, null, typeof(ISortable));
         }
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-			this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(ISortable));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(ISortable));
-		}
-
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             ISortable item = arguments[0] as ISortable;
             ISortable keys = arguments[1] as ISortable;

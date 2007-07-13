@@ -10,20 +10,19 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public class SortDesc: FunctionDefinition {
         public override string Help { get { return Messages.HelpSortDesc; } }
-        public override string Parameters { get { return Messages.SortParams; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
+        protected override void CreateParameters() {
+            this.NumParams(2);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(ISortable));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(ISortable));
+            this.SetParam(0, true, true, false, Messages.PSort1, Messages.PSort1Description, null, typeof(ISortable));
+            this.SetParam(1, false, true, false, Messages.PSort2, Messages.PSort2Description, null, typeof(ISortable));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             ISortable item = arguments[0] as ISortable;
+            ISortable keys = arguments[1] as ISortable;
 
-            if(arguments.Count > 1)
+            if(keys != null)
                 return item.SortDesc(arguments[1] as ISortable);
             else
                 return item.SortDesc();

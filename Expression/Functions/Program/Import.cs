@@ -11,16 +11,14 @@ namespace PavelStransky.Expression.Functions {
 	/// </summary>
 	public class FnImport: FunctionDefinitionIE {
         public override string Name { get { return name; } }
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpImport; } }
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-			this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
+        protected override void CreateParameters() {
+            this.NumParams(2);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(string));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(string));
-		}
+            this.SetParam(0, true, true, false, Messages.PFileName, Messages.PFileNameDescription, null, typeof(string));
+            this.SetParam(1, false, true, false, Messages.PFileType, Messages.PFileTypeDescription, "binary", typeof(string));
+        }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object result = null;
@@ -105,7 +103,5 @@ namespace PavelStransky.Expression.Functions {
 		private const string paramMatlab = "matlab";
 
         private const string name = "import";
-		private const string help = "Provede import dat ze souboru (implicitnì binárnì).";
-		private const string parameters = "jméno souboru (string) [;\"binary\" | \"text\" | \"matlab\"]";
 	}
 }

@@ -6,16 +6,16 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vrátí hodnoty jako int
+    /// Converts given value to an integer number
     /// </summary>
     public class FnInt : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpInt; } }
         public override string Name { get { return name; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(int), typeof(double), typeof(string), typeof(TimeSpan));
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PValue, Messages.PValueDescription, null,
+                typeof(int), typeof(double), typeof(string), typeof(TimeSpan));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -32,7 +32,5 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string name = "int";
-        private const string help = "Pøevede hodnoty na int";
-        private const string parameters = "int | double | TimeSpan | string";
     }
 }

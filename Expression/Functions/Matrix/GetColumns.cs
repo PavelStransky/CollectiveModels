@@ -6,36 +6,50 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Z matice vybere zadané sloupce
+    /// Returns selected columns from a matrix
 	/// </summary>
 	public class GetColumns: FunctionDefinition {
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string Help {get {return Messages.HelpGetColumns;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 2);
+        protected override void CreateParameters() {
+            this.NumParams(2, true);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Matrix));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
-
-            this.ConvertArray2Vectors(evaluatedArguments, 1);
+            this.SetParam(0, true, true, false, Messages.PMatrix, Messages.PMatrixDescription, null, typeof(Matrix));
+            this.SetParam(1, true, true, false, Messages.PIndexColumn, Messages.PIndexColumnDescription, null,
+                typeof(int), typeof(TArray));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Matrix m = (Matrix)arguments[0];
-            Vector columnsToGet = (Vector)arguments[1];
 
+            List columnsToGet = new List();
+
+            foreach(object o in arguments) {
+                if(o is int)
+                    columnsToGet.Add(o);
+                else if(o is TArray) {
+                    TArray ta = o as TArray;
+                    if(ta.GetItemType() != typeof(int))
+                        this.BadTypeError(ta[0], 1);
+
+                    ta.ResetEnumerator();
+                    foreach(int i in ta)
+                        columnsToGet.Add(i);
+                }
+            }
+            
             int lengthX = m.LengthX;
-            int n = columnsToGet.Length;
+            int n = columnsToGet.Count;
 
 			Matrix result = new Matrix(lengthX, n);
-			for(int i = 0; i < lengthX; i++)
-				for(int j = 0; j < n; j++)
-					result[i, j] = m[i, (int)columnsToGet[j]];
+            for(int i = 0; i < lengthX; i++) {
+                int j = 0;
+                foreach(int k in columnsToGet) {
+                    result[i, j++] = m[i, k];
+                }
+            }
+
 			return result;
 		}
-
-		private const string help = "Z matice vybere zadané sloupce";
-		private const string parameters = "Matrix; indexy sloupcù";
 	}
 }

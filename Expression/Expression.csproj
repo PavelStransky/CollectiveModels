@@ -379,6 +379,7 @@
     <Compile Include="Functions\Types\Vector.cs" />
     <Compile Include="Functions\UserFunction.cs" />
     <Compile Include="Functions\Vector\Norm.cs" />
+    <Compile Include="Functions\Vector\Smooth.cs" />
     <Compile Include="Graph.cs">
       <SubType>Code</SubType>
     </Compile>

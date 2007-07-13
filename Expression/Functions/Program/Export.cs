@@ -6,20 +6,19 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
-	/// Uloží jednu promìnnou do souboru
+	/// Saves a variable to a file
 	/// </summary>
 	public class FnExport: FunctionDefinitionIE {
         public override string Name { get { return name; } }
-        public override string Help { get { return help; } }
-		public override string Parameters {get {return parameters;}}
+        public override string Help { get { return Messages.HelpExport; } }
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-			this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
+        protected override void CreateParameters() {
+            this.NumParams(3);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(string));
-            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(string));
-		}
+            this.SetParam(0, true, true, false, Messages.PExpression, Messages.PExpressionDescription, null);
+            this.SetParam(1, true, true, false, Messages.PFileName, Messages.PFileNameDescription, null, typeof(string));
+            this.SetParam(2, false, true, false, Messages.PFileType, Messages.PFileTypeDescription, "binary", typeof(string));
+        }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Export export = new Export((string)arguments[0], this.Binary(arguments, 2));
@@ -30,7 +29,5 @@ namespace PavelStransky.Expression.Functions {
 		}
 
         private const string name = "export";
-		private const string help = "Uloží jednu promìnnou do souboru (implicitnì binárnì)";
-		private const string parameters = "název souboru (string); promìnná; [;\"binary\" | \"text\"]";
 	}
 }

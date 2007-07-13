@@ -11,15 +11,17 @@ namespace PavelStransky.Expression.Functions {
     public class FnTime : FunctionDefinition {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpTime; } }
-        public override string Parameters { get { return Messages.TimeParameters; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) { }
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, false, false, Messages.PCommands, Messages.PCommandsDescription, null);
+        }
 
-        public override object Evaluate(Guider guider, ArrayList arguments, bool evaluateArray) {
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             this.CheckArgumentsNumber(arguments, 1);
 
             DateTime startTime = DateTime.Now;
-            base.Evaluate(guider, arguments, evaluateArray);
+            Atom.EvaluateAtomObject(guider, arguments[0]);
             return DateTime.Now - startTime;
         }
 

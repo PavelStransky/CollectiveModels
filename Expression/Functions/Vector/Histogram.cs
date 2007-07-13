@@ -6,35 +6,28 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí histogram vektoru
+    /// Returns the histogram of a vector (and given interval)
     /// </summary>
     public class Histogram: FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpHistogram; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
+        protected override void CreateParameters() {
+            this.NumParams(2);
 
-            this.ConvertInt2Double(evaluatedArguments, 2);
-            this.ConvertInt2Double(evaluatedArguments, 3);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Vector));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 3, evaluateArray, typeof(double));
+            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector));
+            this.SetParam(1, true, true, false, Messages.P1Histogram, Messages.P1HistogramDescription, null,
+                typeof(Vector), typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Vector v = (Vector)arguments[0];
 
-            double min = (arguments.Count > 2) ? (double)arguments[2] : v.Min();
-            double max = (arguments.Count > 3) ? (double)arguments[3] : v.Max();
+            if(arguments[1] is int)
+                return v.Histogram((int)arguments[1], v.Min(), v.Max());
+            else if(arguments[1] is Vector)
+                return v.Histogram((Vector)arguments[1]);
 
-            return v.Histogram((int)arguments[1], min, max);
+            return null;
         }
-
-        private const string help = "Vytvoøí histogram vektoru pro zadaný poèet intervalù";
-        private const string parameters = "Vector; poèet intervalù (int) [;minimální hodnota (double) [;maximální hodnota (double)]]";
     }
 }

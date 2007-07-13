@@ -48,6 +48,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.VRenorm());
             functions.Add(new Functions.Norm());
             functions.Add(new Functions.Spacing());
+            functions.Add(new Functions.Smooth());
 
             // Matrix
             functions.Add(new Functions.BandWidth());

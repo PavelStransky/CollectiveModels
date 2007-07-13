@@ -11,13 +11,12 @@ namespace PavelStransky.Expression.Functions
 	/// </summary>
 	public class Length: FunctionDefinition {
 		public override string Help {get {return Messages.HelpLength;}}
-		public override string Parameters {get {return Messages.LengthParameters;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, 
-                typeof(Vector), typeof(PointVector), typeof(Matrix), typeof(TArray), typeof(List));
-		}
+        protected override void CreateParameters() {
+            this.NumParams(1);
+            this.SetParam(0, true, true, false, Messages.PMultiDimensions, Messages.PMultiDimensionsDescription, null,
+                typeof(Vector), typeof(TArray), typeof(Matrix), typeof(List), typeof(PointVector));
+        }
 
 		protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object item = arguments[0];

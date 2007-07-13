@@ -7,47 +7,32 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vypoèítá spektrum LHOQuantumGCM objektu
+    /// Computes spectrum of a LHOQuantumGCM object
     /// </summary>
     public class ComputeSpectrum : FunctionDefinition {
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpComputeSpectrum; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 5);
+        protected override void CreateParameters() {
+            this.NumParams(5);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCM));
-
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(bool));
-            this.CheckArgumentsType(evaluatedArguments, 3, evaluateArray, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 4, evaluateArray, typeof(int));
+            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM));
+            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
+            this.SetParam(2, false, true, false, Messages.PEVectors, Messages.PEvectorsDescription, false, typeof(bool));
+            this.SetParam(3, false, true, false, Messages.PNumEV, Messages.PNumEVDescription, 0, typeof(int));
+            this.SetParam(4, false, true, false, Messages.PNumSteps, Messages.PNumStepsDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             LHOQuantumGCM item = arguments[0] as LHOQuantumGCM;
 
             int maxE = (int)arguments[1];
-            int numSteps = 0;               // 0 - numsteps je dopoèítáno automaticky
-            bool ev = false;
-            int numev = 0;                  // 0 - berou se všechny vlastní hodnoty
+            bool ev = (bool)arguments[2];
+            int numev = (int)arguments[3];                  // 0 - berou se všechny vlastní hodnoty
+            int numSteps = (int)arguments[4];               // 0 - numsteps je dopoèítáno automaticky
 
-            if(arguments.Count > 2 && arguments[2] != null) 
-                ev = (bool)arguments[2];
+            item.Compute(maxE, numSteps, ev, numev, guider);
 
-            if(arguments.Count > 3 && arguments[3] != null) 
-                numev = (int)arguments[3];
-
-                if(arguments.Count > 4 && arguments[4] != null) 
-                    numSteps = (int)arguments[4];
-
-                item.Compute(maxE, numSteps, ev, numev, guider);
-
-                return null;
+            return item;
         }
-    
-        private const string help = "Vypoèítá spektrum LHOQuantumGCM tøídy";
-        private const string parameters = "LHOQuantumGCM objekt; MaxE (int)[; True pro vlastní vektory [; Poèet vlastních hodnot (int) [; NumSteps - dìlení møíže (int)]]]";
     }
 }

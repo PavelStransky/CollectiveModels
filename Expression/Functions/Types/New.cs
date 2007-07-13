@@ -6,18 +6,17 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Vytvoøí nový objekt podle typu
+    /// Creates new object of a given type
     /// </summary>
     public class FnNew: FunctionDefinition {
         public override string Name { get { return name; } }
-        public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string Help { get { return Messages.HelpNew; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(string));
+        protected override void CreateParameters() {
+            this.NumParams(1, true);
+            this.SetParam(0, true, true, false, Messages.PType, Messages.PTypeDescription, null, typeof(string));
         }
-
+        
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             return this.EvaluateOne(guider, arguments, 0);
         }
@@ -96,7 +95,5 @@ namespace PavelStransky.Expression.Functions {
         }
 
         private const string name = "new";
-        private const string help = "Z argumentù funkce vytvoøí øadu (Array)";
-        private const string parameters = "dimenze1 (int)[; dimenze2 (int) ...]";
     }
 }

@@ -150,6 +150,12 @@
   <data name="EMNotEqualTypes" xml:space="preserve">
     <value>The elements of the given list have not equal types.</value>
   </data>
+  <data name="EMNotEqualVectorLength" xml:space="preserve">
+    <value>Lengths of two vectors in the function '{0}' must be equal.</value>
+  </data>
+  <data name="EMNotEqualVectorLengthDetail" xml:space="preserve">
+    <value>Length of the first vector: {0}\r\nLength of the second vector: {1}</value>
+  </data>
   <data name="EMObligatoryParameter" xml:space="preserve">
     <value>Parameter "{0}" (position {1}) of the function "{2}" is obligatory and cannot be omited.</value>
   </data>
@@ -180,6 +186,9 @@
   <data name="HelpArcTan" xml:space="preserve">
     <value>Arcus tangens of the value</value>
   </data>
+  <data name="HelpBandWidth" xml:space="preserve">
+    <value>Size of the band of a band matrix</value>
+  </data>
   <data name="HelpBounds" xml:space="preserve">
     <value>For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found</value>
   </data>
@@ -198,17 +207,29 @@
   <data name="HelpClearGlobal" xml:space="preserve">
     <value>Erase the variable from the global context</value>
   </data>
+  <data name="HelpComputeSpectrum" xml:space="preserve">
+    <value>Computes spectrum of a LHOQuantumGCM object</value>
+  </data>
   <data name="HelpContext" xml:space="preserve">
     <value>Creates a new context</value>
   </data>
   <data name="HelpDeflate" xml:space="preserve">
     <value>Given array transforms into one dimensional array</value>
   </data>
+  <data name="HelpDouble" xml:space="preserve">
+    <value>Converts given value to a double precision number</value>
+  </data>
   <data name="HelpEnergy" xml:space="preserve">
     <value>For given dynamical system and position in the phase space calculates the energy</value>
   </data>
   <data name="HelpEquipotential" xml:space="preserve">
     <value>For GCM system and given energy calculates equipotential contour</value>
+  </data>
+  <data name="HelpExit" xml:space="preserve">
+    <value>Sends the request to close the program</value>
+  </data>
+  <data name="HelpExport" xml:space="preserve">
+    <value>Saves a variable to a file</value>
   </data>
   <data name="HelpExtendedCGCM1" xml:space="preserve">
     <value>Creates an ExtendedClassicalGCM class with mass proportional to beta^2</value>
@@ -225,6 +246,9 @@
   <data name="HelpFullHelp" xml:space="preserve">
     <value>Full help for the given function (including names and types of the parameters)</value>
   </data>
+  <data name="HelpGetColumns" xml:space="preserve">
+    <value>Returns selected columns from a matrix</value>
+  </data>
   <data name="HelpGetContext" xml:space="preserve">
     <value>Returns actual context</value>
   </data>
@@ -234,17 +258,38 @@
   <data name="HelpGetGlobalVar" xml:space="preserve">
     <value>Gets out a variable from the global context</value>
   </data>
+  <data name="HelpGetRows" xml:space="preserve">
+    <value>Returns selected rows from a matrix</value>
+  </data>
   <data name="HelpGetVar" xml:space="preserve">
     <value>Returns a variable from a given context</value>
+  </data>
+  <data name="HelpGetY" xml:space="preserve">
+    <value>From point or pointvector separates coordinates y</value>
   </data>
   <data name="HelpGraph" xml:space="preserve">
     <value>Create graph</value>
   </data>
+  <data name="HelpHamiltonianMatrixTrace" xml:space="preserve">
+    <value>Returns the trace of the Hamiltonian matrix of a quantum system</value>
+  </data>
   <data name="HelpHH" xml:space="preserve">
     <value>Creates a HenonHeiles class</value>
   </data>
+  <data name="HelpHistogram" xml:space="preserve">
+    <value>Returns the histogram of a vector (on a given interval)</value>
+  </data>
+  <data name="HelpImport" xml:space="preserve">
+    <value>Read a file to a variable</value>
+  </data>
   <data name="HelpInitialCondition" xml:space="preserve">
     <value>For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector</value>
+  </data>
+  <data name="HelpInt" xml:space="preserve">
+    <value>Converts given value to an integer number</value>
+  </data>
+  <data name="HelpIntegrate" xml:space="preserve">
+    <value>Calculates an integral under given curve</value>
   </data>
   <data name="HelpIntervalA" xml:space="preserve">
     <value>Creates points for interval (as an array)</value>
@@ -279,6 +324,9 @@
   <data name="HelpMatrixRow" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
   </data>
+  <data name="HelpNew" xml:space="preserve">
+    <value>Creates new object of a given type</value>
+  </data>
   <data name="HelpNorm" xml:space="preserve">
     <value>Norm of the vector</value>
   </data>
@@ -294,6 +342,12 @@
   <data name="HelpPoincare" xml:space="preserve">
     <value>Calculates a Poincaré section for given energy or trajectory given by its initial condition</value>
   </data>
+  <data name="HelpPoint" xml:space="preserve">
+    <value>Creates a point from two given numbers</value>
+  </data>
+  <data name="HelpPointVector" xml:space="preserve">
+    <value>Converts given data to a pointvector</value>
+  </data>
   <data name="HelpPoisson" xml:space="preserve">
     <value>Value of Poisson distribution</value>
   </data>
@@ -302,6 +356,12 @@
   </data>
   <data name="HelpPotentialRoots" xml:space="preserve">
     <value>For GCM system solves the equation Potential == Given energy</value>
+  </data>
+  <data name="HelpPrint" xml:space="preserve">
+    <value>Writes a text (or variable) to the writer</value>
+  </data>
+  <data name="HelpPrintLine" xml:space="preserve">
+    <value>Writes a text (or variable) to the writer and begins new line</value>
   </data>
   <data name="HelpRemoveBadPoints" xml:space="preserve">
     <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
@@ -320,6 +380,12 @@
   </data>
   <data name="HelpSALIR" xml:space="preserve">
     <value>Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)</value>
+  </data>
+  <data name="HelpSave" xml:space="preserve">
+    <value>Saves current document into a file</value>
+  </data>
+  <data name="HelpSecondInvariant" xml:space="preserve">
+    <value>Returns the second invariant of a quantum system</value>
   </data>
   <data name="HelpSetContext" xml:space="preserve">
     <value>Sets a new context</value>
@@ -341,6 +407,9 @@
   </data>
   <data name="HelpSin" xml:space="preserve">
     <value>Sinus of the value</value>
+  </data>
+  <data name="HelpSmooth" xml:space="preserve">
+    <value>Smooths a vector</value>
   </data>
   <data name="HelpSort" xml:space="preserve">
     <value>Ascending sort of the object (with keys according to the sorting will be done)</value>
@@ -393,6 +462,9 @@
   <data name="HelpWigner" xml:space="preserve">
     <value>Value of Wigner distribution</value>
   </data>
+  <data name="MsgBytes" xml:space="preserve">
+    <value>{0} Bytes</value>
+  </data>
   <data name="MsgParsing" xml:space="preserve">
     <value>`</value>
   </data>
@@ -405,6 +477,18 @@
   <data name="P1GraphDescription" xml:space="preserve">
     <value>Data for curves</value>
   </data>
+  <data name="P1Histogram" xml:space="preserve">
+    <value>bin</value>
+  </data>
+  <data name="P1HistogramDescription" xml:space="preserve">
+    <value>Number of bins or an interval</value>
+  </data>
+  <data name="P1Integrate" xml:space="preserve">
+    <value>curve</value>
+  </data>
+  <data name="P1IntegrateDescription" xml:space="preserve">
+    <value>Curve</value>
+  </data>
   <data name="P1Join" xml:space="preserve">
     <value>v</value>
   </data>
@@ -416,6 +500,12 @@
   </data>
   <data name="P1NormDescription" xml:space="preserve">
     <value>Vector which norm is calculated</value>
+  </data>
+  <data name="P1PointVector" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="P1PointVectorDescription" xml:space="preserve">
+    <value>Values of the pointvector</value>
   </data>
   <data name="P1Regression" xml:space="preserve">
     <value>pv</value>
@@ -443,6 +533,12 @@
   </data>
   <data name="P2PoincareDescription" xml:space="preserve">
     <value>Initial condition of a trajectory or energy if the trajectory is randomly chosen</value>
+  </data>
+  <data name="P2PointVector" xml:space="preserve">
+    <value>y</value>
+  </data>
+  <data name="P2PointVectorDescription" xml:space="preserve">
+    <value>Y values of the pointvector</value>
   </data>
   <data name="P3Equipotential" xml:space="preserve">
     <value>points</value>
@@ -506,6 +602,12 @@
   </data>
   <data name="PA" xml:space="preserve">
     <value>a</value>
+  </data>
+  <data name="PA0" xml:space="preserve">
+    <value>a0</value>
+  </data>
+  <data name="PA0Description" xml:space="preserve">
+    <value>Stiffness of the harmonic basis</value>
   </data>
   <data name="PADescription" xml:space="preserve">
     <value>A parameter of GCM</value>
@@ -585,11 +687,35 @@
   <data name="PEnergyDescription" xml:space="preserve">
     <value>Energy of the system</value>
   </data>
+  <data name="PEVectors" xml:space="preserve">
+    <value>evectors</value>
+  </data>
+  <data name="PEvectorsDescription" xml:space="preserve">
+    <value>True if the eigenvectors is to be calculated</value>
+  </data>
+  <data name="PExpression" xml:space="preserve">
+    <value>expression</value>
+  </data>
+  <data name="PExpressionDescription" xml:space="preserve">
+    <value>Expression (or variable)</value>
+  </data>
   <data name="PExtendedGCM" xml:space="preserve">
     <value>p</value>
   </data>
   <data name="PExtendedGCMDescription" xml:space="preserve">
     <value>Parameter extending mass coeficient</value>
+  </data>
+  <data name="PFileName" xml:space="preserve">
+    <value>filename</value>
+  </data>
+  <data name="PFileNameDescription" xml:space="preserve">
+    <value>Name of the file</value>
+  </data>
+  <data name="PFileType" xml:space="preserve">
+    <value>filetype</value>
+  </data>
+  <data name="PFileTypeDescription" xml:space="preserve">
+    <value>Type of the file ("binary" or "text")</value>
   </data>
   <data name="PFnName" xml:space="preserve">
     <value>fnname</value>
@@ -624,6 +750,12 @@
   <data name="PGraphNameDescription" xml:space="preserve">
     <value>Name of the graph (will be shown in the graph caption)</value>
   </data>
+  <data name="PHBar" xml:space="preserve">
+    <value>hbar</value>
+  </data>
+  <data name="PHBarDescription" xml:space="preserve">
+    <value>Planck constant</value>
+  </data>
   <data name="PIBMChi" xml:space="preserve">
     <value>chi</value>
   </data>
@@ -636,11 +768,26 @@
   <data name="PIBMEtaDescription" xml:space="preserve">
     <value>Eta parameter of IBM</value>
   </data>
+  <data name="PIndexColumn" xml:space="preserve">
+    <value>ic</value>
+  </data>
+  <data name="PIndexColumnDescription" xml:space="preserve">
+    <value>Indexes of columns</value>
+  </data>
+  <data name="PIndexRow" xml:space="preserve">
+    <value>ir</value>
+  </data>
+  <data name="PIndexRowDescription" xml:space="preserve">
+    <value>Indexes of rows</value>
+  </data>
   <data name="PItem" xml:space="preserve">
     <value>item</value>
   </data>
   <data name="PItemDescription" xml:space="preserve">
     <value>Item to be added to the end of the list</value>
+  </data>
+  <data name="PItemVectorDescription" xml:space="preserve">
+    <value>Items of vector</value>
   </data>
   <data name="PK" xml:space="preserve">
     <value>k</value>
@@ -648,17 +795,41 @@
   <data name="PKDescription" xml:space="preserve">
     <value>K (mass) parameter of GCM</value>
   </data>
+  <data name="PLHOQuantumGCM" xml:space="preserve">
+    <value>q</value>
+  </data>
+  <data name="PLHOQuantumGCMDescription" xml:space="preserve">
+    <value>LHOQuantumGCM object</value>
+  </data>
+  <data name="PMatrix" xml:space="preserve">
+    <value>matrix</value>
+  </data>
   <data name="PMatrixColumn" xml:space="preserve">
     <value>column</value>
   </data>
   <data name="PMatrixColumnDescription" xml:space="preserve">
     <value>Data for a column</value>
   </data>
+  <data name="PMatrixDescription" xml:space="preserve">
+    <value>Matrix</value>
+  </data>
   <data name="PMatrixRow" xml:space="preserve">
     <value>row</value>
   </data>
   <data name="PMatrixRowDescription" xml:space="preserve">
     <value>Data for a row</value>
+  </data>
+  <data name="PMaxEnergy" xml:space="preserve">
+    <value>emax</value>
+  </data>
+  <data name="PMaxEnergyDescription" xml:space="preserve">
+    <value>Maximum energy (in units of hbar)</value>
+  </data>
+  <data name="PMultiDimensions" xml:space="preserve">
+    <value>item</value>
+  </data>
+  <data name="PMultiDimensionsDescription" xml:space="preserve">
+    <value>Object with several dimensions</value>
   </data>
   <data name="PNonDiagonalValue" xml:space="preserve">
     <value>nd</value>
@@ -684,6 +855,18 @@
   <data name="PNumColumnsDescription" xml:space="preserve">
     <value>Number of columns in an array of graphs</value>
   </data>
+  <data name="PNumEV" xml:space="preserve">
+    <value>numev</value>
+  </data>
+  <data name="PNumEVDescription" xml:space="preserve">
+    <value>Number of computed eigenvalues (and eigenvectors)</value>
+  </data>
+  <data name="PNumSteps" xml:space="preserve">
+    <value>steps</value>
+  </data>
+  <data name="PNumStepsDescription" xml:space="preserve">
+    <value>Number of steps for numerical integration</value>
+  </data>
   <data name="POrder" xml:space="preserve">
     <value>n</value>
   </data>
@@ -695,6 +878,12 @@
   </data>
   <data name="PPhaseSpacePositionDescription" xml:space="preserve">
     <value>Position in the phase space</value>
+  </data>
+  <data name="PPoint" xml:space="preserve">
+    <value>p</value>
+  </data>
+  <data name="PPointDescription" xml:space="preserve">
+    <value>Point-type object</value>
   </data>
   <data name="PPolynomCoef" xml:space="preserve">
     <value>pcoef</value>
@@ -798,6 +987,12 @@
   <data name="PToArray1Description" xml:space="preserve">
     <value>Object to be converted to array</value>
   </data>
+  <data name="PType" xml:space="preserve">
+    <value>type</value>
+  </data>
+  <data name="PTypeDescription" xml:space="preserve">
+    <value>Type of a variable</value>
+  </data>
   <data name="PURI" xml:space="preserve">
     <value>uri</value>
   </data>
@@ -833,6 +1028,12 @@
   </data>
   <data name="PXDetail" xml:space="preserve">
     <value>Variable x</value>
+  </data>
+  <data name="PY" xml:space="preserve">
+    <value>y</value>
+  </data>
+  <data name="PYDescription" xml:space="preserve">
+    <value>Variable y</value>
   </data>
   <data name="RegressionHelp" xml:space="preserve">
     <value>Polynomial regression of data</value>

@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            if(arguments.Count == 1) {
+            if(arguments[1] == null) {
                 if(arguments[0] is Vector)
                     return new PointVector(arguments[0] as Vector);
 

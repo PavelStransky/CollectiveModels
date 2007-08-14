@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return guider.WriteLine(arguments[0]);
+            return guider.Write(arguments[0]);
         }
 
         private const string name = "print";

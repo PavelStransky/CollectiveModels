@@ -17,6 +17,7 @@ namespace PavelStransky.Expression {
 			binaryOperators.Add(new BinaryOperators.Plus());
 			binaryOperators.Add(new BinaryOperators.Minus());
 			binaryOperators.Add(new BinaryOperators.Times());
+            binaryOperators.Add(new BinaryOperators.ItemTimes());
 			binaryOperators.Add(new BinaryOperators.Divide());
 			binaryOperators.Add(new BinaryOperators.Equals());
 			binaryOperators.Add(new BinaryOperators.NotEquals());
@@ -48,7 +49,9 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.VRenorm());
             functions.Add(new Functions.Norm());
             functions.Add(new Functions.Spacing());
+            functions.Add(new Functions.Delta());
             functions.Add(new Functions.Smooth());
+            functions.Add(new Functions.Exclude());
 
             // Matrix
             functions.Add(new Functions.BandWidth());
@@ -56,6 +59,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.DropColumns());
             functions.Add(new Functions.DropRows());
             functions.Add(new Functions.FnJacobi());
+            functions.Add(new Functions.EigenSystem());
             functions.Add(new Functions.SetDiagonal());
             functions.Add(new Functions.SetNonDiagonal());
 
@@ -195,6 +199,16 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.SALIG());
             functions.Add(new Functions.TrajectoryM());
             functions.Add(new Functions.TrajectoryP());
+
+            // Statistics
+            functions.Add(new Functions.RandomU());
+            functions.Add(new Functions.RandomG());
+            functions.Add(new Functions.RandomVectorU());
+            functions.Add(new Functions.RandomVectorG());
+            functions.Add(new Functions.Mean());
+            functions.Add(new Functions.Variance());
+            functions.Add(new Functions.RandomMatrixSG());
+            functions.Add(new Functions.EnvelopeMatrixG());
 
             functions.Add(new Functions.NuDatReadKnownIsotopes());
             functions.Add(new Functions.NuDatReadNucleus());

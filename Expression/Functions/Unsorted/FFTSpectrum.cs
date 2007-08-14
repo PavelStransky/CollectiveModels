@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// Fast Fourier Transform (FFT) of a vector
     /// </summary>
     public class FFTSpectrum: FunctionDefinition {
-        public override string Name { get { return Messages.HelpFFTSpectrum; } }
+        public override string Help { get { return Messages.HelpFFTSpectrum; } }
 
         protected override void CreateParameters() {
             this.NumParams(2);

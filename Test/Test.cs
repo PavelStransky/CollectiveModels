@@ -153,7 +153,7 @@ namespace PavelStransky.Test {
 
 //            Console.WriteLine(m.ToString());
 
-            Vector v1 = PavelStransky.DLLWrapper.LAPackDLL.dsyev(m);
+            Vector v1 = PavelStransky.DLLWrapper.LAPackDLL.dsyev(m, false)[0];
             Jacobi jacobi = new Jacobi(m);
             jacobi.SortAsc();
             Vector v2 = new Vector(jacobi.EigenValue);
@@ -390,7 +390,7 @@ namespace PavelStransky.Test {
 		private static void PokusFFT() {
 			const int length = 1024;
 
-			NormalDistribution normal = new NormalDistribution(0, 1);
+			NormalDistribution normal = new NormalDistribution();
 			Vector v = normal.GetVector(length);
 
 			for(int i = 0; i < length; i++) {

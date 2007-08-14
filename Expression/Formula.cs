@@ -50,30 +50,34 @@ namespace PavelStransky.Expression {
 		/// Doplní závorky do výrazu
 		/// </summary>
 		/// <param name="e">Výraz</param>
-		private static string FillBracket(string e) {
-            for(int i = (int)BinaryOperators.BinaryOperator.MaxPriority; i >= 0; i--) {
-                MatchCollection matches = Regex.Matches(e, binaryOperators.OperatorPattern, RegexOptions.ExplicitCapture);
+        private static string FillBracket(string e) {
+            for(int i = (int)BinaryOperators.BinaryOperator.MaxPriority; i >= 0; i--)
+                for(int j = binaryOperators.MaxOperatorLength; j >= 0; j--)
+                    foreach(BinaryOperator o in binaryOperators.Values) {
+                        if((int)o.Priority != i)
+                            continue;
 
-                int addIndex = 0;
-                foreach(Match match in matches) {
-                    if(!binaryOperators.Contains(match.Value))
-                        continue;
-                    if(IsInString(e, match.Index + addIndex))
-                        continue;
+                        string name = o.OperatorName;
 
-                    if(((int)(binaryOperators[match.Value] as BinaryOperator).Priority) == i) {
-                        string left = e.Substring(0, match.Index + addIndex);
-                        if(!IsInBracket(left)) {
-                            int index = match.Index + addIndex + match.Length;
-                            e = AddOpenBracket(left) + match.Value + AddCloseBracket(e.Substring(index, e.Length - index));
-                            addIndex += 2;
+                        if(name.Length != j)
+                            continue;
+
+                        int p = -1;
+                        while((p = e.IndexOf(name, p + 1)) >= 0) {
+                            if(IsInString(e, p))
+                                continue;
+
+                            string left = e.Substring(0, p);
+                            if(!IsInBracket(left)) {
+                                p += name.Length;
+                                e = AddOpenBracket(left) + name + AddCloseBracket(e.Substring(p, e.Length - p));
+                                p += 2;
+                            }
                         }
                     }
-                }
-            }
 
-			return RemoveOutsideBracket(e);
-		}
+            return RemoveOutsideBracket(e);
+        }
 
 		/// <summary>
 		/// Pøidá k èásti výrazu na první vhodné místo poèáteèní závorku

@@ -216,14 +216,26 @@
   <data name="HelpDeflate" xml:space="preserve">
     <value>Given array transforms into one dimensional array</value>
   </data>
+  <data name="HelpDelta" xml:space="preserve">
+    <value>Calculates statistics v_{i} - v_{0} - i</value>
+  </data>
   <data name="HelpDouble" xml:space="preserve">
     <value>Converts given value to a double precision number</value>
+  </data>
+  <data name="HelpEigenSystem" xml:space="preserve">
+    <value>Eigensystem of a matrix calculated using LAPACK library (function dsyev); before calculation it makes symmetrization of a matrix</value>
   </data>
   <data name="HelpEnergy" xml:space="preserve">
     <value>For given dynamical system and position in the phase space calculates the energy</value>
   </data>
+  <data name="HelpEnvelopeMatrixG" xml:space="preserve">
+    <value>Generates an envelope matrix in Gaussian form (according to PRL 65, 529 (1990))</value>
+  </data>
   <data name="HelpEquipotential" xml:space="preserve">
     <value>For GCM system and given energy calculates equipotential contour</value>
+  </data>
+  <data name="HelpExclude" xml:space="preserve">
+    <value>From the first vector excludes values contained in the second vector</value>
   </data>
   <data name="HelpExit" xml:space="preserve">
     <value>Sends the request to close the program</value>
@@ -324,6 +336,9 @@
   <data name="HelpMatrixRow" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
   </data>
+  <data name="HelpMean" xml:space="preserve">
+    <value>Calculates mean of a vector</value>
+  </data>
   <data name="HelpNew" xml:space="preserve">
     <value>Creates new object of a given type</value>
   </data>
@@ -362,6 +377,21 @@
   </data>
   <data name="HelpPrintLine" xml:space="preserve">
     <value>Writes a text (or variable) to the writer and begins new line</value>
+  </data>
+  <data name="HelpRandomG" xml:space="preserve">
+    <value>Generates Gaussian distributed random numbers with given variance and mean</value>
+  </data>
+  <data name="HelpRandomMatrixSG" xml:space="preserve">
+    <value>Generates a symmetric matrix with Gaussian distributed components (according to PRL 65, 529 (1990))</value>
+  </data>
+  <data name="HelpRandomU" xml:space="preserve">
+    <value>Generates uniformly distributed random numbers between given limits</value>
+  </data>
+  <data name="HelpRandomVectorG" xml:space="preserve">
+    <value>Generates a vector with Gaussian distributed components</value>
+  </data>
+  <data name="HelpRandomVectorU" xml:space="preserve">
+    <value>Generates a vector with uniformly distributed components</value>
   </data>
   <data name="HelpRemoveBadPoints" xml:space="preserve">
     <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
@@ -456,6 +486,9 @@
   <data name="HelpUseContext" xml:space="preserve">
     <value>Uses the given context for specified calculations</value>
   </data>
+  <data name="HelpVariance" xml:space="preserve">
+    <value>Calculates variance of a vector</value>
+  </data>
   <data name="HelpVector" xml:space="preserve">
     <value>Convert given data to a vector</value>
   </data>
@@ -473,6 +506,12 @@
   </data>
   <data name="NuDatReadNucleusPage" xml:space="preserve">
     <value>Reading page of nucleus {0}...</value>
+  </data>
+  <data name="P1Exclude" xml:space="preserve">
+    <value>exc</value>
+  </data>
+  <data name="P1ExcludeDescription" xml:space="preserve">
+    <value>Values to be excluded</value>
   </data>
   <data name="P1GraphDescription" xml:space="preserve">
     <value>Data for curves</value>
@@ -795,11 +834,23 @@
   <data name="PKDescription" xml:space="preserve">
     <value>K (mass) parameter of GCM</value>
   </data>
+  <data name="PLength" xml:space="preserve">
+    <value>l</value>
+  </data>
+  <data name="PLengthDescription" xml:space="preserve">
+    <value>Length of the vector</value>
+  </data>
   <data name="PLHOQuantumGCM" xml:space="preserve">
     <value>q</value>
   </data>
   <data name="PLHOQuantumGCMDescription" xml:space="preserve">
     <value>LHOQuantumGCM object</value>
+  </data>
+  <data name="PLowerBound" xml:space="preserve">
+    <value>lb</value>
+  </data>
+  <data name="PLowerBoundDescription" xml:space="preserve">
+    <value>Lower bound</value>
   </data>
   <data name="PMatrix" xml:space="preserve">
     <value>matrix</value>
@@ -824,6 +875,12 @@
   </data>
   <data name="PMaxEnergyDescription" xml:space="preserve">
     <value>Maximum energy (in units of hbar)</value>
+  </data>
+  <data name="PMean" xml:space="preserve">
+    <value>mean</value>
+  </data>
+  <data name="PMeanDescription" xml:space="preserve">
+    <value>Mean of the distribution</value>
   </data>
   <data name="PMultiDimensions" xml:space="preserve">
     <value>item</value>
@@ -891,6 +948,12 @@
   <data name="PPolynomCoefDescription" xml:space="preserve">
     <value>Coeficients of polynom</value>
   </data>
+  <data name="PPositionWindow" xml:space="preserve">
+    <value>position</value>
+  </data>
+  <data name="PPositionWindowDescription" xml:space="preserve">
+    <value>Position of the window</value>
+  </data>
   <data name="PPrecision" xml:space="preserve">
     <value>precision</value>
   </data>
@@ -920,6 +983,18 @@
   </data>
   <data name="PSignalDescription" xml:space="preserve">
     <value>Sampled signal </value>
+  </data>
+  <data name="PSize" xml:space="preserve">
+    <value>size</value>
+  </data>
+  <data name="PSizeDescription" xml:space="preserve">
+    <value>Size of the matrix</value>
+  </data>
+  <data name="PSizeWindow" xml:space="preserve">
+    <value>size</value>
+  </data>
+  <data name="PSizeWindowDescription" xml:space="preserve">
+    <value>Size of the window</value>
   </data>
   <data name="PSizeX" xml:space="preserve">
     <value>sizex</value>
@@ -993,6 +1068,12 @@
   <data name="PTypeDescription" xml:space="preserve">
     <value>Type of a variable</value>
   </data>
+  <data name="PUpperBound" xml:space="preserve">
+    <value>ub</value>
+  </data>
+  <data name="PUpperBoundDescription" xml:space="preserve">
+    <value>Upper bound</value>
+  </data>
   <data name="PURI" xml:space="preserve">
     <value>uri</value>
   </data>
@@ -1010,6 +1091,12 @@
   </data>
   <data name="PVariableDescription" xml:space="preserve">
     <value>Variable</value>
+  </data>
+  <data name="PVariance" xml:space="preserve">
+    <value>var</value>
+  </data>
+  <data name="PVarianceDescription" xml:space="preserve">
+    <value>Variance of the distribution</value>
   </data>
   <data name="PVarName" xml:space="preserve">
     <value>varname</value>

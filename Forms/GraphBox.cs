@@ -268,7 +268,7 @@ namespace PavelStransky.Forms {
             int nGroups = this.graph.NumGroups();
 
             // Ukládáme všechny obrázky
-            if(this.evalGroup && nGroups > 1) {
+            if(nGroups > 1) {
                 for(int g = 0; g < nGroups; g++) {
                     // Vyvíjíme køivky
                     if(this.evalCurve) {

@@ -23,7 +23,7 @@ namespace PavelStransky.Expression.Functions {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Matrix m = (Matrix)arguments[0];
             m = m.Symmetrize();
-			Jacobi jacobi = new Jacobi(m);
+			Jacobi jacobi = new Jacobi(m, guider);
 			
             jacobi.SortAsc();
 			TArray result = new TArray(typeof(Vector), m.Length + 1);

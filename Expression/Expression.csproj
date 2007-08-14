@@ -88,6 +88,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\DLLWrapper\DLLWrapper.csproj">
+      <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
+      <Name>DLLWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GCM\GCM.csproj">
       <Project>{9A261EE9-33BB-4136-B0CA-681BD82B6806}</Project>
       <Name>GCM</Name>
@@ -118,6 +122,7 @@
     <Compile Include="Atom.Functions.cs" />
     <Compile Include="BinaryOperators\BoolAnd.cs" />
     <Compile Include="BinaryOperators\BoolOr.cs" />
+    <Compile Include="BinaryOperators\ItemTimes.cs" />
     <Compile Include="BinaryOperators\Join.cs" />
     <Compile Include="FileData.cs" />
     <Compile Include="Functions\Context\Clear.cs" />
@@ -232,6 +237,7 @@
     <Compile Include="Functions\Matrix\CM.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Functions\Matrix\EigenSystem.cs" />
     <Compile Include="Functions\Matrix\SetDiagonal.cs" />
     <Compile Include="Functions\Matrix\SetNonDiagonal.cs" />
     <Compile Include="Functions\MinMax\Max.cs" />
@@ -269,6 +275,14 @@
     <Compile Include="Functions\Quantum\LHOQGCMRLO.cs" />
     <Compile Include="Functions\Quantum\Parity.cs" />
     <Compile Include="Functions\Quantum\SecondInvariant.cs" />
+    <Compile Include="Functions\Statistics\EnvelopeMatrixG.cs" />
+    <Compile Include="Functions\Statistics\RandomMatrixSG.cs" />
+    <Compile Include="Functions\Statistics\Mean.cs" />
+    <Compile Include="Functions\Statistics\RandomG.cs" />
+    <Compile Include="Functions\Statistics\RandomU.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorG.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorU.cs" />
+    <Compile Include="Functions\Statistics\Variance.cs" />
     <Compile Include="Functions\Test\RWF5DLHO.cs" />
     <Compile Include="Functions\ShellModel\DataParams.cs" />
     <Compile Include="Functions\ShellModel\VEffective.cs" />
@@ -336,6 +350,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Unsorted\FFTSpectrum.cs" />
+    <Compile Include="Functions\Vector\Delta.cs" />
+    <Compile Include="Functions\Vector\Exclude.cs" />
     <Compile Include="Functions\Vector\GetX.cs">
       <SubType>Code</SubType>
     </Compile>

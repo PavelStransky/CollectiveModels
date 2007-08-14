@@ -405,6 +405,22 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
+        /// Pøetypování obyèejné øady na TArray
+        /// </summary>
+        /// <param name="a">Obyèejná øada</param>
+        public static implicit operator TArray(Array a) {
+            TArray result = new TArray();
+            result.data = (Array)a.Clone();
+
+            foreach(object o in result.data) {
+                result.type = o.GetType();
+                break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Pøetypování na vektor
         /// </summary>
         /// <param name="array">Øada</param>

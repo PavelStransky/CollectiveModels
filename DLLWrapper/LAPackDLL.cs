@@ -56,21 +56,23 @@ namespace PavelStransky.DLLWrapper {
         /// Nalezne vlastní èísla matice
         /// </summary>
         /// <param name="matrix">Vstupní ètvercová matice</param>
-        public static Vector dsyev(Matrix matrix) {
+        public static Vector[] dsyev(Matrix matrix, bool ev) {
+            char jobz = ev ? 'V' : 'N';
+            char uplo = 'U';
+
             int n = matrix.Length;
 
-            double *a = PrepareMatrix(matrix);
+            double* a = PrepareMatrix(matrix);
             double* w = Memory.NewDouble(n);
 
-            char uplo = 'U';
-            char jobz = 'N';
             int lda = n;
             int lwork = -1;
             double* work = null;
 
             int info = 0;
 
-            Vector result = null;
+            Vector[] result = null;
+            bool success = false;
 
             try {
                 double lwork1 = 0;
@@ -83,13 +85,33 @@ namespace PavelStransky.DLLWrapper {
 
                 // Vlastní výpoèet
                 dsyev_(&jobz, &uplo, &n, a, &lda, w, work, &lwork, &info);
+                success = true;
+            }
+            finally {
+                Memory.Delete(work);
+            }
 
-                result = ProcessVector(w, n);
+            // Zpracování výsledkù
+            try {
+                if(success) {
+                    if(ev)
+                        result = new Vector[n + 1];
+                    else
+                        result = new Vector[1];
+                }
+
+                result[0] = ProcessVector(w, n);
+
+                if(ev)
+                    for(int i = 0; i < n; i++) {
+                        result[i + 1] = new Vector(n);
+                        for(int j = 0; j < n; j++)
+                            result[i + 1][j] = a[i * n + j];
+                    }
             }
             finally {
                 Memory.Delete(a);
                 Memory.Delete(w);
-                Memory.Delete(work);
             }
 
             return result;
@@ -333,10 +355,7 @@ namespace PavelStransky.DLLWrapper {
                     else
                         result = new Vector[1];
 
-                    result[0] = new Vector(m);
-
-                    for(int i = 0; i < m; i++)
-                        result[0][i] = w[i];
+                    result[0] = ProcessVector(w, m);
 
                     if(ev)
                         for(int i = 0; i < m; i++) {

@@ -12,11 +12,13 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return Messages.HelpShow;}}
 
         protected override void CreateParameters() {
-            this.NumParams(3);
+            this.NumParams(5);
 
             this.SetParam(0, true, true, false, Messages.PGraph, Messages.PGraphDescription, null, typeof(Graph), typeof(TArray));
             this.SetParam(1, false, true, false, Messages.PGraphName, Messages.PGraphNameDescription, "Graph", typeof(string));
             this.SetParam(2, false, true, false, Messages.PNumColumns, Messages.PNumColumnsDescription, 1, typeof(int));
+            this.SetParam(3, false, true, false, Messages.PPositionWindow, Messages.PPositionWindowDescription, new PointD(-1.0, -1.0), typeof(PointD));
+            this.SetParam(4, false, true, false, Messages.PSizeWindow, Messages.PSizeWindowDescription, new PointD(-1.0, -1.0), typeof(PointD));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -24,6 +26,9 @@ namespace PavelStransky.Expression.Functions {
 
             string name = (string)arguments[1];
             int numColumns = (int)arguments[2];
+
+            PointD position = (PointD)arguments[3];
+            PointD size = (PointD)arguments[4];
 
             TArray graph = null;
             if(arguments[0] is Graph) {
@@ -33,7 +38,7 @@ namespace PavelStransky.Expression.Functions {
             else 
                 graph = arguments[0] as TArray;
 
-            guider.Context.OnEvent(new ContextEventArgs(ContextEventType.GraphRequest, graph, name, numColumns));
+            guider.Context.OnEvent(new ContextEventArgs(ContextEventType.GraphRequest, graph, name, numColumns, position, size));
 
             return graph;
         }

@@ -198,6 +198,25 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Násobí vektory prvek po prvku
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static object ItemMul(Vector v1, Vector v2) {
+            if(v1.Length != v2.Length)
+                throw new VectorException(errorMessageDifferentLength);
+
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = v1[i] * v2[i];
+
+            return result;
+        }
+
+        /// <summary>
         /// Skalární souèin
         /// </summary>
         public static double operator *(Vector v1, Vector v2) {
@@ -1026,7 +1045,7 @@ namespace PavelStransky.Math {
         private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
 		private const string errorMessageDifferentLength = "K provedení operace musí mít vektory stejnou délku.";
 		private const string errorMessageMatrixVector = "Pøi násobení matice a vektoru musí mít oba objekty kompatibilní rozmìry.";
-	}
+    }
 
 	/// <summary>
 	/// Výjimka ve tøídì Vector

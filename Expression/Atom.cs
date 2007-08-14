@@ -373,7 +373,7 @@ namespace PavelStransky.Expression {
 		/// <param name="operatorName">Výsledek - oznaèení operátoru</param>
 		/// <returns>Poloha operátoru ve výrazu</returns>
 		protected static int FindUnaryOperatorPosition(out string operatorName, string e) {
-			return FindOperatorPosition(out operatorName, e, unaryOperators.OperatorPattern, false);
+			return FindOperatorPosition(out operatorName, e, false);
 		}
 
 		/// <summary>
@@ -393,7 +393,7 @@ namespace PavelStransky.Expression {
 		/// <param name="operatorName">Výsledek - oznaèení operátoru</param>
 		/// <returns>Poloha operátoru ve výrazu</returns>
 		protected static int FindBinaryOperatorPosition(out string operatorName, string e) {
-			return FindOperatorPosition(out operatorName, e, binaryOperators.OperatorPattern, true);
+			return FindOperatorPosition(out operatorName, e, true);
 		}
 
 		/// <summary>
@@ -404,22 +404,29 @@ namespace PavelStransky.Expression {
 		/// <param name="operatorPattern">Vzorec pro vyhledávání pomocí regulárních výrazù</param>
 		/// <param name="binary">True, pokud se jedná o binární operátor, který se nesmí vyskytovat na první pozici</param>
 		/// <returns>Poloha operátoru ve výrazu</returns>
-		private static int FindOperatorPosition(out string operatorName, string e, string operatorPattern, bool binary) {
-			MatchCollection matches = Regex.Matches(e, operatorPattern, RegexOptions.ExplicitCapture);
+		private static int FindOperatorPosition(out string operatorName, string e, bool binary) {
+            Operators.Operators o = binary ? binaryOperators : unaryOperators;
 
-			foreach(Match match in matches) {
-				if(match.Index == 0 && binary)
-					continue;
+            for(int i = o.MaxOperatorLength; i >= 0; i--)
+                foreach(string name in o.Keys) {
+                    if(name.Length != i)
+                        continue;
 
-				if(IsInString(e, match.Index))
-					continue;
+                    int index = -1;
+                    while((index = e.IndexOf(name, index + 1)) >= 0) {
+                        if(index == 0 && binary)
+                            continue;
 
-				if(!IsInBracket(e.Substring(0, match.Index))) {
-					operatorName = match.Value;
-					return match.Index;
-				}
-			}
+                        if(IsInString(e, index))
+                            continue;
 
+                        if(!IsInBracket(e.Substring(0, index))) {
+                            operatorName = name;
+                            return index;
+                        }
+                    }
+                }
+            
 			operatorName = string.Empty;
 			return -1;
 		}

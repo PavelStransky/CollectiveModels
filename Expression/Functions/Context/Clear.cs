@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            if(arguments.Count == 0)
+            if(arguments[0] == null)
 				guider.Context.Clear();
 			else
                 foreach(string s in arguments)

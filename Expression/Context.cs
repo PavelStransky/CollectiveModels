@@ -227,7 +227,21 @@ namespace PavelStransky.Expression {
             foreach(string key in this.objects.Keys) {
                 s.Append(key);
                 s.Append(" (");
-                s.Append(this[key].Item.GetType().FullName);
+
+                object item = this[key].Item;
+                s.Append(item.GetType().FullName);
+
+                if(item is Vector)
+                    s.Append(string.Format(" [{0}]", (item as Vector).Length));
+                else if(item is PointVector)
+                    s.Append(string.Format(" [{0}]", (item as PointVector).Length));
+                else if(item is List)
+                    s.Append(string.Format(" [{0}]", (item as List).Count));
+                else if(item is TArray) {
+                    s.Append(string.Format(" [{0}] ", (item as TArray).LengthsString()));
+                    s.Append((item as TArray).GetItemType());
+                }
+
                 s.Append(')');
                 s.Append(Environment.NewLine);
             }

@@ -244,6 +244,24 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
+        /// <summary>
+        /// Vynásobí dvì matice po prvcích
+        /// </summary>
+        public static object ItemMul(Matrix m1, Matrix m2) {
+            if(m1.LengthX != m2.LengthX || m1.LengthY != m2.LengthY)
+                throw new MatrixException(errorMessageDifferentDimension);
+
+            int lengthX = m1.LengthX;
+            int lengthY = m1.LengthY;
+            Matrix result = new Matrix(lengthX, lengthY);
+
+            for(int i = 0; i < lengthX; i++)
+                for(int j = 0; j < lengthY; j++)
+                    result[i, j] = m1[i, j] * m2[i, j];
+
+            return result;
+        }
+
 		public override bool Equals(object obj) {
 			Matrix m = obj as Matrix;
 
@@ -301,8 +319,7 @@ namespace PavelStransky.Math {
 
 			// Jednotková matice
             int length = this.Length;
-            Matrix result = new Matrix(length, length);
-			result.SetUnit();
+            Matrix result = Matrix.Unit(length);
 
 			// Úprava matice na trojúhelníkovou
 			for(int i = 0; i < length; i++) {
@@ -371,20 +388,15 @@ namespace PavelStransky.Math {
 		}
 
 		/// <summary>
-		/// Matici pøevede na jednotkovou
+		/// Vytvoøí jednotkovou matici
 		/// </summary>
-		public void SetUnit() {
-			if(!this.IsSquare)
-				throw new MatrixException(errorMessageNotSquare);
+		public static Matrix Unit(int length) {
+            Matrix result = new Matrix(length);
 
-            int length = this.Length;
+            for(int i = 0; i < length; i++)
+                result[i, i] = 1;
 
-			for(int i = 0; i < length; i++)
-				for(int j = 0; j < length; j++)
-					if(i == j) 
-						this[i,j] = 1;
-					else
-						this[i,j] = 0;
+            return result;
 		}
 
 		/// <summary>

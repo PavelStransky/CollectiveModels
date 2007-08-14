@@ -6,9 +6,6 @@ namespace PavelStransky.Math {
 	/// f(x) = 1 / (sqrt(2 pi) sigma) exp(-(x - mi)^2 / (2 sigma^2))
 	/// </summary>
 	public class NormalDistribution {
-		private double mean;
-		private double variance;
-
 		/// <summary>
 		/// Generátor rovnomìrnì rozdìlených náhodných èísel
 		/// </summary>
@@ -17,41 +14,55 @@ namespace PavelStransky.Math {
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		/// <param name="mean">Støední hodnota rozdìlení</param>
-		/// <param name="variance">Rozptyl rozdìlení</param>
-		public NormalDistribution(double mean, double variance) {
-			this.mean = mean;
-			this.variance = variance;
+		public NormalDistribution() {
 			this.r = new Random();
 		}
+
+        /// <summary>
+        /// Vrátí jednu hodnotu se standardním rozptylem a støední hodnotou
+        /// </summary>
+        public double GetValue() {
+            return this.GetValue(1.0, 0.0);
+        }
 
 		/// <summary>
 		/// Vrátí jednu hodnotu
 		/// </summary>
-		public double GetValue() {
+        /// <param name="variance">Rozptyl rozdìlení</param>
+        /// <param name="mean">Støední hodnota rozdìlení</param>
+        public double GetValue(double variance, double mean) {
 			double n1, n2;
-			this.BoxMuller(out n1, out n2);
+			this.BoxMuller(out n1, out n2, variance, mean);
 
 			return n1;
 		}
+
+        /// <summary>
+        /// Vrátí vektor se standardním rozptylem a støední hodnotou
+        /// </summary>
+        public Vector GetVector(int length) {
+            return this.GetVector(length, 1.0, 0.0);
+        }
 
 		/// <summary>
 		/// Vrátí vektor
 		/// </summary>
 		/// <param name="length">Délka vektoru</param>
-		public Vector GetVector(int length) {
+        /// <param name="variance">Rozptyl rozdìlení</param>
+        /// <param name="mean">Støední hodnota rozdìlení</param>
+        public Vector GetVector(int length, double variance, double mean) {
 			double n1, n2;
 			Vector result = new Vector(length);
 
 			for(int i = 0; i < length / 2; i++) {
-				this.BoxMuller(out n1, out n2);
+				this.BoxMuller(out n1, out n2, variance, mean);
 				result[2*i] = n1;
 				result[2*i + 1] = n2;
 			}
 
 			// Pokud je poèet prvkù lichý, vyplníme ještì poslední hodnotu
 			if(length % 2 > 0) {
-				this.BoxMuller(out n1, out n2);
+                this.BoxMuller(out n1, out n2, variance, mean);
 				result[length - 1] = n1;
 			}
 
@@ -63,7 +74,9 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="n1">První hodnota</param>
 		/// <param name="n2">Druhá hodnota</param>
-		private void BoxMuller(out double n1, out double n2) {
+        /// <param name="variance">Rozptyl rozdìlení</param>
+        /// <param name="mean">Støední hodnota rozdìlení</param>
+        private void BoxMuller(out double n1, out double n2, double variance, double mean) {
 			double v1, v2, rsq;
 			do {
 				v1 = 2.0 * r.NextDouble() - 1.0;
@@ -73,8 +86,8 @@ namespace PavelStransky.Math {
 
 			double fac = System.Math.Sqrt(-2.0 * System.Math.Log(rsq) / rsq);
 
-			n1 = v1 * fac * this.variance + this.mean;
-			n2 = v2 * fac * this.variance + this.mean;
+			n1 = v1 * fac * variance + mean;
+			n2 = v2 * fac * variance + mean;
 		}
 	}
 }

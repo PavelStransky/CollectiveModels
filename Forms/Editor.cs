@@ -146,8 +146,23 @@ namespace PavelStransky.Forms {
                     string name = e.GetParam(1) as string;
                     int numColumns = (int)e.GetParam(2);
 
+                    PointD position = (PointD)e.GetParam(3);
+                    PointD size = (PointD)e.GetParam(4);
+
                     GraphForm graphForm = this.NewParentForm(typeof(GraphForm), name) as GraphForm;
                     graphForm.SetGraph(graphs, numColumns);
+
+                    graphForm.Location = new Point(graphForm.Location.X, graphForm.Location.Y);
+
+                    if(position.X >= 0.0)
+                        graphForm.Location = new Point((int)position.X, graphForm.Location.Y);
+                    if(position.Y >= 0.0)
+                        graphForm.Location = new Point(graphForm.Location.X, (int)position.Y);
+                    if(size.X > 0.0)
+                        graphForm.Size = new Size((int)size.X, graphForm.Size.Height);
+                    if(size.Y > 0.0)
+                        graphForm.Size = new Size(graphForm.Size.Width, (int)size.Y);
+
 
                     graphForm.Show();
                     this.Activate();

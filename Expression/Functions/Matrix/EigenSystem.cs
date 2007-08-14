@@ -4,35 +4,33 @@ using System.Collections;
 using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Expression.Functions {
-	/// <summary>
-	/// Vypoèítá systém vlastních hodnot a vektorù symetrické matice
-	/// </summary>
-	public class EigenSystem: FunctionDefinition {
-		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+    /// <summary>
+    /// Eigensystem of a matrix calculated using LAPACK library; 
+    /// before calculation it makes symmetrization of a matrix
+    /// </summary>
+    public class EigenSystem: FunctionDefinition {
+        public override string Help { get { return Messages.HelpEigenSystem; } }
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Matrix));
-		}
+        protected override void CreateParameters() {
+            this.NumParams(2);
+
+            this.SetParam(0, true, true, false, Messages.PSymmetricMatrix, Messages.PSymmetricMatrixDescription, null, typeof(Matrix));
+            this.SetParam(1, false, true, false, Messages.PEVectors, Messages.PEvectorsDescription, false, typeof(bool));
+        }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Matrix m = (Matrix)arguments[0];
-			Jacobi jacobi = new Jacobi(m);
-			
-            jacobi.SortAsc();
-			TArray result = new TArray(typeof(Vector), m.Length + 1);
+            m = m.Symmetrize();
 
-			result[0] = new Vector(jacobi.EigenValue);
-			for(int i = 0; i < jacobi.EigenVector.Length; i++)
-				result[i + 1] = jacobi.EigenVector[i];
+            bool ev = (bool)arguments[1];
 
-			return result;
-		}
-
-		private const string help = "Vypoèítá systém vlastních hodnot a vektorù pro symetrickou matici. Vrací øadu vektorù, jejíž první prvek obsahuje vlastní hodnoty, zbytek prvkù vlastní vektory";
-		private const string parameters = "Matrix";
-	}
+            if(ev)
+                return (TArray)LAPackDLL.dsyev(m, ev);
+            else
+                return LAPackDLL.dsyev(m, ev)[0];
+        }
+    }
 }

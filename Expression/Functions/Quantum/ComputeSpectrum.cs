@@ -4,6 +4,7 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
+using PavelStransky.PT;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
@@ -15,7 +16,7 @@ namespace PavelStransky.Expression.Functions {
         protected override void CreateParameters() {
             this.NumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM));
+            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM), typeof(DoubleQuadratic));
             this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
             this.SetParam(2, false, true, false, Messages.PEVectors, Messages.PEvectorsDescription, false, typeof(bool));
             this.SetParam(3, false, true, false, Messages.PNumEV, Messages.PNumEVDescription, 0, typeof(int));
@@ -23,14 +24,17 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            LHOQuantumGCM item = arguments[0] as LHOQuantumGCM;
+            object item = arguments[0];
 
             int maxE = (int)arguments[1];
             bool ev = (bool)arguments[2];
             int numev = (int)arguments[3];                  // 0 - berou se všechny vlastní hodnoty
             int numSteps = (int)arguments[4];               // 0 - numsteps je dopoèítáno automaticky
 
-            item.Compute(maxE, numSteps, ev, numev, guider);
+            if(item is LHOQuantumGCM)
+                (item as LHOQuantumGCM).Compute(maxE, numSteps, ev, numev, guider);
+            else if(item is DoubleQuadratic)
+                (item as DoubleQuadratic).Compute(maxE, ev, numev, guider);
 
             return item;
         }

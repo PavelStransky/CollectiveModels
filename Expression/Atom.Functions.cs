@@ -140,6 +140,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.HamiltonianMatrixTrace());
             functions.Add(new Functions.SecondInvariant());
             functions.Add(new Functions.Parity());
+            functions.Add(new Functions.TwoLHO());
 
             // Sorting
             functions.Add(new Functions.Sort());
@@ -167,6 +168,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Sqrt());
             functions.Add(new Functions.Laguerre());
             functions.Add(new Functions.Legendre());
+            functions.Add(new Functions.Hermite());
             functions.Add(new Functions.Factorial());
             functions.Add(new Functions.BC());
             functions.Add(new Functions.Sin());

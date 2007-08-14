@@ -22,8 +22,6 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            int count = arguments.Count;
-
             double a = (double)arguments[0];
             double b = (double)arguments[1];
             double c = (double)arguments[2];

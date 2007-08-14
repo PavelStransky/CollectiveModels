@@ -363,6 +363,70 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Hermite polynomial (physicists' notation)
+        /// </summary>
+        /// <param name="n">Order of the polynomial</param>
+        /// <param name="x">Value</param>
+        public static double Hermite(double x, int n) {
+            double hm2 = 1.0;
+            double hm1 = 2.0 * x;
+
+            double result = hm1;
+
+            if(n == 0)
+                result = hm2;
+
+            else {
+                for(int i = 2; i <= n; i++) {
+                    result = 2.0 * x * hm1 - 2 * (i - 1) * hm2;
+
+                    hm2 = hm1;
+                    hm1 = result;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrací logaritmus Hermiteova polynomu
+        /// </summary>
+        /// <param name="result">Výsledek (základ)</param>
+        /// <param name="exp">Exponent - výsledné èíslo získáme jako result * Math.Exp(exp)</param>
+        /// <param name="n">Øád polynomu</param>
+        /// <param name="x">Hodnota</param>
+        public static void Hermite(out double result, out double exp, double x, int n) {
+            double hm2 = 1;
+            double hm1 = 2.0 * x;
+
+            result = hm1;
+            exp = 0.0;
+
+            if(n == 0) {
+                result = hm2;
+                return;
+            }
+            else if(n == 1)
+                return;
+
+            for(int i = 2; i <= n; i++) {
+                result = 2.0 * x * hm1 - 2 * (i - 1) * hm2;
+                double abs = System.Math.Abs(result);
+                // Pokud je abs malé, nemùžeme dìlat logaritmus - nenormujeme
+                if(abs == 0.0)
+                    abs = 1.0;
+
+                exp += System.Math.Log(abs);
+
+                result /= abs;
+                hm2 = hm1 / abs;
+                hm1 = result;
+            }
+
+            return;
+        }
+        
+        /// <summary>
         /// Hodnota Wignerova rozdìlení se støední hodnotou 1
         /// </summary>
         /// <param name="x">x</param>

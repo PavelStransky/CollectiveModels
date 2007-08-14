@@ -285,6 +285,9 @@
   <data name="HelpHamiltonianMatrixTrace" xml:space="preserve">
     <value>Returns the trace of the Hamiltonian matrix of a quantum system</value>
   </data>
+  <data name="HelpHermite" xml:space="preserve">
+    <value>Value of the Hermite polynomial</value>
+  </data>
   <data name="HelpHH" xml:space="preserve">
     <value>Creates a HenonHeiles class</value>
   </data>
@@ -480,6 +483,9 @@
   <data name="HelpTrajectoryP" xml:space="preserve">
     <value>    For given energy or a trajectory given by its initial condition calculates the trajectory; the x, y coordinates of the result is returned by a PointVector</value>
   </data>
+  <data name="HelpTwoLHO" xml:space="preserve">
+    <value>Creates a DoubleQuadratic class</value>
+  </data>
   <data name="HelpType" xml:space="preserve">
     <value>Type of the value</value>
   </data>
@@ -552,6 +558,12 @@
   <data name="P1RegressionDescription" xml:space="preserve">
     <value>Input data for the regression</value>
   </data>
+  <data name="P1TwoLHO" xml:space="preserve">
+    <value>omega</value>
+  </data>
+  <data name="P1TwoLHODescription" xml:space="preserve">
+    <value>Angular frequency of the LHO</value>
+  </data>
   <data name="P2ContextDescription" xml:space="preserve">
     <value>Name of a variable that will be copied from actual context</value>
   </data>
@@ -579,6 +591,12 @@
   <data name="P2PointVectorDescription" xml:space="preserve">
     <value>Y values of the pointvector</value>
   </data>
+  <data name="P2TwoLHO" xml:space="preserve">
+    <value>x1</value>
+  </data>
+  <data name="P2TwoLHODescription" xml:space="preserve">
+    <value>Distance of the first LHO from 0</value>
+  </data>
   <data name="P3Equipotential" xml:space="preserve">
     <value>points</value>
   </data>
@@ -603,6 +621,12 @@
   <data name="P3PoincareDescription" xml:space="preserve">
     <value>Number of points of the final section</value>
   </data>
+  <data name="P3TwoLHO" xml:space="preserve">
+    <value>x2</value>
+  </data>
+  <data name="P3TwoLHODescription" xml:space="preserve">
+    <value>Distance of the second LHO from 0</value>
+  </data>
   <data name="P4Graph" xml:space="preserve">
     <value>pglobal</value>
   </data>
@@ -614,6 +638,12 @@
   </data>
   <data name="P4PoincareDescription" xml:space="preserve">
     <value>Plane of the section</value>
+  </data>
+  <data name="P4TwoLHO" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="P4TwoLHODescription" xml:space="preserve">
+    <value>Mixing parameter of the two minima</value>
   </data>
   <data name="P5Graph" xml:space="preserve">
     <value>pgroups</value>

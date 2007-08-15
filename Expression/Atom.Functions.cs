@@ -141,6 +141,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.SecondInvariant());
             functions.Add(new Functions.Parity());
             functions.Add(new Functions.FnPT1());
+            functions.Add(new Functions.FnPT2());
 
             // Sorting
             functions.Add(new Functions.Sort());
@@ -177,6 +178,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.Wigner());
             functions.Add(new Functions.Poisson());
             functions.Add(new Functions.PT1Potential());
+            functions.Add(new Functions.PT2Potential());
 
 			// Funkce vyžadující functions
 			functions.Add(new Functions.FNames(functions));

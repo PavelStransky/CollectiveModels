@@ -853,6 +853,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a class PT1 for studying quantum phase transitions.
+        /// </summary>
+        internal static string HelpPT1 {
+            get {
+                return ResourceManager.GetString("HelpPT1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of the potential of the system PT1.
+        /// </summary>
+        internal static string HelpPT1Potential {
+            get {
+                return ResourceManager.GetString("HelpPT1Potential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a class PT2 for studying quantum phase transitions.
+        /// </summary>
+        internal static string HelpPT2 {
+            get {
+                return ResourceManager.GetString("HelpPT2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of the potential of the system PT2.
+        /// </summary>
+        internal static string HelpPT2Potential {
+            get {
+                return ResourceManager.GetString("HelpPT2Potential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates Gaussian distributed random numbers with given variance and mean.
         /// </summary>
         internal static string HelpRandomG {
@@ -1159,15 +1195,6 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a DoubleQuadratic class.
-        /// </summary>
-        internal static string HelpTwoLHO {
-            get {
-                return ResourceManager.GetString("HelpTwoLHO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Type of the value.
         /// </summary>
         internal static string HelpType {
@@ -1384,24 +1411,6 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to omega.
-        /// </summary>
-        internal static string P1TwoLHO {
-            get {
-                return ResourceManager.GetString("P1TwoLHO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Angular frequency of the LHO.
-        /// </summary>
-        internal static string P1TwoLHODescription {
-            get {
-                return ResourceManager.GetString("P1TwoLHODescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name of a variable that will be copied from actual context.
         /// </summary>
         internal static string P2ContextDescription {
@@ -1483,24 +1492,6 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to x1.
-        /// </summary>
-        internal static string P2TwoLHO {
-            get {
-                return ResourceManager.GetString("P2TwoLHO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance of the first LHO from 0.
-        /// </summary>
-        internal static string P2TwoLHODescription {
-            get {
-                return ResourceManager.GetString("P2TwoLHODescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to points.
         /// </summary>
         internal static string P3Equipotential {
@@ -1573,24 +1564,6 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to x2.
-        /// </summary>
-        internal static string P3TwoLHO {
-            get {
-                return ResourceManager.GetString("P3TwoLHO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance of the second LHO from 0.
-        /// </summary>
-        internal static string P3TwoLHODescription {
-            get {
-                return ResourceManager.GetString("P3TwoLHODescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pglobal.
         /// </summary>
         internal static string P4Graph {
@@ -1623,24 +1596,6 @@ namespace PavelStransky.Expression {
         internal static string P4PoincareDescription {
             get {
                 return ResourceManager.GetString("P4PoincareDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to m.
-        /// </summary>
-        internal static string P4TwoLHO {
-            get {
-                return ResourceManager.GetString("P4TwoLHO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mixing parameter of the two minima.
-        /// </summary>
-        internal static string P4TwoLHODescription {
-            get {
-                return ResourceManager.GetString("P4TwoLHODescription", resourceCulture);
             }
         }
         
@@ -2320,6 +2275,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to omega.
+        /// </summary>
+        internal static string PLHOOmega {
+            get {
+                return ResourceManager.GetString("PLHOOmega", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Angular frequency of the LHO basis.
+        /// </summary>
+        internal static string PLHOOmegaDescription {
+            get {
+                return ResourceManager.GetString("PLHOOmegaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to q.
         /// </summary>
         internal static string PLHOQuantumGCM {
@@ -2442,6 +2415,24 @@ namespace PavelStransky.Expression {
         internal static string PMeanDescription {
             get {
                 return ResourceManager.GetString("PMeanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
+        internal static string PMixingParameter {
+            get {
+                return ResourceManager.GetString("PMixingParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mixing parameter of the two minima.
+        /// </summary>
+        internal static string PMixingParameterDescription {
+            get {
+                return ResourceManager.GetString("PMixingParameterDescription", resourceCulture);
             }
         }
         

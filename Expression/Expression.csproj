@@ -163,12 +163,14 @@
     <Compile Include="Functions\Help\Use.cs" />
     <Compile Include="Functions\List\Add.cs" />
     <Compile Include="Functions\List\AddGlobal.cs" />
+    <Compile Include="Functions\Math\PT2Potential.cs" />
     <Compile Include="Functions\Math\Hermite.cs" />
     <Compile Include="Functions\Math\Legendre.cs" />
     <Compile Include="Functions\Math\MathFnD.cs" />
     <Compile Include="Functions\Math\MathFnID.cs" />
     <Compile Include="Functions\Math\Pi.cs" />
     <Compile Include="Functions\Math\Poisson.cs" />
+    <Compile Include="Functions\Math\PT1Potential.cs" />
     <Compile Include="Functions\Math\Sin.cs" />
     <Compile Include="Functions\Math\Wigner.cs" />
     <Compile Include="Functions\Matrix\BandWidth.cs" />
@@ -279,8 +281,9 @@
     <Compile Include="Functions\Quantum\LHOQGCMRLE.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMRLO.cs" />
     <Compile Include="Functions\Quantum\Parity.cs" />
+    <Compile Include="Functions\Quantum\PT2.cs" />
     <Compile Include="Functions\Quantum\SecondInvariant.cs" />
-    <Compile Include="Functions\Quantum\TwoLHO.cs" />
+    <Compile Include="Functions\Quantum\PT1.cs" />
     <Compile Include="Functions\Statistics\EnvelopeMatrixG.cs" />
     <Compile Include="Functions\Statistics\RandomMatrixSG.cs" />
     <Compile Include="Functions\Statistics\Mean.cs" />

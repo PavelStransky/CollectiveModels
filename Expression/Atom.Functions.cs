@@ -140,7 +140,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.HamiltonianMatrixTrace());
             functions.Add(new Functions.SecondInvariant());
             functions.Add(new Functions.Parity());
-            functions.Add(new Functions.TwoLHO());
+            functions.Add(new Functions.FnPT1());
 
             // Sorting
             functions.Add(new Functions.Sort());
@@ -176,6 +176,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.FnPolynom());
             functions.Add(new Functions.Wigner());
             functions.Add(new Functions.Poisson());
+            functions.Add(new Functions.PT1Potential());
 
 			// Funkce vyžadující functions
 			functions.Add(new Functions.FNames(functions));

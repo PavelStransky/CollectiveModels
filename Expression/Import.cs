@@ -5,6 +5,7 @@ using System.Text;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 using PavelStransky.IBM;
+using PavelStransky.PT;
 
 namespace PavelStransky.Expression {
     /// <summary>
@@ -56,6 +57,10 @@ namespace PavelStransky.Expression {
                 return new LHOQuantumGCMRLE();
             else if(typeName == typeof(LHOQuantumGCM5D).FullName)
                 return new LHOQuantumGCM5D();
+            else if(typeName == typeof(PT1).FullName)
+                return new PT1();
+            else if(typeName == typeof(PT2).FullName)
+                return new PT2();
             else
                 return base.CreateObject(typeName);
         }

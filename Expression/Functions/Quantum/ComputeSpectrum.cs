@@ -16,7 +16,7 @@ namespace PavelStransky.Expression.Functions {
         protected override void CreateParameters() {
             this.NumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM), typeof(DoubleQuadratic));
+            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM), typeof(PT1));
             this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
             this.SetParam(2, false, true, false, Messages.PEVectors, Messages.PEvectorsDescription, false, typeof(bool));
             this.SetParam(3, false, true, false, Messages.PNumEV, Messages.PNumEVDescription, 0, typeof(int));
@@ -33,8 +33,8 @@ namespace PavelStransky.Expression.Functions {
 
             if(item is LHOQuantumGCM)
                 (item as LHOQuantumGCM).Compute(maxE, numSteps, ev, numev, guider);
-            else if(item is DoubleQuadratic)
-                (item as DoubleQuadratic).Compute(maxE, ev, numev, guider);
+            else if(item is PT1)
+                (item as PT1).Compute(maxE, ev, numev, guider);
 
             return item;
         }

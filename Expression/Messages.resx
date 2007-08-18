@@ -330,6 +330,9 @@
   <data name="HelpLength" xml:space="preserve">
     <value>Returns length(s) or number of elements of a given object as an array</value>
   </data>
+  <data name="HelpLinearRegression" xml:space="preserve">
+    <value>Linear regression of data (including uncertainities of estimated parameters)</value>
+  </data>
   <data name="HelpLog" xml:space="preserve">
     <value>Logarithm of the value (with specified base)</value>
   </data>

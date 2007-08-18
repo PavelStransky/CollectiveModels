@@ -20,13 +20,9 @@ namespace PavelStransky.Expression.Functions {
         }
 
 		protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-			if(arguments[0] is PointVector) {
-				PointVector pointVector = arguments[0] as PointVector;
-				int order = (int)arguments[1];
-				return Regression.Compute(pointVector, order);
-			}
-
-            return null;
+			PointVector pointVector = arguments[0] as PointVector;
+			int order = (int)arguments[1];
+			return Regression.Compute(pointVector, order);
 		}
 
 		private const string name = "regression";

@@ -700,6 +700,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Linear regression of data (including uncertainities of estimated parameters).
+        /// </summary>
+        internal static string HelpLinearRegression {
+            get {
+                return ResourceManager.GetString("HelpLinearRegression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logarithm of the value (with specified base).
         /// </summary>
         internal static string HelpLog {

@@ -312,6 +312,7 @@
     <Compile Include="Functions\Unsorted\IntervalV.cs" />
     <Compile Include="Functions\Unsorted\IntervalPV.cs" />
     <Compile Include="Functions\Math\Polynom.cs" />
+    <Compile Include="Functions\Unsorted\LinearRegression.cs" />
     <Compile Include="Functions\Unsorted\Regression.cs" />
     <Compile Include="Functions\Unsorted\RemoveBadPoints.cs" />
     <Compile Include="Functions\Unsorted\Time.cs" />

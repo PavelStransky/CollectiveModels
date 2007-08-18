@@ -70,6 +70,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.FnTime());
             functions.Add(new Functions.TimeNow());
             functions.Add(new Functions.FnRegression());
+            functions.Add(new Functions.LinearRegression());
             functions.Add(new Functions.RemoveBadPoints());
             functions.Add(new Functions.FFTSpectrum());
 

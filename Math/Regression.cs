@@ -44,5 +44,42 @@ namespace PavelStransky.Math {
 
 			return m.Inv() * v;
 		}
-	}
+
+        /// <summary>
+        /// Lineární regrese vèetnì chyb koeficientù
+        /// </summary>
+        public static Vector ComputeLinear(PointVector points) {
+            double sumx = 0.0;
+            double sumy = 0.0;
+            double sumxy = 0.0;
+            double sumx2 = 0.0;
+            double sumy2 = 0.0;
+
+            int n = points.Length;
+
+            for(int i = 0; i < n; i++) {
+                PointD p = points[i];
+                sumx += p.X;
+                sumy += p.Y;
+                sumxy += p.X * p.Y;
+                sumx2 += p.X * p.X;
+                sumy2 += p.Y * p.Y;
+            }
+
+            Vector v = new Vector(5);
+            
+            // Odhady parametrù regrese
+            v[1] = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx * sumx);
+            v[0] = (sumy - v[1] * sumx) / n;
+
+            // Odhad smìrodatné odchylky (s^2)
+            v[2] = (sumy2 - v[0] * sumy - v[1] * sumxy) / (n - 2);
+
+            // Smìrodatné odchylky parametrù
+            v[3] = System.Math.Sqrt(v[2] * sumx2 / (n * sumx2 - sumx * sumx));
+            v[4] = System.Math.Sqrt(n * v[2] / (n * sumx2 - sumx * sumx));
+
+            return v;
+        }
+    }
 }

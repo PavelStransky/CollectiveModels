@@ -1,19 +1,31 @@
+using System.Collections;
 using System;
 
-using PavelStransky.Expression;
+using PavelStransky.Math;
 
-namespace PavelStransky.Expression.BinaryOperators {
+namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Booleovský souèet ||
+    /// Operator ||
     /// </summary>
-    public class BoolOr: BinaryOperator {
-        public override string OperatorName { get { return operatorName; } }
-        public override OperatorPriority Priority { get { return OperatorPriority.BoolAddPriority; } }
+    public class BoolOr: Operator {
+        public override string Name { get { return name; } }
+        public override string Help { get { return Messages.HelpBoolOr; } }
+        public override OperatorPriority Priority { get { return OperatorPriority.BoolOrPriority; } }
 
-        protected override object EvaluateBB(bool left, bool right) {
-            return left || right;
+        protected override void CreateParameters() {
+            this.SetNumParams(1, true);
+            this.SetParam(0, true, true, false, Messages.PBool, Messages.PBoolDescription, null, typeof(bool));
         }
 
-        private const string operatorName = "||";
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            bool result = true;
+
+            foreach(bool b in arguments)
+                result = result || b;
+
+            return result;
+        }
+
+        private const string name = "||";
     }
 }

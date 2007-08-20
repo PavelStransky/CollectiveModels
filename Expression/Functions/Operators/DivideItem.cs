@@ -5,16 +5,16 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Operator minus
+    /// Operator divide, items of vectors and matrices is divided among one another
     /// </summary>
-    public class Minus: Operator {
+    public class DivideItem: Operator {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.HelpMinus; } }
-        public override OperatorPriority Priority { get { return OperatorPriority.SumPriority; } }
+        public override string Help { get { return Messages.HelpDivideItem; } }
+        public override OperatorPriority Priority { get { return OperatorPriority.ProductPriority; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(1, true);
-            this.SetParam(0, true, true, false, Messages.PMinuend, Messages.PMinuend, null,
+            this.SetParam(0, true, true, false, Messages.PDividend, Messages.PDividendDescription, null,
                 typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(DateTime));
 
             this.AddCompatibility(typeof(int), typeof(double));
@@ -25,7 +25,6 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            int count = arguments.Count;
             int[] lengths = this.GetTypesLength(arguments, true);
 
             int k = 0;
@@ -35,27 +34,28 @@ namespace PavelStransky.Expression.Functions {
                 int lengthv = lengths[4];
                 Vector resultv = new Vector(lengthv);
 
-                for(int i = 0; i < lengthv; i++)
+                for(int i = 0; i < lengthv; i++) {
+                    resultv[i] = 1.0;
                     foreach(object o in arguments) {
-                        if(k == 0 && count > 1) {
+                        if(k == 0) {
                             if(o is Vector)
-                                resultv[i] += (o as Vector)[i];
+                                resultv[i] *= (o as Vector)[i];
                             else if(o is double)
-                                resultv[i] += (double)o;
+                                resultv[i] *= (double)o;
                             else if(o is int)
-                                resultv[i] += (int)o;
+                                resultv[i] *= (int)o;
                         }
                         else {
                             if(o is Vector)
-                                resultv[i] -= (o as Vector)[i];
+                                resultv[i] /= (o as Vector)[i];
                             else if(o is double)
-                                resultv[i] -= (double)o;
+                                resultv[i] /= (double)o;
                             else if(o is int)
-                                resultv[i] -= (int)o;
+                                resultv[i] /= (int)o;
                         }
                         k++;
                     }
-
+                }
                 return resultv;
             }
 
@@ -65,42 +65,43 @@ namespace PavelStransky.Expression.Functions {
                 Matrix resultm = new Matrix(lengthmx, lengthmy);
 
                 for(int i = 0; i < lengthmx; i++)
-                    for(int j = 0; j < lengthmy; j++)
+                    for(int j = 0; j < lengthmy; j++) {
+                        resultm[i, j] = 1.0;
                         foreach(object o in arguments) {
-                            if(k == 0 && count > 1) {
+                            if(k == 0) {
                                 if(o is Matrix)
-                                    resultm[i, j] += (o as Matrix)[i, j];
+                                    resultm[i, j] *= (o as Matrix)[i, j];
                                 else if(o is double)
-                                    resultm[i, j] += (double)o;
+                                    resultm[i, j] *= (double)o;
                                 else if(o is int)
-                                    resultm[i, j] += (int)o;
+                                    resultm[i, j] *= (int)o;
                             }
                             else {
                                 if(o is Matrix)
-                                    resultm[i, j] += (o as Matrix)[i, j];
+                                    resultm[i, j] /= (o as Matrix)[i, j];
                                 else if(o is double)
-                                    resultm[i, j] += (double)o;
+                                    resultm[i, j] /= (double)o;
                                 else if(o is int)
-                                    resultm[i, j] += (int)o;
+                                    resultm[i, j] /= (int)o;
                             }
                             k++;
                         }
-
+                    }
                 return resultm;
             }
 
             else if(lengths[8] >= 0) {  // PointD
-                double x = 0.0;
-                double y = 0.0;
+                double x = 1.0;
+                double y = 1.0;
 
                 foreach(PointD p in arguments) {
-                    if(k == 0 && count > 1) {
-                        x += p.X;
-                        y += p.Y;
+                    if(k == 0 ) {
+                        x *= p.X;
+                        y *= p.Y;
                     }
                     else {
-                        x -= p.X;
-                        y -= p.Y;
+                        x /= p.X;
+                        y /= p.Y;
                     }
                     k++;
                 }
@@ -108,29 +109,14 @@ namespace PavelStransky.Expression.Functions {
                 return new PointD(x, y);
             }
 
-            else if(lengths[10] >= 0) { // DateTime
-                TimeSpan resultt;
-
-                if(count == 1)
-                    resultt = DateTime.Now - (DateTime)arguments[0];
-                else if(count == 2)
-                    resultt = (DateTime)arguments[0] - (DateTime)arguments[1];
-                else
-                    throw new FunctionDefinitionException(
-                        string.Format(Messages.EMManyArgs, this.Name),
-                        string.Format(Messages.EMInvalidNumberArgsDetail, 2, count));
-
-                return resultt;
-            }
-
             else if(lengths[0] >= 0 && lengths[2] < 0) {    // int
-                int resulti = 0;
+                int resulti = 1;
 
                 foreach(int i in arguments) {
-                    if(k == 0 && count > 1)
-                        resulti += i;
+                    if(k == 0)
+                        resulti *= i;
                     else
-                        resulti -= i;
+                        resulti /= i;
                     k++;
                 }
 
@@ -138,20 +124,20 @@ namespace PavelStransky.Expression.Functions {
             }
 
             else {                      // double a int - výsledek double
-                double resultd = 0;
+                double resultd = 1.0;
 
                 foreach(object o in arguments) {
-                    if(k == 0 && count > 1) {
+                    if(k == 0) {
                         if(o is int)
-                            resultd += (int)o;
+                            resultd *= (int)o;
                         else
-                            resultd += (double)o;
+                            resultd *= (double)o;
                     }
                     else {
                         if(o is int)
-                            resultd -= (int)o;
+                            resultd /= (int)o;
                         else
-                            resultd -= (double)o;
+                            resultd /= (double)o;
                     }
                     k++;
                 }
@@ -160,6 +146,6 @@ namespace PavelStransky.Expression.Functions {
             }
         }
 
-        private const string name = "-";
+        private const string name = "//";
     }
 }

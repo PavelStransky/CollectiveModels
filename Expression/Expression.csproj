@@ -171,6 +171,19 @@
     <Compile Include="Functions\Math\Wigner.cs" />
     <Compile Include="Functions\Matrix\BandWidth.cs" />
     <Compile Include="Functions\Operators\Assignment.cs" />
+    <Compile Include="Functions\Operators\BoolAnd.cs" />
+    <Compile Include="Functions\Operators\BoolOr.cs" />
+    <Compile Include="Functions\Operators\Divide.cs" />
+    <Compile Include="Functions\Operators\DivideItem.cs" />
+    <Compile Include="Functions\Operators\Equality.cs" />
+    <Compile Include="Functions\Operators\GEquality.cs" />
+    <Compile Include="Functions\Operators\Greater.cs" />
+    <Compile Include="Functions\Operators\Interval.cs" />
+    <Compile Include="Functions\Operators\OpJoin.cs" />
+    <Compile Include="Functions\Operators\LEquality.cs" />
+    <Compile Include="Functions\Operators\Lesser.cs" />
+    <Compile Include="Functions\Operators\Minus.cs" />
+    <Compile Include="Functions\Operators\Inequality.cs" />
     <Compile Include="Functions\Operators\Plus.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -216,6 +229,11 @@
     <Compile Include="Functions\MinMax\MinMax.cs" />
     <Compile Include="Functions\NuDatReadKnownIsotopes.cs" />
     <Compile Include="Functions\NuDatReadNucleus.cs" />
+    <Compile Include="Functions\Operators\Power.cs" />
+    <Compile Include="Functions\Operators\PowerItem.cs" />
+    <Compile Include="Functions\Operators\Separator.cs" />
+    <Compile Include="Functions\Operators\Times.cs" />
+    <Compile Include="Functions\Operators\TimesItem.cs" />
     <Compile Include="Functions\Parameters.cs" />
     <Compile Include="Functions\Program\Print.cs" />
     <Compile Include="Functions\Program\PrintClear.cs" />

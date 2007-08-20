@@ -95,7 +95,7 @@ namespace PavelStransky.Expression {
         /// <returns>Polohu místa, kde je chyba</returns>
         public static void CheckSyntax(string e) {
             int length = e.Length;
-            int n = openChars.Length;
+            int n = openBracketChars.Length;
             ArrayList numBrackets = new ArrayList();
 
             // Aktuální poèet závorek; na nb[n] je pozice otevírací závorky
@@ -124,12 +124,15 @@ namespace PavelStransky.Expression {
                 // Cyklus pøes všechny závorky
                 bool bracket = false;
                 for(int k = 0; k < n; k++) {
-                    if(e[i] == openChars[k]) {
+                    if(e[i] == openBracketChars[k]) {
                         if(!CheckPositionType(position,         // Normální závorka
                             SyntaxPosition.Beginning, SyntaxPosition.AfterOperator,
                             SyntaxPosition.AfterVariableOrFunction) 
                             && k == 0)
-                            throw new ExpressionException("Chybná závorka", i);
+                            throw new ExpressionException(
+                                Messages.EMInvalidBracketPosition, 
+                                string.Format(Messages.EMInvalidBracketPositionDetail, openBracketChars[k]), 
+                                i);
 
                         else if(!CheckPositionType(position,    // Indexovací závorka
                             SyntaxPosition.AfterValue, SyntaxPosition.AfterVariableOrFunction)
@@ -147,12 +150,18 @@ namespace PavelStransky.Expression {
                         position = SyntaxPosition.Beginning;
                     }
 
-                    else if(e[i] == closeChars[k]) {
+                    else if(e[i] == closeBracketChars[k]) {
                         if(CheckPositionType(position, SyntaxPosition.AfterOperator))
-                            throw new ExpressionException("Chybná závorka", i);
+                            throw new ExpressionException(
+                                Messages.EMInvalidBracketPosition, 
+                                string.Format(Messages.EMInvalidBracketPositionDetail, closeBracketChars[k]), 
+                                i);
 
                         if(numBrackets.Count == 1)
-                            throw new ExpressionException("Chyba závorek, uzavírací pøed otevírací.", i);
+                            throw new ExpressionException(
+                                Messages.EMInvalidBracketPosition, 
+                                string.Format(Messages.EMInvalidBracketPositionDetailCloseBeforeOpen, closeBracketChars[k], openBracketChars[k]), 
+                                i);
 
                         nb = (int[])numBrackets[0];
                         nb = (int[])nb.Clone();
@@ -162,7 +171,10 @@ namespace PavelStransky.Expression {
 
                         for(int l = 0; l < n; l++)
                             if(nb[l] != nbp[l])
-                                throw new ExpressionException("Chyba závorek, uzavírací pøed otevírací.", i);
+                                throw new ExpressionException(
+                                    Messages.EMInvalidBracketPosition,
+                                    string.Format(Messages.EMInvalidBracketPositionDetailBracketMixing, openBracketChars[(k + 1) % 2], closeBracketChars[k]),
+                                    i, nbp[n]);
 
                         numBrackets.RemoveAt(0);
                         bracket = true;
@@ -176,7 +188,9 @@ namespace PavelStransky.Expression {
 
                 else if(e[i] == endVariableChar) {
                     if(((int[])numBrackets[0])[1] <= 0)
-                        throw new ExpressionException("Chyba koncové promìnné, není obsažena v indexových závorkách.", i);
+                        throw new ExpressionException(
+                            Messages.EMInvalidEndVariablePosition,
+                            i);
                     i++;
                     position = SyntaxPosition.AfterValue;
                 }
@@ -188,7 +202,9 @@ namespace PavelStransky.Expression {
                 else if((j = StringPosition(e, i)) > 0) {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
-                        throw new ExpressionException("Chyba, string na nesprávném místì", i);
+                        throw new ExpressionException(
+                            string.Format(Messages.EMInvalidPosition, "String"),
+                            i);
 
                     i = j;
                     position = SyntaxPosition.AfterValue;
@@ -197,7 +213,9 @@ namespace PavelStransky.Expression {
                 else if((j = VariableOrFunctionPosition(e, i)) > 0) {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
-                        throw new ExpressionException("Chyba, promìnná na nesprávném místì", i);
+                        throw new ExpressionException(
+                            string.Format(Messages.EMInvalidPosition, "Variable"), 
+                            i);
 
                     i = j;
                     position = SyntaxPosition.AfterVariableOrFunction;
@@ -206,7 +224,9 @@ namespace PavelStransky.Expression {
                 else if((j = NumberPosition(e, i)) > 0) {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
-                        throw new ExpressionException("Chyba, èíslo na nesprávném místì", i);
+                        throw new ExpressionException(
+                            string.Format(Messages.EMInvalidPosition, "Number"),
+                            i);
 
                     i = j;
                     position = SyntaxPosition.AfterValue;
@@ -218,7 +238,7 @@ namespace PavelStransky.Expression {
                 }
 
                 else
-                    throw new ExpressionException("Chyba na pozici i", i);
+                    throw new ExpressionException(Messages.EMInvalidCharacter, i);
             }
         }
 
@@ -272,7 +292,7 @@ namespace PavelStransky.Expression {
                     break;
 
             if(j < 0)
-                throw new ExpressionException("Chyba uvozovek, pozice i", i);
+                throw new ExpressionException(Messages.EMStringCharMissing, i);
 
             return j + 1;
         }
@@ -363,7 +383,7 @@ namespace PavelStransky.Expression {
         /// <param name="i">Poèáteèní pozice</param>
         private static int FirstNonOperatorChar(string e, int i) {
             int length = e.Length;
-            int n = openChars.Length;
+            int n = openBracketChars.Length;
 
             bool bracket = false;
 
@@ -381,7 +401,7 @@ namespace PavelStransky.Expression {
 
 
                 for(int k = 0; k < n; k++)
-                    if(e[i] == openChars[k] || e[i] == closeChars[k]) {
+                    if(e[i] == openBracketChars[k] || e[i] == closeBracketChars[k]) {
                         bracket = true;
                         break;
                     }
@@ -402,10 +422,10 @@ namespace PavelStransky.Expression {
         /// <param name="i">Poèáteèní pozice</param>
         private static int BracketPosition(string e, int i) {
             int length = e.Length;
-            int n = openChars.Length;
+            int n = openBracketChars.Length;
 
             int k = 0;
-            while(k < n && e[i] != openChars[k])
+            while(k < n && e[i] != openBracketChars[k])
                 k++;
 
             if(k == n)
@@ -415,12 +435,12 @@ namespace PavelStransky.Expression {
             int numBrackets = 0;
 
             while(i < length) {
-                if(e[i] == openChars[k]) {
+                if(e[i] == openBracketChars[k]) {
                     numBrackets++;
                     i++;
                 }
 
-                else if(e[i] == closeChars[k]) {
+                else if(e[i] == closeBracketChars[k]) {
                     numBrackets--;
                     if(numBrackets == 0)
                         return i + 1;
@@ -475,6 +495,19 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
+        /// Odstraní z konce všechny znaky komentáøe
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        protected static string RemoveEndSeparator(string e) {
+            int i = e.Length - 1;
+            
+            while(i >= 0 && e[i] == separatorChar)
+                i--;
+
+            return e.Substring(0, i + 1);
+        }
+
+        /// <summary>
         /// Odstraní všechny vnìjší závorky z výrazu
         /// </summary>
         /// <param name="e">Výraz</param>
@@ -503,7 +536,7 @@ namespace PavelStransky.Expression {
 
 			while(e.Length != 0) {
                 int j = 0;
-                if((j = BracketPosition(e, 0)) > 0 && e[0] == openChars[bracketNumber] && j == e.Length)
+                if((j = BracketPosition(e, 0)) > 0 && e[0] == openBracketChars[bracketNumber] && j == e.Length)
                         e = e.Substring(1, e.Length - 2).Trim();
                 else
                     break;
@@ -558,7 +591,7 @@ namespace PavelStransky.Expression {
                 }
 
                 else if((j = BracketPosition(e, i)) > 0) {
-                    if(e[i] == openChars[0])
+                    if(e[i] == openBracketChars[0])
                         result = ExpressionTypes.Function;
                     else
                         result = ExpressionTypes.Indexer;
@@ -675,7 +708,7 @@ namespace PavelStransky.Expression {
             else if(p == "matrix")
                 return typeof(Matrix);
 
-            throw new ExpressionException(string.Format(errorMessageUnknownType, p));
+            throw new ExpressionException(string.Format(Messages.EMBadTypeName, p));
         }
 
 		/// <summary>
@@ -688,7 +721,7 @@ namespace PavelStransky.Expression {
 			else if(e == boolFalse)
 				return false;
 			else
-				throw new ExpressionException(errorMessageNotBool, string.Format(errorMessageNotBoolDetail, e));
+				throw new ExpressionException(Messages.EMBadBoolValue);
 		}
 
 		/// <summary>
@@ -768,12 +801,7 @@ namespace PavelStransky.Expression {
             SyntaxPosition position = SyntaxPosition.Beginning;
 
             while(i < length) {
-                if(e[i] == separatorChar) {
-                    position = SyntaxPosition.Beginning;
-                    i++;
-                }
-
-                else if((j = StringPosition(e, i)) > 0 ||
+                if((j = StringPosition(e, i)) > 0 ||
                     (j = NumberPosition(e, i)) > 0 ||
                     (j = BracketPosition(e, i)) > 0) {
                     i = j;
@@ -793,7 +821,7 @@ namespace PavelStransky.Expression {
 
                         // Máme napøíklad toto: y + -(x; 12);
                         // - už je hotová funkce, nemusíme ji nijak zpracovávat
-                        if(e[l] == openChars[0]) {
+                        if(e[l] == openBracketChars[0]) {
                             i = BracketPosition(e, l);
                             position = SyntaxPosition.AfterVariableOrFunction;
                             continue;
@@ -928,7 +956,8 @@ namespace PavelStransky.Expression {
                     i++;
             }
 
-            result.Add(FillBracket(e.Substring(k, length - k)));
+            if(length - k > 0)
+                result.Add(FillBracket(e.Substring(k, length - k)));
             return result;
         }
 
@@ -946,7 +975,7 @@ namespace PavelStransky.Expression {
                 if((j = StringPosition(e, i)) > 0)
                     i = j;
                 else if((j = BracketPosition(e, i)) > 0) {
-                    if(e[i] == openChars[0])
+                    if(e[i] == openBracketChars[0])
                         break;
                     else
                         i++;
@@ -976,7 +1005,7 @@ namespace PavelStransky.Expression {
                 if((j = StringPosition(e, i)) > 0)
                     i = j;
                 else if((j = BracketPosition(e, i)) > 0) {
-                    if(e[i] == openChars[1])
+                    if(e[i] == openBracketChars[1])
                         k = i;
                     i = j;
                 }
@@ -1021,7 +1050,7 @@ namespace PavelStransky.Expression {
                 if((j = StringPosition(e, i)) > 0)
                     i = j;
                 else if((j = BracketPosition(e, i)) > 0) {
-                    if(e[i] == openChars[1])    // Pøeskakujeme jen další vnoøený indexer
+                    if(e[i] == openBracketChars[1])    // Pøeskakujeme jen další vnoøený indexer
                         i = j;
                     else
                         i++;
@@ -1085,19 +1114,5 @@ namespace PavelStransky.Expression {
 
             return false;
         }
-
-        private const string errorMessageBracketNumber = "Ve výrazu je chybný poèet závorek.";
-		private const string errorMessageBracketNumberDetail = "Výraz: {0}\nRozdíl otevírací - uzavírací závorky: {1}";
-
-		private const string errorMessageBracketPosition = "Závorky ve výrazu jsou špatnì uspoøádány.";
-		private const string errorMessageBracketPositionDetail = "Výraz: {0}\nPozice: {1}";
-
-		private const string errorMessageNotBool = "Výraz nelze vyhodnotit jako logickou promìnnou.";
-		private const string errorMessageNotBoolDetail = "Výraz: {0}";
-
-		private const string errorMessageSubstChar = "Ve výrazu se nesmí vyskytovat znak '{0}'";
-		private const string errorMessageSubstCharDetail = "Výraz: {0}\nPozice: {1}";
-
-        private const string errorMessageUnknownType = "Unknown type {0}.";
     }
 }

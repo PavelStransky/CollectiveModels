@@ -1,30 +1,41 @@
+using System.Collections;
 using System;
 
-using PavelStransky.Expression;
+using PavelStransky.Math;
 
-namespace PavelStransky.Expression.BinaryOperators {
-	/// <summary>
-	/// Interval 1...X
-	/// </summary>
-	public class Interval: BinaryOperator {
-		public override string OperatorName {get {return operatorName;}}
-		public override OperatorPriority Priority {get {return OperatorPriority.IntervalPriority;}}
+namespace PavelStransky.Expression.Functions {
+    /// <summary>
+    /// Interval operator
+    /// </summary>
+    public class Interval: Operator {
+        public override string Name { get { return name; } }
+        public override string Help { get { return Messages.HelpTimes; } }
+        public override OperatorPriority Priority { get { return OperatorPriority.IntervalPriority; } }
 
-		protected override object EvaluateII(int left, int right) {
-            if(left < right) {
-                TArray result = new TArray(typeof(int), right - left + 1);
-                for(int i = left; i <= right; i++)
-                    result[i - left] = i;
-                return result;
+        protected override void CreateParameters() {
+            this.SetNumParams(3);
+            this.SetParam(0, true, true, false, Messages.PStartingPoint, Messages.PStartingPointDetail, null, typeof(int));
+            this.SetParam(1, true, true, false, Messages.PEndingPoint, Messages.PEndingPointDetail, null, typeof(int));
+            this.SetParam(2, false, true, false, Messages.PStep, Messages.PStepDescription, 1, typeof(int));
+        }
+
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            int start = (int)arguments[0];
+            int end = (int)arguments[1];
+            int step = (int)arguments[2];
+
+            int num = System.Math.Max(0, (end - start)) / step + 1;
+            TArray result = new TArray(typeof(int), num);
+
+            int i = 0;
+            while(start <= end) {
+                result[i++] = start;
+                start += step;
             }
-            else {
-                TArray result = new TArray(typeof(int), left - right + 1);
-                for(int i = left; i >= right; i--)
-                    result[left - i] = i;
-                return result;
-            }
-		}
 
-		private const string operatorName = "...";
-	}
+            return result;
+        }
+
+        private const string name = ":";
+    }
 }

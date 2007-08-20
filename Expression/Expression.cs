@@ -21,6 +21,7 @@ namespace PavelStransky.Expression {
             CheckSyntax(this.expression);
 
             this.expression = RemoveComments(this.expression);
+            this.expression = RemoveEndSeparator(this.expression);
             this.expression = FillBracket(this.expression);
 
             this.atom = CreateAtomObject(this.expression);
@@ -41,43 +42,43 @@ namespace PavelStransky.Expression {
 	/// Výjimka ve tøídì Expression
 	/// </summary>
 	public class ExpressionException: DetailException {
-        private int position;
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public ExpressionException(string message) : base(errMessage + message) {}
+        private int position1 = -1;
+        private int position2 = -1;
 
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="message">Text chybového hlášení</param>
         /// <param name="position">Pozice chyby</param>
-		public ExpressionException(string message, int position) : base(errMessage + message) {
-            this.position = position;
+        public ExpressionException(string message, params int[] position)
+            : base(errMessage + message) {
+            if(position.Length > 0)
+                this.position1 = position[0];
+            if(position.Length > 1)
+                this.position2 = position[1];
         }
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		/// <param name="detailMessage">Detail chyby</param>
-		public ExpressionException(string message, string detailMessage) : base(errMessage + message, detailMessage) {}
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="message">Text chybového hlášení</param>
         /// <param name="position">Pozice chyby</param>
-        public ExpressionException(string message, string detailMessage, int position) : base(errMessage + message, detailMessage) {
-            this.position = position;
+        public ExpressionException(string message, string detailMessage, params int[] position) : base(errMessage + message, detailMessage) {
+            if(position.Length > 0)
+                this.position1 = position[0];
+            if(position.Length > 1)
+                this.position2 = position[1];
         }
 
         /// <summary>
-        /// Pozice chyby
+        /// Pozice chyby (zaèátek)
         /// </summary>
-        public int Position { get { return this.position; } }
+        public int Position1 { get { return this.position1; } }
+
+        /// <summary>
+        /// Pozice chyby (konec)
+        /// </summary>
+        public int Position2 { get { return this.position2; } }
 
         private const string errMessage = "Pøi zpracování výrazu došlo k chybì: ";
 	}

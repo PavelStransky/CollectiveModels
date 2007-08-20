@@ -1,98 +1,74 @@
-using System;
+using System.Collections;
 using System.Text;
+using System;
 
 using PavelStransky.Math;
-using PavelStransky.Expression.Operators;
 
-namespace PavelStransky.Expression.BinaryOperators {
-	/// <summary>
-	/// Operátor mocnina po prvcích
-	/// </summary>
-	public class Power: BinaryOperator {
-		public override string OperatorName {get {return operatorName;}}
+namespace PavelStransky.Expression.Functions {
+    /// <summary>
+    /// Operator power
+    /// </summary>
+    public class Power: Operator {
+        public override string Name { get { return name; } }
+        public override string Help { get { return Messages.HelpPower; } }
         public override OperatorPriority Priority { get { return OperatorPriority.PowerPriority; } }
 
-        protected override object EvaluateII(int left, int right) {
-            return (int)System.Math.Pow(left, right);
+        protected override void CreateParameters() {
+            this.SetNumParams(2);
+            this.SetParam(0, true, true, false, Messages.PRoot, Messages.PRootDescription, null,
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(string));
+            this.SetParam(1, true, true, false, Messages.PExponent, Messages.PExponentDescription, null,
+                typeof(int), typeof(double));
         }
 
-		protected override object EvaluateDDx(double left, double right) {
-			return System.Math.Pow(left, right);
-		}
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            object left = arguments[0];
+            object right = arguments[1];
 
-		protected override object EvaluateDVx(double left, Vector right) {
-			Vector result = new Vector(right.Length);
+            if(left is int) {
+                if(right is int)
+                    return (int)System.Math.Pow((int)left, (int)right);
+                else if(right is double)
+                    return System.Math.Pow((int)left, (double)right);
+            }
+            else if(left is double) {
+                if(right is int)
+                    return System.Math.Pow((double)left, (int)right);
+                else if(right is double)
+                    return System.Math.Pow((double)left, (double)right);
+            }
+            else if(left is Vector) {
+                if(right is int) {
+                    if(((int)right % 2) == 0)
+                        return System.Math.Pow((Vector)left * (Vector)right, (int)right / 2);
+                    else
+                        return System.Math.Pow((Vector)left * (Vector)right, (int)right / 2) * (Vector)left;
+                }
+            }
+            else if(left is Matrix) {
+                if(right is int) {
+                    Matrix m = (Matrix)left;
+                    Matrix result = Matrix.Unit(m.Length);
 
-			for(int i = 0; i < result.Length; i++)
-				result[i] = System.Math.Pow(left, right[i]);
-			
-			return result;
-		}
+                    for(int i = 0; i < (int)right; i++)
+                        result *= m;
 
-		protected override object EvaluateDMx(double left, Matrix right) {
-			Matrix result = new Matrix(right.LengthX, right.LengthY);
+                    return result;
+                }
+            }
+            else if(left is string) {
+                if(right is int) {
+                    StringBuilder s = new StringBuilder();
+                    for(int i = 0; i < (int)right; i++)
+                        s.Append(left);
+                    return s.ToString();
+                }
+            }
 
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
-					result[i, j] = System.Math.Pow(left, right[i, j]);
-			
-			return result;
-		}
+            this.BadTypeCompatibility(left, right);
+            return null;
+        }
 
-		protected override object EvaluateVDx(Vector left, double right) {
-			Vector result = new Vector(left.Length);
-
-			for(int i = 0; i < result.Length; i++)
-				result[i] = System.Math.Pow(left[i], right);
-			
-			return result;
-		}
-
-		protected override object EvaluateVVx(Vector left, Vector right) {
-			if(left.Length != right.Length)
-				throw new OperatorException(string.Format(errorMessageNotEqualLengthVector, this.OperatorName, left.Length, right.Length));
-
-			Vector result = new Vector(left.Length);
-
-			for(int i = 0; i < result.Length; i++)
-				result[i] = System.Math.Pow(left[i], right[i]);
-			
-			return result;
-		}
-
-		protected override object EvaluateMDx(Matrix left, double right) {
-			Matrix result = new Matrix(left.LengthX, left.LengthY);
-
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
-					result[i, j] = System.Math.Pow(left[i, j], right);
-			
-			return result;
-		}
-
-		protected override object EvaluateMMx(Matrix left, Matrix right) {
-			if(left.LengthX != right.LengthX || left.LengthY != right.LengthY)
-				throw new OperatorException(string.Format(errorMessageNotEqualLengthMatrix, this.OperatorName, left.LengthX, left.LengthY, right.LengthX, right.LengthY));
-
-			Matrix result = new Matrix(left.LengthX, left.LengthY);
-
-			for(int i = 0; i < result.LengthX; i++)
-				for(int j = 0; j < result.LengthY; j++)
-					result[i, j] = System.Math.Pow(left[i, j], right[i, j]);
-			
-			return result;
-		}
-
-		protected override object EvaluateSI(string left, int right) {
-			StringBuilder result = new StringBuilder(left.Length * right);
-			for(int i = 0; i < right; i++)
-				result.Append(left);
-			return result.ToString();
-		}
-
-		private const string errorMessageNotEqualLengthVector = "Pro použití operátoru '{0}' mezi vektory je nutné, aby jejich rozmìry ({1}, {2}) byly shodné.";
-		private const string errorMessageNotEqualLengthMatrix = "Pro použití operátoru '{0}' mezi maticemi je nutné, aby jejich rozmìry (({1},{2}), {{3},{4})) byly shodné.";
-
-		private const string operatorName = "^";
-	}
+        private const string name = "^";
+    }
 }

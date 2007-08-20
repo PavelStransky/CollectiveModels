@@ -61,7 +61,34 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter &quot;{0}&quot; has bad type..
+        ///   Looks up a localized string similar to The Arrays for function &apos;{0}&apos; do not have the same sizes (dimensions)..
+        /// </summary>
+        internal static string EMBadArrayDimensions {
+            get {
+                return ResourceManager.GetString("EMBadArrayDimensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Array: {0}\nSecond Array: {1}.
+        /// </summary>
+        internal static string EMBadArrayDimensionsDetail {
+            get {
+                return ResourceManager.GetString("EMBadArrayDimensionsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to String &apos;{0}&apos; has not been determined as a bool value..
+        /// </summary>
+        internal static string EMBadBoolValue {
+            get {
+                return ResourceManager.GetString("EMBadBoolValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter &apos;{0}&apos; in function &apos;{1}&apos; has bad type..
         /// </summary>
         internal static string EMBadParamType {
             get {
@@ -79,7 +106,16 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name &quot;{0}&quot; of a variable has not valid format..
+        ///   Looks up a localized string similar to String &apos;{0}&apos; has not been determined as a valid type..
+        /// </summary>
+        internal static string EMBadTypeName {
+            get {
+                return ResourceManager.GetString("EMBadTypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name &apos;{0}&apos; of a variable has not valid format..
         /// </summary>
         internal static string EMBadVariableName {
             get {
@@ -88,7 +124,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name must not contain the character &quot;{0}&quot; at position {1}..
+        ///   Looks up a localized string similar to The name must not contain the character &apos;{0}&apos; at position {1}..
         /// </summary>
         internal static string EMBadVariableNameInvalidCharacter {
             get {
@@ -106,11 +142,110 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file you &quot;{0}&quot; have specified does not exist..
+        ///   Looks up a localized string similar to Function &apos;{0}&apos; has not enough arguments..
+        /// </summary>
+        internal static string EMFewArgs {
+            get {
+                return ResourceManager.GetString("EMFewArgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file you &apos;{0}&apos; have specified does not exist..
         /// </summary>
         internal static string EMFileNotExist {
             get {
                 return ResourceManager.GetString("EMFileNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid bracket position..
+        /// </summary>
+        internal static string EMInvalidBracketPosition {
+            get {
+                return ResourceManager.GetString("EMInvalidBracketPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bracket of type &apos;{0}&apos; is placed on invalid position..
+        /// </summary>
+        internal static string EMInvalidBracketPositionDetail {
+            get {
+                return ResourceManager.GetString("EMInvalidBracketPositionDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid mixing of brackets &apos;{0}&apos; and &apos;{1}&apos;..
+        /// </summary>
+        internal static string EMInvalidBracketPositionDetailBracketMixing {
+            get {
+                return ResourceManager.GetString("EMInvalidBracketPositionDetailBracketMixing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close bracket &apos;{0}&apos; is placed before open bracket &apos;{1}&apos; or open bracket &apos;{1}&apos; is missing..
+        /// </summary>
+        internal static string EMInvalidBracketPositionDetailCloseBeforeOpen {
+            get {
+                return ResourceManager.GetString("EMInvalidBracketPositionDetailCloseBeforeOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid character..
+        /// </summary>
+        internal static string EMInvalidCharacter {
+            get {
+                return ResourceManager.GetString("EMInvalidCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid &apos;$&apos; position. It can be placed only inside indexing brackets..
+        /// </summary>
+        internal static string EMInvalidEndVariablePosition {
+            get {
+                return ResourceManager.GetString("EMInvalidEndVariablePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Function &apos;{0}&apos; has incorrect number of arguments..
+        /// </summary>
+        internal static string EMInvalidNumberArgs {
+            get {
+                return ResourceManager.GetString("EMInvalidNumberArgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arguments needed: {0}\nArguments number: {1}.
+        /// </summary>
+        internal static string EMInvalidNumberArgsDetail {
+            get {
+                return ResourceManager.GetString("EMInvalidNumberArgsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is placed on invalid position..
+        /// </summary>
+        internal static string EMInvalidPosition {
+            get {
+                return ResourceManager.GetString("EMInvalidPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Function &apos;{0}&apos; has too many arguments..
+        /// </summary>
+        internal static string EMManyArgs {
+            get {
+                return ResourceManager.GetString("EMManyArgs", resourceCulture);
             }
         }
         
@@ -178,7 +313,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter &quot;{0}&quot; (position {1}) of the function &quot;{2}&quot; is obligatory and cannot be omited..
+        ///   Looks up a localized string similar to Parameter &apos;{0}&apos; (position {1}) of the function &apos;{2}&apos; is obligatory and cannot be omited..
         /// </summary>
         internal static string EMObligatoryParameter {
             get {
@@ -241,7 +376,16 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable &quot;{0}&quot; cannot be set..
+        ///   Looks up a localized string similar to String character missing. String is opened, but not closed..
+        /// </summary>
+        internal static string EMStringCharMissing {
+            get {
+                return ResourceManager.GetString("EMStringCharMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; cannot be set..
         /// </summary>
         internal static string EMVarCannotBeSet {
             get {
@@ -295,11 +439,38 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator of assignment.
+        /// </summary>
+        internal static string HelpAssignment {
+            get {
+                return ResourceManager.GetString("HelpAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Size of the band of a band matrix.
         /// </summary>
         internal static string HelpBandWidth {
             get {
                 return ResourceManager.GetString("HelpBandWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator &amp;&amp; (boolean product).
+        /// </summary>
+        internal static string HelpBoolAnd {
+            get {
+                return ResourceManager.GetString("HelpBoolAnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator || (boolean sum).
+        /// </summary>
+        internal static string HelpBoolOr {
+            get {
+                return ResourceManager.GetString("HelpBoolOr", resourceCulture);
             }
         }
         
@@ -394,6 +565,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator /.
+        /// </summary>
+        internal static string HelpDivide {
+            get {
+                return ResourceManager.GetString("HelpDivide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator //, items of vectors and matrices are divided among one another.
+        /// </summary>
+        internal static string HelpDivideItem {
+            get {
+                return ResourceManager.GetString("HelpDivideItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converts given value to a double precision number.
         /// </summary>
         internal static string HelpDouble {
@@ -426,6 +615,15 @@ namespace PavelStransky.Expression {
         internal static string HelpEnvelopeMatrixG {
             get {
                 return ResourceManager.GetString("HelpEnvelopeMatrixG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator == (equality).
+        /// </summary>
+        internal static string HelpEquality {
+            get {
+                return ResourceManager.GetString("HelpEquality", resourceCulture);
             }
         }
         
@@ -511,6 +709,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator &gt;= (greater or equal).
+        /// </summary>
+        internal static string HelpGEquality {
+            get {
+                return ResourceManager.GetString("HelpGEquality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns selected columns from a matrix.
         /// </summary>
         internal static string HelpGetColumns {
@@ -583,6 +790,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator &gt;.
+        /// </summary>
+        internal static string HelpGreater {
+            get {
+                return ResourceManager.GetString("HelpGreater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the trace of the Hamiltonian matrix of a quantum system.
         /// </summary>
         internal static string HelpHamiltonianMatrixTrace {
@@ -628,6 +844,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator != (inequality).
+        /// </summary>
+        internal static string HelpInequality {
+            get {
+                return ResourceManager.GetString("HelpInequality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector.
         /// </summary>
         internal static string HelpInitialCondition {
@@ -651,6 +876,15 @@ namespace PavelStransky.Expression {
         internal static string HelpIntegrate {
             get {
                 return ResourceManager.GetString("HelpIntegrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns an array of integer numbers beginning and ending with given numbers (and with given step).
+        /// </summary>
+        internal static string HelpInterval {
+            get {
+                return ResourceManager.GetString("HelpInterval", resourceCulture);
             }
         }
         
@@ -727,6 +961,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator &lt;= (lesser or equal).
+        /// </summary>
+        internal static string HelpLEquality {
+            get {
+                return ResourceManager.GetString("HelpLEquality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator &lt;.
+        /// </summary>
+        internal static string HelpLesser {
+            get {
+                return ResourceManager.GetString("HelpLesser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Linear regression of data (including uncertainities of estimated parameters).
         /// </summary>
         internal static string HelpLinearRegression {
@@ -772,6 +1024,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator -.
+        /// </summary>
+        internal static string HelpMinus {
+            get {
+                return ResourceManager.GetString("HelpMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates new object of a given type.
         /// </summary>
         internal static string HelpNew {
@@ -808,11 +1069,29 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator ~ (joins numbers together into vector, joins strings and lists).
+        /// </summary>
+        internal static string HelpOpJoin {
+            get {
+                return ResourceManager.GetString("HelpOpJoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Pi number.
         /// </summary>
         internal static string HelpPi {
             get {
                 return ResourceManager.GetString("HelpPi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator +.
+        /// </summary>
+        internal static string HelpPlus {
+            get {
+                return ResourceManager.GetString("HelpPlus", resourceCulture);
             }
         }
         
@@ -867,6 +1146,24 @@ namespace PavelStransky.Expression {
         internal static string HelpPotentialRoots {
             get {
                 return ResourceManager.GetString("HelpPotentialRoots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator ^ (power).
+        /// </summary>
+        internal static string HelpPower {
+            get {
+                return ResourceManager.GetString("HelpPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator ^^, power is calculated among the items of vectors and matrices.
+        /// </summary>
+        internal static string HelpPowerItem {
+            get {
+                return ResourceManager.GetString("HelpPowerItem", resourceCulture);
             }
         }
         
@@ -1042,6 +1339,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator ; (separator).
+        /// </summary>
+        internal static string HelpSeparator {
+            get {
+                return ResourceManager.GetString("HelpSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sets a new context.
         /// </summary>
         internal static string HelpSetContext {
@@ -1204,6 +1510,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator *.
+        /// </summary>
+        internal static string HelpTimes {
+            get {
+                return ResourceManager.GetString("HelpTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator **, items of vectors and matrices are multiplied among one another.
+        /// </summary>
+        internal static string HelpTimesItem {
+            get {
+                return ResourceManager.GetString("HelpTimesItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given non-array object change to an array..
         /// </summary>
         internal static string HelpToArray {
@@ -1308,6 +1632,24 @@ namespace PavelStransky.Expression {
         internal static string NuDatReadNucleusPage {
             get {
                 return ResourceManager.GetString("NuDatReadNucleusPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to v.
+        /// </summary>
+        internal static string P1Assignment {
+            get {
+                return ResourceManager.GetString("P1Assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name or indexed item.
+        /// </summary>
+        internal static string P1AssignmentDescription {
+            get {
+                return ResourceManager.GetString("P1AssignmentDescription", resourceCulture);
             }
         }
         
@@ -1443,6 +1785,24 @@ namespace PavelStransky.Expression {
         internal static string P1RegressionDescription {
             get {
                 return ResourceManager.GetString("P1RegressionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to x.
+        /// </summary>
+        internal static string P2Assignment {
+            get {
+                return ResourceManager.GetString("P2Assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value to be assigned.
+        /// </summary>
+        internal static string P2AssignmentDescription {
+            get {
+                return ResourceManager.GetString("P2AssignmentDescription", resourceCulture);
             }
         }
         
@@ -1737,18 +2097,18 @@ namespace PavelStransky.Expression {
         /// <summary>
         ///   Looks up a localized string similar to a.
         /// </summary>
-        internal static string PAddent {
+        internal static string PAddend {
             get {
-                return ResourceManager.GetString("PAddent", resourceCulture);
+                return ResourceManager.GetString("PAddend", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to addent.
+        ///   Looks up a localized string similar to addend.
         /// </summary>
-        internal static string PAddentDescription {
+        internal static string PAddendDescription {
             get {
-                return ResourceManager.GetString("PAddentDescription", resourceCulture);
+                return ResourceManager.GetString("PAddendDescription", resourceCulture);
             }
         }
         
@@ -1816,6 +2176,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to b.
+        /// </summary>
+        internal static string PBool {
+            get {
+                return ResourceManager.GetString("PBool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boolean value.
+        /// </summary>
+        internal static string PBoolDescription {
+            get {
+                return ResourceManager.GetString("PBoolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c.
         /// </summary>
         internal static string PC {
@@ -1830,6 +2208,24 @@ namespace PavelStransky.Expression {
         internal static string PCDescription {
             get {
                 return ResourceManager.GetString("PCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c.
+        /// </summary>
+        internal static string PCoefficient {
+            get {
+                return ResourceManager.GetString("PCoefficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to coefficient.
+        /// </summary>
+        internal static string PCoefficientDetail {
+            get {
+                return ResourceManager.GetString("PCoefficientDetail", resourceCulture);
             }
         }
         
@@ -1933,6 +2329,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to d1.
+        /// </summary>
+        internal static string PDividend {
+            get {
+                return ResourceManager.GetString("PDividend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dividend.
+        /// </summary>
+        internal static string PDividendDescription {
+            get {
+                return ResourceManager.GetString("PDividendDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to d2.
+        /// </summary>
+        internal static string PDivisor {
+            get {
+                return ResourceManager.GetString("PDivisor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Divisor.
+        /// </summary>
+        internal static string PDivisorDescription {
+            get {
+                return ResourceManager.GetString("PDivisorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to dynamicalsystem.
         /// </summary>
         internal static string PDynamicalSystem {
@@ -2001,6 +2433,24 @@ namespace PavelStransky.Expression {
         internal static string PEvectorsDescription {
             get {
                 return ResourceManager.GetString("PEvectorsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.
+        /// </summary>
+        internal static string PExponent {
+            get {
+                return ResourceManager.GetString("PExponent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exponent.
+        /// </summary>
+        internal static string PExponentDescription {
+            get {
+                return ResourceManager.GetString("PExponentDescription", resourceCulture);
             }
         }
         
@@ -2475,6 +2925,24 @@ namespace PavelStransky.Expression {
         /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
+        internal static string PMinuend {
+            get {
+                return ResourceManager.GetString("PMinuend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minuend.
+        /// </summary>
+        internal static string PMinuendDescription {
+            get {
+                return ResourceManager.GetString("PMinuendDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
         internal static string PMixingParameter {
             get {
                 return ResourceManager.GetString("PMixingParameter", resourceCulture);
@@ -2725,6 +3193,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to r.
+        /// </summary>
+        internal static string PRoot {
+            get {
+                return ResourceManager.GetString("PRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root.
+        /// </summary>
+        internal static string PRootDescription {
+            get {
+                return ResourceManager.GetString("PRootDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Method of Runge-Kutta calculation (Normal | Adapted | Energy).
         /// </summary>
         internal static string PRungeKuttaDescription {
@@ -2955,6 +3441,24 @@ namespace PavelStransky.Expression {
         internal static string PStartingPointDetail {
             get {
                 return ResourceManager.GetString("PStartingPointDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to step.
+        /// </summary>
+        internal static string PStep {
+            get {
+                return ResourceManager.GetString("PStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step if the interval.
+        /// </summary>
+        internal static string PStepDescription {
+            get {
+                return ResourceManager.GetString("PStepDescription", resourceCulture);
             }
         }
         

@@ -117,23 +117,68 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EMBadArrayDimensions" xml:space="preserve">
+    <value>The Arrays for function '{0}' do not have the same sizes (dimensions).</value>
+  </data>
+  <data name="EMBadArrayDimensionsDetail" xml:space="preserve">
+    <value>First Array: {0}\nSecond Array: {1}</value>
+  </data>
+  <data name="EMBadBoolValue" xml:space="preserve">
+    <value>String '{0}' has not been determined as a bool value.</value>
+  </data>
   <data name="EMBadParamType" xml:space="preserve">
-    <value>Parameter "{0}" has bad type.</value>
+    <value>Parameter '{0}' in function '{1}' has bad type.</value>
   </data>
   <data name="EMBadParamTypeDetail" xml:space="preserve">
     <value>Correct type: {0}\r\nEntered type: {1}</value>
   </data>
+  <data name="EMBadTypeName" xml:space="preserve">
+    <value>String '{0}' has not been determined as a valid type.</value>
+  </data>
   <data name="EMBadVariableName" xml:space="preserve">
-    <value>The name "{0}" of a variable has not valid format.</value>
+    <value>The name '{0}' of a variable has not valid format.</value>
   </data>
   <data name="EMBadVariableNameInvalidCharacter" xml:space="preserve">
-    <value>The name must not contain the character "{0}" at position {1}.</value>
+    <value>The name must not contain the character '{0}' at position {1}.</value>
   </data>
   <data name="EMBadVariableNameNoSpace" xml:space="preserve">
     <value>There must be no spaces in it.</value>
   </data>
+  <data name="EMFewArgs" xml:space="preserve">
+    <value>Function '{0}' has not enough arguments.</value>
+  </data>
   <data name="EMFileNotExist" xml:space="preserve">
-    <value>The file you "{0}" have specified does not exist.</value>
+    <value>The file you '{0}' have specified does not exist.</value>
+  </data>
+  <data name="EMInvalidBracketPosition" xml:space="preserve">
+    <value>Invalid bracket position.</value>
+  </data>
+  <data name="EMInvalidBracketPositionDetail" xml:space="preserve">
+    <value>Bracket of type '{0}' is placed on invalid position.</value>
+  </data>
+  <data name="EMInvalidBracketPositionDetailBracketMixing" xml:space="preserve">
+    <value>Invalid mixing of brackets '{0}' and '{1}'.</value>
+  </data>
+  <data name="EMInvalidBracketPositionDetailCloseBeforeOpen" xml:space="preserve">
+    <value>Close bracket '{0}' is placed before open bracket '{1}' or open bracket '{1}' is missing.</value>
+  </data>
+  <data name="EMInvalidCharacter" xml:space="preserve">
+    <value>Invalid character.</value>
+  </data>
+  <data name="EMInvalidEndVariablePosition" xml:space="preserve">
+    <value>Invalid '$' position. It can be placed only inside indexing brackets.</value>
+  </data>
+  <data name="EMInvalidNumberArgs" xml:space="preserve">
+    <value>Function '{0}' has incorrect number of arguments.</value>
+  </data>
+  <data name="EMInvalidNumberArgsDetail" xml:space="preserve">
+    <value>Arguments needed: {0}\nArguments number: {1}</value>
+  </data>
+  <data name="EMInvalidPosition" xml:space="preserve">
+    <value>{0} is placed on invalid position.</value>
+  </data>
+  <data name="EMManyArgs" xml:space="preserve">
+    <value>Function '{0}' has too many arguments.</value>
   </data>
   <data name="EMNoFile" xml:space="preserve">
     <value>You must specify the name of the file.</value>
@@ -157,7 +202,7 @@
     <value>Length of the first vector: {0}\r\nLength of the second vector: {1}</value>
   </data>
   <data name="EMObligatoryParameter" xml:space="preserve">
-    <value>Parameter "{0}" (position {1}) of the function "{2}" is obligatory and cannot be omited.</value>
+    <value>Parameter '{0}' (position {1}) of the function '{2}' is obligatory and cannot be omited.</value>
   </data>
   <data name="EMOperatorArrayLength" xml:space="preserve">
     <value>Using the operator '{0}' between array requires the length  ({1}, {2}) to be equals.</value>
@@ -177,8 +222,11 @@
   <data name="EMRankDetail" xml:space="preserve">
     <value>Rank of the Array = {0}.</value>
   </data>
+  <data name="EMStringCharMissing" xml:space="preserve">
+    <value>String character missing. String is opened, but not closed.</value>
+  </data>
   <data name="EMVarCannotBeSet" xml:space="preserve">
-    <value>Variable "{0}" cannot be set.</value>
+    <value>Variable '{0}' cannot be set.</value>
   </data>
   <data name="EMZeroLengthList" xml:space="preserve">
     <value>The length of the list must not be zero.</value>
@@ -195,8 +243,17 @@
   <data name="HelpArcTan" xml:space="preserve">
     <value>Arcus tangens of the value</value>
   </data>
+  <data name="HelpAssignment" xml:space="preserve">
+    <value>Operator of assignment</value>
+  </data>
   <data name="HelpBandWidth" xml:space="preserve">
     <value>Size of the band of a band matrix</value>
+  </data>
+  <data name="HelpBoolAnd" xml:space="preserve">
+    <value>Operator &amp;&amp; (boolean product)</value>
+  </data>
+  <data name="HelpBoolOr" xml:space="preserve">
+    <value>Operator || (boolean sum)</value>
   </data>
   <data name="HelpBounds" xml:space="preserve">
     <value>For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found</value>
@@ -228,6 +285,12 @@
   <data name="HelpDelta" xml:space="preserve">
     <value>Calculates statistics v_{i} - v_{0} - i</value>
   </data>
+  <data name="HelpDivide" xml:space="preserve">
+    <value>Operator /</value>
+  </data>
+  <data name="HelpDivideItem" xml:space="preserve">
+    <value>Operator //, items of vectors and matrices are divided among one another</value>
+  </data>
   <data name="HelpDouble" xml:space="preserve">
     <value>Converts given value to a double precision number</value>
   </data>
@@ -239,6 +302,9 @@
   </data>
   <data name="HelpEnvelopeMatrixG" xml:space="preserve">
     <value>Generates an envelope matrix in Gaussian form (according to PRL 65, 529 (1990))</value>
+  </data>
+  <data name="HelpEquality" xml:space="preserve">
+    <value>Operator == (equality)</value>
   </data>
   <data name="HelpEquipotential" xml:space="preserve">
     <value>For GCM system and given energy calculates equipotential contour</value>
@@ -267,6 +333,9 @@
   <data name="HelpFullHelp" xml:space="preserve">
     <value>Full help for the given function (including names and types of the parameters)</value>
   </data>
+  <data name="HelpGEquality" xml:space="preserve">
+    <value>Operator &gt;= (greater or equal)</value>
+  </data>
   <data name="HelpGetColumns" xml:space="preserve">
     <value>Returns selected columns from a matrix</value>
   </data>
@@ -291,6 +360,9 @@
   <data name="HelpGraph" xml:space="preserve">
     <value>Create graph</value>
   </data>
+  <data name="HelpGreater" xml:space="preserve">
+    <value>Operator &gt;</value>
+  </data>
   <data name="HelpHamiltonianMatrixTrace" xml:space="preserve">
     <value>Returns the trace of the Hamiltonian matrix of a quantum system</value>
   </data>
@@ -306,6 +378,9 @@
   <data name="HelpImport" xml:space="preserve">
     <value>Read a file to a variable</value>
   </data>
+  <data name="HelpInequality" xml:space="preserve">
+    <value>Operator != (inequality)</value>
+  </data>
   <data name="HelpInitialCondition" xml:space="preserve">
     <value>For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector</value>
   </data>
@@ -314,6 +389,9 @@
   </data>
   <data name="HelpIntegrate" xml:space="preserve">
     <value>Calculates an integral under given curve</value>
+  </data>
+  <data name="HelpInterval" xml:space="preserve">
+    <value>Returns an array of integer numbers beginning and ending with given numbers (and with given step)</value>
   </data>
   <data name="HelpIntervalA" xml:space="preserve">
     <value>Creates points for interval (as an array)</value>
@@ -339,6 +417,12 @@
   <data name="HelpLength" xml:space="preserve">
     <value>Returns length(s) or number of elements of a given object as an array</value>
   </data>
+  <data name="HelpLEquality" xml:space="preserve">
+    <value>Operator &lt;= (lesser or equal)</value>
+  </data>
+  <data name="HelpLesser" xml:space="preserve">
+    <value>Operator &lt;</value>
+  </data>
   <data name="HelpLinearRegression" xml:space="preserve">
     <value>Linear regression of data (including uncertainities of estimated parameters)</value>
   </data>
@@ -354,6 +438,9 @@
   <data name="HelpMean" xml:space="preserve">
     <value>Calculates mean of a vector</value>
   </data>
+  <data name="HelpMinus" xml:space="preserve">
+    <value>Operator -</value>
+  </data>
   <data name="HelpNew" xml:space="preserve">
     <value>Creates new object of a given type</value>
   </data>
@@ -366,8 +453,14 @@
   <data name="HelpNuDatReadNucleus" xml:space="preserve">
     <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
   </data>
+  <data name="HelpOpJoin" xml:space="preserve">
+    <value>Operator ~ (joins numbers together into vector, joins strings and lists)</value>
+  </data>
   <data name="HelpPi" xml:space="preserve">
     <value>Value of Pi number</value>
+  </data>
+  <data name="HelpPlus" xml:space="preserve">
+    <value>Operator +</value>
   </data>
   <data name="HelpPoincare" xml:space="preserve">
     <value>Calculates a Poincaré section for given energy or trajectory given by its initial condition</value>
@@ -386,6 +479,12 @@
   </data>
   <data name="HelpPotentialRoots" xml:space="preserve">
     <value>For GCM system solves the equation Potential == Given energy</value>
+  </data>
+  <data name="HelpPower" xml:space="preserve">
+    <value>Operator ^ (power)</value>
+  </data>
+  <data name="HelpPowerItem" xml:space="preserve">
+    <value>Operator ^^, power is calculated among the items of vectors and matrices</value>
   </data>
   <data name="HelpPrint" xml:space="preserve">
     <value>Writes a text (or variable) to the writer</value>
@@ -444,6 +543,9 @@
   <data name="HelpSecondInvariant" xml:space="preserve">
     <value>Returns the second invariant of a quantum system</value>
   </data>
+  <data name="HelpSeparator" xml:space="preserve">
+    <value>Operator ; (separator)</value>
+  </data>
   <data name="HelpSetContext" xml:space="preserve">
     <value>Sets a new context</value>
   </data>
@@ -498,6 +600,12 @@
   <data name="HelpTimeNow" xml:space="preserve">
     <value>Returns the current time</value>
   </data>
+  <data name="HelpTimes" xml:space="preserve">
+    <value>Operator *</value>
+  </data>
+  <data name="HelpTimesItem" xml:space="preserve">
+    <value>Operator **, items of vectors and matrices are multiplied among one another</value>
+  </data>
   <data name="HelpToArray" xml:space="preserve">
     <value>Given non-array object change to an array.</value>
   </data>
@@ -533,6 +641,12 @@
   </data>
   <data name="NuDatReadNucleusPage" xml:space="preserve">
     <value>Reading page of nucleus {0}...</value>
+  </data>
+  <data name="P1Assignment" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="P1AssignmentDescription" xml:space="preserve">
+    <value>Variable name or indexed item</value>
   </data>
   <data name="P1Exclude" xml:space="preserve">
     <value>exc</value>
@@ -578,6 +692,12 @@
   </data>
   <data name="P1RegressionDescription" xml:space="preserve">
     <value>Input data for the regression</value>
+  </data>
+  <data name="P2Assignment" xml:space="preserve">
+    <value>x</value>
+  </data>
+  <data name="P2AssignmentDescription" xml:space="preserve">
+    <value>Value to be assigned</value>
   </data>
   <data name="P2ContextDescription" xml:space="preserve">
     <value>Name of a variable that will be copied from actual context</value>
@@ -675,11 +795,11 @@
   <data name="PA0Description" xml:space="preserve">
     <value>Stiffness of the harmonic basis</value>
   </data>
-  <data name="PAddent" xml:space="preserve">
+  <data name="PAddend" xml:space="preserve">
     <value>a</value>
   </data>
-  <data name="PAddentDescription" xml:space="preserve">
-    <value>addent</value>
+  <data name="PAddendDescription" xml:space="preserve">
+    <value>addend</value>
   </data>
   <data name="PADescription" xml:space="preserve">
     <value>A parameter of GCM</value>
@@ -702,11 +822,23 @@
   <data name="PBDescription" xml:space="preserve">
     <value>B parameter of GCM</value>
   </data>
+  <data name="PBool" xml:space="preserve">
+    <value>b</value>
+  </data>
+  <data name="PBoolDescription" xml:space="preserve">
+    <value>Boolean value</value>
+  </data>
   <data name="PC" xml:space="preserve">
     <value>c</value>
   </data>
   <data name="PCDescription" xml:space="preserve">
     <value>C parameter of GCM</value>
+  </data>
+  <data name="PCoefficient" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="PCoefficientDetail" xml:space="preserve">
+    <value>coefficient</value>
   </data>
   <data name="PCommands" xml:space="preserve">
     <value>commands</value>
@@ -741,6 +873,18 @@
   <data name="PDiagonalValueDescription" xml:space="preserve">
     <value>Value(s) to be put onto diagonal</value>
   </data>
+  <data name="PDividend" xml:space="preserve">
+    <value>d1</value>
+  </data>
+  <data name="PDividendDescription" xml:space="preserve">
+    <value>Dividend</value>
+  </data>
+  <data name="PDivisor" xml:space="preserve">
+    <value>d2</value>
+  </data>
+  <data name="PDivisorDescription" xml:space="preserve">
+    <value>Divisor</value>
+  </data>
   <data name="PDynamicalSystem" xml:space="preserve">
     <value>dynamicalsystem</value>
   </data>
@@ -764,6 +908,12 @@
   </data>
   <data name="PEvectorsDescription" xml:space="preserve">
     <value>True if the eigenvectors is to be calculated</value>
+  </data>
+  <data name="PExponent" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="PExponentDescription" xml:space="preserve">
+    <value>Exponent</value>
   </data>
   <data name="PExpression" xml:space="preserve">
     <value>expression</value>
@@ -921,6 +1071,12 @@
   <data name="PMeanDescription" xml:space="preserve">
     <value>Mean of the distribution</value>
   </data>
+  <data name="PMinuend" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="PMinuendDescription" xml:space="preserve">
+    <value>Minuend</value>
+  </data>
   <data name="PMixingParameter" xml:space="preserve">
     <value>m</value>
   </data>
@@ -1005,6 +1161,12 @@
   <data name="PPrecisionDescription" xml:space="preserve">
     <value>Precision of the calculation</value>
   </data>
+  <data name="PRoot" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="PRootDescription" xml:space="preserve">
+    <value>Root</value>
+  </data>
   <data name="PRungeKuttaDescription" xml:space="preserve">
     <value>Method of Runge-Kutta calculation (Normal | Adapted | Energy)</value>
   </data>
@@ -1082,6 +1244,12 @@
   </data>
   <data name="PStartingPointDetail" xml:space="preserve">
     <value>Starting point of the interval</value>
+  </data>
+  <data name="PStep" xml:space="preserve">
+    <value>step</value>
+  </data>
+  <data name="PStepDescription" xml:space="preserve">
+    <value>Step if the interval</value>
   </data>
   <data name="PSymmetricMatrix" xml:space="preserve">
     <value>smatrix</value>

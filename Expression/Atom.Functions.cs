@@ -12,8 +12,26 @@ namespace PavelStransky.Expression {
 			functions = new Functions.FunctionDefinitions();
 
             // Operátory
-            functions.Add(new Functions.Plus());
             functions.Add(new Functions.Assignment());
+            functions.Add(new Functions.Plus());
+            functions.Add(new Functions.Minus());
+            functions.Add(new Functions.Times());
+            functions.Add(new Functions.Divide());
+            functions.Add(new Functions.Power());
+            functions.Add(new Functions.BoolAnd());
+            functions.Add(new Functions.BoolOr());
+            functions.Add(new Functions.Equality());
+            functions.Add(new Functions.Inequality());
+            functions.Add(new Functions.GEquality());
+            functions.Add(new Functions.LEquality());
+            functions.Add(new Functions.Greater());
+            functions.Add(new Functions.Lesser());
+            functions.Add(new Functions.Interval());
+            functions.Add(new Functions.TimesItem());
+            functions.Add(new Functions.DivideItem());
+            functions.Add(new Functions.PowerItem());
+            functions.Add(new Functions.Separator());
+            functions.Add(new Functions.OpJoin());
 
             functions.Add(new Functions.Exit());
 			functions.Add(new Functions.FnExport());
@@ -206,8 +224,8 @@ namespace PavelStransky.Expression {
         protected static readonly Functions.FunctionDefinitions functions;
 
         // Znaky otevírání a uzavírání
-        protected static char[] openChars = { '(', '[' };
-        protected static char[] closeChars = { ')', ']' };
+        protected static char[] openBracketChars = { '(', '[' };
+        protected static char[] closeBracketChars = { ')', ']' };
 
         private static char stringChar = '"';
         private static char specialChar = '\\';

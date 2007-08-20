@@ -1,21 +1,71 @@
+using System.Collections;
+using System.Text;
 using System;
 
-namespace PavelStransky.Expression.BinaryOperators {
-	/// <summary>
-	/// Operátor vìtší
-	/// </summary>
-	public class Greater: BinaryOperator {
-		public override string OperatorName {get {return operatorName;}}
-		public override OperatorPriority Priority {get {return OperatorPriority.ComparePriority;}}
+using PavelStransky.Math;
 
-		protected override object EvaluateII(int left, int right) {
-			return left > right;
-		}
+namespace PavelStransky.Expression.Functions {
+    /// <summary>
+    /// Operator of inequality (greater)
+    /// </summary>
+    public class Greater: Operator {
+        public override string Name { get { return name; } }
+        public override string Help { get { return Messages.HelpGreater; } }
+        public override OperatorPriority Priority { get { return OperatorPriority.ComparePriority; } }
 
-		protected override object EvaluateDDx(double left, double right) {
-			return left > right;
-		}
+        protected override void CreateParameters() {
+            this.SetNumParams(1, true);
+            this.SetParam(0, true, true, false, Messages.PValue, Messages.PValueDescription, null,
+                typeof(int), typeof(double));
 
-		private const string operatorName = ">";
-	}
+            this.AddCompatibility(typeof(int), typeof(double));
+        }
+
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            int[] lengths = this.GetTypesLength(arguments, false);
+            int count = arguments.Count;
+
+            object item = arguments[0];
+
+            if(lengths[0] > 0 && lengths[2] > 0) {  // Double i int hodnoty
+                for(int k = 1; k < count; k++) {
+                    item = arguments[k - 1];
+                    double d = (item is int) ? (int)item : (double)item;
+
+                    item = arguments[k];
+                    if(item is double) {
+                        if((double)item <= d)
+                            return false;
+                    }
+                    else if(item is int) {
+                        if((int)item <= d)
+                            return false;
+                    }
+                }
+                return true;
+            }
+
+            else if(item is int) {
+                for(int k = 1; k < count; k++) {
+                    int i = (int)arguments[k - 1];
+                    if(i <= (int)arguments[k])
+                        return false;
+                }
+                return true;
+            }
+
+            else if(item is double) {
+                for(int k = 1; k < count; k++) {
+                    double d = (double)arguments[k - 1];
+                    if(d <= (double)arguments[k])
+                        return false;
+                }
+                return true;
+            }
+
+            return null;
+        }
+
+        private const string name = ">";
+    }
 }

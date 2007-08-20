@@ -6,11 +6,11 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Operator of inequality (lesser)
+    /// Operator of inequality (greater or equal)
     /// </summary>
-    public class Lesser: Operator {
+    public class GEquality: Operator {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.HelpLesser; } }
+        public override string Help { get { return Messages.HelpGEquality; } }
         public override OperatorPriority Priority { get { return OperatorPriority.ComparePriority; } }
 
         protected override void CreateParameters() {
@@ -34,11 +34,11 @@ namespace PavelStransky.Expression.Functions {
 
                     item = arguments[k];
                     if(item is double) {
-                        if((double)item >= d)
+                        if((double)item < d)
                             return false;
                     }
                     else if(item is int) {
-                        if((int)item >= d)
+                        if((int)item < d)
                             return false;
                     }
                 }
@@ -48,7 +48,7 @@ namespace PavelStransky.Expression.Functions {
             else if(item is int) {
                 for(int k = 1; k < count; k++) {
                     int i = (int)arguments[k - 1];
-                    if(i >= (int)arguments[k])
+                    if(i < (int)arguments[k])
                         return false;
                 }
                 return true;
@@ -57,7 +57,7 @@ namespace PavelStransky.Expression.Functions {
             else if(item is double) {
                 for(int k = 1; k < count; k++) {
                     double d = (double)arguments[k - 1];
-                    if(d >= (double)arguments[k])
+                    if(d < (double)arguments[k])
                         return false;
                 }
                 return true;
@@ -66,6 +66,6 @@ namespace PavelStransky.Expression.Functions {
             return null;
         }
 
-        private const string name = "<";
+        private const string name = ">=";
     }
 }

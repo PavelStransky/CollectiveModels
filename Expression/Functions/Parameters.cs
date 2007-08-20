@@ -55,6 +55,23 @@ namespace PavelStransky.Expression.Functions {
         public bool Evaluate { get { return this.evaluate; } }
 
         /// <summary>
+        /// Returns all possible type names in a string separated by |
+        /// </summary>
+        public string TypesNames {
+            get {
+                StringBuilder result = new StringBuilder();
+
+                foreach(Type t in this.types) {
+                    if(result.Length > 0)
+                        result.Append(" | ");
+                    result.Append(t.Name);
+                }
+
+                return result.ToString();
+            }
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="obligatory">True if the parameter is obligatory (must not be null)</param>

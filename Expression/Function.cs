@@ -18,8 +18,10 @@ namespace PavelStransky.Expression
 		// Argumenty funkce
 		private ArrayList arguments = new ArrayList();
 
-        // True if the array will be treated like an array object
-        private bool evaluateArray = false;
+        /// <summary>
+        /// Jméno funkce
+        /// </summary>
+        public string Name { get { return this.function.Name; } }
 
 		/// <summary>
 		/// Konstruktor
@@ -51,11 +53,10 @@ namespace PavelStransky.Expression
             object result = null;
 
             DateTime startTime = DateTime.Now; 			
-			result = this.function.Evaluate(guider, this.arguments, this.evaluateArray);
+			result = this.function.Evaluate(guider, this.arguments);
 			return result;
 		}
 
         private const string errorMessageFunctionNotExists = "Funkce {0} neexistuje.";
-        private const char evaluateArrayChar = '!';
     }
 }

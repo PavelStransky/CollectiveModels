@@ -19,8 +19,35 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            guider.Context.SetVariable(arguments[0] as string, arguments[1]);
-            return arguments[1];
+            object leftSide = arguments[0];
+            this.result = arguments[1];
+
+            if(this.result == null)
+                throw new FunctionDefinitionException(Messages.EMNullValue);
+
+            if(this.result as ICloneable != null)
+                this.result = (this.result as ICloneable).Clone();
+
+            if(leftSide is Indexer) {
+                (leftSide as Indexer).Evaluate(guider, this.AssignFn);
+                return this.result;
+            }
+            else if(leftSide is string) {
+                guider.Context.SetVariable(leftSide as string, this.result);
+                return arguments[1];
+            }
+            else
+                throw new FunctionDefinitionException(Messages.EMBadAssignment, leftSide.GetType().FullName);
+        }
+
+        private object result;
+
+        /// <summary>
+        /// Pøiøazovací funkce
+        /// </summary>
+        /// <param name="o">Objekt pro pøiøazení</param>
+        private object AssignFn(object o) {
+            return this.result;
         }
 
         private const string name = "=";

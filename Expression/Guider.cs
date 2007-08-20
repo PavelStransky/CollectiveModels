@@ -11,6 +11,8 @@ namespace PavelStransky.Expression {
         private Context context;
         private string execDir;
         private string tmpDir;
+        private bool arrayEvaluation = false;
+        private bool mute = false;
 
         public string ExecDir { get { return this.execDir; } set { this.execDir = value; } }
         public string TmpDir { get { return this.tmpDir; } set { this.tmpDir = value; } }
@@ -19,6 +21,16 @@ namespace PavelStransky.Expression {
         /// Kontext výpoètu
         /// </summary>
         public Context Context { get { return this.context; } }
+
+        /// <summary>
+        /// Bude provádìn výpoèet øadou?
+        /// </summary>
+        public bool ArrayEvaluation { get { return this.arrayEvaluation; } set { this.arrayEvaluation = value; } }
+
+        /// <summary>
+        /// True pokud bude utlumen výstup do writeru
+        /// </summary>
+        public bool Mute { get { return this.mute; } set { this.mute = value; } }
 
         /// <summary>
         /// Konstruktor
@@ -46,6 +58,11 @@ namespace PavelStransky.Expression {
         public Guider ChangeContext(Context context) {
             Guider result = new Guider(context);
             result.writer = this.writer;
+            result.arrayEvaluation = this.arrayEvaluation;
+            result.execDir = this.execDir;
+            result.tmpDir = this.tmpDir;
+            result.mute = this.mute;
+
             return result;
         }
 
@@ -55,7 +72,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="o">Object</param>
         public string Write(object o) {
-            if(this.writer != null)
+            if(this.writer != null && !this.mute)
                 return this.writer.Write(o);
             else
                 return string.Empty;
@@ -66,7 +83,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="o">Object</param>
         public string WriteLine(object o) {
-            if(this.writer != null)
+            if(this.writer != null && !this.mute)
                 return this.writer.WriteLine(o);
             else
                 return string.Empty;
@@ -77,7 +94,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="o">Object</param>
         public string WriteLine() {
-            if(this.writer != null)
+            if(this.writer != null && !this.mute)
                 return this.writer.WriteLine();
             else
                 return string.Empty;
@@ -87,7 +104,7 @@ namespace PavelStransky.Expression {
         /// Vymaže vše na writeru
         /// </summary>
         public void Clear() {
-            if(this.writer != null)
+            if(this.writer != null && !this.mute)
                 this.writer.Clear();
         }
 
@@ -95,7 +112,7 @@ namespace PavelStransky.Expression {
         /// Odsazení výsledku
         /// </summary>
         public int Indent(int i) {
-            if(this.writer != null)
+            if(this.writer != null && !this.mute)
                 return this.writer.Indent(i);
             else
                 return i;

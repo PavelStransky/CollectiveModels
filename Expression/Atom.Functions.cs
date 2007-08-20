@@ -32,6 +32,10 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.PowerItem());
             functions.Add(new Functions.Separator());
             functions.Add(new Functions.OpJoin());
+            functions.Add(new Functions.EvalArray());
+            functions.Add(new Functions.Mute());
+            functions.Add(new Functions.OpHelp(functions));
+            functions.Add(new Functions.OpFullHelp(functions));
 
             functions.Add(new Functions.Exit());
 			functions.Add(new Functions.FnExport());

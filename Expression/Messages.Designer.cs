@@ -70,11 +70,21 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First Array: {0}\nSecond Array: {1}.
+        ///   Looks up a localized string similar to First Array: {0}
+        ///Second Array: {1}.
         /// </summary>
         internal static string EMBadArrayDimensionsDetail {
             get {
                 return ResourceManager.GetString("EMBadArrayDimensionsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It is possible to assign only to variable or indexer, not to &apos;{0}&apos;..
+        /// </summary>
+        internal static string EMBadAssignment {
+            get {
+                return ResourceManager.GetString("EMBadAssignment", resourceCulture);
             }
         }
         
@@ -88,6 +98,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help is provided only for functions, not for &apos;{0}&apos;..
+        /// </summary>
+        internal static string EMBadHelpParameter {
+            get {
+                return ResourceManager.GetString("EMBadHelpParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter &apos;{0}&apos; in function &apos;{1}&apos; has bad type..
         /// </summary>
         internal static string EMBadParamType {
@@ -97,7 +116,8 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Correct type: {0}\r\nEntered type: {1}.
+        ///   Looks up a localized string similar to Correct type: {0}
+        ///Entered type: {1}.
         /// </summary>
         internal static string EMBadParamTypeDetail {
             get {
@@ -214,6 +234,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The expression cannot finish with operator..
+        /// </summary>
+        internal static string EMInvalidExpressionEnd {
+            get {
+                return ResourceManager.GetString("EMInvalidExpressionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Function &apos;{0}&apos; has incorrect number of arguments..
         /// </summary>
         internal static string EMInvalidNumberArgs {
@@ -223,7 +252,8 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arguments needed: {0}\nArguments number: {1}.
+        ///   Looks up a localized string similar to Arguments needed: {0}
+        ///Arguments number: {1}.
         /// </summary>
         internal static string EMInvalidNumberArgsDetail {
             get {
@@ -277,7 +307,8 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Length of the first object: {0}\r\nLength of the second object: {1}.
+        ///   Looks up a localized string similar to Length of the first object: {0}
+        ///Length of the second object: {1}.
         /// </summary>
         internal static string EMNotEqualLengthDetail {
             get {
@@ -304,11 +335,21 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Length of the first vector: {0}\r\nLength of the second vector: {1}.
+        ///   Looks up a localized string similar to Length of the first vector: {0}
+        ///Length of the second vector: {1}.
         /// </summary>
         internal static string EMNotEqualVectorLengthDetail {
             get {
                 return ResourceManager.GetString("EMNotEqualVectorLengthDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The result of a part of the expression is NULL. This cannot be assigned..
+        /// </summary>
+        internal static string EMNullValue {
+            get {
+                return ResourceManager.GetString("EMNullValue", resourceCulture);
             }
         }
         
@@ -637,6 +678,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Array evaluation of functions.
+        /// </summary>
+        internal static string HelpEvalArray {
+            get {
+                return ResourceManager.GetString("HelpEvalArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From the first vector excludes values contained in the second vector.
         /// </summary>
         internal static string HelpExclude {
@@ -804,6 +854,15 @@ namespace PavelStransky.Expression {
         internal static string HelpHamiltonianMatrixTrace {
             get {
                 return ResourceManager.GetString("HelpHamiltonianMatrixTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help to the function.
+        /// </summary>
+        internal static string HelpHelp {
+            get {
+                return ResourceManager.GetString("HelpHelp", resourceCulture);
             }
         }
         
@@ -1029,6 +1088,15 @@ namespace PavelStransky.Expression {
         internal static string HelpMinus {
             get {
                 return ResourceManager.GetString("HelpMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mutes the output of a function.
+        /// </summary>
+        internal static string HelpMute {
+            get {
+                return ResourceManager.GetString("HelpMute", resourceCulture);
             }
         }
         

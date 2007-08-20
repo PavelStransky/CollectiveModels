@@ -40,8 +40,12 @@ namespace PavelStransky.Expression.Functions {
         /// </summary>
         public static OperatorPriority MaxPriority { get { return OperatorPriority.MaxPriority; } }
 
-        public override object Evaluate(Guider guider, ArrayList arguments, bool evaluateArray) {
-            return base.Evaluate(guider, arguments, true);      // V pøípadì operátorù vždy poèítáme øadu
+        public override object Evaluate(Guider guider, ArrayList arguments) {
+            guider.ArrayEvaluation = true;
+            object result = base.Evaluate(guider, arguments);      // V pøípadì operátorù vždy poèítáme øadu
+            guider.ArrayEvaluation = false;
+
+            return result;
         }
 
         /// <summary>

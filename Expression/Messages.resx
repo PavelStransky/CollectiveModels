@@ -121,16 +121,24 @@
     <value>The Arrays for function '{0}' do not have the same sizes (dimensions).</value>
   </data>
   <data name="EMBadArrayDimensionsDetail" xml:space="preserve">
-    <value>First Array: {0}\nSecond Array: {1}</value>
+    <value>First Array: {0}
+Second Array: {1}</value>
+  </data>
+  <data name="EMBadAssignment" xml:space="preserve">
+    <value>It is possible to assign only to variable or indexer, not to '{0}'.</value>
   </data>
   <data name="EMBadBoolValue" xml:space="preserve">
     <value>String '{0}' has not been determined as a bool value.</value>
+  </data>
+  <data name="EMBadHelpParameter" xml:space="preserve">
+    <value>Help is provided only for functions, not for '{0}'.</value>
   </data>
   <data name="EMBadParamType" xml:space="preserve">
     <value>Parameter '{0}' in function '{1}' has bad type.</value>
   </data>
   <data name="EMBadParamTypeDetail" xml:space="preserve">
-    <value>Correct type: {0}\r\nEntered type: {1}</value>
+    <value>Correct type: {0}
+Entered type: {1}</value>
   </data>
   <data name="EMBadTypeName" xml:space="preserve">
     <value>String '{0}' has not been determined as a valid type.</value>
@@ -168,11 +176,15 @@
   <data name="EMInvalidEndVariablePosition" xml:space="preserve">
     <value>Invalid '$' position. It can be placed only inside indexing brackets.</value>
   </data>
+  <data name="EMInvalidExpressionEnd" xml:space="preserve">
+    <value>The expression cannot finish with operator.</value>
+  </data>
   <data name="EMInvalidNumberArgs" xml:space="preserve">
     <value>Function '{0}' has incorrect number of arguments.</value>
   </data>
   <data name="EMInvalidNumberArgsDetail" xml:space="preserve">
-    <value>Arguments needed: {0}\nArguments number: {1}</value>
+    <value>Arguments needed: {0}
+Arguments number: {1}</value>
   </data>
   <data name="EMInvalidPosition" xml:space="preserve">
     <value>{0} is placed on invalid position.</value>
@@ -190,7 +202,8 @@
     <value>Lengths of the given objects must be equal.</value>
   </data>
   <data name="EMNotEqualLengthDetail" xml:space="preserve">
-    <value>Length of the first object: {0}\r\nLength of the second object: {1}</value>
+    <value>Length of the first object: {0}
+Length of the second object: {1}</value>
   </data>
   <data name="EMNotEqualTypes" xml:space="preserve">
     <value>The elements of the given list have not equal types.</value>
@@ -199,7 +212,11 @@
     <value>Lengths of two vectors in the function '{0}' must be equal.</value>
   </data>
   <data name="EMNotEqualVectorLengthDetail" xml:space="preserve">
-    <value>Length of the first vector: {0}\r\nLength of the second vector: {1}</value>
+    <value>Length of the first vector: {0}
+Length of the second vector: {1}</value>
+  </data>
+  <data name="EMNullValue" xml:space="preserve">
+    <value>The result of a part of the expression is NULL. This cannot be assigned.</value>
   </data>
   <data name="EMObligatoryParameter" xml:space="preserve">
     <value>Parameter '{0}' (position {1}) of the function '{2}' is obligatory and cannot be omited.</value>
@@ -309,6 +326,9 @@
   <data name="HelpEquipotential" xml:space="preserve">
     <value>For GCM system and given energy calculates equipotential contour</value>
   </data>
+  <data name="HelpEvalArray" xml:space="preserve">
+    <value>Array evaluation of functions</value>
+  </data>
   <data name="HelpExclude" xml:space="preserve">
     <value>From the first vector excludes values contained in the second vector</value>
   </data>
@@ -365,6 +385,9 @@
   </data>
   <data name="HelpHamiltonianMatrixTrace" xml:space="preserve">
     <value>Returns the trace of the Hamiltonian matrix of a quantum system</value>
+  </data>
+  <data name="HelpHelp" xml:space="preserve">
+    <value>Help to the function</value>
   </data>
   <data name="HelpHermite" xml:space="preserve">
     <value>Value of the Hermite polynomial</value>
@@ -440,6 +463,9 @@
   </data>
   <data name="HelpMinus" xml:space="preserve">
     <value>Operator -</value>
+  </data>
+  <data name="HelpMute" xml:space="preserve">
+    <value>Mutes the output of a function</value>
   </data>
   <data name="HelpNew" xml:space="preserve">
     <value>Creates new object of a given type</value>

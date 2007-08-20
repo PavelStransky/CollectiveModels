@@ -117,9 +117,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Assignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Atom.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -176,14 +173,18 @@
     <Compile Include="Functions\Operators\Divide.cs" />
     <Compile Include="Functions\Operators\DivideItem.cs" />
     <Compile Include="Functions\Operators\Equality.cs" />
+    <Compile Include="Functions\Operators\EvalArray.cs" />
+    <Compile Include="Functions\Operators\FullHelp.cs" />
     <Compile Include="Functions\Operators\GEquality.cs" />
     <Compile Include="Functions\Operators\Greater.cs" />
+    <Compile Include="Functions\Operators\Help.cs" />
     <Compile Include="Functions\Operators\Interval.cs" />
-    <Compile Include="Functions\Operators\OpJoin.cs" />
+    <Compile Include="Functions\Operators\Join.cs" />
     <Compile Include="Functions\Operators\LEquality.cs" />
     <Compile Include="Functions\Operators\Lesser.cs" />
     <Compile Include="Functions\Operators\Minus.cs" />
     <Compile Include="Functions\Operators\Inequality.cs" />
+    <Compile Include="Functions\Operators\Mute.cs" />
     <Compile Include="Functions\Operators\Plus.cs">
       <SubType>Code</SubType>
     </Compile>

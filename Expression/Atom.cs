@@ -35,18 +35,10 @@ namespace PavelStransky.Expression {
 		// Promìnné, které se vyskytují v èásti výrazu
 		protected ArrayList variables = new ArrayList();
 
-        // Informace o probíhajícím výpoètu
-        protected string infoText = string.Empty;
-
         /// <summary>
         /// Rodiè
         /// </summary>
         public Atom Parent { get { return this.parent; } }
-
-        /// <summary>
-        /// Informace o probíhajícím výpoètu
-        /// </summary>
-        public string InfoText { get { return this.infoText; } }
 
 		/// <summary>
 		/// Náš výraz
@@ -240,6 +232,9 @@ namespace PavelStransky.Expression {
                 else
                     throw new ExpressionException(Messages.EMInvalidCharacter, i);
             }
+
+            if(CheckPositionType(position, SyntaxPosition.AfterOperator))
+                throw new ExpressionException(Messages.EMInvalidExpressionEnd, i);
         }
 
         /// <summary>

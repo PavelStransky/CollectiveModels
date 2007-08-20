@@ -12,11 +12,11 @@ namespace PavelStransky.Expression.Functions {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpTime; } }
 
-        public override object Evaluate(Guider guider, ArrayList arguments, bool evaluateArray) {
+        public override object Evaluate(Guider guider, ArrayList arguments) {
             this.CheckArgumentsNumber(arguments, 1);
 
             DateTime startTime = DateTime.Now;
-            base.Evaluate(guider, arguments, evaluateArray);
+            base.Evaluate(guider, arguments);
             return DateTime.Now - startTime;
         }
 

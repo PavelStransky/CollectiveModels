@@ -205,6 +205,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operator &apos;{0}&apos; cannot be used between types &apos;{1}&apos; and &apos;{2}&apos;..
+        /// </summary>
+        internal static string EMParametersCompatibility {
+            get {
+                return ResourceManager.GetString("EMParametersCompatibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The operator &apos;{0}&apos; requires that all of the parameters of the type &apos;{1}&apos; must have the same length..
+        /// </summary>
+        internal static string EMParametersDifferentLength {
+            get {
+                return ResourceManager.GetString("EMParametersDifferentLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found lengths: {0}, {1}.
+        /// </summary>
+        internal static string EMParametersDifferentLengthDetail {
+            get {
+                return ResourceManager.GetString("EMParametersDifferentLengthDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rank of the Array = {0}..
         /// </summary>
         internal static string EMRankDetail {
@@ -1704,6 +1731,24 @@ namespace PavelStransky.Expression {
         internal static string PA0Description {
             get {
                 return ResourceManager.GetString("PA0Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to a.
+        /// </summary>
+        internal static string PAddent {
+            get {
+                return ResourceManager.GetString("PAddent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to addent.
+        /// </summary>
+        internal static string PAddentDescription {
+            get {
+                return ResourceManager.GetString("PAddentDescription", resourceCulture);
             }
         }
         

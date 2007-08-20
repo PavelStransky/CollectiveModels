@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpTime; } }
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.SetNumParams(1);
             this.SetParam(0, true, false, false, Messages.PCommands, Messages.PCommandsDescription, null);
         }
 

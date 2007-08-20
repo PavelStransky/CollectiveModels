@@ -27,7 +27,7 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return Messages.HelpGraph;}}
 
         protected override void CreateParameters() {
-            this.NumParams(6);
+            this.SetNumParams(6);
 
             this.SetParam(0, false, true, false, Messages.PGraph1, Messages.P1GraphDescription, null,
                 typeof(TArray), typeof(Vector), typeof(PointVector));

@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpPoincare; } }
 
         protected override void CreateParameters() {
-            this.NumParams(8);
+            this.SetNumParams(8);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));

@@ -9,29 +9,12 @@ namespace PavelStransky.Expression {
 		/// Statický konstruktor
 		/// </summary>
 		static Atom() {
-			unaryOperators = new Operators.Operators();
-			unaryOperators.Add(new UnaryOperators.Plus());
-			unaryOperators.Add(new UnaryOperators.Minus());
-
-			binaryOperators = new Operators.Operators();
-			binaryOperators.Add(new BinaryOperators.Plus());
-			binaryOperators.Add(new BinaryOperators.Minus());
-			binaryOperators.Add(new BinaryOperators.Times());
-            binaryOperators.Add(new BinaryOperators.ItemTimes());
-			binaryOperators.Add(new BinaryOperators.Divide());
-			binaryOperators.Add(new BinaryOperators.Equals());
-			binaryOperators.Add(new BinaryOperators.NotEquals());
-			binaryOperators.Add(new BinaryOperators.GEquals());
-			binaryOperators.Add(new BinaryOperators.LEquals());
-			binaryOperators.Add(new BinaryOperators.Greater());
-			binaryOperators.Add(new BinaryOperators.Lesser());
-			binaryOperators.Add(new BinaryOperators.Interval());
-			binaryOperators.Add(new BinaryOperators.Power());
-            binaryOperators.Add(new BinaryOperators.BoolOr());
-            binaryOperators.Add(new BinaryOperators.BoolAnd());
-            binaryOperators.Add(new BinaryOperators.Join());
-
 			functions = new Functions.FunctionDefinitions();
+
+            // Operátory
+            functions.Add(new Functions.Plus());
+            functions.Add(new Functions.Assignment());
+
             functions.Add(new Functions.Exit());
 			functions.Add(new Functions.FnExport());
 			functions.Add(new Functions.GetColumns());
@@ -220,8 +203,23 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.NuDatReadNucleus());
         }
 
-        protected static readonly Operators.Operators unaryOperators;
-        protected static readonly Operators.Operators binaryOperators;
         protected static readonly Functions.FunctionDefinitions functions;
+
+        // Znaky otevírání a uzavírání
+        protected static char[] openChars = { '(', '[' };
+        protected static char[] closeChars = { ')', ']' };
+
+        private static char stringChar = '"';
+        private static char specialChar = '\\';
+        private static char separatorChar = ';';
+        private static char endVariableChar = '$';
+
+        private static string commentChars = "%%";
+        private static string noMeanChars = " \t\r\n";
+        private static string variableChars = "_";          // Znaky, které se smìjí vyskytovat v promìnné
+
+        private const string boolTrue = "true";
+        private const string boolFalse = "false";
+
     }
 }

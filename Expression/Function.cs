@@ -28,32 +28,18 @@ namespace PavelStransky.Expression
         /// <param name="parent">Rodiè</param>
         /// <param name="writer">Writer pro textové výstupy</param>
         public Function(string expression, Atom parent)
-            : base(expression, parent) { 
-			int pos = FindOpenBracketPosition(this.expression);
-            string fncName = this.expression.Substring(0, pos).Trim().ToLower();
+            : base(expression, parent) {
+            ArrayList parts = GetArguments(this.expression);
 
-            if(fncName[0] == evaluateArrayChar) {
-                fncName = fncName.Substring(1);
-                this.evaluateArray = true;
-            }
-            else
-                this.evaluateArray = false;
-
+            string fncName = parts[0] as string;
             if(functions.Contains(fncName))
                 this.function = functions[fncName];
+
             else if((this.function = Functions.UserFunction.CreateUserFunction(fncName)) == null)
                 throw new ExpressionException(string.Format(errorMessageFunctionNotExists, fncName));
-            
-			string args = this.expression.Substring(pos + 1, this.expression.Length - pos - 2).Trim();
-            
-			if(args.Length == 0)
-				return;
 
-			string [] a = SplitArguments(args);
-			for(int i = 0; i < a.Length; i++) {
-				string arg = RemoveOutsideBracket(a[i]).Trim();
-				this.arguments.Add(this.CreateAtomObject(arg));
-			}
+            foreach(string s in (parts[1] as ArrayList))
+				this.arguments.Add(this.CreateAtomObject(s));
 		}
 
     	/// <summary>

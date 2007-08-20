@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpToArray; } }
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.SetNumParams(1);
             this.SetParam(0, true, true, false, Messages.PToArray1, Messages.PToArray1Description, null, typeof(FileData), typeof(List));
         }
 

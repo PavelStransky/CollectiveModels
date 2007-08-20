@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpInitialCondition; } }
 
         protected override void CreateParameters() {
-            this.NumParams(3);
+            this.SetNumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));

@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpCIBM; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetParam(0, true, true, true, Messages.PIBMEta, Messages.PIBMEtaDescription, null, typeof(double));
             this.SetParam(1, true, true, true, Messages.PIBMChi, Messages.PIBMChiDescription, null, typeof(double));

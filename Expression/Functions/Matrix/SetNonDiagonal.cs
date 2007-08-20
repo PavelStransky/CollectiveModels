@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpSetNonDiagonal; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetParam(0, true, true, false, Messages.PSquareMatrix, Messages.PSquareMatrixDescription, null, typeof(Matrix));
             this.SetParam(1, true, true, true, Messages.PNonDiagonalValue, Messages.PNonDiagonalValueDescription, null, typeof(double));

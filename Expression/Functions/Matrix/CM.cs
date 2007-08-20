@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
 	/// </summary>
 	public class CM: FunctionDefinition {
 		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string ParametersHelp {get {return parameters;}}
 
 		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
 			this.CheckArgumentsMinNumber(evaluatedArguments, 1);

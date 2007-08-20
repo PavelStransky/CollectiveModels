@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpHistogram; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector));
             this.SetParam(1, true, true, false, Messages.P1Histogram, Messages.P1HistogramDescription, null,

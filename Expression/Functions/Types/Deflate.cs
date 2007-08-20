@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpDeflate; } }
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.SetNumParams(1);
 
             this.SetParam(0, true, true, false, Messages.PDeflate1, Messages.PDeflate1Description, null, typeof(TArray));
         }

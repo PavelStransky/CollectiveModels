@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.Functions {
 	public class FnIf: FunctionDefinition {
 		public override string Name {get {return name;}}
 		public override string Help {get {return help;}}
-		public override string Parameters {get {return parameters;}}
+		public override string ParametersHelp {get {return parameters;}}
 
         public override object Evaluate(Guider guider, ArrayList arguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(arguments, 2);

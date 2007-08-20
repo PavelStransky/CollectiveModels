@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpFFTSpectrum; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetParam(0, true, true, false, Messages.PSignal, Messages.PSignalDescription, null, typeof(Vector), typeof(ComplexVector));
             this.SetParam(1, false, true, true, Messages.PSamplingRate, Messages.PSamplingRateDescription, 1.0, typeof(double));

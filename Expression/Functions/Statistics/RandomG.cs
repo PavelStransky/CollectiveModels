@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpRandomG; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetParam(0, false, true, true, Messages.PVariance, Messages.PVarianceDescription, 1.0, typeof(double));
             this.SetParam(1, false, true, true, Messages.PUpperBound, Messages.PUpperBoundDescription, 1.0, typeof(double));

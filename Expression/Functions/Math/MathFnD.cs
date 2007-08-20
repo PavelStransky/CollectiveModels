@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.SetNumParams(1);
             this.SetXParam();
         }
 

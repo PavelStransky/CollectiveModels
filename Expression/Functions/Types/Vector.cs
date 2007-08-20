@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpVector; } }
 
         protected override void CreateParameters() {
-            this.NumParams(1, true);
+            this.SetNumParams(1, true);
             this.SetParam(0, false, true, true, Messages.PItem, Messages.PItemVectorDescription, null,
                 typeof(TArray), typeof(double), typeof(int), typeof(Matrix), typeof(List), typeof(Vector));
         }

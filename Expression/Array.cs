@@ -374,7 +374,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="inIndex">Vstupní indexy v jednotlivých rozmìrech (mùžou být duplicity)</param>
         /// <param name="value">Pøiøazovaná hodnota</param>
-        public void SetValue(int[][] inIndex, Assignment.AssignmentFunction assignFn) {
+        public void SetValue(int[][] inIndex, Atom.AssignmentFunction assignFn) {
             int rank = this.Rank;
 
             inIndex = this.AddMissingIndexes(inIndex);

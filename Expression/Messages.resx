@@ -165,6 +165,15 @@
   <data name="EMOperatorUnknownType" xml:space="preserve">
     <value>It is not possible to use the operator '{0}' between these types: {1} {0} {2}.</value>
   </data>
+  <data name="EMParametersCompatibility" xml:space="preserve">
+    <value>The operator '{0}' cannot be used between types '{1}' and '{2}'.</value>
+  </data>
+  <data name="EMParametersDifferentLength" xml:space="preserve">
+    <value>The operator '{0}' requires that all of the parameters of the type '{1}' must have the same length.</value>
+  </data>
+  <data name="EMParametersDifferentLengthDetail" xml:space="preserve">
+    <value>Found lengths: {0}, {1}</value>
+  </data>
   <data name="EMRankDetail" xml:space="preserve">
     <value>Rank of the Array = {0}.</value>
   </data>
@@ -665,6 +674,12 @@
   </data>
   <data name="PA0Description" xml:space="preserve">
     <value>Stiffness of the harmonic basis</value>
+  </data>
+  <data name="PAddent" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="PAddentDescription" xml:space="preserve">
+    <value>addent</value>
   </data>
   <data name="PADescription" xml:space="preserve">
     <value>A parameter of GCM</value>

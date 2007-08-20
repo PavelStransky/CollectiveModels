@@ -71,29 +71,18 @@ namespace PavelStransky.Expression {
         /// <param name="writer">Writer pro textové výstupy</param>
         public Indexer(string expression, Atom parent)
             : base(expression, parent) {
-            int pos = FindLastOpenIndexBracketPosition(this.expression);
+            ArrayList parts = GetIndexes(this.expression);
 
-            this.indexedItem = this.CreateAtomObject(RemoveOutsideBracket(this.expression.Substring(0, pos)).Trim().ToLower());
-            string inds = this.expression.Substring(pos + 1, this.expression.Length - pos - 2).Trim();
+            this.indexedItem = this.CreateAtomObject(parts[0] as string);
+            this.endVariables = parts[2] as ArrayList;
 
-            if(inds.Length == 0)
-                return;
-
-            string[] a = SplitArguments(inds);
-            for(int i = 0; i < a.Length; i++) {
-                string arg = RemoveOutsideBracket(a[i]).Trim();
-                
-                string endVariable = GetEndVariable();
-                this.endVariables.Add(endVariable);
-                arg = ReplaceEndVariable(arg, endVariable);
-
-                this.indexes.Add(this.CreateAtomObject(arg));
-            }
+            foreach(string s in (parts[1] as ArrayList)) 
+                this.indexes.Add(this.CreateAtomObject(s));
         }
 
         #region Assignment
         // Pøiøazovací funkce z pøedchozí úrovnì
-        private Assignment.AssignmentFunction assignFn;
+        private Atom.AssignmentFunction assignFn;
         private Guider guider;
 
         /// <summary>
@@ -187,7 +176,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="guider">Prùvodce výpoètu</param>
         /// <param name="value">Hodnota</param>
-        public void Evaluate(Guider guider, Assignment.AssignmentFunction assignFn) {
+        public void Evaluate(Guider guider, Atom.AssignmentFunction assignFn) {
             this.assignFn = assignFn;
             this.guider = guider;
 
@@ -513,35 +502,6 @@ namespace PavelStransky.Expression {
 			throw new ExpressionException(string.Format(errorMessageManyIndexes, count, needed),
 				string.Format(errorMessageDetail, this.expression));
 		}
-
-		/// <summary>
-		/// Zjistí, zda se ve výrazu nachází znak pro délku øady. Pokud ano, nahradí jej názvem pomocné promìnné
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		/// <param name="endVariable">Zástupná promìnná pro $</param>
-		/// <returns>Nahrazený výraz</returns>
-		private static string ReplaceEndVariable(string e, string endVariable) {
-			int index = -1;
-
-			while((index = (e.IndexOf(endChar, index + 1))) >= 0) {
-				if(!IsInString(e, index)) 
-					e = string.Format("{0}{1}{2}", e.Substring(0, index), endVariable, e.Substring(index + 1, e.Length - index - 1));
-			}
-
-			return e;
-		}
-
-		private static int countEndVariables = 0;
-
-		/// <summary>
-		/// Vrátí nový jedineèný název promìnné
-		/// </summary>
-		private static string GetEndVariable() {
-			return string.Format(defaultEndVariable, countEndVariables++);
-		}
-
-		private const char endChar = '$';
-		private const string defaultEndVariable = "$end{0}";
 
         private const string errorMessageBadIndexRank = "The indexing Array has {0} dimensions. Only 1 is required.";
 		private const string errorMessageManyIndexes = "Indexer má pøíliš mnoho indexù. Zadáno: {0}, požadováno maximálnì {1}.";

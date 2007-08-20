@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return Messages.HelpJacobi;}}
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.SetNumParams(1);
 
             this.SetParam(0, true, true, false, Messages.PSymmetricMatrix, Messages.PSymmetricMatrixDescription, null, typeof(Matrix));
         }

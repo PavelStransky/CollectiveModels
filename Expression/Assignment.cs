@@ -1,7 +1,7 @@
 using System;
 
 using PavelStransky.Math;
-
+/*
 namespace PavelStransky.Expression {
     /// <summary>
     /// Pøiøazení ve výrazu, obsahuje rovnítko (napø. a = x + 1)
@@ -48,11 +48,6 @@ namespace PavelStransky.Expression {
         private object result;
 
         /// <summary>
-        /// Delegát funkce, která provede pøiøazení
-        /// </summary>
-        public delegate object AssignmentFunction(object o);
-
-        /// <summary>
         /// Pøiøazovací funkce
         /// </summary>
         /// <param name="o">Objekt pro pøiøazení</param>
@@ -91,3 +86,4 @@ namespace PavelStransky.Expression {
         private const string errorMessageNullValue = "Výsledkem výpoètu èásti výrazu je hodnota NULL. Nelze dosadit do promìnné.";
     }
 }
+*/

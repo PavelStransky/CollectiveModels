@@ -1,51 +1,100 @@
+using System.Collections;
 using System;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.BinaryOperators {
+namespace PavelStransky.Expression.Functions {
 	/// <summary>
 	/// Operátor plus
 	/// </summary>
-	public class Plus: BinaryOperator {
-		public override string OperatorName {get {return operatorName;}}
+	public class Plus: Operator {
+		public override string Name {get {return name;}}
         public override OperatorPriority Priority { get { return OperatorPriority.AddPriority; } }
 
-		protected override object EvaluateII(int left, int right) {
-			return left + right;
-		}
+        protected override void CreateParameters() {
+            this.SetNumParams(1, true);
+            this.SetParam(0, true, true, false, Messages.PAddent, Messages.PAddentDescription, null,
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD));
 
-		protected override object EvaluateDDx(double left, double right) {
-			return left + right;
-		}
+            this.AddCompatibility(typeof(int), typeof(double));
+            this.AddCompatibility(typeof(int), typeof(Vector));
+            this.AddCompatibility(typeof(int), typeof(Matrix));
+            this.AddCompatibility(typeof(double), typeof(Vector));
+            this.AddCompatibility(typeof(double), typeof(Matrix));
+        }
 
-		protected override object EvaluateDVx(double left, Vector right) {
-			return right + left;
-		}
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            int[] lengths = this.GetTypesLength(arguments, true);
+            
+            // Výpoèet 
+            if(lengths[4] >= 0) {       // Vektor
+                int lengthv = lengths[2];
+                Vector resultv = new Vector(lengthv);
 
-		protected override object EvaluateDMx(double left, Matrix right) {
-			return right + left;
-		}
+                for(int i = 0; i < lengthv; i++)
+                    foreach(object o in arguments)
+                        if(o is Vector)
+                            resultv[i] += (o as Vector)[i];
+                        else if(o is double)
+                            resultv[i] += (double)o;
+                        else if(o is int)
+                            resultv[i] += (int)o;
 
-		protected override object EvaluatePPx(PointD left, PointD right) {
-			return left + right;
-		}
+                return resultv;
+            }
+
+            else if(lengths[6] >= 0) {    // Matice
+                int lengthmx = lengths[6];
+                int lengthmy = lengths[7];
+                Matrix resultm = new Matrix(lengthmx, lengthmy);
+
+                for(int i = 0; i < lengthmx; i++)
+                    for(int j = 0; j < lengthmy; j++)
+                        foreach(object o in arguments)
+                            if(o is Matrix)
+                                resultm[i, j] += (o as Matrix)[i, j];
+                            else if(o is double)
+                                resultm[i, j] += (double)o;
+                            else if(o is int)
+                                resultm[i, j] += (int)o;
+
+                return resultm;
+            }
+
+            else if(lengths[8] >= 0) {  // PointD
+                double x = 0.0;
+                double y = 0.0;
+
+                foreach(PointD p in arguments) {
+                    x += p.X;
+                    y += p.Y;
+                }
+
+                return new PointD(x, y);
+            }
+
+            else if(lengths[0] >= 0 && lengths[2] < 0) {    // int
+                int resulti = 0;
+
+                foreach(int i in arguments)
+                    resulti += i;
+
+                return resulti;
+            }
+
+            else {                      // double a int - výsledek double
+                double resultd = 0;
+
+                foreach(object o in arguments)
+                    if(o is int)
+                        resultd += (int)o;
+                    else
+                        resultd += (double)o;
+
+                return resultd;
+            }
+        }
 		
-		protected override object EvaluateVDx(Vector left, double right) {
-			return left + right;
-		}
-
-		protected override object EvaluateVVx(Vector left, Vector right) {
-			return left + right;
-		}
-
-		protected override object EvaluateMDx(Matrix left, double right) {
-			return left + right;
-		}
-
-		protected override object EvaluateMMx(Matrix left, Matrix right) {
-			return left + right;
-		}
-
-		private const string operatorName = "+";
+		private const string name = "+";
 	}
 }

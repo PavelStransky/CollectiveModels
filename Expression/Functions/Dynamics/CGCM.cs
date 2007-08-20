@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpCGCM; } }
 
         protected override void CreateParameters() {
-            this.NumParams(4);
+            this.SetNumParams(4);
             this.SetParam(0, false, true, true, Messages.PA, Messages.PADescription, -1.0, typeof(double));
             this.SetParam(1, false, true, true, Messages.PB, Messages.PBDescription, 1.0, typeof(double));
             this.SetParam(2, false, true, true, Messages.PC, Messages.PCDescription, 1.0, typeof(double));

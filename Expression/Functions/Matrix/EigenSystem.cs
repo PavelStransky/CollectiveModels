@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpEigenSystem; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetParam(0, true, true, false, Messages.PSymmetricMatrix, Messages.PSymmetricMatrixDescription, null, typeof(Matrix));
             this.SetParam(1, false, true, false, Messages.PEVectors, Messages.PEvectorsDescription, false, typeof(bool));

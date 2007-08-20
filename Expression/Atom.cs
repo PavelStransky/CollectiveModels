@@ -1,15 +1,16 @@
 using System;
+using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Collections;
 
 using PavelStransky.Math;
+using PavelStransky.Expression.Functions;
 
 namespace PavelStransky.Expression {
 	/// <summary>
 	/// Základní pøedek pro vzorec a funkci
 	/// </summary>
-	public abstract partial class Atom {
+    public abstract partial class Atom {
 		/// <summary>
 		/// Typy výrazù
 		/// </summary>
@@ -17,14 +18,12 @@ namespace PavelStransky.Expression {
 			Transform,
 			Formula, 
 			Function, 
-			Assignment, 
 			Null, 
 			Bool, 
 			Int32, 
 			Double, 
 			String, 
 			Variable, 
-			ExpressionList,
 			Indexer
 		}
 
@@ -60,20 +59,9 @@ namespace PavelStransky.Expression {
 		/// <param name="expression">Výraz funkce</param>
 		/// <param name="parent">Rodiè</param>
 		public Atom(string expression, Atom parent) {
-			this.Create(expression, parent);
-		}
-
-		/// <summary>
-		/// Vytvoøení objektu
-		/// </summary>
-		private void Create(string expression, Atom parent) {
-			this.parent = parent;
-			this.expression = RemoveComment(expression);
-			this.expression = RemoveNewLine(this.expression);
-			this.expression = RemoveOutsideBracket(this.expression).Trim();
-			CheckBrackets(this.expression);
-			CheckSubstChar(this.expression);
-		}
+            this.parent = parent;
+            this.expression = expression;
+        }
 
         /// <summary>
         /// Provede výpoèet èásti výrazu
@@ -92,94 +80,407 @@ namespace PavelStransky.Expression {
 			return null;
         }
 
+        #region Kontrola Syntaxe
         /// <summary>
-		/// Odstraní komentáø
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		private static string RemoveComment(string e) {
-			int index = -1;
-			while((index = e.IndexOf(commentMark, index + 1)) >= 0) {
-				if(IsInString(e, index)) 
-					continue;
-
-				int newLineIndex = e.IndexOf('\n', index);
-				if(newLineIndex < 0)
-					e = e.Substring(0, index);
-				else
-					e = e.Substring(0, index) + e.Substring(newLineIndex, e.Length - newLineIndex);
-
-				index--;
-			}
-
-			return e;
-		}
+        /// Pozice v syntaxi
+        /// </summary>
+        private enum SyntaxPosition {
+            Beginning, AfterOperator, AfterValue, AfterVariableOrFunction
+        }
 
 		/// <summary>
-		/// Odstraní znaky nových øádek a nahradí je mezerami
+		/// Zkontroluje, zda je správnì zadaná syntaxe (závorky, uvozovky, operátory, funkce)
 		/// </summary>
 		/// <param name="e">Výraz</param>
-		private static string RemoveNewLine(string e) {
-			return e.Replace("\r", string.Empty).Replace("\n", substNewLine);
-		}
+        /// <returns>Polohu místa, kde je chyba</returns>
+        public static void CheckSyntax(string e) {
+            int length = e.Length;
+            int n = openChars.Length;
+            ArrayList numBrackets = new ArrayList();
 
-		/// <summary>
-		/// Zkontroluje, zda se ve vzorci nevyskytuje zástupný znak (nesmí se vyskytovat)
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		private static void CheckSubstChar(string e) {
-			int index = e.IndexOf(substitutionChar);
-			if(index >= 0)
-				throw new ExpressionException(string.Format(errorMessageSubstChar, substitutionChar),
-					string.Format(errorMessageSubstCharDetail, e, index));
-		}
+            // Aktuální poèet závorek; na nb[n] je pozice otevírací závorky
+            int[] nb = new int[n + 1];
+            nb[n] = -1;
+            numBrackets.Add(nb);
 
-		/// <summary>
-		/// Zkontroluje, zda jsou správnì zadané závorky (obyèejné i indexové)
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		private static void CheckBrackets(string e) {
-			int numBrackets = 0;
-			int i = 0;
-			int openBracketIndex = -1;
-			char closeBracketChar = closeIndexBracket;
+            SyntaxPosition position = SyntaxPosition.Beginning;
 
-			for(i = 0; i < e.Length; i++) {
-				if(IsInString(e, i))
-					continue;
-				if(e[i] == openBracket && (numBrackets == 0 || closeBracketChar == closeBracket)) {
-					numBrackets++;
-					if(numBrackets == 1) {
-						openBracketIndex = i;
-						closeBracketChar = closeBracket;
-					}
-				}
-				else if(e[i] == openIndexBracket && (numBrackets == 0 || closeBracketChar == closeIndexBracket)) {
-					numBrackets++;
-					if(numBrackets == 1) {
-						openBracketIndex = i;
-						closeBracketChar = closeIndexBracket;
-					}
-				}
-				else if((e[i] == closeBracket || e[i] == closeIndexBracket) && numBrackets == 0)
-					throw new ExpressionException(errorMessageBracketPosition, string.Format(errorMessageBracketPositionDetail, e, i));
-				else if(e[i] == closeBracketChar) {
-					numBrackets--;
-					if(numBrackets == 0)
-						CheckBrackets(e.Substring(openBracketIndex + 1, i - openBracketIndex - 1));
-				}
-			}
+            // Pomocná promìnná
+            int j = 0;
+            int i = 0;
 
-			if(numBrackets != 0) 
-				throw new ExpressionException(errorMessageBracketNumber, string.Format(errorMessageBracketNumberDetail, e, numBrackets));
-		}
+            while(i < length) {
+                if(noMeanChars.IndexOf(e[i]) >= 0) {
+                    i++;
+                    continue;
+                }
 
-		/// <summary>
-		/// Odstraní všechny vnìjší závorky z výrazu
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		/// <returns>Výraz bez vnìjších závorek</returns>
-		protected static string RemoveOutsideBracket(string e) {
-			return RemoveOutsideBracket(openBracket, closeBracket, e);
+                else if(e[i] == separatorChar) {
+                    i++;
+                    position = SyntaxPosition.Beginning;
+                    continue;
+                }
+
+                // Cyklus pøes všechny závorky
+                bool bracket = false;
+                for(int k = 0; k < n; k++) {
+                    if(e[i] == openChars[k]) {
+                        if(!CheckPositionType(position,         // Normální závorka
+                            SyntaxPosition.Beginning, SyntaxPosition.AfterOperator,
+                            SyntaxPosition.AfterVariableOrFunction) 
+                            && k == 0)
+                            throw new ExpressionException("Chybná závorka", i);
+
+                        else if(!CheckPositionType(position,    // Indexovací závorka
+                            SyntaxPosition.AfterValue, SyntaxPosition.AfterVariableOrFunction)
+                            && k == 1)
+
+                        nb = (int[])numBrackets[0];
+                        nb = (int[])nb.Clone();
+
+                        nb[k]++;
+                        nb[n] = i;
+
+                        numBrackets.Insert(0, nb);
+
+                        bracket = true;
+                        position = SyntaxPosition.Beginning;
+                    }
+
+                    else if(e[i] == closeChars[k]) {
+                        if(CheckPositionType(position, SyntaxPosition.AfterOperator))
+                            throw new ExpressionException("Chybná závorka", i);
+
+                        if(numBrackets.Count == 1)
+                            throw new ExpressionException("Chyba závorek, uzavírací pøed otevírací.", i);
+
+                        nb = (int[])numBrackets[0];
+                        nb = (int[])nb.Clone();
+                        nb[k]--;
+
+                        int[] nbp = (int[])numBrackets[1];
+
+                        for(int l = 0; l < n; l++)
+                            if(nb[l] != nbp[l])
+                                throw new ExpressionException("Chyba závorek, uzavírací pøed otevírací.", i);
+
+                        numBrackets.RemoveAt(0);
+                        bracket = true;
+                        position = SyntaxPosition.AfterValue;
+                    }
+                }
+
+                if(bracket) {
+                    i++;
+                }
+
+                else if(e[i] == endVariableChar) {
+                    if(((int[])numBrackets[0])[1] <= 0)
+                        throw new ExpressionException("Chyba koncové promìnné, není obsažena v indexových závorkách.", i);
+                    i++;
+                    position = SyntaxPosition.AfterValue;
+                }
+
+                else if((j = CommentPosition(e, i)) > 0) { // Komentáø pøeskoèíme
+                    i = j;
+                }
+
+                else if((j = StringPosition(e, i)) > 0) {
+                    if(!CheckPositionType(position,
+                        SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
+                        throw new ExpressionException("Chyba, string na nesprávném místì", i);
+
+                    i = j;
+                    position = SyntaxPosition.AfterValue;
+                }
+
+                else if((j = VariableOrFunctionPosition(e, i)) > 0) {
+                    if(!CheckPositionType(position,
+                        SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
+                        throw new ExpressionException("Chyba, promìnná na nesprávném místì", i);
+
+                    i = j;
+                    position = SyntaxPosition.AfterVariableOrFunction;
+                }
+
+                else if((j = NumberPosition(e, i)) > 0) {
+                    if(!CheckPositionType(position,
+                        SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
+                        throw new ExpressionException("Chyba, èíslo na nesprávném místì", i);
+
+                    i = j;
+                    position = SyntaxPosition.AfterValue;
+                }
+
+                else if((j = OperatorPosition(e, i)) > 0) {
+                    i = j;
+                    position = SyntaxPosition.AfterOperator;
+                }
+
+                else
+                    throw new ExpressionException("Chyba na pozici i", i);
+            }
+        }
+
+        /// <summary>
+        /// Zkontroluje, zda pozice je zadaného typu
+        /// </summary>
+        /// <param name="position">Aktuální pozice</param>
+        /// <param name="types">Možné typy</param>
+        /// <returns></returns>
+        private static bool CheckPositionType(SyntaxPosition position, params SyntaxPosition[] types) {
+            foreach(SyntaxPosition p in types)
+                if(p == position)
+                    return true;
+
+            return false;
+        }
+        #endregion
+
+        #region Pozice rùzných èástí výrazù
+        /// <summary>
+        /// Pozice dalšího znaku po komentáøi (pokud komentáø není, vrací -1)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int CommentPosition(string e, int i) {
+            if(e.IndexOf(commentChars, i) != i)
+                return -1;
+
+            int j = e.IndexOf('\n', i);
+            if(j < 0)
+                j = e.IndexOf('\r', i);
+            if(j < 0)
+                j = e.Length;
+
+            return j;
+        }
+
+        /// <summary>
+        /// Pozice dalšího znaku po øetìzci (pokud øetìzec není, vrací -1)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int StringPosition(string e, int i) {
+            if(e[i] != stringChar)
+                return -1;
+
+            int j = i;
+
+            while((j = e.IndexOf(stringChar, j + 1)) >= 0)
+                if(e[j - 1] != specialChar)
+                    break;
+
+            if(j < 0)
+                throw new ExpressionException("Chyba uvozovek, pozice i", i);
+
+            return j + 1;
+        }
+
+        /// <summary>
+        /// Pozice dalšího znaku po konci textu (pokud text není, vrací -1)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int VariableOrFunctionPosition(string e, int i) {
+            if(!char.IsLetter(e[i]) && e[i] != endVariableChar && variableChars.IndexOf(e[i]) < 0)
+                return -1;
+
+            int length = e.Length;
+            while(++i < length && (char.IsLetterOrDigit(e[i]) || variableChars.IndexOf(e[i]) >= 0));
+
+            return i;
+        }
+
+        /// <summary>
+        /// Pozice dalšího znaku po èíslu (pokud èíslo není, vrací -1)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int NumberPosition(string e, int i) {
+            bool point = false;
+            bool exp = false;
+
+            if(e[i] == '.')
+                point = true;
+            else if(!char.IsDigit(e[i]))
+                return -1;
+
+            int length = e.Length;
+            while(++i < length) {
+                if(char.IsDigit(e[i]))
+                    continue;
+
+                else if(e[i] == '.') {
+                    if(point || exp)
+                        break;
+                    else
+                        point = true;
+                }
+
+                else if(char.ToUpper(e[i]) == 'E')
+                    exp = true;
+
+                else if(e[i] == '+' || e[i] == '-') {
+                    if(!exp || char.ToUpper(e[i - 1]) != 'E')
+                        break;
+                }
+
+                else
+                    break;
+            }
+
+            return i;
+        }
+
+        /// <summary>
+        /// Pozice dalšího znaku po operátoru (pokud operátor není, vrací -1)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int OperatorPosition(string e, int i) {
+            int j = FirstNonOperatorChar(e, i);
+
+            if(i == j)
+                return -1;
+
+            string o = string.Empty;
+
+            while((o = e.Substring(i, j - i)).Length > 0) {
+                foreach(string name in functions.Keys)
+                    if(name == o)
+                        return j;
+                j--;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Vrátí pozici prvního znaku, který není operátorem
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int FirstNonOperatorChar(string e, int i) {
+            int length = e.Length;
+            int n = openChars.Length;
+
+            bool bracket = false;
+
+            while(i < length) {
+                if(noMeanChars.IndexOf(e[i]) >= 0)
+                    break;
+                else if(char.IsLetterOrDigit(e[i]))
+                    break;
+                else if(e[i] == '.')
+                    break;
+                else if(variableChars.IndexOf(e[i]) >= 0)
+                    break;
+                else if(e[i] == stringChar)
+                    break;
+
+
+                for(int k = 0; k < n; k++)
+                    if(e[i] == openChars[k] || e[i] == closeChars[k]) {
+                        bracket = true;
+                        break;
+                    }
+
+                if(bracket)
+                    break;
+
+                i++;
+            }
+
+            return i;
+        }
+
+        /// <summary>
+        /// Pozice dalšího znaku po závorce (pokud závorka není, vrací -1)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="i">Poèáteèní pozice</param>
+        private static int BracketPosition(string e, int i) {
+            int length = e.Length;
+            int n = openChars.Length;
+
+            int k = 0;
+            while(k < n && e[i] != openChars[k])
+                k++;
+
+            if(k == n)
+                return -1;
+
+            int j = 0;
+            int numBrackets = 0;
+
+            while(i < length) {
+                if(e[i] == openChars[k]) {
+                    numBrackets++;
+                    i++;
+                }
+
+                else if(e[i] == closeChars[k]) {
+                    numBrackets--;
+                    if(numBrackets == 0)
+                        return i + 1;
+                    i++;
+                }
+
+                else if((j = StringPosition(e, i)) > 0)
+                    i = j;
+
+                else
+                    i++;
+            }
+
+            return -1;
+        }
+        #endregion
+
+        /// <summary>
+        /// Odstraní komentáø a všechny znaky bez smyslu
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        protected static string RemoveComments(string e) {
+            int length = e.Length;
+
+            int i = 0;
+            int j = 0;
+
+            StringBuilder result = new StringBuilder(length);
+
+            while(i < length) {
+                if((j = CommentPosition(e, i)) > 0) // Pøeskoèíme komentáøe
+                    i = j;
+
+                else if((noMeanChars.IndexOf(e[i])) >= 0) {
+                    if(i > 0 && result[result.Length - 1] != ' ')
+                        result.Append(' ');
+                    i++;
+                }
+
+                else if((j = StringPosition(e, i)) > 0) { // Pøeskoèíme a uložíme øetìzce
+                    result.Append(e.Substring(i, j - i));
+                    i = j;
+                }
+
+                else {
+                    result.Append(e[i]);
+                    i++;
+                }
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Odstraní všechny vnìjší závorky z výrazu
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <returns>Výraz bez vnìjších závorek</returns>
+        protected static string RemoveOutsideBracket(string e) {
+			return RemoveOutsideBracket(0, e);
 		}
 
 		/// <summary>
@@ -188,94 +489,27 @@ namespace PavelStransky.Expression {
 		/// <param name="e">Výraz</param>
 		/// <returns>Výraz bez vnìjších závorek</returns>
 		protected static string RemoveOutsideIndexBracket(string e) {
-			return RemoveOutsideBracket(openIndexBracket, closeIndexBracket, e);
+			return RemoveOutsideBracket(1, e);
 		}
 
 		/// <summary>
 		/// Odstraní všechny vnìjší závorky z výrazu
 		/// </summary>
-		/// <param name="openBracket">Znak otevírací závorky</param>
-		/// <param name="closeBracket">Znak zavírací závorky</param>
+		/// <param name="bracketNumber">Èíslo (typ) závorky</param>
 		/// <param name="e">Výraz</param>
 		/// <returns>Výraz bez vnìjších závorek</returns>
-		private static string RemoveOutsideBracket(char openBracket, char closeBracket, string e) {
+		private static string RemoveOutsideBracket(int bracketNumber, string e) {
 			e = e.Trim();
 
 			while(e.Length != 0) {
-				if(e[0] == openBracket && e[e.Length - 1] == closeBracket) {
-					string s = e.Substring(1, e.Length - 2).Trim();
-					for(int i = 1; i < s.Length; i++) {
-						string subs = s.Substring(0, i);
-						if(BracketNumber(subs) < 0 || IndexBracketNumber(subs) < 0)
-							return e;
-					}
-					e = s;
-				}
-				else
-					return e;
+                int j = 0;
+                if((j = BracketPosition(e, 0)) > 0 && e[0] == openChars[bracketNumber] && j == e.Length)
+                        e = e.Substring(1, e.Length - 2).Trim();
+                else
+                    break;
 			}
 
-			return e;
-		}
-
-		/// <summary>
-		/// True, pokud je pro zadaný výraz BracketNumber != 0
-		/// </summary>
-		/// <param name="left">Výraz</param>
-		public static bool IsInBracket(string left) {
-			if(BracketNumber(left) != 0)
-				return true;
-			if(IndexBracketNumber(left) != 0)
-				return true;
-
-			return false;
-		}
-
-		/// <summary>
-		/// True, pokud zadaný index je uzavøen v závorce
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		/// <param name="index">Index</param>
-		public static bool IsInBracket(string e, int index) {
-			return IsInBracket(e.Substring(0, index));
-		}
-
-		/// <summary>
-		/// Vypoèítá rozdíl otevírací - uzavírací závorky
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		private static int BracketNumber(string e) {
-			return BracketNumber(openBracket, closeBracket, e);
-		}
-
-		/// <summary>
-		/// Vypoèítá rozdíl otevírací - uzavírací závorky indexeru
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		public static int IndexBracketNumber(string e) {
-			return BracketNumber(openIndexBracket, closeIndexBracket, e);
-		}
-
-		/// <summary>
-		/// Vypoèítá rozdíl otevírací - uzavírací závorky
-		/// </summary>
-		/// <param name="openBracket">Znak otevírací závorky</param>
-		/// <param name="closeBracket">Znak zavírací závorky</param>
-		/// <param name="e">Výraz</param>
-		private static int BracketNumber(char openBracket, char closeBracket, string e) {
-			int numOpen = 0;
-			int index = -1;
-			while((index = e.IndexOf(openBracket, index + 1)) >= 0) 
-				if(!IsInString(e, index))
-					numOpen++;
-
-			int numClose = 0;
-			index = -1;
-			while((index = e.IndexOf(closeBracket, index + 1)) >= 0) 
-				if(!IsInString(e, index))
-					numClose++;
-			
-			return numOpen - numClose;
+            return e;
 		}
 
 		/// <summary>
@@ -283,218 +517,72 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="e">Výraz</param>
 		protected static ExpressionTypes ExpressionType(string e) {
-			if(e.Length == 0)
-				return ExpressionTypes.Null;
-			if(FindSeparatorPosition(e) > 0)
-				return ExpressionTypes.ExpressionList;
-			else if(FindAssignmentOperatorPosition(e) > 0)
-				return ExpressionTypes.Assignment;
-			else if(FindBinaryOperatorPosition(e) > 0)
-				return ExpressionTypes.Formula;
-			else if(FindUnaryOperatorPosition(e) == 0)
-				return ExpressionTypes.Transform;
-			else if(FindOpenIndexBracketPosition(e) > 0)
-				return ExpressionTypes.Indexer;
-			else if(FindOpenBracketPosition(e) > 0)
-				return ExpressionTypes.Function;
-			else if(numbers.IndexOf(e[0]) >= 0) {
-				if(e.IndexOf('.') >= 0 || e.IndexOf(',') >= 0) 
-					return ExpressionTypes.Double;
-				else
-					return ExpressionTypes.Int32;
-			}
-			else if(IsString(e))
-				return ExpressionTypes.String;
-			else if(IsBool(e))
-				return ExpressionTypes.Bool;
-			else
-				return ExpressionTypes.Variable;
-		}
+            e = e.Trim();
+            int length = e.Length;
 
-		/// <summary>
-		/// Najde polohu oddìlovaèe
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		protected static int FindSeparatorPosition(string e) {
-			int index = -1;
-			while((index = e.IndexOf(separator, index + 1)) >= 0) {
-				if(IsInString(e, index))
-					continue;
+            int i = 0;
+            int j = 0;
 
-				if(!IsInBracket(e, index)) 
-					return index;
-			}
+            ExpressionTypes result = ExpressionTypes.Null;
 
-			return -1;
-		}
-
-		/// <summary>
-		/// Najde polohu operátoru pøiøazení
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		protected static int FindAssignmentOperatorPosition(string e) {
-			int index = -1;
-			while((index = e.IndexOf(assignmentOperator, index + 1)) >= 0) {
-				if(IsInString(e, index))
-					continue;
-
-				if(!IsInBracket(e, index)) {
-					// Kontrolujeme, zda se nejedná o nìjaký z operátorù "<=, >=, =="
-					string substring = e.Substring(System.Math.Max(index - 2, 0), 
-						System.Math.Min(binaryOperators.MaxOperatorLength + 2, e.Length - index))
-                        .Replace(openBracket.ToString(), string.Empty)
-                        .Replace(closeBracket.ToString(), string.Empty);
-					int pos = FindBinaryOperatorPosition(substring);
-					// Mùže být napø. x =-12
-					if(pos < 0 || substring.IndexOf(assignmentOperator, pos) < 0)
-						return index;
-				}
-			}
-
-			return -1;
-		}
-
-		/// <summary>
-		/// Najde polohu unárního operátoru, který budeme zpracovávat
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		protected static int FindUnaryOperatorPosition(string e) {
-			string operatorName = string.Empty;
-			return FindUnaryOperatorPosition(out operatorName, e);
-		}
-
-		/// <summary>
-		/// Najde polohu unárního operátoru, který budeme zpracovávat
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <param name="operatorName">Výsledek - oznaèení operátoru</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		protected static int FindUnaryOperatorPosition(out string operatorName, string e) {
-			return FindOperatorPosition(out operatorName, e, false);
-		}
-
-		/// <summary>
-		/// Najde polohu binárního operátoru, který budeme zpracovávat
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		protected static int FindBinaryOperatorPosition(string e) {
-			string operatorName = string.Empty;
-			return FindBinaryOperatorPosition(out operatorName, e);
-		}
-
-		/// <summary>
-		/// Najde polohu binárního operátoru, který budeme zpracovávat
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <param name="operatorName">Výsledek - oznaèení operátoru</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		protected static int FindBinaryOperatorPosition(out string operatorName, string e) {
-			return FindOperatorPosition(out operatorName, e, true);
-		}
-
-		/// <summary>
-		/// Najde polohu operátoru, který budeme zpracovávat
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <param name="operatorName">Výsledek - oznaèení operátoru</param>
-		/// <param name="operatorPattern">Vzorec pro vyhledávání pomocí regulárních výrazù</param>
-		/// <param name="binary">True, pokud se jedná o binární operátor, který se nesmí vyskytovat na první pozici</param>
-		/// <returns>Poloha operátoru ve výrazu</returns>
-		private static int FindOperatorPosition(out string operatorName, string e, bool binary) {
-            Operators.Operators o = binary ? binaryOperators : unaryOperators;
-
-            for(int i = o.MaxOperatorLength; i >= 0; i--)
-                foreach(string name in o.Keys) {
-                    if(name.Length != i)
-                        continue;
-
-                    int index = -1;
-                    while((index = e.IndexOf(name, index + 1)) >= 0) {
-                        if(index == 0 && binary)
-                            continue;
-
-                        if(IsInString(e, index))
-                            continue;
-
-                        if(!IsInBracket(e.Substring(0, index))) {
-                            operatorName = name;
-                            return index;
-                        }
-                    }
+            while(i < length) {
+                    // Operátor
+                if((j = OperatorPosition(e, i)) > 0) {
+                    result = ExpressionTypes.Function;
+                    break;
                 }
-            
-			operatorName = string.Empty;
-			return -1;
+
+                    // Øetìzec
+                else if((j = StringPosition(e, i)) > 0) {
+                    result = ExpressionTypes.String;
+                    break;
+                }
+
+                    // Promìnná
+                else if((j = VariableOrFunctionPosition(e, i)) > 0) {
+                    if(j == length) {
+                        result = ExpressionTypes.Variable;
+                        break;
+                    }
+
+                    i = j;
+                }
+
+                    // Èíslo
+                else if((j = NumberPosition(e, i)) > 0) {
+                    if(IsIntNumber(e.Substring(i, j - i)))
+                        result = ExpressionTypes.Int32;
+                    else
+                        result = ExpressionTypes.Double;
+                    break;
+                }
+
+                else if((j = BracketPosition(e, i)) > 0) {
+                    if(e[i] == openChars[0])
+                        result = ExpressionTypes.Function;
+                    else
+                        result = ExpressionTypes.Indexer;
+                    break;
+                }
+
+                else
+                    i++;
+            }
+
+            return result;
 		}
 
-		/// <summary>
-		/// Najde polohu závorky s argumenty funkce
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha závorky ve výrazu</returns>
-		protected static int FindOpenBracketPosition(string e) {
-			return FindOpenBracketPosition(openBracket, e);
-		}
-
-		/// <summary>
-		/// Najde polohu závorky indexeru
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha závorky ve výrazu</returns>
-		protected static int FindOpenIndexBracketPosition(string e) {
-			return FindOpenBracketPosition(openIndexBracket, e);
-		}
-
-		/// <summary>
-		/// Najde polohu závorky
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha závorky ve výrazu</returns>
-		protected static int FindOpenBracketPosition(char openBracket, string e) {
-			int index = -1;
-			while((index = e.IndexOf(openBracket, index + 1)) >= 0)
-				if(!IsInString(e, index) && !IsInBracket(e, index))
-					return index;
-
-			return -1;
-		}
-
-		/// <summary>
-		/// Najde polohu POSLEDNÍ otevírací závorky indexeru
-		/// </summary>
-		/// <param name="e">Výraz, ve kterém hledá</param>
-		/// <returns>Poloha závorky ve výrazu</returns>
-		protected static int FindLastOpenIndexBracketPosition(string e) {
-			int result = e.Length - 1;
-
-			while((result = e.LastIndexOf(openIndexBracket)) >= 0) {
-				if(!IsInBracket(e, result))
-					return result;
-			}
-
-			return -1;
-		}
-
-		/// <summary>
-		/// Rozhodne, zda výraz je samostatný øetìzec
-		/// </summary>
-		/// <param name="e">Výraz</param>
-		protected static bool IsString(string e) {
-			if(e.Length < 2 || e[0] != quotationMark || e[e.Length - 1] != quotationMark)
-				return false;
-
-			int index = 0;
-			while((index = e.IndexOf(quotationMark, index + 1)) != -1) {
-				if(e[index - 1] != specialCharMark && !(index == e.Length - 1 && e[index - 1] != specialCharMark))
-					return false;
-			}
-
-			return true;
-		}
+        /// <summary>
+        /// Vrátí TRUE, pokud je èíslo celé
+        /// </summary>
+        /// <param name="e">Výraz obsahující pouze èíslo</param>
+        private static bool IsIntNumber(string e) {
+            e = e.ToUpper();
+            if(e.IndexOf('.') >= 0 || e.IndexOf('E') >= 0)
+                return false;
+            else
+                return true;
+        }
 
 		/// <summary>
 		/// Rozhodne, zda výraz je logická promìnná (true, false)
@@ -508,21 +596,6 @@ namespace PavelStransky.Expression {
 		}
 
 		/// <summary>
-		/// Vrátí true, pokud se uvedená pozice nachází uprostøed øetìzce
-		/// </summary>
-		/// <param name="e">Vstupní výraz</param>
-		/// <param name="position">Pozice</param>
-		protected static bool IsInString(string e, int position) {
-			bool result = false;
-
-			for(int i = 0; i <= position; i++)
-				if(e[i] == quotationMark && (i == 0 || e[i - 1] != specialCharMark))
-					result = !result;
-
-			return result;
-		}
-
-		/// <summary>
 		/// Rozhodne, jaký objekt z èásti výrazu vytvoøí
 		/// </summary>
 		/// <param name="expression">Výraz funkce</param>
@@ -531,20 +604,8 @@ namespace PavelStransky.Expression {
 			object retValue = null;
 
 			switch(ExpressionType(expression)) {
-				case ExpressionTypes.Transform:
-					retValue = new Transform(expression, this);
-					break;
-				case ExpressionTypes.Formula:
-					retValue = new Formula(expression, this);
-					break;
 				case ExpressionTypes.Function:
 					retValue = new Function(expression, this);
-					break;
-				case ExpressionTypes.Assignment:
-					retValue = new Assignment(expression, this);
-					break;
-				case ExpressionTypes.ExpressionList:
-					retValue = new ExpressionList(expression, this);
 					break;
 				case ExpressionTypes.Indexer:
 					retValue = new Indexer(expression, this);
@@ -583,8 +644,8 @@ namespace PavelStransky.Expression {
 		/// <param name="e">Výraz</param>
 		/// <returns>Je - li øetezec, pak øetìzec, jinak null</returns>
 		protected static string ParseString(string e) {
-			if(IsString(e))
-				return e.Substring(1, e.Length - 2).Replace(specialCharMark.ToString() + quotationMark.ToString(), quotationMark.ToString());
+			if(StringPosition(e,0)==e.Length)
+				return e.Substring(1, e.Length - 2).Replace(specialChar.ToString() + stringChar.ToString(), stringChar.ToString());
 			else
 				return null;
 		}
@@ -689,42 +750,343 @@ namespace PavelStransky.Expression {
 			return retValue;
 		}
 
-		/// <summary>
-		/// Oddìlí od sebe jednotlivé parametry v závorce
-		/// </summary>
-		/// <param name="e">Vstupní výraz</param>
-		protected static string [] SplitArguments(string e) {
-			StringBuilder s = new StringBuilder(e.Length);
+        /// <summary>
+        /// Doplní závorky do èásti výrazu
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        protected static string FillBracket(string e) {
+            e = RemoveOutsideBracket(e);
+            int length = e.Length;
 
-			for(int i = 0; i < e.Length; i++) {
-				if(e[i] == separator && !IsInBracket(e, i) && !IsInString(e, i))
-					s.Append(substitutionChar);
-				else
-					s.Append(e[i]);
-			}
+            // Nejprve rozdìlíme
+            ArrayList parts = new ArrayList();
 
-			return s.ToString().Split(substitutionChar);
-		}
+            int i = 0;
+            int j = 0;
+            int k = 0;
 
-		protected const string numbers = "0123456789 ";
-		protected const char openBracket = '(';
-		protected const char closeBracket = ')';
-		protected const char openIndexBracket = '[';
-		protected const char closeIndexBracket = ']';
-		protected const char assignmentOperator = '=';
-		protected const char separator = ';';
-		protected const char semicolon = ';';
-		protected const char quotationMark = '"';
-		protected const char specialCharMark = '\\';
-		protected const char substitutionChar = '`';
+            SyntaxPosition position = SyntaxPosition.Beginning;
 
-		private const string substNewLine = "   ";
-		private const string boolTrue = "true";
-		private const string boolFalse = "false";
+            while(i < length) {
+                if(e[i] == separatorChar) {
+                    position = SyntaxPosition.Beginning;
+                    i++;
+                }
 
-		protected const string commentMark = "%%";
+                else if((j = StringPosition(e, i)) > 0 ||
+                    (j = NumberPosition(e, i)) > 0 ||
+                    (j = BracketPosition(e, i)) > 0) {
+                    i = j;
+                    position = SyntaxPosition.AfterValue;
+                }
 
-		private const string errorMessageBracketNumber = "Ve výrazu je chybný poèet závorek.";
+                else if((j = VariableOrFunctionPosition(e, i)) > 0) {
+                    i = j;
+                    position = SyntaxPosition.AfterVariableOrFunction;
+                }
+
+                else if((j = OperatorPosition(e, i)) > 0) {
+                    if(CheckPositionType(position, SyntaxPosition.Beginning, SyntaxPosition.AfterOperator)) {
+                        int l = j;
+                        while(noMeanChars.IndexOf(e[l]) >= 0)
+                            l++;
+
+                        // Máme napøíklad toto: y + -(x; 12);
+                        // - už je hotová funkce, nemusíme ji nijak zpracovávat
+                        if(e[l] == openChars[0]) {
+                            i = BracketPosition(e, l);
+                            position = SyntaxPosition.AfterVariableOrFunction;
+                            continue;
+                        }
+                    }
+                    else
+                        parts.Add(e.Substring(k, i - k).Trim());
+
+                    parts.Add(functions[e.Substring(i, j - i)]);
+                    k = j;
+                    i = j;
+                    position = SyntaxPosition.AfterOperator;
+                }
+
+                else
+                    i++;
+            }
+
+            parts.Add(e.Substring(k, length - k));
+
+            // Rozdìleno, nyní hledáme vždy operátory od nejvyšší priority k nejnižší a vkládáme závorky
+            // (unární operátory mají vždy vyšší prioritu než binární, proto je zpracujeme nejdøíve)
+            ArrayList newParts = new ArrayList();
+
+            int count = parts.Count;
+
+            i = 0;
+            while(i < count) {
+                if(parts[i] is Operator && (parts[i + 1] is Operator || i == 0)) {
+                    if(i != 0) 
+                        newParts.Add(parts[i++]);
+
+                    StringBuilder s = new StringBuilder();
+                    j = 0;
+
+                    while(parts[i] is Operator) {
+                        s.Append((parts[i] as Operator).Name);
+                        s.Append('(');
+                        i++; j++;
+                    }
+
+                    s.Append(parts[i]);
+                    s.Append(')', j);
+
+                    newParts.Add(s.ToString());
+                    i++;
+                }
+                else
+                    newParts.Add(parts[i++]);
+            }
+
+            parts = newParts;
+
+            for(k = (int)Operator.MaxPriority; k >= 0; k--) {
+                count = parts.Count;
+                if(count <= 1)
+                    break;
+
+                newParts = new ArrayList();
+                object last = parts[count - 1];
+
+                for(i = count - 2; i >= 0; i--) {
+                    if(parts[i] is Operator && ((int)(parts[i] as Operator).Priority == k)) {
+                        string name = (parts[i] as Operator).Name;
+                        int numParams = (parts[i] as Operator).NumParams;
+
+                        StringBuilder s = new StringBuilder();
+                        i--;
+                        s.Append(parts[i]);
+                        i--;
+
+                        j = 2;
+
+                        while(i >= 0 && j < numParams) {
+                            if((parts[i] is Operator) && (parts[i] as Operator).Name == name) {
+                                s.Insert(0, separatorChar);
+                                i--;
+                                s.Insert(0, parts[i]);
+                                i--;
+                                j++;
+                            }
+                            else 
+                                break;
+                        }
+
+                        i++;
+
+                        s.Insert(0, '(');
+                        s.Insert(0, name);
+                        s.Append(separatorChar);
+                        s.Append(last);
+                        s.Append(')');
+                        last = s.ToString();
+                    }
+                    else {
+                        newParts.Insert(0, last);
+                        last = parts[i];
+                    }
+                }
+
+                newParts.Insert(0, last);
+                parts = newParts;
+            }
+
+            return parts[0].ToString();
+        }
+
+        /// <summary>
+        /// Provede rozdìlení argumentù funkce (indexù indexeru)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        private static ArrayList SeparateArguments(string e) {
+            int length = e.Length;
+
+            int i = 0;
+            int j = 0;
+            int k = 0;
+
+            ArrayList result = new ArrayList();
+
+            while(i < length) {
+                if((j = StringPosition(e, i)) > 0)
+                    i = j;
+                else if((j = BracketPosition(e, i)) > 0)
+                    i = j;
+                else if(e[i] == separatorChar) {
+                    result.Add(FillBracket(e.Substring(k, i - k)));
+                    k = i + 1;
+                    i++;
+                }
+                else
+                    i++;
+            }
+
+            result.Add(FillBracket(e.Substring(k, length - k)));
+            return result;
+        }
+
+        /// <summary>
+        /// Oddìlí jméno funkce a její argumenty 
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        protected static ArrayList GetArguments(string e) {
+            int length = e.Length;
+
+            int i = 0;
+            int j = 0;
+
+            while(i < length) {
+                if((j = StringPosition(e, i)) > 0)
+                    i = j;
+                else if((j = BracketPosition(e, i)) > 0) {
+                    if(e[i] == openChars[0])
+                        break;
+                    else
+                        i++;
+                }
+                else
+                    i++;
+            }
+
+            ArrayList result = new ArrayList();
+            result.Add(e.Substring(0, i).Trim());
+            result.Add(SeparateArguments(e.Substring(i + 1, length - i - 2)));
+            return result;
+        }
+
+        /// <summary>
+        /// Najde poslední indexaèní závorky a vrátí indexovaný výraz a indexy
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        protected static ArrayList GetIndexes(string e) {
+            int length = e.Length;
+
+            int i = 0;
+            int j = 0;
+            int k = 0;
+
+            while(i < length) {
+                if((j = StringPosition(e, i)) > 0)
+                    i = j;
+                else if((j = BracketPosition(e, i)) > 0) {
+                    if(e[i] == openChars[1])
+                        k = i;
+                    i = j;
+                }
+                else
+                    i++;
+            }
+
+            ArrayList result = new ArrayList();
+            result.Add(e.Substring(0, k).Trim());
+
+            // Nahrazení koncových promìnných
+            ArrayList indexes = SeparateArguments(e.Substring(k + 1, length - k - 2));
+            ArrayList endVariables = new ArrayList();
+            ArrayList indexesev = new ArrayList();
+
+            foreach(string s in indexes) {
+                string ev = GenerateEndVariable();
+                endVariables.Add(ev);
+                indexesev.Add(ReplaceEndVariables(s, ev));
+            }
+
+            result.Add(indexesev);
+            result.Add(endVariables);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Nahradí všechny znaky pro koncové promìnné daným oznaèením koncové promìnné
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="ev">Znaèení koncové promìnné</param>
+        private static string ReplaceEndVariables(string e, string ev) {
+            int length = e.Length;
+            StringBuilder result = new StringBuilder();
+
+            int i = 0;
+            int j = 0;
+            int k = 0;
+
+            while(i < length) {
+                if((j = StringPosition(e, i)) > 0)
+                    i = j;
+                else if((j = BracketPosition(e, i)) > 0) {
+                    if(e[i] == openChars[1])    // Pøeskakujeme jen další vnoøený indexer
+                        i = j;
+                    else
+                        i++;
+                }
+                else if(e[i] == '$') {
+                    result.Append(e.Substring(k, i));
+                    result.Append(ev);
+                    k = i + 1;
+                    i++;
+                }
+                else
+                    i++;
+            }
+
+            result.Append(e.Substring(k, length - k));
+
+            return result.ToString();
+        }
+
+        private static int countEndVariables = 0;
+
+        /// <summary>
+        /// Nageneruje jedineènou promìnnou
+        /// </summary>
+        /// <returns></returns>
+        private static string GenerateEndVariable() {
+            return string.Format("$end{0}", countEndVariables++);
+        }
+
+        /// <summary>
+        /// Delegát funkce, která provede pøiøazení
+        /// </summary>
+        public delegate object AssignmentFunction(object o);
+
+        /// <summary>
+        /// Vrátí true, pokud daný ukazatel ukazuje na místo uprostøed závorek
+        /// nebo na místo uprostøed øetìzce
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        /// <param name="p">Zkoumaná pozice</param>
+        public static bool IsInBracket(string e, int p) {
+            int length = e.Length;
+
+            int i = 0;
+            int j = 0;
+
+            while(i < length) {
+                if((j = StringPosition(e, i)) > 0) {
+                    if(p < j && p > i)
+                        return true;
+                    i = j;
+                }
+                else if((j = BracketPosition(e, i)) > 0) {
+                    if(p < j && p > i)
+                        return true;
+                    i = j;
+                }
+                else
+                    i++;
+            }
+
+            return false;
+        }
+
+        private const string errorMessageBracketNumber = "Ve výrazu je chybný poèet závorek.";
 		private const string errorMessageBracketNumberDetail = "Výraz: {0}\nRozdíl otevírací - uzavírací závorky: {1}";
 
 		private const string errorMessageBracketPosition = "Závorky ve výrazu jsou špatnì uspoøádány.";

@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpComputeSpectrum; } }
 
         protected override void CreateParameters() {
-            this.NumParams(5);
+            this.SetNumParams(5);
 
             this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM), typeof(PT1));
             this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));

@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections;
 
 using PavelStransky.Math;
-
+/*
 namespace PavelStransky.Expression {
 	/// <summary>
 	/// Tøída pro zpracování více pøíkazù oddìlených støedníkem (pøíkaz1; pøíkaz2; ...)
@@ -42,3 +42,4 @@ namespace PavelStransky.Expression {
 		}
 	}
 }
+*/

@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions {
     public class FnList: FunctionDefinition {
         public override string Name { get { return name; } }
         public override string Help { get { return help; } }
-        public override string Parameters { get { return parameters; } }
+        public override string ParametersHelp { get { return parameters; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             List result = new List();

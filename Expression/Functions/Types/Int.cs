@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Name { get { return name; } }
 
         protected override void CreateParameters() {
-            this.NumParams(1);
+            this.SetNumParams(1);
             this.SetParam(0, true, true, false, Messages.PValue, Messages.PValueDescription, null,
                 typeof(int), typeof(double), typeof(string), typeof(TimeSpan));
         }

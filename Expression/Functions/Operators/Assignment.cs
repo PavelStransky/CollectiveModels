@@ -1,19 +1,27 @@
+using System.Collections;
 using System;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.BinaryOperators {
+namespace PavelStransky.Expression.Functions {
     /// <summary>
     /// Operátor pøiøazení
     /// </summary>
-    public class PlusX: BinaryOperator {
-        public override string OperatorName { get { return operatorName; } }
-        public override OperatorPriority Priority { get { return OperatorPriority.BoolAddPriority; } }
+    public class Assignment: Operator {
+        public override string Name { get { return name; } }
+        public override OperatorPriority Priority { get { return OperatorPriority.AssignmentPriority; } }
 
-        public override object Evaluate(object left, object right) {
-            return base.Evaluate(left, right);
+        protected override void CreateParameters() {
+            this.SetNumParams(2);
+            this.SetParam(0, true, false, false, Messages.PAddent, Messages.PAddentDescription, null);
+            this.SetParam(1, true, true, false, Messages.PAddent, Messages.PAddentDescription, null);
         }
 
-        private const string operatorName = "=";
+        protected override object EvaluateFn(Guider guider, ArrayList arguments) {
+            guider.Context.SetVariable(arguments[0] as string, arguments[1]);
+            return arguments[1];
+        }
+
+        private const string name = "=";
     }
 }

@@ -124,10 +124,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Atom.Functions.cs" />
-    <Compile Include="BinaryOperators\BoolAnd.cs" />
-    <Compile Include="BinaryOperators\BoolOr.cs" />
-    <Compile Include="BinaryOperators\ItemTimes.cs" />
-    <Compile Include="BinaryOperators\Join.cs" />
     <Compile Include="FileData.cs" />
     <Compile Include="Functions\Context\Clear.cs" />
     <Compile Include="Functions\Context\ClearGlobal.cs" />
@@ -174,43 +170,8 @@
     <Compile Include="Functions\Math\Sin.cs" />
     <Compile Include="Functions\Math\Wigner.cs" />
     <Compile Include="Functions\Matrix\BandWidth.cs" />
-    <Compile Include="BinaryOperators\BinaryOperator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Divide.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Equals.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\GEquals.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Greater.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Interval.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\LEquals.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Lesser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Minus.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\NotEquals.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Plus.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Power.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BinaryOperators\Times.cs">
+    <Compile Include="Functions\Operators\Assignment.cs" />
+    <Compile Include="Functions\Operators\Plus.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ColorArray.cs" />
@@ -224,9 +185,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExpressionList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Formula.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Function.cs">
@@ -421,25 +379,10 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="MinMaxCache.cs" />
-    <Compile Include="Operators\Operator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Operators\Operators.cs">
+    <Compile Include="Functions\Operators\Operator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Vector\Spacing.cs" />
-    <Compile Include="Transform.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UnaryOperators\Minus.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UnaryOperators\Plus.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UnaryOperators\UnaryOperator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Variable.cs">
       <SubType>Code</SubType>
     </Compile>

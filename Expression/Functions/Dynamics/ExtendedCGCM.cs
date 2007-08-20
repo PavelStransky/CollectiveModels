@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.Functions {
     /// </summary>
     public abstract class ExtendedCGCM: FunctionDefinition {
         protected override void CreateParameters() {
-            this.NumParams(5);
+            this.SetNumParams(5);
             this.SetParam(0, false, true, true, Messages.PA, Messages.PADescription, -1.0, typeof(double));
             this.SetParam(1, false, true, true, Messages.PB, Messages.PBDescription, 1.0, typeof(double));
             this.SetParam(2, false, true, true, Messages.PC, Messages.PCDescription, 1.0, typeof(double));

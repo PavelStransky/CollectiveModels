@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpLog; } }
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetXParam();
             this.SetParam(1, false, true, true, Messages.PBase, Messages.PBaseDescription, null, typeof(double));

@@ -13,7 +13,7 @@ namespace PavelStransky.Expression.Functions {
 		public override string Help {get {return Messages.HelpPolynom;}}
 
         protected override void CreateParameters() {
-            this.NumParams(2);
+            this.SetNumParams(2);
 
             this.SetXParam();
             this.SetParam(1, true, true, false, Messages.PPolynomCoef, Messages.PPolynomCoefDescription, null, typeof(Vector));

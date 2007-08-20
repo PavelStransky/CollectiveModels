@@ -470,7 +470,7 @@ namespace PavelStransky.Expression {
                     i = j;
 
                 else if((noMeanChars.IndexOf(e[i])) >= 0) {
-                    if(i > 0 && result[result.Length - 1] != ' ')
+                    if(result.Length > 0 && result[result.Length - 1] != ' ')
                         result.Append(' ');
                     i++;
                 }
@@ -486,7 +486,7 @@ namespace PavelStransky.Expression {
                 }
             }
 
-            return result.ToString();
+            return result.ToString().Trim();
         }
 
         /// <summary>
@@ -552,6 +552,7 @@ namespace PavelStransky.Expression {
             int j = 0;
 
             ExpressionTypes result = ExpressionTypes.Null;
+            char lastOpenBracketChar = (char)0;
 
             while(i < length) {
                     // Operátor
@@ -569,7 +570,10 @@ namespace PavelStransky.Expression {
                     // Promìnná
                 else if((j = VariableOrFunctionPosition(e, i)) > 0) {
                     if(j == length) {
-                        result = ExpressionTypes.Variable;
+                        if(IsBool(e.Substring(i, j - i)))
+                            result = ExpressionTypes.Bool;
+                        else
+                            result = ExpressionTypes.Variable;
                         break;
                     }
 
@@ -586,16 +590,18 @@ namespace PavelStransky.Expression {
                 }
 
                 else if((j = BracketPosition(e, i)) > 0) {
-                    if(e[i] == openBracketChars[0])
-                        result = ExpressionTypes.Function;
-                    else
-                        result = ExpressionTypes.Indexer;
-                    break;
+                    lastOpenBracketChar = e[i];
+                    i = j;
                 }
 
                 else
                     i++;
             }
+
+            if(lastOpenBracketChar == openBracketChars[0])
+                result = ExpressionTypes.Function;
+            else if(lastOpenBracketChar == openBracketChars[1])
+                result = ExpressionTypes.Indexer;
 
             return result;
 		}
@@ -793,6 +799,8 @@ namespace PavelStransky.Expression {
             int j = 0;
             int k = 0;
 
+            bool separator = false;
+
             SyntaxPosition position = SyntaxPosition.Beginning;
 
             while(i < length) {
@@ -822,10 +830,21 @@ namespace PavelStransky.Expression {
                             continue;
                         }
                     }
-                    else
+                    else {
+                        separator = false;
                         parts.Add(e.Substring(k, i - k).Trim());
+                    }
+
+                    if(separator)
+                        parts.Add(string.Empty);
 
                     parts.Add(functions[e.Substring(i, j - i)]);
+
+                    if(e[i] == separatorChar)
+                        separator = true;
+                    else
+                        separator = false;
+
                     k = j;
                     i = j;
                     position = SyntaxPosition.AfterOperator;

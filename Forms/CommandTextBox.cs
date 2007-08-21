@@ -156,10 +156,9 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        #region Highlight designer
+        #region Highlighting of syntax
+        // Èasovaè (pøekreslujeme vždy po urèité dobì po zmìnì)
         private System.Timers.Timer timer = new System.Timers.Timer();
-        private RichTextBox doubleBuffer = new RichTextBox();
-
         private Highlight highlight;
 
         /// <summary>
@@ -172,7 +171,6 @@ namespace PavelStransky.Forms {
                 System.Drawing.FontStyle.Regular,
                 System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             Font fontBold = new Font(font, FontStyle.Bold);
-            Font fontItalic = new Font(font, FontStyle.Italic);
 
             int selectionStart = this.SelectionStart;
             int selectionLength = this.SelectionLength;
@@ -211,6 +209,17 @@ namespace PavelStransky.Forms {
                         this.SelectionFont = fontBold;
                         this.SelectionColor = Color.Black;
                     }
+                    else if(lastType == HighlightTypes.UserFunction) {
+                        this.SelectionStart = item.Start;
+                        this.SelectionLength = 1;
+                        this.SelectionFont = fontBold;
+                        this.SelectionColor = Color.Gray;
+
+                        this.SelectionStart = item.End;
+                        this.SelectionLength = 1;
+                        this.SelectionFont = fontBold;
+                        this.SelectionColor = Color.Gray;
+                    }
 
                     lastType = item.HighlightType;
                     continue;
@@ -233,6 +242,11 @@ namespace PavelStransky.Forms {
                 else if(item.HighlightType == HighlightTypes.Function) {
                     this.SelectionFont = fontBold;
                     this.SelectionColor = Color.Black;
+                }
+
+                else if(item.HighlightType == HighlightTypes.UserFunction) {
+                    this.SelectionFont = fontBold;
+                    this.SelectionColor = Color.Gray;
                 }
 
                 else if(item.HighlightType == HighlightTypes.Separator) {
@@ -258,18 +272,117 @@ namespace PavelStransky.Forms {
             this.Invalidate();
         }
 
+        /// <summary>
+        /// Stisk klávesy - indikuje zmìnu textu
+        /// </summary>
         protected override void OnKeyPress(KeyPressEventArgs e) {
             this.timer.Stop();
             this.timer.Start();
         }
 
+        // Delegát kvùli Invoke
         private delegate void InvokeDelegate();
 
         private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if(!this.IsDisposed)
                 this.Invoke(new InvokeDelegate(this.HighlightSyntax));
         }
+        #endregion
 
+        #region Zvýraznìní dvojice závorek
+        /// <summary>
+        /// Stisk klávesy - závorky zvýrazòujeme pøi stisku CTRL
+        /// </summary>
+        protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e) {
+            base.OnPreviewKeyDown(e);
+            
+            if(e.Control && !this.timer.Enabled && !this.showedBracketPair) {
+                this.bracketPair = this.highlight.FindSecondBracket(this.SelectionStart);
+                this.ShowBracketPair(true);
+            }
+        }
+
+        /// <summary>
+        /// Uvolnìní klávesy
+        /// </summary>
+        protected override void OnKeyUp(KeyEventArgs e) {
+            base.OnKeyUp(e);
+
+            if(!e.Control && this.showedBracketPair) 
+                this.ShowBracketPair(false);
+        }
+
+        private bool showedBracketPair = false;
+        private Highlight.HighlightItem bracketPair;
+        private Font oldFont;
+        private Color oldColor;
+
+        /// <summary>
+        /// Zobrazí pár závorek
+        /// </summary>
+        private void ShowBracketPair(bool show) {
+            if(this.bracketPair == null)
+                return;
+
+            this.showedBracketPair = !this.showedBracketPair;
+
+            int selectionStart = this.SelectionStart;
+            int selectionLength = this.SelectionLength;
+            int firstShowedChar = this.GetCharIndexFromPosition(new Point(this.Margin.Left, this.Margin.Top));
+
+            this.StopRedrawing();
+
+            if(show) {
+                Font font = new System.Drawing.Font("Courier New", 12F,
+                    System.Drawing.FontStyle.Regular,
+                    System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+                
+                Font fontBold = new Font(font, FontStyle.Bold);
+                this.SelectionStart = this.bracketPair.Start;
+                this.SelectionLength = 1;
+
+                this.oldFont = this.SelectionFont;
+                this.oldColor = this.SelectionColor;
+
+                this.SelectionFont = fontBold;
+                this.SelectionColor = Color.Magenta;
+
+                this.SelectionStart = this.bracketPair.End;
+                this.SelectionLength = 1;
+
+                this.SelectionFont = fontBold;
+                this.SelectionColor = Color.Magenta;
+
+                this.showedBracketPair = true;
+            }
+
+            else {
+                this.SelectionStart = this.bracketPair.Start;
+                this.SelectionLength = 1;
+
+                this.SelectionFont = this.oldFont;
+                this.SelectionColor = this.oldColor;
+
+                this.SelectionStart = this.bracketPair.End;
+                this.SelectionLength = 1;
+
+                this.SelectionFont = this.oldFont;
+                this.SelectionColor = this.oldColor;
+
+                this.showedBracketPair = false;
+            }
+
+            this.SelectionStart = firstShowedChar;
+            this.ScrollToCaret();
+
+            this.SelectionStart = selectionStart;
+            this.SelectionLength = selectionLength;
+
+            this.ResumeRedrawing();
+            this.ResumeLayout();
+
+            this.Invalidate();
+        }
         #endregion
 
         private const string newLine = "\r\n";

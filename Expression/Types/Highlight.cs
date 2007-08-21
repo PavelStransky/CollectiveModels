@@ -10,7 +10,8 @@ namespace PavelStransky.Expression {
         Comment, 
         NormalBracket,
         IndexBracket, 
-        Function, 
+        Function,
+        UserFunction, 
         Variable, 
         Number,
         String,
@@ -43,7 +44,10 @@ namespace PavelStransky.Expression {
             /// Nastaví funkci
             /// </summary>
             public void SetFunction() {
-                this.highlightType = HighlightTypes.Function;
+                if((this.comment as string)[0] == '_')
+                    this.highlightType = HighlightTypes.UserFunction;
+                else
+                    this.highlightType = HighlightTypes.Function;
             }
 
             /// <summary>
@@ -94,6 +98,21 @@ namespace PavelStransky.Expression {
 
         public void Add(int i, HighlightTypes highlightType, int start, int end) {
             this.Insert(i, new HighlightItem(highlightType, start, end, null));
+        }
+
+        /// <summary>
+        /// K závorce nalezne pozici druhé závorky; pokud nic nenalezne, vrátí 0
+        /// </summary>
+        /// <param name="pos">Pozice první závorky</param>
+        public HighlightItem FindSecondBracket(int pos) {
+            foreach(HighlightItem item in this)
+                if(item.HighlightType == HighlightTypes.NormalBracket
+                    || item.HighlightType == HighlightTypes.IndexBracket) {
+                    if(item.Start == pos || item.End == pos)
+                        return item;
+                }
+
+            return null;
         }
     }
 }

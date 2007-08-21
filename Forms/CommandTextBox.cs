@@ -1,6 +1,9 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Drawing;
+
+using System.Runtime.InteropServices;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
@@ -17,7 +20,10 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public CommandTextBox() : base() { }
+        public CommandTextBox() : base() {
+            this.timer.Interval = 1500;
+            this.timer.Tick += new EventHandler(timer_Tick);
+        }
 
         /// <summary>
         /// Spustí všechny pøíkazy
@@ -120,6 +126,149 @@ namespace PavelStransky.Forms {
         private int NextIndexOf(string text, char c, int start) {
             return text.IndexOf(c, start);
         }
+
+        #region Zastavení pøekreslování
+        private const int WM_SETREDRAW      = 0x000B;
+        private const int WM_USER           = 0x400;
+        private const int EM_GETEVENTMASK   = (WM_USER + 59);
+        private const int EM_SETEVENTMASK   = (WM_USER + 69);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        private extern static IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
+
+        private IntPtr eventMask = IntPtr.Zero;
+
+        public void StopRedrawing() {
+            // Stop redrawing:
+            SendMessage(this.Handle, WM_SETREDRAW, 0, IntPtr.Zero);
+
+            // Stop sending of events:
+            this.eventMask = SendMessage(this.Handle, EM_GETEVENTMASK, 0, IntPtr.Zero);
+        }
+
+        public void ResumeRedrawing() {
+            // turn on events
+            SendMessage(this.Handle, EM_SETEVENTMASK, 0, eventMask);
+
+            // turn on redrawing
+            SendMessage(this.Handle, WM_SETREDRAW, 1, IntPtr.Zero);
+        }
+        #endregion
+
+        #region Highlight designer
+        private Timer timer = new Timer();
+        private RichTextBox doubleBuffer = new RichTextBox();
+
+        private Highlight highlight;
+
+        /// <summary>
+        /// Zvýrazní syntaxi v celém textu
+        /// </summary>
+        private void HighlightSyntax() {
+            this.highlight = Atom.CheckSyntax(this.Text);
+
+            Font font = new System.Drawing.Font("Courier New", 9.75F,
+                System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            Font fontBold = new Font(font, FontStyle.Bold);
+            Font fontItalic = new Font(font, FontStyle.Italic);
+
+            int selectionStart = this.SelectionStart;
+            int selectionLength = this.SelectionLength;
+            int firstShowedChar = this.GetCharIndexFromPosition(new Point(5, 5));
+
+            this.StopRedrawing();
+
+            // Tenhle debilní pøíkaz je na vymazání RTF formátování uvnitø textu
+            // a na vymazání obrázkù
+            this.doubleBuffer.s = this.Text;
+
+            // Reset písma
+            this.Font = font;
+            this.ForeColor = Color.Blue;
+
+            this.Text = s;
+            this.SaveFile("c:\\tmp1.rtf");
+
+            HighlightTypes lastType = HighlightTypes.Separator;
+
+            foreach(Highlight.HighlightItem item in this.highlight) {
+                if(item.HighlightType == HighlightTypes.IndexBracket
+                    || item.HighlightType == HighlightTypes.Number
+                    || item.HighlightType == HighlightTypes.Operator
+                    || item.HighlightType == HighlightTypes.Variable)
+                    continue;
+
+                if(item.HighlightType == HighlightTypes.NormalBracket) {
+                    if(lastType == HighlightTypes.Function) {
+                        this.SelectionStart = item.Start;
+                        this.SelectionLength = 1;
+                        this.SelectionFont = fontBold;
+                        this.SelectionColor = Color.Black;
+
+                        this.SelectionStart = item.End;
+                        this.SelectionLength = 1;
+                        this.SelectionFont = fontBold;
+                        this.SelectionColor = Color.Black;
+                    }
+
+                    lastType = item.HighlightType;
+                    continue;
+                }
+
+                this.SelectionStart = item.Start;
+                this.SelectionLength = item.Length;
+
+                if(item.HighlightType == HighlightTypes.Comment)
+                    this.SelectionColor = Color.Gray;
+
+                else if(item.HighlightType == HighlightTypes.EndVariable)
+                    this.SelectionColor = Color.Black;
+
+                else if(item.HighlightType == HighlightTypes.Error)
+                    this.SelectionColor = Color.Red;
+
+                else if(item.HighlightType == HighlightTypes.Function) {
+                    this.SelectionFont = fontBold;
+                    this.SelectionColor = Color.Black;
+                }
+
+                else if(item.HighlightType == HighlightTypes.Separator) {
+                    this.SelectionFont = fontBold;
+                    this.SelectionColor = Color.Black;
+                }
+
+                else if(item.HighlightType == HighlightTypes.String)
+                    this.SelectionColor = Color.Green;
+
+                lastType = item.HighlightType;
+            }
+
+            this.SelectionStart = firstShowedChar;
+            this.ScrollToCaret();
+
+            this.SelectionStart = selectionStart;
+            this.SelectionLength = selectionLength;
+
+            this.ResumeRedrawing();
+            this.ResumeLayout();
+
+            this.Invalidate();
+            this.SaveFile("c:\\tmp2.rtf");
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e) {
+            this.timer.Stop();
+            this.timer.Start();
+        }
+
+        void timer_Tick(object sender, EventArgs e) {
+            this.timer.Stop();
+            if(!this.IsDisposed)
+                this.HighlightSyntax();
+        }
+
+        #endregion
 
         private const string newLine = "\r\n";
         private const char semicolon = ';';

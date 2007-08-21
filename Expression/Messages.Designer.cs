@@ -180,6 +180,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Function &apos;{0}&apos; does not exist..
+        /// </summary>
+        internal static string EMFunctionNotExist {
+            get {
+                return ResourceManager.GetString("EMFunctionNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid bracket position..
         /// </summary>
         internal static string EMInvalidBracketPosition {

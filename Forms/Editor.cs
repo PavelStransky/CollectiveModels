@@ -644,6 +644,8 @@ namespace PavelStransky.Forms {
                 this.txtCommand.SelectionLength = (int)param.Get(0);
                 this.txtCommand.ScrollToCaret();
 
+                this.txtCommand.HighlightSyntax();
+
                 this.resultNumber = (int)param.Get(0);
 
                 this.context = (Context)param.Get();

@@ -158,6 +158,9 @@ Entered type: {1}</value>
   <data name="EMFileNotExist" xml:space="preserve">
     <value>The file you '{0}' have specified does not exist.</value>
   </data>
+  <data name="EMFunctionNotExist" xml:space="preserve">
+    <value>Function '{0}' does not exist.</value>
+  </data>
   <data name="EMInvalidBracketPosition" xml:space="preserve">
     <value>Invalid bracket position.</value>
   </data>

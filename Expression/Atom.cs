@@ -85,56 +85,49 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="e">Výraz</param>
         /// <returns>Polohu místa, kde je chyba</returns>
-        public static void CheckSyntax(string e) {
+        public static Highlight CheckSyntax(string e) {
             int length = e.Length;
             int n = openBracketChars.Length;
             ArrayList numBrackets = new ArrayList();
 
             // Aktuální poèet závorek; na nb[n] je pozice otevírací závorky
-            int[] nb = new int[n + 1];
+            int[] nb = new int[n + 2];
             nb[n] = -1;
             numBrackets.Add(nb);
 
             SyntaxPosition position = SyntaxPosition.Beginning;
+            Highlight highlight = new Highlight();
 
             // Pomocná promìnná
             int j = 0;
             int i = 0;
 
             while(i < length) {
-                if(noMeanChars.IndexOf(e[i]) >= 0) {
-                    i++;
-                    continue;
-                }
-
-                else if(e[i] == separatorChar) {
-                    i++;
-                    position = SyntaxPosition.Beginning;
-                    continue;
-                }
-
                 // Cyklus pøes všechny závorky
                 bool bracket = false;
                 for(int k = 0; k < n; k++) {
                     if(e[i] == openBracketChars[k]) {
-                        if(!CheckPositionType(position,         // Normální závorka
+                        if((!CheckPositionType(position,         // Normální závorka
                             SyntaxPosition.Beginning, SyntaxPosition.AfterOperator,
-                            SyntaxPosition.AfterVariableOrFunction) 
-                            && k == 0)
-                            throw new ExpressionException(
-                                Messages.EMInvalidBracketPosition, 
-                                string.Format(Messages.EMInvalidBracketPositionDetail, openBracketChars[k]), 
-                                i);
-
-                        else if(!CheckPositionType(position,    // Indexovací závorka
+                            SyntaxPosition.AfterVariableOrFunction) && k == 0
+                            ||
+                            (!CheckPositionType(position,       // Indexovací závorka
                             SyntaxPosition.AfterValue, SyntaxPosition.AfterVariableOrFunction)
-                            && k == 1)
+                            && k == 1)))
+                            highlight.Add(HighlightTypes.Error, i,
+                                new ExpressionException(
+                                    Messages.EMInvalidBracketPosition,
+                                    string.Format(Messages.EMInvalidBracketPositionDetail, openBracketChars[k]),
+                                    i));
 
                         nb = (int[])numBrackets[0];
                         nb = (int[])nb.Clone();
 
                         nb[k]++;
                         nb[n] = i;
+                        // Indikace, že tady zaèíná závorka; obratem dostaneme pozici, na kterou následnì
+                        // závorku uložit
+                        nb[n + 1] = highlight.BracketStart(k == 0 ? HighlightTypes.NormalBracket : HighlightTypes.IndexBracket);
 
                         numBrackets.Insert(0, nb);
 
@@ -144,31 +137,44 @@ namespace PavelStransky.Expression {
 
                     else if(e[i] == closeBracketChars[k]) {
                         if(CheckPositionType(position, SyntaxPosition.AfterOperator))
-                            throw new ExpressionException(
-                                Messages.EMInvalidBracketPosition, 
-                                string.Format(Messages.EMInvalidBracketPositionDetail, closeBracketChars[k]), 
-                                i);
+                            highlight.Add(HighlightTypes.Error, i,
+                                new ExpressionException(
+                                    Messages.EMInvalidBracketPosition,
+                                    string.Format(Messages.EMInvalidBracketPositionDetail, closeBracketChars[k]),
+                                    i));
 
                         if(numBrackets.Count == 1)
-                            throw new ExpressionException(
-                                Messages.EMInvalidBracketPosition, 
-                                string.Format(Messages.EMInvalidBracketPositionDetailCloseBeforeOpen, closeBracketChars[k], openBracketChars[k]), 
-                                i);
-
-                        nb = (int[])numBrackets[0];
-                        nb = (int[])nb.Clone();
-                        nb[k]--;
-
-                        int[] nbp = (int[])numBrackets[1];
-
-                        for(int l = 0; l < n; l++)
-                            if(nb[l] != nbp[l])
-                                throw new ExpressionException(
+                            highlight.Add(HighlightTypes.Error, i,
+                                new ExpressionException(
                                     Messages.EMInvalidBracketPosition,
-                                    string.Format(Messages.EMInvalidBracketPositionDetailBracketMixing, openBracketChars[(k + 1) % 2], closeBracketChars[k]),
-                                    i, nbp[n]);
+                                    string.Format(Messages.EMInvalidBracketPositionDetailCloseBeforeOpen, closeBracketChars[k], openBracketChars[k]),
+                                    i));
 
-                        numBrackets.RemoveAt(0);
+                        else {
+                            nb = (int[])numBrackets[0];
+                            nb = (int[])nb.Clone();
+                            nb[k]--;
+
+                            int[] nbp = (int[])numBrackets[1];
+
+                            bool error = false;
+                            for(int l = 0; l < n; l++)
+                                if(nb[l] != nbp[l]) {
+                                    highlight.Add(HighlightTypes.Error, i,
+                                        new ExpressionException(
+                                            Messages.EMInvalidBracketPosition,
+                                            string.Format(Messages.EMInvalidBracketPositionDetailBracketMixing, openBracketChars[(k + 1) % 2], closeBracketChars[k]),
+                                            i, nbp[n]));
+                                    error = true;
+                                }
+
+                            if(!error) {
+                                highlight.Add(nb[n + 1], k == 0 ? HighlightTypes.NormalBracket : HighlightTypes.IndexBracket, nb[n], i);
+                            }
+
+                            numBrackets.RemoveAt(0);
+                        }
+
                         bracket = true;
                         position = SyntaxPosition.AfterValue;
                     }
@@ -178,25 +184,44 @@ namespace PavelStransky.Expression {
                     i++;
                 }
 
+                else if((j = NoMeansCharPosition(e, i)) > 0) {
+                    i = j;
+                }
+
+                else if(e[i] == separatorChar) {
+                    highlight.Add(HighlightTypes.Separator, i);
+
+                    i++;
+                    position = SyntaxPosition.Beginning;
+                }
+
                 else if(e[i] == endVariableChar) {
                     if(((int[])numBrackets[0])[1] <= 0)
-                        throw new ExpressionException(
-                            Messages.EMInvalidEndVariablePosition,
-                            i);
+                        highlight.Add(HighlightTypes.Error, i,
+                            new ExpressionException(
+                                Messages.EMInvalidEndVariablePosition,
+                                i));
+                    else
+                        highlight.Add(HighlightTypes.EndVariable, i);
+
                     i++;
                     position = SyntaxPosition.AfterValue;
                 }
 
                 else if((j = CommentPosition(e, i)) > 0) { // Komentáø pøeskoèíme
+                    highlight.Add(HighlightTypes.Comment, i, j);
                     i = j;
                 }
 
                 else if((j = StringPosition(e, i)) > 0) {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
-                        throw new ExpressionException(
-                            string.Format(Messages.EMInvalidPosition, "String"),
-                            i);
+                        highlight.Add(HighlightTypes.Error, i, j,
+                            new ExpressionException(
+                                string.Format(Messages.EMInvalidPosition, "String"),
+                                i));
+                    else
+                        highlight.Add(HighlightTypes.String, i, j);
 
                     i = j;
                     position = SyntaxPosition.AfterValue;
@@ -205,9 +230,12 @@ namespace PavelStransky.Expression {
                 else if((j = VariableOrFunctionPosition(e, i)) > 0) {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
-                        throw new ExpressionException(
-                            string.Format(Messages.EMInvalidPosition, "Variable"), 
-                            i);
+                        highlight.Add(HighlightTypes.Error, i, j,
+                            new ExpressionException(
+                                string.Format(Messages.EMInvalidPosition, "Variable"),
+                                i));
+                    else
+                        highlight.Add(HighlightTypes.Variable, i, j, e.Substring(i, j - i));
 
                     i = j;
                     position = SyntaxPosition.AfterVariableOrFunction;
@@ -216,25 +244,46 @@ namespace PavelStransky.Expression {
                 else if((j = NumberPosition(e, i)) > 0) {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
-                        throw new ExpressionException(
-                            string.Format(Messages.EMInvalidPosition, "Number"),
-                            i);
+                        highlight.Add(HighlightTypes.Error, i, j,
+                            new ExpressionException(
+                                string.Format(Messages.EMInvalidPosition, "Number"),
+                                i));
+                    else
+                        highlight.Add(HighlightTypes.Number, i, j);
 
                     i = j;
                     position = SyntaxPosition.AfterValue;
                 }
 
                 else if((j = OperatorPosition(e, i)) > 0) {
+                    highlight.Add(HighlightTypes.Operator, i, j, e.Substring(i, j - i));
+
                     i = j;
                     position = SyntaxPosition.AfterOperator;
                 }
 
-                else
-                    throw new ExpressionException(Messages.EMInvalidCharacter, i);
+                else{
+                    highlight.Add(HighlightTypes.Error, i, new ExpressionException(Messages.EMInvalidCharacter, i));
+                    i++;
+                }
             }
 
             if(CheckPositionType(position, SyntaxPosition.AfterOperator))
-                throw new ExpressionException(Messages.EMInvalidExpressionEnd, i);
+                highlight.Add(HighlightTypes.Error, i,
+                    new ExpressionException(Messages.EMInvalidExpressionEnd, i));
+
+            // Kontrola na existenci funkcí
+            foreach(Highlight.HighlightItem item in highlight) {
+                if(item.HighlightType == HighlightTypes.Function) {
+                    string fnName = (string)item.Comment;
+                    if(fnName[0] != '_' && !functions.Contains(fnName)) {
+                        item.SetError(new ExpressionException(
+                            string.Format(Messages.EMFunctionNotExist, fnName), item.Start));
+                    }
+                }
+            }
+
+            return highlight;
         }
 
         /// <summary>
@@ -253,6 +302,16 @@ namespace PavelStransky.Expression {
         #endregion
 
         #region Pozice rùzných èástí výrazù
+        private static int NoMeansCharPosition(string e, int i) {
+            if(noMeanChars.IndexOf(e[i]) < 0)
+                return -1;
+
+            int length = e.Length;
+            while(++i < length && noMeanChars.IndexOf(e[i]) >= 0) ;
+
+            return i;
+        }
+
         /// <summary>
         /// Pozice dalšího znaku po komentáøi (pokud komentáø není, vrací -1)
         /// </summary>
@@ -262,9 +321,9 @@ namespace PavelStransky.Expression {
             if(e.IndexOf(commentChars, i) != i)
                 return -1;
 
-            int j = e.IndexOf('\n', i);
+            int j = e.IndexOf('\n', i) + 1;
             if(j < 0)
-                j = e.IndexOf('\r', i);
+                j = e.IndexOf('\r', i) + 1;
             if(j < 0)
                 j = e.Length;
 

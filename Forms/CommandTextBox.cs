@@ -22,7 +22,8 @@ namespace PavelStransky.Forms {
         /// </summary>
         public CommandTextBox() : base() {
             this.timer.Interval = 1500;
-            this.timer.Tick += new EventHandler(timer_Tick);
+            this.timer.AutoReset = false;
+            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace PavelStransky.Forms {
         #endregion
 
         #region Highlight designer
-        private Timer timer = new Timer();
+        private System.Timers.Timer timer = new System.Timers.Timer();
         private RichTextBox doubleBuffer = new RichTextBox();
 
         private Highlight highlight;
@@ -164,7 +165,7 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Zvýrazní syntaxi v celém textu
         /// </summary>
-        private void HighlightSyntax() {
+        public void HighlightSyntax() {
             this.highlight = Atom.CheckSyntax(this.Text);
 
             Font font = new System.Drawing.Font("Courier New", 9.75F,
@@ -175,20 +176,19 @@ namespace PavelStransky.Forms {
 
             int selectionStart = this.SelectionStart;
             int selectionLength = this.SelectionLength;
-            int firstShowedChar = this.GetCharIndexFromPosition(new Point(5, 5));
+            int firstShowedChar = this.GetCharIndexFromPosition(new Point(this.Margin.Left, this.Margin.Top));
 
             this.StopRedrawing();
 
             // Tenhle debilní pøíkaz je na vymazání RTF formátování uvnitø textu
             // a na vymazání obrázkù
-            this.doubleBuffer.s = this.Text;
+            string s = this.Text;
 
             // Reset písma
             this.Font = font;
             this.ForeColor = Color.Blue;
 
             this.Text = s;
-            this.SaveFile("c:\\tmp1.rtf");
 
             HighlightTypes lastType = HighlightTypes.Separator;
 
@@ -225,8 +225,10 @@ namespace PavelStransky.Forms {
                 else if(item.HighlightType == HighlightTypes.EndVariable)
                     this.SelectionColor = Color.Black;
 
-                else if(item.HighlightType == HighlightTypes.Error)
+                else if(item.HighlightType == HighlightTypes.Error) {
+                    this.SelectionFont = fontBold;
                     this.SelectionColor = Color.Red;
+                }
 
                 else if(item.HighlightType == HighlightTypes.Function) {
                     this.SelectionFont = fontBold;
@@ -254,7 +256,6 @@ namespace PavelStransky.Forms {
             this.ResumeLayout();
 
             this.Invalidate();
-            this.SaveFile("c:\\tmp2.rtf");
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e) {
@@ -262,10 +263,11 @@ namespace PavelStransky.Forms {
             this.timer.Start();
         }
 
-        void timer_Tick(object sender, EventArgs e) {
-            this.timer.Stop();
+        private delegate void InvokeDelegate();
+
+        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if(!this.IsDisposed)
-                this.HighlightSyntax();
+                this.Invoke(new InvokeDelegate(this.HighlightSyntax));
         }
 
         #endregion

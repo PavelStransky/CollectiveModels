@@ -57,9 +57,11 @@ namespace PavelStransky.Forms {
             // 
             // txtCommand
             // 
+            this.txtCommand.AcceptsTab = true;
             this.txtCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCommand.AutoWordSelection = true;
             this.txtCommand.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.txtCommand.ForeColor = System.Drawing.Color.Blue;
             this.txtCommand.Location = new System.Drawing.Point(0, 0);

@@ -678,7 +678,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Array evaluation of functions.
+        ///   Looks up a localized string similar to Array evaluation of an expression.
         /// </summary>
         internal static string HelpEvalArray {
             get {
@@ -1115,6 +1115,15 @@ namespace PavelStransky.Expression {
         internal static string HelpNorm {
             get {
                 return ResourceManager.GetString("HelpNorm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable array evaluation of an expression.
+        /// </summary>
+        internal static string HelpNotEvalArray {
+            get {
+                return ResourceManager.GetString("HelpNotEvalArray", resourceCulture);
             }
         }
         

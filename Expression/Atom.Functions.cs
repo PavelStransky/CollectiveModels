@@ -34,6 +34,7 @@ namespace PavelStransky.Expression {
             functions.Add(new Functions.OpJoin());
             functions.Add(new Functions.EvalArray());
             functions.Add(new Functions.Mute());
+            functions.Add(new Functions.NotEvalArray());
             functions.Add(new Functions.OpHelp(functions));
             functions.Add(new Functions.OpFullHelp(functions));
 

@@ -17,7 +17,7 @@ namespace PavelStransky.Expression {
         /// <param name="writer">Writer pro textové výstupy</param>
         public Expression(string expression)
             : base(expression, null) {
-			this.parent = null;
+			this.parent = null;            
             CheckSyntax(this.expression);
 
             this.expression = RemoveComments(this.expression);

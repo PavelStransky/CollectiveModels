@@ -505,13 +505,6 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Pøi zmìnì textu zmìníme atribut Modified
-        /// </summary>
-        private void txtCommand_TextChanged(object sender, System.EventArgs e) {
-            this.Modified = txtCommand.Modified;
-        }
-
-        /// <summary>
         /// nastaví nadpis okna
         /// </summary>
         private void SetCaption() {
@@ -538,6 +531,40 @@ namespace PavelStransky.Forms {
             else if(e.CloseReason == CloseReason.MdiFormClosing && this.fileName != null && this.fileName != string.Empty)
                 (this.MdiParent as MainForm).OpenedFileNames.Add(this.fileName);
         }
+
+        #region Nápovìda pomocí ToolTipu
+        private string oldFnName;
+        private int position;
+
+        /// <summary>
+        /// Pøi zmìnì textu zmìníme atribut Modified
+        /// </summary>
+        private void txtCommand_TextChanged(object sender, System.EventArgs e) {
+            this.Modified = txtCommand.Modified;
+            this.SetToolTipHelp();
+        }
+
+        /// <summary>
+        /// Událost vyvolaná pøi pøesunu myši
+        /// </summary>
+        private void txtCommand_MouseMove(object sender, MouseEventArgs e) {
+            this.position = this.txtCommand.GetCharIndexFromPosition(e.Location);
+            this.SetToolTipHelp();
+        }
+
+        /// <summary>
+        /// Nastaví nápovìdu do ToolTipu
+        /// </summary>
+        private void SetToolTipHelp() {
+            string s = Atom.GetFnName(this.txtCommand.Text, this.position);
+
+            if(this.oldFnName != s) {
+                string help = Atom.GetHelp(s, 20);
+                this.toolTip.SetToolTip(this.txtCommand as Control, help);
+                this.oldFnName = s;
+            }
+        }
+        #endregion
 
         #region Implementace IExportable
         /// <summary>

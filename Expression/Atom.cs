@@ -895,48 +895,49 @@ namespace PavelStransky.Expression {
                     break;
 
                 newParts = new ArrayList();
-                object last = parts[count - 1];
+                object last = parts[0];
 
-                for(i = count - 2; i >= 0; i--) {
+                for(i = 1; i < count; i++) {
                     if(parts[i] is Operator && ((int)(parts[i] as Operator).Priority == k)) {
                         string name = (parts[i] as Operator).Name;
                         int numParams = (parts[i] as Operator).NumParams;
 
                         StringBuilder s = new StringBuilder();
-                        i--;
+                        s.Append(name);
+                        s.Append('(');
+                        s.Append(last);
+                        s.Append(separatorChar);
+
+                        i++;
                         s.Append(parts[i]);
-                        i--;
+                        i++;
 
                         j = 2;
 
-                        while(i >= 0 && j < numParams) {
+                        while(i < count && j < numParams) {
                             if((parts[i] is Operator) && (parts[i] as Operator).Name == name) {
-                                s.Insert(0, separatorChar);
-                                i--;
-                                s.Insert(0, parts[i]);
-                                i--;
-                                j++;
+                                s.Append(separatorChar);
+                                i++;
+                                s.Append(parts[i]);
+                                i++;
+                                j--;
                             }
                             else 
                                 break;
                         }
 
-                        i++;
+                        i--;
 
-                        s.Insert(0, '(');
-                        s.Insert(0, name);
-                        s.Append(separatorChar);
-                        s.Append(last);
                         s.Append(')');
                         last = s.ToString();
                     }
                     else {
-                        newParts.Insert(0, last);
+                        newParts.Add(last);
                         last = parts[i];
                     }
                 }
 
-                newParts.Insert(0, last);
+                newParts.Add(last);
                 parts = newParts;
             }
 
@@ -1128,5 +1129,83 @@ namespace PavelStransky.Expression {
 
             return false;
         }
+
+        #region Extern functions
+        /// <summary>
+        /// Hledá název funkce v okolí dané pozice
+        /// </summary>
+        /// <param name="e">Text (výraz)</param>
+        /// <param name="position">Pozice v textu</param>
+        public static string GetFnName(string e, int position) {
+            int length = e.Length;
+
+            if(length == 0 || position >= length || position < 0)
+                return string.Empty;
+
+            int i = position;
+            while(i >= 0) {
+                if(!char.IsLetterOrDigit(e[i]))
+                    break;
+                i--;
+            }
+
+            i++;
+
+            if(i >= length)
+                return string.Empty;
+
+            int j = VariableOrFunctionPosition(e, i);
+
+            if(j > 0)
+                return e.Substring(i, j - i).ToLower();
+
+            else
+                return string.Empty;
+        }
+
+        /// <summary>
+        /// Vrátí nápovìdu k dané funkci; pokud funkce neexistuje, vrátí seznam funkcí podobných
+        /// </summary>
+        /// <param name="fnName">Jméno funkce</param>
+        /// <param name="maxHints">Maximální poèet funkcí k nápovìdì</param>
+        public static string GetHelp(string fnName, int maxHints) {
+            if(fnName == string.Empty)
+                return string.Empty;
+
+            if(functions.Contains(fnName)) {
+                FunctionDefinition fn = functions[fnName] as FunctionDefinition;
+                return string.Format("{0}{1}{1}{2}", fn.Use, Environment.NewLine, fn.Help);
+            }
+
+            ArrayList fns = new ArrayList();
+            int i = 0;
+
+            foreach(string s in functions.Keys) {
+                if(s.IndexOf(fnName) == 0) {
+                    fns.Add(s);
+
+                    if(++i > maxHints)
+                        break;
+                }
+            }
+
+            fns.Sort();
+
+            StringBuilder result = new StringBuilder();
+
+            foreach(string s in fns) {
+                if(result.Length > 0)
+                    result.Append(Environment.NewLine);
+                result.Append(s);
+            }
+
+            if(i > maxHints) {
+                result.Append(Environment.NewLine);
+                result.Append("...");
+            }
+
+            return result.ToString();
+        }
+        #endregion
     }
 }

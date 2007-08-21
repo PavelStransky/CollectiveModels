@@ -61,7 +61,7 @@ namespace PavelStransky.Forms {
                         commandEnd = this.NextIndexOf(this.Text, semicolon, commandEnd + 1);
                         if(commandEnd < 0)
                             commandEnd = this.Text.Length;
-                    } while(Atom.IsInBracket(this.Text.Substring(commandStart, commandEnd - commandStart)) && commandEnd != this.Text.Length);
+                    } while(Atom.IsInBracket(this.Text.Substring(commandStart, commandEnd - commandStart), 0) && commandEnd != this.Text.Length);
 
                     while(commandEnd != this.Text.Length && this.Text[commandEnd] == semicolon)
                         commandEnd++;

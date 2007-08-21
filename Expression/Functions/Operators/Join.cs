@@ -16,7 +16,7 @@ namespace PavelStransky.Expression.Functions {
         protected override void CreateParameters() {
             this.SetNumParams(1, true);
             this.SetParam(0, true, true, true, Messages.PValue, Messages.PValueDescription, null,
-                typeof(double), typeof(Vector), typeof(PointD), typeof(PointVector), typeof(List), typeof(string));
+                typeof(double), typeof(Vector), typeof(PointD), typeof(PointVector), typeof(List), typeof(string), typeof(TimeSpan));
 
             this.AddCompatibility(typeof(double), typeof(Vector));
             this.AddCompatibility(typeof(double), typeof(List));
@@ -25,6 +25,7 @@ namespace PavelStransky.Expression.Functions {
             this.AddCompatibility(typeof(PointD), typeof(PointVector));
             this.AddCompatibility(typeof(PointVector), typeof(List));
             this.AddCompatibility(typeof(List), typeof(string));
+            this.AddCompatibility(typeof(string), typeof(TimeSpan));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

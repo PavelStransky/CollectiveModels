@@ -327,7 +327,7 @@ Length of the second vector: {1}</value>
     <value>For GCM system and given energy calculates equipotential contour</value>
   </data>
   <data name="HelpEvalArray" xml:space="preserve">
-    <value>Array evaluation of functions</value>
+    <value>Array evaluation of an expression</value>
   </data>
   <data name="HelpExclude" xml:space="preserve">
     <value>From the first vector excludes values contained in the second vector</value>
@@ -472,6 +472,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpNorm" xml:space="preserve">
     <value>Norm of the vector</value>
+  </data>
+  <data name="HelpNotEvalArray" xml:space="preserve">
+    <value>Disable array evaluation of an expression</value>
   </data>
   <data name="HelpNuDatReadKnownIsotopes" xml:space="preserve">
     <value>Reads all known isotopes from http://www-nds.iaea.org</value>

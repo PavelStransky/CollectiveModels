@@ -5,11 +5,11 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Array evaluation of functions
+    /// Disable array evaluation
     /// </summary>
-    public class EvalArray: Operator {
+    public class NotEvalArray: Operator {
         public override string Name { get { return name; } }
-        public override string Help { get { return Messages.HelpEvalArray; } }
+        public override string Help { get { return Messages.HelpNotEvalArray; } }
         public override OperatorPriority Priority { get { return OperatorPriority.MaxPriority; } }
 
         protected override void CreateParameters() {
@@ -20,13 +20,13 @@ namespace PavelStransky.Expression.Functions {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object item = arguments[0];
             bool oldArrayEvaluation = guider.ArrayEvaluation;
-            guider.ArrayEvaluation = true;
+            guider.ArrayEvaluation = false;
             object result = Atom.EvaluateAtomObject(guider, item);
             guider.ArrayEvaluation = oldArrayEvaluation;
 
             return result;
         }
 
-        private const string name = "#";
+        private const string name = "'";
     }
 }

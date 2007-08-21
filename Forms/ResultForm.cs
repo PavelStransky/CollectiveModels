@@ -267,11 +267,14 @@ namespace PavelStransky.Forms {
         /// <param name="exc">Vyjímka</param>
         private void CatchException(Exception exc) {
             DetailException dexc = exc as DetailException;
+            ExpressionException eexc = exc as ExpressionException;
 
             if(WinMain.PlaySounds)
                 soundFailure.Play();
 
-            if(dexc != null)
+            if(eexc != null)
+                MessageBox.Show(this, string.Format("{0}\n\n{1}\n\nPozice: {2}, {3}", eexc.Message, eexc.DetailMessage, eexc.Position1, eexc.Position2));
+            else if(dexc != null)
                 MessageBox.Show(this, string.Format("{0}\n\n{1}", dexc.Message, dexc.DetailMessage));
             else
 				MessageBox.Show(this, exc.Message);

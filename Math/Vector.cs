@@ -954,7 +954,7 @@ namespace PavelStransky.Math {
         /// Spojí vektory do jednoho
         /// </summary>
         /// <param name="vArray">Øada vektorù</param>
-        public static Vector Join(Vector[] vArray) {
+        public static Vector Join(params Vector[] vArray) {
 			// Poèet prvkù výsledného vektoru
 			int numItems = 0;
 			for(int i = 0; i < vArray.Length; i++)

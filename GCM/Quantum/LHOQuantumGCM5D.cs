@@ -282,8 +282,6 @@ namespace PavelStransky.GCM {
                 throw new GCMException(errorMessageComputing);
             this.isComputing = true;
 
-            GC.Collect();
-
             if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxE))
                 numev = this.HamiltonianMatrixSize(maxE);
 

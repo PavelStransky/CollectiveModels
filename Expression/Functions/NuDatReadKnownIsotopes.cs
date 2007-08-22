@@ -6,11 +6,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Reads all known isotopes from http://www-nds.iaea.org
     /// </summary>
-    public class NuDatReadKnownIsotopes: FunctionDefinition {
+    public class NuDatReadKnownIsotopes: Fnc {
         public override string Help { get { return Messages.HelpNuDatReadKnownIsotopes; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

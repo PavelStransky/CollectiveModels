@@ -6,11 +6,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org
     /// </summary>
-    public class NuDatReadNucleus: FunctionDefinition {
+    public class NuDatReadNucleus: Fnc {
         private enum ColumnType {
             ELevelKeV,
             XREF,

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Shows a graph
 	/// </summary>
-	public class Show: FunctionDefinition {
+	public class Show: Fnc {
 		public override string Help {get {return Messages.HelpShow;}}
 
         protected override void CreateParameters() {

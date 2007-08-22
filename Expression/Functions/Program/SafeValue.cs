@@ -4,12 +4,12 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Tries to get the value of the variable from the context; If there the variable
     /// does not exist, returns default value
     /// </summary>
-    public class SafeValue : FunctionDefinition {
+    public class SafeValue : Fnc {
         public override string Help { get { return Messages.HelpSafeValue; } }
 
         protected override void CreateParameters() {

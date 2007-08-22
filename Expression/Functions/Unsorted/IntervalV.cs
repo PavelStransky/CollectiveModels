@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates points for interval
     /// </summary>
-    public class IntervalV: FunctionDefinition {
+    public class IntervalV: Fnc {
         public override string Help { get { return Messages.HelpIntervalV; } }
 
         protected override void CreateParameters() {

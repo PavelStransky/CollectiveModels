@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Norm of the vector
 	/// </summary>
-	public class Norm: FunctionDefinition {
+	public class Norm: Fnc {
 		public override string Help {get {return Messages.HelpNorm;}}
 
         protected override void CreateParameters() {

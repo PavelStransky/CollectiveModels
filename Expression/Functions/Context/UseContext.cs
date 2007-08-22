@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Uses the given context for specified calculations
     /// </summary>
-    public class UseContext : FunctionDefinition {
+    public class UseContext : Fnc {
         public override string Help { get { return Messages.HelpUseContext; } }
 
         protected override void CreateParameters() {

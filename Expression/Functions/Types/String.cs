@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vrátí hodnoty jako øetìzec
 	/// </summary>
-	public class FnString: FunctionDefinition {
+	public class FnString: Fnc {
         public override string Name { get { return name; } }
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}

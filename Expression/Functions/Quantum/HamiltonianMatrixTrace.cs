@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns the trace of the Hamiltonian matrix of a quantum system
     /// </summary>
-    public class HamiltonianMatrixTrace : FunctionDefinition {
+    public class HamiltonianMatrixTrace : Fnc {
         public override string Help { get { return Messages.HelpHamiltonianMatrixTrace; } }
 
         protected override void CreateParameters() {

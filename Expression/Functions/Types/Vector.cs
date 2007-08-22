@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Z argumentù funkce vytvoøí vektor
     /// </summary>
-    public class FnVector: FunctionDefinition {
+    public class FnVector: Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpVector; } }
 

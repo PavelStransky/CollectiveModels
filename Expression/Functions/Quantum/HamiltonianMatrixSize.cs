@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vrátí velikost Hamiltonovy matice
     /// </summary>
-    public class HamiltonianMatrixSize : FunctionDefinition {
+    public class HamiltonianMatrixSize : Fnc {
         public override string Help { get { return help; } }
         public override string ParametersHelp { get { return parameters; } }
 

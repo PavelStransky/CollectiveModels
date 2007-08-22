@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Saves current document into a file
     /// </summary>
-    public class Save : FunctionDefinition {
+    public class Save : Fnc {
         public override string Help { get { return Messages.HelpSave; } }
 
         protected override void CreateParameters() {

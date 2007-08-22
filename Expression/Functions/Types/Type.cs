@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Type of the value
 	/// </summary>
-	public class FnType: FunctionDefinition {
+	public class FnType: Fnc {
 		public override string Name {get {return name;}}
 		public override string Help {get {return Messages.HelpType;}}
 

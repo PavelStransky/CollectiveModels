@@ -6,11 +6,11 @@ using PavelStransky.Math;
 using PavelStransky.GCM;
 using PavelStransky.PT;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Computes spectrum of a LHOQuantumGCM object
     /// </summary>
-    public class ComputeSpectrum : FunctionDefinition {
+    public class ComputeSpectrum : Fnc {
         public override string Help { get { return Messages.HelpComputeSpectrum; } }
 
         protected override void CreateParameters() {

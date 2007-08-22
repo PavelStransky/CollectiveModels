@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Writes a text (or variable) to the writer and begins new line
     /// </summary>
-    public class PrintLine : FunctionDefinition {
+    public class PrintLine : Fnc {
         public override string Help { get { return Messages.HelpPrintLine; } }
 
         protected override void CreateParameters() {

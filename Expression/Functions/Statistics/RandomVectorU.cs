@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Generates a vector with uniformly distributed components
     /// </summary>
-    public class RandomVectorU: FunctionDefinition {
+    public class RandomVectorU: Fnc {
         private Random random = new Random();
 
         public override string Help { get { return Messages.HelpRandomVectorU; } }

@@ -5,27 +5,15 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns global context
     /// </summary>
-    public class GetGlobalContext: FunctionDefinition {
+    public class GetGlobalContext: FncGlobalContext {
         public override string Help { get { return Messages.HelpGetGlobalContext; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            string fileName = Context.GlobalContextFileName;
-            FileInfo fileInfo = new FileInfo(fileName);
-
-            Context result;
-            if(fileInfo.Exists) {
-                Import import = new Import(Context.GlobalContextFileName, true);
-                result = import.Read() as Context;
-                import.Close();
-            }
-            else
-                result = new Context();
-
-            return result;
+            return this.GetGlobalContext();
         }
     }
 }

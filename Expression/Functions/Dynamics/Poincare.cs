@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Calculates a Poincaré section for given energy or trajectory given by its initial condition
     /// </summary>
-    public class Poincare: FunctionDefinition {
+    public class Poincare: Fnc {
         public override string Help { get { return Messages.HelpPoincare; } }
 
         protected override void CreateParameters() {

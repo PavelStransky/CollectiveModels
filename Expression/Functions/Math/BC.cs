@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vrací binomický koeficient
     /// </summary>
-    public class BC : FunctionDefinition {
+    public class BC : Fnc {
         public override string Help { get { return help; } }
         public override string ParametersHelp { get { return parameters; } }
 

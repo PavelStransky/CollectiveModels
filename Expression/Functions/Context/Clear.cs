@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 
 using PavelStransky.Math;
-using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Delete the specified variable (all variables) from the context
 	/// </summary>
-	public class Clear: FunctionDefinition {
+	public class Clear: Fnc {
 		public override string Help {get {return Messages.HelpClear;}}
 
         protected override void CreateParameters() {

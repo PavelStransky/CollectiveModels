@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Test - value of the radial part of basis wave function for 5D LHO
     /// </summary>
-    public class RWF5DLHO: MathFnD {
+    public class RWF5DLHO: FncMathD {
         public override string Help { get { return Messages.HelpRWF5DLHO; } }
 
         protected override void CreateParameters() {

@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.PT;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates a PT1 class
     /// </summary>
-    public class FnPT1: FunctionDefinition {
+    public class FnPT1: Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpPT1; } }
 

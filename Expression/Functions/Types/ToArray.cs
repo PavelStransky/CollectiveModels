@@ -3,11 +3,11 @@ using System.Collections;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates array from some non-array types
     /// </summary>
-    public class ToArray: FunctionDefinition {
+    public class ToArray: Fnc {
         public override string Help { get { return Messages.HelpToArray; } }
 
         protected override void CreateParameters() {

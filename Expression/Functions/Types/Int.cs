@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Converts given value to an integer number
     /// </summary>
-    public class FnInt : FunctionDefinition {
+    public class FnInt : Fnc {
         public override string Help { get { return Messages.HelpInt; } }
         public override string Name { get { return name; } }
 

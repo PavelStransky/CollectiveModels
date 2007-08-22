@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Generates uniformly distributed random numbers between given limits
     /// </summary>
-    public class RandomU : FunctionDefinition {
+    public class RandomU : Fnc {
         private Random random = new Random();
 
         public override string Help { get { return Messages.HelpRandomU; } }

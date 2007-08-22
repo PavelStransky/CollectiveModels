@@ -4,12 +4,12 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions
+namespace PavelStransky.Expression.Functions.Def
 {
 	/// <summary>
 	/// Returns length(s) of given object as an array
 	/// </summary>
-	public class Length: FunctionDefinition {
+	public class Length: Fnc {
 		public override string Help {get {return Messages.HelpLength;}}
 
         protected override void CreateParameters() {

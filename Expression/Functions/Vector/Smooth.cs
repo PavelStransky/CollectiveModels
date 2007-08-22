@@ -5,11 +5,11 @@ using PavelStransky.Math;
 using PavelStransky.Expression;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Smooths a vector
     /// </summary>
-    public class Smooth : FunctionDefinition {
+    public class Smooth : Fnc {
         public override string Help { get { return Messages.HelpSmooth; } }
 
         protected override void CreateParameters() {

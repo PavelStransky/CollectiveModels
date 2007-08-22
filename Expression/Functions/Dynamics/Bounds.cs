@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For given dynamical system and energy determines the bounds (higher limit) in which the solution can be found
     /// </summary>
-    public class Bounds : FunctionDefinition {
+    public class Bounds : Fnc {
         public override string Help { get { return Messages.HelpBounds; } }
 
         protected override void CreateParameters() {

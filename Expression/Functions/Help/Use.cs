@@ -4,18 +4,18 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vytvoøí øadu s použitím všech zaregistrovaných funkcí
 	/// </summary>
-	public class Use: FunctionDefinition {
-		private FunctionDefinitions functions;
+	public class Use: Fnc {
+		private FncList functions;
 		
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public Use(FunctionDefinitions functions) : base() {
+		public Use(FncList functions) : base() {
 			this.functions = functions;
 		}
 
@@ -34,7 +34,7 @@ namespace PavelStransky.Expression.Functions {
 				TArray result = new TArray(typeof(string), functions.Count);
 
                 int i = 0;
-				foreach(FunctionDefinition f in functions.Values)
+				foreach(Fnc f in functions.Values)
 					result[i++] = f.Use;
 
 				return result;

@@ -5,11 +5,11 @@ using System.Collections;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Tries to read text from specified URI
     /// </summary>
-    public class TestWWW: FunctionDefinition {
+    public class TestWWW: Fnc {
         public override string Help { get { return Messages.HelpTestWWW; } }
 
         protected override void CreateParameters() {

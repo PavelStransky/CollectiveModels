@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates a new context
     /// </summary>
-    public class FnContext : FunctionDefinition {
+    public class FnContext : Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpContext; } }
 

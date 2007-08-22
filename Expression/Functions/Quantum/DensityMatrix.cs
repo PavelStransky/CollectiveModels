@@ -5,11 +5,11 @@ using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vrátí matici hustot vlastní funkce
     /// </summary>
-    public class DensityMatrix : FunctionDefinition {
+    public class DensityMatrix : Fnc {
         public override string Help { get { return help; } }
         public override string ParametersHelp { get { return parameters; } }
 

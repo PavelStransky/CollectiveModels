@@ -2,8 +2,9 @@ using System.Collections;
 using System;
 
 using PavelStransky.Math;
+using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Interval operator
     /// </summary>

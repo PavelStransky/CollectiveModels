@@ -5,12 +5,12 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For given energy or a trajectory given by its initial condition calculates the trajectory; 
     /// the result is returned by a matrix in the form (time, x, y, ..., px, py, ...)
     /// </summary>
-    public class TrajectoryM: FunctionDefinition {
+    public class TrajectoryM: Fnc {
         public override string Help { get { return Messages.HelpTrajectoryM; } }
 
         protected override void CreateParameters() {

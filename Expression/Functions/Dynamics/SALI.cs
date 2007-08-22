@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Calculates SALI dependence on time for given trajectory
     /// </summary>
-    public class FnSALI: FunctionDefinition {
+    public class FnSALI: Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpSALI; } }
 

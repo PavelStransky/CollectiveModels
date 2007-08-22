@@ -4,11 +4,11 @@ using System.Collections;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Sets a variable into the global context
     /// </summary>
-    public class SetGlobalVar: FDGlobalContext {
+    public class SetGlobalVar: FncGlobalContext {
         public override string Help { get { return Messages.HelpSetGlobalVar; } }
 
         protected override void CreateParameters() {

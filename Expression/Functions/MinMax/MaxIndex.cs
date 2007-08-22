@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vrací index prvku s nejvyšší èíselnou hodnotou
 	/// </summary>
-	public class MaxIndex: MinMax {
+	public class MaxIndex: FncMinMax {
 		public override string Help {get {return help;}}
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

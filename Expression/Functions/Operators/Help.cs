@@ -2,8 +2,9 @@ using System.Collections;
 using System;
 
 using PavelStransky.Math;
+using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Help operator
     /// </summary>
@@ -12,13 +13,13 @@ namespace PavelStransky.Expression.Functions {
         public override string Help { get { return Messages.HelpHelp; } }
         public override OperatorPriority Priority { get { return OperatorPriority.MaxPriority; } }
 
-		private FunctionDefinitions functions;
+		private FncList functions;
 		
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public OpHelp(FunctionDefinitions functions) : base() {
+		public OpHelp(FncList functions) : base() {
 			this.functions = functions;
 		}
 
@@ -38,7 +39,7 @@ namespace PavelStransky.Expression.Functions {
             else
                 throw new FunctionDefinitionException(Messages.EMBadHelpParameter, item.GetType().Name);
 
-            return (this.functions[fnName] as FunctionDefinition).Help;
+            return (this.functions[fnName] as Fnc).Help;
         }
 
         private const string name = "?";

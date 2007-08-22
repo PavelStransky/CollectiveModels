@@ -6,12 +6,12 @@ using PavelStransky.Math;
 using PavelStransky.Expression;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Eigensystem of a matrix calculated using LAPACK library; 
     /// before calculation it makes symmetrization of a matrix
     /// </summary>
-    public class EigenSystem: FunctionDefinition {
+    public class EigenSystem: Fnc {
         public override string Help { get { return Messages.HelpEigenSystem; } }
 
         protected override void CreateParameters() {

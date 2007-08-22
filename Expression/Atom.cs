@@ -1232,7 +1232,7 @@ namespace PavelStransky.Expression {
                 return string.Empty;
 
             if(functions.Contains(fnName)) {
-                FunctionDefinition fn = functions[fnName] as FunctionDefinition;
+                Fnc fn = functions[fnName] as Fnc;
                 return string.Format("{0}{1}{1}{2}", fn.Use, Environment.NewLine, fn.Help);
             }
 

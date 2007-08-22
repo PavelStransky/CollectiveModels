@@ -3,8 +3,9 @@ using System.Text;
 using System;
 
 using PavelStransky.Math;
+using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Operator times, items of vectors and matrices is multiplied among one another
     /// </summary>

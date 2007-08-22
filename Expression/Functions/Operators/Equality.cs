@@ -3,8 +3,9 @@ using System.Text;
 using System;
 
 using PavelStransky.Math;
+using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Operator of equality
     /// </summary>

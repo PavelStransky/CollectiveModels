@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Logarithm of the value (with specified base)
     /// </summary>
-    public class Log: MathFnD {
+    public class Log: FncMathD {
         public override string Help { get { return Messages.HelpLog; } }
 
         protected override void CreateParameters() {

@@ -5,11 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.Expression.Functions {
+using PavelStransky.Expression;
+
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// The renormalization of the potential
     /// </summary>
-    public class VRenorm: FunctionDefinition {
+    public class VRenorm: Fnc {
         private DataParams dataParams = new DataParams();
 
         /// <summary>

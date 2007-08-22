@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Generates Gaussian distributed random numbers with given variance and mean
     /// </summary>
-    public class RandomG: FunctionDefinition {
+    public class RandomG: Fnc {
         private NormalDistribution nd = new NormalDistribution();
 
         public override string Help { get { return Messages.HelpRandomG; } }

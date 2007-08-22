@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vytvoøí kumulovaný histogram vektoru
 	/// </summary>
-	public class CumulHistogram: FunctionDefinition {
+	public class CumulHistogram: Fnc {
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}
 

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Calculates statistics v_{i} - v_{0} - i
     /// </summary>
-    public class Delta: FunctionDefinition {
+    public class Delta: Fnc {
         public override string Help { get { return Messages.HelpDelta; } }
 
         protected override void CreateParameters() {

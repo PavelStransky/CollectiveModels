@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Data of input vector interprets as coeficients of polynom and return its value
 	/// </summary>
-	public class FnPolynom: MathFnD {
+	public class FnPolynom: FncMathD {
 		public override string Name {get {return name;}}
 		public override string Help {get {return Messages.HelpPolynom;}}
 

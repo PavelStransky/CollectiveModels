@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vytvoøí Hamiltonovu matici kvantového systému
     /// </summary>
-    public class HamiltonianMatrix : FunctionDefinition {
+    public class HamiltonianMatrix : Fnc {
         public override string Help { get { return help; } }
         public override string ParametersHelp { get { return parameters; } }
 

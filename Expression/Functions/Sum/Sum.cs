@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Sum all elements
     /// </summary>
-    public class Sum : SumFn {
+    public class Sum : FncSum {
         public override string Help { get { return Messages.HelpSum; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -5,11 +5,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Gets out a variable from the global context
     /// </summary>
-    public class GetGlobalVar: FunctionDefinition {
+    public class GetGlobalVar: FncGlobalContext {
         public override string Help { get { return Messages.HelpGetGlobalVar; } }
 
         protected override void CreateParameters() {
@@ -19,11 +19,7 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            Import import = new Import(Context.GlobalContextFileName, true);
-            Context c = import.Read() as Context;
-            import.Close();
-
-            return c[arguments[0] as string];
+            return this.GetGlobalContext()[arguments[0] as string];
         }
     }
 }

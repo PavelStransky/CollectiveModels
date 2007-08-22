@@ -5,11 +5,11 @@ using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Given value or Vector of values put onto diagonal of square matrix
     /// </summary>
-    public class SetDiagonal: FunctionDefinition {
+    public class SetDiagonal: Fnc {
         public override string Help { get { return Messages.HelpSetDiagonal; } }
 
         protected override void CreateParameters() {

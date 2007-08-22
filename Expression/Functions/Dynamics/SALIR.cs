@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)
     /// </summary>
-    public class SALIR: FunctionDefinition {
+    public class SALIR: Fnc {
         public override string Help { get { return Messages.HelpSALIR; } }
 
         protected override void CreateParameters() {

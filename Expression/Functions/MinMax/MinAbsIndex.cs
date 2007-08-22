@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vrací index prvku s nejnižší èíselnou hodnotou v absolutní hodnotì
 	/// </summary>
-	public class MinAbsIndex: MinMax {
+	public class MinAbsIndex: FncMinMax {
 		public override string Help {get {return help;}}
 
 

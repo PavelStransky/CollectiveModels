@@ -5,11 +5,11 @@ using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns the second invariant of a quantum system
     /// </summary>
-    public class SecondInvariant: FunctionDefinition {
+    public class SecondInvariant: Fnc {
         public override string Help { get { return Messages.HelpSecondInvariant; } }
 
         protected override void CreateParameters() {

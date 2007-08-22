@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates new object of a given type
     /// </summary>
-    public class FnNew: FunctionDefinition {
+    public class FnNew: Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpNew; } }
 

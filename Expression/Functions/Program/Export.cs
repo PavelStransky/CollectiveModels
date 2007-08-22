@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Saves a variable to a file
 	/// </summary>
-	public class FnExport: FunctionDefinitionIE {
+	public class FnExport: FncIE {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpExport; } }
 

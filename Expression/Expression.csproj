@@ -125,7 +125,7 @@
     <Compile Include="Functions\Context\Clear.cs" />
     <Compile Include="Functions\Context\ClearGlobal.cs" />
     <Compile Include="Functions\Context\Context.cs" />
-    <Compile Include="Functions\Context\FDGlobalContext.cs" />
+    <Compile Include="Functions\FncGlobalContext.cs" />
     <Compile Include="Functions\Context\GetContext.cs" />
     <Compile Include="Functions\Context\GetGlobalContext.cs" />
     <Compile Include="Functions\Context\GetGlobalVar.cs" />
@@ -140,7 +140,7 @@
     <Compile Include="Functions\Dynamics\CIBM.cs" />
     <Compile Include="Functions\Dynamics\Energy.cs" />
     <Compile Include="Functions\Dynamics\Equipotential.cs" />
-    <Compile Include="Functions\Dynamics\ExtendedCGCM.cs" />
+    <Compile Include="Functions\FncExtendedCGCM.cs" />
     <Compile Include="Functions\Dynamics\ExtendedCGCM1.cs" />
     <Compile Include="Functions\Dynamics\ExtendedCGCM2.cs" />
     <Compile Include="Functions\Dynamics\HH.cs" />
@@ -159,8 +159,8 @@
     <Compile Include="Functions\Math\PT2Potential.cs" />
     <Compile Include="Functions\Math\Hermite.cs" />
     <Compile Include="Functions\Math\Legendre.cs" />
-    <Compile Include="Functions\Math\MathFnD.cs" />
-    <Compile Include="Functions\Math\MathFnID.cs" />
+    <Compile Include="Functions\FncMathD.cs" />
+    <Compile Include="Functions\FncMathID.cs" />
     <Compile Include="Functions\Math\Pi.cs" />
     <Compile Include="Functions\Math\Poisson.cs" />
     <Compile Include="Functions\Math\PT1Potential.cs" />
@@ -225,9 +225,9 @@
     <Compile Include="Functions\MinMax\MinAbs.cs" />
     <Compile Include="Functions\MinMax\MinAbsIndex.cs" />
     <Compile Include="Functions\MinMax\MinIndex.cs" />
-    <Compile Include="Functions\MinMax\MinMax.cs" />
-    <Compile Include="Functions\NuDatReadKnownIsotopes.cs" />
-    <Compile Include="Functions\NuDatReadNucleus.cs" />
+    <Compile Include="Functions\FncMinMax.cs" />
+    <Compile Include="Functions\NUDAT\NuDatReadKnownIsotopes.cs" />
+    <Compile Include="Functions\NUDAT\NuDatReadNucleus.cs" />
     <Compile Include="Functions\Operators\Power.cs" />
     <Compile Include="Functions\Operators\PowerItem.cs" />
     <Compile Include="Functions\Operators\Separator.cs" />
@@ -247,7 +247,7 @@
     <Compile Include="Functions\Quantum\HamiltonianMatrix.cs" />
     <Compile Include="Functions\Quantum\HamiltonianMatrixSize.cs" />
     <Compile Include="Functions\Quantum\HamiltonianMatrixTrace.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCM.cs" />
+    <Compile Include="Functions\FncLHOQGCM.cs" />
     <Compile Include="Functions\Quantum\LHOQGCM5D.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMC.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMR.cs" />
@@ -275,7 +275,7 @@
     <Compile Include="Functions\Sorting\SortDesc.cs" />
     <Compile Include="Functions\Sum\Sum.cs" />
     <Compile Include="Functions\Sum\SumAbs.cs" />
-    <Compile Include="Functions\Sum\SumFn.cs" />
+    <Compile Include="Functions\FncSum.cs" />
     <Compile Include="Functions\Sum\SumSquare.cs" />
     <Compile Include="Functions\Test\TestWWW.cs" />
     <Compile Include="Functions\Types\Deflate.cs" />
@@ -319,13 +319,13 @@
     <Compile Include="Functions\Help\FullHelp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\FunctionDefinition.cs">
+    <Compile Include="Functions\Fnc.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\FunctionDefinitionIE.cs">
+    <Compile Include="Functions\FncIE.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Functions\FunctionDefinitions.cs">
+    <Compile Include="Functions\FncList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Matrix\GetColumns.cs">
@@ -378,7 +378,7 @@
     <Compile Include="Functions\Types\PointVector.cs" />
     <Compile Include="Functions\Types\String.cs" />
     <Compile Include="Functions\Types\Vector.cs" />
-    <Compile Include="Functions\UserFunction.cs" />
+    <Compile Include="Functions\UserFnc.cs" />
     <Compile Include="Functions\Vector\Norm.cs" />
     <Compile Include="Functions\Vector\Smooth.cs" />
     <Compile Include="Types\Graph.cs">
@@ -397,7 +397,7 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="Types\MinMaxCache.cs" />
-    <Compile Include="Functions\Operators\Operator.cs">
+    <Compile Include="Functions\Operator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Functions\Vector\Spacing.cs" />

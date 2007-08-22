@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Given vectors put onto rows of a matrix
     /// </summary>
-    public class MatrixRow : FunctionDefinition {
+    public class MatrixRow : Fnc {
         public override string Help { get { return Messages.HelpMatrixRow; } }
 
         protected override void CreateParameters() {

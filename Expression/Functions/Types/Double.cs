@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Converts given value to a double precision number
     /// </summary>
-    public class FnDouble : FunctionDefinition {
+    public class FnDouble : Fnc {
         public override string Help { get { return Messages.HelpDouble; } }
         public override string Name { get { return name; } }
 

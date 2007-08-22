@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Sum absolute values of all elements
     /// </summary>
-    public class SumAbs: SumFn {
+    public class SumAbs: FncSum {
         public override string Help { get { return Messages.HelpSumAbs; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Pro LHOQuantumGCM tøídu a zadaný vlastní vektor vytvoøí matici H|n> - E|n>
     /// </summary>
-    public class EVNumDiff : FunctionDefinition {
+    public class EVNumDiff : Fnc {
         public override string Help { get { return help; } }
         public override string ParametersHelp { get { return parameters; } }
 

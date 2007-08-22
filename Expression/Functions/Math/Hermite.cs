@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Value of the Hermite polynomial
     /// </summary>
-    public class Hermite: MathFnD {
+    public class Hermite: FncMathD {
         public override string Help { get { return Messages.HelpHermite; } }
 
         protected override void CreateParameters() {

@@ -5,12 +5,12 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vytvoøí LHOQuantumGCMRLE tøídu (poèítanou v radiálních souøadnicích, jen sudé stavy)
     /// pomocí knihovny LAPACK
     /// </summary>
-    public class LHOQGCMRLE: LHOQGCM {
+    public class LHOQGCMRLE: FncLHOQGCM {
         public override string Help { get { return help; } }
 
         protected override object Create(double a, double b, double c, double k, double a0, double hbar) {

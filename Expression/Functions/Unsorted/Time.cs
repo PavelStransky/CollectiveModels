@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Duration of evaluating of the expression
     /// </summary>
-    public class FnTime : FunctionDefinition {
+    public class FnTime : Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpTime; } }
 

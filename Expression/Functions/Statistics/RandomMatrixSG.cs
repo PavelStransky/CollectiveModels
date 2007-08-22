@@ -4,12 +4,12 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Generates a symmetric matrix with Gaussian distributed components
     /// (according to PRL 65, 529 (1990))
     /// </summary>
-    public class RandomMatrixSG: FunctionDefinition {
+    public class RandomMatrixSG: Fnc {
         private NormalDistribution nd = new NormalDistribution();
 
         public override string Help { get { return Messages.HelpRandomMatrixSG; } }

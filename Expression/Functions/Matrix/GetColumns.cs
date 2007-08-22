@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
     /// Returns selected columns from a matrix
 	/// </summary>
-	public class GetColumns: FunctionDefinition {
+	public class GetColumns: Fnc {
 		public override string Help {get {return Messages.HelpGetColumns;}}
 
         protected override void CreateParameters() {

@@ -3,11 +3,11 @@ using System.Collections;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Adds an element to the end of the list in the global context
     /// </summary>
-    public class AddGlobal: FDGlobalContext {
+    public class AddGlobal: FncGlobalContext {
         public override string Help { get { return Messages.HelpAddGlobal; } }
 
         protected override void CreateParameters() {

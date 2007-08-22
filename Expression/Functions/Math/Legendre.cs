@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Value of the Legendre polynomial
     /// </summary>
-    public class Legendre: MathFnD {
+    public class Legendre: FncMathD {
         public override string Help { get { return Messages.HelpLaguerre; } }
 
         protected override void CreateParameters() {

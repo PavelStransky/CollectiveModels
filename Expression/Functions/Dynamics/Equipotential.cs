@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For GCM system and given energy calculates equipotential line
     /// </summary>
-    public class Equipotential: FunctionDefinition {
+    public class Equipotential: Fnc {
         public override string Help { get { return Messages.HelpEquipotential; } }
 
         protected override void CreateParameters() {

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Calculates an integral under given curve
 	/// </summary>
-	public class Integrate: FunctionDefinition {
+	public class Integrate: Fnc {
 		public override string Help {get {return Messages.HelpIntegrate;}}
 
         protected override void CreateParameters() {

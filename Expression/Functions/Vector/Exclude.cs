@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// From the first vector excludes values contained in the second vector
     /// </summary>
-    public class Exclude: FunctionDefinition {
+    public class Exclude: Fnc {
         public override string Help { get { return Messages.HelpExclude; } }
 
         protected override void CreateParameters() {

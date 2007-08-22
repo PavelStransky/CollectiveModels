@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Ascending sort
 	/// </summary>
-	public class Sort: FunctionDefinition {
+	public class Sort: Fnc {
 		public override string Help {get {return Messages.HelpSort;}}
 
         protected override void CreateParameters() {

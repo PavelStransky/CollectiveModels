@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vrací prvek s nejvyšší èíselnou hodnotou v absolutní hodnotì
 	/// </summary>
-	public class MaxAbs: MinMax {
+	public class MaxAbs: FncMinMax {
 		public override string Help {get {return help;}}
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

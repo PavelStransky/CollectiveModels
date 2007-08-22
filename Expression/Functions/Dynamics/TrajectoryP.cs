@@ -5,7 +5,7 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For given energy or a trajectory given by its initial condition calculates the trajectory; 
     /// the x, y coordinates of the result is returned by a PointVector

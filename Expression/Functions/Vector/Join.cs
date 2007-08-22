@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
     /// Array of Vectors or Array of PointVectors joins into one Vector
 	/// </summary>
-	public class Join: FunctionDefinition {
+	public class Join: Fnc {
 		public override string Help {get {return Messages.HelpJoin;}}
 
         protected override void CreateParameters() {

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vypíše text (promìnnou) do writeru
     /// </summary>
-    public class FnPrint : FunctionDefinition {
+    public class FnPrint : Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpPrint; } }
 

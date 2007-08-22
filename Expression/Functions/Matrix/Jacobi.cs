@@ -5,12 +5,12 @@ using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
     /// Eigensystem of a matrix calculated using Jacobi method; 
     /// before calculation it makes symmetrization of a matrix
 	/// </summary>
-	public class FnJacobi: FunctionDefinition {
+	public class FnJacobi: Fnc {
         public override string Name { get { return name; } }
 		public override string Help {get {return Messages.HelpJacobi;}}
 

@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.IBM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates a ClassicalIBM class
     /// </summary>
-    public class CIBM : FunctionDefinition {
+    public class CIBM : Fnc {
         public override string Help { get { return Messages.HelpCIBM; } }
 
         protected override void CreateParameters() {

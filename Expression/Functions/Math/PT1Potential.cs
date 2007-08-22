@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.PT;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Value of the potential of the system PT1
     /// </summary>
-    public class PT1Potential: MathFnD {
+    public class PT1Potential: FncMathD {
         public override string Help { get { return Messages.HelpPT1Potential; } }
 
         protected override void CreateParameters() {

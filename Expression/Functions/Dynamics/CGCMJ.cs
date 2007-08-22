@@ -5,7 +5,7 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates a ClassicalGCMJ class (case with nonzero angular momentum)
     /// </summary>

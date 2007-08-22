@@ -3,11 +3,11 @@ using System.Collections;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Z argumentù funkce vytvoøí øadu
 	/// </summary>
-	public class FnArray: FunctionDefinition {
+	public class FnArray: Fnc {
 		public override string Name {get {return name;}}
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}

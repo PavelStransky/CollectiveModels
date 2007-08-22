@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Removes bad points (NaN, Infinity) from Vector or PointVector
     /// </summary>
-    public class RemoveBadPoints: FunctionDefinition {
+    public class RemoveBadPoints: Fnc {
         public override string Help { get { return Messages.HelpRemoveBadPoints; } }
 
         protected override void CreateParameters() {

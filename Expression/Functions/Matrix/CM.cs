@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vypoèítá korelaèní matici (matice)
 	/// </summary>
-	public class CM: FunctionDefinition {
+	public class CM: Fnc {
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}
 

@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections;
 
 using PavelStransky.Math;
+using PavelStransky.Expression;
 
 namespace PavelStransky.Expression {
 	/// <summary>

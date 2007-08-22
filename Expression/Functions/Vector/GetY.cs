@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// From point or pointvector separates coordinates y
     /// </summary>
-    public class GetY: FunctionDefinition {
+    public class GetY: Fnc {
         public override string Help { get { return Messages.HelpGetY; } }
 
         protected override void CreateParameters() {

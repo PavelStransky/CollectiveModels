@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 
 using PavelStransky.Math;
-using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Deletes specified variable (all variables) from the global context
     /// </summary>
-    public class ClearGlobal: FDGlobalContext {
+    public class ClearGlobal: FncGlobalContext {
         public override string Help { get { return Messages.HelpClearGlobal; } }
 
         protected override void CreateParameters() {

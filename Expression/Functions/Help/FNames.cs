@@ -4,18 +4,18 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
     /// Returns an array with names of all registered functions
 	/// </summary>
-	public class FNames: FunctionDefinition {
-		private FunctionDefinitions functions;
+	public class FNames: Fnc {
+		private FncList functions;
 		
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public FNames(FunctionDefinitions functions) : base() {
+		public FNames(FncList functions) : base() {
 			this.functions = functions;
 		}
 

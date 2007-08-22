@@ -4,7 +4,7 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vytvoøí graf
 	/// </summary>
@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions {
     /// (Array(N), Array(N)) - jedna køivka k jednomu pozadí
     /// (Array(N, M), Array(N)) - M køivek ke každému pozadí
 	/// </param>
-	public class FnGraph: FunctionDefinition {
+	public class FnGraph: Fnc {
         public override string Name { get { return name; } }
 		public override string Help {get {return Messages.HelpGraph;}}
 

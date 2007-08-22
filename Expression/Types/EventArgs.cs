@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 
-namespace PavelStransky.Expression
-{
+namespace PavelStransky.Expression {
     /// <summary>
     /// Možné události na kontextu
     /// </summary>

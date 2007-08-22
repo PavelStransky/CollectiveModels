@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Fast Fourier Transform (FFT) of a vector
     /// </summary>
-    public class FFTSpectrum: FunctionDefinition {
+    public class FFTSpectrum: Fnc {
         public override string Help { get { return Messages.HelpFFTSpectrum; } }
 
         protected override void CreateParameters() {

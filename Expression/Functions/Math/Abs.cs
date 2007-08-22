@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Absolute value
 	/// </summary>
-	public class Abs: MathFnID {
+	public class Abs: FncMathID {
 		public override string Help {get {return Messages.HelpAbs;}}
 
         protected override int FnInt(int i, params object[] p) {

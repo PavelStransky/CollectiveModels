@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Linear regression of data (including uncertainities of estimated parameters)
     /// </summary>
-    public class LinearRegression: FunctionDefinition {
+    public class LinearRegression: Fnc {
         public override string Help { get { return Messages.RegressionHelp; } }
 
         protected override void CreateParameters() {

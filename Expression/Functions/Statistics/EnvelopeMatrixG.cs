@@ -4,12 +4,12 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Generates an envelope matrix in Gaussian form
     /// (according to PRL 65, 529 (1990))
     /// </summary>
-    public class EnvelopeMatrixG: FunctionDefinition {
+    public class EnvelopeMatrixG: Fnc {
         public override string Help { get { return Messages.HelpEnvelopeMatrixG; } }
 
         protected override void CreateParameters() {

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Converts given data to a pointvector
 	/// </summary>
-	public class FnPointVector: FunctionDefinition {
+	public class FnPointVector: Fnc {
 		public override string Name {get {return name;}}
         public override string Help { get { return Messages.HelpPointVector; } }
 

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Z bodu nebo vektoru bodù vybere souøadnice X
 	/// </summary>
-	public class GetX: FunctionDefinition {
+	public class GetX: Fnc {
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}
 

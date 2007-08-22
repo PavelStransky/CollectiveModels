@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by SALI
     /// </summary>
-    public class SALIG: FunctionDefinition {
+    public class SALIG: Fnc {
         public override string Help { get { return Messages.HelpSALIG; } }
 
         protected override void CreateParameters() {

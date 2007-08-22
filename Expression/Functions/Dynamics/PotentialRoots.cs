@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For GCM system solves the equation Potential == Given energy
     /// </summary>
-    public class PotentialRoots : FunctionDefinition {
+    public class PotentialRoots : Fnc {
         public override string Help { get { return Messages.HelpPotentialRoots; } }
 
         protected override void CreateParameters() {

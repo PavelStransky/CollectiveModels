@@ -6,6 +6,7 @@ using PavelStransky.Math;
 using PavelStransky.GCM;
 using PavelStransky.IBM;
 using PavelStransky.PT;
+using PavelStransky.Expression;
 
 namespace PavelStransky.Expression {
     /// <summary>

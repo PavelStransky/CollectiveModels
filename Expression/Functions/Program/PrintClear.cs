@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vymaže writer
     /// </summary>
-    public class PrintClear : FunctionDefinition {
+    public class PrintClear : Fnc {
         public override string Help { get { return help; } }
 
         protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {

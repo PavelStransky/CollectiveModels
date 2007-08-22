@@ -4,18 +4,18 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Vrátí nápovìdu k zadané funkci
 	/// </summary>
-	public class FnHelp: FunctionDefinition {
-		private FunctionDefinitions functions;
+	public class FnHelp: Fnc {
+		private FncList functions;
 		
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public FnHelp(FunctionDefinitions functions) : base() {
+		public FnHelp(FncList functions) : base() {
 			this.functions = functions;
 		}
 

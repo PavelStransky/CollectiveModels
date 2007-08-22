@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Sum squares of the values of all elements
     /// </summary>
-    public class SumSquare: SumFn {
+    public class SumSquare: FncSum {
         public override string Help { get { return Messages.HelpSumSquare; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

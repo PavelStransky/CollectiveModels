@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Vytvoøí LHOQuantumGCMRFull tøídu (poèítanou v radiálních souøadnicích, bereme úplnou bázi)
     /// </summary>
-    public class LHOQGCMRF: LHOQGCM {
+    public class LHOQGCMRF: FncLHOQGCM {
         public override string Help { get { return help; } }
 
         protected override object Create(double a, double b, double c, double k, double a0, double hbar) {

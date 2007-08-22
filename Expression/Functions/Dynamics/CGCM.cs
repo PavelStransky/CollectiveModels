@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Creates ClassicalGCM class
     /// </summary>
-    public class CGCM : FunctionDefinition {
+    public class CGCM : Fnc {
         public override string Help { get { return Messages.HelpCGCM; } }
 
         protected override void CreateParameters() {

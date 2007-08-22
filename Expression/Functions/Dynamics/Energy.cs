@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For given dynamical system and position in the phase space calculates the energy
     /// </summary>
-    public class Energy : FunctionDefinition {
+    public class Energy : Fnc {
         public override string Help { get { return Messages.HelpEnergy; } }
 
         protected override void CreateParameters() {

@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Generates a vector with Gaussian distributed components
     /// </summary>
-    public class RandomVectorG: FunctionDefinition {
+    public class RandomVectorG: Fnc {
         private NormalDistribution nd = new NormalDistribution();
 
         public override string Help { get { return Messages.HelpRandomVectorG; } }

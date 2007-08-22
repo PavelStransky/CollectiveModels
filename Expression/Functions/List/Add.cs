@@ -3,11 +3,11 @@ using System.Collections;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Adds an element to the end of the list
     /// </summary>
-    public class FnAdd: FunctionDefinition {
+    public class FnAdd: Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpAdd; } }
 

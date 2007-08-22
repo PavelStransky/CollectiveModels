@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns a variable from a given context
     /// </summary>
-    public class GetVar : FunctionDefinition {
+    public class GetVar : Fnc {
         public override string Help { get { return Messages.HelpGetVar; } }
 
         protected override void CreateParameters() {

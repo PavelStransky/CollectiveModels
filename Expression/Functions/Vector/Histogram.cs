@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns the histogram of a vector (and given interval)
     /// </summary>
-    public class Histogram: FunctionDefinition {
+    public class Histogram: Fnc {
         public override string Help { get { return Messages.HelpHistogram; } }
 
         protected override void CreateParameters() {

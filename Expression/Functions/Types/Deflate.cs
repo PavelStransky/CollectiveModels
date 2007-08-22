@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Given array transforms into one dimensional array
     /// </summary>
-    public class Deflate: FunctionDefinition {
+    public class Deflate: Fnc {
         public override string Help { get { return Messages.HelpDeflate; } }
 
         protected override void CreateParameters() {

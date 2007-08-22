@@ -13,7 +13,7 @@ namespace PavelStransky.Expression
 	/// </summary>
 	public class Function: Atom {
 		// Typ operátoru
-		private Functions.FunctionDefinition function;
+		private Functions.Fnc function;
 
 		// Argumenty funkce
 		private ArrayList arguments = new ArrayList();
@@ -37,7 +37,7 @@ namespace PavelStransky.Expression
             if(functions.Contains(fncName))
                 this.function = functions[fncName];
 
-            else if((this.function = Functions.UserFunction.CreateUserFunction(fncName)) == null)
+            else if((this.function = Functions.UserFnc.CreateUserFunction(fncName)) == null)
                 throw new ExpressionException(string.Format(errorMessageFunctionNotExists, fncName));
 
             foreach(string s in (parts[1] as ArrayList))

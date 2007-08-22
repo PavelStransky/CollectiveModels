@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Polynomial regression of data
 	/// </summary>
-	public class FnRegression: FunctionDefinition {
+	public class FnRegression: Fnc {
 		public override string Name {get {return name;}}
 		public override string Help {get {return Messages.RegressionHelp;}}
 

@@ -5,11 +5,11 @@ using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Given value put onto nondiagonal elements of square matrix
     /// </summary>
-    public class SetNonDiagonal: FunctionDefinition {
+    public class SetNonDiagonal: Fnc {
         public override string Help { get { return Messages.HelpSetNonDiagonal; } }
 
         protected override void CreateParameters() {

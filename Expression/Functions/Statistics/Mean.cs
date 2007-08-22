@@ -4,11 +4,11 @@ using System.Collections;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
 	/// Calculates mean of a vector
 	/// </summary>
-    public class Mean: FunctionDefinition {
+    public class Mean: Fnc {
         public override string Help { get { return Messages.HelpMean; } }
 
         protected override void CreateParameters() {

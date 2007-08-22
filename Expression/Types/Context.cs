@@ -6,7 +6,7 @@ using System.Text;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression {
-	/// <summary>
+    /// <summary>
 	/// Kontext, ve kterém jsou uloženy všechny promìnné
 	/// </summary>
 	public class Context: IExportable {

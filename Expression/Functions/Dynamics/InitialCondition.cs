@@ -5,11 +5,11 @@ using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 
-namespace PavelStransky.Expression.Functions {
+namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// For given dynamical system and energy generates initial condition of a trajectory and returns it as Vector
     /// </summary>
-    public class InitialCondition: FunctionDefinition {
+    public class InitialCondition: Fnc {
         public override string Help { get { return Messages.HelpInitialCondition; } }
 
         protected override void CreateParameters() {

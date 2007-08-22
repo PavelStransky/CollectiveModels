@@ -659,7 +659,7 @@ namespace PavelStransky.Forms {
 
         #region Drag and Drop obsluha
         private void txtCommand_MouseDown(object sender, MouseEventArgs e) {
-            if(e.Button == MouseButtons.Left && this.txtCommand.SelectionLength > 0) {
+            if(e.Button == MouseButtons.Left && this.txtCommand.SelectionLength > 0 && e.Clicks == 1) {
                 //invoke the drag and drop operation
                 this.txtCommand.DoDragDrop(this.txtCommand.SelectedText, DragDropEffects.Copy);
             }

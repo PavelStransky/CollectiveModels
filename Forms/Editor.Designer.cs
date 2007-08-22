@@ -73,6 +73,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.MouseMove += new System.Windows.Forms.MouseEventHandler(this.txtCommand_MouseMove);
             this.txtCommand.ExecuteCommand += new PavelStransky.Forms.CommandTextBox.ExecuteCommandEventHandler(this.txtCommand_ExecuteCommand);
             this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
+            this.txtCommand.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtCommand_MouseDown);
             // 
             // Editor
             // 

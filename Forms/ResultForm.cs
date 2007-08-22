@@ -135,9 +135,9 @@ namespace PavelStransky.Forms {
         /// Výraz
         /// </summary>
         /// <param name="command">Pøíkaz</param>
-        public void SetExpression (string command) {
+        public void SetExpression(string command) {
             try {
-                this.expression = new PavelStransky.Expression.Expression(command); 
+                this.expression = new PavelStransky.Expression.Expression(command);
                 this.txtCommand.Text = command.Replace(Environment.NewLine, "\n").Replace("\n", Environment.NewLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
                 this.calcThread.Priority = ThreadPriority.BelowNormal;
@@ -148,7 +148,7 @@ namespace PavelStransky.Forms {
                 this.calcThread = null;
                 this.CatchException(exc);
                 this.SetButtons();
-            }		
+            }
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace PavelStransky.Forms {
         public void Start() {
             if(!this.calculating && this.calcThread != null) {
                 this.calculating = true;
-                
+
                 // Nastavení ovládacích prvkù
                 this.txtResult.Clear();
                 this.SetCaption(captionCalculating);
@@ -213,7 +213,7 @@ namespace PavelStransky.Forms {
                 this.OnCalcStarted(new EventArgs());
 
                 this.indent = 0;
-                if(this.chkAsync.Checked) 
+                if(this.chkAsync.Checked)
                     this.calcThread.Start();
                 else
                     this.ThreadStart();
@@ -277,7 +277,7 @@ namespace PavelStransky.Forms {
             else if(dexc != null)
                 MessageBox.Show(this, string.Format("{0}\n\n{1}", dexc.Message, dexc.DetailMessage));
             else
-				MessageBox.Show(this, exc.Message);
+                MessageBox.Show(this, exc.Message);
 
             this.calculating = false;
             this.paused = false;
@@ -317,7 +317,7 @@ namespace PavelStransky.Forms {
 
                 this.txtResult.Text += s;
             }
-            
+
             this.OnCalcFinished(new FinishedEventArgs(true));
         }
 
@@ -349,7 +349,7 @@ namespace PavelStransky.Forms {
             if(this.calculating) {
                 DialogResult dialogResult = MessageBox.Show(this, string.Format(messageClose, this.Name), captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
-                if(dialogResult == DialogResult.Yes) 
+                if(dialogResult == DialogResult.Yes)
                     this.calcThread.Abort();
                 else
                     result = true;
@@ -436,7 +436,7 @@ namespace PavelStransky.Forms {
             sb.Append(Environment.NewLine);
             this.Invoke(new WriteDelegate(this.WriteInvoke), sb.ToString());
             this.lineStart = true;
-            
+
             return Environment.NewLine;
         }
 
@@ -467,6 +467,19 @@ namespace PavelStransky.Forms {
             this.txtResult.WordWrap = this.chkWrap.Checked;
             this.txtCommand.WordWrap = this.chkWrap.Checked;
         }
+
+        #region Drag and Drop obsluha
+        private void ResultForm_DragEnter(object sender, DragEventArgs e) {
+            if(!this.calculating && e.Data.GetDataPresent(DataFormats.Text)) {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void ResultForm_DragDrop(object sender, DragEventArgs e) {
+            this.SetExpression(e.Data.GetData(DataFormats.Text).ToString());
+            this.Start();
+        }
+        #endregion
 
         #region Implementace IExportable
         /// <summary>

@@ -210,6 +210,7 @@ namespace PavelStransky.Forms {
             // 
             // ResultForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 368);
@@ -232,6 +233,8 @@ namespace PavelStransky.Forms {
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Výpoèet...";
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.ResultForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.ResultForm_DragEnter);
             this.ResumeLayout(false);
             this.PerformLayout();
 

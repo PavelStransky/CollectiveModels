@@ -657,6 +657,15 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
+        #region Drag and Drop obsluha
+        private void txtCommand_MouseDown(object sender, MouseEventArgs e) {
+            if(e.Button == MouseButtons.Left && this.txtCommand.SelectionLength > 0) {
+                //invoke the drag and drop operation
+                this.txtCommand.DoDragDrop(this.txtCommand.SelectedText, DragDropEffects.Copy);
+            }
+        }
+        #endregion
+
         private const string messageFileChanged = "Soubor '{0}' byl zmìnìn. Chcete zmìny uložit?";
         private const string messageChanged = "Data nejsou uložena. Chcete je uložit?";
         private const string captionFileChanged = "Uložení souboru";

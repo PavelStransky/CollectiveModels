@@ -35,7 +35,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 int lv = v.Length;
 
                 if(l != lv)
-                    throw new FunctionDefinitionException(
+                    throw new FncException(
                         Messages.EMNotEqualLength,
                         string.Format(Messages.EMNotEqualLengthDetail, l, lv));
 

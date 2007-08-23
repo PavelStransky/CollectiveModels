@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace PavelStransky.Core {
@@ -103,7 +103,7 @@ namespace PavelStransky.Core {
                 (o as IExportable).Export(this);
             }
             else if(o != null)
-                throw new IEException(string.Format(errorMessageBadType, typeName));
+                throw new IEException(string.Format(Messages.EMInvalidObjectTypeExport, typeName));
         }
 
         /// <summary>
@@ -126,7 +126,6 @@ namespace PavelStransky.Core {
             return s.Replace("\n", "\\%n").Replace("\r", "\\%r").Replace("\t", "\\%t");
         }
 
-        public const string errorMessageBadType = "Typ {0} neumím uložit. Uložení se nezdaøilo.";
-        public const string nullString = "null";
+        private const string nullString = "null";
     }
 }

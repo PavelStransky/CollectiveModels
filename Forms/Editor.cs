@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 using PavelStransky.Expression;
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.Forms {
@@ -605,7 +606,7 @@ namespace PavelStransky.Forms {
         /// Naète obsah kontextu ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(PavelStransky.Math.Import import) {
+        public void Import(Core.Import import) {
             if(import.Binary) {
                 import.VersionName = import.B.ReadString();
                 import.VersionNumber = import.B.ReadInt32();
@@ -660,8 +661,23 @@ namespace PavelStransky.Forms {
         #region Drag and Drop obsluha
         private void txtCommand_MouseDown(object sender, MouseEventArgs e) {
             if(e.Button == MouseButtons.Left && this.txtCommand.SelectionLength > 0 && e.Clicks == 1) {
+                int selectionStart = this.txtCommand.SelectionStart;
+                int selectionLength = this.txtCommand.SelectionLength;
+                int firstShowedChar = this.txtCommand.GetCharIndexFromPosition(new Point(this.txtCommand.Margin.Left, this.txtCommand.Margin.Top));
+
+                this.txtCommand.StopRedrawing();
+
                 //invoke the drag and drop operation
                 this.txtCommand.DoDragDrop(this.txtCommand.SelectedText, DragDropEffects.Copy);
+
+                this.txtCommand.SelectionStart = firstShowedChar;
+                this.txtCommand.ScrollToCaret();
+
+                this.txtCommand.SelectionStart = selectionStart;
+                this.txtCommand.SelectionLength = selectionLength;
+
+                this.txtCommand.ResumeRedrawing();
+                this.txtCommand.Invalidate();
             }
         }
         #endregion

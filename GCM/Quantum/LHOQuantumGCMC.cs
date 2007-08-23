@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.GCM {
     /// <summary>

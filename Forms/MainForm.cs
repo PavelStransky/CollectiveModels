@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
-using PavelStransky.Math;
+using PavelStransky.Core;
 using PavelStransky.Expression;
 using PavelStransky.DLLWrapper;
 

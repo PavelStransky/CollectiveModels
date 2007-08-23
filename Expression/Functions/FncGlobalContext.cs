@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-using PavelStransky.Expression;
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions {

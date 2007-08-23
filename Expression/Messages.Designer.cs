@@ -1227,6 +1227,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data of input vector interprets as coeficients of polynom and return its integral.
+        /// </summary>
+        internal static string HelpPolynomIntegrate {
+            get {
+                return ResourceManager.GetString("HelpPolynomIntegrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For GCM system solves the equation Potential == Given energy.
         /// </summary>
         internal static string HelpPotentialRoots {

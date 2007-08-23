@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression {
@@ -427,7 +428,7 @@ namespace PavelStransky.Expression {
         /// Naète obsah ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public virtual void Import(PavelStransky.Math.Import import) {
+        public virtual void Import(Core.Import import) {
             IEParam param = new IEParam(import);
 
             if(import.VersionNumber >= 4) {

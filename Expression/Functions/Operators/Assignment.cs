@@ -24,7 +24,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.result = arguments[1];
 
             if(this.result == null)
-                throw new FunctionDefinitionException(Messages.EMNullValue);
+                throw new FncException(Messages.EMNullValue);
 
             if(this.result as ICloneable != null)
                 this.result = (this.result as ICloneable).Clone();
@@ -38,7 +38,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 return arguments[1];
             }
             else
-                throw new FunctionDefinitionException(Messages.EMBadAssignment, leftSide.GetType().FullName);
+                throw new FncException(Messages.EMBadAssignment, leftSide.GetType().FullName);
         }
 
         private object result;

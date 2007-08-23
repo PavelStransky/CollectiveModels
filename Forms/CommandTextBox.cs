@@ -157,7 +157,8 @@ namespace PavelStransky.Forms {
         #endregion
 
         #region Highlighting of syntax
-        // Èasovaè (pøekreslujeme vždy po urèité dobì po zmìnì)
+        // Èasovaè (pøekreslujeme vždy po urèité dobì po zmìnì, protože pøekreslování je
+        // bohužel hroznì èasovì nároèné)
         private System.Timers.Timer timer = new System.Timers.Timer();
         private Highlight highlight;
 
@@ -183,6 +184,7 @@ namespace PavelStransky.Forms {
             string s = this.Text;
 
             // Reset písma
+            this.ResetText();
             this.Font = font;
             this.ForeColor = Color.Blue;
 
@@ -267,7 +269,6 @@ namespace PavelStransky.Forms {
             this.SelectionLength = selectionLength;
 
             this.ResumeRedrawing();
-            this.ResumeLayout();
 
             this.Invalidate();
         }

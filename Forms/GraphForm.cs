@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Threading;
 
-using PavelStransky.Math;
+using PavelStransky.Core;
 using PavelStransky.Expression;
 
 namespace PavelStransky.Forms {
@@ -220,7 +220,7 @@ namespace PavelStransky.Forms {
         /// Naète obsah kontextu ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(PavelStransky.Math.Import import) {
+        public void Import(Core.Import import) {
             IEParam param = new IEParam(import);
 
             this.Location = new Point((int)param.Get(0), (int)param.Get(0));

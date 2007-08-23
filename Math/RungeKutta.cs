@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PavelStransky.Math {
+    /// <summary>
+    /// Metody RK
+    /// </summary>
+    public enum RungeKuttaMethods { Normal, Energy, Adapted }
+
     public class RungeKutta {
         // Dynamický systém
         protected IDynamicalSystem dynamicalSystem;

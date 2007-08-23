@@ -36,7 +36,7 @@ namespace PavelStransky.Core {
         /// <returns></returns>
         public static string Format(TimeSpan timeSpan, bool isText) {
             if(isText)
-                return string.Format("Doba výpoètu: {0}", Format(timeSpan));
+                return string.Format(Messages.CalculationTime, Format(timeSpan));
             else
                 return Format(timeSpan);
         }

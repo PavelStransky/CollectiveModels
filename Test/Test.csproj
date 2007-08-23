@@ -89,6 +89,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DLLWrapper\DLLWrapper.csproj">
       <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
       <Name>DLLWrapper</Name>

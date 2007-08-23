@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Name>Math</Name>

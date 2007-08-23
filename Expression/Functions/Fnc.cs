@@ -5,6 +5,7 @@ using System.Collections;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.Expression.Functions {
 	/// <summary>
@@ -170,7 +171,7 @@ namespace PavelStransky.Expression.Functions {
                 if(o == null)
                     evaluatedArguments[i] = p.DefaultValue;
                 if(o == null && p.Obligatory && i < l)
-                    throw new FunctionDefinitionException(string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
+                    throw new FncException(string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
 
                 if(p.IntToDouble)
                     this.ConvertInt2Double(evaluatedArguments, i);
@@ -183,7 +184,7 @@ namespace PavelStransky.Expression.Functions {
                 ParameterItem p = this.parameters[j];
 
                 if(p.Obligatory)
-                    throw new FunctionDefinitionException(string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
+                    throw new FncException(string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
 
                 evaluatedArguments.Add(p.DefaultValue);
             }
@@ -196,7 +197,7 @@ namespace PavelStransky.Expression.Functions {
         /// <param name="number">Požadovaný minimální poèet argumentù</param>
         protected void CheckArgumentsMinNumber(ArrayList args, int number) {
             if(args.Count < number)
-                throw new FunctionDefinitionException(
+                throw new FncException(
                     string.Format(Messages.EMFewArgs, this.Name),
                     string.Format(Messages.EMInvalidNumberArgsDetail, number, args.Count));
         }
@@ -208,7 +209,7 @@ namespace PavelStransky.Expression.Functions {
         /// <param name="number">Požadovaný maximální poèet argumentù</param>
         protected void CheckArgumentsMaxNumber(ArrayList args, int number) {
             if(args.Count > number)
-                throw new FunctionDefinitionException(
+                throw new FncException(
                     string.Format(Messages.EMManyArgs, this.Name),
                     string.Format(Messages.EMInvalidNumberArgsDetail, number, args.Count));
         }
@@ -220,7 +221,7 @@ namespace PavelStransky.Expression.Functions {
         /// <param name="number">Požadovaný maximální poèet argumentù</param>
         protected void CheckArgumentsNumber(ArrayList args, int number) {
             if(args.Count != number)
-                throw new FunctionDefinitionException(
+                throw new FncException(
                     string.Format(Messages.EMInvalidNumberArgs, this.Name),
                     string.Format(Messages.EMInvalidNumberArgsDetail, number, args.Count));
         }
@@ -263,11 +264,11 @@ namespace PavelStransky.Expression.Functions {
                     at = at.BaseType;
                 } while(at != null);
 
-                throw new FunctionDefinitionException(
+                throw new FncException(
                     string.Format(Messages.EMBadParamType, i + 1, this.Name),
                     string.Format(Messages.EMBadParamTypeDetail, type.FullName, at.FullName));
             }
-            throw new FunctionDefinitionException(
+            throw new FncException(
                 string.Format(Messages.EMBadParamType, i + 1, this.Name),
                 string.Format(Messages.EMBadParamTypeDetail, type.FullName, t.FullName));
         }
@@ -320,7 +321,7 @@ namespace PavelStransky.Expression.Functions {
                 } while(at != null);
             }
 
-            throw new FunctionDefinitionException(
+            throw new FncException(
                 string.Format(Messages.EMBadParamType, i + 1, this.Name),
                 string.Format(Messages.EMBadParamTypeDetail, ts, (args[i] is TArray && evaluateArray) ? (args[i] as TArray).GetItemType() : args[i].GetType()));
         }
@@ -405,7 +406,7 @@ namespace PavelStransky.Expression.Functions {
         /// <param name="a2">Øada 2</param>
         protected void CheckArrayLengths(TArray a1, TArray a2) {
             if(!TArray.IsEqualDimension(a1, a2)) 
-                throw new FunctionDefinitionException(
+                throw new FncException(
                     string.Format(Messages.EMBadArrayDimensions, this.Name),
                     string.Format(Messages.EMBadArrayDimensionsDetail, a1.LengthsString(), a2.LengthsString()));
         }
@@ -482,7 +483,7 @@ namespace PavelStransky.Expression.Functions {
 		/// </summary>
 		/// <param name="item">Prvek</param>
 		protected object BadTypeError(object item, int i) {
-			throw new FunctionDefinitionException(
+			throw new FncException(
                 string.Format(Messages.EMBadParamType, i + 1, this.Name),
 				string.Format(Messages.EMBadParamTypeDetail, this.parameters[i].TypesNames, item.GetType().FullName));
 		}
@@ -501,31 +502,5 @@ namespace PavelStransky.Expression.Functions {
 
         private const string useFormat = "{0}({1});";
 		private const string fullHelpFormat = "{0}\r\n\r\n{1}";
-	}
-
-	/// <summary>
-	/// Výjimka ve tøídì FunctionDefinition
-	/// </summary>
-	public class FunctionDefinitionException: DetailException {
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public FunctionDefinitionException(string message) : base(errMessage + message) {}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public FunctionDefinitionException(string message, Exception innerException) : base(errMessage + message, innerException) {}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		/// <param name="detailMessage">Detail chyby</param>
-		public FunctionDefinitionException(string message, string detailMessage) : base(errMessage + message, detailMessage) {}
-	
-		private const string errMessage = "Ve tøídì FunctionDefinition došlo k chybì: ";
 	}
 }

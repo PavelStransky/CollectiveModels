@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 
 using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.GCM {
     /// <summary>
@@ -446,7 +447,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Import import) {
+        public void Import(Core.Import import) {
             IEParam param = new IEParam(import);
 
             this.A = (double)param.Get(-1.0);

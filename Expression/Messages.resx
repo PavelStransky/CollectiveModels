@@ -509,6 +509,9 @@ Length of the second vector: {1}</value>
   <data name="HelpPolynom" xml:space="preserve">
     <value>Data of input vector interprets as coeficients of polynom and return its value</value>
   </data>
+  <data name="HelpPolynomIntegrate" xml:space="preserve">
+    <value>Data of input vector interprets as coeficients of polynom and return its integral</value>
+  </data>
   <data name="HelpPotentialRoots" xml:space="preserve">
     <value>For GCM system solves the equation Potential == Given energy</value>
   </data>

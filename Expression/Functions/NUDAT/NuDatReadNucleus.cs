@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Collections;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 

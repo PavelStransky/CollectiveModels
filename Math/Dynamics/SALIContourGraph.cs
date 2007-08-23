@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Math {
     /// <summary>
     /// Tøída, která na základì SALI vytvoøí konturovaný graf 

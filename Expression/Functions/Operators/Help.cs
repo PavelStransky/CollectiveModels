@@ -37,7 +37,7 @@ namespace PavelStransky.Expression.Functions.Def {
             else if(item is Function)
                 fnName = (item as Function).Name;
             else
-                throw new FunctionDefinitionException(Messages.EMBadHelpParameter, item.GetType().Name);
+                throw new FncException(Messages.EMBadHelpParameter, item.GetType().Name);
 
             return (this.functions[fnName] as Fnc).Help;
         }

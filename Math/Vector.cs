@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Math {
 	/// <summary>
 	/// Implementace operací s vektorem
@@ -448,7 +450,7 @@ namespace PavelStransky.Math {
 		/// Naète obsah vektoru ze souboru
 		/// </summary>
         /// <param name="import">Import</param>
-        public void Import(Import import) {
+        public void Import(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

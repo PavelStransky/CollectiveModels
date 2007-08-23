@@ -114,5 +114,14 @@ namespace PavelStransky.Expression {
 
             return null;
         }
+
+        /// <summary>
+        /// Vyvolá výjimky zpùsobené chybami
+        /// </summary>
+        public void ThrowErrors() {
+            foreach(HighlightItem item in this)
+                if(item.HighlightType == HighlightTypes.Error)
+                    throw item.Comment as Exception;
+        }
     }
 }

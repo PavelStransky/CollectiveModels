@@ -3,7 +3,7 @@ using System.IO;
 
 using PavelStransky.Math;
 using PavelStransky.GCM;
-
+using PavelStransky.Core;
 using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.GCM {

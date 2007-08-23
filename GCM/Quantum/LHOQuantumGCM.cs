@@ -3,6 +3,7 @@ using System.IO;
 
 using PavelStransky.Math;
 using PavelStransky.GCM;
+using PavelStransky.Core;
 
 namespace PavelStransky.GCM {
     /// <summary>
@@ -245,7 +246,7 @@ namespace PavelStransky.GCM {
         /// Naète výsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Import import) {
+        public void Import(Core.Import import) {
             IEParam param = new IEParam(import);
 
             if(import.VersionNumber >= 4) {

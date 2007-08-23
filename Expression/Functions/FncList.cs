@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
 		public Fnc this[string functionName] {
 			get {
 				if(!this.Contains(functionName))
-					throw new FunctionDefinitionException(string.Format(errorMessageBadFunctionName, functionName));
+					throw new FncException(string.Format(errorMessageBadFunctionName, functionName));
 				else
 					return base[functionName] as Fnc;
 			}
@@ -26,7 +26,7 @@ namespace PavelStransky.Expression.Functions {
 			string functionName = function.Name.ToLower();
 
 			if(this.Contains(functionName))
-				throw new FunctionDefinitionException(string.Format(errorMessageFunctionExists, functionName));
+				throw new FncException(string.Format(errorMessageFunctionExists, functionName));
 			this.Add(functionName, function);
 		}
 

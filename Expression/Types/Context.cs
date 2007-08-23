@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Text;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression {
@@ -269,7 +270,7 @@ namespace PavelStransky.Expression {
 		/// Naète obsah kontextu ze souboru
 		/// </summary>
         /// <param name="import">Import</param>
-        public void Import(PavelStransky.Math.Import import) {
+        public void Import(Core.Import import) {
             this.Clear();
 
             IEParam param = new IEParam(import);

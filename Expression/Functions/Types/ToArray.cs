@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
             if(item is FileData) {
                 FileData f = item as FileData;
                 if(f.Binary)
-                    throw new FunctionDefinitionException(Messages.ToArrayEMNotTextFile);
+                    throw new FncException(Messages.ToArrayEMNotTextFile);
                 return f.Lines.Clone();
             }
 

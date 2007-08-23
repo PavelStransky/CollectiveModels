@@ -4,6 +4,7 @@ using System.IO;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 using PavelStransky.DLLWrapper;
+using PavelStransky.Core;
 
 namespace PavelStransky.GCM {
     /// <summary>

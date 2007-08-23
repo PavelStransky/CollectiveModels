@@ -23,7 +23,7 @@ namespace PavelStransky.Expression.Functions {
 				else if(arguments[index] as string == paramText)
 					binary = false;
 				else
-					throw new FunctionDefinitionException(string.Format(errorMessageBadParameter, arguments[index] as string, index, this.Name));
+					throw new FncException(string.Format(errorMessageBadParameter, arguments[index] as string, index, this.Name));
 			}
 
 			return binary;

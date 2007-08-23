@@ -1,6 +1,6 @@
 using System;
 
-using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.Expression {
     /// <summary>

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using PavelStransky.Core;
 using PavelStransky.IBM;
 using PavelStransky.Math;
 using PavelStransky.Expression;

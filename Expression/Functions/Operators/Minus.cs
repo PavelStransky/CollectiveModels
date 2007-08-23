@@ -117,7 +117,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 else if(count == 2)
                     resultt = (DateTime)arguments[0] - (DateTime)arguments[1];
                 else
-                    throw new FunctionDefinitionException(
+                    throw new FncException(
                         string.Format(Messages.EMManyArgs, this.Name),
                         string.Format(Messages.EMInvalidNumberArgsDetail, 2, count));
 

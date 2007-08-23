@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace PavelStransky.Core {
@@ -93,7 +93,7 @@ namespace PavelStransky.Core {
                 result = this.CreateObject(typeName);
 
             if(result == null && typeName != nullString)
-                throw new IEException(string.Format(errorMessageCannotCreateObject, typeName));
+                throw new IEException(string.Format(Messages.EMInvalidObjectTypeImport, typeName));
 
             // Import dat
             IExportable ie = result as IExportable;
@@ -108,20 +108,7 @@ namespace PavelStransky.Core {
         /// </summary>
         /// <param name="typeName">Název typu objektu</param>
         public virtual object CreateObject(string typeName) {
-            if(typeName == typeof(Vector).FullName)
-                return new Vector();
-            else if(typeName == typeof(Matrix).FullName)
-                return new Matrix();
-            else if(typeName == typeof(PointD).FullName)
-                return new PointD();
-            else if(typeName == typeof(PointVector).FullName)
-                return new PointVector();
-            else if(typeName == typeof(ComplexVector).FullName)
-                return new ComplexVector();
-            else if(typeName == typeof(Jacobi).FullName)
-                return new Jacobi();
-            else
-                return null;
+            return null;
         }
 
         /// <summary>
@@ -144,7 +131,6 @@ namespace PavelStransky.Core {
             return s.Replace("\\%n", "\n").Replace("\\%r", "\r").Replace("\\%t", "\t");
         }
 
-        private const string errorMessageCannotCreateObject = "Nepodaøilo se vytvoøit objekt typu {0}. Import se nezdaøil.";
         public const string nullString = "null";
     }
 }

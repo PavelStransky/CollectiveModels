@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Text;
 
-using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.Expression {
     public class List: ArrayList, IExportable {
@@ -43,7 +43,7 @@ namespace PavelStransky.Expression {
         /// Naète obsah øady ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(PavelStransky.Math.Import import) {
+        public void Import(Core.Import import) {
             IEParam param = new IEParam(import);
             int count = (int)param.Get(0);
 

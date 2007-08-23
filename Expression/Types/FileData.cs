@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.Expression {
     /// <summary>
@@ -151,7 +151,7 @@ namespace PavelStransky.Expression {
         /// Import from the file
         /// </summary>
         /// <param name="import">Import object</param>
-        public void Import(PavelStransky.Math.Import import) {
+        public void Import(Core.Import import) {
             if(import.Binary) {
                 BinaryReader b = import.B;
                 this.binary = b.ReadBoolean();

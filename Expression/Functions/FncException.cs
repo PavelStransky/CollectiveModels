@@ -4,28 +4,28 @@ using System.Text;
 
 using PavelStransky.Core;
 
-namespace PavelStransky.Forms {
+namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// Výjimka v projektu Forms
+    /// Výjimka ve tøídì Fnc
     /// </summary>
-    public class FormsException : DetailException {
+    public class FncException: DetailException {
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="message">Text chybového hlášení</param>
-        public FormsException(string message) : base(message) { }
+        public FncException(string message) : base(message) { }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="message">Text chybového hlášení</param>
-        public FormsException(string message, Exception innerException) : base(message, innerException) { }
+        public FncException(string message, Exception innerException) : base(message, innerException) { }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="message">Text chybového hlášení</param>
         /// <param name="detailMessage">Detail chyby</param>
-        public FormsException(string message, string detailMessage) : base(message, detailMessage) { }
+        public FncException(string message, string detailMessage) : base(message, detailMessage) { }
     }
 }

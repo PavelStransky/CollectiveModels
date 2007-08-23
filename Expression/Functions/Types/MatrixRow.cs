@@ -36,7 +36,7 @@ namespace PavelStransky.Expression.Functions.Def {
                         length = l;
 
                     if(length != l)
-                        throw new FunctionDefinitionException(Messages.EMNotEqualLength);
+                        throw new FncException(Messages.EMNotEqualLength);
 
                     items.Add(v);
                 }
@@ -56,7 +56,7 @@ namespace PavelStransky.Expression.Functions.Def {
                                 length = l;
 
                             if(length != l)
-                                throw new FunctionDefinitionException(Messages.EMNotEqualLength);
+                                throw new FncException(Messages.EMNotEqualLength);
 
                             items.Add(v);
                         }
@@ -66,7 +66,7 @@ namespace PavelStransky.Expression.Functions.Def {
                             length = l;
 
                         if(length != l)
-                            throw new FunctionDefinitionException(Messages.EMNotEqualLength);
+                            throw new FncException(Messages.EMNotEqualLength);
 
                         Vector v = new Vector(length);
                         int j = 0;
@@ -98,7 +98,7 @@ namespace PavelStransky.Expression.Functions.Def {
                                 length = l;
 
                             if(length != l)
-                                throw new FunctionDefinitionException(Messages.EMNotEqualLength);
+                                throw new FncException(Messages.EMNotEqualLength);
 
                             items.Add(v);
                         }
@@ -108,7 +108,7 @@ namespace PavelStransky.Expression.Functions.Def {
                             length = l;
 
                         if(length != l)
-                            throw new FunctionDefinitionException(Messages.EMNotEqualLength);
+                            throw new FncException(Messages.EMNotEqualLength);
 
                         Vector v = new Vector(length);
                         int j = 0;

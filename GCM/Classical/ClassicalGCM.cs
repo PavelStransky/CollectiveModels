@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.GCM {
     public class ClassicalGCM: GCM, IExportable, IDynamicalSystem {
@@ -219,7 +220,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public virtual void Import(Import import) {
+        public virtual void Import(Core.Import import) {
             IEParam param = new IEParam(import);
 
             this.A = (double)param.Get(-1.0);

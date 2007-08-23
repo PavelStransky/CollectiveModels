@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Text;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.Expression {
@@ -531,7 +532,7 @@ namespace PavelStransky.Expression {
         /// Naète obsah øady ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(PavelStransky.Math.Import import) {
+        public void Import(Core.Import import) {
             int rank = 0;
             string typeName = string.Empty;
             int[] lengths;

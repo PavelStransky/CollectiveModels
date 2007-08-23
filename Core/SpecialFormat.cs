@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.Math {
+namespace PavelStransky.Core {
     /// <summary>
     /// Rùzné uživatelské formátování øetìzcù
     /// </summary>

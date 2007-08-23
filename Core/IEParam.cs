@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace PavelStransky.Math {
+namespace PavelStransky.Core {
     /// <summary>
     /// Parametry pro import a export
     /// </summary>

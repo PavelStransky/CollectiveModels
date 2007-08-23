@@ -44,6 +44,7 @@ namespace PavelStransky.Forms {
                 graphicsBox.TabIndex = 0;
                 graphicsBox.TabStop = false;
                 graphicsBox.MouseMove += new MouseEventHandler(graphControl_MouseMove);
+                graphicsBox.MouseDown += new MouseEventHandler(graphicsBox_MouseDown);
                 this.Controls.Add(graphicsBox);
                 this.graphControl = graphicsBox;
             }
@@ -56,6 +57,14 @@ namespace PavelStransky.Forms {
         /// </summary>
         void graphControl_MouseMove(object sender, MouseEventArgs e) {
             this.toolTip.SetToolTip(this.graphControl as Control, this.graphControl.ToolTip(e.X, e.Y));
+        }
+
+        /// <summary>
+        /// Pro drag & drop akci
+        /// </summary>
+        void graphicsBox_MouseDown(object sender, MouseEventArgs e) {
+            if(e.Button == MouseButtons.Left && e.Clicks == 1)
+                this.DoDragDrop(this.graphControl.CoordinatesFromPosition(e.X, e.Y), DragDropEffects.Copy);
         }
 
 		/// <summary>

@@ -84,6 +84,7 @@ namespace PavelStransky.Forms {
             // 
             // Editor
             // 
+            this.AllowDrop = true;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(561, 384);
             this.Controls.Add(this.mrbResult);

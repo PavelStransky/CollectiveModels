@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PavelStransky.Expression;
+using PavelStransky.Math;
 
 namespace PavelStransky.Forms {
     /// <summary>
@@ -27,6 +28,14 @@ namespace PavelStransky.Forms {
         /// <param name="x">X-ová souøadnice</param>
         /// <param name="y">Y-ová souøadnice</param>
         string ToolTip(int x, int y);
+
+        /// <summary>
+        /// Vrátí skuteèné souøadnice vypoèítané ze souøadnic v oknì
+        /// </summary>
+        /// <param name="x">X-ová souøadnice</param>
+        /// <param name="y">Y-ová souøadnice</param>
+        /// <returns></returns>
+        PointD CoordinatesFromPosition(int x, int y);
 
         /// <summary>
         /// Uloží graf jako GIF

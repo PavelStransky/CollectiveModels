@@ -21,7 +21,9 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public CommandTextBox() : base() { }
+        public CommandTextBox() : base() {
+            this.AllowDrop = true;
+        }
 
         /// <summary>
         /// Spustí všechny pøíkazy
@@ -439,9 +441,42 @@ namespace PavelStransky.Forms {
             this.SelectionLength = selectionLength;
 
             this.ResumeRedrawing();
-            this.ResumeLayout();
-
             this.Invalidate();
+        }
+        #endregion
+
+        #region Obsluha Drag & Drop
+        protected override void OnDragEnter(DragEventArgs drgevent) {
+            base.OnDragEnter(drgevent);
+
+            if(drgevent.Data.GetDataPresent(typeof(PointD))) {
+                drgevent.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        protected override void OnDragDrop(DragEventArgs drgevent) {
+            base.OnDragDrop(drgevent);
+
+            Point ps = this.PointToClient(new Point(drgevent.X, drgevent.Y));
+            int index = this.GetCharIndexFromPosition(ps);
+
+            PointD p = (PointD)drgevent.Data.GetData(typeof(PointD));
+            string text = string.Format("point({0}; {1})", p.X, p.Y);
+
+            int firstShowedChar = this.GetCharIndexFromPosition(new Point(this.Margin.Left, this.Margin.Top));
+            this.StopRedrawing();
+            this.SelectionStart = index;
+            this.SelectionLength = 0;
+            this.SelectedText = text;
+
+            this.SelectionStart = firstShowedChar;
+            this.ScrollToCaret();
+
+            this.ResumeRedrawing();
+            this.Invalidate();
+
+            this.tRecalculate.Start();
+            this.tRedraw.Start();
         }
         #endregion
 

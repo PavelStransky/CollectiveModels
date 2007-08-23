@@ -1067,24 +1067,32 @@ namespace PavelStransky.Forms {
         /// <param name="x">X - ová souøadnice myši</param>
         /// <param name="y">Y - ová souøadnice myši</param>
         public string ToolTip(int x, int y) {
+            PointD p = this.CoordinatesFromPosition(x, y);
+
+            Matrix m = this.graph.GetMatrix(this.group);
+            if(m.NumItems() > 0) {
+                double id = (p.X - this.minMaxB[this.group].MinX) * m.LengthX / this.minMaxB[this.group].Width;
+                double jd = (p.Y - this.minMaxB[this.group].MinY) * m.LengthY / this.minMaxB[this.group].Height;
+
+                if(id >= 0.0 && id < m.LengthX && jd >= 0.0 && jd < m.LengthY)
+                    return string.Format("({0,5:F}, {1,5:F}) = {2,5:F}", p.X, p.Y, m[(int)id, (int)jd]);
+            }
+
+            return string.Format("({0,5:F}, {1,5:F})", p.X, p.Y);
+        }
+
+        /// <summary>
+        /// Pøevede souøadnice okna (myši) na souøadnice skuteèné
+        /// </summary>
+        /// <param name="x">X - ová souøadnice myši</param>
+        /// <param name="y">Y - ová souøadnice myši</param>
+        public PointD CoordinatesFromPosition(int x, int y) {
             double offsetX = this.GetFitOffsetX(this.group);
             double amplifyX = this.GetFitAmplifyX(this.group);
             double offsetY = this.GetFitOffsetY(this.group);
             double amplifyY = this.GetFitAmplifyY(this.group);
 
-            double xl = (x - offsetX) / amplifyX;
-            double yl = -(y - offsetY) / amplifyY;
-
-            Matrix m = this.graph.GetMatrix(this.group);
-            if(m.NumItems() > 0) {
-                double id = (xl - this.minMaxB[this.group].MinX) * m.LengthX / this.minMaxB[this.group].Width;
-                double jd = (yl - this.minMaxB[this.group].MinY) * m.LengthY / this.minMaxB[this.group].Height;
-
-                if(id >= 0.0 && id < m.LengthX && jd >= 0.0 && jd < m.LengthY)
-                    return string.Format("({0,5:F}, {1,5:F}) = {2,5:F}", xl, yl, m[(int)id, (int)jd]);
-            }
-
-            return string.Format("({0,5:F}, {1,5:F})", xl, yl);
+            return new PointD((x - offsetX) / amplifyX, -(y - offsetY) / amplifyY);
         }
 
 		/// <summary>

@@ -80,12 +80,21 @@ namespace PavelStransky.Expression {
             Beginning, AfterOperator, AfterValue, AfterVariableOrFunction
         }
 
+        /// <summary>
+        /// Zkontroluje, zda je správnì zadaná syntaxe (závorky, uvozovky, operátory, funkce)
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        public static Highlight CheckSyntax(string e) {
+            Highlight highlight = new Highlight();
+            CheckSyntax(e, highlight);
+            return highlight;
+        }
+
 		/// <summary>
 		/// Zkontroluje, zda je správnì zadaná syntaxe (závorky, uvozovky, operátory, funkce)
 		/// </summary>
 		/// <param name="e">Výraz</param>
-        /// <returns>Polohu místa, kde je chyba</returns>
-        public static Highlight CheckSyntax(string e) {
+        public static void CheckSyntax(string e, Highlight highlight) {
             int length = e.Length;
             int n = openBracketChars.Length;
             ArrayList numBrackets = new ArrayList();
@@ -96,7 +105,6 @@ namespace PavelStransky.Expression {
             numBrackets.Add(nb);
 
             SyntaxPosition position = SyntaxPosition.Beginning;
-            Highlight highlight = new Highlight();
 
             // Pomocná promìnná
             int j = 0;
@@ -220,6 +228,11 @@ namespace PavelStransky.Expression {
                             new ExpressionException(
                                 string.Format(Messages.EMInvalidPosition, "String"),
                                 i));
+
+                    else if(j > length)
+                        highlight.Add(HighlightTypes.Error, i, j - 1,
+                            new ExpressionException(Messages.EMStringCharMissing, i));
+
                     else
                         highlight.Add(HighlightTypes.String, i, j);
 
@@ -282,8 +295,6 @@ namespace PavelStransky.Expression {
                     }
                 }
             }
-
-            return highlight;
         }
 
         /// <summary>
@@ -346,7 +357,7 @@ namespace PavelStransky.Expression {
                     break;
 
             if(j < 0)
-                throw new ExpressionException(Messages.EMStringCharMissing, i);
+                j = e.Length + 1;
 
             return j + 1;
         }

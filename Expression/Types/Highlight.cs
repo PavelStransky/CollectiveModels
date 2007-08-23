@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Drawing;
 using System.Text;
 
 namespace PavelStransky.Expression {
@@ -44,7 +45,7 @@ namespace PavelStransky.Expression {
             /// Nastaví funkci
             /// </summary>
             public void SetFunction() {
-                if((this.comment as string)[0] == '_')
+                if(this.highlightType == HighlightTypes.Variable && (this.comment as string)[0] == '_')
                     this.highlightType = HighlightTypes.UserFunction;
                 else
                     this.highlightType = HighlightTypes.Function;
@@ -66,8 +67,15 @@ namespace PavelStransky.Expression {
             public int Length { get { return this.end - this.start; } }
         }
 
+        // Poslední zvýrazòovaný objekt
         private HighlightItem last;
 
+        /// <summary>
+        /// Voláno, pokud byly nalezeny závorky;
+        /// Pokud poslední objekt byl text
+        /// </summary>
+        /// <param name="highlightType"></param>
+        /// <returns></returns>
         public int BracketStart(HighlightTypes highlightType) {
             if(last != null && highlightType == HighlightTypes.NormalBracket)
                 last.SetFunction();
@@ -80,8 +88,8 @@ namespace PavelStransky.Expression {
 
             if(hightlightType == HighlightTypes.Variable)
                 last = item;
-            else if(hightlightType != HighlightTypes.Comment) 
-                last = null;            
+            else if(hightlightType != HighlightTypes.Comment)
+                last = null;
         }
 
         public void Add(HighlightTypes highlightType, int start, object comment) {
@@ -122,6 +130,127 @@ namespace PavelStransky.Expression {
             foreach(HighlightItem item in this)
                 if(item.HighlightType == HighlightTypes.Error)
                     throw item.Comment as Exception;
+        }
+
+        /// <summary>
+        /// Zkontroluje syntaxi v celém textu
+        /// </summary>
+        /// <param name="e">Výraz</param>
+        public void CheckSyntax(string e) {
+            this.Clear();
+            Atom.CheckSyntax(e, this);
+        }
+
+        /// <summary>
+        /// Základní písmo pro zvýraznìní
+        /// </summary>
+        private Font baseFont;
+        private Font boldFont;
+
+        public Font BaseFont {
+            get {
+                return this.baseFont;
+            }
+            set {
+                this.baseFont = value;
+                this.boldFont = new Font(value, FontStyle.Bold);
+            }
+        }
+
+        /// <summary>
+        /// Základní barva
+        /// </summary>
+        public Color DefaultColor { get { return Color.Blue; } }
+
+        public void HighlightAll(IHighlightText h) {
+            HighlightTypes lastType = HighlightTypes.Separator;
+
+            foreach(HighlightItem item in this) {
+                if(item.HighlightType == HighlightTypes.IndexBracket
+                    || item.HighlightType == HighlightTypes.Number
+                    || item.HighlightType == HighlightTypes.Operator
+                    || item.HighlightType == HighlightTypes.Variable)
+                    continue;
+
+                if(item.HighlightType == HighlightTypes.NormalBracket) {
+                    if(lastType == HighlightTypes.Function) {
+                        h.SelectionStart = item.Start;
+                        h.SelectionLength = 1;
+                        h.SelectionFont = this.boldFont;
+                        h.SelectionColor = Color.Black;
+
+                        h.SelectionStart = item.End;
+                        h.SelectionLength = 1;
+                        h.SelectionFont = this.boldFont;
+                        h.SelectionColor = Color.Black;
+                    }
+                    else if(lastType == HighlightTypes.UserFunction) {
+                        h.SelectionStart = item.Start;
+                        h.SelectionLength = 1;
+                        h.SelectionFont = this.boldFont;
+                        h.SelectionColor = Color.Gray;
+
+                        h.SelectionStart = item.End;
+                        h.SelectionLength = 1;
+                        h.SelectionFont = this.boldFont;
+                        h.SelectionColor = Color.Gray;
+                    }
+
+                    lastType = item.HighlightType;
+                    continue;
+                }
+
+                h.SelectionStart = item.Start;
+                h.SelectionLength = item.Length;
+
+                if(item.HighlightType == HighlightTypes.Comment)
+                    h.SelectionColor = Color.Gray;
+
+                else if(item.HighlightType == HighlightTypes.EndVariable)
+                    h.SelectionColor = Color.Black;
+
+                else if(item.HighlightType == HighlightTypes.Error) {
+                    h.SelectionFont = this.boldFont;
+                    h.SelectionColor = Color.Red;
+                }
+
+                else if(item.HighlightType == HighlightTypes.Function) {
+                    h.SelectionFont = boldFont;
+                    h.SelectionColor = Color.Black;
+                }
+
+                else if(item.HighlightType == HighlightTypes.UserFunction) {
+                    h.SelectionFont = this.boldFont;
+                    h.SelectionColor = Color.Gray;
+                }
+
+                else if(item.HighlightType == HighlightTypes.Separator) {
+                    h.SelectionFont = this.boldFont;
+                    h.SelectionColor = Color.Black;
+                }
+
+                else if(item.HighlightType == HighlightTypes.String)
+                    h.SelectionColor = Color.Green;
+
+                lastType = item.HighlightType;
+            }
+        }
+
+        /// <summary>
+        /// Najde prvek, uvnitø nìhož co nejlépe sedí daný index
+        /// </summary>
+        /// <param name="index">Index</param>
+        public HighlightItem FindItem(int index) {
+            HighlightItem result = null;
+
+            foreach(HighlightItem item in this)
+                if(item.Start <= index && item.End >= index)
+                    result = item;
+                else
+                    if(result != null && item.Start > index)
+                        break;
+
+            return result;
         }
     }
 }

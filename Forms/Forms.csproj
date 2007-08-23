@@ -134,7 +134,9 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
-    <Compile Include="EventArgs.cs" />
+    <Compile Include="ExecuteCommandEventArgs.cs" />
+    <Compile Include="FileNameEventArgs.cs" />
+    <Compile Include="FinishedEventArgs.cs" />
     <Compile Include="FormsException.cs" />
     <Compile Include="GraphControl.cs">
       <SubType>UserControl</SubType>
@@ -148,6 +150,7 @@
     <Compile Include="GraphForm.Designer.cs">
       <DependentUpon>GraphForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="HighlightItemEventArgs.cs" />
     <Compile Include="IGraphControl.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="GraphBox.cs">
@@ -169,6 +172,7 @@
     <Compile Include="MultipleRadioButton.Designer.cs">
       <DependentUpon>MultipleRadioButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="MultipleRadioButtonEventArgs.cs" />
     <Compile Include="ResultForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -128,6 +128,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Atom.Functions.cs" />
+    <Compile Include="Types\ChangeEventArgs.cs" />
+    <Compile Include="Types\ContextEventArgs.cs" />
     <Compile Include="Types\FileData.cs" />
     <Compile Include="Functions\Context\Clear.cs" />
     <Compile Include="Functions\Context\ClearGlobal.cs" />
@@ -198,9 +200,6 @@
     </Compile>
     <Compile Include="Types\ColorArray.cs" />
     <Compile Include="Types\Context.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Types\EventArgs.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Expression.cs">
@@ -395,8 +394,10 @@
     <Compile Include="Indexer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\GraphRequestEventArgs.cs" />
     <Compile Include="Types\Guider.cs" />
     <Compile Include="Types\Highlight.cs" />
+    <Compile Include="Types\IHighlightText.cs" />
     <Compile Include="Types\List.cs" />
     <Compile Include="Messages.Designer.cs">
       <AutoGen>True</AutoGen>

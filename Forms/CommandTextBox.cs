@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 
@@ -12,7 +13,7 @@ namespace PavelStransky.Forms {
     /// <summary>
     /// TextBox pro zadávání pøíkazù - nìkteré speciální funkce
     /// </summary>
-    public class CommandTextBox: RichTextBox {
+    public class CommandTextBox: RichTextBox, IHighlightText {
         // Událost Execute
         public delegate void ExecuteCommandEventHandler(object sender, ExecuteCommandEventArgs e);
         public event ExecuteCommandEventHandler ExecuteCommand;
@@ -20,11 +21,7 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public CommandTextBox() : base() {
-            this.timer.Interval = 1500;
-            this.timer.AutoReset = false;
-            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-        }
+        public CommandTextBox() : base() { }
 
         /// <summary>
         /// Spustí všechny pøíkazy
@@ -45,6 +42,8 @@ namespace PavelStransky.Forms {
         /// Pøi stisknutém tlaèítku
         /// </summary>
         protected override void OnKeyDown(KeyEventArgs e) {
+            this.tRedraw.Stop();
+
             base.OnKeyDown(e);
 
             if(!e.Alt && !e.Shift && e.KeyValue == 116) {
@@ -102,6 +101,8 @@ namespace PavelStransky.Forms {
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+
+            this.tRedraw.Start();
         }
 
         /// <summary>
@@ -157,22 +158,75 @@ namespace PavelStransky.Forms {
         #endregion
 
         #region Highlighting of syntax
+        private bool highlighting = false;
+
         // Èasovaè (pøekreslujeme vždy po urèité dobì po zmìnì, protože pøekreslování je
         // bohužel hroznì èasovì nároèné)
-        private System.Timers.Timer timer = new System.Timers.Timer();
+        private System.Timers.Timer tRecalculate, tRedraw;
+        private bool timersInicialized = false;
+
+        private BackgroundWorker workerRecalculate;
         private Highlight highlight;
+
+        private bool recalculating = false;
+
+        /// <summary>
+        /// True, pokud chceme zobrazovat zvýrazòování syntaxe
+        /// </summary>
+        public bool Highlighting {
+            get {
+                return this.highlighting;
+            }
+            set {
+                if(value == true & this.highlighting == false) {
+                    this.SetHighlight();
+                    this.SetTimers();
+                }
+
+                this.highlighting = value;
+            }
+        }
+
+        /// <summary>
+        /// Nastaví tøídu pro zvýrazòování
+        /// </summary>
+        private void SetHighlight() {
+            this.highlight = new Highlight();
+
+            this.highlight.BaseFont = new System.Drawing.Font("Courier New", 9.75F,
+                System.Drawing.FontStyle.Regular,
+                System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+        }
+
+        /// <summary>
+        /// Nastaví èasovaèe pro pøekreslování syntaxe
+        /// </summary>
+        private void SetTimers() {
+            if(!this.timersInicialized) {
+                this.tRecalculate = new System.Timers.Timer();
+                this.tRecalculate.Interval = 1500;
+                this.tRecalculate.AutoReset = false;
+                this.tRecalculate.Elapsed += new System.Timers.ElapsedEventHandler(tRecalculate_Elapsed);
+
+                this.tRedraw = new System.Timers.Timer();
+                this.tRedraw.Interval = 2000;
+                this.tRedraw.AutoReset = false;
+                this.tRedraw.Elapsed += new System.Timers.ElapsedEventHandler(tRedraw_Elapsed);
+
+                this.workerRecalculate = new BackgroundWorker();
+                this.workerRecalculate.WorkerReportsProgress = false;
+                this.workerRecalculate.WorkerSupportsCancellation = false;
+                this.workerRecalculate.DoWork += new DoWorkEventHandler(workerRecalculate_DoWork);
+
+                this.timersInicialized = true;
+
+            }
+        }
 
         /// <summary>
         /// Zvýrazní syntaxi v celém textu
         /// </summary>
-        public void HighlightSyntax() {
-            this.highlight = Atom.CheckSyntax(this.Text);
-
-            Font font = new System.Drawing.Font("Courier New", 9.75F,
-                System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            Font fontBold = new Font(font, FontStyle.Bold);
-
+        private void HighlightSyntax() {
             int selectionStart = this.SelectionStart;
             int selectionLength = this.SelectionLength;
             int firstShowedChar = this.GetCharIndexFromPosition(new Point(this.Margin.Left, this.Margin.Top));
@@ -185,82 +239,12 @@ namespace PavelStransky.Forms {
 
             // Reset písma
             this.ResetText();
-            this.Font = font;
-            this.ForeColor = Color.Blue;
+            this.Font = this.highlight.BaseFont;
+            this.ForeColor = this.highlight.DefaultColor;
 
             this.Text = s;
 
-            HighlightTypes lastType = HighlightTypes.Separator;
-
-            foreach(Highlight.HighlightItem item in this.highlight) {
-                if(item.HighlightType == HighlightTypes.IndexBracket
-                    || item.HighlightType == HighlightTypes.Number
-                    || item.HighlightType == HighlightTypes.Operator
-                    || item.HighlightType == HighlightTypes.Variable)
-                    continue;
-
-                if(item.HighlightType == HighlightTypes.NormalBracket) {
-                    if(lastType == HighlightTypes.Function) {
-                        this.SelectionStart = item.Start;
-                        this.SelectionLength = 1;
-                        this.SelectionFont = fontBold;
-                        this.SelectionColor = Color.Black;
-
-                        this.SelectionStart = item.End;
-                        this.SelectionLength = 1;
-                        this.SelectionFont = fontBold;
-                        this.SelectionColor = Color.Black;
-                    }
-                    else if(lastType == HighlightTypes.UserFunction) {
-                        this.SelectionStart = item.Start;
-                        this.SelectionLength = 1;
-                        this.SelectionFont = fontBold;
-                        this.SelectionColor = Color.Gray;
-
-                        this.SelectionStart = item.End;
-                        this.SelectionLength = 1;
-                        this.SelectionFont = fontBold;
-                        this.SelectionColor = Color.Gray;
-                    }
-
-                    lastType = item.HighlightType;
-                    continue;
-                }
-
-                this.SelectionStart = item.Start;
-                this.SelectionLength = item.Length;
-
-                if(item.HighlightType == HighlightTypes.Comment)
-                    this.SelectionColor = Color.Gray;
-
-                else if(item.HighlightType == HighlightTypes.EndVariable)
-                    this.SelectionColor = Color.Black;
-
-                else if(item.HighlightType == HighlightTypes.Error) {
-                    this.SelectionFont = fontBold;
-                    this.SelectionColor = Color.Red;
-                }
-
-                else if(item.HighlightType == HighlightTypes.Function) {
-                    this.SelectionFont = fontBold;
-                    this.SelectionColor = Color.Black;
-                }
-
-                else if(item.HighlightType == HighlightTypes.UserFunction) {
-                    this.SelectionFont = fontBold;
-                    this.SelectionColor = Color.Gray;
-                }
-
-                else if(item.HighlightType == HighlightTypes.Separator) {
-                    this.SelectionFont = fontBold;
-                    this.SelectionColor = Color.Black;
-                }
-
-                else if(item.HighlightType == HighlightTypes.String)
-                    this.SelectionColor = Color.Green;
-
-                lastType = item.HighlightType;
-            }
+            this.highlight.HighlightAll(this);
 
             this.SelectionStart = firstShowedChar;
             this.ScrollToCaret();
@@ -274,19 +258,94 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
-        /// Stisk klávesy - indikuje zmìnu textu
+        /// Provede okamžitì oznaèení syntaxe
+        /// </summary>
+        public void ForceHighlightSyntax() {
+            this.SetHighlight();
+            this.highlight.CheckSyntax(this.Text); 
+            this.HighlightSyntax();
+        }
+
+        /// <summary>
+        /// Stisk klávesy - indikuje zmìnu textu, pøepoèítáváme
         /// </summary>
         protected override void OnKeyPress(KeyPressEventArgs e) {
-            this.timer.Stop();
-            this.timer.Start();
+            base.OnKeyPress(e);
+            this.tRecalculate.Start();
+        }
+
+        /// <summary>
+        /// Stisk myšky - znovu rozjedeme vykreslování
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnMouseClick(MouseEventArgs e) {
+            this.tRedraw.Stop();
+            base.OnMouseClick(e);
+            this.tRedraw.Start();
         }
 
         // Delegát kvùli Invoke
         private delegate void InvokeDelegate();
 
-        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+        /// <summary>
+        /// Pøepoèítání formátování
+        /// </summary>
+        private void tRecalculate_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if(!this.IsDisposed)
-                this.Invoke(new InvokeDelegate(this.HighlightSyntax));
+                this.Invoke(new InvokeDelegate(this.RecalculateSyntax));
+        }
+
+        /// <summary>
+        /// This.Text mùžeme naèíst jen ve vlastním threadu, ale poèítat chci na pozadí.
+        /// Proto tahle šaráda.
+        /// </summary>
+        private void RecalculateSyntax() {
+            this.workerRecalculate.RunWorkerAsync(this.Text);
+        }
+
+        void workerRecalculate_DoWork(object sender, DoWorkEventArgs e) {
+            this.recalculating = true;
+            this.highlight.CheckSyntax(e.Argument as string);
+            this.recalculating = false;
+            this.tRedraw.Start();
+        }
+
+        /// <summary>
+        /// Pøekreslení
+        /// </summary>
+        void tRedraw_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            if(!this.IsDisposed) {
+                if(this.recalculating)
+                    this.tRedraw.Start();
+                else
+                    this.Invoke(new InvokeDelegate(this.HighlightSyntax));
+            }
+        }
+
+        // Událost HighlighItemPointed
+        public delegate void HighlightItemPointedEventHandler(object sender, HighlightItemEventArgs e);
+        public event HighlightItemPointedEventHandler HighlightItemPointed;
+
+        Highlight.HighlightItem lastItem = null;
+
+        protected override void OnMouseMove(MouseEventArgs e) {
+            base.OnMouseMove(e);
+
+            if(this.highlighting) {
+                int index = this.GetCharIndexFromPosition(e.Location);
+                Highlight.HighlightItem item = this.highlight.FindItem(index);
+
+                if(item != this.lastItem) {
+                    this.OnHighlightItemPointed(new HighlightItemEventArgs(item));
+                }
+
+                this.lastItem = item;
+            }        
+        }
+
+        protected virtual void OnHighlightItemPointed(HighlightItemEventArgs e) {
+            if(this.HighlightItemPointed != null)
+                this.HighlightItemPointed(this, e);
         }
         #endregion
 
@@ -297,7 +356,7 @@ namespace PavelStransky.Forms {
         protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e) {
             base.OnPreviewKeyDown(e);
             
-            if(e.Control && !this.timer.Enabled && !this.showedBracketPair) {
+            if(e.Control && !this.tRecalculate.Enabled && !this.showedBracketPair) {
                 this.bracketPair = this.highlight.FindSecondBracket(this.SelectionStart);
                 this.ShowBracketPair(true);
             }

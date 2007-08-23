@@ -45,6 +45,12 @@ namespace PavelStransky.Forms {
             this.toolTip.SetToolTip(this.btStart, "Spustit výpoèet (F5)");
             this.btStart.UseVisualStyleBackColor = true;
             // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 20000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
+            // 
             // mrbResult
             // 
             this.mrbResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
@@ -64,14 +70,15 @@ namespace PavelStransky.Forms {
             this.txtCommand.AutoWordSelection = true;
             this.txtCommand.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.txtCommand.ForeColor = System.Drawing.Color.Blue;
+            this.txtCommand.Highlighting = true;
             this.txtCommand.Location = new System.Drawing.Point(0, 0);
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.Size = new System.Drawing.Size(561, 360);
             this.txtCommand.TabIndex = 6;
             this.txtCommand.Text = "";
             this.txtCommand.WordWrap = false;
-            this.txtCommand.MouseMove += new System.Windows.Forms.MouseEventHandler(this.txtCommand_MouseMove);
             this.txtCommand.ExecuteCommand += new PavelStransky.Forms.CommandTextBox.ExecuteCommandEventHandler(this.txtCommand_ExecuteCommand);
+            this.txtCommand.HighlightItemPointed += new PavelStransky.Forms.CommandTextBox.HighlightItemPointedEventHandler(this.txtCommand_HighlightItemPointed);
             this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
             this.txtCommand.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtCommand_MouseDown);
             // 

@@ -534,36 +534,38 @@ namespace PavelStransky.Forms {
         }
 
         #region Nápovìda pomocí ToolTipu
-        private string oldFnName;
-        private int position;
-
         /// <summary>
         /// Pøi zmìnì textu zmìníme atribut Modified
         /// </summary>
         private void txtCommand_TextChanged(object sender, System.EventArgs e) {
             this.Modified = txtCommand.Modified;
-            this.SetToolTipHelp();
         }
 
-        /// <summary>
-        /// Událost vyvolaná pøi pøesunu myši
-        /// </summary>
-        private void txtCommand_MouseMove(object sender, MouseEventArgs e) {
-            this.position = this.txtCommand.GetCharIndexFromPosition(e.Location);
-            this.SetToolTipHelp();
+        private void txtCommand_HighlightItemPointed(object sender, HighlightItemEventArgs e) {
+            this.SetToolTipHelp(e.HighlightItem);
         }
 
         /// <summary>
         /// Nastaví nápovìdu do ToolTipu
         /// </summary>
-        private void SetToolTipHelp() {
-            string s = Atom.GetFnName(this.txtCommand.Text, this.position);
+        private void SetToolTipHelp(Highlight.HighlightItem item) {
+            if(item == null)
+                this.toolTip.SetToolTip(this.txtCommand, null);
 
-            if(this.oldFnName != s) {
-                string help = Atom.GetHelp(s, 20);
-                this.toolTip.SetToolTip(this.txtCommand as Control, help);
-                this.oldFnName = s;
+            else if(item.HighlightType == HighlightTypes.Function) {
+                string help = Atom.GetHelp(item.Comment as string, 20);
+                this.toolTip.SetToolTip(this.txtCommand, help);
             }
+
+            else if(item.HighlightType == HighlightTypes.Variable) {
+                if(this.context.Contains(item.Comment as string)) {
+                    string help = this.context[item.Comment as string].Item.ToString();
+                    this.toolTip.SetToolTip(this.txtCommand, help);
+                }
+            }
+
+            else
+                this.toolTip.SetToolTip(this.txtCommand, null);
         }
         #endregion
 
@@ -645,7 +647,7 @@ namespace PavelStransky.Forms {
                 this.txtCommand.SelectionLength = (int)param.Get(0);
                 this.txtCommand.ScrollToCaret();
 
-                this.txtCommand.HighlightSyntax();
+                this.txtCommand.ForceHighlightSyntax();
 
                 this.resultNumber = (int)param.Get(0);
 
@@ -707,5 +709,9 @@ namespace PavelStransky.Forms {
         private const string tmpFile = "tmp.tmp";
 
         private const int margin = 8;
+
+        private void txtCommand_MouseMove(object sender, MouseEventArgs e) {
+
+        }
     }
 }

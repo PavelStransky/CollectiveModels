@@ -30,6 +30,7 @@ namespace PavelStransky.Forms {
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.btStart = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.tHelp = new System.Windows.Forms.Timer(this.components);
             this.mrbResult = new PavelStransky.Forms.MultipleRadioButton();
             this.txtCommand = new PavelStransky.Forms.CommandTextBox();
             this.SuspendLayout();
@@ -51,6 +52,11 @@ namespace PavelStransky.Forms {
             this.toolTip.InitialDelay = 500;
             this.toolTip.ReshowDelay = 100;
             // 
+            // tHelp
+            // 
+            this.tHelp.Interval = 150;
+            this.tHelp.Tick += new System.EventHandler(this.tHelp_Tick);
+            // 
             // mrbResult
             // 
             this.mrbResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
@@ -64,6 +70,7 @@ namespace PavelStransky.Forms {
             // txtCommand
             // 
             this.txtCommand.AcceptsTab = true;
+            this.txtCommand.AllowDrop = true;
             this.txtCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
@@ -104,5 +111,6 @@ namespace PavelStransky.Forms {
         private Button btStart;
         private ToolTip toolTip;
         private MultipleRadioButton mrbResult;
+        private Timer tHelp;
     }
 }

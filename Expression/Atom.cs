@@ -1237,8 +1237,7 @@ namespace PavelStransky.Expression {
         /// Vrátí nápovìdu k dané funkci; pokud funkce neexistuje, vrátí seznam funkcí podobných
         /// </summary>
         /// <param name="fnName">Jméno funkce</param>
-        /// <param name="maxHints">Maximální poèet funkcí k nápovìdì</param>
-        public static string GetHelp(string fnName, int maxHints) {
+        public static string GetHelp(string fnName) {
             if(fnName == string.Empty)
                 return string.Empty;
 
@@ -1250,14 +1249,9 @@ namespace PavelStransky.Expression {
             ArrayList fns = new ArrayList();
             int i = 0;
 
-            foreach(string s in functions.Keys) {
-                if(s.IndexOf(fnName) == 0) {
+            foreach(string s in functions.Keys) 
+                if(s.IndexOf(fnName) == 0) 
                     fns.Add(s);
-
-                    if(++i > maxHints)
-                        break;
-                }
-            }
 
             fns.Sort();
 
@@ -1267,11 +1261,6 @@ namespace PavelStransky.Expression {
                 if(result.Length > 0)
                     result.Append(Environment.NewLine);
                 result.Append(s);
-            }
-
-            if(i > maxHints) {
-                result.Append(Environment.NewLine);
-                result.Append("...");
             }
 
             return result.ToString();

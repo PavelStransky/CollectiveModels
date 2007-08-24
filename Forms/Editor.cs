@@ -533,7 +533,6 @@ namespace PavelStransky.Forms {
                 (this.MdiParent as MainForm).OpenedFileNames.Add(this.fileName);
         }
 
-        #region Nápovìda pomocí ToolTipu
         /// <summary>
         /// Pøi zmìnì textu zmìníme atribut Modified
         /// </summary>
@@ -541,31 +540,64 @@ namespace PavelStransky.Forms {
             this.Modified = txtCommand.Modified;
         }
 
+        #region Nápovìda pomocí ToolTipu
+        // Objekt, ze kterého se bude zobrazovat toolTip
+        private Highlight.HighlightItem toolTipItem;
+
         private void txtCommand_HighlightItemPointed(object sender, HighlightItemEventArgs e) {
-            this.SetToolTipHelp(e.HighlightItem);
+            // Help tvoøíme vždy se zpoždìním podle èasovaèe tHelp
+            // (aby pøi rychlých zmìnách nedocházelo ke zbyteèným výpoètùm)
+            this.tHelp.Enabled = false;
+
+            this.toolTipItem = e.HighlightItem;
+            this.SetToolTipHelp(null);
+
+            this.tHelp.Start();
+        }
+
+        /// <summary>
+        /// Tick - nastavíme toolTipHelp
+        /// </summary>
+        private void tHelp_Tick(object sender, EventArgs e) {
+            this.tHelp.Enabled = false;
+            this.SetToolTipHelp(this.toolTipItem);
         }
 
         /// <summary>
         /// Nastaví nápovìdu do ToolTipu
         /// </summary>
         private void SetToolTipHelp(Highlight.HighlightItem item) {
-            if(item == null)
-                this.toolTip.SetToolTip(this.txtCommand, null);
+            string help = null;
 
-            else if(item.HighlightType == HighlightTypes.Function) {
-                string help = Atom.GetHelp(item.Comment as string, 20);
-                this.toolTip.SetToolTip(this.txtCommand, help);
-            }
+            if(item != null) {
+                if(item.HighlightType == HighlightTypes.Function) {
+                    help = Atom.GetHelp(item.Comment as string);
+                }
 
-            else if(item.HighlightType == HighlightTypes.Variable) {
-                if(this.context.Contains(item.Comment as string)) {
-                    string help = this.context[item.Comment as string].Item.ToString();
-                    this.toolTip.SetToolTip(this.txtCommand, help);
+                else if(item.HighlightType == HighlightTypes.Variable) {
+                    if(this.context.Contains(item.Comment as string)) {
+                        help = this.context[item.Comment as string].Item.ToString();
+                    }
                 }
             }
 
-            else
-                this.toolTip.SetToolTip(this.txtCommand, null);
+            if(help != null) {
+                // Maximálnì 20 øádek nebo 1000 znakù
+                int i = -1;
+                int n = 0;
+
+                while((i = help.IndexOf('\n', i + 1)) >= 0)
+                    if(++n > 20)
+                        break;
+
+                if(i > 0)
+                    help = string.Format("{0}{1}...", help.Substring(0, i - 1), Environment.NewLine);
+
+                if(help.Length > 1000)
+                    help = string.Format("{0}...", help.Substring(0, 500));
+            }
+
+            this.toolTip.SetToolTip(this.txtCommand, help);
         }
         #endregion
 
@@ -648,6 +680,7 @@ namespace PavelStransky.Forms {
                 this.txtCommand.ScrollToCaret();
 
                 this.txtCommand.ForceHighlightSyntax();
+                this.Modified = false;
 
                 this.resultNumber = (int)param.Get(0);
 

@@ -333,13 +333,12 @@ namespace PavelStransky.Forms {
         protected override void OnMouseMove(MouseEventArgs e) {
             base.OnMouseMove(e);
 
-            if(this.highlighting) {
+            if(this.highlighting && !this.recalculating) {
                 int index = this.GetCharIndexFromPosition(e.Location);
                 Highlight.HighlightItem item = this.highlight.FindItem(index);
 
-                if(item != this.lastItem) {
+                if(item != this.lastItem) 
                     this.OnHighlightItemPointed(new HighlightItemEventArgs(item));
-                }
 
                 this.lastItem = item;
             }        
@@ -348,6 +347,15 @@ namespace PavelStransky.Forms {
         protected virtual void OnHighlightItemPointed(HighlightItemEventArgs e) {
             if(this.HighlightItemPointed != null)
                 this.HighlightItemPointed(this, e);
+        }
+
+        /// <summary>
+        /// Èasovaè - nyní pošleme event o vykreslení 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void tHelp_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            this.OnHighlightItemPointed(new HighlightItemEventArgs(this.lastItem));
         }
         #endregion
 

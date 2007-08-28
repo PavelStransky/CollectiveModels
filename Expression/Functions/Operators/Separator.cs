@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(1, true);
-            this.SetParam(0, true, true, false, Messages.PCommands, Messages.PCommandsDescription, null);
+            this.SetParam(0, false, true, false, Messages.PCommands, Messages.PCommandsDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

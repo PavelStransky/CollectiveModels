@@ -662,6 +662,9 @@ Length of the second vector: {1}</value>
   <data name="HelpVector" xml:space="preserve">
     <value>Convert given data to a vector</value>
   </data>
+  <data name="HelpVMatrixHH" xml:space="preserve">
+    <value>cal_{V} matrix for Toda lattice Hamiltonian (PRL 98, 234301 (2007))</value>
+  </data>
   <data name="HelpWigner" xml:space="preserve">
     <value>Value of Wigner distribution</value>
   </data>

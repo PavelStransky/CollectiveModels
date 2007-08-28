@@ -1686,6 +1686,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cal_{V} matrix for Toda lattice Hamiltonian (PRL 98, 234301 (2007)).
+        /// </summary>
+        internal static string HelpVMatrixHH {
+            get {
+                return ResourceManager.GetString("HelpVMatrixHH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Wigner distribution.
         /// </summary>
         internal static string HelpWigner {

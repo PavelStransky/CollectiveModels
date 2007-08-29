@@ -218,6 +218,9 @@ Length of the second object: {1}</value>
     <value>Length of the first vector: {0}
 Length of the second vector: {1}</value>
   </data>
+  <data name="EMNoVariable" xml:space="preserve">
+    <value>Variable '{0}' has not been found in the context.</value>
+  </data>
   <data name="EMNullValue" xml:space="preserve">
     <value>The result of a part of the expression is NULL. This cannot be assigned.</value>
   </data>
@@ -288,10 +291,16 @@ Length of the second vector: {1}</value>
     <value>Creates a ClassicalIBM class</value>
   </data>
   <data name="HelpClear" xml:space="preserve">
-    <value>Erase the variable (all variables if nothing is specified) from the context</value>
+    <value>Erase variable from the context</value>
+  </data>
+  <data name="HelpClearAll" xml:space="preserve">
+    <value>Delete all variables from the context</value>
+  </data>
+  <data name="HelpClearExcept" xml:space="preserve">
+    <value>Erase all variables except specified ones from the context</value>
   </data>
   <data name="HelpClearGlobal" xml:space="preserve">
-    <value>Erase the variable from the global context</value>
+    <value>Erase variable from the global context</value>
   </data>
   <data name="HelpComputeSpectrum" xml:space="preserve">
     <value>Computes spectrum of a LHOQuantumGCM object</value>

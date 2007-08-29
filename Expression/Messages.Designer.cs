@@ -354,6 +354,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; has not been found in the context..
+        /// </summary>
+        internal static string EMNoVariable {
+            get {
+                return ResourceManager.GetString("EMNoVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The result of a part of the expression is NULL. This cannot be assigned..
         /// </summary>
         internal static string EMNullValue {
@@ -561,7 +570,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Erase the variable (all variables if nothing is specified) from the context.
+        ///   Looks up a localized string similar to Erase variable from the context.
         /// </summary>
         internal static string HelpClear {
             get {
@@ -570,7 +579,25 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Erase the variable from the global context.
+        ///   Looks up a localized string similar to Delete all variables from the context.
+        /// </summary>
+        internal static string HelpClearAll {
+            get {
+                return ResourceManager.GetString("HelpClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erase all variables except specified ones from the context.
+        /// </summary>
+        internal static string HelpClearExcept {
+            get {
+                return ResourceManager.GetString("HelpClearExcept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erase variable from the global context.
         /// </summary>
         internal static string HelpClearGlobal {
             get {

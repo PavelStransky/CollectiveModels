@@ -161,7 +161,7 @@ namespace PavelStransky.Expression {
 			if(this.objects.ContainsKey(name))
 				this.objects.Remove(name);
 			else
-				throw new ContextException(string.Format(errorMessageNoObject, name));
+				throw new ContextException(string.Format( Messages.EMNoVariable, name));
 
             this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
@@ -204,7 +204,7 @@ namespace PavelStransky.Expression {
 
 				Variable variable = this.objects[name] as Variable;
 				if(variable == null)
-					throw new ContextException(string.Format(errorMessageNoObject, name));
+					throw new ContextException(string.Format(Messages.EMNoVariable, name));
 
 				return variable;
 			}
@@ -287,7 +287,6 @@ namespace PavelStransky.Expression {
         }
 		#endregion
 
-		private const string errorMessageNoObject = "Objekt \"{0}\" nebyl nalezen.";
 		private const string separator = "-----------------------------------------------------------";
 
         private const string directoryVariable = "_dir";

@@ -116,6 +116,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionException.cs" />
+    <Compile Include="Functions\Context\ClearAll.cs" />
+    <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\FncException.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
     <Compile Include="Functions\Test\VMatrixHH.cs" />

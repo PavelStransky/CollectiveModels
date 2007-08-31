@@ -120,6 +120,7 @@
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\FncException.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
+    <Compile Include="Functions\Test\LaguerreI.cs" />
     <Compile Include="Functions\Test\VMatrixHH.cs" />
     <Compile Include="Types\Array.cs">
       <SubType>Code</SubType>

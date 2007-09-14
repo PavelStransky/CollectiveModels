@@ -35,17 +35,17 @@ namespace PavelStransky.Expression {
 		#endregion
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-		public Context() {}
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="directory">Adresáø</param>
         public Context(string directory) {
             this.directory = directory;
         }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        public Context() { }
 
         /// <summary>
         /// Adresáø
@@ -270,9 +270,7 @@ namespace PavelStransky.Expression {
 		/// Naète obsah kontextu ze souboru
 		/// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
-            this.Clear();
-
+        public Context(Core.Import import) {
             IEParam param = new IEParam(import);
 
             int count = param.Count;

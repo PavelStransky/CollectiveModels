@@ -233,11 +233,6 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public Graph() { }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="item">Data pro graf</param>
@@ -428,7 +423,7 @@ namespace PavelStransky.Expression {
         /// Naète obsah ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public virtual void Import(Core.Import import) {
+        public Graph(Core.Import import) {
             IEParam param = new IEParam(import);
 
             if(import.VersionNumber >= 4) {

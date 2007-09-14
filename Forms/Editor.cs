@@ -640,7 +640,8 @@ namespace PavelStransky.Forms {
         /// Naète obsah kontextu ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public Editor(Core.Import import)
+            : this() {
             if(import.Binary) {
                 import.VersionName = import.B.ReadString();
                 import.VersionNumber = import.B.ReadInt32();

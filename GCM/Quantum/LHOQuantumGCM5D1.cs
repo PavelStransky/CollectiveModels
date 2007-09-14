@@ -17,11 +17,6 @@ namespace PavelStransky.GCM {
         protected LHO5DIndex index;
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public LHOQuantumGCM5D1() { }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="a0">Parametr LHO</param>
@@ -186,21 +181,19 @@ namespace PavelStransky.GCM {
             int s = lambda1 + lambda2 + p + 3;
             bool shalf = s % 2 != 0;
 
-            double sum = 0;
+            LongFraction sum = new LongFraction(0);
             ArrayList a = new ArrayList();
 
             for(int i = 0; i <= l1; i++)
                 for(int j = 0; j <= l2; j++) {
-                    double d = -SpecialFunctions.FactorialILog(i) - SpecialFunctions.FactorialILog(j);
-                    d += SpecialFunctions.HalfFactorialILog(l1 + lambda1 + 2) - SpecialFunctions.FactorialILog(l1 - i) - SpecialFunctions.HalfFactorialILog(lambda1 + 2 + i);
-                    d += SpecialFunctions.HalfFactorialILog(l2 + lambda2 + 2) - SpecialFunctions.FactorialILog(l2 - j) - SpecialFunctions.HalfFactorialILog(lambda2 + 2 + j);
-                    d += shalf ? SpecialFunctions.HalfFactorialILog(s / 2 + i + j + 1) : SpecialFunctions.FactorialILog(s / 2 + i + j);
-
-                    a.Add(((i + j) % 2 == 0) ? System.Math.Exp(d) : -System.Math.Exp(d));
+                    LongFraction l = SpecialFunctions.HalfFactorialL(l1 + lambda1 + 2) / SpecialFunctions.FactorialL(l1 - i) / SpecialFunctions.HalfFactorialL(lambda1 + 2 + i) / SpecialFunctions.FactorialL(i);
+                    l *= SpecialFunctions.HalfFactorialL(l2 + lambda2 + 2) / SpecialFunctions.FactorialL(l2 - j) / SpecialFunctions.HalfFactorialL(lambda2 + 2 + j) / SpecialFunctions.FactorialL(j);
+                    l *= shalf ? SpecialFunctions.HalfFactorialL(s / 2 + i + j + 1) : SpecialFunctions.FactorialL(s / 2 + i + j);
+                    l.Abbreviate();
+                    sum += l;
                 }
 
-            a.Sort();
-            return sum;
+            return (double)sum;
         }
 
         /// <summary>

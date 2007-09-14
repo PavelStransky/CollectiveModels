@@ -236,11 +236,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public ClassicalGCMJ() { }
-
-        /// <summary>
         /// Kostruktor standardního lagranžiánu
         /// </summary>
         /// <param name="a">A</param>
@@ -447,7 +442,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public ClassicalGCMJ(Core.Import import) {
             IEParam param = new IEParam(import);
 
             this.A = (double)param.Get(-1.0);

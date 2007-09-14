@@ -12,11 +12,10 @@ namespace PavelStransky.GCM {
     public class LHOQuantumGCMR: LHOQuantumGCM {
         // Indexy báze
         protected LHOPolarIndex index;
-
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        public LHOQuantumGCMR() { }
+        protected LHOQuantumGCMR() { }
 
         /// <summary>
         /// Konstruktor
@@ -350,6 +349,7 @@ namespace PavelStransky.GCM {
             return result;
         }
 
+        #region Implementace IExportable
         protected override void Export(IEParam param) {
             if(this.isComputed)
                 param.Add(this.index.MaxE, "Maximum Energy of Basis Functions");
@@ -359,5 +359,8 @@ namespace PavelStransky.GCM {
             if(this.isComputed)
                 this.CreateIndex((int)param.Get(10));
         }
+
+        public LHOQuantumGCMR(Core.Import import) : base(import) { }
+        #endregion
     }
 }

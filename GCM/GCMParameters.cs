@@ -43,7 +43,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        public GCMParameters() { }
+        protected GCMParameters() { }
 
         /// <summary>
         /// Kostruktor GCM modelu

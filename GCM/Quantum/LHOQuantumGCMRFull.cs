@@ -37,6 +37,8 @@ namespace PavelStransky.GCM {
         public LHOQuantumGCMRFull(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
+        public LHOQuantumGCMRFull(Core.Import import) : base(import) { }
+
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>

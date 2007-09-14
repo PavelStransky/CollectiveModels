@@ -16,13 +16,17 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(1, true);
             this.SetParam(0, true, true, false, Messages.PDividend, Messages.PDividendDescription, null,
-                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(DateTime));
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD),
+                typeof(LongNumber), typeof(LongFraction));
 
             this.AddCompatibility(typeof(int), typeof(double));
             this.AddCompatibility(typeof(int), typeof(Vector));
             this.AddCompatibility(typeof(int), typeof(Matrix));
+            this.AddCompatibility(typeof(int), typeof(LongNumber));
+            this.AddCompatibility(typeof(int), typeof(LongFraction));
             this.AddCompatibility(typeof(double), typeof(Vector));
             this.AddCompatibility(typeof(double), typeof(Matrix));
+            this.AddCompatibility(typeof(LongNumber), typeof(LongFraction));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -110,6 +114,38 @@ namespace PavelStransky.Expression.Functions.Def {
                 return new PointD(x, y);
             }
 
+            else if(lengths[12] >= 0 || lengths[10] >= 0) {     // LongFraction or LongNumber
+                LongFraction result = new LongFraction(1);
+
+                if(arguments.Count == 1) {
+                    if(arguments[0] is LongNumber)
+                        return result / (LongNumber)arguments[0];
+                    else 
+                        return result / (LongFraction)arguments[0];
+                }
+
+                foreach(object o in arguments) {
+                    if(result == null) {
+                        if(o is int)
+                            result *= (int)o;
+                        else if(o is LongNumber)
+                            result *= (LongNumber)o;
+                        else if(o is LongFraction)
+                            result *= (LongFraction)o;
+                    }
+                    else {
+                        if(o is int)
+                            result /= (int)o;
+                        else if(o is LongNumber)
+                            result /= (LongNumber)o;
+                        else if(o is LongFraction)
+                            result /= (LongFraction)o;
+                    }
+                }
+
+                return result;
+            }
+           
             else if(lengths[0] >= 0 && lengths[2] < 0) {    // int
                 int resulti = 1;
 

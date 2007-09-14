@@ -13,11 +13,6 @@ namespace PavelStransky.Math {
 		private Complex [] item;
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public ComplexVector() { }
-        
-        /// <summary>
 		/// Konstruktor
 		/// </summary>
 		/// <param name="length">Délka vektoru</param>
@@ -156,7 +151,7 @@ namespace PavelStransky.Math {
 		/// Naète obsah vektoru ze souboru
 		/// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public ComplexVector(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

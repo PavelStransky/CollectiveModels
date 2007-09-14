@@ -15,7 +15,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        public LHOQuantumGCMRL() { }
+        protected LHOQuantumGCMRL() { }
 
         /// <summary>
         /// Konstruktor
@@ -39,6 +39,8 @@ namespace PavelStransky.GCM {
         /// <param name="hbar">Planckova konstanta</param>
         public LHOQuantumGCMRL(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
+
+        public LHOQuantumGCMRL(Core.Import import) : base(import) { }
 
         /// <summary>
         /// Stopa Hamiltonovy matice

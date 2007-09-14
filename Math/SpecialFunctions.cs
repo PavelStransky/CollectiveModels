@@ -11,6 +11,9 @@ namespace PavelStransky.Math {
         private static double[] factorialLog;
         private static double[] halfFactorialLog;
 
+        private static LongNumber[] factorialL;
+        private static LongFraction[] halfFactorialL;
+
         /// <summary>
         /// Statický konstruktor
         /// </summary>
@@ -27,19 +30,26 @@ namespace PavelStransky.Math {
             // Výpoèet bufferu factoriálù
             factorial = new double[maxFactorial];
             factorial[0] = 1;
-
             for(int i = 1; i < maxFactorial; i++)
                 factorial[i] = factorial[i - 1] * i;
 
+            factorialL = new LongNumber[maxFactorialL];
+            factorialL[0] = new LongNumber(1);
+            for(int i = 1; i < maxFactorialL; i++)
+                factorialL[i] = factorialL[i - 1] * i;
+
+            halfFactorialL = new LongFraction[maxHalfFactorialL];
+            halfFactorialL[0] = new LongNumber(1);
+            for(int i = 1; i < maxHalfFactorialL; i++)
+                halfFactorialL[i] = halfFactorialL[i - 1] * new LongFraction(2 * i - 1, 2);
+
             factorialLog = new double[maxFactorialLog];
             factorialLog[0] = 0;
-
             for(int i = 1; i < maxFactorialLog; i++)
                 factorialLog[i] = factorialLog[i - 1] + System.Math.Log(i);
 
             halfFactorialLog = new double[maxHalfFactorialLog];
             halfFactorialLog[0] = System.Math.Log(System.Math.Sqrt(System.Math.PI));
-
             for(int i = 1; i < maxHalfFactorialLog; i++)
                 halfFactorialLog[i] = halfFactorialLog[i - 1] + System.Math.Log(i - 0.5);
         }
@@ -85,12 +95,55 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Vrátí faktoriál z pøedvypoèítaných hodnot z bufferu
+        /// </summary>
+        /// <param name="i">Vstupní hodnota</param>
+        public static LongNumber FactorialL(int i) {
+            if(i < 0)
+                return new LongNumber(0);
+
+            else if(i >= maxFactorialL) {
+                LongNumber result = factorialL[maxFactorialL - 1];
+
+                for(int j = maxFactorialL; j <= i; j++)
+                    result *= j;
+
+                return result;
+            }
+
+            else
+                return factorialL[i];
+        }
+
+        /// <summary>
+        /// Vrátí faktoriál polovièního èísla z pøedvypoèítaných hodnot z bufferu
+        /// </summary>
+        /// <param name="i">Vstupní hodnota</param>
+        public static LongFraction HalfFactorialL(int i) {
+            if(i < 0)
+                return new LongFraction(0);
+
+            else if(i >= maxHalfFactorialL) {
+                LongFraction result = factorialL[maxHalfFactorialL - 1];
+
+                for(int j = maxHalfFactorialL; j <= i; j++)
+                    result *= new LongFraction(2 * j - 1, 2);
+
+                return result;
+            }
+
+            else
+                return halfFactorialL[i];
+        }
+
+        /// <summary>
         /// Vrátí logaritmus faktoriálu z pøedvypoèítaných hodnot z bufferu
         /// </summary>
         /// <param name="i">Vstupní hodnota</param>
         public static double FactorialILog(int i) {
             if(i < 0)
                 return double.NaN;
+
             else if(i >= maxFactorialLog) {
                 double result = factorialLog[maxFactorialLog - 1];
 
@@ -99,6 +152,7 @@ namespace PavelStransky.Math {
 
                 return result;
             }
+
             else
                 return factorialLog[i];
         }
@@ -448,7 +502,9 @@ namespace PavelStransky.Math {
         private const double epsilon = 1E-10;
         private const int maxFactorial = 171;
         private const int maxFactorialLog = 1000;
+        private const int maxFactorialL = 200;
         private const int maxHalfFactorialLog = 1000;
+        private const int maxHalfFactorialL = 200;
 
         private const string errorMessageIterationOverrun = "Pøekroèen poèet iterací ve funkci {0}.";
     }

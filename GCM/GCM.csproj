@@ -42,6 +42,7 @@
     <Compile Include="Classical\ClassicalGCM.cs" />
     <Compile Include="Classical\ClassicalGCMJ.cs" />
     <Compile Include="Classical\GCMJBisectionFunction.cs" />
+    <Compile Include="Classical\VMatrixBisectionFunction.cs" />
     <Compile Include="GCMParameters.cs" />
     <Compile Include="HenonHeiles.cs" />
     <Compile Include="Contour.cs" />

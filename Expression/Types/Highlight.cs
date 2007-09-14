@@ -77,8 +77,9 @@ namespace PavelStransky.Expression {
         /// <param name="highlightType"></param>
         /// <returns></returns>
         public int BracketStart(HighlightTypes highlightType) {
-            if(last != null && highlightType == HighlightTypes.NormalBracket)
+            if(last != null && highlightType == HighlightTypes.NormalBracket) 
                 last.SetFunction();
+            last = null;
             return this.Count;
         }
 

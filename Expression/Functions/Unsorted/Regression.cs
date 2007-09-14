@@ -10,7 +10,7 @@ namespace PavelStransky.Expression.Functions.Def {
 	/// </summary>
 	public class FnRegression: Fnc {
 		public override string Name {get {return name;}}
-		public override string Help {get {return Messages.RegressionHelp;}}
+		public override string Help {get {return Messages.HelpRegression;}}
 
         protected override void CreateParameters() {
             this.SetNumParams(2);

@@ -13,14 +13,14 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
-            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector), typeof(PointVector));
+            this.SetParam(0, true, true, false, Messages.PObjectWithBadPoints, Messages.PObjectWithBadPointsDescription, null, typeof(Vector), typeof(PointVector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object item = arguments[0];
 
             if(item is Vector) {
-                Vector v = arguments[0] as Vector;
+                Vector v = item as Vector;
 
                 int index = 0;
                 int length = v.Length;

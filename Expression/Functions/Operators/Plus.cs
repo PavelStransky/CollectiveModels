@@ -17,13 +17,17 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(1, true);
             this.SetParam(0, true, true, false, Messages.PAddend, Messages.PAddendDescription, null,
-                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(string));
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(string), 
+                typeof(LongNumber), typeof(LongFraction));
 
             this.AddCompatibility(typeof(int), typeof(double));
             this.AddCompatibility(typeof(int), typeof(Vector));
             this.AddCompatibility(typeof(int), typeof(Matrix));
+            this.AddCompatibility(typeof(int), typeof(LongNumber));
+            this.AddCompatibility(typeof(int), typeof(LongFraction));
             this.AddCompatibility(typeof(double), typeof(Vector));
             this.AddCompatibility(typeof(double), typeof(Matrix));
+            this.AddCompatibility(typeof(LongNumber), typeof(LongFraction));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -88,6 +92,34 @@ namespace PavelStransky.Expression.Functions.Def {
                 }
 
                 return results.ToString();
+            }
+
+            else if(lengths[14] >= 0) { // LongFraction
+                LongFraction result = new LongFraction(0);
+
+                foreach(object o in arguments) {
+                    if(o is int)
+                        result += (int)o;
+                    else if(o is LongNumber)
+                        result += (LongNumber)o;
+                    else if(o is LongFraction)
+                        result += (LongFraction)o;
+                }
+
+                return result;
+            }
+
+            else if(lengths[12] >= 0) { // LongNumber
+                LongNumber result = new LongNumber(0);
+
+                foreach(object o in arguments) {
+                    if(o is int)
+                        result += (int)o;
+                    else if(o is LongNumber)
+                        result += (LongNumber)o;
+                }
+
+                return result;
             }
 
             else if(lengths[0] >= 0 && lengths[2] < 0) {    // int

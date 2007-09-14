@@ -92,11 +92,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public ExtendedClassicalGCM1() { }
-
-        /// <summary>
         /// Konstruktor rozšíøeného Lagrangiánu
         /// </summary>
         /// <param name="a">Parametr A</param>
@@ -148,7 +143,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public override void Import(Core.Import import) {
+        public ExtendedClassicalGCM1(Core.Import import) {
             IEParam param = new IEParam(import);
 
             this.A = (double)param.Get(-1.0);

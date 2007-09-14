@@ -48,14 +48,6 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public TArray() {
-            this.data = null;
-            this.type = null;
-        }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="i">Celoèíselné hodnoty</param>
@@ -71,6 +63,28 @@ namespace PavelStransky.Expression {
         public TArray(params double[] i) {
             this.type = typeof(double);
             this.data = (int[])i.Clone();
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="a">Øada</param>
+        public TArray(Array a) {
+            this.data = (Array)a.Clone();
+
+            foreach(object o in this.data) {
+                this.type = o.GetType();
+                break;
+            }
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="a">Øada</param>
+        public TArray(TArray a) {
+            this.data = (Array)a.data.Clone();
+            this.type = a.type;
         }
 
         /// <summary>
@@ -410,15 +424,7 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="a">Obyèejná øada</param>
         public static implicit operator TArray(Array a) {
-            TArray result = new TArray();
-            result.data = (Array)a.Clone();
-
-            foreach(object o in result.data) {
-                result.type = o.GetType();
-                break;
-            }
-
-            return result;
+            return new TArray(a);
         }
 
         /// <summary>
@@ -532,7 +538,7 @@ namespace PavelStransky.Expression {
         /// Naète obsah øady ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public TArray(Core.Import import) {
             int rank = 0;
             string typeName = string.Empty;
             int[] lengths;
@@ -718,10 +724,7 @@ namespace PavelStransky.Expression {
 
         #region Implementace ICloneable
         public object Clone() {
-            TArray result = new TArray();
-            result.data = (Array)this.data.Clone();
-            result.type = this.type;
-            return result;
+            return new TArray(this);
         }
         #endregion
 

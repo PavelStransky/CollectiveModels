@@ -100,7 +100,7 @@ namespace PavelStransky.Math {
         /// Naète bod ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public PointD(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

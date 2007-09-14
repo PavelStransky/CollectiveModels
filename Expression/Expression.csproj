@@ -118,10 +118,20 @@
     <Compile Include="ExpressionException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
+    <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
+    <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
     <Compile Include="Functions\FncException.cs" />
+    <Compile Include="Functions\LongNumbers\Abbreviate.cs" />
+    <Compile Include="Functions\LongNumbers\Denominator.cs" />
+    <Compile Include="Functions\LongNumbers\MCD.cs" />
+    <Compile Include="Functions\LongNumbers\Numerator.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
     <Compile Include="Functions\Test\LaguerreI.cs" />
-    <Compile Include="Functions\Test\VMatrixHH.cs" />
+    <Compile Include="Functions\Dynamics\VMatrix.cs" />
+    <Compile Include="Functions\Types\Fraction.cs" />
+    <Compile Include="Functions\Types\Long.cs" />
+    <Compile Include="Functions\Unsorted\Primes.cs" />
+    <Compile Include="Functions\Unsorted\ReplaceBadPoints.cs" />
     <Compile Include="Types\Array.cs">
       <SubType>Code</SubType>
     </Compile>

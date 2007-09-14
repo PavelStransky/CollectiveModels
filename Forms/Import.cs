@@ -23,13 +23,11 @@ namespace PavelStransky.Forms {
         /// <returns></returns>
         public override object CreateObject(string typeName) {
             if(typeName == typeof(Editor).FullName)
-                return new Editor();
+                return new Editor(this);
             else if(typeName == typeof(ResultForm).FullName)
-                return new ResultForm();
+                return new ResultForm(this);
             else if(typeName == typeof(GraphForm).FullName)
-                return new GraphForm();
-            else if(typeName == typeof(GraphControl).FullName)
-                return new GraphControl();
+                return new GraphForm(this);
             else
                 return base.CreateObject(typeName);
         }

@@ -12,11 +12,6 @@ namespace PavelStransky.Math {
 		// složky
 		private PointD [] item;
 
-        /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public PointVector() { }
-
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -217,7 +212,7 @@ namespace PavelStransky.Math {
 		/// Naète obsah vektoru ze souboru
 		/// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public PointVector(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

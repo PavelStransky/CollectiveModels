@@ -19,11 +19,6 @@ namespace PavelStransky.Math {
         // X
 
         #region Konstruktory
-        /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public Matrix() { }
-
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -960,7 +955,7 @@ namespace PavelStransky.Math {
         /// Naète obsah matice ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public Matrix(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

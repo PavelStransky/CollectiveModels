@@ -16,11 +16,6 @@ namespace PavelStransky.GCM {
         protected LHO5DIndex index;
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public LHOQuantumGCM5D() { }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="a0">Parametr LHO</param>
@@ -485,6 +480,7 @@ namespace PavelStransky.GCM {
             return result * norm;
         }
 
+        #region Implementace IExportable
         protected override void Export(IEParam param) {
             if(this.isComputed)
                 param.Add(this.index.MaxE, "Maximum Energy of Basis Functions");
@@ -494,5 +490,9 @@ namespace PavelStransky.GCM {
             if(this.isComputed)
                 this.CreateIndex((int)param.Get(10));
         }
+
+        public LHOQuantumGCM5D(Core.Import import) : base(import) { }
+
+        #endregion
     }
 }

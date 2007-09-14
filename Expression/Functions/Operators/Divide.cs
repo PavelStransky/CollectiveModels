@@ -16,9 +16,11 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(2);
             this.SetParam(0, true, true, false, Messages.PDividend, Messages.PDividendDescription, null,
-                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(PointVector));
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(PointVector),
+                typeof(LongNumber), typeof(LongFraction));
             this.SetParam(1, true, true, false, Messages.PDivisor, Messages.PDivisorDescription, null,
-                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(PointVector));
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(PointVector),
+                typeof(LongNumber), typeof(LongFraction));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -30,9 +32,14 @@ namespace PavelStransky.Expression.Functions.Def {
                     return (int)left / (int)right;
                 else if(right is double)
                     return (int)left / (double)right;
+                else if(right is LongNumber)
+                    return new LongFraction((int)left, (LongNumber)right);
+                else if(right is LongFraction)
+                    return (int)left / (LongFraction)right;
                 else if(right is Matrix)
                     return ((Matrix)right).Inv() * (int)left;
             }
+
             else if(left is double) {
                 if(right is int)
                     return (double)left / (int)right;
@@ -41,6 +48,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 else if(right is Matrix)
                     return ((Matrix)right).Inv() * (double)left;
             }
+
             else if(left is Vector) {
                 if(right is int)
                     return (Vector)left / (int)right;
@@ -49,6 +57,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 else if(right is Matrix)
                     return (Vector)left * ((Matrix)right).Inv();
             }
+
             else if(left is Matrix) {
                 if(right is int)
                     return (Matrix)left / (int)right;
@@ -57,13 +66,33 @@ namespace PavelStransky.Expression.Functions.Def {
                 else if(right is Matrix)
                     return (Matrix)left / (Matrix)right;
             }
+
             else if(left is PointD) {
                 if(right is PointD)
                     return (PointD)left / (PointD)right;
             }
+
             else if(left is PointVector) {
                 if(right is PointD)
                     return (PointVector)left / (PointD)right;
+            }
+
+            else if(left is LongNumber) {
+                if(right is int)
+                    return (LongNumber)left / (int)right;
+                else if(right is LongNumber)
+                    return (LongNumber)left / (LongNumber)right;
+                else if(right is LongFraction)
+                    return (LongNumber)left / (LongFraction)right;
+            }
+
+            else if(left is LongFraction) {
+                if(right is int)
+                    return (LongFraction)left / (int)right;
+                else if(right is LongNumber)
+                    return (LongFraction)left / (LongNumber)right;
+                else if(right is LongFraction)
+                    return (LongFraction)left / (LongFraction)right;
             }
 
             this.BadTypeCompatibility(left, right);

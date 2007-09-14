@@ -95,11 +95,6 @@ namespace PavelStransky.Core {
             if(result == null && typeName != nullString)
                 throw new IEException(string.Format(Messages.EMInvalidObjectTypeImport, typeName));
 
-            // Import dat
-            IExportable ie = result as IExportable;
-            if(ie != null)
-                ie.Import(this);
-
             return result;
         }
 

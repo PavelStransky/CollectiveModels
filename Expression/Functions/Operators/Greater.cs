@@ -35,11 +35,11 @@ namespace PavelStransky.Expression.Functions.Def {
 
                     item = arguments[k];
                     if(item is double) {
-                        if((double)item <= d)
+                        if(d <= (double)item)
                             return false;
                     }
                     else if(item is int) {
-                        if((int)item <= d)
+                        if(d <= (int)item)
                             return false;
                     }
                 }

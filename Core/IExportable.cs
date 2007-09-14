@@ -11,10 +11,5 @@ namespace PavelStransky.Core {
         /// Uloží data do souboru
         /// </summary>
         void Export(Export export);
-
-        /// <summary>
-        /// Naète data
-        /// </summary>
-        void Import(Import import);
     }
 }

@@ -16,11 +16,6 @@ namespace PavelStransky.Math {
         private double[] eigenValue;
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public Jacobi() { }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="source">Zdrojová symetrická matice</param>
@@ -299,7 +294,7 @@ namespace PavelStransky.Math {
         /// Naète výsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public Jacobi(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

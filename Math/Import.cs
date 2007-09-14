@@ -23,17 +23,21 @@ namespace PavelStransky.Math {
         /// <returns></returns>
         public override object CreateObject(string typeName) {
             if(typeName == typeof(Vector).FullName)
-                return new Vector();
+                return new Vector(this);
             else if(typeName == typeof(Matrix).FullName)
-                return new Matrix();
+                return new Matrix(this);
             else if(typeName == typeof(PointD).FullName)
-                return new PointD();
+                return new PointD(this);
             else if(typeName == typeof(PointVector).FullName)
-                return new PointVector();
+                return new PointVector(this);
             else if(typeName == typeof(ComplexVector).FullName)
-                return new ComplexVector();
+                return new ComplexVector(this);
             else if(typeName == typeof(Jacobi).FullName)
-                return new Jacobi();
+                return new Jacobi(this);
+            else if(typeName == typeof(LongNumber).FullName)
+                return new LongNumber(this);
+            else if(typeName == typeof(LongFraction).FullName)
+                return new LongFraction(this);
             else
                 return null;
         }

@@ -115,6 +115,8 @@
     <Compile Include="Jacobi.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LongFraction.cs" />
+    <Compile Include="LongNumber.cs" />
     <Compile Include="Matrix.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -130,6 +132,7 @@
     <Compile Include="Polynom.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Primes.cs" />
     <Compile Include="Regression.cs" />
     <Compile Include="RungeKutta.cs" />
     <Compile Include="RungeKuttaAdaptive.cs" />

@@ -462,6 +462,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abbreviates a fraction.
+        /// </summary>
+        internal static string HelpAbbreviate {
+            get {
+                return ResourceManager.GetString("HelpAbbreviate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Absolute value.
         /// </summary>
         internal static string HelpAbs {
@@ -642,6 +651,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Denominator of a fraction.
+        /// </summary>
+        internal static string HelpDenominator {
+            get {
+                return ResourceManager.GetString("HelpDenominator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator /.
         /// </summary>
         internal static string HelpDivide {
@@ -782,6 +800,15 @@ namespace PavelStransky.Expression {
         internal static string HelpFFTSpectrum {
             get {
                 return ResourceManager.GetString("HelpFFTSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exact fraction.
+        /// </summary>
+        internal static string HelpFraction {
+            get {
+                return ResourceManager.GetString("HelpFraction", resourceCulture);
             }
         }
         
@@ -1092,6 +1119,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converts given value to a long integer number (with arbitrary precision).
+        /// </summary>
+        internal static string HelpLong {
+            get {
+                return ResourceManager.GetString("HelpLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given vectors put onto columns of a matrix.
         /// </summary>
         internal static string HelpMatrixColumn {
@@ -1106,6 +1142,15 @@ namespace PavelStransky.Expression {
         internal static string HelpMatrixRow {
             get {
                 return ResourceManager.GetString("HelpMatrixRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal common divisor of given numbers.
+        /// </summary>
+        internal static string HelpMCD {
+            get {
+                return ResourceManager.GetString("HelpMCD", resourceCulture);
             }
         }
         
@@ -1178,6 +1223,15 @@ namespace PavelStransky.Expression {
         internal static string HelpNuDatReadNucleus {
             get {
                 return ResourceManager.GetString("HelpNuDatReadNucleus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Numerator of a fraction.
+        /// </summary>
+        internal static string HelpNumerator {
+            get {
+                return ResourceManager.GetString("HelpNumerator", resourceCulture);
             }
         }
         
@@ -1290,6 +1344,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns given number of primes.
+        /// </summary>
+        internal static string HelpPrimes {
+            get {
+                return ResourceManager.GetString("HelpPrimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Writes a text (or variable) to the writer.
         /// </summary>
         internal static string HelpPrint {
@@ -1389,11 +1452,29 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Polynomial regression of data.
+        /// </summary>
+        internal static string HelpRegression {
+            get {
+                return ResourceManager.GetString("HelpRegression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes bad points (NaN, Infinity) from Vector or PointVector.
         /// </summary>
         internal static string HelpRemoveBadPoints {
             get {
                 return ResourceManager.GetString("HelpRemoveBadPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces bad points (NaN, Infinity) in Vector or PointVector by a given value.
+        /// </summary>
+        internal static string HelpReplaceBadPoints {
+            get {
+                return ResourceManager.GetString("HelpReplaceBadPoints", resourceCulture);
             }
         }
         
@@ -1713,11 +1794,29 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cal_{V} matrix for Toda lattice Hamiltonian (PRL 98, 234301 (2007)).
+        ///   Looks up a localized string similar to cal_{V} matrix (PRL 98, 234301 (2007), expression (27)).
         /// </summary>
-        internal static string HelpVMatrixHH {
+        internal static string HelpVMatrix {
             get {
-                return ResourceManager.GetString("HelpVMatrixHH", resourceCulture);
+                return ResourceManager.GetString("HelpVMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For GCM system and given energy calculates the line where the lower eigenvalue of V matrix is zero.
+        /// </summary>
+        internal static string HelpVMatrixZero1 {
+            get {
+                return ResourceManager.GetString("HelpVMatrixZero1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For GCM system and given energy calculates the line where the higher eigenvalue of V matrix is zero.
+        /// </summary>
+        internal static string HelpVMatrixZero2 {
+            get {
+                return ResourceManager.GetString("HelpVMatrixZero2", resourceCulture);
             }
         }
         
@@ -2406,6 +2505,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to c.
+        /// </summary>
+        internal static string PCount {
+            get {
+                return ResourceManager.GetString("PCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count.
+        /// </summary>
+        internal static string PCountDescription {
+            get {
+                return ResourceManager.GetString("PCountDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to default.
         /// </summary>
         internal static string PDefaultValue {
@@ -2438,6 +2555,24 @@ namespace PavelStransky.Expression {
         internal static string PDeflate1Description {
             get {
                 return ResourceManager.GetString("PDeflate1Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to d.
+        /// </summary>
+        internal static string PDenominator {
+            get {
+                return ResourceManager.GetString("PDenominator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denominator.
+        /// </summary>
+        internal static string PDenominatorDescription {
+            get {
+                return ResourceManager.GetString("PDenominatorDescription", resourceCulture);
             }
         }
         
@@ -2672,6 +2807,24 @@ namespace PavelStransky.Expression {
         internal static string PFnNameDescription {
             get {
                 return ResourceManager.GetString("PFnNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to frac.
+        /// </summary>
+        internal static string PFraction {
+            get {
+                return ResourceManager.GetString("PFraction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fraction.
+        /// </summary>
+        internal static string PFractionDescription {
+            get {
+                return ResourceManager.GetString("PFractionDescription", resourceCulture);
             }
         }
         
@@ -3180,6 +3333,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to n.
+        /// </summary>
+        internal static string PNumerator {
+            get {
+                return ResourceManager.GetString("PNumerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Numerator.
+        /// </summary>
+        internal static string PNumeratorDescription {
+            get {
+                return ResourceManager.GetString("PNumeratorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to numev.
         /// </summary>
         internal static string PNumEV {
@@ -3212,6 +3383,24 @@ namespace PavelStransky.Expression {
         internal static string PNumStepsDescription {
             get {
                 return ResourceManager.GetString("PNumStepsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to o.
+        /// </summary>
+        internal static string PObjectWithBadPoints {
+            get {
+                return ResourceManager.GetString("PObjectWithBadPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Object that contains bad points (NaN, Infinity).
+        /// </summary>
+        internal static string PObjectWithBadPointsDescription {
+            get {
+                return ResourceManager.GetString("PObjectWithBadPointsDescription", resourceCulture);
             }
         }
         
@@ -3842,15 +4031,6 @@ namespace PavelStransky.Expression {
         internal static string PYDescription {
             get {
                 return ResourceManager.GetString("PYDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Polynomial regression of data.
-        /// </summary>
-        internal static string RegressionHelp {
-            get {
-                return ResourceManager.GetString("RegressionHelp", resourceCulture);
             }
         }
         

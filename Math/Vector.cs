@@ -12,11 +12,6 @@ namespace PavelStransky.Math {
 		// Prvky vektoru
 		private double [] item;
 
-        /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public Vector() { }
-
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -450,7 +445,7 @@ namespace PavelStransky.Math {
 		/// Naète obsah vektoru ze souboru
 		/// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public Vector(Core.Import import) {
             if(import.Binary) {
                 // Binárnì
                 BinaryReader b = import.B;

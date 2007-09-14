@@ -20,11 +20,25 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.RescueMC();
+            Test.PokusLongNumber();
 
-			Console.Write("Hotovo.");
+            Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Pokus na dlouhá èísla
+        /// </summary>
+        static void PokusLongNumber() {
+            LongNumber result = new LongNumber(1);
+
+            // Dlouhý faktoriál
+            for(int i = 1; i < 100; i++) {
+                result *= new LongNumber(i);
+            }
+
+            Console.WriteLine(result.ToString());
+        }
 
         static void RescueMC() {
             RescueMemoryCard rc = new RescueMemoryCard();

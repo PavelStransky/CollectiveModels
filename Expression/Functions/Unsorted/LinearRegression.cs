@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions.Def {
     /// Linear regression of data (including uncertainities of estimated parameters)
     /// </summary>
     public class LinearRegression: Fnc {
-        public override string Help { get { return Messages.RegressionHelp; } }
+        public override string Help { get { return Messages.HelpRegression; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(1);

@@ -151,7 +151,7 @@ namespace PavelStransky.Expression {
         /// Import from the file
         /// </summary>
         /// <param name="import">Import object</param>
-        public void Import(Core.Import import) {
+        public FileData(Core.Import import) {
             if(import.Binary) {
                 BinaryReader b = import.B;
                 this.binary = b.ReadBoolean();

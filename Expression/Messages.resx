@@ -254,6 +254,9 @@ Length of the second vector: {1}</value>
   <data name="EMZeroLengthList" xml:space="preserve">
     <value>The length of the list must not be zero.</value>
   </data>
+  <data name="HelpAbbreviate" xml:space="preserve">
+    <value>Abbreviates a fraction</value>
+  </data>
   <data name="HelpAbs" xml:space="preserve">
     <value>Absolute value</value>
   </data>
@@ -314,6 +317,9 @@ Length of the second vector: {1}</value>
   <data name="HelpDelta" xml:space="preserve">
     <value>Calculates statistics v_{i} - v_{0} - i</value>
   </data>
+  <data name="HelpDenominator" xml:space="preserve">
+    <value>Denominator of a fraction</value>
+  </data>
   <data name="HelpDivide" xml:space="preserve">
     <value>Operator /</value>
   </data>
@@ -361,6 +367,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpFFTSpectrum" xml:space="preserve">
     <value>Gives the spectrum of a vector using Fast Fourier Transform (FFT)</value>
+  </data>
+  <data name="HelpFraction" xml:space="preserve">
+    <value>Exact fraction</value>
   </data>
   <data name="HelpFullHelp" xml:space="preserve">
     <value>Full help for the given function (including names and types of the parameters)</value>
@@ -464,11 +473,17 @@ Length of the second vector: {1}</value>
   <data name="HelpLog" xml:space="preserve">
     <value>Logarithm of the value (with specified base)</value>
   </data>
+  <data name="HelpLong" xml:space="preserve">
+    <value>Converts given value to a long integer number (with arbitrary precision)</value>
+  </data>
   <data name="HelpMatrixColumn" xml:space="preserve">
     <value>Given vectors put onto columns of a matrix</value>
   </data>
   <data name="HelpMatrixRow" xml:space="preserve">
     <value>Given vectors put onto rows of a matrix</value>
+  </data>
+  <data name="HelpMCD" xml:space="preserve">
+    <value>Maximal common divisor of given numbers</value>
   </data>
   <data name="HelpMean" xml:space="preserve">
     <value>Calculates mean of a vector</value>
@@ -493,6 +508,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpNuDatReadNucleus" xml:space="preserve">
     <value>Reads all accessible pieces of information about a nucleus from http://www-nds.iaea.org</value>
+  </data>
+  <data name="HelpNumerator" xml:space="preserve">
+    <value>Numerator of a fraction</value>
   </data>
   <data name="HelpOpJoin" xml:space="preserve">
     <value>Operator ~ (joins numbers together into vector, joins strings and lists)</value>
@@ -530,6 +548,9 @@ Length of the second vector: {1}</value>
   <data name="HelpPowerItem" xml:space="preserve">
     <value>Operator ^^, power is calculated among the items of vectors and matrices</value>
   </data>
+  <data name="HelpPrimes" xml:space="preserve">
+    <value>Returns given number of primes</value>
+  </data>
   <data name="HelpPrint" xml:space="preserve">
     <value>Writes a text (or variable) to the writer</value>
   </data>
@@ -563,8 +584,14 @@ Length of the second vector: {1}</value>
   <data name="HelpRandomVectorU" xml:space="preserve">
     <value>Generates a vector with uniformly distributed components</value>
   </data>
+  <data name="HelpRegression" xml:space="preserve">
+    <value>Polynomial regression of data</value>
+  </data>
   <data name="HelpRemoveBadPoints" xml:space="preserve">
     <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
+  </data>
+  <data name="HelpReplaceBadPoints" xml:space="preserve">
+    <value>Replaces bad points (NaN, Infinity) in Vector or PointVector by a given value</value>
   </data>
   <data name="HelpRWF5DLHO" xml:space="preserve">
     <value>Value of the radial part of basis wave function for 5D LHO</value>
@@ -671,8 +698,14 @@ Length of the second vector: {1}</value>
   <data name="HelpVector" xml:space="preserve">
     <value>Convert given data to a vector</value>
   </data>
-  <data name="HelpVMatrixHH" xml:space="preserve">
-    <value>cal_{V} matrix for Toda lattice Hamiltonian (PRL 98, 234301 (2007))</value>
+  <data name="HelpVMatrix" xml:space="preserve">
+    <value>cal_{V} matrix (PRL 98, 234301 (2007), expression (27))</value>
+  </data>
+  <data name="HelpVMatrixZero1" xml:space="preserve">
+    <value>For GCM system and given energy calculates the line where the lower eigenvalue of V matrix is zero</value>
+  </data>
+  <data name="HelpVMatrixZero2" xml:space="preserve">
+    <value>For GCM system and given energy calculates the line where the higher eigenvalue of V matrix is zero</value>
   </data>
   <data name="HelpWigner" xml:space="preserve">
     <value>Value of Wigner distribution</value>
@@ -902,6 +935,12 @@ Length of the second vector: {1}</value>
   <data name="PContextDescription" xml:space="preserve">
     <value>Given context</value>
   </data>
+  <data name="PCount" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="PCountDescription" xml:space="preserve">
+    <value>Count</value>
+  </data>
   <data name="PDefaultValue" xml:space="preserve">
     <value>default</value>
   </data>
@@ -913,6 +952,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PDeflate1Description" xml:space="preserve">
     <value>Array to be deflated</value>
+  </data>
+  <data name="PDenominator" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="PDenominatorDescription" xml:space="preserve">
+    <value>Denominator</value>
   </data>
   <data name="PDiagonalValue" xml:space="preserve">
     <value>d</value>
@@ -991,6 +1036,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PFnNameDescription" xml:space="preserve">
     <value>Name of a function</value>
+  </data>
+  <data name="PFraction" xml:space="preserve">
+    <value>frac</value>
+  </data>
+  <data name="PFractionDescription" xml:space="preserve">
+    <value>Fraction</value>
   </data>
   <data name="PGamma" xml:space="preserve">
     <value>gamma</value>
@@ -1160,6 +1211,12 @@ Length of the second vector: {1}</value>
   <data name="PNumColumnsDescription" xml:space="preserve">
     <value>Number of columns in an array of graphs</value>
   </data>
+  <data name="PNumerator" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="PNumeratorDescription" xml:space="preserve">
+    <value>Numerator</value>
+  </data>
   <data name="PNumEV" xml:space="preserve">
     <value>numev</value>
   </data>
@@ -1171,6 +1228,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PNumStepsDescription" xml:space="preserve">
     <value>Number of steps for numerical integration</value>
+  </data>
+  <data name="PObjectWithBadPoints" xml:space="preserve">
+    <value>o</value>
+  </data>
+  <data name="PObjectWithBadPointsDescription" xml:space="preserve">
+    <value>Object that contains bad points (NaN, Infinity)</value>
   </data>
   <data name="POrder" xml:space="preserve">
     <value>n</value>
@@ -1381,9 +1444,6 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PYDescription" xml:space="preserve">
     <value>Variable y</value>
-  </data>
-  <data name="RegressionHelp" xml:space="preserve">
-    <value>Polynomial regression of data</value>
   </data>
   <data name="SMCC_file" xml:space="preserve">
     <value>If you do want to compute an effective interaction for coupled-cluster calculations you need to specify three files, one for the interaction itself, one for the kinetic energies of all sp orbits and one for sp data declarations. These files are in turn used as input to coupled-cluster calculations.</value>

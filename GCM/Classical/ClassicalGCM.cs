@@ -66,7 +66,7 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="x">Vektor x v èase t</param>
         public virtual Matrix Jacobian(Vector x) {
-            Matrix result = new Matrix(4, 4);
+            Matrix result = new Matrix(4);
 
             double b2 = x[0] * x[0] + x[1] * x[1];
             double dV2dxdx = 2.0 * this.A + 6.0 * this.B * x[0] + 4.0 * this.C * (3.0 * x[0] * x[0] + x[1] * x[1]);
@@ -91,11 +91,6 @@ namespace PavelStransky.GCM {
         public int DegreesOfFreedom { get { return degreesOfFreedom; } }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public ClassicalGCM() { }
-
-        /// <summary>
         /// Konstruktor standardního Lagrangiánu
         /// </summary>
         /// <param name="a">Parametr A</param>
@@ -105,6 +100,11 @@ namespace PavelStransky.GCM {
         public ClassicalGCM(double a, double b, double c, double k)
             : base(a, b, c, k) {
         }
+
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        protected ClassicalGCM() { }
 
         /// <summary>
         /// Generuje poèáteèní podmínky rovnomìrnì ve FP
@@ -220,7 +220,7 @@ namespace PavelStransky.GCM {
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public virtual void Import(Core.Import import) {
+        public ClassicalGCM(Core.Import import) {
             IEParam param = new IEParam(import);
 
             this.A = (double)param.Get(-1.0);

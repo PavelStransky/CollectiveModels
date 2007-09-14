@@ -40,6 +40,8 @@ namespace PavelStransky.GCM {
         public LHOQuantumGCMRLE(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
+        public LHOQuantumGCMRLE(Core.Import import) : base(import) { }
+
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>

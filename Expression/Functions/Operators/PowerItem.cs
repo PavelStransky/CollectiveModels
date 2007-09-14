@@ -17,7 +17,8 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(2);
             this.SetParam(0, true, true, false, Messages.PRoot, Messages.PRootDescription, null,
-                typeof(int), typeof(double), typeof(Vector), typeof(Matrix));
+                typeof(int), typeof(double), typeof(Vector), typeof(Matrix),
+                typeof(LongNumber), typeof(LongFraction));
             this.SetParam(1, true, true, false, Messages.PExponent, Messages.PExponentDescription, null,
                 typeof(int), typeof(double), typeof(Vector), typeof(Matrix));
         }
@@ -89,6 +90,16 @@ namespace PavelStransky.Expression.Functions.Def {
 
                     return result;
                 }
+            }
+
+            else if(left is LongNumber) {
+                if(right is int)
+                    return (left as LongNumber).Power((int)right);
+            }
+
+            else if(left is LongFraction) {
+                if(right is int)
+                    return (left as LongFraction).Power((int)right);
             }
 
             else if(left is Vector) {

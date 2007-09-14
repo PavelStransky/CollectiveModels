@@ -55,11 +55,6 @@ namespace PavelStransky.GCM {
         public bool IsComputed { get { return this.isComputed; } }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public LHOQuantumGCM() { }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="a0">Parametr LHO</param>
@@ -86,6 +81,11 @@ namespace PavelStransky.GCM {
 
             this.RefreshConstants();
         }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        protected LHOQuantumGCM() { }
 
         /// <summary>
         /// Pøepoèítá konstanty
@@ -246,7 +246,7 @@ namespace PavelStransky.GCM {
         /// Naète výsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public LHOQuantumGCM(Core.Import import) {
             IEParam param = new IEParam(import);
 
             if(import.VersionNumber >= 4) {

@@ -20,11 +20,6 @@ namespace PavelStransky.GCM {
         public int MaxN { get { return this.IsComputed ? this.hermit.MaxN : 0; } }
 
         /// <summary>
-        /// Prázdný konstruktor
-        /// </summary>
-        public LHOQuantumGCMC() { }
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="a0">Parametr LHO</param>
@@ -310,6 +305,7 @@ namespace PavelStransky.GCM {
             return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * this.hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
         }
 
+        #region Implementace IExportable
         protected override void Export(IEParam param) {
             if(this.isComputed)
                 param.Add(this.hermit.MaxN, "Order of Hermit Polynom");
@@ -319,5 +315,8 @@ namespace PavelStransky.GCM {
             if(this.isComputed)
                 this.hermit = new HermitPolynom((int)param.Get(10));
         }
+
+        public LHOQuantumGCMC(Core.Import import) : base(import) { }
+        #endregion
     }
 }

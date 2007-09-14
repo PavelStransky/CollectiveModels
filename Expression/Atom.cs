@@ -285,6 +285,8 @@ namespace PavelStransky.Expression {
                 highlight.Add(HighlightTypes.Error, i,
                     new ExpressionException(Messages.EMInvalidExpressionEnd, i));
 
+
+
             // Kontrola na existenci funkcí
             foreach(Highlight.HighlightItem item in highlight) {
                 if(item.HighlightType == HighlightTypes.Function) {
@@ -778,6 +780,8 @@ namespace PavelStransky.Expression {
                 return typeof(List);
             else if(p == "matrix")
                 return typeof(Matrix);
+            else if(p == "long")
+                return typeof(LongNumber);
 
             throw new ExpressionException(string.Format(Messages.EMBadTypeName, p));
         }

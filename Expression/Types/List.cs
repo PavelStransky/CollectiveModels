@@ -8,19 +8,9 @@ using PavelStransky.Core;
 namespace PavelStransky.Expression {
     public class List: ArrayList, IExportable {
         /// <summary>
-        /// Indexer pro více prvkù
+        /// Konstruktor
         /// </summary>
-        //public List this[params int[] index] {
-        //    get {
-        //        int length = index.Length;
-        //        List result = new List();
-                
-        //        for(int i = 0; i < length; i++)
-        //            result.Add((this as ArrayList)[index[i]]);
-
-        //        return result;
-        //    }
-        //}
+        public List() { }
 
         #region Implementace IExportable
         /// <summary>
@@ -43,7 +33,8 @@ namespace PavelStransky.Expression {
         /// Naète obsah øady ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public List(Core.Import import)
+            : base() {
             IEParam param = new IEParam(import);
             int count = (int)param.Get(0);
 

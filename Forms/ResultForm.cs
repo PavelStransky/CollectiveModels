@@ -507,7 +507,8 @@ namespace PavelStransky.Forms {
         /// Naète obsah formuláøe ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public void Import(Core.Import import) {
+        public ResultForm(Core.Import import)
+            : this() {
             IEParam param = new IEParam(import);
 
             this.Location = new Point((int)param.Get(0), (int)param.Get(0));

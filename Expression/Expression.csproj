@@ -126,6 +126,7 @@
     <Compile Include="Functions\LongNumbers\MCD.cs" />
     <Compile Include="Functions\LongNumbers\Numerator.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
+    <Compile Include="Functions\Matrix\Trace.cs" />
     <Compile Include="Functions\Test\LaguerreI.cs" />
     <Compile Include="Functions\Dynamics\VMatrix.cs" />
     <Compile Include="Functions\Types\Fraction.cs" />

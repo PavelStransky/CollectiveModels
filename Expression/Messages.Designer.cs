@@ -1740,6 +1740,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trace of a given matrix.
+        /// </summary>
+        internal static string HelpTrace {
+            get {
+                return ResourceManager.GetString("HelpTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For given energy or a trajectory given by its initial condition calculates the trajectory; the result is returned by a matrix in the form (time, x, y, ..., px, py, ...).
         /// </summary>
         internal static string HelpTrajectoryM {

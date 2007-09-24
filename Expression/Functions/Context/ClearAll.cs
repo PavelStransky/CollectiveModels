@@ -11,7 +11,7 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpClearAll; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            guider.Clear();
+            guider.Context.Clear();
             return guider.Context;
         }
     }

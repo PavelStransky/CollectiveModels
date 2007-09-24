@@ -1251,7 +1251,6 @@ namespace PavelStransky.Expression {
             }
 
             ArrayList fns = new ArrayList();
-            int i = 0;
 
             foreach(string s in functions.Keys) 
                 if(s.IndexOf(fnName) == 0) 

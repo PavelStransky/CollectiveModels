@@ -680,6 +680,9 @@ Length of the second vector: {1}</value>
   <data name="HelpToArray" xml:space="preserve">
     <value>Given non-array object change to an array.</value>
   </data>
+  <data name="HelpTrace" xml:space="preserve">
+    <value>Trace of a given matrix</value>
+  </data>
   <data name="HelpTrajectoryM" xml:space="preserve">
     <value>For given energy or a trajectory given by its initial condition calculates the trajectory; the result is returned by a matrix in the form (time, x, y, ..., px, py, ...)</value>
   </data>

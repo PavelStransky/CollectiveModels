@@ -291,10 +291,10 @@ namespace PavelStransky.GCM {
             double a = 3.0 / System.Math.Abs((2.0 * (e - this.V(x, y))));
 
             Matrix result = new Matrix(2);
-            result[0, 0] = a * vx * vx + vxx;
-            result[0, 1] = a * vx * vy + vxy;
+            result[0, 0] = (a * vx * vx + vxx) / this.K;
+            result[0, 1] = (a * vx * vy + vxy) / this.K;
             result[1, 0] = result[0, 1];
-            result[1, 1] = a * vy * vy + vyy;
+            result[1, 1] = (a * vy * vy + vyy) / this.K;
 
             return result;
         }

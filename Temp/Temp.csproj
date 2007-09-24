@@ -52,7 +52,6 @@
     <Compile Include="SwapDim.cs" />
     <Compile Include="SwapXY.cs" />
     <Compile Include="Symmetry.cs" />
-    <Compile Include="Trace.cs" />
     <Compile Include="Transpose.cs" />
     <Compile Include="UserFunction.cs" />
     <Compile Include="Windows.cs" />

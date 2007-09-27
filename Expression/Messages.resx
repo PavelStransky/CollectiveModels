@@ -192,6 +192,9 @@ Arguments number: {1}</value>
   <data name="EMInvalidPosition" xml:space="preserve">
     <value>{0} is placed on invalid position.</value>
   </data>
+  <data name="EMListToArrayConvert" xml:space="preserve">
+    <value>List cannot be converted into an array. There are items of Incompatible types in the list.</value>
+  </data>
   <data name="EMManyArgs" xml:space="preserve">
     <value>Function '{0}' has too many arguments.</value>
   </data>
@@ -262,6 +265,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpAdd" xml:space="preserve">
     <value>Adds an element to the end of the list</value>
+  </data>
+  <data name="HelpAddBefore" xml:space="preserve">
+    <value>Adds an element to the beginning of the list</value>
   </data>
   <data name="HelpAddGlobal" xml:space="preserve">
     <value>Adds an element to the end of the list in the global context</value>

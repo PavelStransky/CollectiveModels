@@ -43,7 +43,7 @@ namespace PavelStransky.GCM {
             if(parity == 1)
                 mBoundMin = mInc;
             else if(parity == 2)
-                mBoundMax = 0;
+                mBoundMin = 0;
 
             // Zjistíme poèet
             int length = 0;

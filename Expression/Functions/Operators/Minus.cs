@@ -40,7 +40,9 @@ namespace PavelStransky.Expression.Functions.Def {
                 int lengthv = lengths[4];
                 Vector resultv = new Vector(lengthv);
 
-                for(int i = 0; i < lengthv; i++)
+                for(int i = 0; i < lengthv; i++) {
+                    k = 0;
+
                     foreach(object o in arguments) {
                         if(k == 0 && count > 1) {
                             if(o is Vector)
@@ -60,6 +62,7 @@ namespace PavelStransky.Expression.Functions.Def {
                         }
                         k++;
                     }
+                }
 
                 return resultv;
             }
@@ -70,7 +73,9 @@ namespace PavelStransky.Expression.Functions.Def {
                 Matrix resultm = new Matrix(lengthmx, lengthmy);
 
                 for(int i = 0; i < lengthmx; i++)
-                    for(int j = 0; j < lengthmy; j++)
+                    for(int j = 0; j < lengthmy; j++) {
+                        k = 0;
+
                         foreach(object o in arguments) {
                             if(k == 0 && count > 1) {
                                 if(o is Matrix)
@@ -82,14 +87,15 @@ namespace PavelStransky.Expression.Functions.Def {
                             }
                             else {
                                 if(o is Matrix)
-                                    resultm[i, j] += (o as Matrix)[i, j];
+                                    resultm[i, j] -= (o as Matrix)[i, j];
                                 else if(o is double)
-                                    resultm[i, j] += (double)o;
+                                    resultm[i, j] -= (double)o;
                                 else if(o is int)
-                                    resultm[i, j] += (int)o;
+                                    resultm[i, j] -= (int)o;
                             }
                             k++;
                         }
+                    }
 
                 return resultm;
             }

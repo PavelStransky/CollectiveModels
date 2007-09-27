@@ -297,7 +297,7 @@ namespace PavelStransky.Expression.Functions {
                 if(interfaces.Length > 0)
                     return;
 
-                interfaces = type.IsInterface ? at.FindInterfaces(this.InterfaceFilter, type.FullName) : new Type[0];
+                interfaces = (type.IsInterface && at != null) ? at.FindInterfaces(this.InterfaceFilter, type.FullName) : new Type[0];
                 if(interfaces.Length > 0)
                     return;
 

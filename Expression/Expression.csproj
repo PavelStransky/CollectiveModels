@@ -121,13 +121,16 @@
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
     <Compile Include="Functions\FncException.cs" />
+    <Compile Include="Functions\List\AddBefore.cs" />
     <Compile Include="Functions\LongNumbers\Abbreviate.cs" />
     <Compile Include="Functions\LongNumbers\Denominator.cs" />
     <Compile Include="Functions\LongNumbers\MCD.cs" />
     <Compile Include="Functions\LongNumbers\Numerator.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
     <Compile Include="Functions\Matrix\Trace.cs" />
-    <Compile Include="Functions\Test\LaguerreI.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRAL5D.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRALE.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMRALO.cs" />
     <Compile Include="Functions\Dynamics\VMatrix.cs" />
     <Compile Include="Functions\Types\Fraction.cs" />
     <Compile Include="Functions\Types\Long.cs" />

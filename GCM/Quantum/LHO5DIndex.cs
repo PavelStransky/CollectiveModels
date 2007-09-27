@@ -14,6 +14,13 @@ namespace PavelStransky.GCM {
         private int maxL, maxMu;
 
         /// <summary>
+        /// Maximal L for given mu
+        /// </summary>
+        private int LBoundMax(int mu) {
+            return (int)((maxE - 2.5 - 3 * System.Math.Abs(mu)) / 2);
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="maxE">Maximum energy in hbar * Omega</param>
@@ -21,13 +28,13 @@ namespace PavelStransky.GCM {
             this.maxE = maxE;
 
             int muInc = 1;
-            int muBoundMax = ((maxE - 1) / muInc) * muInc;
+            int muBoundMax = ((maxE - 3) / 3 / muInc) * muInc;
             int muBoundMin = 0;
 
             // Finding out the number of indexes
             int length = 0;
             for(int mu = muBoundMin; mu <= muBoundMax; mu += muInc)
-                for(int l = 0; l <= (maxE - 1 - System.Math.Abs(mu)) / 2; l++)
+                for(int l = 0; l <= this.LBoundMax(mu); l++)
                     length++;
 
             // Generating indexes
@@ -36,7 +43,7 @@ namespace PavelStransky.GCM {
 
             int i = 0;
             for(int mu = muBoundMin; mu <= muBoundMax; mu += muInc)
-                for(int l = 0; l <= (maxE - 1 - System.Math.Abs(mu)) / 2; l++) {
+                for(int l = 0; l <= this.LBoundMax(mu); l++) {
                     this.indexMu[i] = mu;
                     this.indexL[i] = l;
                     i++;
@@ -44,7 +51,7 @@ namespace PavelStransky.GCM {
 
 
             this.maxMu = muBoundMax;
-            this.maxL = (maxE - 1) / 2;
+            this.maxL = this.LBoundMax(0);
         }
 
         /// <summary>

@@ -55,24 +55,28 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quantum\AngularMatrixElement.cs" />
+    <Compile Include="Quantum\Fortran\AngularMatrixElement.cs" />
     <Compile Include="Quantum\BasisCache.cs" />
     <Compile Include="Quantum\ClebshGordon.cs" />
-    <Compile Include="Quantum\GammaLog.cs" />
+    <Compile Include="Quantum\Fortran\GammaLog.cs" />
     <Compile Include="Quantum\LHO5DIndex.cs" />
     <Compile Include="Quantum\LHOPolarIndex.cs" />
     <Compile Include="Quantum\LHOQuantumGCM.cs" />
     <Compile Include="Quantum\LHOQuantumGCM5D.cs" />
-    <Compile Include="Quantum\LHOQuantumGCM5D1.cs" />
-    <Compile Include="Quantum\LHOQuantumGCMC.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMA.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMI.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRAL5D.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMIC.cs" />
     <Compile Include="Quantum\LHOQuantumGCMR.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRALE.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRFull.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRL.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRLE.cs" />
     <Compile Include="Quantum\LHOQuantumGCMRLO.cs" />
-    <Compile Include="Quantum\QuantumGCM.cs" />
-    <Compile Include="Quantum\RadialMatrixElement.cs" />
-    <Compile Include="Quantum\RAIndex.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMRALO.cs" />
+    <Compile Include="Quantum\Fortran\QuantumGCM.cs" />
+    <Compile Include="Quantum\Fortran\RadialMatrixElement.cs" />
+    <Compile Include="Quantum\Fortran\RAIndex.cs" />
     <Compile Include="Quantum\DiscreteInterval.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -280,6 +280,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List cannot be converted into an array. There are items of Incompatible types in the list..
+        /// </summary>
+        internal static string EMListToArrayConvert {
+            get {
+                return ResourceManager.GetString("EMListToArrayConvert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Function &apos;{0}&apos; has too many arguments..
         /// </summary>
         internal static string EMManyArgs {
@@ -485,6 +494,15 @@ namespace PavelStransky.Expression {
         internal static string HelpAdd {
             get {
                 return ResourceManager.GetString("HelpAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds an element to the beginning of the list.
+        /// </summary>
+        internal static string HelpAddBefore {
+            get {
+                return ResourceManager.GetString("HelpAddBefore", resourceCulture);
             }
         }
         

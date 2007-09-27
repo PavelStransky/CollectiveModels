@@ -4,6 +4,7 @@ using System.IO;
 using PavelStransky.Math;
 using PavelStransky.GCM;
 using PavelStransky.Core;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.GCM {
     /// <summary>
@@ -18,11 +19,9 @@ namespace PavelStransky.GCM {
 
         // Koeficienty
         protected double s;
+        protected double omega;
 
-        // Epsilon
-        protected const double epsilon = 1E-8;
-
-        // Vlastní hodnoty
+         // Vlastní hodnoty
         protected Vector eigenValues;
 
         // Vlastní vektory
@@ -42,7 +41,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Úhlová frekvence LHO [J*m^-2]
         /// </summary>
-        public double Omega { get { return System.Math.Sqrt(2.0 * this.a0 / this.K); } }
+        public double Omega { get { return this.omega } }
 
         /// <summary>
         /// Parametr pro LHO [s^-1]
@@ -53,17 +52,6 @@ namespace PavelStransky.GCM {
         /// True, pokud jsou vypoèítané hladiny
         /// </summary>
         public bool IsComputed { get { return this.isComputed; } }
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="a0">Parametr LHO</param>
-        /// <param name="a">Parametr A</param>
-        /// <param name="b">Parametr B</param>
-        /// <param name="c">Parametr C</param>
-        /// <param name="k">Parametr D</param>
-        public LHOQuantumGCM(double a, double b, double c, double k, double a0)
-            : this(a, b, c, k, a0, 0.1) { }
 
         /// <summary>
         /// Konstruktor
@@ -91,14 +79,17 @@ namespace PavelStransky.GCM {
         /// Pøepoèítá konstanty
         /// </summary>
         protected virtual void RefreshConstants() {
-            this.s = System.Math.Sqrt(this.K * this.Omega / this.hbar);      // xi = s*x (Formanek (2.283))
+            this.omega = System.Math.Sqrt(2.0 * this.a0 / this.K);
+            this.s = System.Math.Sqrt(this.K * this.omega / this.hbar);      // xi = s*x (Formanek (2.283))
         }
 
         /// <summary>
         /// Vrátí velikost Hamiltonovy matice v dané bázi
         /// </summary>
         /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
-        public abstract int HamiltonianMatrixSize(int maxE);
+        public virtual int HamiltonianMatrixSize(int maxE) {
+            return this.HamiltonianMatrix(maxE, 0, null).Length;
+        }
 
         /// <summary>
         /// Stopa Hamiltonovy matice
@@ -106,7 +97,9 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        public abstract double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer);
+        public virtual double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
+            return this.HamiltonianMatrix(maxE, numSteps, writer).Trace();
+        }
 
         /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
@@ -114,64 +107,81 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        public abstract Matrix HamiltonianMatrix(int maxE, int numSteps, IOutputWriter writer);
+        public virtual Matrix HamiltonianMatrix(int maxE, int numSteps, IOutputWriter writer) {
+            return (Matrix)this.HamiltonianSBMatrix(maxE, numSteps, writer);
+        }
 
         /// <summary>
-        /// Provede výpoèet
+        /// Napoèítá Hamiltonovu matici jako pásovou matici
+        /// </summary>
+        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
+        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="writer">Writer</param>
+        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
+            throw new GCMException(string.Format(Messages.EMNotImplemented, "SymmetricBandMatrix", this.GetType().Name);
+        }
+
+        /// <summary>
+        /// Provede výpoèet Jacobiho metodou diagonalizace
         /// </summary>
         /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
         /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
         /// <param name="writer">Writer</param>
-        public virtual void Compute(int maxn, int numSteps, bool ev, int numev, IOutputWriter writer) {
+        public virtual void ComputeJ(int maxn, int numSteps, bool ev, int numev, IOutputWriter writer) {
             if(this.isComputing)
-                throw new GCMException(errorMessageComputing);
+                throw new GCMException(Messages.EMComputing);
+
             this.isComputing = true;
 
-            if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxn))
-                numev = this.HamiltonianMatrixSize(maxn);
+            try {
+                if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxn))
+                    numev = this.HamiltonianMatrixSize(maxn);
 
-            DateTime startTime = DateTime.Now;
+                DateTime startTime = DateTime.Now;
 
-            if(writer != null) {
-                writer.WriteLine(string.Format("{0} ({1}): Výpoèet {2} vlastních hodnot{3}.",
-                    this.GetType().Name,
-                    startTime,
-                    numev, 
-                    ev ? " a vektorù" : string.Empty));
-                writer.Indent(1);
+                if(writer != null) {
+                    writer.WriteLine(string.Format("{0} ({1}): Výpoèet {2} vlastních hodnot{3}.",
+                        this.GetType().Name,
+                        startTime,
+                        numev,
+                        ev ? " a vektorù" : string.Empty));
+                    writer.Indent(1);
+                }
+
+                Matrix h = this.HamiltonianMatrix(maxn, numSteps, writer);
+
+                if(writer != null) {
+                    writer.WriteLine(string.Format("Stopa matice: {0}", h.Trace()));
+                    writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
+                }
+
+                Jacobi jacobi = new Jacobi(h, writer);
+                jacobi.SortAsc();
+
+                this.eigenValues = new Vector(jacobi.EigenValue);
+                this.eigenValues.Length = numev;
+
+                if(ev) {
+                    this.eigenVectors = new Vector[numev];
+                    for(int i = 0; i < numev; i++)
+                        this.eigenVectors[i] = jacobi.EigenVector[i];
+                }
+                else
+                    this.eigenVectors = new Vector[0];
+
+                if(writer != null) {
+                    writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
+                    writer.Indent(-1);
+                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
+                }
+
+                this.isComputed = true;
             }
-
-            Matrix h = this.HamiltonianMatrix(maxn, numSteps, writer);
-
-            if(writer != null) {
-                writer.WriteLine(string.Format("Stopa matice: {0}", h.Trace()));
-                writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
+            finally {
+                this.isComputing = false;
             }
-
-            Jacobi jacobi = new Jacobi(h, writer);
-            jacobi.SortAsc();
-
-            this.eigenValues = new Vector(jacobi.EigenValue);
-            this.eigenValues.Length = numev;
-
-            if(ev) {
-                this.eigenVectors = new Vector[numev];
-                for(int i = 0; i < numev; i++)
-                    this.eigenVectors[i] = jacobi.EigenVector[i];
-            }
-            else
-                this.eigenVectors = new Vector[0];
-
-            if(writer != null) {
-                writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
-                writer.Indent(-1);
-                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
-            }
-
-            this.isComputed = true;
-            this.isComputing = false;
         }
 
         /// <summary>
@@ -274,8 +284,5 @@ namespace PavelStransky.GCM {
             this.RefreshConstants();
         }
         #endregion
-
-        protected const string errorMessageNotComputed = "Energetické spektrum ještì nebylo vypoèteno.";
-        protected const string errorMessageComputing = "Nad daným objektem LHOQuantumGCM již probíhá výpoèet.";
     }
 }

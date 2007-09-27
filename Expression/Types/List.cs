@@ -66,10 +66,32 @@ namespace PavelStransky.Expression {
             if(this.Count == 0)
                 throw new ExpressionException(Messages.EMZeroLengthList);
 
-            TArray result = new TArray(this[0].GetType(), count);
+            bool isDouble = false;
+            bool isInt = false;
+            bool isOther = false;
+
+            foreach(object o in this) {
+                if(o is int)
+                    isInt = true;
+                else if(o is double)
+                    isDouble = true;
+                else
+                    isOther = true;
+            }
+
+            if(isOther && (isDouble || isInt))
+                throw new ExpressionException(Messages.EMListToArrayConvert);
+
+            TArray result;
+            if(isDouble)
+                result = new TArray(typeof(double), count);
+            else if(isInt)
+                result = new TArray(typeof(int), count);
+            else
+                result = new TArray(this[0].GetType(), count);
 
             int i = 0;
-            foreach(object o in this)
+            foreach(object o in this) 
                 result[i++] = o;
 
             return result;

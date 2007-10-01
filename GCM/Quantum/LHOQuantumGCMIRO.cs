@@ -3,16 +3,17 @@ using System.IO;
 
 using PavelStransky.Math;
 using PavelStransky.GCM;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.GCM {
     /// <summary>
-    /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
+    /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru jen pro liché stavy
     /// </summary>
-    public class LHOQuantumGCMIRFull : LHOQuantumGCMIR {
+    public class LHOQuantumGCMIRO: LHOQuantumGCMIR {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        protected LHOQuantumGCMIRFull() { }
+        protected LHOQuantumGCMIRO() { }
 
         /// <summary>
         /// Konstruktor
@@ -23,10 +24,10 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr D</param>
         /// <param name="hbar">Planckova konstanta</param>
-        public LHOQuantumGCMIRFull(double a, double b, double c, double k, double a0, double hbar)
+        public LHOQuantumGCMIRO(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
-        public LHOQuantumGCMIRFull(Core.Import import) : base(import) { }
+        public LHOQuantumGCMIRO(Core.Import import) : base(import) { }
 
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
@@ -34,7 +35,7 @@ namespace PavelStransky.GCM {
         /// <param name="maxE">Maximální energie</param>
         protected override void CreateIndex(int maxE) {
             if(this.index == null || this.index.MaxE != maxE)
-                this.index = new LHOPolarIndex(maxE, true);
+                this.index = new LHOPolarIndex(maxE, false, 1);            
         }
     }
 }

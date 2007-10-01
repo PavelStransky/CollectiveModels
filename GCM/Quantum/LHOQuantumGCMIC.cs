@@ -10,14 +10,18 @@ namespace PavelStransky.GCM {
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
     public class LHOQuantumGCMIC : LHOQuantumGCMI {
-        private double n;
-
-        private HermitPolynom hermit;
+        private int maxn;
 
         /// <summary>
         /// Maximální hlavní kvantové èíslo
         /// </summary>
-        public int MaxN { get { return this.IsComputed ? this.hermit.MaxN : 0; } }
+        public int MaxN { get { return this.IsComputed ? this.maxn : 0; } }
+
+        /// <summary>
+        /// Konstruktor pro IE
+        /// </summary>
+        /// <param name="import"></param>
+        public LHOQuantumGCMIC(Core.Import import) : base(import) { }
 
         /// <summary>
         /// Konstruktor
@@ -32,13 +36,10 @@ namespace PavelStransky.GCM {
             : base(a, b, c, k, a0, hbar) {
         }
 
-        /// <summary>
-        /// Pøepoèítá konstanty s
-        /// </summary>        
-        protected override void RefreshConstants() {
-            base.RefreshConstants();
-            this.n = System.Math.Sqrt(System.Math.Sqrt(this.K * this.Omega / (System.Math.PI * this.Hbar)));
-                                                                // sqrt(sqrt(M*omega/(pi*hbar))) (Formanek (2.286))
+        protected override int MaximalNumNodes { get { return this.MaxN; } }
+        protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * (this.MaxN + 0.5) / this.A0); } }
+        protected override double PsiRange(double range) {
+            return this.Psi(range, this.MaxN);
         }
 
         /// <summary>
@@ -56,6 +57,8 @@ namespace PavelStransky.GCM {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>        
         public override Matrix HamiltonianMatrix(int maxn, int numSteps, IOutputWriter writer) {
+            this.maxn = maxn;
+
             if(numSteps == 0)
                 numSteps = 10 * maxn + 1;
 
@@ -68,8 +71,7 @@ namespace PavelStransky.GCM {
             }
 
             // Hermitùv polynom
-            this.hermit = new HermitPolynom(maxn);
-            double range = this.GetRange(epsilon);
+            double range = this.GetRange();
 
             // Cache psi hodnot (Bazove vlnove funkce)
             BasisCache psiCache = new BasisCache(new DiscreteInterval(range, numSteps), maxn, this.Psi);
@@ -184,7 +186,7 @@ namespace PavelStransky.GCM {
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public override Matrix DensityMatrix(int n, params Vector[] interval) {
             if(!this.isComputed)
-                throw new GCMException(errorMessageNotComputed);
+                throw new GCMException(Messages.EMNotComputed);
 
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
@@ -205,7 +207,7 @@ namespace PavelStransky.GCM {
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public Matrix NumericalDiff(int n, params Vector[] interval) {
             if(!this.isComputed)
-                throw new GCMException(errorMessageNotComputed);
+                throw new GCMException(Messages.EMNotComputed);
 
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
@@ -235,66 +237,15 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Zkontroluje, zda je range úplný a pøípadnì doplní
-        /// </summary>
-        /// <param name="range">Vstupní rozmìry</param>
-        /// <returns>Výstupní rozmìry</returns>
-        private DiscreteInterval ParseRange(Vector range) {
-            if((object)range == null || range.Length == 0)
-                return new DiscreteInterval(this.GetRange(epsilon), 10 * this.MaxN + 1);
-
-            if(range.Length == 1)
-                return new DiscreteInterval(this.GetRange(epsilon), (int)range[0]);
-
-            if(range.Length == 2)
-                return new DiscreteInterval(range[0], (int)range[1]);
-
-            return new DiscreteInterval(range);
-        }
-
-        /// <summary>
-        /// Vrací parametr range podle dosahu nejvyšší použité vlastní funkce
-        /// </summary>
-        /// <param name="epsilon">Epsilon</param>
-        /// <param name="maxn">Maximální rank vlastní funkce</param>
-        private double GetRange(double epsilon) {
-            // range je klasicky dosah oscilatoru, pridame urcitou rezervu
-            double range = System.Math.Sqrt(this.Hbar * this.Omega * (this.MaxN + 0.5) / this.A0);
-            range *= 5.0;
-
-            // dx musi byt nekolikrat mensi, nez vzdalenost mezi sousednimi nody
-            double dx = range / (50.0 * this.MaxN);
-
-            while(System.Math.Abs(this.Psi(range, this.MaxN)) < epsilon)
-                range -= dx;
-
-            //jedno dx, abysme se dostali tam, co to bylo male a druhe jako rezerva
-            return range + 2 * dx;
-        }
-
-        /// <summary>
         /// Funkce Psi_n (Formánek 2.286)
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="x"></param>
+        /// <param name="s">Koeficient normalizace</param>
+        /// <param name="n">Hlavní kvantové èíslo</param>
+        /// <param name="x">Hodnota polynomu</param>
         /// <returns></returns>
-        public static double Psi(double s, double x, int n) {
+        public double Psi(double x, int n) {
             double xi = this.s * x;
-            return this.n / System.Math.Sqrt(SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * this.hermit.GetValue(n, xi) * System.Math.Exp(-xi * xi / 2);
+            return n / System.Math.Sqrt(System.Math.PI / this.s * SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * SpecialFunctions.Hermite(xi, n) * System.Math.Exp(-xi * xi / 2);
         }
-
-        #region Implementace IExportable
-        protected override void Export(IEParam param) {
-            if(this.isComputed)
-                param.Add(this.hermit.MaxN, "Order of Hermit Polynom");
-        }
-
-        protected override void Import(IEParam param) {
-            if(this.isComputed)
-                this.hermit = new HermitPolynom((int)param.Get(10));
-        }
-
-        public LHOQuantumGCMC(Core.Import import) : base(import) { }
-        #endregion
     }
 }

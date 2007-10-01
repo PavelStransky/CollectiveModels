@@ -44,26 +44,24 @@ namespace PavelStransky.Expression {
                 return new ClassicalIBM(this);
             else if(typeName == typeof(Graph).FullName)
                 return new Graph(this);
-            else if(typeName == typeof(LHOQuantumGCMC).FullName)
-                return new LHOQuantumGCMC(this);
-            else if(typeName == typeof(LHOQuantumGCMR).FullName)
-                return new LHOQuantumGCMR(this);
-            else if(typeName == typeof(LHOQuantumGCMRFull).FullName)
-                return new LHOQuantumGCMRFull(this);
-            else if(typeName == typeof(LHOQuantumGCMRL).FullName)
-                return new LHOQuantumGCMRL(this);
-            else if(typeName == typeof(LHOQuantumGCMRLO).FullName)
-                return new LHOQuantumGCMRLO(this);
-            else if(typeName == typeof(LHOQuantumGCMRLE).FullName)
-                return new LHOQuantumGCMRLE(this);
-            else if(typeName == typeof(LHOQuantumGCM5D).FullName)
-                return new LHOQuantumGCM5D(this);
-            else if(typeName == typeof(LHOQuantumGCMRALO).FullName)
-                return new LHOQuantumGCMRALO(this);
-            else if(typeName == typeof(LHOQuantumGCMRALE).FullName)
-                return new LHOQuantumGCMRALE(this);
-            else if(typeName == typeof(LHOQuantumGCMRAL5D).FullName)
-                return new LHOQuantumGCMRAL5D(this);
+            else if(typeName == typeof(LHOQuantumGCMIC).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMC")
+                return new LHOQuantumGCMIC(this);
+            else if(typeName == typeof(LHOQuantumGCMIR).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMR"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRL")
+                return new LHOQuantumGCMIR(this);
+            else if(typeName == typeof(LHOQuantumGCMIRFull).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRFull")
+                return new LHOQuantumGCMIRFull(this);
+            else if(typeName == typeof(LHOQuantumGCMIRO).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRLO")
+                return new LHOQuantumGCMIRO(this);
+            else if(typeName == typeof(LHOQuantumGCMI5D).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCM5D")
+                return new LHOQuantumGCMI5D(this);
+            else if(typeName == typeof(LHOQuantumGCMARO).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRALO")
+                return new LHOQuantumGCMARO(this);
+            else if(typeName == typeof(LHOQuantumGCMARE).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRALE")
+                return new LHOQuantumGCMARE(this);
+            else if(typeName == typeof(LHOQuantumGCMA5D).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRAL5D")
+                return new LHOQuantumGCMA5D(this);
             else if(typeName == typeof(PT1).FullName)
                 return new PT1(this);
             else if(typeName == typeof(PT2).FullName)

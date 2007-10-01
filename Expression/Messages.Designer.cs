@@ -2505,6 +2505,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to method.
+        /// </summary>
+        internal static string PComputeMethod {
+            get {
+                return ResourceManager.GetString("PComputeMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Computing method (jacobi | LAPACKband).
+        /// </summary>
+        internal static string PComputeMethodDescription {
+            get {
+                return ResourceManager.GetString("PComputeMethodDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to context.
         /// </summary>
         internal static string PContext {

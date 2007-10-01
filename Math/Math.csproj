@@ -105,7 +105,6 @@
     <Compile Include="FFT.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HermitPolynom.cs" />
     <Compile Include="IDynamicalSystem.cs" />
     <Compile Include="Delegates.cs">
       <SubType>Code</SubType>

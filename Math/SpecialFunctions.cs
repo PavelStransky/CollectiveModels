@@ -479,7 +479,7 @@ namespace PavelStransky.Math {
 
             return;
         }
-        
+
         /// <summary>
         /// Hodnota Wignerova rozdìlení se støední hodnotou 1
         /// </summary>

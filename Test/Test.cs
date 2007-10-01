@@ -89,23 +89,6 @@ namespace PavelStransky.Test {
         }
 
         /// <summary>
-        /// Ètvrtý pokus
-        /// </summary>
-        static void PokusLAPack4() {
-            ConsoleWriter w = new ConsoleWriter();
-
-            LHOQuantumGCMR l1 = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
-            LHOQuantumGCMRL l2 = new LHOQuantumGCMRL(-1, 1, 1, 1, 1, 0.1);
-
-            l1.Compute(30, 1000, true, 100, w);
-            l2.Compute(30, 1000, true, 100, w);
-
-            Vector v1 = l1.GetEigenVector(0);
-            Vector v2 = l2.GetEigenVector(0);
-            Vector v = v2 + v1;
-        }
-
-        /// <summary>
         /// Tøetí pokus
         /// </summary>
         static void PokusLAPack3() {
@@ -128,24 +111,6 @@ namespace PavelStransky.Test {
 //            Vector v1 = new Vector(jacobi.EigenValue);
             Vector v2 = LAPackDLL.dsbevx(m2, false, 0, 100)[0];
 //            Vector v3 = v2 - v1;
-        }
-
-        /// <summary>
-        /// 22.1.2006
-        /// </summary>
-        static void PokusLAPack2() {
-            LHOQuantumGCMRL l = new LHOQuantumGCMRL(-1, 1, 1, 1, 1, 0.1);
-            LHOQuantumGCMR r = new LHOQuantumGCMR(-1, 1, 1, 1, 1, 0.1);
-
-            Matrix m1 = l.HamiltonianMatrix(20, 1000, null);
-            Matrix m2 = r.HamiltonianMatrix(20, 1000, null);
-//            Matrix m3 = l.HamiltonianSBMatrix(20, 1000, null).GetBand();
-
-//            Export e = new Export("c:\\tmp3.txt", false);
-//            e.Write(m3);
-//            e.Close();
-
-            l.Compute(20, 1000, true, 0, null);
         }
 
         /// <summary>
@@ -216,16 +181,6 @@ namespace PavelStransky.Test {
         /// <summary>
         /// 19.12.2006
         /// </summary>
-        static void PokusLHOQuantumGCMR() {
-            LHOQuantumGCMR lho = new LHOQuantumGCMR(-1, 1, 1, 1, 0.3, 0.02);
-            lho.Compute(50, 0, false, 0, new ConsoleWriter());
-            for(int i = 0; i < 100; i++)
-                Console.WriteLine(lho.GetEigenValues()[i]);
-        }
-
-        /// <summary>
-        /// 19.12.2006
-        /// </summary>
         public static void PokusLHOQuantumGCMRHladiny() {
             for(int emax = 200; emax <= 200; emax++) {
                 int count = 0;
@@ -246,13 +201,6 @@ namespace PavelStransky.Test {
                 Console.WriteLine();
                 Console.ReadLine();
             }
-        }
-
-        /// <summary>
-        /// 21.11.2006
-        /// </summary>
-        public static void PokusLHOQuantumGCMC() {
-            LHOQuantumGCM GCM = new LHOQuantumGCMC(-1.2, -1, 1, 1, 1);
         }
 
         /// <summary>

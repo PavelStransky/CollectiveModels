@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCMC));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCMIC));
             this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
 
             for(int i = 2; i < evaluatedArguments.Count; i++)
@@ -23,7 +23,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            LHOQuantumGCMC item = arguments[0] as LHOQuantumGCMC;
+            LHOQuantumGCMIC item = arguments[0] as LHOQuantumGCMIC;
             int n = (int)arguments[1];
 
             Vector[] interval = new Vector[arguments.Count - 2];

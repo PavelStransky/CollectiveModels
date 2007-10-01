@@ -935,6 +935,12 @@ Length of the second vector: {1}</value>
   <data name="PCommandsDescription" xml:space="preserve">
     <value>Commands to be calculated</value>
   </data>
+  <data name="PComputeMethod" xml:space="preserve">
+    <value>method</value>
+  </data>
+  <data name="PComputeMethodDescription" xml:space="preserve">
+    <value>Computing method (jacobi | LAPACKband)</value>
+  </data>
   <data name="PContext" xml:space="preserve">
     <value>context</value>
   </data>

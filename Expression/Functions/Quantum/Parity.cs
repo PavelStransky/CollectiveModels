@@ -15,14 +15,14 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
             this.CheckArgumentsNumber(evaluatedArguments, 1);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCMR));
+            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCMIR));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return (arguments[0] as LHOQuantumGCMR).Parity();
+            return (arguments[0] as LHOQuantumGCMIR).Parity();
         }
 
         private const string help = "Vrátí paritu stavù";
-        private const string parameters = "LHOQuantumGCMR";
+        private const string parameters = "LHOQuantumGCMIR";
     }
 }

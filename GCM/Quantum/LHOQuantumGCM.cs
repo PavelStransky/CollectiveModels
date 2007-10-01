@@ -11,6 +11,11 @@ namespace PavelStransky.GCM {
     /// Kvantový GCM 
     /// </summary>
     public abstract class LHOQuantumGCM : GCM, IExportable, IQuantumSystem {
+        /// <summary>
+        /// Metoda výpoètu
+        /// </summary>
+        public enum ComputeMethod { Jacobi, LAPACKBand }
+        
         // Parametr pro LHO
         private double a0;
  
@@ -41,7 +46,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Úhlová frekvence LHO [J*m^-2]
         /// </summary>
-        public double Omega { get { return this.omega } }
+        public double Omega { get { return this.omega; } }
 
         /// <summary>
         /// Parametr pro LHO [s^-1]
@@ -118,26 +123,27 @@ namespace PavelStransky.GCM {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
         protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            throw new GCMException(string.Format(Messages.EMNotImplemented, "SymmetricBandMatrix", this.GetType().Name);
+            throw new GCMException(string.Format(Messages.EMNotImplemented, "SymmetricBandMatrix", this.GetType().Name));
         }
 
         /// <summary>
-        /// Provede výpoèet Jacobiho metodou diagonalizace
+        /// Provede výpoèet (diagonalizaci)
         /// </summary>
-        /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
+        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
         /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
         /// <param name="writer">Writer</param>
-        public virtual void ComputeJ(int maxn, int numSteps, bool ev, int numev, IOutputWriter writer) {
+        /// <param name="method">Metoda výpoètu</param>
+        public void Compute(int maxE, int numSteps, bool ev, int numev, IOutputWriter writer, ComputeMethod method) {
             if(this.isComputing)
                 throw new GCMException(Messages.EMComputing);
 
             this.isComputing = true;
 
             try {
-                if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxn))
-                    numev = this.HamiltonianMatrixSize(maxn);
+                if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxE))
+                    numev = this.HamiltonianMatrixSize(maxE);
 
                 DateTime startTime = DateTime.Now;
 
@@ -150,26 +156,56 @@ namespace PavelStransky.GCM {
                     writer.Indent(1);
                 }
 
-                Matrix h = this.HamiltonianMatrix(maxn, numSteps, writer);
+                if(method == ComputeMethod.Jacobi) {
+                    Matrix h = this.HamiltonianMatrix(maxE, numSteps, writer);
 
-                if(writer != null) {
-                    writer.WriteLine(string.Format("Stopa matice: {0}", h.Trace()));
-                    writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
+                    if(writer != null) {
+                        writer.WriteLine(string.Format("Stopa matice: {0}", h.Trace()));
+                        writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
+                    }
+
+                    Jacobi jacobi = new Jacobi(h, writer);
+                    jacobi.SortAsc();
+
+                    this.eigenValues = new Vector(jacobi.EigenValue);
+                    this.eigenValues.Length = numev;
+
+                    if(ev) {
+                        this.eigenVectors = new Vector[numev];
+                        for(int i = 0; i < numev; i++)
+                            this.eigenVectors[i] = jacobi.EigenVector[i];
+                    }
+                    else
+                        this.eigenVectors = new Vector[0];
                 }
 
-                Jacobi jacobi = new Jacobi(h, writer);
-                jacobi.SortAsc();
+                else if(method == ComputeMethod.LAPACKBand) {
+                    SymmetricBandMatrix m = this.HamiltonianSBMatrix(maxE, numSteps, writer);
 
-                this.eigenValues = new Vector(jacobi.EigenValue);
-                this.eigenValues.Length = numev;
+                    if(writer != null) {
+                        writer.WriteLine(string.Format("Stopa matice: {0}", m.Trace()));
+                        writer.Write("Diagonalizace dsbevx...");
+                    }
 
-                if(ev) {
-                    this.eigenVectors = new Vector[numev];
-                    for(int i = 0; i < numev; i++)
-                        this.eigenVectors[i] = jacobi.EigenVector[i];
+                    DateTime startTime1 = DateTime.Now;
+
+                    Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
+                    m.Dispose();
+
+                    if(writer != null)
+                        writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
+
+                    this.eigenValues = eigenSystem[0];
+                    this.eigenValues.Length = numev;
+
+                    if(ev) {
+                        this.eigenVectors = new Vector[numev];
+                        for(int i = 0; i < numev; i++)
+                            this.eigenVectors[i] = eigenSystem[i + 1];
+                    }
+                    else
+                        this.eigenVectors = new Vector[0];
                 }
-                else
-                    this.eigenVectors = new Vector[0];
 
                 if(writer != null) {
                     writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));

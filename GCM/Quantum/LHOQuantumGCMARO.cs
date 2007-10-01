@@ -49,6 +49,31 @@ namespace PavelStransky.GCM {
             return this.index.Length;
         }
 
+        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
+            this.CreateIndex(maxE);
+
+            double omega = this.Omega;
+            double alpha = this.s * this.s;
+            double alpha2 = alpha * alpha;
+
+            int length = this.index.Length;
+
+            double result = 0.0;
+
+            for(int i = 0; i < length; i++) {
+                int n = this.index.N[i];
+                int m = this.index.M[i];
+
+                int l = System.Math.Abs(m);
+
+                result += this.Hbar * omega * (2 * n + l + 1);
+                result += (this.A - this.A0) * (2 * n + l + 1) / alpha;
+                result += this.C * (n * (n - 1) + (n + l + 1) * (5 * n + l + 2)) / alpha2;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>

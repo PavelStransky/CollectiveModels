@@ -49,6 +49,32 @@ namespace PavelStransky.GCM {
             return this.index.Length;
         }
 
+        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
+            this.CreateIndex(maxE);
+
+            double omega = this.Omega;
+            double alpha = this.s * this.s;
+            double alpha2 = alpha * alpha;
+
+            int length = this.index.Length;
+
+            double result = 0.0;
+
+            for(int i = 0; i < length; i++) {
+                int l = this.index.L[i];
+                int mu = this.index.Mu[i];
+
+                int lambda = 3 * mu;
+                double ro = lambda + 1.5;
+
+                result += this.Hbar * omega * (2 * l + ro + 1);
+                result += (this.A - this.A0) * (2 * l + ro + 1) / alpha;
+                result += this.C * (l * (l - 1) + (l + ro + 1) * (5 * l + ro + 2)) / alpha2;
+            }
+
+            return result;
+        }
+
         protected override SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
             this.CreateIndex(maxE);
 

@@ -7,15 +7,15 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Vytvoøí LHOQuantumGCMRFull tøídu (poèítanou v radiálních souøadnicích, bereme úplnou bázi)
+    /// Creates an object that calculates eigenenergies of QuantumGCM in 2D radial basis
+    /// preparing the Hamiltonian matrix by integrating the basis functions in x-representation;
+    /// states with all possible (also nonfysical) angular momentum are included    
     /// </summary>
     public class LHOQGCMIRF: FncLHOQGCM {
-        public override string Help { get { return help; } }
+        public override string Help { get { return Messages.HelpLHOQGCMIRF; } }
 
         protected override object Create(double a, double b, double c, double k, double a0, double hbar) {
             return new LHOQuantumGCMIRFull(a, b, c, k, a0, hbar);
         }
-
-        private const string help = "Vytvoøí LHOQuantumGCMRFull tøídu (kvantový GCM v kartézské bázi LHO, úplná báze)";
     }
 }

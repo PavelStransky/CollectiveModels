@@ -7,15 +7,14 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Creates LHOQuantumGCMI5D class
+    /// Creates an object that calculates eigenenergies of QuantumGCM in 5D basis 
+    /// preparing the Hamiltonian matrix by integrating the basis functions in x-representation
     /// </summary>
     public class LHOQGCMI5D: FncLHOQGCM {
-        public override string Help { get { return help; } }
+        public override string Help { get { return Messages.HelpLHOQGCMI5D; } }
 
         protected override object Create(double a, double b, double c, double k, double a0, double hbar) {
             return new LHOQuantumGCMI5D(a, b, c, k, a0, hbar);
         }
-
-        private const string help = "Vytvoøí LHOQuantumGCMI5D tøídu (kvantový GCM v kartézské bázi LHO, m = 3k, poèítáno pomocí LAPACK)";
     }
 }

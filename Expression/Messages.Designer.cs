@@ -1119,6 +1119,78 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in 5D basis preparing the Hamiltonian matrix by using algebraic relations.
+        /// </summary>
+        internal static string HelpLHOQGCMA5D {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMA5D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in radial 2D basis even in angular coordinate preparing the Hamiltonian matrix by using algebraic relations.
+        /// </summary>
+        internal static string HelpLHOQGCMARE {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMARE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in radial 2D basis odd in angular coordinate preparing the Hamiltonian matrix by using algebraic relations.
+        /// </summary>
+        internal static string HelpLHOQGCMARO {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMARO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in 5D basis preparing the Hamiltonian matrix by integrating the basis functions in x-representation.
+        /// </summary>
+        internal static string HelpLHOQGCMI5D {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMI5D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in 2D cartesian basis (direct product of two 1D harmonic oscillators) preparing the Hamiltonian matrix by integrating the basis functions in x-representation; states with all possible (also nonfysical) angular momentum are included.
+        /// </summary>
+        internal static string HelpLHOQGCMIC {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in radial 2D basis in angular coordinate preparing the Hamiltonian matrix byintegrating the basis functions in x-representation; both odd and even states are included.
+        /// </summary>
+        internal static string HelpLHOQGCMIR {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMIR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in 2D radial basis preparing the Hamiltonian matrix by integrating the basis functions in x-representation; states with all possible (also nonfysical) angular momentum are included.
+        /// </summary>
+        internal static string HelpLHOQGCMIRF {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMIRF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in radial 2D basis odd in angular coordinate preparing the Hamiltonian matrix by integrating the basis functions in x-representation.
+        /// </summary>
+        internal static string HelpLHOQGCMIRO {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCMIRO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Linear regression of data (including uncertainities of estimated parameters).
         /// </summary>
         internal static string HelpLinearRegression {

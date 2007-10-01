@@ -129,7 +129,7 @@
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
     <Compile Include="Functions\Matrix\Trace.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMA5D.cs" />
-    <Compile Include="Functions\Quantum\LHOQGCMARL.cs" />
+    <Compile Include="Functions\Quantum\LHOQGCMARE.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMARO.cs" />
     <Compile Include="Functions\Dynamics\VMatrix.cs" />
     <Compile Include="Functions\Types\Fraction.cs" />

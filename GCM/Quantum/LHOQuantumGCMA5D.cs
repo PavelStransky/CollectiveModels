@@ -107,10 +107,10 @@ namespace PavelStransky.GCM {
                     double roj = lambdaj + 1.5;
 
                     int diffl = System.Math.Abs(li - lj);
-                    int l = System.Math.Min(li, lj);
+                    double l = System.Math.Min(li, lj);         // Musíme poèítat jako double (jinak dojde k pøeteèení)
 
                     int difflambda = System.Math.Abs(lambdai - lambdaj);
-                    int mu = System.Math.Min(mui, muj);
+                    double mu = System.Math.Min(mui, muj);
                     double ro = System.Math.Min(roi, roj);
 
                     double sum = 0.0;
@@ -118,31 +118,31 @@ namespace PavelStransky.GCM {
                     // Výbìrové pravidlo
                     if(difflambda == 0) {
                         if(diffl == 0) {
-                            sum += this.Hbar * omega * (2 * l + ro + 1);
-                            sum += (this.A - this.A0) * (2 * l + ro + 1) / alpha;
-                            sum += this.C * (l * (l - 1) + (l + ro + 1) * (5 * l + ro + 2)) / alpha2;
+                            sum += this.Hbar * omega * (2.0 * l + ro + 1.0);
+                            sum += (this.A - this.A0) * (2.0 * l + ro + 1.0) / alpha;
+                            sum += this.C * (l * (l - 1.0) + (l + ro + 1.0) * (5.0 * l + ro + 2.0)) / alpha2;
                         }
 
                         else if(diffl == 1) {
-                            sum -= (this.A - this.A0) * System.Math.Sqrt((l + 1) * (l + ro + 1)) / alpha;
-                            sum -= 2.0 * this.C * System.Math.Sqrt((l + 1) * (l + ro + 1)) * (2 * l + ro + 2) / alpha2;
+                            sum -= (this.A - this.A0) * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) / alpha;
+                            sum -= 2.0 * this.C * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) * (2.0 * l + ro + 2.0) / alpha2;
                         }
 
                         else if(diffl == 2)
-                            sum += this.C * System.Math.Sqrt((l + ro + 2) * (l + ro + 1) * (l + 2) * (l + 1)) / alpha2;
+                            sum += this.C * System.Math.Sqrt((l + ro + 2.0) * (l + ro + 1.0) * (l + 2.0) * (l + 1.0)) / alpha2;
                     }
 
                     else if(difflambda == 3 && ((mui > muj && li <= lj) || (mui < muj && li >= lj))) {
-                        double k = (mu + 1) / System.Math.Sqrt((2 * mu + 1) * (2 * mu + 3));
+                        double k = (mu + 1.0) / System.Math.Sqrt((2.0 * mu + 1.0) * (2.0 * mu + 3.0));
 
                         if(diffl == 0)
-                            sum += k * System.Math.Sqrt((l + ro + 3) * (l + ro + 2) * (l + ro + 1)) / alpha32;
+                            sum += k * System.Math.Sqrt((l + ro + 3.0) * (l + ro + 2.0) * (l + ro + 1.0)) / alpha32;
                         else if(diffl == 1)
-                            sum -= k * 3.0 * System.Math.Sqrt((l + 1) * (l + ro + 3) * (l + ro + 2)) / alpha32;
+                            sum -= k * 3.0 * System.Math.Sqrt((l + 1.0) * (l + ro + 3.0) * (l + ro + 2.0)) / alpha32;
                         else if(diffl == 2)
-                            sum += k * 3.0 * System.Math.Sqrt((l + 2) * (l + 1) * (l + ro + 3)) / alpha32;
+                            sum += k * 3.0 * System.Math.Sqrt((l + 2.0) * (l + 1.0) * (l + ro + 3.0)) / alpha32;
                         else if(diffl == 3)
-                            sum -= k * System.Math.Sqrt((l + 3) * (l + 2) * (l + 1)) / alpha32;
+                            sum -= k * System.Math.Sqrt((l + 3.0) * (l + 2.0) * (l + 1.0)) / alpha32;
                     }
 
                     if(sum != 0.0) {

@@ -109,39 +109,39 @@ namespace PavelStransky.GCM {
                     int lj = System.Math.Abs(mj);
 
                     int diffn = System.Math.Abs(ni - nj);
-                    int n = System.Math.Min(ni, nj);
+                    double n = System.Math.Min(ni, nj);         // Musíme poèítat jako double (jinak dojde k pøeteèení)
 
                     int diffl = System.Math.Abs(mi - mj);
-                    int l = System.Math.Min(li, lj);
+                    double l = System.Math.Min(li, lj);
 
                     double sum = 0.0;
 
                     // Výbìrové pravidlo
                     if(diffl == 0) {
                         if(diffn == 0) {
-                            sum += this.Hbar * omega * (2 * n + l + 1);
-                            sum += (this.A - this.A0) * (2 * n + l + 1) / alpha;
-                            sum += this.C * (n * (n - 1) + (n + l + 1) * (5 * n + l + 2)) / alpha2;
+                            sum += this.Hbar * omega * (2.0 * n + l + 1.0);
+                            sum += (this.A - this.A0) * (2.0 * n + l + 1.0) / alpha;
+                            sum += this.C * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0)) / alpha2;
                         }
 
                         else if(diffn == 1) {
-                            sum -= (this.A - this.A0) * System.Math.Sqrt((n + 1) * (n + l + 1)) / alpha;
-                            sum -= 2.0 * this.C * System.Math.Sqrt((n + 1) * (n + l + 1)) * (2 * n + l + 2) / alpha2;
+                            sum -= (this.A - this.A0) * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) / alpha;
+                            sum -= 2.0 * this.C * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0) / alpha2;
                         }
 
                         else if(diffn == 2)
-                            sum += this.C * System.Math.Sqrt((n + l + 2) * (n + l + 1) * (n + 2) * (n + 1)) / alpha2;
+                            sum += this.C * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0)) / alpha2;
                     }
 
                     else if(diffl == 3 && ((mi > mj && ni <= nj) || (mi < mj && ni >= nj))) {
                         if(diffn == 0)
-                            sum += 0.5 * System.Math.Sqrt((n + l + 3) * (n + l + 2) * (n + l + 1)) / alpha32;
+                            sum += 0.5 * System.Math.Sqrt((n + l + 3.0) * (n + l + 2.0) * (n + l + 1.0)) / alpha32;
                         else if(diffn == 1)
-                            sum -= 0.5 * 3.0 * System.Math.Sqrt((n + 1) * (n + l + 3) * (n + l + 2)) / alpha32;
+                            sum -= 0.5 * 3.0 * System.Math.Sqrt((n + 1.0) * (n + l + 3.0) * (n + l + 2.0)) / alpha32;
                         else if(diffn == 2)
-                            sum += 0.5 * 3.0 * System.Math.Sqrt((n + 2) * (n + 1) * (n + l + 3)) / alpha32;
+                            sum += 0.5 * 3.0 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0)) / alpha32;
                         else if(diffn == 3)
-                            sum -= 0.5 * System.Math.Sqrt((n + 3) * (n + 2) * (n + 1)) / alpha32;
+                            sum -= 0.5 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0)) / alpha32;
                     }
 
                     if(sum != 0.0) {

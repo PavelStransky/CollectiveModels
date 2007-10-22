@@ -30,6 +30,24 @@ namespace PavelStransky.GCM {
         public LHOQuantumGCMIR(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
+        protected override int GetBasisLength() {
+            return this.index.Length;
+        }
+
+        protected override int GetBasisQuantumNumber1(int i) {
+            if(i < 0)
+                return this.index.MaxN + 1;
+            else
+                return this.index.N[i];
+        }
+
+        protected override int GetBasisQuantumNumber2(int i) {
+            if(i < 0)
+                return this.index.MaxM / 3 * 2 + 3;
+            else
+                return (this.index.M[i] + this.index.MaxM) / 3;
+        }
+
         protected override int MaximalNumNodes { get { return this.index.MaxM; } }
         protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * this.index.MaxE / this.A0); } }
         protected override double PsiRange(double range) {

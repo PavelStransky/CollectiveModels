@@ -31,6 +31,24 @@ namespace PavelStransky.GCM {
         public LHOQuantumGCMA5D(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
+        protected override int GetBasisLength() {
+            return this.index.Length;
+        }
+
+        protected override int GetBasisQuantumNumber1(int i) {
+            if(i < 0)
+                return this.index.MaxL + 1;
+            else
+                return this.index.L[i];
+        }
+
+        protected override int GetBasisQuantumNumber2(int i) {
+            if(i < 0)
+                return this.index.MaxMu + 1;
+            else
+                return this.index.Mu[i];
+        }
+
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>
@@ -133,7 +151,7 @@ namespace PavelStransky.GCM {
                     }
 
                     else if(difflambda == 3 && ((mui > muj && li <= lj) || (mui < muj && li >= lj))) {
-                        double k = (mu + 1.0) / System.Math.Sqrt((2.0 * mu + 1.0) * (2.0 * mu + 3.0));
+                        double k = this.B * (mu + 1.0) / System.Math.Sqrt((2.0 * mu + 1.0) * (2.0 * mu + 3.0));
 
                         if(diffl == 0)
                             sum += k * System.Math.Sqrt((l + ro + 3.0) * (l + ro + 2.0) * (l + ro + 1.0)) / alpha32;

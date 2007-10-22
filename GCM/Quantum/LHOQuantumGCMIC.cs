@@ -36,6 +36,24 @@ namespace PavelStransky.GCM {
             : base(a, b, c, k, a0, hbar) {
         }
 
+        protected override int GetBasisLength() {
+            return this.maxn * this.maxn;
+        }
+
+        protected override int GetBasisQuantumNumber1(int i) {
+            if(i < 0)
+                return this.maxn;
+            else
+                return i / this.maxn;
+        }
+
+        protected override int GetBasisQuantumNumber2(int i) {
+            if(i < 0)
+                return this.maxn;
+            else
+                return i % this.maxn;
+        }
+
         protected override int MaximalNumNodes { get { return this.MaxN; } }
         protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * (this.MaxN + 0.5) / this.A0); } }
         protected override double PsiRange(double range) {

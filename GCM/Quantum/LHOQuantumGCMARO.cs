@@ -11,9 +11,7 @@ namespace PavelStransky.GCM {
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// - užití algebraických vztahù namísto integrace
     /// </summary>
-    public class LHOQuantumGCMARO: LHOQuantumGCM {
-        // Indexy báze
-        protected LHOPolarIndex index;
+    public class LHOQuantumGCMARO: LHOQuantumGCMAR {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -31,22 +29,20 @@ namespace PavelStransky.GCM {
         public LHOQuantumGCMARO(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
+        protected override int GetBasisQuantumNumber2(int i) {
+            if(i < 0)
+                return this.index.MaxM /3 + 1;
+            else
+                return this.index.M[i] / 3;
+        }
+
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>
         /// <param name="maxE">Maximální energie</param>
-        protected virtual void CreateIndex(int maxE) {
+        protected override void CreateIndex(int maxE) {
             if(this.index == null || this.index.MaxE != maxE)
                 this.index = new LHOPolarIndex(maxE, false, 1);
-        }
-
-        /// <summary>
-        /// Velikost Hamiltonovy matice
-        /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        public override int HamiltonianMatrixSize(int maxE) {
-            this.CreateIndex(maxE);
-            return this.index.Length;
         }
 
         public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
@@ -135,13 +131,13 @@ namespace PavelStransky.GCM {
 
                     else if(diffl == 3 && ((mi > mj && ni <= nj) || (mi < mj && ni >= nj))) {
                         if(diffn == 0)
-                            sum += 0.5 * System.Math.Sqrt((n + l + 3.0) * (n + l + 2.0) * (n + l + 1.0)) / alpha32;
+                            sum += 0.5 * this.B * System.Math.Sqrt((n + l + 3.0) * (n + l + 2.0) * (n + l + 1.0)) / alpha32;
                         else if(diffn == 1)
-                            sum -= 0.5 * 3.0 * System.Math.Sqrt((n + 1.0) * (n + l + 3.0) * (n + l + 2.0)) / alpha32;
+                            sum -= 0.5 * this.B * 3.0 * System.Math.Sqrt((n + 1.0) * (n + l + 3.0) * (n + l + 2.0)) / alpha32;
                         else if(diffn == 2)
-                            sum += 0.5 * 3.0 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0)) / alpha32;
+                            sum += 0.5 * this.B * 3.0 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0)) / alpha32;
                         else if(diffn == 3)
-                            sum -= 0.5 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0)) / alpha32;
+                            sum -= 0.5 * this.B * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0)) / alpha32;
                     }
 
                     if(sum != 0.0) {

@@ -13,19 +13,19 @@ namespace PavelStransky.GCM {
 
         // true, pokud jsou parametry báze poèítány kódem
         // false, pokud kód pøebírá parametry báze z b2s, c2s
-        private bool ifBase;
+//        private bool ifBase;
 
         // true, pokud již byly radiální kvadrupólové maticové elementy pøeškálovány
         // bázových parametrù b2s, c2s (viz metoda QBE2)
-        private bool lRadQ;
+//        private bool lRadQ;
 
         // Poèet nejnižších stavù, pro které se bude poèítat B(E2)
         // (musí platit nEnEiv >= nBQ)
-        private int nBQ;
+//        private int nBQ;
 
         // Parametry výpoètu
-        private double bE202;
-        private double tE2mode;
+//        private double bE202;
+//        private double tE2mode;
 
         // Radiální maticové elementy
         private static RadialMatrixElement rme = new RadialMatrixElement(1, 6);
@@ -57,17 +57,18 @@ namespace PavelStransky.GCM {
             //          this.b2s = 90.0;
             //          this.c2s = 100.0;
 
-            this.ifBase = false;
+//            this.ifBase = false;
 
-            this.nBQ = 4;
+//            this.nBQ = 4;
 
             //this.lMinB = 0;
             //this.lMaxB = 8;
             //this.na = 100;
             //this.nz = 100;
 
-            this.bE202 = 0;
-            this.tE2mode = 2;
+//            this.bE202 = 0;
+//            this.tE2mode = 2;
+
             //this.ia = 0;
             //this.ib = 0;
         }
@@ -88,7 +89,7 @@ namespace PavelStransky.GCM {
             t.WriteLine();
             //t.WriteLine("NA\t{0}", this.na);
             //t.WriteLine("NZ\t{0}", this.nz);
-            t.WriteLine("tE2mode\t{0}", this.tE2mode);
+//            t.WriteLine("tE2mode\t{0}", this.tE2mode);
 
             t.WriteLine();
             //            t.WriteLine("nPh\t{0}", this.nPh);
@@ -145,7 +146,7 @@ namespace PavelStransky.GCM {
         /// </summary>
         private void SMin(int nPhonons) {
             // Flag, který je true, pokud byly radiální kvadrupólové maticové elementy pøeškálovány
-            this.lRadQ = false;
+//            this.lRadQ = false;
             this.b2s = this.B2;
 
             double sumMin = float.MaxValue;

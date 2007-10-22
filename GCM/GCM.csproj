@@ -62,6 +62,7 @@
     <Compile Include="Quantum\LHO5DIndex.cs" />
     <Compile Include="Quantum\LHOPolarIndex.cs" />
     <Compile Include="Quantum\LHOQuantumGCM.cs" />
+    <Compile Include="Quantum\LHOQuantumGCMAR.cs" />
     <Compile Include="Quantum\LHOQuantumGCMI5D.cs" />
     <Compile Include="Quantum\LHOQuantumGCMI.cs" />
     <Compile Include="Quantum\LHOQuantumGCMA5D.cs" />

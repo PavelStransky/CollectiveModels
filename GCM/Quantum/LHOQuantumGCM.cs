@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections;
 
 using PavelStransky.Math;
 using PavelStransky.GCM;
@@ -57,6 +58,21 @@ namespace PavelStransky.GCM {
         /// True, pokud jsou vypoèítané hladiny
         /// </summary>
         public bool IsComputed { get { return this.isComputed; } }
+
+        /// <summary>
+        /// První kvantové èíslo v poøadí od 0 s krokem 1
+        /// </summary>
+        protected abstract int GetBasisQuantumNumber1(int i);
+
+        /// <summary>
+        /// Druhé kvantové èíslo v poøadí od 0 s krokem 1
+        /// </summary>
+        protected abstract int GetBasisQuantumNumber2(int i);
+
+        /// <summary>
+        /// Poèet stavù báze
+        /// </summary>
+        protected abstract int GetBasisLength();
 
         /// <summary>
         /// Konstruktor
@@ -246,6 +262,28 @@ namespace PavelStransky.GCM {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public abstract Matrix DensityMatrix(int n, params Vector[] interval);
+
+        /// <summary>
+        /// Matice s hodnotami vlastních èísel seøazené podle kvantových èísel
+        /// </summary>
+        /// <param name="n">Poøadí vlastní hodnoty</param>
+        public Matrix EigenMatrix(int n) {
+            int num = this.GetBasisLength();
+
+            int maxq1 = this.GetBasisQuantumNumber1(-1);
+            int maxq2 = this.GetBasisQuantumNumber2(-1);
+
+            Matrix result = new Matrix(maxq1, maxq2);
+
+            for(int i = 0; i < num; i++) {
+                int q1 = this.GetBasisQuantumNumber1(i);
+                int q2 = this.GetBasisQuantumNumber2(i);
+
+                result[q1, q2] = this.eigenVectors[n][i];
+            }
+
+            return result;
+        }
 
         #region Implementace IExportable
         /// <summary>

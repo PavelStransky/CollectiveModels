@@ -29,6 +29,13 @@ namespace PavelStransky.GCM {
 
         public LHOQuantumGCMIRO(Core.Import import) : base(import) { }
 
+        protected override int GetBasisQuantumNumber2(int i) {
+            if(i < 0)
+                return this.index.MaxM / 3 + 2;
+            else
+                return (this.index.M[i] + this.index.MaxM) / 3;
+        }
+
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>

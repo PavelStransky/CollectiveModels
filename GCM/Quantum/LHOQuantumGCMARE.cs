@@ -11,9 +11,7 @@ namespace PavelStransky.GCM {
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// - užití algebraických vztahù namísto integrace
     /// </summary>
-    public class LHOQuantumGCMARE: LHOQuantumGCM {
-        // Indexy báze
-        protected LHOPolarIndex index;
+    public class LHOQuantumGCMARE: LHOQuantumGCMAR {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -31,22 +29,20 @@ namespace PavelStransky.GCM {
         public LHOQuantumGCMARE(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
+        protected override int GetBasisQuantumNumber2(int i) {
+            if(i < 0)
+                return this.index.MaxM / 3 + 2;
+            else
+                return this.index.M[i] / 3;
+        }
+
         /// <summary>
         /// Vytvoøí instanci tøídy LHOPolarIndex
         /// </summary>
         /// <param name="maxE">Maximální energie</param>
-        protected virtual void CreateIndex(int maxE) {
+        protected override void CreateIndex(int maxE) {
             if(this.index == null || this.index.MaxE != maxE)
                 this.index = new LHOPolarIndex(maxE, false, 2);
-        }
-
-        /// <summary>
-        /// Velikost Hamiltonovy matice
-        /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        public override int HamiltonianMatrixSize(int maxE) {
-            this.CreateIndex(maxE);
-            return this.index.Length;
         }
 
         public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
@@ -135,6 +131,7 @@ namespace PavelStransky.GCM {
 
                     else if(diffl == 3 && ((mi > mj && ni <= nj) || (mi < mj && ni >= nj))) {
                         double k = (mi == 0 || mj == 0) ? 1.0 / System.Math.Sqrt(2.0) : 0.5;
+                        k *= this.B;
 
                         if(diffn == 0)
                             sum += k * System.Math.Sqrt((n + l + 3.0) * (n + l + 2.0) * (n + l + 1.0)) / alpha32;

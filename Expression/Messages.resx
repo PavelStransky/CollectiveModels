@@ -335,6 +335,9 @@ Length of the second vector: {1}</value>
   <data name="HelpDouble" xml:space="preserve">
     <value>Converts given value to a double precision number</value>
   </data>
+  <data name="HelpEigenMatrix" xml:space="preserve">
+    <value>Returns a matrix of components of eigenvectors arranged in matrix by indexes</value>
+  </data>
   <data name="HelpEigenSystem" xml:space="preserve">
     <value>Eigensystem of a matrix calculated using LAPACK library (function dsyev); before calculation it makes symmetrization of a matrix</value>
   </data>
@@ -1039,6 +1042,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PEvectorsDescription" xml:space="preserve">
     <value>True if the eigenvectors is to be calculated</value>
+  </data>
+  <data name="PEVIndex" xml:space="preserve">
+    <value>evi</value>
+  </data>
+  <data name="PEVIndexDescription" xml:space="preserve">
+    <value>Index of an eigenvalue (eigenvector)</value>
   </data>
   <data name="PExponent" xml:space="preserve">
     <value>e</value>

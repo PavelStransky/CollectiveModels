@@ -705,6 +705,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns a matrix of components of eigenvectors arranged in matrix by indexes.
+        /// </summary>
+        internal static string HelpEigenMatrix {
+            get {
+                return ResourceManager.GetString("HelpEigenMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eigensystem of a matrix calculated using LAPACK library (function dsyev); before calculation it makes symmetrization of a matrix.
         /// </summary>
         internal static string HelpEigenSystem {
@@ -2816,6 +2825,24 @@ namespace PavelStransky.Expression {
         internal static string PEvectorsDescription {
             get {
                 return ResourceManager.GetString("PEvectorsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to evi.
+        /// </summary>
+        internal static string PEVIndex {
+            get {
+                return ResourceManager.GetString("PEVIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Index of an eigenvalue (eigenvector).
+        /// </summary>
+        internal static string PEVIndexDescription {
+            get {
+                return ResourceManager.GetString("PEVIndexDescription", resourceCulture);
             }
         }
         

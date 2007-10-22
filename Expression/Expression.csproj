@@ -128,6 +128,7 @@
     <Compile Include="Functions\LongNumbers\Numerator.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
     <Compile Include="Functions\Matrix\Trace.cs" />
+    <Compile Include="Functions\Quantum\EigenMatrix.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMA5D.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMARE.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMARO.cs" />

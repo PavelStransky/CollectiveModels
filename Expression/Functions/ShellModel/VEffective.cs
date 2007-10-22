@@ -11,7 +11,7 @@ namespace PavelStransky.Expression {
     /// </summary>
     public class VEffective {
         private DataParams dataParams = new DataParams();
-        private static int counter = 0;
+//        private static int counter = 0;
 
         /// <summary>
         /// Constructor

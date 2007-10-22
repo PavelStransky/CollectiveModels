@@ -784,7 +784,6 @@ namespace PavelStransky.Expression {
 
         private const string errorMessageBadRank = "The rank of the Array is invalid.";
         private static string errorMessageBadRankDetail = "Rank is: {0}" + Environment.NewLine + "Number of indexes: {1}";
-        private static string errorMessageBadRankDetailL = "Rank is: {0} and must be 0 for the considered operation.";
 
         private const string errorMessageShrink = "It is not possible to shrink in dimension {0}.";
         private static string errorMessageShrinkDetail = "There must be only one element." + Environment.NewLine + "Number of elements: {0}";

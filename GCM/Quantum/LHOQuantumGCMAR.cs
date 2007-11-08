@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Math;
+
 namespace PavelStransky.GCM {
     public abstract class LHOQuantumGCMAR: LHOQuantumGCM {
         // Indexy báze
@@ -49,6 +51,33 @@ namespace PavelStransky.GCM {
                 return this.index.MaxN + 1;
             else
                 return this.index.N[i];
+        }
+
+        /// <summary>
+        /// Vrátí èasovou støední hodnotu druhého integrálu - úhlového momentu -i * hbar * (d / d phi)
+        /// (kvadratický Casimirùv operátor)
+        /// </summary>
+        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
+        public Vector GetSecondInvariant() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++) {
+                    double d = ev[j] * this.index.M[j];
+                    result[i] += d * d;
+                }
+
+                result[i] *= this.Hbar;
+            }
+
+            return result;
         }
     }
 }

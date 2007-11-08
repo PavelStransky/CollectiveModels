@@ -203,10 +203,14 @@ namespace PavelStransky.GCM {
                         writer.Write("Diagonalizace dsbevx...");
                     }
 
+                    GC.Collect();
+
                     DateTime startTime1 = DateTime.Now;
 
                     Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
                     m.Dispose();
+
+                    GC.Collect();
 
                     if(writer != null)
                         writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));

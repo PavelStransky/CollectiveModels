@@ -110,7 +110,7 @@ namespace PavelStransky.Expression {
                     List l = o as List;
                     
                     for(int j = 0; j < c; j++) 
-                        (l as ArrayList)[i[j]] = this.AssignFn(l[i[j]]);
+                        (l as ArrayList)[i[j]] = this.assignFn(l[i[j]]);
                 }
 
                 else if(o is Vector) {

@@ -175,11 +175,17 @@ namespace PavelStransky.GCM {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
-        public override Matrix AmplitudeMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
-            Vector ev = this.eigenVectors[n];
-            Matrix result = new Matrix(intx.Num, inty.Num);
+        public override Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
+            int numn = n.Length;
+            int numx = intx.Num;
+            int numy = inty.Num;
 
-            int sqrlength = ev.Length;
+            Matrix[] result = new Matrix[numn];
+
+            for(int i = 0; i < numn; i++)
+                result[i] = new Matrix(intx.Num, inty.Num);
+
+            int sqrlength = this.GetBasisLength();
             int length = (int)System.Math.Round(System.Math.Sqrt(sqrlength));
 
             BasisCache cachex = new BasisCache(intx, this.MaxN, this.Psi);
@@ -189,9 +195,13 @@ namespace PavelStransky.GCM {
                 int ix = i / length;
                 int iy = i % length;
 
-                for(int sx = 0; sx < intx.Num; sx++)
-                    for(int sy = 0; sy < inty.Num; sy++)
-                        result[sx, sy] += cachex[ix, sx] * cachey[iy, sy] * ev[i];
+                for(int j = 0; j < numn; j++) {
+                    Vector ev = this.eigenVectors[n[j]];
+
+                    for(int sx = 0; sx < intx.Num; sx++)
+                        for(int sy = 0; sy < inty.Num; sy++)
+                            result[j][sx, sy] += cachex[ix, sx] * cachey[iy, sy] * ev[i];
+                }
             }
 
             return result;
@@ -209,7 +219,10 @@ namespace PavelStransky.GCM {
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
 
-            Matrix em = this.AmplitudeMatrix(n, intx, inty);
+            int[] nn = new int[1];
+            nn[0] = n;
+
+            Matrix em = this.AmplitudeMatrix(nn, null, intx, inty)[0];
             Matrix result = new Matrix(intx.Num, inty.Num);
 
             for(int sx = 1; sx < intx.Num - 1; sx++) {

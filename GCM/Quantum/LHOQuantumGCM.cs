@@ -274,25 +274,46 @@ namespace PavelStransky.GCM {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
-        public virtual Matrix AmplitudeMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
+        public virtual Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
             if(!this.isComputed)
                 throw new GCMException(Messages.EMNotComputed);
-
-            Vector ev = this.eigenVectors[n];
 
             int numx = intx.Num;
             int numy = inty.Num;
 
-            Matrix result = new Matrix(numx, numy);
+            int numn = n.Length;
+
+            Matrix[] result = new Matrix[numn];
+            for(int i = 0; i < numn; i++)
+                result[i] = new Matrix(numx, numy);
 
             int length = this.GetBasisLength();
+            int length100 = length / 100;
+
+            DateTime startTime = DateTime.Now;
 
             for(int k = 0; k < length; k++) {
                 BasisCache2D cache = new BasisCache2D(intx, inty, k, this.PsiXY);
 
-                for(int i = 0; i < numx; i++)
-                    for(int j = 0; j < numy; j++)
-                        result[i, j] += ev[i] * cache[i, j];
+                for(int l = 0; l < numn; l++) {
+                    Vector ev = this.eigenVectors[n[l]];
+
+                    for(int i = 0; i < numx; i++)
+                        for(int j = 0; j < numy; j++)
+                            result[l][i, j] += ev[k] * cache[i, j];
+                }
+
+                if(writer != null)
+                    if((k + 1) % length100 == 0) {
+                        writer.Write('.');
+
+                        if(((k + 1) / length100) % 10 == 0) {
+                            writer.Write((k + 1) / length100);
+                            writer.Write("% ");
+                            writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+                            startTime = DateTime.Now;
+                        }
+                    }
             }
 
             return result;
@@ -303,18 +324,20 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public virtual Matrix DensityMatrix(int n, params Vector[] interval) {
+        public virtual Matrix[] DensityMatrix(int[] n, IOutputWriter writer, params Vector[] interval) {
             DiscreteInterval intx = new DiscreteInterval(interval[0]);
             DiscreteInterval inty = new DiscreteInterval(interval[1]);
 
-            Matrix result = this.AmplitudeMatrix(n, intx, inty);
+            Matrix[] result = this.AmplitudeMatrix(n, writer, intx, inty);
 
-            int numx = result.LengthX;
-            int numy = result.LengthY;
+            int numn = result.Length;
+            int numx = result[0].LengthX;
+            int numy = result[0].LengthY;
 
-            for(int i = 0; i < numx; i++)
-                for(int j = 0; j < numy; j++)
-                    result[i, j] *= result[i, j];
+            for(int l = 0; l < numn; l++)
+                for(int i = 0; i < numx; i++)
+                    for(int j = 0; j < numy; j++)
+                        result[l][i, j] *= result[l][i, j];
 
             return result;
         }

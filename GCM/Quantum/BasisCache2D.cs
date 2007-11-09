@@ -44,7 +44,7 @@ namespace PavelStransky.GCM {
             // Naplnìní cache
             for(int i = 0; i < numx; i++)
                 for(int j = 0; j < numy; j++)
-                    this.cache[i,j]=function(this.intervalx.GetX(i), this.intervaly.GetX(i), n);
+                    this.cache[i, j] = function(this.intervalx.GetX(i), this.intervaly.GetX(j), n);
         }
 
         /// <summary>

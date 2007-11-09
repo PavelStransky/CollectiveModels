@@ -309,27 +309,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public override Matrix DensityMatrix(int n, params Vector[] interval) {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
-            DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
-            DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
-
-            Matrix result = this.EigenMatrix(n, intx, inty);
-
-            for(int sx = 0; sx < intx.Num; sx++)
-                for(int sy = 0; sy < inty.Num; sy++)
-                    result[sx, sy] *= result[sx, sy];
-
-            return result;
-        }
-
-        /// <summary>
         /// Radial part of the wave function
         /// </summary>
         /// <param name="l">Principal quantum number</param>

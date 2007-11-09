@@ -166,7 +166,7 @@ namespace PavelStransky.GCM {
             int n = this.index.N[l];
             int m = this.index.M[l];
 
-            return this.Psi(x, n, m) * System.Math.Cos(m * gamma);
+            return this.Psi(beta, n, m) * System.Math.Cos(m * gamma);
         }
 
         #region Implementace IExportable

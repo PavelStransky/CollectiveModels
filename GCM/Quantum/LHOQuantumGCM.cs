@@ -261,17 +261,72 @@ namespace PavelStransky.GCM {
         public int NumEV { get { return this.eigenVectors.Length; } }
 
         /// <summary>
+        /// Vlnová funkce v souøadnice x, y
+        /// </summary>
+        /// <param name="x">Souøadnice x</param>
+        /// <param name="y">Souøadnice y</param>
+        /// <param name="n">Index vlnové funkce</param>
+        protected abstract double PsiXY(double x, double y, int n);
+
+        /// <summary>
+        /// Vrátí matici <n|V|n> amplitudy vlastní funkce n
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="rx">Rozmìry ve smìru x</param>
+        /// <param name="ry">Rozmìry ve smìru y</param>
+        public virtual Matrix AmplitudeMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            Vector ev = this.eigenVectors[n];
+
+            int numx = intx.Num;
+            int numy = inty.Num;
+
+            Matrix result = new Matrix(numx, numy);
+
+            int length = this.GetBasisLength();
+
+            for(int k = 0; k < length; k++) {
+                BasisCache2D cache = new BasisCache2D(intx, inty, k, this.PsiXY);
+
+                for(int i = 0; i < numx; i++)
+                    for(int j = 0; j < numy; j++)
+                        result[i, j] += ev[i] * cache[i, j];
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Vrátí matici hustot pro vlastní funkce
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public abstract Matrix DensityMatrix(int n, params Vector[] interval);
+        public virtual Matrix DensityMatrix(int n, params Vector[] interval) {
+            DiscreteInterval intx = new DiscreteInterval(interval[0]);
+            DiscreteInterval inty = new DiscreteInterval(interval[1]);
+
+            Matrix result = this.AmplitudeMatrix(n, intx, inty);
+
+            int numx = result.LengthX;
+            int numy = result.LengthY;
+
+            for(int i = 0; i < numx; i++)
+                for(int j = 0; j < numy; j++)
+                    result[i, j] *= result[i, j];
+
+            return result;
+        }
 
         /// <summary>
         /// Matice s hodnotami vlastních èísel seøazené podle kvantových èísel
         /// </summary>
         /// <param name="n">Poøadí vlastní hodnoty</param>
         public Matrix EigenMatrix(int n) {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed); 
+            
             int num = this.GetBasisLength();
 
             int maxq1 = this.GetBasisQuantumNumber1(-1);

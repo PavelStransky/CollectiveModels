@@ -376,6 +376,16 @@ namespace PavelStransky.GCM {
             return result * norm;
         }
 
+        /// <summary>
+        /// Vlnová funkce ve 2D
+        /// </summary>
+        protected override double PsiXY(double x, double y, int n) {
+            double beta = System.Math.Sqrt(x * x + y * y);
+            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
+
+            return this.Psi(beta, n) * this.APsi(gamma, n);
+        }
+
         #region Implementace IExportable
         protected override void Export(IEParam param) {
             if(this.isComputed)

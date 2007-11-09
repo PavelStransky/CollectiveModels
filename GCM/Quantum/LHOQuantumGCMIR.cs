@@ -382,69 +382,6 @@ namespace PavelStransky.GCM {
 
             return m;
         }
- 
-        /// <summary>
-        /// Vrátí matici <n|V|n> vlastní funkce n
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="rx">Rozmìry ve smìru x</param>
-        /// <param name="ry">Rozmìry ve smìru y</param>
-        private Complex[,] EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
-            Vector ev = this.eigenVectors[n];
-
-            Complex[,] result = new Complex[intx.Num, inty.Num];
-            for(int sx = 0; sx < intx.Num; sx++)
-                for(int sy = 0; sy < inty.Num; sy++)
-                    result[sx, sy] = new Complex();
-
-            DiscreteInterval intr = new DiscreteInterval(0,
-                System.Math.Max(System.Math.Max(System.Math.Abs(intx.Min), System.Math.Abs(intx.Max)),
-                    System.Math.Max(System.Math.Abs(inty.Min), System.Math.Abs(inty.Max))),
-                intx.Num + inty.Num);
-
-            int length = this.index.Length;
-
-            BasisCache cache = new BasisCache(intr, length, this.Psi);
-
-            for(int i = 0; i < length; i++) {
-                int ni = this.index.N[i];
-                int mi = this.index.M[i];
-
-                for(int sx = 0; sx < intx.Num; sx++) {
-                    double x = intx.GetX(sx);
-                    for(int sy = 0; sy < inty.Num; sy++) {
-                        double y = inty.GetX(sy);
-                        double beta = System.Math.Sqrt(x * x + y * y);
-                        double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
-                        result[sx, sy] += cache.GetValue(i, beta) * ev[i] * Complex.Exp(Complex.I * mi * gamma);
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public override Matrix DensityMatrix(int n, params Vector[] interval) {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
-            DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
-            DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
-
-            Complex[,] m = this.EigenMatrix(n, intx, inty);
-            Matrix result = new Matrix(m.GetLength(0), m.GetLength(1));
-
-            for(int sx = 0; sx < intx.Num; sx++)
-                for(int sy = 0; sy < inty.Num; sy++)
-                    result[sx, sy] = m[sx, sy].SquaredNorm;
-
-            return result;
-        }
 
         /// <summary>
         /// Radiální èást vlnové funkce
@@ -478,6 +415,10 @@ namespace PavelStransky.GCM {
         /// <param name="x">Souøadnice</param>
         protected double Psi(double x, int i) {
             return this.Psi(x, this.index.N[i], this.index.M[i]);
+        }
+
+        protected override double PsiXY(double x, double y, int n) {
+            throw new Exception("The method or operation is not implemented.");
         }
 
         /// <summary>

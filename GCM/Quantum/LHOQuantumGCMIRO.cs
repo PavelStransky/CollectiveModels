@@ -44,5 +44,18 @@ namespace PavelStransky.GCM {
             if(this.index == null || this.index.MaxE != maxE)
                 this.index = new LHOPolarIndex(maxE, false, 1);            
         }
+
+        /// <summary>
+        /// Vlnová funkce ve 2D
+        /// </summary>
+        protected override double PsiXY(double x, double y, int l) {
+            double beta = System.Math.Sqrt(x * x + y * y);
+            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
+
+            int n = this.index.N[l];
+            int m = this.index.M[l];
+
+            return this.Psi(x, n, m) * System.Math.Sin(m * gamma);
+        }
     }
 }

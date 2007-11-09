@@ -175,7 +175,7 @@ namespace PavelStransky.GCM {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
-        private Matrix EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
+        public override Matrix AmplitudeMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
             Vector ev = this.eigenVectors[n];
             Matrix result = new Matrix(intx.Num, inty.Num);
 
@@ -198,27 +198,6 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public override Matrix DensityMatrix(int n, params Vector[] interval) {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
-            DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
-            DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
-
-            Matrix result = this.EigenMatrix(n, intx, inty);
-
-            for(int sx = 0; sx < intx.Num; sx++)
-                for(int sy = 0; sy < inty.Num; sy++)
-                    result[sx, sy] = result[sx, sy] * result[sx, sy];
-
-            return result;
-        }
-
-        /// <summary>
         /// Diference |H|psi> - E|psi>|^2 pro zadanou vlastní funkci
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
@@ -230,7 +209,7 @@ namespace PavelStransky.GCM {
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);
 
-            Matrix em = this.EigenMatrix(n, intx, inty);
+            Matrix em = this.AmplitudeMatrix(n, intx, inty);
             Matrix result = new Matrix(intx.Num, inty.Num);
 
             for(int sx = 1; sx < intx.Num - 1; sx++) {
@@ -264,6 +243,13 @@ namespace PavelStransky.GCM {
         public double Psi(double x, int n) {
             double xi = this.s * x;
             return n / System.Math.Sqrt(System.Math.PI / this.s * SpecialFunctions.Factorial(n) * System.Math.Pow(2, n)) * SpecialFunctions.Hermite(xi, n) * System.Math.Exp(-xi * xi / 2);
+        }
+
+        /// <summary>
+        /// Funkce Psi ve dvou rozmìrech
+        /// </summary>
+        protected override double PsiXY(double x, double y, int n) {
+            return this.Psi(x, n) * this.Psi(y, n);
         }
     }
 }

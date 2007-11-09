@@ -157,12 +157,16 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
+        /// Vlnová funkce ve 2D
         /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public override Matrix DensityMatrix(int n, params Vector[] interval) {
-            return null;
+        protected override double PsiXY(double x, double y, int l) {
+            double beta = System.Math.Sqrt(x * x + y * y);
+            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
+
+            int n = this.index.N[l];
+            int m = this.index.M[l];
+
+            return this.Psi(x, n, m) * System.Math.Cos(m * gamma);
         }
 
         #region Implementace IExportable

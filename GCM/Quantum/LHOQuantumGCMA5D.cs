@@ -176,13 +176,8 @@ namespace PavelStransky.GCM {
             return m;
         }
 
-        /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public override Matrix DensityMatrix(int n, params Vector[] interval) {
-            return null;
+        protected override double PsiXY(double x, double y, int n) {
+            throw new Exception("The method or operation is not implemented.");
         }
 
         #region Implementace IExportable

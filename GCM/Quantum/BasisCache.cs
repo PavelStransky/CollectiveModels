@@ -4,16 +4,16 @@ using PavelStransky.Math;
 
 namespace PavelStransky.GCM {
     /// <summary>
-    /// Bázová funkce
-    /// </summary>
-    /// <param name="n">Øád bázové funkce</param>
-    /// <param name="x">Promìnná</param>
-    public delegate double BasisFunction(double x, int n);
-
-    /// <summary>
     /// Pøedvypoèítá hodnoty bázové funkce na zadané møížce
     /// </summary>
     public class BasisCache : DiscreteInterval {
+        /// <summary>
+        /// Bázová funkce
+        /// </summary>
+        /// <param name="n">Øád bázové funkce</param>
+        /// <param name="x">Promìnná</param>
+        public delegate double BasisFunction(double x, int n);
+
         private double[,] cache;
         private BasisFunction function;
         private int minn, maxn;

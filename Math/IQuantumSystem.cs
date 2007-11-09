@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Math {
     /// <summary>
     /// Interface pro kvantový systém
@@ -27,6 +29,6 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="n">Èíslo vlastní funkce</param>
         /// <param name="interval">Oblast hodnot k zhobrazení (seøazená ve tvaru minx, maxx, numx, ...)</param>
-        Matrix DensityMatrix(int n, params Vector[] interval);
+        Matrix[] DensityMatrix(int []n, IOutputWriter writer, params Vector[] interval);
     }
 }

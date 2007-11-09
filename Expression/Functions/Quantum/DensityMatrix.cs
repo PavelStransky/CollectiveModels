@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.CheckArgumentsMinNumber(evaluatedArguments, 2);
 
             this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(IQuantumSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
+            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int), typeof(TArray));
 
             int count = evaluatedArguments.Count;
             for(int i = 2; i < count; i++)
@@ -26,14 +26,37 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IQuantumSystem qs = arguments[0] as IQuantumSystem;
-            int n = (int)arguments[1];
+
+            int[] n;
+            bool one = false;
+
+            if(arguments[1] is int) {
+                n = new int[1];
+                n[0] = (int)arguments[1];
+
+                one = true;
+            }
+            else {
+                TArray a = arguments[1] as TArray;
+
+                int num = a.Length;
+                n = new int[num];
+
+                for(int j = 0; j < num; j++)
+                    n[j] = (int)a[j];
+            }
 
             int count = arguments.Count;
             Vector[] interval = new Vector[count - 2];
             for(int i = 2; i < count; i++)
                 interval[i - 2] = arguments[i] as Vector;
 
-            return qs.DensityMatrix(n, interval);
+            Matrix[] result = qs.DensityMatrix(n, guider, interval);
+
+            if(one)
+                return result[0];
+            else
+                return new TArray(result);
         }
 
         private const string help = "Vrátí matici hustot vlastní funkce";

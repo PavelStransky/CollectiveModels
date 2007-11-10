@@ -48,7 +48,7 @@ namespace PavelStransky.GCM {
         protected override int MaximalNumNodes { get { return this.index.MaxMu; } }
         protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * this.index.MaxE / this.A0); } }
         protected override double PsiRange(double range) {
-            return this.Psi(range, this.index.MaxL, this.index.MaxMu);
+            return this.Psi5D(range, this.index.MaxL, this.index.MaxMu);
         }
 
         /// <summary>
@@ -270,77 +270,12 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrátí matici <n|V|n> vlastní funkce n
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="rx">Rozmìry ve smìru x</param>
-        /// <param name="ry">Rozmìry ve smìru y</param>
-        private Matrix EigenMatrix(int n, DiscreteInterval intx, DiscreteInterval inty) {
-            Vector ev = this.eigenVectors[n];
-
-            Matrix result = new Matrix(intx.Num, inty.Num);
-
-            DiscreteInterval intr = new DiscreteInterval(0,
-                System.Math.Max(System.Math.Max(System.Math.Abs(intx.Min), System.Math.Abs(intx.Max)),
-                    System.Math.Max(System.Math.Abs(inty.Min), System.Math.Abs(inty.Max))),
-                intx.Num + inty.Num);
-
-            int length = this.index.Length;
-
-            BasisCache rcache = new BasisCache(intr, length, this.Psi);
-            BasisCache acache = new BasisCache(new DiscreteInterval(0, 2.0 * System.Math.PI, intr.Num * 4), length, this.APsi);
-
-            for(int i = 0; i < length; i++) {
-                int li = this.index.L[i];
-                int mui = this.index.Mu[i];
-
-                for(int sx = 0; sx < intx.Num; sx++) {
-                    double x = intx.GetX(sx);
-                    for(int sy = 0; sy < inty.Num; sy++) {
-                        double y = inty.GetX(sy);
-                        double beta = System.Math.Sqrt(x * x + y * y);
-                        double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
-                        result[sx, sy] += rcache.GetValue(i, beta) * ev[i] * acache.GetValue(i, gamma);
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Radial part of the wave function
-        /// </summary>
-        /// <param name="l">Principal quantum number</param>
-        /// <param name="mu">Second quantum number</param>
-        /// <param name="x">Value</param>
-        /// <param name="s">Multiplication factor</param>
-        public double Psi(double x, int l, int mu) {
-            double xi2 = this.s * x; xi2 *= xi2;
-            int lambda = 3 * mu;
-
-            double normLog = (lambda + 2.5) * System.Math.Log(this.s) + 0.5 * (SpecialFunctions.FactorialILog(l) - SpecialFunctions.HalfFactorialILog(lambda + l + 2) + System.Math.Log(2.0));
-            double r = 0.0;
-            double e = 0.0;
-            SpecialFunctions.Laguerre(out r, out e, xi2, l, lambda + 1.5);
-
-            if(r == 0.0 || x == 0.0)
-                return 0.0;
-
-            double rLog = System.Math.Log(System.Math.Abs(r));
-            double result = normLog + lambda * System.Math.Log(x) - xi2 / 2.0 + rLog + e;
-            result = r < 0.0 ? -System.Math.Exp(result) : System.Math.Exp(result);
-
-            return result;
-        }
-
-        /// <summary>
         /// Radiální èást vlnové funkce
         /// </summary>
         /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
         /// <param name="x">Souøadnice</param>
         protected double Psi(double x, int i) {
-            return Psi(x, this.index.L[i], this.index.Mu[i]);
+            return this.Psi5D(x, this.index.L[i], this.index.Mu[i]);
         }
 
         /// <summary>
@@ -348,21 +283,18 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="g">Angle gamma</param>
         /// <param name="i">Index</param>
-        public double APsi(double g, int i) {
-            int mu = this.index.Mu[i];
-            double result = SpecialFunctions.Legendre(System.Math.Cos(3.0 * g), mu);
-            double norm = System.Math.Sqrt((2.0 * mu + 1.0) / 4.0);
-            return result * norm;
+        protected double Phi(double g, int i) {
+            return this.Phi5D(g, this.index.Mu[i]);
         }
 
         /// <summary>
         /// Vlnová funkce ve 2D
         /// </summary>
-        protected override double PsiXY(double x, double y, int n) {
-            double beta = System.Math.Sqrt(x * x + y * y);
-            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
+        protected override double PsiBG(double beta, double gamma, int n) {
+            int l = this.index.L[n];
+            int mu = this.index.Mu[n];
 
-            return this.Psi(beta, n) * this.APsi(gamma, n);
+            return this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
         }
 
         #region Implementace IExportable

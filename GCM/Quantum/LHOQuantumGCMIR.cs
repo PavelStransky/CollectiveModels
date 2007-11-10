@@ -51,7 +51,7 @@ namespace PavelStransky.GCM {
         protected override int MaximalNumNodes { get { return this.index.MaxM; } }
         protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * this.index.MaxE / this.A0); } }
         protected override double PsiRange(double range) {
-            return Psi(range, this.index.MaxN, this.index.MaxM);
+            return this.Psi2D(range, this.index.MaxN, this.index.MaxM);
         }
 
         /// <summary>
@@ -386,35 +386,10 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Radiální èást vlnové funkce
         /// </summary>
-        /// <param name="n">Hlavní kvantové èíslo</param>
-        /// <param name="m">Spin</param>
-        /// <param name="x">Souøadnice</param>
-        public double Psi(double x, int n, int m) {
-            double xi2 = this.s * x; xi2 *= xi2;
-            m = System.Math.Abs(m);
-
-            double normLog = 0.5 * (System.Math.Log(2.0) + SpecialFunctions.FactorialILog(n) - SpecialFunctions.FactorialILog(n + m)) + (m + 1) * System.Math.Log(this.s);
-            double l = 0.0;
-            double e = 0.0;
-            SpecialFunctions.Laguerre(out l, out e, xi2, n, m);
-
-            if(l == 0.0 || x == 0.0)
-                return 0.0;
-
-            double lLog = System.Math.Log(System.Math.Abs(l));
-            double result = normLog + m * System.Math.Log(x) - xi2 / 2.0 + lLog + e;
-            result = l < 0.0 ? -System.Math.Exp(result) : System.Math.Exp(result);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Radiální èást vlnové funkce
-        /// </summary>
         /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
         /// <param name="x">Souøadnice</param>
         protected double Psi(double x, int i) {
-            return this.Psi(x, this.index.N[i], this.index.M[i]);
+            return this.Psi2D(x, this.index.N[i], this.index.M[i]);
         }
 
         protected override double PsiXY(double x, double y, int n) {

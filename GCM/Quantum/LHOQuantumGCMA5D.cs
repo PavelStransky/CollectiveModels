@@ -176,8 +176,11 @@ namespace PavelStransky.GCM {
             return m;
         }
 
-        protected override double PsiXY(double x, double y, int n) {
-            throw new Exception("The method or operation is not implemented.");
+        protected override double PsiBG(double beta, double gamma, int n) {
+            int l = this.index.L[n];
+            int mu = this.index.Mu[n];
+
+            return this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
         }
 
         #region Implementace IExportable

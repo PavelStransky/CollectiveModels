@@ -260,13 +260,116 @@ namespace PavelStransky.GCM {
         /// </summary>
         public int NumEV { get { return this.eigenVectors.Length; } }
 
+        #region Vlnové funkce
         /// <summary>
-        /// Vlnová funkce v souøadnice x, y
+        /// Vlnová funkce v souøadnicích x, y
         /// </summary>
         /// <param name="x">Souøadnice x</param>
         /// <param name="y">Souøadnice y</param>
         /// <param name="n">Index vlnové funkce</param>
-        protected abstract double PsiXY(double x, double y, int n);
+        protected virtual double PsiXY(double x, double y, int n) {
+            double beta = System.Math.Sqrt(x * x + y * y);
+            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
+
+            return this.PsiBG(beta, gamma, n);
+        }
+
+        /// <summary>
+        /// Vlnová funkce v souøadnicích beta, gamma
+        /// </summary>
+        /// <param name="beta">Souøadnice beta</param>
+        /// <param name="gamma">Souøadnice gamma</param>
+        /// <param name="n">Index vlnové funkce</param>
+        protected virtual double PsiBG(double beta, double gamma, int n) {
+            return 0.0;
+        }
+
+        /// <summary>
+        /// Radiální èást 2D vlnové funkce
+        /// </summary>
+        /// <param name="n">Hlavní kvantové èíslo</param>
+        /// <param name="m">Úhlové kvantové èíslo</param>
+        /// <param name="x">Souøadnice</param>
+        public double Psi2D(double x, int n, int m) {
+            double xi2 = this.s * x; xi2 *= xi2;
+            m = System.Math.Abs(m);
+
+            double normLog = 0.5 * (System.Math.Log(2.0) + SpecialFunctions.FactorialILog(n) - SpecialFunctions.FactorialILog(n + m)) + (m + 1) * System.Math.Log(this.s);
+            double l = 0.0;
+            double e = 0.0;
+            SpecialFunctions.Laguerre(out l, out e, xi2, n, m);
+
+            if(l == 0.0 || x == 0.0)
+                return 0.0;
+
+            double lLog = System.Math.Log(System.Math.Abs(l));
+            double result = normLog + m * System.Math.Log(x) - xi2 / 2.0 + lLog + e;
+            result = l < 0.0 ? -System.Math.Exp(result) : System.Math.Exp(result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Úhlová èást vlnové 2D funkce (liché)
+        /// </summary>
+        /// <param name="gamma">Souøadnice gamma</param>
+        /// <param name="m">Úhlové kvantové èíslo</param>
+        /// <returns></returns>
+        public double Phi2DO(double gamma, int m) {
+            return System.Math.Sin(m * gamma) * norm;
+        }
+
+        /// <summary>
+        /// Úhlová èást vlnové 2D funkce (sudé)
+        /// </summary>
+        /// <param name="gamma">Souøadnice gamma</param>
+        /// <param name="m">Úhlové kvantové èíslo</param>
+        /// <returns></returns>
+        public double Phi2DE(double gamma, int m) {
+            if(m == 0)
+                return norm / System.Math.Sqrt(2.0);
+            else
+                return System.Math.Cos(m * gamma) * norm;
+        }
+
+        private static double norm = 1 / System.Math.Sqrt(System.Math.PI);
+
+        /// <summary>
+        /// Radial part of the 5D wave function
+        /// </summary>
+        /// <param name="l">Principal quantum number</param>
+        /// <param name="mu">Second quantum number</param>
+        /// <param name="x">Value</param>
+        public double Psi5D(double x, int l, int mu) {
+            double xi2 = this.s * x; xi2 *= xi2;
+            int lambda = 3 * mu;
+
+            double normLog = (lambda + 2.5) * System.Math.Log(this.s) + 0.5 * (SpecialFunctions.FactorialILog(l) - SpecialFunctions.HalfFactorialILog(lambda + l + 2) + System.Math.Log(2.0));
+            double r = 0.0;
+            double e = 0.0;
+            SpecialFunctions.Laguerre(out r, out e, xi2, l, lambda + 1.5);
+
+            if(r == 0.0 || x == 0.0)
+                return 0.0;
+
+            double rLog = System.Math.Log(System.Math.Abs(r));
+            double result = normLog + lambda * System.Math.Log(x) - xi2 / 2.0 + rLog + e;
+            result = r < 0.0 ? -System.Math.Exp(result) : System.Math.Exp(result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Angular part of the 5D wave function
+        /// </summary>
+        /// <param name="g">Angle gamma</param>
+        /// <param name="mu">Angular quantum number</param>
+        public double Phi5D(double g, int mu) {
+            double result = SpecialFunctions.Legendre(System.Math.Cos(3.0 * g), mu);
+            double norm = System.Math.Sqrt((2.0 * mu + 1.0) / 4.0);
+            return result * norm;
+        }
+        #endregion
 
         /// <summary>
         /// Vrátí matici <n|V|n> amplitudy vlastní funkce n

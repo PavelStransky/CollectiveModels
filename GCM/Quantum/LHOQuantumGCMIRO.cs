@@ -48,14 +48,11 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Vlnová funkce ve 2D
         /// </summary>
-        protected override double PsiXY(double x, double y, int l) {
-            double beta = System.Math.Sqrt(x * x + y * y);
-            double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
-
+        protected override double PsiBG(double beta, double gamma, int l) {
             int n = this.index.N[l];
             int m = this.index.M[l];
 
-            return this.Psi(x, n, m) * System.Math.Sin(m * gamma);
+            return this.Psi2D(beta, n, m) * this.Phi2DO(gamma, m);
         }
     }
 }

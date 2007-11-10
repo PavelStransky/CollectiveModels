@@ -153,8 +153,14 @@ namespace PavelStransky.GCM {
             return m;
         }
 
-        protected override double PsiXY(double x, double y, int n) {
-            throw new Exception("The method or operation is not implemented.");
+        /// <summary>
+        /// Vlnová funkce ve 2D
+        /// </summary>
+        protected override double PsiBG(double beta, double gamma, int l) {
+            int n = this.index.N[l];
+            int m = this.index.M[l];
+
+            return this.Psi2D(beta, n, m) * this.Phi2DO(gamma, m);
         }
 
         #region Implementace IExportable

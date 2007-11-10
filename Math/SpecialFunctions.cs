@@ -481,11 +481,30 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Hodnota Wignerova rozdìlení se støední hodnotou 1
+        /// Hodnota Wignerova GOE rozdìlení se støední hodnotou 1
         /// </summary>
         /// <param name="x">x</param>
-        public static double Wigner(double x) {
+        public static double GOE(double x) {
             return System.Math.PI / 2.0 * x * System.Math.Exp(-System.Math.PI / 4.0 * x * x);
+        }
+
+        /// <summary>
+        /// Hodnota Wignerova GOE rozdìlení se støední hodnotou 1
+        /// </summary>
+        /// <param name="x">x</param>
+        public static double GUE(double x) {
+            double x2 = x * x;
+            return 32.0 / (System.Math.PI * System.Math.PI) * x2 * System.Math.Exp(-4.0 * x2 / System.Math.PI);
+        }
+
+        /// <summary>
+        /// Hodnota Wignerova GOE rozdìlení se støední hodnotou 1
+        /// </summary>
+        /// <param name="x">x</param>
+        public static double GSE(double x) {
+            double x2 = x * x;
+            double n = (64.0 / (9.0 * System.Math.PI));
+            return n * n * n * x2 * x2 * System.Math.Exp(-n * x2);
         }
 
         /// <summary>

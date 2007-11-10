@@ -921,6 +921,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value of Wigner GOE distribution.
+        /// </summary>
+        internal static string HelpGOE {
+            get {
+                return ResourceManager.GetString("HelpGOE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create graph.
         /// </summary>
         internal static string HelpGraph {
@@ -935,6 +944,24 @@ namespace PavelStransky.Expression {
         internal static string HelpGreater {
             get {
                 return ResourceManager.GetString("HelpGreater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of Wigner GSE distribution.
+        /// </summary>
+        internal static string HelpGSE {
+            get {
+                return ResourceManager.GetString("HelpGSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of Wigner GUE distribution.
+        /// </summary>
+        internal static string HelpGUE {
+            get {
+                return ResourceManager.GetString("HelpGUE", resourceCulture);
             }
         }
         
@@ -1515,11 +1542,47 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value with Wigner GOE distribution.
+        /// </summary>
+        internal static string HelpRandomGOE {
+            get {
+                return ResourceManager.GetString("HelpRandomGOE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value with Wigner GSE distribution.
+        /// </summary>
+        internal static string HelpRandomGSE {
+            get {
+                return ResourceManager.GetString("HelpRandomGSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value with Wigner GUE distribution.
+        /// </summary>
+        internal static string HelpRandomGUE {
+            get {
+                return ResourceManager.GetString("HelpRandomGUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates a symmetric matrix with Gaussian distributed components (according to PRL 65, 529 (1990)).
         /// </summary>
         internal static string HelpRandomMatrixSG {
             get {
                 return ResourceManager.GetString("HelpRandomMatrixSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value with Poisson distribution.
+        /// </summary>
+        internal static string HelpRandomPoisson {
+            get {
+                return ResourceManager.GetString("HelpRandomPoisson", resourceCulture);
             }
         }
         
@@ -1538,6 +1601,42 @@ namespace PavelStransky.Expression {
         internal static string HelpRandomVectorG {
             get {
                 return ResourceManager.GetString("HelpRandomVectorG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with Wigner GOE distributed components.
+        /// </summary>
+        internal static string HelpRandomVectorGOE {
+            get {
+                return ResourceManager.GetString("HelpRandomVectorGOE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with Wigner GSE distributed components.
+        /// </summary>
+        internal static string HelpRandomVectorGSE {
+            get {
+                return ResourceManager.GetString("HelpRandomVectorGSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with Wigner GUE distributed components.
+        /// </summary>
+        internal static string HelpRandomVectorGUE {
+            get {
+                return ResourceManager.GetString("HelpRandomVectorGUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with Poisson distributed components.
+        /// </summary>
+        internal static string HelpRandomVectorPoisson {
+            get {
+                return ResourceManager.GetString("HelpRandomVectorPoisson", resourceCulture);
             }
         }
         
@@ -1925,15 +2024,6 @@ namespace PavelStransky.Expression {
         internal static string HelpVMatrixZero2 {
             get {
                 return ResourceManager.GetString("HelpVMatrixZero2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value of Wigner distribution.
-        /// </summary>
-        internal static string HelpWigner {
-            get {
-                return ResourceManager.GetString("HelpWigner", resourceCulture);
             }
         }
         

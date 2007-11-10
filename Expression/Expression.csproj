@@ -126,6 +126,8 @@
     <Compile Include="Functions\LongNumbers\Denominator.cs" />
     <Compile Include="Functions\LongNumbers\MCD.cs" />
     <Compile Include="Functions\LongNumbers\Numerator.cs" />
+    <Compile Include="Functions\Math\GSE.cs" />
+    <Compile Include="Functions\Math\GUE.cs" />
     <Compile Include="Functions\Math\PolynomIntegrate.cs" />
     <Compile Include="Functions\Matrix\Trace.cs" />
     <Compile Include="Functions\Quantum\EigenMatrix.cs" />
@@ -133,6 +135,14 @@
     <Compile Include="Functions\Quantum\LHOQGCMARE.cs" />
     <Compile Include="Functions\Quantum\LHOQGCMARO.cs" />
     <Compile Include="Functions\Dynamics\VMatrix.cs" />
+    <Compile Include="Functions\Statistics\RandomGOE.cs" />
+    <Compile Include="Functions\Statistics\RandomGSE.cs" />
+    <Compile Include="Functions\Statistics\RandomGUE.cs" />
+    <Compile Include="Functions\Statistics\RandomPoisson.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorGOE.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorGSE.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorGUE.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorPoisson.cs" />
     <Compile Include="Functions\Types\Fraction.cs" />
     <Compile Include="Functions\Types\Long.cs" />
     <Compile Include="Functions\Unsorted\Primes.cs" />
@@ -193,7 +203,7 @@
     <Compile Include="Functions\Math\Poisson.cs" />
     <Compile Include="Functions\Math\PT1Potential.cs" />
     <Compile Include="Functions\Math\Sin.cs" />
-    <Compile Include="Functions\Math\Wigner.cs" />
+    <Compile Include="Functions\Math\GOE.cs" />
     <Compile Include="Functions\Matrix\BandWidth.cs" />
     <Compile Include="Functions\Operators\Assignment.cs" />
     <Compile Include="Functions\Operators\BoolAnd.cs" />

@@ -407,11 +407,20 @@ Length of the second vector: {1}</value>
   <data name="HelpGetY" xml:space="preserve">
     <value>From point or pointvector separates coordinates y</value>
   </data>
+  <data name="HelpGOE" xml:space="preserve">
+    <value>Value of Wigner GOE distribution</value>
+  </data>
   <data name="HelpGraph" xml:space="preserve">
     <value>Create graph</value>
   </data>
   <data name="HelpGreater" xml:space="preserve">
     <value>Operator &gt;</value>
+  </data>
+  <data name="HelpGSE" xml:space="preserve">
+    <value>Value of Wigner GSE distribution</value>
+  </data>
+  <data name="HelpGUE" xml:space="preserve">
+    <value>Value of Wigner GUE distribution</value>
   </data>
   <data name="HelpHamiltonianMatrixTrace" xml:space="preserve">
     <value>Returns the trace of the Hamiltonian matrix of a quantum system</value>
@@ -605,14 +614,38 @@ Length of the second vector: {1}</value>
   <data name="HelpRandomG" xml:space="preserve">
     <value>Generates Gaussian distributed random numbers with given variance and mean</value>
   </data>
+  <data name="HelpRandomGOE" xml:space="preserve">
+    <value>Value with Wigner GOE distribution</value>
+  </data>
+  <data name="HelpRandomGSE" xml:space="preserve">
+    <value>Value with Wigner GSE distribution</value>
+  </data>
+  <data name="HelpRandomGUE" xml:space="preserve">
+    <value>Value with Wigner GUE distribution</value>
+  </data>
   <data name="HelpRandomMatrixSG" xml:space="preserve">
     <value>Generates a symmetric matrix with Gaussian distributed components (according to PRL 65, 529 (1990))</value>
+  </data>
+  <data name="HelpRandomPoisson" xml:space="preserve">
+    <value>Value with Poisson distribution</value>
   </data>
   <data name="HelpRandomU" xml:space="preserve">
     <value>Generates uniformly distributed random numbers between given limits</value>
   </data>
   <data name="HelpRandomVectorG" xml:space="preserve">
     <value>Generates a vector with Gaussian distributed components</value>
+  </data>
+  <data name="HelpRandomVectorGOE" xml:space="preserve">
+    <value>Generates a vector with Wigner GOE distributed components</value>
+  </data>
+  <data name="HelpRandomVectorGSE" xml:space="preserve">
+    <value>Generates a vector with Wigner GSE distributed components</value>
+  </data>
+  <data name="HelpRandomVectorGUE" xml:space="preserve">
+    <value>Generates a vector with Wigner GUE distributed components</value>
+  </data>
+  <data name="HelpRandomVectorPoisson" xml:space="preserve">
+    <value>Generates a vector with Poisson distributed components</value>
   </data>
   <data name="HelpRandomVectorU" xml:space="preserve">
     <value>Generates a vector with uniformly distributed components</value>
@@ -742,9 +775,6 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpVMatrixZero2" xml:space="preserve">
     <value>For GCM system and given energy calculates the line where the higher eigenvalue of V matrix is zero</value>
-  </data>
-  <data name="HelpWigner" xml:space="preserve">
-    <value>Value of Wigner distribution</value>
   </data>
   <data name="MsgBytes" xml:space="preserve">
     <value>{0} Bytes</value>

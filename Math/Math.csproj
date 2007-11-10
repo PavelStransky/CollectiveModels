@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="Primes.cs" />
     <Compile Include="Regression.cs" />
+    <Compile Include="RMTDistribution.cs" />
     <Compile Include="RungeKutta.cs" />
     <Compile Include="RungeKuttaAdaptive.cs" />
     <Compile Include="RungeKuttaEnergy.cs" />

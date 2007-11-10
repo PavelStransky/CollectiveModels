@@ -260,6 +260,34 @@ namespace PavelStransky.GCM {
         /// </summary>
         public int NumEV { get { return this.eigenVectors.Length; } }
 
+        /// <summary>
+        /// Druhý invariant
+        /// </summary>
+        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
+        public virtual Vector GetSecondInvariant() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++) 
+                    result[i] += ev[j] * ev[j] * this.SecondInvariantCoef(j);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Koeficient pro výpoèet druhého invariantu
+        /// </summary>
+        /// <param name="j">Index k vlnové funkci</param>
+        protected abstract double SecondInvariantCoef(int j);
+
         #region Vlnové funkce
         /// <summary>
         /// Vlnová funkce v souøadnicích x, y

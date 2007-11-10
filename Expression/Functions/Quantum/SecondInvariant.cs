@@ -14,20 +14,11 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, typeof(LHOQuantumGCMIR), typeof(LHOQuantumGCMAR));
+            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, typeof(LHOQuantumGCM));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            object item = arguments[0];
-
-            if(item as LHOQuantumGCMAR != null)
-                return (item as LHOQuantumGCMAR).GetSecondInvariant();
-
-            else if(item as LHOQuantumGCMIR != null)
-                return (item as LHOQuantumGCMIR).GetSecondInvariant();
-
-            else
-                return null;
+            return (arguments[0] as LHOQuantumGCM).GetSecondInvariant();
         }
     }
 }

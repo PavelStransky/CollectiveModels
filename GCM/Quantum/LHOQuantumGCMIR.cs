@@ -397,27 +397,11 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Vrátí èasovou støední hodnotu druhého integrálu - úhlového momentu -i * hbar * (d / d phi)
+        /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(2) hbar^2 * (d / d phi)^2
         /// </summary>
-        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public Vector GetSecondInvariant() {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
-            int count = this.eigenVectors.Length;
-            Vector result = new Vector(count);
-
-            for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenVectors[i];
-                int length = ev.Length;
-
-                for(int j = 0; j < length; j++)
-                    result[i] += ev[j] * ev[j] * System.Math.Abs(this.index.M[j]);
-
-                result[i] *= this.Hbar;
-            }
-
-            return result;
+        protected override double SecondInvariantCoef(int n) {
+            double d = this.index.M[n] * this.Hbar;
+            return d * d;
         }
 
         #region Implementace IExportable

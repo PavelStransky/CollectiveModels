@@ -264,5 +264,9 @@ namespace PavelStransky.GCM {
         protected override double PsiXY(double x, double y, int n) {
             return this.Psi(x, n) * this.Psi(y, n);
         }
+
+        protected override double SecondInvariantCoef(int j) {
+            throw new Exception("The method or operation is not implemented.");
+        }
     }
 }

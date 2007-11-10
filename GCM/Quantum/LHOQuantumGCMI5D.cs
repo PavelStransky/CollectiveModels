@@ -297,6 +297,14 @@ namespace PavelStransky.GCM {
             return this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
         }
 
+        /// <summary>
+        /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(5)
+        /// </summary>
+        protected override double SecondInvariantCoef(int n) {
+            int lambda = 3 * this.index.Mu[n];
+            return lambda * (lambda + 3) * this.Hbar * this.Hbar;
+        }
+
         #region Implementace IExportable
         protected override void Export(IEParam param) {
             if(this.isComputed)

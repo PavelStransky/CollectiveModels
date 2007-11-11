@@ -576,7 +576,7 @@ namespace PavelStransky.Forms {
 
                 else if(item.HighlightType == HighlightTypes.Variable) {
                     if(this.context.Contains(item.Comment as string)) {
-                        help = this.context[item.Comment as string].Item.ToString();
+                        help = this.context[item.Comment as string].Item.GetType().Name;
                     }
                 }
             }

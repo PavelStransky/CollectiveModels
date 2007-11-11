@@ -180,7 +180,8 @@ namespace PavelStransky.GCM {
             int l = this.index.L[n];
             int mu = this.index.Mu[n];
 
-            return this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
+            double beta2 = beta * beta;
+            return beta * beta2 * this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
         }
 
         /// <summary>

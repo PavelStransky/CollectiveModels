@@ -52,7 +52,6 @@ namespace PavelStransky.Expression
 		public override object Evaluate(Guider guider) {
             object result = null;
 
-            DateTime startTime = DateTime.Now;
             try {
                 result = this.function.Evaluate(guider, this.arguments);
             }

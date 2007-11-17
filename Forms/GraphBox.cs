@@ -37,10 +37,10 @@ namespace PavelStransky.Forms {
         private MinMaxCache[] minMaxB;
 
 		// Velikosti okrajù (aby graf nepøelézal a nedotýkal se)
-        private int marginL = 3 * defaultMargin;
-        private int marginR = defaultMargin;
-        private int marginT = defaultMargin;
-        private int marginB = 3 * defaultMargin;
+        private int marginL;
+        private int marginR;
+        private int marginT;
+        private int marginB;
 
         // True, pokud se bude animovat èasový vývoj køivky
         private bool evalCurve = false;
@@ -109,8 +109,8 @@ namespace PavelStransky.Forms {
         /// <param name="group">Index skupiny</param>
         /// <param name="matrix">Matice k vykreslení</param>
         private Bitmap CreateBitmap(int group, Matrix matrix) {
-            int pointSizeX = (int)this.graph.GetBackgroundParameter(group, paramPointSizeX, defaultPointSizeX);
-            int pointSizeY = (int)this.graph.GetBackgroundParameter(group, paramPointSizeY, defaultPointSizeY);
+            int pointSizeX = (int)this.graph.GetBackgroundParameter(group, paramPointSizeXBackground, defaultPointSizeXBackground);
+            int pointSizeY = (int)this.graph.GetBackgroundParameter(group, paramPointSizeYBackground, defaultPointSizeYBackground);
             bool legend = (bool)this.graph.GetBackgroundParameter(group, paramLegend, defaultLegend);
             int legendWidth = (int)this.graph.GetBackgroundParameter(group, paramLegendWidth, defaultLegendWidth);
 
@@ -483,10 +483,24 @@ namespace PavelStransky.Forms {
 		public void SetGraph(Graph graph) {
 			this.graph = graph;
 
-            this.marginL = (bool)this.graph.GetGeneralParameter(paramShowAxeY, defaultShowAxeY) ? defaultMarginWithAxeL : defaultMargin;
-            this.marginR = defaultMargin;
-            this.marginT = defaultMargin;
-            this.marginB = (bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX) ? defaultMarginWithAxeB : defaultMargin;
+            this.marginL = defaultMargin;
+            if((bool)this.graph.GetGeneralParameter(paramShowAxeY, defaultShowAxeY))
+                this.marginL += defaultMarginAxeL;
+            if((string)this.graph.GetGeneralParameter(paramTitleY, defaultTitleY) != string.Empty)
+                this.marginL += defaultMarginTitleY;
+
+            this.marginL = (int)this.graph.GetGeneralParameter(paramMarginLeft, this.marginL);
+
+            this.marginR = (int)this.graph.GetGeneralParameter(paramMarginRight, defaultMargin);
+            this.marginT = (int)this.graph.GetGeneralParameter(paramMarginTop, defaultMargin);
+
+            this.marginB = defaultMargin;
+            if((bool)this.graph.GetGeneralParameter(paramShowAxeX, defaultShowAxeX))
+                this.marginB += defaultMarginAxeB;
+            if((string)this.graph.GetGeneralParameter(paramTitleX, defaultTitleX) != string.Empty)
+                this.marginB += defaultMarginTitleX;
+
+            this.marginB = (int)this.graph.GetGeneralParameter(paramMarginBottom, this.marginB);
 
             this.evalGroup = (bool)this.graph.GetGeneralParameter(paramEvaluateGroup, defaultEvaluateGroup);
             this.evalCurve = (bool)this.graph.GetGeneralParameter(paramEvaluateCurve, defaultEvaluateCurve);
@@ -602,10 +616,10 @@ namespace PavelStransky.Forms {
                 }
 
                 Vector minmaxB = new Vector(4);
-                minmaxB[0] = (double)this.graph.GetBackgroundParameter(group, paramMinXBackground, minmax[0]);
-                minmaxB[1] = (double)this.graph.GetBackgroundParameter(group, paramMaxXBackground, minmax[1]);
-                minmaxB[2] = (double)this.graph.GetBackgroundParameter(group, paramMinYBackground, minmax[2]);
-                minmaxB[3] = (double)this.graph.GetBackgroundParameter(group, paramMaxYBackground, minmax[3]);
+                minmaxB[0] = (double)this.graph.GetBackgroundParameter(g, paramMinXBackground, minmax[0]);
+                minmaxB[1] = (double)this.graph.GetBackgroundParameter(g, paramMaxXBackground, minmax[1]);
+                minmaxB[2] = (double)this.graph.GetBackgroundParameter(g, paramMinYBackground, minmax[2]);
+                minmaxB[3] = (double)this.graph.GetBackgroundParameter(g, paramMaxYBackground, minmax[3]);
 
                 Matrix m = this.graph.GetMatrix(g);
                 double maxAbs = 0.0;
@@ -892,6 +906,36 @@ namespace PavelStransky.Forms {
                 this.DrawPoints(g, p, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
             }
 
+            // X - ový popisek
+            string titleX = (string)this.graph.GetGeneralParameter(paramTitleX, defaultTitleX);
+
+            if(titleX != string.Empty) {
+                int x = (this.Width - this.AbsMarginL - this.AbsMarginR) / 2 + this.AbsMarginL;
+                int y = this.Height - this.AbsMarginB / 2;
+
+                Font font = new Font(baseFontFamilyName, (int)this.graph.GetGeneralParameter(paramFontSizeTitleX, defaultFontSizeTitleX), FontStyle.Bold | FontStyle.Italic);
+                Color titleColor = (Color)this.graph.GetGeneralParameter(paramTitleColorX, defaultTitleColorX);
+                Brush titleBrush = new Pen(titleColor).Brush;
+
+                SizeF p = g.MeasureString(titleX, font);
+                g.DrawString(titleX, font, titleBrush, x - (int)(p.Width / 2), y);
+            }
+
+            // Y - ový popisek
+            string titleY = (string)this.graph.GetGeneralParameter(paramTitleY, defaultTitleY);
+
+            if(titleY != string.Empty) {
+                int x = this.AbsMarginL / 2;
+                int y = (this.Height - this.AbsMarginT - this.AbsMarginB) / 2 + this.AbsMarginT;
+
+                Font font = new Font(baseFontFamilyName, (int)this.graph.GetGeneralParameter(paramFontSizeTitleY, defaultFontSizeTitleY), FontStyle.Bold | FontStyle.Italic);
+                Color titleColor = (Color)this.graph.GetGeneralParameter(paramTitleColorY, defaultTitleColorY);
+                Brush titleBrush = new Pen(titleColor).Brush;
+
+                SizeF p = g.MeasureString(titleY, font);
+                g.DrawString(titleY, font, titleBrush, x - (int)(p.Width), y - (int)(p.Height / 2));
+            }
+
             // Legenda
             bool showLegend = (bool)this.graph.GetBackgroundParameter(group, paramLegend, defaultLegend);
             if(showLegend && this.graph.GetMatrix(group).NumItems() > 0) {
@@ -963,10 +1007,10 @@ namespace PavelStransky.Forms {
 			double x = min;
 			double interval = largeInterval / smallIntervals;
 			x /= interval;
-			x = System.Math.Floor(x) + 1;
+			x = System.Math.Ceiling(x);
 			x *= interval;
 
-			Vector result = new Vector((int)(wholeInterval / interval));
+            Vector result = new Vector((int)(max / interval) - (int)(min / interval) + 1);
 
 			for(int i = 1; i <= result.Length; i++)
 				result[i - 1] = x + (i - 1) * interval;
@@ -1176,10 +1220,14 @@ namespace PavelStransky.Forms {
 
 		private string baseFontFamilyName = "Arial";
 		private const double baseAmplifyY = 8;
+
         // Okraj v promilích
-		private const int defaultMargin = 20;
-		private const int defaultMarginWithAxeL = 120;
-		private const int defaultMarginWithAxeB = 100;
+		private const int defaultMargin = 30;
+		private const int defaultMarginAxeL = 80;
+		private const int defaultMarginAxeB = 70;
+        private const int defaultMarginTitleX = 50;
+        private const int defaultMarginTitleY = 50;
+
 		// Interval mezi dvìma body s èísly na ose (v obrazových bodech)
 		private const int axePointInterval = 50;
         private const double multiplierMinMax = 0.02;
@@ -1205,6 +1253,11 @@ namespace PavelStransky.Forms {
         private const string paramLastPointColor = "lpcolor";
         private const string paramLastPointStyle = "lpstyle";
         private const string paramLastPointSize = "lpsize";
+
+        private const string paramMarginLeft = "marginl";
+        private const string paramMarginRight = "marginr";
+        private const string paramMarginTop = "margint";
+        private const string paramMarginBottom = "marginb";
 
         private const string paramMinX = "minx";
         private const string paramMaxX = "maxx";
@@ -1239,6 +1292,11 @@ namespace PavelStransky.Forms {
         private const string paramFontSizeY = "fsizey";
         private const string paramShowAxeY = "showaxey";
 
+        private const string paramFontSizeTitleX = "fsizetx";
+        private const string paramFontSizeTitleY = "fsizety";
+        private const string paramTitleColorX = "tcolorx";
+        private const string paramTitleColorY = "tcolory";
+
         private const string paramColorZero = "colorzero";
         private const string paramColorPlus = "colorplus";
         private const string paramColorMinus = "colorminus";
@@ -1255,6 +1313,9 @@ namespace PavelStransky.Forms {
         private const string paramMaxXBackground = "maxxb";
         private const string paramMinYBackground = "minyb";
         private const string paramMaxYBackground = "maxyb";
+
+        private const string paramPointSizeXBackground = "psizexb";
+        private const string paramPointSizeYBackground = "psizeyb";
 
         // Default hodnoty
         private const bool defaultShift = false;
@@ -1282,7 +1343,7 @@ namespace PavelStransky.Forms {
         private const double defaultMinY = defaultMinX;
         private const double defaultMaxY = defaultMinX;
 
-        private const string defaultTitleX = "X";
+        private const string defaultTitleX = "";
         private static Color defaultLineColorX = Color.FromName("red");
         private const float defaultLineWidthX = 1.0F;
         private static Color defaultPointColorX = Color.FromName("red");
@@ -1293,7 +1354,7 @@ namespace PavelStransky.Forms {
         private const int defaultFontSizeX = 8;
         private const bool defaultShowAxeX = true;
 
-        private const string defaultTitleY = "Y";
+        private const string defaultTitleY = "";
         private static Color defaultLineColorY = Color.FromName("red");
         private const float defaultLineWidthY = 1.0F;
         private static Color defaultPointColorY = Color.FromName("red");
@@ -1303,6 +1364,11 @@ namespace PavelStransky.Forms {
         private static Color defaultLabelColorY = defaultLineColorY;
         private const int defaultFontSizeY = defaultFontSizeX;
         private const bool defaultShowAxeY = true;
+
+        private const int defaultFontSizeTitleX = 12;
+        private const int defaultFontSizeTitleY = 12;
+        private static Color defaultTitleColorX = Color.FromName("red");
+        private static Color defaultTitleColorY = Color.FromName("red");
 
         private static Color defaultColorZero = Color.FromName("white");
         private static Color defaultColorPlus = Color.FromName("blue");
@@ -1325,6 +1391,9 @@ namespace PavelStransky.Forms {
         private const double defaultMaxXBackground = defaultMinX;
         private const double defaultMinYBackground = defaultMinX;
         private const double defaultMaxYBackground = defaultMinX;
+
+        private const int defaultPointSizeXBackground = 1;
+        private const int defaultPointSizeYBackground = 1;
 
         private const string errorMessageBadFileName = "Chybný název souboru pro uložení obrázku: {0}";
     }

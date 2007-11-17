@@ -31,6 +31,7 @@ namespace PavelStransky.Forms {
             this.btStart = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tHelp = new System.Windows.Forms.Timer(this.components);
+            this.chkHighlightSyntax = new System.Windows.Forms.CheckBox();
             this.mrbResult = new PavelStransky.Forms.MultipleRadioButton();
             this.txtCommand = new PavelStransky.Forms.CommandTextBox();
             this.SuspendLayout();
@@ -57,13 +58,25 @@ namespace PavelStransky.Forms {
             this.tHelp.Interval = 150;
             this.tHelp.Tick += new System.EventHandler(this.tHelp_Tick);
             // 
+            // chkHighlightSyntax
+            // 
+            this.chkHighlightSyntax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkHighlightSyntax.AutoSize = true;
+            this.chkHighlightSyntax.Location = new System.Drawing.Point(36, 365);
+            this.chkHighlightSyntax.Name = "chkHighlightSyntax";
+            this.chkHighlightSyntax.Size = new System.Drawing.Size(15, 14);
+            this.chkHighlightSyntax.TabIndex = 10;
+            this.toolTip.SetToolTip(this.chkHighlightSyntax, "Zvýrazòování syntaxe");
+            this.chkHighlightSyntax.UseVisualStyleBackColor = true;
+            this.chkHighlightSyntax.CheckedChanged += new System.EventHandler(this.chkHighlightSyntax_CheckedChanged);
+            // 
             // mrbResult
             // 
             this.mrbResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.mrbResult.Location = new System.Drawing.Point(32, 363);
+            this.mrbResult.Location = new System.Drawing.Point(59, 363);
             this.mrbResult.Name = "mrbResult";
-            this.mrbResult.Size = new System.Drawing.Size(529, 18);
+            this.mrbResult.Size = new System.Drawing.Size(501, 18);
             this.mrbResult.TabIndex = 9;
             this.mrbResult.RBClick += new PavelStransky.Forms.MultipleRadioButton.MultipleRadioButtonEventHandler(this.mrbResult_RBClick);
             // 
@@ -94,6 +107,7 @@ namespace PavelStransky.Forms {
             this.AllowDrop = true;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(561, 384);
+            this.Controls.Add(this.chkHighlightSyntax);
             this.Controls.Add(this.mrbResult);
             this.Controls.Add(this.btStart);
             this.Controls.Add(this.txtCommand);
@@ -102,6 +116,7 @@ namespace PavelStransky.Forms {
             this.Text = "Prográmek";
             this.Activated += new System.EventHandler(this.Editor_Activated);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         #endregion
@@ -112,5 +127,6 @@ namespace PavelStransky.Forms {
         private ToolTip toolTip;
         private MultipleRadioButton mrbResult;
         private Timer tHelp;
+        private CheckBox chkHighlightSyntax;
     }
 }

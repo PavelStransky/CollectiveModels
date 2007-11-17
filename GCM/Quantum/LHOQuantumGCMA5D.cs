@@ -180,8 +180,11 @@ namespace PavelStransky.GCM {
             int l = this.index.L[n];
             int mu = this.index.Mu[n];
 
-            double beta2 = beta * beta;
-            return beta * beta2 * this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
+            double beta3 = beta * beta * beta;
+            double sin3g = System.Math.Abs(System.Math.Sin(3.0 * gamma));
+            double k = System.Math.Sqrt(beta3 * sin3g);
+
+            return k * this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
         }
 
         /// <summary>

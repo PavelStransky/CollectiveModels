@@ -23,6 +23,8 @@ namespace PavelStransky.Forms {
         /// </summary>
         public CommandTextBox() : base() {
             this.AllowDrop = true;
+            this.SetHighlight();
+            this.SetTimers();
         }
 
         /// <summary>
@@ -165,7 +167,6 @@ namespace PavelStransky.Forms {
         // Èasovaè (pøekreslujeme vždy po urèité dobì po zmìnì, protože pøekreslování je
         // bohužel hroznì èasovì nároèné)
         private System.Timers.Timer tRecalculate, tRedraw;
-        private bool timersInicialized = false;
 
         private BackgroundWorker workerRecalculate;
         private Highlight highlight;
@@ -180,10 +181,10 @@ namespace PavelStransky.Forms {
                 return this.highlighting;
             }
             set {
-                if(value == true & this.highlighting == false) {
-                    this.SetHighlight();
-                    this.SetTimers();
-                }
+                if(value == true & this.highlighting == false) 
+                    this.ForceHighlightSyntax();
+                else if(value == false && this.highlighting == true) 
+                    this.HighlightSyntax(false);
 
                 this.highlighting = value;
             }
@@ -204,31 +205,34 @@ namespace PavelStransky.Forms {
         /// Nastaví èasovaèe pro pøekreslování syntaxe
         /// </summary>
         private void SetTimers() {
-            if(!this.timersInicialized) {
-                this.tRecalculate = new System.Timers.Timer();
-                this.tRecalculate.Interval = 1500;
-                this.tRecalculate.AutoReset = false;
-                this.tRecalculate.Elapsed += new System.Timers.ElapsedEventHandler(tRecalculate_Elapsed);
+            this.tRecalculate = new System.Timers.Timer();
+            this.tRecalculate.Interval = 1500;
+            this.tRecalculate.AutoReset = false;
+            this.tRecalculate.Elapsed += new System.Timers.ElapsedEventHandler(tRecalculate_Elapsed);
 
-                this.tRedraw = new System.Timers.Timer();
-                this.tRedraw.Interval = 2000;
-                this.tRedraw.AutoReset = false;
-                this.tRedraw.Elapsed += new System.Timers.ElapsedEventHandler(tRedraw_Elapsed);
+            this.tRedraw = new System.Timers.Timer();
+            this.tRedraw.Interval = 2000;
+            this.tRedraw.AutoReset = false;
+            this.tRedraw.Elapsed += new System.Timers.ElapsedEventHandler(tRedraw_Elapsed);
 
-                this.workerRecalculate = new BackgroundWorker();
-                this.workerRecalculate.WorkerReportsProgress = false;
-                this.workerRecalculate.WorkerSupportsCancellation = false;
-                this.workerRecalculate.DoWork += new DoWorkEventHandler(workerRecalculate_DoWork);
-
-                this.timersInicialized = true;
-
-            }
+            this.workerRecalculate = new BackgroundWorker();
+            this.workerRecalculate.WorkerReportsProgress = false;
+            this.workerRecalculate.WorkerSupportsCancellation = false;
+            this.workerRecalculate.DoWork += new DoWorkEventHandler(workerRecalculate_DoWork);
         }
 
         /// <summary>
         /// Zvýrazní syntaxi v celém textu
         /// </summary>
         private void HighlightSyntax() {
+            this.HighlightSyntax(true);
+        }
+
+        /// <summary>
+        /// Zruší nebo zvýrazní syntaxi v celém textu
+        /// </summary>
+        /// <param name="h">True, chceme-li syntaxi zvýraznit</param>
+        private void HighlightSyntax(bool h) {
             int selectionStart = this.SelectionStart;
             int selectionLength = this.SelectionLength;
             int firstShowedChar = this.GetCharIndexFromPosition(new Point(this.Margin.Left, this.Margin.Top));
@@ -246,7 +250,8 @@ namespace PavelStransky.Forms {
 
             this.Text = s;
 
-            this.highlight.HighlightAll(this);
+            if(h)
+                this.highlight.HighlightAll(this);
 
             this.SelectionStart = firstShowedChar;
             this.ScrollToCaret();
@@ -263,9 +268,8 @@ namespace PavelStransky.Forms {
         /// Provede okamžitì oznaèení syntaxe
         /// </summary>
         public void ForceHighlightSyntax() {
-            this.SetHighlight();
             this.highlight.CheckSyntax(this.Text); 
-            this.HighlightSyntax();
+            this.HighlightSyntax(true);
         }
 
         /// <summary>
@@ -319,8 +323,10 @@ namespace PavelStransky.Forms {
             if(!this.IsDisposed) {
                 if(this.recalculating)
                     this.tRedraw.Start();
-                else
+                else {
+                    this.tRecalculate.Stop();
                     this.Invoke(new InvokeDelegate(this.HighlightSyntax));
+                }
             }
         }
 

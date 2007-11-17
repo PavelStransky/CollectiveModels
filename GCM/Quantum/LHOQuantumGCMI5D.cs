@@ -294,7 +294,10 @@ namespace PavelStransky.GCM {
             int l = this.index.L[n];
             int mu = this.index.Mu[n];
 
-            return this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
+            double beta3 = beta * beta * beta;
+            double sin3g = System.Math.Abs(System.Math.Sin(3.0 * gamma));
+
+            return beta3 * sin3g * this.Psi5D(beta, l, mu) * this.Phi5D(gamma, mu);
         }
 
         /// <summary>

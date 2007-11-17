@@ -540,6 +540,13 @@ namespace PavelStransky.Forms {
             this.Modified = txtCommand.Modified;
         }
 
+        /// <summary>
+        /// Pøi zmìnì zvýrazòování syntaxe
+        /// </summary>
+        private void chkHighlightSyntax_CheckedChanged(object sender, EventArgs e) {
+            this.txtCommand.Highlighting = this.chkHighlightSyntax.Checked;
+        }
+
         #region Nápovìda pomocí ToolTipu
         // Objekt, ze kterého se bude zobrazovat toolTip
         private Highlight.HighlightItem toolTipItem;
@@ -632,6 +639,7 @@ namespace PavelStransky.Forms {
             param.Add(this.context, "Context");
 
             param.Add(this.WindowState.ToString(), "WindowState");
+            param.Add(this.chkHighlightSyntax.Checked, "HighlightSyntax");
 
             param.Export(export);
         }
@@ -688,6 +696,7 @@ namespace PavelStransky.Forms {
                 this.context = (Context)param.Get();
 
                 this.WindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), (string)param.Get(FormWindowState.Normal.ToString()), true);
+                this.chkHighlightSyntax.Checked = (bool)param.Get(true);
             }
 
             this.InitializeEvents(this.context);
@@ -743,9 +752,5 @@ namespace PavelStransky.Forms {
         private const string tmpFile = "tmp.tmp";
 
         private const int margin = 8;
-
-        private void txtCommand_MouseMove(object sender, MouseEventArgs e) {
-
-        }
     }
 }

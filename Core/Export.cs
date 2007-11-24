@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 
@@ -98,6 +99,9 @@ namespace PavelStransky.Core {
             }
             else if(o is TimeSpan) {
                 if(binary) b.Write(((TimeSpan)o).Ticks); else t.WriteLine(((TimeSpan)o).Ticks);
+            }
+            else if(o is Color) {
+                if(binary) b.Write(((Color)o).ToArgb()); else t.WriteLine(((Color)o).ToArgb());
             }
             else if(o as IExportable != null) {
                 (o as IExportable).Export(this);

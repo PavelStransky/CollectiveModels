@@ -130,6 +130,13 @@ Second Array: {1}</value>
   <data name="EMBadBoolValue" xml:space="preserve">
     <value>String '{0}' has not been determined as a bool value.</value>
   </data>
+  <data name="EMBadGraphParamType" xml:space="preserve">
+    <value>Parameter '{0}' in graph parameters has bad type.</value>
+  </data>
+  <data name="EMBadGraphParamTypeDetail" xml:space="preserve">
+    <value>Correct type: {0}
+Entered type: {1}</value>
+  </data>
   <data name="EMBadHelpParameter" xml:space="preserve">
     <value>Help is provided only for functions, not for '{0}'.</value>
   </data>
@@ -256,6 +263,480 @@ Length of the second vector: {1}</value>
   </data>
   <data name="EMZeroLengthList" xml:space="preserve">
     <value>The length of the list must not be zero.</value>
+  </data>
+  <data name="GPALabelColorX" xml:space="preserve">
+    <value>alabelcolorx</value>
+  </data>
+  <data name="GPALabelColorXDescription" xml:space="preserve">
+    <value>Color of the labels of the x-axis </value>
+  </data>
+  <data name="GPALabelColorY" xml:space="preserve">
+    <value>alabelcolory</value>
+  </data>
+  <data name="GPALabelColorYDescription" xml:space="preserve">
+    <value>Color of the labels of the y-axis </value>
+  </data>
+  <data name="GPALabelFSizeX" xml:space="preserve">
+    <value>alabelfsizex</value>
+  </data>
+  <data name="GPALabelFSizeXDescription" xml:space="preserve">
+    <value>Font size of the labels of the x-axis </value>
+  </data>
+  <data name="GPALabelFSizeY" xml:space="preserve">
+    <value>alabelfsizey</value>
+  </data>
+  <data name="GPALabelFSizeYDescription" xml:space="preserve">
+    <value>Font size of the labels of the y-axis </value>
+  </data>
+  <data name="GPALColorX" xml:space="preserve">
+    <value>alcolorx</value>
+  </data>
+  <data name="GPALColorXDescription" xml:space="preserve">
+    <value>Color of the line of the x-axis</value>
+  </data>
+  <data name="GPALColorY" xml:space="preserve">
+    <value>alcolory</value>
+  </data>
+  <data name="GPALColorYDescription" xml:space="preserve">
+    <value>Color of the line of the y-axis</value>
+  </data>
+  <data name="GPALWidthX" xml:space="preserve">
+    <value>alwidthx</value>
+  </data>
+  <data name="GPALWidthXDescription" xml:space="preserve">
+    <value>Width of the line of the x-axis</value>
+  </data>
+  <data name="GPALWidthY" xml:space="preserve">
+    <value>alwidthy</value>
+  </data>
+  <data name="GPALWidthYDescription" xml:space="preserve">
+    <value>Width of the line of the y-axis</value>
+  </data>
+  <data name="GPAnimCurve" xml:space="preserve">
+    <value>animcurve</value>
+  </data>
+  <data name="GPAnimCurveDescription" xml:space="preserve">
+    <value>True if the curves are to be animated</value>
+  </data>
+  <data name="GPAnimGroup" xml:space="preserve">
+    <value>animgroup</value>
+  </data>
+  <data name="GPAnimGroupDescription" xml:space="preserve">
+    <value>True if the groups are to be animated</value>
+  </data>
+  <data name="GPAPColorX" xml:space="preserve">
+    <value>apcolorx</value>
+  </data>
+  <data name="GPAPColorXDescription" xml:space="preserve">
+    <value>Color of the points of the x-axis</value>
+  </data>
+  <data name="GPAPColorY" xml:space="preserve">
+    <value>apcolory</value>
+  </data>
+  <data name="GPAPColorYDescription" xml:space="preserve">
+    <value>Color of the points of the y-axis</value>
+  </data>
+  <data name="GPAPSizeX" xml:space="preserve">
+    <value>apsizex</value>
+  </data>
+  <data name="GPAPSizeXDescription" xml:space="preserve">
+    <value>Size of the points of the x-axis</value>
+  </data>
+  <data name="GPAPSizeY" xml:space="preserve">
+    <value>apsizey</value>
+  </data>
+  <data name="GPAPSizeYDescription" xml:space="preserve">
+    <value>Size of the points of the y-axis</value>
+  </data>
+  <data name="GPAPStyleX" xml:space="preserve">
+    <value>apstylex</value>
+  </data>
+  <data name="GPAPStyleXDescription" xml:space="preserve">
+    <value>Style of the points of the x-axis</value>
+  </data>
+  <data name="GPAPStyleY" xml:space="preserve">
+    <value>apstyley</value>
+  </data>
+  <data name="GPAPStyleYDescription" xml:space="preserve">
+    <value>Style of the points of the y-axis</value>
+  </data>
+  <data name="GPAShowB" xml:space="preserve">
+    <value>ashowb</value>
+  </data>
+  <data name="GPAShowBDescription" xml:space="preserve">
+    <value>True if the x-axis at the bottom is to be shown</value>
+  </data>
+  <data name="GPAShowL" xml:space="preserve">
+    <value>ashowl</value>
+  </data>
+  <data name="GPAShowLabelX" xml:space="preserve">
+    <value>ashowlabelx</value>
+  </data>
+  <data name="GPAShowLabelXDescription" xml:space="preserve">
+    <value>True if the labels of the x-axis are to be shown</value>
+  </data>
+  <data name="GPAShowLabelY" xml:space="preserve">
+    <value>ashowlabely</value>
+  </data>
+  <data name="GPAShowLabelYDescription" xml:space="preserve">
+    <value>True if the labels of the y-axis are to be shown</value>
+  </data>
+  <data name="GPAShowLDescription" xml:space="preserve">
+    <value>True if the y-axis on the left is to be shown</value>
+  </data>
+  <data name="GPAShowR" xml:space="preserve">
+    <value>ashowr</value>
+  </data>
+  <data name="GPAShowRDescription" xml:space="preserve">
+    <value>True if the y-axis on the right is to be shown</value>
+  </data>
+  <data name="GPAShowT" xml:space="preserve">
+    <value>ashowt</value>
+  </data>
+  <data name="GPAShowTDescription" xml:space="preserve">
+    <value>True if the x-axis at the top is to be shown</value>
+  </data>
+  <data name="GPATitleColorX" xml:space="preserve">
+    <value>titlecolorx</value>
+  </data>
+  <data name="GPATitleColorXDescription" xml:space="preserve">
+    <value>Color of the x-axis</value>
+  </data>
+  <data name="GPATitleColorY" xml:space="preserve">
+    <value>titlecolory</value>
+  </data>
+  <data name="GPATitleColorYDescription" xml:space="preserve">
+    <value>Color of the y-axis</value>
+  </data>
+  <data name="GPATitleFSizeX" xml:space="preserve">
+    <value>titlefsizex</value>
+  </data>
+  <data name="GPATitleFSizeXDescription" xml:space="preserve">
+    <value>Font size of the x-axis</value>
+  </data>
+  <data name="GPATitleFSizeY" xml:space="preserve">
+    <value>titlefsizey</value>
+  </data>
+  <data name="GPATitleFSizeYDescription" xml:space="preserve">
+    <value>Font size of the y-axis</value>
+  </data>
+  <data name="GPATitleX" xml:space="preserve">
+    <value>atitlex</value>
+  </data>
+  <data name="GPATitleXDescription" xml:space="preserve">
+    <value>Title of the x-axis</value>
+  </data>
+  <data name="GPATitleY" xml:space="preserve">
+    <value>atitley</value>
+  </data>
+  <data name="GPATitleYDescription" xml:space="preserve">
+    <value>Title of the y-axis</value>
+  </data>
+  <data name="GPBColor" xml:space="preserve">
+    <value>bcolor</value>
+  </data>
+  <data name="GPBColorDescription" xml:space="preserve">
+    <value>Color of the background</value>
+  </data>
+  <data name="GPBColorMinus" xml:space="preserve">
+    <value>bcolorminus</value>
+  </data>
+  <data name="GPBColorMinusDescription" xml:space="preserve">
+    <value>Color of the minimal negative value of the background image</value>
+  </data>
+  <data name="GPBColorPlus" xml:space="preserve">
+    <value>bcolorplus</value>
+  </data>
+  <data name="GPBColorPlusDescription" xml:space="preserve">
+    <value>Color of the maximal positive value of the background image</value>
+  </data>
+  <data name="GPBColorZero" xml:space="preserve">
+    <value>bcolorzero</value>
+  </data>
+  <data name="GPBColorZeroDescription" xml:space="preserve">
+    <value>Color of the zero value of the background image</value>
+  </data>
+  <data name="GPBLegend" xml:space="preserve">
+    <value>blegend</value>
+  </data>
+  <data name="GPBLegendDescription" xml:space="preserve">
+    <value>True if the legend of the background image are to be displayed</value>
+  </data>
+  <data name="GPBLegendFSize" xml:space="preserve">
+    <value>blegendfsize</value>
+  </data>
+  <data name="GPBLegendFSizeDescription" xml:space="preserve">
+    <value>Font size of the legend of the background image</value>
+  </data>
+  <data name="GPBLegendWidth" xml:space="preserve">
+    <value>blegendwidth</value>
+  </data>
+  <data name="GPBLegendWidthDescription" xml:space="preserve">
+    <value>Width of the legend of the background image</value>
+  </data>
+  <data name="GPBMaxX" xml:space="preserve">
+    <value>bmaxx</value>
+  </data>
+  <data name="GPBMaxXDescription" xml:space="preserve">
+    <value>Maximal x of the background image</value>
+  </data>
+  <data name="GPBMaxY" xml:space="preserve">
+    <value>bmaxy</value>
+  </data>
+  <data name="GPBMaxYDescription" xml:space="preserve">
+    <value>Maximal y of the background image</value>
+  </data>
+  <data name="GPBMinX" xml:space="preserve">
+    <value>bminx</value>
+  </data>
+  <data name="GPBMinXDescription" xml:space="preserve">
+    <value>Minimal x of the background image</value>
+  </data>
+  <data name="GPBMinY" xml:space="preserve">
+    <value>bminy</value>
+  </data>
+  <data name="GPBMinYDescription" xml:space="preserve">
+    <value>Minimal y of the background image</value>
+  </data>
+  <data name="GPBPSizeX" xml:space="preserve">
+    <value>bpsizex</value>
+  </data>
+  <data name="GPBPSizeXDescription" xml:space="preserve">
+    <value>Size of the points of the background image in the x-direction</value>
+  </data>
+  <data name="GPBPSizeY" xml:space="preserve">
+    <value>bpsizey</value>
+  </data>
+  <data name="GPBPSizeYDescription" xml:space="preserve">
+    <value>Size of the points of the background image in the y-direction</value>
+  </data>
+  <data name="GPFPColor" xml:space="preserve">
+    <value>fpcolor</value>
+  </data>
+  <data name="GPFPColorDescription" xml:space="preserve">
+    <value>Color of the first point of the curve</value>
+  </data>
+  <data name="GPFPSize" xml:space="preserve">
+    <value>fpsize</value>
+  </data>
+  <data name="GPFPSizeDescription" xml:space="preserve">
+    <value>Size of the first point of the curve</value>
+  </data>
+  <data name="GPFPStyle" xml:space="preserve">
+    <value>fpstyle</value>
+  </data>
+  <data name="GPFPStyleDescription" xml:space="preserve">
+    <value>Style of the first point of the curve</value>
+  </data>
+  <data name="GPGridColorX" xml:space="preserve">
+    <value>gridcolorx</value>
+  </data>
+  <data name="GPGridColorXDescription" xml:space="preserve">
+    <value>Color of vertical grid lines</value>
+  </data>
+  <data name="GPGridColorY" xml:space="preserve">
+    <value>gridcolory</value>
+  </data>
+  <data name="GPGridColorYDescription" xml:space="preserve">
+    <value>Color of horizontal grid lines</value>
+  </data>
+  <data name="GPGridWidthX" xml:space="preserve">
+    <value>gridwidthx</value>
+  </data>
+  <data name="GPGridWidthXDescription" xml:space="preserve">
+    <value>Width of vertical grid lines</value>
+  </data>
+  <data name="GPGridWidthY" xml:space="preserve">
+    <value>gridwidthy</value>
+  </data>
+  <data name="GPGridWidthYDescription" xml:space="preserve">
+    <value>Width of horizontal grid lines</value>
+  </data>
+  <data name="GPGTitle" xml:space="preserve">
+    <value>gtitle</value>
+  </data>
+  <data name="GPGTitleColor" xml:space="preserve">
+    <value>gtitlecolor</value>
+  </data>
+  <data name="GPGTitleColorDescription" xml:space="preserve">
+    <value>Color of the title of the group</value>
+  </data>
+  <data name="GPGTitleDescription" xml:space="preserve">
+    <value>Title of the group</value>
+  </data>
+  <data name="GPGTitleFSize" xml:space="preserve">
+    <value>gtitlefsize</value>
+  </data>
+  <data name="GPGTitleFSizeDescription" xml:space="preserve">
+    <value>Font size of the title of the group</value>
+  </data>
+  <data name="GPInterval" xml:space="preserve">
+    <value>interval</value>
+  </data>
+  <data name="GPIntervalDescription" xml:space="preserve">
+    <value>Interval of the animation (ms)</value>
+  </data>
+  <data name="GPLabelColor" xml:space="preserve">
+    <value>labelcolor</value>
+  </data>
+  <data name="GPLabelColorDescription" xml:space="preserve">
+    <value>Color of the label of the curve</value>
+  </data>
+  <data name="GPLabelFSize" xml:space="preserve">
+    <value>labelfsize</value>
+  </data>
+  <data name="GPLabelFSizeDescription" xml:space="preserve">
+    <value>Font size of the curve</value>
+  </data>
+  <data name="GPLColor" xml:space="preserve">
+    <value>lcolor</value>
+  </data>
+  <data name="GPLColorDescription" xml:space="preserve">
+    <value>Color of the line of curve</value>
+  </data>
+  <data name="GPLName" xml:space="preserve">
+    <value>lname</value>
+  </data>
+  <data name="GPLNameDescription" xml:space="preserve">
+    <value>Name of the curve</value>
+  </data>
+  <data name="GPLPColor" xml:space="preserve">
+    <value>lpcolor</value>
+  </data>
+  <data name="GPLPColorDescription" xml:space="preserve">
+    <value>Color of the last point of the curve</value>
+  </data>
+  <data name="GPLPSize" xml:space="preserve">
+    <value>lpsize</value>
+  </data>
+  <data name="GPLPSizeDescription" xml:space="preserve">
+    <value>Size of the last point of the curve</value>
+  </data>
+  <data name="GPLPStyle" xml:space="preserve">
+    <value>lpstyle</value>
+  </data>
+  <data name="GPLPStyleDescription" xml:space="preserve">
+    <value>Style of the last point of the curve</value>
+  </data>
+  <data name="GPLStyle" xml:space="preserve">
+    <value>lstyle</value>
+  </data>
+  <data name="GPLStyleDescription" xml:space="preserve">
+    <value>Style of the line of the curve</value>
+  </data>
+  <data name="GPLWidth" xml:space="preserve">
+    <value>lwidth</value>
+  </data>
+  <data name="GPLWidthDescription" xml:space="preserve">
+    <value>Width of the line of the curve</value>
+  </data>
+  <data name="GPMarginB" xml:space="preserve">
+    <value>marginb</value>
+  </data>
+  <data name="GPMarginBDescription" xml:space="preserve">
+    <value>Bottom margin (in promiles)</value>
+  </data>
+  <data name="GPMarginL" xml:space="preserve">
+    <value>marginl</value>
+  </data>
+  <data name="GPMarginLDescription" xml:space="preserve">
+    <value>Left margin (in promiles)</value>
+  </data>
+  <data name="GPMarginR" xml:space="preserve">
+    <value>marginr</value>
+  </data>
+  <data name="GPMarginRDescription" xml:space="preserve">
+    <value>Right margin (in promiles)</value>
+  </data>
+  <data name="GPMarginT" xml:space="preserve">
+    <value>margint</value>
+  </data>
+  <data name="GPMarginTDescription" xml:space="preserve">
+    <value>Top margin (in promiles)</value>
+  </data>
+  <data name="GPMaxX" xml:space="preserve">
+    <value>maxx</value>
+  </data>
+  <data name="GPMaxXDescription" xml:space="preserve">
+    <value>Maximal x of the group</value>
+  </data>
+  <data name="GPMaxY" xml:space="preserve">
+    <value>maxy</value>
+  </data>
+  <data name="GPMaxYDescription" xml:space="preserve">
+    <value>Maximal y of the group</value>
+  </data>
+  <data name="GPMinX" xml:space="preserve">
+    <value>minx</value>
+  </data>
+  <data name="GPMinXDescription" xml:space="preserve">
+    <value>Minimal x of the group</value>
+  </data>
+  <data name="GPMinY" xml:space="preserve">
+    <value>miny</value>
+  </data>
+  <data name="GPMinYDescription" xml:space="preserve">
+    <value>Minimal y of the group</value>
+  </data>
+  <data name="GPPColor" xml:space="preserve">
+    <value>pcolor</value>
+  </data>
+  <data name="GPPColorDescription" xml:space="preserve">
+    <value>Color of the points of the curve</value>
+  </data>
+  <data name="GPPSize" xml:space="preserve">
+    <value>psize</value>
+  </data>
+  <data name="GPPSizeDescription" xml:space="preserve">
+    <value>Size of the points of the curve</value>
+  </data>
+  <data name="GPPStyle" xml:space="preserve">
+    <value>pstyle</value>
+  </data>
+  <data name="GPPStyleDescription" xml:space="preserve">
+    <value>Style of the points of the curve</value>
+  </data>
+  <data name="GPScrollStep" xml:space="preserve">
+    <value>scrollstep</value>
+  </data>
+  <data name="GPScrollStepDescription" xml:space="preserve">
+    <value>Step between two pictures when a scroll wheel is used</value>
+  </data>
+  <data name="GPShift" xml:space="preserve">
+    <value>shift</value>
+  </data>
+  <data name="GPShiftDescription" xml:space="preserve">
+    <value>Shift of the curves</value>
+  </data>
+  <data name="GPShowGridX" xml:space="preserve">
+    <value>showgridx</value>
+  </data>
+  <data name="GPShowGridXDescription" xml:space="preserve">
+    <value>Show vertical grid</value>
+  </data>
+  <data name="GPShowGridY" xml:space="preserve">
+    <value>showgridy</value>
+  </data>
+  <data name="GPShowGridYDescription" xml:space="preserve">
+    <value>Show horizontal grid</value>
+  </data>
+  <data name="GPTitle" xml:space="preserve">
+    <value>title</value>
+  </data>
+  <data name="GPTitleColor" xml:space="preserve">
+    <value>titlecolor</value>
+  </data>
+  <data name="GPTitleColorDescription" xml:space="preserve">
+    <value>Color of the main title of the graph</value>
+  </data>
+  <data name="GPTitleDescription" xml:space="preserve">
+    <value>Title of the whole graph</value>
+  </data>
+  <data name="GPTitleFSize" xml:space="preserve">
+    <value>titlefsize</value>
+  </data>
+  <data name="GPTitleFSizeDescription" xml:space="preserve">
+    <value>Font size of the main title of the graph</value>
   </data>
   <data name="HelpAbbreviate" xml:space="preserve">
     <value>Abbreviates a fraction</value>

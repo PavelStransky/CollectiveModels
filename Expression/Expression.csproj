@@ -121,6 +121,11 @@
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
     <Compile Include="Functions\FncException.cs" />
+    <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
+    <Compile Include="Types\Graph.Workers.cs" />
+    <Compile Include="Types\GraphParameterItem.cs" />
+    <Compile Include="Types\GraphParameterValues.cs" />
+    <Compile Include="Types\GraphParameterDefinitions.cs" />
     <Compile Include="Functions\List\AddBefore.cs" />
     <Compile Include="Functions\LongNumbers\Abbreviate.cs" />
     <Compile Include="Functions\LongNumbers\Denominator.cs" />
@@ -268,7 +273,7 @@
     <Compile Include="Functions\Operators\Separator.cs" />
     <Compile Include="Functions\Operators\Times.cs" />
     <Compile Include="Functions\Operators\TimesItem.cs" />
-    <Compile Include="Functions\Parameters.cs" />
+    <Compile Include="Functions\ParameterItem.cs" />
     <Compile Include="Functions\Program\Print.cs" />
     <Compile Include="Functions\Program\PrintClear.cs" />
     <Compile Include="Functions\Program\PrintLine.cs" />
@@ -420,6 +425,7 @@
     <Compile Include="Indexer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\Graph.Params.cs" />
     <Compile Include="Types\GraphRequestEventArgs.cs" />
     <Compile Include="Types\Guider.cs" />
     <Compile Include="Types\Highlight.cs" />

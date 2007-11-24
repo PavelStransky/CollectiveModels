@@ -32,6 +32,8 @@ namespace PavelStransky.Expression {
                 return new List(this);
             else if(typeName == typeof(Context).FullName)
                 return new Context(this);
+            else if(typeName == typeof(GraphParameterValues).FullName)
+                return new GraphParameterValues(this);
             else if(typeName == typeof(ClassicalGCM).FullName)
                 return new ClassicalGCM(this);
             else if(typeName == typeof(ExtendedClassicalGCM1).FullName)
@@ -46,7 +48,7 @@ namespace PavelStransky.Expression {
                 return new Graph(this);
             else if(typeName == typeof(LHOQuantumGCMIC).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMC")
                 return new LHOQuantumGCMIC(this);
-            else if(typeName == typeof(LHOQuantumGCMIR).FullName 
+            else if(typeName == typeof(LHOQuantumGCMIR).FullName
                 || typeName == "PavelStransky.GCM.LHOQuantumGCMR"
                 || typeName == "PavelStransky.GCM.LHOQuantumGCMRL")
                 return new LHOQuantumGCMIR(this);

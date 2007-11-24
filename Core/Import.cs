@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 
@@ -89,6 +90,8 @@ namespace PavelStransky.Core {
                 result = DateTime.FromBinary(binary ? b.ReadInt64() : long.Parse(t.ReadLine()));
             else if(typeName == typeof(TimeSpan).FullName)
                 result = TimeSpan.FromTicks(binary ? b.ReadInt64() : long.Parse(t.ReadLine()));
+            else if(typeName == typeof(Color).FullName)
+                result = Color.FromArgb(binary ? b.ReadInt32() : int.Parse(t.ReadLine()));
             else
                 result = this.CreateObject(typeName);
 

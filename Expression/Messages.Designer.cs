@@ -98,6 +98,25 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameter &apos;{0}&apos; in graph parameters has bad type..
+        /// </summary>
+        internal static string EMBadGraphParamType {
+            get {
+                return ResourceManager.GetString("EMBadGraphParamType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Correct type: {0}
+        ///Entered type: {1}.
+        /// </summary>
+        internal static string EMBadGraphParamTypeDetail {
+            get {
+                return ResourceManager.GetString("EMBadGraphParamTypeDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help is provided only for functions, not for &apos;{0}&apos;..
         /// </summary>
         internal static string EMBadHelpParameter {
@@ -467,6 +486,1428 @@ namespace PavelStransky.Expression {
         internal static string EMZeroLengthList {
             get {
                 return ResourceManager.GetString("EMZeroLengthList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alabelcolorx.
+        /// </summary>
+        internal static string GPALabelColorX {
+            get {
+                return ResourceManager.GetString("GPALabelColorX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the labels of the x-axis .
+        /// </summary>
+        internal static string GPALabelColorXDescription {
+            get {
+                return ResourceManager.GetString("GPALabelColorXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alabelcolory.
+        /// </summary>
+        internal static string GPALabelColorY {
+            get {
+                return ResourceManager.GetString("GPALabelColorY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the labels of the y-axis .
+        /// </summary>
+        internal static string GPALabelColorYDescription {
+            get {
+                return ResourceManager.GetString("GPALabelColorYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alabelfsizex.
+        /// </summary>
+        internal static string GPALabelFSizeX {
+            get {
+                return ResourceManager.GetString("GPALabelFSizeX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the labels of the x-axis .
+        /// </summary>
+        internal static string GPALabelFSizeXDescription {
+            get {
+                return ResourceManager.GetString("GPALabelFSizeXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alabelfsizey.
+        /// </summary>
+        internal static string GPALabelFSizeY {
+            get {
+                return ResourceManager.GetString("GPALabelFSizeY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the labels of the y-axis .
+        /// </summary>
+        internal static string GPALabelFSizeYDescription {
+            get {
+                return ResourceManager.GetString("GPALabelFSizeYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alcolorx.
+        /// </summary>
+        internal static string GPALColorX {
+            get {
+                return ResourceManager.GetString("GPALColorX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the line of the x-axis.
+        /// </summary>
+        internal static string GPALColorXDescription {
+            get {
+                return ResourceManager.GetString("GPALColorXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alcolory.
+        /// </summary>
+        internal static string GPALColorY {
+            get {
+                return ResourceManager.GetString("GPALColorY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the line of the y-axis.
+        /// </summary>
+        internal static string GPALColorYDescription {
+            get {
+                return ResourceManager.GetString("GPALColorYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alwidthx.
+        /// </summary>
+        internal static string GPALWidthX {
+            get {
+                return ResourceManager.GetString("GPALWidthX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of the line of the x-axis.
+        /// </summary>
+        internal static string GPALWidthXDescription {
+            get {
+                return ResourceManager.GetString("GPALWidthXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alwidthy.
+        /// </summary>
+        internal static string GPALWidthY {
+            get {
+                return ResourceManager.GetString("GPALWidthY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of the line of the y-axis.
+        /// </summary>
+        internal static string GPALWidthYDescription {
+            get {
+                return ResourceManager.GetString("GPALWidthYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to animcurve.
+        /// </summary>
+        internal static string GPAnimCurve {
+            get {
+                return ResourceManager.GetString("GPAnimCurve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the curves are to be animated.
+        /// </summary>
+        internal static string GPAnimCurveDescription {
+            get {
+                return ResourceManager.GetString("GPAnimCurveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to animgroup.
+        /// </summary>
+        internal static string GPAnimGroup {
+            get {
+                return ResourceManager.GetString("GPAnimGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the groups are to be animated.
+        /// </summary>
+        internal static string GPAnimGroupDescription {
+            get {
+                return ResourceManager.GetString("GPAnimGroupDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apcolorx.
+        /// </summary>
+        internal static string GPAPColorX {
+            get {
+                return ResourceManager.GetString("GPAPColorX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the points of the x-axis.
+        /// </summary>
+        internal static string GPAPColorXDescription {
+            get {
+                return ResourceManager.GetString("GPAPColorXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apcolory.
+        /// </summary>
+        internal static string GPAPColorY {
+            get {
+                return ResourceManager.GetString("GPAPColorY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the points of the y-axis.
+        /// </summary>
+        internal static string GPAPColorYDescription {
+            get {
+                return ResourceManager.GetString("GPAPColorYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apsizex.
+        /// </summary>
+        internal static string GPAPSizeX {
+            get {
+                return ResourceManager.GetString("GPAPSizeX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the points of the x-axis.
+        /// </summary>
+        internal static string GPAPSizeXDescription {
+            get {
+                return ResourceManager.GetString("GPAPSizeXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apsizey.
+        /// </summary>
+        internal static string GPAPSizeY {
+            get {
+                return ResourceManager.GetString("GPAPSizeY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the points of the y-axis.
+        /// </summary>
+        internal static string GPAPSizeYDescription {
+            get {
+                return ResourceManager.GetString("GPAPSizeYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apstylex.
+        /// </summary>
+        internal static string GPAPStyleX {
+            get {
+                return ResourceManager.GetString("GPAPStyleX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style of the points of the x-axis.
+        /// </summary>
+        internal static string GPAPStyleXDescription {
+            get {
+                return ResourceManager.GetString("GPAPStyleXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apstyley.
+        /// </summary>
+        internal static string GPAPStyleY {
+            get {
+                return ResourceManager.GetString("GPAPStyleY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style of the points of the y-axis.
+        /// </summary>
+        internal static string GPAPStyleYDescription {
+            get {
+                return ResourceManager.GetString("GPAPStyleYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowb.
+        /// </summary>
+        internal static string GPAShowB {
+            get {
+                return ResourceManager.GetString("GPAShowB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the x-axis at the bottom is to be shown.
+        /// </summary>
+        internal static string GPAShowBDescription {
+            get {
+                return ResourceManager.GetString("GPAShowBDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowl.
+        /// </summary>
+        internal static string GPAShowL {
+            get {
+                return ResourceManager.GetString("GPAShowL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowlabelx.
+        /// </summary>
+        internal static string GPAShowLabelX {
+            get {
+                return ResourceManager.GetString("GPAShowLabelX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the labels of the x-axis are to be shown.
+        /// </summary>
+        internal static string GPAShowLabelXDescription {
+            get {
+                return ResourceManager.GetString("GPAShowLabelXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowlabely.
+        /// </summary>
+        internal static string GPAShowLabelY {
+            get {
+                return ResourceManager.GetString("GPAShowLabelY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the labels of the y-axis are to be shown.
+        /// </summary>
+        internal static string GPAShowLabelYDescription {
+            get {
+                return ResourceManager.GetString("GPAShowLabelYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the y-axis on the left is to be shown.
+        /// </summary>
+        internal static string GPAShowLDescription {
+            get {
+                return ResourceManager.GetString("GPAShowLDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowr.
+        /// </summary>
+        internal static string GPAShowR {
+            get {
+                return ResourceManager.GetString("GPAShowR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the y-axis on the right is to be shown.
+        /// </summary>
+        internal static string GPAShowRDescription {
+            get {
+                return ResourceManager.GetString("GPAShowRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowt.
+        /// </summary>
+        internal static string GPAShowT {
+            get {
+                return ResourceManager.GetString("GPAShowT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the x-axis at the top is to be shown.
+        /// </summary>
+        internal static string GPAShowTDescription {
+            get {
+                return ResourceManager.GetString("GPAShowTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to titlecolorx.
+        /// </summary>
+        internal static string GPATitleColorX {
+            get {
+                return ResourceManager.GetString("GPATitleColorX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the x-axis.
+        /// </summary>
+        internal static string GPATitleColorXDescription {
+            get {
+                return ResourceManager.GetString("GPATitleColorXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to titlecolory.
+        /// </summary>
+        internal static string GPATitleColorY {
+            get {
+                return ResourceManager.GetString("GPATitleColorY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the y-axis.
+        /// </summary>
+        internal static string GPATitleColorYDescription {
+            get {
+                return ResourceManager.GetString("GPATitleColorYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to titlefsizex.
+        /// </summary>
+        internal static string GPATitleFSizeX {
+            get {
+                return ResourceManager.GetString("GPATitleFSizeX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the x-axis.
+        /// </summary>
+        internal static string GPATitleFSizeXDescription {
+            get {
+                return ResourceManager.GetString("GPATitleFSizeXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to titlefsizey.
+        /// </summary>
+        internal static string GPATitleFSizeY {
+            get {
+                return ResourceManager.GetString("GPATitleFSizeY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the y-axis.
+        /// </summary>
+        internal static string GPATitleFSizeYDescription {
+            get {
+                return ResourceManager.GetString("GPATitleFSizeYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to atitlex.
+        /// </summary>
+        internal static string GPATitleX {
+            get {
+                return ResourceManager.GetString("GPATitleX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title of the x-axis.
+        /// </summary>
+        internal static string GPATitleXDescription {
+            get {
+                return ResourceManager.GetString("GPATitleXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to atitley.
+        /// </summary>
+        internal static string GPATitleY {
+            get {
+                return ResourceManager.GetString("GPATitleY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title of the y-axis.
+        /// </summary>
+        internal static string GPATitleYDescription {
+            get {
+                return ResourceManager.GetString("GPATitleYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolor.
+        /// </summary>
+        internal static string GPBColor {
+            get {
+                return ResourceManager.GetString("GPBColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the background.
+        /// </summary>
+        internal static string GPBColorDescription {
+            get {
+                return ResourceManager.GetString("GPBColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolorminus.
+        /// </summary>
+        internal static string GPBColorMinus {
+            get {
+                return ResourceManager.GetString("GPBColorMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the minimal negative value of the background image.
+        /// </summary>
+        internal static string GPBColorMinusDescription {
+            get {
+                return ResourceManager.GetString("GPBColorMinusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolorplus.
+        /// </summary>
+        internal static string GPBColorPlus {
+            get {
+                return ResourceManager.GetString("GPBColorPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the maximal positive value of the background image.
+        /// </summary>
+        internal static string GPBColorPlusDescription {
+            get {
+                return ResourceManager.GetString("GPBColorPlusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolorzero.
+        /// </summary>
+        internal static string GPBColorZero {
+            get {
+                return ResourceManager.GetString("GPBColorZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the zero value of the background image.
+        /// </summary>
+        internal static string GPBColorZeroDescription {
+            get {
+                return ResourceManager.GetString("GPBColorZeroDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blegend.
+        /// </summary>
+        internal static string GPBLegend {
+            get {
+                return ResourceManager.GetString("GPBLegend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the legend of the background image are to be displayed.
+        /// </summary>
+        internal static string GPBLegendDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blegendfsize.
+        /// </summary>
+        internal static string GPBLegendFSize {
+            get {
+                return ResourceManager.GetString("GPBLegendFSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the legend of the background image.
+        /// </summary>
+        internal static string GPBLegendFSizeDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendFSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blegendwidth.
+        /// </summary>
+        internal static string GPBLegendWidth {
+            get {
+                return ResourceManager.GetString("GPBLegendWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of the legend of the background image.
+        /// </summary>
+        internal static string GPBLegendWidthDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendWidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bmaxx.
+        /// </summary>
+        internal static string GPBMaxX {
+            get {
+                return ResourceManager.GetString("GPBMaxX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal x of the background image.
+        /// </summary>
+        internal static string GPBMaxXDescription {
+            get {
+                return ResourceManager.GetString("GPBMaxXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bmaxy.
+        /// </summary>
+        internal static string GPBMaxY {
+            get {
+                return ResourceManager.GetString("GPBMaxY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal y of the background image.
+        /// </summary>
+        internal static string GPBMaxYDescription {
+            get {
+                return ResourceManager.GetString("GPBMaxYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bminx.
+        /// </summary>
+        internal static string GPBMinX {
+            get {
+                return ResourceManager.GetString("GPBMinX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal x of the background image.
+        /// </summary>
+        internal static string GPBMinXDescription {
+            get {
+                return ResourceManager.GetString("GPBMinXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bminy.
+        /// </summary>
+        internal static string GPBMinY {
+            get {
+                return ResourceManager.GetString("GPBMinY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal y of the background image.
+        /// </summary>
+        internal static string GPBMinYDescription {
+            get {
+                return ResourceManager.GetString("GPBMinYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bpsizex.
+        /// </summary>
+        internal static string GPBPSizeX {
+            get {
+                return ResourceManager.GetString("GPBPSizeX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the points of the background image in the x-direction.
+        /// </summary>
+        internal static string GPBPSizeXDescription {
+            get {
+                return ResourceManager.GetString("GPBPSizeXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bpsizey.
+        /// </summary>
+        internal static string GPBPSizeY {
+            get {
+                return ResourceManager.GetString("GPBPSizeY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the points of the background image in the y-direction.
+        /// </summary>
+        internal static string GPBPSizeYDescription {
+            get {
+                return ResourceManager.GetString("GPBPSizeYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fpcolor.
+        /// </summary>
+        internal static string GPFPColor {
+            get {
+                return ResourceManager.GetString("GPFPColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the first point of the curve.
+        /// </summary>
+        internal static string GPFPColorDescription {
+            get {
+                return ResourceManager.GetString("GPFPColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fpsize.
+        /// </summary>
+        internal static string GPFPSize {
+            get {
+                return ResourceManager.GetString("GPFPSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the first point of the curve.
+        /// </summary>
+        internal static string GPFPSizeDescription {
+            get {
+                return ResourceManager.GetString("GPFPSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fpstyle.
+        /// </summary>
+        internal static string GPFPStyle {
+            get {
+                return ResourceManager.GetString("GPFPStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style of the first point of the curve.
+        /// </summary>
+        internal static string GPFPStyleDescription {
+            get {
+                return ResourceManager.GetString("GPFPStyleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gridcolorx.
+        /// </summary>
+        internal static string GPGridColorX {
+            get {
+                return ResourceManager.GetString("GPGridColorX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of vertical grid lines.
+        /// </summary>
+        internal static string GPGridColorXDescription {
+            get {
+                return ResourceManager.GetString("GPGridColorXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gridcolory.
+        /// </summary>
+        internal static string GPGridColorY {
+            get {
+                return ResourceManager.GetString("GPGridColorY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of horizontal grid lines.
+        /// </summary>
+        internal static string GPGridColorYDescription {
+            get {
+                return ResourceManager.GetString("GPGridColorYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gridwidthx.
+        /// </summary>
+        internal static string GPGridWidthX {
+            get {
+                return ResourceManager.GetString("GPGridWidthX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of vertical grid lines.
+        /// </summary>
+        internal static string GPGridWidthXDescription {
+            get {
+                return ResourceManager.GetString("GPGridWidthXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gridwidthy.
+        /// </summary>
+        internal static string GPGridWidthY {
+            get {
+                return ResourceManager.GetString("GPGridWidthY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of horizontal grid lines.
+        /// </summary>
+        internal static string GPGridWidthYDescription {
+            get {
+                return ResourceManager.GetString("GPGridWidthYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gtitle.
+        /// </summary>
+        internal static string GPGTitle {
+            get {
+                return ResourceManager.GetString("GPGTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gtitlecolor.
+        /// </summary>
+        internal static string GPGTitleColor {
+            get {
+                return ResourceManager.GetString("GPGTitleColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the title of the group.
+        /// </summary>
+        internal static string GPGTitleColorDescription {
+            get {
+                return ResourceManager.GetString("GPGTitleColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title of the group.
+        /// </summary>
+        internal static string GPGTitleDescription {
+            get {
+                return ResourceManager.GetString("GPGTitleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gtitlefsize.
+        /// </summary>
+        internal static string GPGTitleFSize {
+            get {
+                return ResourceManager.GetString("GPGTitleFSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the title of the group.
+        /// </summary>
+        internal static string GPGTitleFSizeDescription {
+            get {
+                return ResourceManager.GetString("GPGTitleFSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to interval.
+        /// </summary>
+        internal static string GPInterval {
+            get {
+                return ResourceManager.GetString("GPInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval of the animation (ms).
+        /// </summary>
+        internal static string GPIntervalDescription {
+            get {
+                return ResourceManager.GetString("GPIntervalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to labelcolor.
+        /// </summary>
+        internal static string GPLabelColor {
+            get {
+                return ResourceManager.GetString("GPLabelColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the label of the curve.
+        /// </summary>
+        internal static string GPLabelColorDescription {
+            get {
+                return ResourceManager.GetString("GPLabelColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to labelfsize.
+        /// </summary>
+        internal static string GPLabelFSize {
+            get {
+                return ResourceManager.GetString("GPLabelFSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the curve.
+        /// </summary>
+        internal static string GPLabelFSizeDescription {
+            get {
+                return ResourceManager.GetString("GPLabelFSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lcolor.
+        /// </summary>
+        internal static string GPLColor {
+            get {
+                return ResourceManager.GetString("GPLColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the line of curve.
+        /// </summary>
+        internal static string GPLColorDescription {
+            get {
+                return ResourceManager.GetString("GPLColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lname.
+        /// </summary>
+        internal static string GPLName {
+            get {
+                return ResourceManager.GetString("GPLName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the curve.
+        /// </summary>
+        internal static string GPLNameDescription {
+            get {
+                return ResourceManager.GetString("GPLNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lpcolor.
+        /// </summary>
+        internal static string GPLPColor {
+            get {
+                return ResourceManager.GetString("GPLPColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the last point of the curve.
+        /// </summary>
+        internal static string GPLPColorDescription {
+            get {
+                return ResourceManager.GetString("GPLPColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lpsize.
+        /// </summary>
+        internal static string GPLPSize {
+            get {
+                return ResourceManager.GetString("GPLPSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the last point of the curve.
+        /// </summary>
+        internal static string GPLPSizeDescription {
+            get {
+                return ResourceManager.GetString("GPLPSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lpstyle.
+        /// </summary>
+        internal static string GPLPStyle {
+            get {
+                return ResourceManager.GetString("GPLPStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style of the last point of the curve.
+        /// </summary>
+        internal static string GPLPStyleDescription {
+            get {
+                return ResourceManager.GetString("GPLPStyleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lstyle.
+        /// </summary>
+        internal static string GPLStyle {
+            get {
+                return ResourceManager.GetString("GPLStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style of the line of the curve.
+        /// </summary>
+        internal static string GPLStyleDescription {
+            get {
+                return ResourceManager.GetString("GPLStyleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lwidth.
+        /// </summary>
+        internal static string GPLWidth {
+            get {
+                return ResourceManager.GetString("GPLWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of the line of the curve.
+        /// </summary>
+        internal static string GPLWidthDescription {
+            get {
+                return ResourceManager.GetString("GPLWidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to marginb.
+        /// </summary>
+        internal static string GPMarginB {
+            get {
+                return ResourceManager.GetString("GPMarginB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom margin (in promiles).
+        /// </summary>
+        internal static string GPMarginBDescription {
+            get {
+                return ResourceManager.GetString("GPMarginBDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to marginl.
+        /// </summary>
+        internal static string GPMarginL {
+            get {
+                return ResourceManager.GetString("GPMarginL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left margin (in promiles).
+        /// </summary>
+        internal static string GPMarginLDescription {
+            get {
+                return ResourceManager.GetString("GPMarginLDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to marginr.
+        /// </summary>
+        internal static string GPMarginR {
+            get {
+                return ResourceManager.GetString("GPMarginR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right margin (in promiles).
+        /// </summary>
+        internal static string GPMarginRDescription {
+            get {
+                return ResourceManager.GetString("GPMarginRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to margint.
+        /// </summary>
+        internal static string GPMarginT {
+            get {
+                return ResourceManager.GetString("GPMarginT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top margin (in promiles).
+        /// </summary>
+        internal static string GPMarginTDescription {
+            get {
+                return ResourceManager.GetString("GPMarginTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxx.
+        /// </summary>
+        internal static string GPMaxX {
+            get {
+                return ResourceManager.GetString("GPMaxX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal x of the group.
+        /// </summary>
+        internal static string GPMaxXDescription {
+            get {
+                return ResourceManager.GetString("GPMaxXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxy.
+        /// </summary>
+        internal static string GPMaxY {
+            get {
+                return ResourceManager.GetString("GPMaxY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal y of the group.
+        /// </summary>
+        internal static string GPMaxYDescription {
+            get {
+                return ResourceManager.GetString("GPMaxYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minx.
+        /// </summary>
+        internal static string GPMinX {
+            get {
+                return ResourceManager.GetString("GPMinX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal x of the group.
+        /// </summary>
+        internal static string GPMinXDescription {
+            get {
+                return ResourceManager.GetString("GPMinXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to miny.
+        /// </summary>
+        internal static string GPMinY {
+            get {
+                return ResourceManager.GetString("GPMinY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal y of the group.
+        /// </summary>
+        internal static string GPMinYDescription {
+            get {
+                return ResourceManager.GetString("GPMinYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pcolor.
+        /// </summary>
+        internal static string GPPColor {
+            get {
+                return ResourceManager.GetString("GPPColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the points of the curve.
+        /// </summary>
+        internal static string GPPColorDescription {
+            get {
+                return ResourceManager.GetString("GPPColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to psize.
+        /// </summary>
+        internal static string GPPSize {
+            get {
+                return ResourceManager.GetString("GPPSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the points of the curve.
+        /// </summary>
+        internal static string GPPSizeDescription {
+            get {
+                return ResourceManager.GetString("GPPSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pstyle.
+        /// </summary>
+        internal static string GPPStyle {
+            get {
+                return ResourceManager.GetString("GPPStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style of the points of the curve.
+        /// </summary>
+        internal static string GPPStyleDescription {
+            get {
+                return ResourceManager.GetString("GPPStyleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to scrollstep.
+        /// </summary>
+        internal static string GPScrollStep {
+            get {
+                return ResourceManager.GetString("GPScrollStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step between two pictures when a scroll wheel is used.
+        /// </summary>
+        internal static string GPScrollStepDescription {
+            get {
+                return ResourceManager.GetString("GPScrollStepDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shift.
+        /// </summary>
+        internal static string GPShift {
+            get {
+                return ResourceManager.GetString("GPShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift of the curves.
+        /// </summary>
+        internal static string GPShiftDescription {
+            get {
+                return ResourceManager.GetString("GPShiftDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to showgridx.
+        /// </summary>
+        internal static string GPShowGridX {
+            get {
+                return ResourceManager.GetString("GPShowGridX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show vertical grid.
+        /// </summary>
+        internal static string GPShowGridXDescription {
+            get {
+                return ResourceManager.GetString("GPShowGridXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to showgridy.
+        /// </summary>
+        internal static string GPShowGridY {
+            get {
+                return ResourceManager.GetString("GPShowGridY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show horizontal grid.
+        /// </summary>
+        internal static string GPShowGridYDescription {
+            get {
+                return ResourceManager.GetString("GPShowGridYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to title.
+        /// </summary>
+        internal static string GPTitle {
+            get {
+                return ResourceManager.GetString("GPTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to titlecolor.
+        /// </summary>
+        internal static string GPTitleColor {
+            get {
+                return ResourceManager.GetString("GPTitleColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the main title of the graph.
+        /// </summary>
+        internal static string GPTitleColorDescription {
+            get {
+                return ResourceManager.GetString("GPTitleColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title of the whole graph.
+        /// </summary>
+        internal static string GPTitleDescription {
+            get {
+                return ResourceManager.GetString("GPTitleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to titlefsize.
+        /// </summary>
+        internal static string GPTitleFSize {
+            get {
+                return ResourceManager.GetString("GPTitleFSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the main title of the graph.
+        /// </summary>
+        internal static string GPTitleFSizeDescription {
+            get {
+                return ResourceManager.GetString("GPTitleFSizeDescription", resourceCulture);
             }
         }
         

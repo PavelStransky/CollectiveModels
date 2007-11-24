@@ -27,12 +27,6 @@ namespace PavelStransky.Forms {
 		/// </summary>
 		/// <param name="graph">Promìnná s grafem</param>
 		public void SetGraph(Graph graph) {
-			if(graph.Item as IExportable != null)
-				this.cmnSaveAsTxt.Enabled = true;
-			else
-				this.cmnSaveAsTxt.Enabled = false;
-
-            this.lblTitle.Text = (string)graph.GetGeneralParameter(paramTitle, defaultTitle);
             this.toolTip.RemoveAll();
 
             if(this.graphControl == null) {
@@ -142,7 +136,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void saveFileDialogGif_FileOk(object sender, CancelEventArgs e) {
             WinMain.SetDirectoryFromFile(this.saveFileDialogGif.FileName);
-            this.graphControl.SaveGIF(this.saveFileDialogGif.FileName);
+//            this.graphControl.SaveGIF(this.saveFileDialogGif.FileName);
         }
 
         /// <summary>
@@ -161,7 +155,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void saveFileDialogPicture_FileOk(object sender, CancelEventArgs e) {
             WinMain.SetDirectoryFromFile(this.saveFileDialogPicture.FileName);
-            this.graphControl.SavePicture(this.saveFileDialogPicture.FileName);
+//            this.graphControl.SavePicture(this.saveFileDialogPicture.FileName);
         }
 
         private const string paramTitle = "title";

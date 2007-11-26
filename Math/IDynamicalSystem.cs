@@ -58,5 +58,11 @@ namespace PavelStransky.Math {
         /// Poèet stupòù volnosti
         /// </summary>
         int DegreesOfFreedom { get;}
+
+        /// <summary>
+        /// Hodnota Peresova invariantu (bude vystøedována)
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        double PeresInvariant(Vector x);
     }
 }

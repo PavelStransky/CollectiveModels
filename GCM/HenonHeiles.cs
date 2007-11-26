@@ -88,6 +88,13 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// NEFUNGUJE !!!
+        /// </summary>
+        public double PeresInvariant(Vector x) {
+            return 0;
+        }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         public HenonHeiles() {

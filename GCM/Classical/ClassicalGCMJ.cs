@@ -416,6 +416,10 @@ namespace PavelStransky.GCM {
             throw new Exception("The method or operation is not implemented.");
         }
 
+        public double PeresInvariant(Vector x) {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
         public int DegreesOfFreedom {
             get { return degreesOfFreedom; }
         }

@@ -118,6 +118,7 @@
     <Compile Include="ExpressionException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
+    <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
     <Compile Include="Functions\FncException.cs" />

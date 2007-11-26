@@ -183,6 +183,15 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Peresùv invariant
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public double PeresInvariant(Vector x) {
+            double j = x[0] * x[3] - x[1] * x[2];
+            return j * j;
+        }
+
+        /// <summary>
         /// Vypíše parametry GCM modelu
         /// </summary>
         public override string ToString() {

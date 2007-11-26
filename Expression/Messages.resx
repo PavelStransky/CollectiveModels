@@ -1080,6 +1080,9 @@ Length of the second vector: {1}</value>
   <data name="HelpOpJoin" xml:space="preserve">
     <value>Operator ~ (joins numbers together into vector, joins strings and lists)</value>
   </data>
+  <data name="HelpPeresInvariantG" xml:space="preserve">
+    <value>Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by time averaged Peres invariant</value>
+  </data>
   <data name="HelpPi" xml:space="preserve">
     <value>Value of Pi number</value>
   </data>

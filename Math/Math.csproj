@@ -99,7 +99,9 @@
     <Compile Include="ComplexVector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dynamics\AverageInvariant.cs" />
     <Compile Include="Dynamics\DynamicalSystem.cs" />
+    <Compile Include="Dynamics\ExactBounds.cs" />
     <Compile Include="Dynamics\SALIContourGraph.cs" />
     <Compile Include="Dynamics\Trajectory.cs" />
     <Compile Include="FFT.cs">

@@ -2938,6 +2938,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by time averaged Peres invariant.
+        /// </summary>
+        internal static string HelpPeresInvariantG {
+            get {
+                return ResourceManager.GetString("HelpPeresInvariantG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Pi number.
         /// </summary>
         internal static string HelpPi {

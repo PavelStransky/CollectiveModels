@@ -26,8 +26,8 @@ namespace PavelStransky.Forms {
                 return new Editor(this);
             else if(typeName == typeof(ResultForm).FullName)
                 return new ResultForm(this);
-            else if(typeName == typeof(GraphForm).FullName)
-                return new GraphForm(this);
+            else if(typeName == typeof(SingleGraphForm).FullName || typeName == "PavelStransky.Forms.GraphForm")
+                return new SingleGraphForm(this);
             else
                 return base.CreateObject(typeName);
         }

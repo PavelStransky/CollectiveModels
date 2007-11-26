@@ -140,6 +140,9 @@ Entered type: {1}</value>
   <data name="EMBadHelpParameter" xml:space="preserve">
     <value>Help is provided only for functions, not for '{0}'.</value>
   </data>
+  <data name="EMBadParameterName" xml:space="preserve">
+    <value>The graph parameter '{0}' does not exist.</value>
+  </data>
   <data name="EMBadParamType" xml:space="preserve">
     <value>Parameter '{0}' in function '{1}' has bad type.</value>
   </data>
@@ -359,6 +362,15 @@ Length of the second vector: {1}</value>
   </data>
   <data name="GPAPStyleYDescription" xml:space="preserve">
     <value>Style of the points of the y-axis</value>
+  </data>
+  <data name="GParamHelpCurveParam" xml:space="preserve">
+    <value>Curve parameter</value>
+  </data>
+  <data name="GParamHelpGlobalParam" xml:space="preserve">
+    <value>Global parameter</value>
+  </data>
+  <data name="GParamHelpGroupParam" xml:space="preserve">
+    <value>Group parameter</value>
   </data>
   <data name="GPAShowB" xml:space="preserve">
     <value>ashowb</value>
@@ -696,6 +708,30 @@ Length of the second vector: {1}</value>
   <data name="GPPStyleDescription" xml:space="preserve">
     <value>Style of the points of the curve</value>
   </data>
+  <data name="GPRWindowH" xml:space="preserve">
+    <value>rwindowh</value>
+  </data>
+  <data name="GPRWindowHDescription" xml:space="preserve">
+    <value>Relative height of the window of the graph</value>
+  </data>
+  <data name="GPRWindowL" xml:space="preserve">
+    <value>rwindowl</value>
+  </data>
+  <data name="GPRWindowLDescription" xml:space="preserve">
+    <value>Left relative margin of the window of the graph</value>
+  </data>
+  <data name="GPRWindowT" xml:space="preserve">
+    <value>rwindowt</value>
+  </data>
+  <data name="GPRWindowTDescription" xml:space="preserve">
+    <value>Top relative margin of the window of the graph</value>
+  </data>
+  <data name="GPRWindowW" xml:space="preserve">
+    <value>rwindoww</value>
+  </data>
+  <data name="GPRWindowWDescription" xml:space="preserve">
+    <value>Relative width of the window of the graph</value>
+  </data>
   <data name="GPScrollStep" xml:space="preserve">
     <value>scrollstep</value>
   </data>
@@ -890,6 +926,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpGOE" xml:space="preserve">
     <value>Value of Wigner GOE distribution</value>
+  </data>
+  <data name="HelpGParamHelp" xml:space="preserve">
+    <value>Help to one graph parameter</value>
+  </data>
+  <data name="HelpGParams" xml:space="preserve">
+    <value>List of all graph parameters</value>
   </data>
   <data name="HelpGraph" xml:space="preserve">
     <value>Create graph</value>
@@ -1799,6 +1841,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="POrderDetail" xml:space="preserve">
     <value>Order of the polynomial</value>
+  </data>
+  <data name="PParamName" xml:space="preserve">
+    <value>pname</value>
+  </data>
+  <data name="PParamNameDescription" xml:space="preserve">
+    <value>Parameter name</value>
   </data>
   <data name="PPhaseSpacePosition" xml:space="preserve">
     <value>psposition</value>

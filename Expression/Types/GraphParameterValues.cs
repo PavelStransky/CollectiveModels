@@ -11,7 +11,7 @@ namespace PavelStransky.Expression {
     /// <summary>
     /// Hodnoty parametrù grafu
     /// </summary>
-    public class GraphParameterValues: IExportable {
+    public class GraphParameterValues: IExportable,ICloneable {
         private Hashtable values = new Hashtable();
         private Hashtable isDefault = new Hashtable();
 
@@ -158,6 +158,22 @@ namespace PavelStransky.Expression {
                     this.values.Add(key, i.DefaultValue);
                 }
             }
+        }
+        #endregion
+
+        #region Implementace klonování
+        /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        private GraphParameterValues() { }
+
+        public object Clone() {
+            GraphParameterValues result = new GraphParameterValues();
+
+            result.isDefault = (Hashtable)this.isDefault.Clone();
+            result.values = (Hashtable)this.values.Clone();
+
+            return result;
         }
         #endregion
     }

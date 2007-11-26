@@ -34,6 +34,11 @@ namespace PavelStransky.Expression {
             TitleColor = 6,
             Shift = 10,
 
+            RWindowL = 20,
+            RWindowT = 21,
+            RWindowW = 22,
+            RWindowH = 23,
+
             AnimCurve = 100,
             BColor = 101,
 
@@ -150,11 +155,24 @@ namespace PavelStransky.Expression {
         private static GraphParameterDefinitions curveParams;
 
         /// <summary>
+        /// Globální parametry grafu
+        /// </summary>
+        public static GraphParameterDefinitions GlobalParams { get { return globalParams; } }
+
+        /// <summary>
+        /// Parametry skupiny grafu
+        /// </summary>
+        public static GraphParameterDefinitions GroupParams { get { return groupParams; } }
+
+        /// <summary>
+        /// Parametry køivky grafu
+        /// </summary>
+        public static GraphParameterDefinitions CurveParams { get { return curveParams; } }
+
+        /// <summary>
         /// Vytvoøení parametrù
         /// </summary>
         static Graph() {
-//            InitializeGIFBuffer();
-
             globalParams = new GraphParameterDefinitions();
             globalParams.Add(ParametersIndications.AnimGroup, Messages.GPAnimGroup, Messages.GPAnimGroupDescription, false);
             globalParams.Add(ParametersIndications.Interval, Messages.GPInterval, Messages.GPIntervalDescription, 1000);
@@ -164,9 +182,14 @@ namespace PavelStransky.Expression {
             globalParams.Add(ParametersIndications.TitleColor, Messages.GPTitleColor, Messages.GPTitleColorDescription, Color.Black);
             globalParams.Add(ParametersIndications.Shift, Messages.GPShift, Messages.GPShiftDescription, false);
 
+            globalParams.Add(ParametersIndications.RWindowL, Messages.GPRWindowL, Messages.GPRWindowLDescription, 0.0);
+            globalParams.Add(ParametersIndications.RWindowT, Messages.GPRWindowT, Messages.GPRWindowTDescription, 0.0);
+            globalParams.Add(ParametersIndications.RWindowW, Messages.GPRWindowW, Messages.GPRWindowWDescription, 1.0);
+            globalParams.Add(ParametersIndications.RWindowH, Messages.GPRWindowH, Messages.GPRWindowHDescription, 1.0);
+
             groupParams = new GraphParameterDefinitions();
             groupParams.Add(ParametersIndications.AnimCurve, Messages.GPAnimCurve, Messages.GPAnimCurveDescription, false);
-            groupParams.Add(ParametersIndications.BColor, Messages.GPBColor, Messages.GPBColorDescription, Color.White);
+            groupParams.Add(ParametersIndications.BColor, Messages.GPBColor, Messages.GPBColorDescription, Color.Transparent);
             groupParams.Add(ParametersIndications.MarginL, Messages.GPMarginL, Messages.GPMarginLDescription, 30);
             groupParams.Add(ParametersIndications.MarginR, Messages.GPMarginR, Messages.GPMarginRDescription, 30);
             groupParams.Add(ParametersIndications.MarginT, Messages.GPMarginT, Messages.GPMarginTDescription, 30);

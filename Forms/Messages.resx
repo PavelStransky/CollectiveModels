@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,19 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="contextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>102, 17</value>
-  </metadata>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="sfdText.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>217, 17</value>
-  </metadata>
-  <metadata name="sfdAnim.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>305, 17</value>
-  </metadata>
-  <metadata name="sfdSeq.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>384, 16</value>
-  </metadata>
+  <data name="EMBadFileName" xml:space="preserve">
+    <value>Bad file name: '{0}'</value>
+  </data>
+  <data name="TSaveAllAnim" xml:space="preserve">
+    <value>Save data of all graph items as (animated) GIF</value>
+  </data>
+  <data name="TSaveAllSeq" xml:space="preserve">
+    <value>Save data of all graph items as sequence of pictures</value>
+  </data>
+  <data name="TSaveAllText" xml:space="preserve">
+    <value>Save data of all graph items as text</value>
+  </data>
+  <data name="TSaveOneAnim" xml:space="preserve">
+    <value>Save data of one graph item as (animated) GIF</value>
+  </data>
+  <data name="TSaveOneSeq" xml:space="preserve">
+    <value>Save data of one graph item as sequence of pictures</value>
+  </data>
+  <data name="TSaveOneText" xml:space="preserve">
+    <value>Save data of one graph item as text</value>
+  </data>
 </root>

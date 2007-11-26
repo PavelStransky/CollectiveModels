@@ -150,7 +150,7 @@ namespace PavelStransky.Forms {
                     PointD position = (PointD)e.GetParam(3);
                     PointD size = (PointD)e.GetParam(4);
 
-                    GraphForm graphForm = this.NewParentForm(typeof(GraphForm), name) as GraphForm;
+                    SingleGraphForm graphForm = this.NewParentForm(typeof(SingleGraphForm), name) as SingleGraphForm;
                     graphForm.SetGraph(graphs, numColumns);
 
                     graphForm.Location = new Point(graphForm.Location.X, graphForm.Location.Y);
@@ -225,8 +225,8 @@ namespace PavelStransky.Forms {
             if(result != null)
                 return result;
 
-            if(type == typeof(GraphForm)) {
-                result = new GraphForm();
+            if(type == typeof(SingleGraphForm)) {
+                result = new SingleGraphForm();
                 result.Location = new Point(margin, this.MdiParent.Height - result.Size.Height - 8 * margin);
             }
             else if(type == typeof(ResultForm)) {

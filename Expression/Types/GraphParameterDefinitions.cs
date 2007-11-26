@@ -26,5 +26,10 @@ namespace PavelStransky.Expression {
             GraphParameterItem item = new GraphParameterItem(indication, name, description, defaultValue);
             this.items.Add(indication, item);
         }
+
+        /// <summary>
+        /// Number of elements
+        /// </summary>
+        public int Count { get { return this.items.Count; } }
     }
 }

@@ -126,6 +126,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The graph parameter &apos;{0}&apos; does not exist..
+        /// </summary>
+        internal static string EMBadParameterName {
+            get {
+                return ResourceManager.GetString("EMBadParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter &apos;{0}&apos; in function &apos;{1}&apos; has bad type..
         /// </summary>
         internal static string EMBadParamType {
@@ -774,6 +783,33 @@ namespace PavelStransky.Expression {
         internal static string GPAPStyleYDescription {
             get {
                 return ResourceManager.GetString("GPAPStyleYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Curve parameter.
+        /// </summary>
+        internal static string GParamHelpCurveParam {
+            get {
+                return ResourceManager.GetString("GParamHelpCurveParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global parameter.
+        /// </summary>
+        internal static string GParamHelpGlobalParam {
+            get {
+                return ResourceManager.GetString("GParamHelpGlobalParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group parameter.
+        /// </summary>
+        internal static string GParamHelpGroupParam {
+            get {
+                return ResourceManager.GetString("GParamHelpGroupParam", resourceCulture);
             }
         }
         
@@ -1786,6 +1822,78 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to rwindowh.
+        /// </summary>
+        internal static string GPRWindowH {
+            get {
+                return ResourceManager.GetString("GPRWindowH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Relative height of the window of the graph.
+        /// </summary>
+        internal static string GPRWindowHDescription {
+            get {
+                return ResourceManager.GetString("GPRWindowHDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rwindowl.
+        /// </summary>
+        internal static string GPRWindowL {
+            get {
+                return ResourceManager.GetString("GPRWindowL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left relative margin of the window of the graph.
+        /// </summary>
+        internal static string GPRWindowLDescription {
+            get {
+                return ResourceManager.GetString("GPRWindowLDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rwindowt.
+        /// </summary>
+        internal static string GPRWindowT {
+            get {
+                return ResourceManager.GetString("GPRWindowT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top relative margin of the window of the graph.
+        /// </summary>
+        internal static string GPRWindowTDescription {
+            get {
+                return ResourceManager.GetString("GPRWindowTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rwindoww.
+        /// </summary>
+        internal static string GPRWindowW {
+            get {
+                return ResourceManager.GetString("GPRWindowW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Relative width of the window of the graph.
+        /// </summary>
+        internal static string GPRWindowWDescription {
+            get {
+                return ResourceManager.GetString("GPRWindowWDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to scrollstep.
         /// </summary>
         internal static string GPScrollStep {
@@ -2367,6 +2475,24 @@ namespace PavelStransky.Expression {
         internal static string HelpGOE {
             get {
                 return ResourceManager.GetString("HelpGOE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help to one graph parameter.
+        /// </summary>
+        internal static string HelpGParamHelp {
+            get {
+                return ResourceManager.GetString("HelpGParamHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of all graph parameters.
+        /// </summary>
+        internal static string HelpGParams {
+            get {
+                return ResourceManager.GetString("HelpGParams", resourceCulture);
             }
         }
         
@@ -5094,6 +5220,24 @@ namespace PavelStransky.Expression {
         internal static string POrderDetail {
             get {
                 return ResourceManager.GetString("POrderDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pname.
+        /// </summary>
+        internal static string PParamName {
+            get {
+                return ResourceManager.GetString("PParamName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter name.
+        /// </summary>
+        internal static string PParamNameDescription {
+            get {
+                return ResourceManager.GetString("PParamNameDescription", resourceCulture);
             }
         }
         

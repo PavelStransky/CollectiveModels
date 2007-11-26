@@ -124,6 +124,7 @@
     <Content Include="Success.WAV">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="AnimGIFBuffer.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CommandTextBox.cs">
       <SubType>Component</SubType>
@@ -138,22 +139,21 @@
     <Compile Include="FileNameEventArgs.cs" />
     <Compile Include="FinishedEventArgs.cs" />
     <Compile Include="FormsException.cs" />
-    <Compile Include="GraphControl.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="GraphItem.cs" />
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-    <Compile Include="GraphControl.Designer.cs">
-      <DependentUpon>GraphControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphForm.cs">
+    <Compile Include="SingleGraphForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GraphForm.Designer.cs">
-      <DependentUpon>GraphForm.cs</DependentUpon>
+    <Compile Include="SingleGraphForm.Designer.cs">
+      <DependentUpon>SingleGraphForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HighlightItemEventArgs.cs" />
-    <Compile Include="IGraphControl.cs" />
     <Compile Include="Import.cs" />
-    <Compile Include="GraphBox.cs">
+    <Compile Include="GraphicsBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="LastOpenedFiles.cs" />
@@ -179,6 +179,9 @@
     <Compile Include="ResultForm.Designer.cs">
       <DependentUpon>ResultForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SingleGraphForm.Save.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="WinMain.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -190,16 +193,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GraphControl.resx">
-      <DependentUpon>GraphControl.cs</DependentUpon>
+    <EmbeddedResource Include="Messages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SingleGraphForm.resx">
+      <DependentUpon>SingleGraphForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GraphForm.resx">
-      <DependentUpon>GraphForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphBox.resx">
-      <DependentUpon>GraphBox.cs</DependentUpon>
+    <EmbeddedResource Include="GraphicsBox.resx">
+      <DependentUpon>GraphicsBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">

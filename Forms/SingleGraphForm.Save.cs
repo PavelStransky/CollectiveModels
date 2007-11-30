@@ -113,6 +113,28 @@ namespace PavelStransky.Forms {
             this.sfdAnim.ShowDialog();
         }
 
+        private void cmnSaveOneSeq_Click(object sender, EventArgs e) {
+            this.sfdSeq.InitialDirectory = WinMain.Directory;
+            if(this.sfdSeq.FileName == string.Empty)
+                this.sfdSeq.FileName = this.Text;
+
+            this.sfdSeq.Title = Messages.TSaveOneSeq;
+            this.saveAll = false;
+
+            this.sfdSeq.ShowDialog();
+        }
+
+        private void cmnSaveAllSeq_Click(object sender, EventArgs e) {
+            this.sfdSeq.InitialDirectory = WinMain.Directory;
+            if(this.sfdSeq.FileName == string.Empty)
+                this.sfdSeq.FileName = this.Text;
+
+            this.sfdSeq.Title = Messages.TSaveAllSeq;
+            this.saveAll = true;
+
+            this.sfdSeq.ShowDialog();
+        }
+
         private void sfdAnim_FileOk(object sender, CancelEventArgs e) {
             this.SaveAnim(this.sfdAnim.FileName);
         }

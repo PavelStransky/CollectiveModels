@@ -103,7 +103,7 @@ namespace PavelStransky.Forms {
             this.cmnSaveAllAnim,
             this.cmnSaveAllSeq});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(250, 142);
+            this.contextMenu.Size = new System.Drawing.Size(250, 164);
             this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
             // 
             // cmnSaveOneText
@@ -125,6 +125,7 @@ namespace PavelStransky.Forms {
             this.cmnSaveOneSeq.Name = "cmnSaveOneSeq";
             this.cmnSaveOneSeq.Size = new System.Drawing.Size(249, 22);
             this.cmnSaveOneSeq.Text = "Uložit jako &obrázek (sekvenènì)...";
+            this.cmnSaveOneSeq.Click += new System.EventHandler(this.cmnSaveOneSeq_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -150,6 +151,7 @@ namespace PavelStransky.Forms {
             this.cmnSaveAllSeq.Name = "cmnSaveAllSeq";
             this.cmnSaveAllSeq.Size = new System.Drawing.Size(249, 22);
             this.cmnSaveAllSeq.Text = "Vše jako obrázek (&sekvenènì)...";
+            this.cmnSaveAllSeq.Click += new System.EventHandler(this.cmnSaveAllSeq_Click);
             // 
             // sfdText
             // 

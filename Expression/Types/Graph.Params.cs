@@ -118,6 +118,7 @@ namespace PavelStransky.Expression {
             PColor = 1020,
             PStyle = 1021,
             PSize = 1022,
+            PColorFnc = 1023,
 
             FPColor = 1030,
             FPStyle = 1031,
@@ -147,7 +148,9 @@ namespace PavelStransky.Expression {
             PixelL = 10020,
             PixelT = 10021,
             PixelW = 10022,
-            PixelH = 10023
+            PixelH = 10023,
+
+            PColorFncBuffer = 10100
         }
 
         private static GraphParameterDefinitions globalParams;
@@ -259,6 +262,7 @@ namespace PavelStransky.Expression {
             curveParams.Add(ParametersIndications.PColor, Messages.GPPColor, Messages.GPPColorDescription, Color.Brown);
             curveParams.Add(ParametersIndications.PStyle, Messages.GPPStyle, Messages.GPPStyleDescription, PointStyles.FSquare);
             curveParams.Add(ParametersIndications.PSize, Messages.GPPSize, Messages.GPPSizeDescription, 2);
+            curveParams.Add(ParametersIndications.PColorFnc, Messages.GPPColorFnc, Messages.GPPColorFncDescription, string.Empty);
             curveParams.Add(ParametersIndications.FPColor, Messages.GPFPColor, Messages.GPFPColorDescription, Color.DarkRed);
             curveParams.Add(ParametersIndications.FPStyle, Messages.GPFPStyle, Messages.GPFPStyleDescription, PointStyles.FSquare);
             curveParams.Add(ParametersIndications.FPSize, Messages.GPFPSize, Messages.GPFPSizeDescription, 2);

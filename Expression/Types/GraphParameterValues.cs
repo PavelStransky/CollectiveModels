@@ -15,15 +15,18 @@ namespace PavelStransky.Expression {
         private Hashtable values = new Hashtable();
         private Hashtable isDefault = new Hashtable();
 
+        private GraphParameterDefinitions definitions;
+
         /// <summary>
-        /// Konstruktor
+        /// Nastaví parametry
         /// </summary>
+        /// <param name="first">True, pokud voláme poprvé (nastavujeme i defaultní hodnoty)</param>
         /// <param name="definitions">Definice parametrù</param>
         /// <param name="c1">1. kontext</param>
         /// <param name="c2">2. kontext</param>
         /// <param name="c3">3. kontext</param>
-        public GraphParameterValues(GraphParameterDefinitions definitions, Context c1, Context c2, Context c3) {
-            foreach(GraphParameterItem i in definitions.Definitions) {
+        private void SetParams(bool first, Context c1, Context c2, Context c3) {
+            foreach(GraphParameterItem i in this.definitions.Definitions) {
                 object dvalue = i.DefaultValue;
                 string name = i.Name;
                 bool isdef = false;
@@ -37,9 +40,14 @@ namespace PavelStransky.Expression {
                     value = c3[name];
 
                 if(value == null) {
-                    value = dvalue;
-                    isdef = true;
+                    if(first) {
+                        value = dvalue;
+                        isdef = true;
+                    }
+                    else
+                        continue;
                 }
+
                 else {
                     if(value is Variable)
                         value = (value as Variable).Item;
@@ -79,9 +87,39 @@ namespace PavelStransky.Expression {
                             string.Format(Messages.EMBadGraphParamTypeDetail, dvalue.GetType().FullName, value.GetType().FullName));
                 }
 
-                this.values.Add(i.Indication, value);
-                this.isDefault.Add(i.Indication, isdef);
+                if(first) {
+                    this.values.Add(i.Indication, value);
+                    this.isDefault.Add(i.Indication, isdef);
+                }
+
+                else {
+                    this.values[i.Indication] = value;
+                    this.isDefault[i.Indication] = false;
+                }
             }
+        }
+
+        /// <summary>
+        /// Nastaví parametry
+        /// </summary>
+        /// <param name="definitions">Definice parametrù</param>
+        /// <param name="c1">1. kontext</param>
+        /// <param name="c2">2. kontext</param>
+        /// <param name="c3">3. kontext</param>
+        public void SetParams(Context c1, Context c2, Context c3) {
+            this.SetParams(false, c1, c2, c3);
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="definitions">Definice parametrù</param>
+        /// <param name="c1">1. kontext</param>
+        /// <param name="c2">2. kontext</param>
+        /// <param name="c3">3. kontext</param>
+        public GraphParameterValues(GraphParameterDefinitions definitions, Context c1, Context c2, Context c3) {
+            this.definitions = definitions;
+            this.SetParams(true, c1, c2, c3);
         }
 
         /// <summary>
@@ -142,6 +180,8 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="definitions">Definice parametrù</param>
         public void AddDefaultParams(GraphParameterDefinitions definitions) {
+            this.definitions = definitions;
+
             foreach(GraphParameterItem i in definitions.Definitions) {
                 Graph.ParametersIndications key = i.Indication;
 
@@ -170,6 +210,7 @@ namespace PavelStransky.Expression {
         public object Clone() {
             GraphParameterValues result = new GraphParameterValues();
 
+            result.definitions = this.definitions;
             result.isDefault = (Hashtable)this.isDefault.Clone();
             result.values = (Hashtable)this.values.Clone();
 

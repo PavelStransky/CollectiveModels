@@ -112,6 +112,17 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Voláno pøi zmìnì na grafu
+        /// </summary>
+        void graph_Changed(object sender, EventArgs e) {
+            // Pøekreslíme bitmapy
+            (this.parent.Parent as SingleGraphForm).NewProcess(string.Empty, this.graph.BWCreate);
+
+            // Invalidujeme
+            this.parent.Invalidate();
+        }
+
+        /// <summary>
         /// Voláno pøi dopoèítání pozadí jednotlivé skupiny
         /// </summary>
         private void graph_FinishedBackground(object sender, FinishedBackgroundEventArgs e) {

@@ -269,7 +269,14 @@ namespace PavelStransky.Expression {
                         g.DrawString(lineName, font, labelBrush, rectangleM.Left, (float)(offset.Y - stringHeight / 2.0));
                     }
 
-                    this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
+                    // Barva bodù podle funkce
+                    string colorFnc = (string)iv[ParametersIndications.PColorFnc];
+                    TArray colorBuffer = (TArray)iv[ParametersIndications.PColorFncBuffer];
+
+                    if(colorFnc == string.Empty || colorBuffer == null)
+                        this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
+                    else
+                        this.DrawPoints(g, p, colorBuffer, pointStyle, pointSize);
 
                     // První a poslední bod
                     if(p.Length > 0) {
@@ -432,7 +439,7 @@ namespace PavelStransky.Expression {
 
             // X - ový popisek
             string titleX = (string)gv[ParametersIndications.ATitleX];
-
+            
             if(titleX != string.Empty && (showAxeT || showAxeB)) {
                 int x = rectangleM.Width / 2 + rectangleM.Left;
                 int yT = rectangleM.Top - 20;
@@ -458,8 +465,8 @@ namespace PavelStransky.Expression {
 
             if(titleY != string.Empty && (showAxeL || showAxeR)) {
                 int y = rectangleM.Height / 2 + rectangleM.Top;
-                int xL = rectangleM.Left - 15;
-                int xR = rectangleM.Right + 15;
+                int xL = rectangle.Left + 5;
+                int xR = rectangle.Right - 5;
 
                 Font font = new Font(baseFontFamilyName, (int)gv[ParametersIndications.ATitleFSizeY], FontStyle.Bold | FontStyle.Italic);
                 Color titleColor = (Color)gv[ParametersIndications.ATitleColorY];
@@ -467,7 +474,7 @@ namespace PavelStransky.Expression {
 
                 SizeF p = g.MeasureString(titleY, font);
                 y -= (int)(p.Height / 2F);
-                xL -= (int)p.Width;
+                xR -= (int)p.Width;
 
                 if(showAxeL)
                     g.DrawString(titleY, font, titleBrush, xL, y);
@@ -476,7 +483,6 @@ namespace PavelStransky.Expression {
                     g.DrawString(titleY, font, titleBrush, xR, y);
             }
 
-            // Titulek
             string title = (string)this.graphParamValues[ParametersIndications.Title];
             if(title != string.Empty) {
                 Color titleColor = (Color)this.graphParamValues[ParametersIndications.TitleColor];
@@ -545,9 +551,13 @@ namespace PavelStransky.Expression {
             x = System.Math.Ceiling(x);
             x *= interval;
 
-            Vector result = new Vector((int)(max / interval) - (int)(min / interval) + 1);
+            int length = (int)(max / interval) - (int)(min / interval);
+            if(min * max <= 0)
+                length++;
 
-            for(int i = 1; i <= result.Length; i++)
+            Vector result = new Vector(length);
+
+            for(int i = 1; i <= length; i++)
                 result[i - 1] = x + (i - 1) * interval;
 
             smallIntervalsOffset = (int)(((System.Math.Floor(x / largeInterval) + 1) * largeInterval - x) / interval + 0.5);
@@ -604,6 +614,22 @@ namespace PavelStransky.Expression {
                     this.DrawPoint(g, points[j], pen, hlPointStyle, hlPointSize);
                 else
                     this.DrawPoint(g, points[j], pen, pointStyle, pointSize);
+            }
+        }
+
+        /// <summary>
+        /// Nakreslí body s danou vybarvovací funkcí
+        /// </summary>
+        /// <param name="g">Objekt Graphics</param>
+        /// <param name="points">Body</param>
+        /// <param name="colorBuffer">Buffer s barvami bodù</param>
+        /// <param name="pointStyle">Styl bodù</param>
+        /// <param name="pointSize">Velikost bodù</param>
+        private void DrawPoints(Graphics g, Point[] points, TArray colorBuffer, Graph.PointStyles pointStyle, int pointSize) {
+            int num = points.Length;
+            for(int i = 0; i < num; i++) {
+                Pen pen = new Pen((Color)colorBuffer[i]);
+                this.DrawPoint(g, points[i], pen, pointStyle, pointSize);
             }
         }
 

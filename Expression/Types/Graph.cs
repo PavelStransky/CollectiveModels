@@ -23,6 +23,21 @@ namespace PavelStransky.Expression {
         public int NumGroups { get { return (int)this.graphParamValues[ParametersIndications.NumGroups]; } }
 
         /// <summary>
+        /// Poèet køivek grafu
+        /// </summary>
+        public int[] NumCurves {
+            get {
+                int nGroups = (int)this.graphParamValues[ParametersIndications.NumGroups];
+                int[] result = new int[nGroups];
+
+                for(int i = 0; i < nGroups; i++)
+                    result[i] = (int)(this.groupParamValues[i] as GraphParameterValues)[ParametersIndications.NumCurves];
+
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Maximální èas pro skupinu
         /// </summary>
         /// <param name="group">Èíslo skupiny</param>
@@ -136,6 +151,38 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
+        /// Nastaví nové parametry grafu
+        /// </summary>
+        /// <param name="graphContext">Parametry celého grafu</param>
+        /// <param name="itemContext">Parametry jednotlivých køivek grafu</param>
+        /// <param name="groupContext">Parametry skupin</param>
+        public void SetParams(Context graphContext, TArray groupContext, TArray itemContext) {
+            int nGroups = (int)this.graphParamValues[ParametersIndications.NumGroups];
+
+            int gcl = groupContext.Length;
+            int icl = itemContext.Length;
+
+            this.graphParamValues.SetParams(graphContext, null, null);
+
+            for(int g = 0; g < nGroups; g++) {
+                GraphParameterValues gv = this.groupParamValues[g] as GraphParameterValues;
+                TArray cv = this.itemParamValues[g] as TArray;
+
+                Context gc = gcl > g ? groupContext[g] as Context : null;
+                TArray aic = icl > g ? itemContext[g] as TArray : null;
+
+                gv.SetParams(gc, graphContext, null);
+
+                int nCurves = (int)gv[ParametersIndications.NumCurves];
+
+                int icll = icl > g ? aic.Length : 0;
+
+                for(int i = 0; i < nCurves; i++)
+                    (cv[i] as GraphParameterValues).SetParams(icll > i ? aic[i] as Context : null, gc, graphContext);
+            }
+        }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="item">Data pro graf</param>
@@ -188,6 +235,8 @@ namespace PavelStransky.Expression {
                     a[i] = cv;
 
                     maxLength = System.Math.Max(maxLength, (ac[i] as PointVector).Length);
+
+                    this.SetColorFncBuffer(cv);
                 }
 
                 gv[ParametersIndications.GroupMaxLength] = maxLength;
@@ -201,6 +250,45 @@ namespace PavelStransky.Expression {
             }
 
             this.bitmap = new Bitmap[nGroups];
+        }
+
+        /// <summary>
+        /// Pokud máme funkci pro barvy, 
+        /// </summary>
+        /// <param name="cv"></param>
+        private void SetColorFncBuffer(GraphParameterValues cv) {
+            string colorFnc = (string)cv[ParametersIndications.PColorFnc];
+
+            if(colorFnc != string.Empty) {
+                PointVector data = (PointVector)cv[ParametersIndications.DataCurves];
+
+                int num = data.Length;
+                TArray buffer = new TArray(typeof(Color), num);
+                int i = 0;
+
+                try {
+                    Function fnc = new Function(string.Format("getvar({0}(x; y); cf)", colorFnc), null);
+                    Context c = new Context();
+
+                    for(i = 0; i < num; i++) {
+                        PointD p = data[i];
+                        c.SetVariable("x", p.X);
+                        c.SetVariable("y", p.Y);
+
+                        Vector v = (fnc.Evaluate(c) as Variable).Item as Vector;
+                        buffer[i] = Color.FromArgb((int)v[0], (int)v[1], (int)v[2]);
+                    }
+                }
+
+                catch(Exception) {
+                    Color dc = (Color)cv[ParametersIndications.PColor];
+
+                    for(; i < num; i++)
+                        buffer[i] = dc;
+                }
+
+                cv[ParametersIndications.PColorFncBuffer] = buffer;
+            }
         }
 
         /// <summary>

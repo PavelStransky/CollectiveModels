@@ -1786,6 +1786,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pcolorfnc.
+        /// </summary>
+        internal static string GPPColorFnc {
+            get {
+                return ResourceManager.GetString("GPPColorFnc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the point color function.
+        /// </summary>
+        internal static string GPPColorFncDescription {
+            get {
+                return ResourceManager.GetString("GPPColorFncDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to psize.
         /// </summary>
         internal static string GPPSize {
@@ -3244,11 +3262,29 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Replaces a specified value with other one.
+        /// </summary>
+        internal static string HelpRepaceValue {
+            get {
+                return ResourceManager.GetString("HelpRepaceValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replaces bad points (NaN, Infinity) in Vector or PointVector by a given value.
         /// </summary>
         internal static string HelpReplaceBadPoints {
             get {
                 return ResourceManager.GetString("HelpReplaceBadPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces values from specified interval with new value.
+        /// </summary>
+        internal static string HelpReplaceInterval {
+            get {
+                return ResourceManager.GetString("HelpReplaceInterval", resourceCulture);
             }
         }
         
@@ -3357,6 +3393,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSetGlobalVar {
             get {
                 return ResourceManager.GetString("HelpSetGlobalVar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets new parameters to a graph.
+        /// </summary>
+        internal static string HelpSetGraphParams {
+            get {
+                return ResourceManager.GetString("HelpSetGraphParams", resourceCulture);
             }
         }
         
@@ -5071,6 +5116,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to new.
+        /// </summary>
+        internal static string PNewValue {
+            get {
+                return ResourceManager.GetString("PNewValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New value.
+        /// </summary>
+        internal static string PNewValueDescription {
+            get {
+                return ResourceManager.GetString("PNewValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nd.
         /// </summary>
         internal static string PNonDiagonalValue {
@@ -5211,6 +5274,60 @@ namespace PavelStransky.Expression {
         internal static string PObjectWithBadPointsDescription {
             get {
                 return ResourceManager.GetString("PObjectWithBadPointsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to old.
+        /// </summary>
+        internal static string POldValue {
+            get {
+                return ResourceManager.GetString("POldValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old value.
+        /// </summary>
+        internal static string POldValueDescription {
+            get {
+                return ResourceManager.GetString("POldValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to oldmax.
+        /// </summary>
+        internal static string POldValueMax {
+            get {
+                return ResourceManager.GetString("POldValueMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal value to be replaced.
+        /// </summary>
+        internal static string POldValueMaxDescription {
+            get {
+                return ResourceManager.GetString("POldValueMaxDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to oldmin.
+        /// </summary>
+        internal static string POldValueMin {
+            get {
+                return ResourceManager.GetString("POldValueMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal value to be replaced.
+        /// </summary>
+        internal static string POldValueMinDescription {
+            get {
+                return ResourceManager.GetString("POldValueMinDescription", resourceCulture);
             }
         }
         

@@ -696,6 +696,12 @@ Length of the second vector: {1}</value>
   <data name="GPPColorDescription" xml:space="preserve">
     <value>Color of the points of the curve</value>
   </data>
+  <data name="GPPColorFnc" xml:space="preserve">
+    <value>pcolorfnc</value>
+  </data>
+  <data name="GPPColorFncDescription" xml:space="preserve">
+    <value>Name of the point color function</value>
+  </data>
   <data name="GPPSize" xml:space="preserve">
     <value>psize</value>
   </data>
@@ -1182,8 +1188,14 @@ Length of the second vector: {1}</value>
   <data name="HelpRemoveBadPoints" xml:space="preserve">
     <value>Removes bad points (NaN, Infinity) from Vector or PointVector</value>
   </data>
+  <data name="HelpRepaceValue" xml:space="preserve">
+    <value>Replaces a specified value with other one</value>
+  </data>
   <data name="HelpReplaceBadPoints" xml:space="preserve">
     <value>Replaces bad points (NaN, Infinity) in Vector or PointVector by a given value</value>
+  </data>
+  <data name="HelpReplaceInterval" xml:space="preserve">
+    <value>Replaces values from specified interval with new value</value>
   </data>
   <data name="HelpRWF5DLHO" xml:space="preserve">
     <value>Value of the radial part of basis wave function for 5D LHO</value>
@@ -1220,6 +1232,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpSetGlobalVar" xml:space="preserve">
     <value>Sets a variable into the global context</value>
+  </data>
+  <data name="HelpSetGraphParams" xml:space="preserve">
+    <value>Sets new parameters to a graph</value>
   </data>
   <data name="HelpSetNonDiagonal" xml:space="preserve">
     <value>Given value put onto nondiagonal elements of square matrix</value>
@@ -1791,6 +1806,12 @@ Length of the second vector: {1}</value>
   <data name="PMultiDimensionsDescription" xml:space="preserve">
     <value>Object with several dimensions</value>
   </data>
+  <data name="PNewValue" xml:space="preserve">
+    <value>new</value>
+  </data>
+  <data name="PNewValueDescription" xml:space="preserve">
+    <value>New value</value>
+  </data>
   <data name="PNonDiagonalValue" xml:space="preserve">
     <value>nd</value>
   </data>
@@ -1838,6 +1859,24 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PObjectWithBadPointsDescription" xml:space="preserve">
     <value>Object that contains bad points (NaN, Infinity)</value>
+  </data>
+  <data name="POldValue" xml:space="preserve">
+    <value>old</value>
+  </data>
+  <data name="POldValueDescription" xml:space="preserve">
+    <value>Old value</value>
+  </data>
+  <data name="POldValueMax" xml:space="preserve">
+    <value>oldmax</value>
+  </data>
+  <data name="POldValueMaxDescription" xml:space="preserve">
+    <value>Maximal value to be replaced</value>
+  </data>
+  <data name="POldValueMin" xml:space="preserve">
+    <value>oldmin</value>
+  </data>
+  <data name="POldValueMinDescription" xml:space="preserve">
+    <value>Minimal value to be replaced</value>
   </data>
   <data name="POrder" xml:space="preserve">
     <value>n</value>

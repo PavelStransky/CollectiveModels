@@ -443,7 +443,7 @@ namespace PavelStransky.Math {
 
             for(int i = 0; i < lengthX; i++)
                 for(int j = 0; j < lengthY; j++)
-                    result[i, j] = function(this[i, j]);
+                    result[i, j] = function(this[i, j], p);
 
             return result;
         }

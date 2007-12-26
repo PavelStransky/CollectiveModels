@@ -57,13 +57,21 @@ namespace PavelStransky.Expression {
             BMinY = 132,
             BMaxY = 133,
 
-            BColorZero = 140,
-            BColorPlus = 141,
-            BColorMinus = 142,
+            BColorMin = 140,
+            BColorMiddle = 141,
+            BColorMax = 142,
+            BColorSpecial = 143,
+            
+            BColorMinValue = 145,
+            BColorMiddleValue = 146,
+            BColorMaxValue = 147,
+            BColorSpecialValue = 148,
 
             BLegend = 150,
             BLegendWidth = 151,
             BLegendFSize = 152,
+            BLegendMinY = 155,
+            BLegendMaxY = 156,
         
             BPSizeX = 160,
             BPSizeY = 161,
@@ -205,12 +213,19 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.BMaxX, Messages.GPBMaxX, Messages.GPBMaxXDescription, 0.0);
             groupParams.Add(ParametersIndications.BMinY, Messages.GPBMinY, Messages.GPBMinYDescription, 0.0);
             groupParams.Add(ParametersIndications.BMaxY, Messages.GPBMaxY, Messages.GPBMaxYDescription, 0.0);
-            groupParams.Add(ParametersIndications.BColorZero, Messages.GPBColorZero, Messages.GPBColorZeroDescription, Color.White);
-            groupParams.Add(ParametersIndications.BColorPlus, Messages.GPBColorPlus, Messages.GPBColorPlusDescription, Color.Blue);
-            groupParams.Add(ParametersIndications.BColorMinus, Messages.GPBColorMinus, Messages.GPBColorMinusDescription, Color.Red);
+            groupParams.Add(ParametersIndications.BColorMin, Messages.GPBColorMin, Messages.GPBColorMinDescription, Color.Red);
+            groupParams.Add(ParametersIndications.BColorMiddle, Messages.GPBColorMiddle, Messages.GPBColorMiddleDescription, Color.White);
+            groupParams.Add(ParametersIndications.BColorMax, Messages.GPBColorMax, Messages.GPBColorMaxDescription, Color.Blue);
+            groupParams.Add(ParametersIndications.BColorSpecial, Messages.GPBColorSpecial, Messages.GPBColorSpecialDescription, Color.Black);
+            groupParams.Add(ParametersIndications.BColorMinValue, Messages.GPBColorMinValue, Messages.GPBColorMinValueDescription, -1.0);
+            groupParams.Add(ParametersIndications.BColorMiddleValue, Messages.GPBColorMiddleValue, Messages.GPBColorMiddleValueDescription, 0.0);
+            groupParams.Add(ParametersIndications.BColorMaxValue, Messages.GPBColorMaxValue, Messages.GPBColorMaxValueDescription, 1.0);
+            groupParams.Add(ParametersIndications.BColorSpecialValue, Messages.GPBColorSpecialValue, Messages.GPBColorSpecialValueDescription, 0.0);
             groupParams.Add(ParametersIndications.BLegend, Messages.GPBLegend, Messages.GPBLegendDescription, false);
             groupParams.Add(ParametersIndications.BLegendFSize, Messages.GPBLegendFSize, Messages.GPBLegendFSizeDescription, 10);
-            groupParams.Add(ParametersIndications.BLegendWidth, Messages.GPBLegendWidth, Messages.GPBLegendWidthDescription, 20);
+            groupParams.Add(ParametersIndications.BLegendWidth, Messages.GPBLegendWidth, Messages.GPBLegendWidthDescription, 30);
+            groupParams.Add(ParametersIndications.BLegendMinY, Messages.GPBLegendMinY, Messages.GPBLegendMinYDescription, -1.0);
+            groupParams.Add(ParametersIndications.BLegendMaxY, Messages.GPBLegendMaxY, Messages.GPBLegendMaxYDescription, 1.0);
             groupParams.Add(ParametersIndications.BPSizeX, Messages.GPBPSizeX, Messages.GPBPSizeXDescription, 1);
             groupParams.Add(ParametersIndications.BPSizeY, Messages.GPBPSizeY, Messages.GPBPSizeYDescription, 1);
             groupParams.Add(ParametersIndications.GTitle, Messages.GPGTitle, Messages.GPGTitleDescription, string.Empty);

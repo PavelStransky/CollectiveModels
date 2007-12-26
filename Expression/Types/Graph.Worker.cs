@@ -85,28 +85,13 @@ namespace PavelStransky.Expression {
             int sizeY = lengthY * pointSizeY;
 
             Bitmap result = new Bitmap(sizeX, sizeY);
-
-            Color colorPlus = (Color)gv[ParametersIndications.BColorPlus];
-            Color colorZero = (Color)gv[ParametersIndications.BColorZero];
-            Color colorMinus = (Color)gv[ParametersIndications.BColorMinus];
-
-            double maxAbs = System.Math.Abs((double)gv[ParametersIndications.MatrixAbs]);
+            BColor bcolor = new BColor(gv);
 
             for(int i = 0; i < lengthX; i++) {
                 for(int j = 0; j < lengthY; j++) {
-                    double m = matrix[i, lengthY - j - 1] / maxAbs;
+                    double m = matrix[i, lengthY - j - 1];
 
-                    Color color;
-                    if(m < 0) 
-                        color = Color.FromArgb(
-                            (int)((1 + m) * colorZero.R - m * colorMinus.R),
-                            (int)((1 + m) * colorZero.G - m * colorMinus.G),
-                            (int)((1 + m) * colorZero.B - m * colorMinus.B));
-                    else
-                        color = Color.FromArgb(
-                            (int)((1 - m) * colorZero.R + m * colorPlus.R),
-                            (int)((1 - m) * colorZero.G + m * colorPlus.G),
-                            (int)((1 - m) * colorZero.B + m * colorPlus.B));
+                    Color color = bcolor[m];
 
                     int i1 = i * pointSizeX;
                     int j1 = j * pointSizeY;

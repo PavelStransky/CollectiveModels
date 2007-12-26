@@ -159,6 +159,34 @@ namespace PavelStransky.Expression {
             int nCurves = (int)gv[ParametersIndications.NumCurves];
             Matrix background = (Matrix)gv[ParametersIndications.DataBackground];
 
+            // Legenda k pozadí
+            bool bLegend = (bool)gv[ParametersIndications.BLegend];
+
+            if(bLegend) {
+                double bLegendMinY = (double)gv[ParametersIndications.BLegendMinY];
+                double bLegendMaxY = (double)gv[ParametersIndications.BLegendMaxY];
+                int bLegendWidth = (int)gv[ParametersIndications.BLegendWidth];
+
+                double bColorMinValue = (double)gv[ParametersIndications.BColorMinValue];
+                double bColorMaxValue = (double)gv[ParametersIndications.BColorMaxValue];
+
+                int bLegendB = (int)(-bLegendMinY * amplify.Y + offset.Y);
+                int bLegendT = (int)(-bLegendMaxY * amplify.Y + offset.Y);
+                
+                double bLegendCoef = (bColorMaxValue - bColorMinValue) / (bLegendB - bLegendT);
+
+                int bLegendL = rectangle.Right - bLegendWidth - 5;
+                int bLegendR = rectangle.Right - 5;
+
+                BColor bcolor = new BColor(gv);
+
+                for(int i = bLegendT; i < bLegendB; i++) {
+                    double v = bColorMinValue + (i - bLegendT) * bLegendCoef;
+                    Pen p = new Pen(bcolor[v]);
+                    g.DrawLine(p, bLegendL, i, bLegendR, i);
+                }
+            }
+
             // X - ová møížka
             bool showGridX = (bool)gv[ParametersIndications.ShowGridX];
 

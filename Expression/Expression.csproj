@@ -129,6 +129,7 @@
     <Compile Include="Functions\Math\ReplaceInterval.cs" />
     <Compile Include="Functions\Math\ReplaceValue.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
+    <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />
     <Compile Include="Types\Graph.Worker.cs" />
     <Compile Include="Types\GraphParameterItem.cs" />

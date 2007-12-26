@@ -6,7 +6,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
-    /// Returns an array with names of all registered functions
+    /// Returns names of all registered functions which begin with specified string
 	/// </summary>
 	public class FNames: Fnc {
 		private FncList functions;
@@ -19,22 +19,29 @@ namespace PavelStransky.Expression.Functions.Def {
 			this.functions = functions;
 		}
 
-		public override string Help {get {return help;}}
+		public override string Help {get {return Messages.HelpFNames;}}
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 0);
+        protected override void CreateParameters() {
+            this.SetNumParams(1);
+            this.SetParam(0, false, true, false, Messages.PFnName, Messages.PFnNameDescription, string.Empty, typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            TArray result = new TArray(typeof(string), this.functions.Count);
+            ArrayList l = new ArrayList();
+            string begining = arguments[0] as string;
+
+            foreach(string fName in functions.Keys)
+                if(fName.IndexOf(begining) == 0)
+                    l.Add(fName);
+
+            int count = l.Count;
+            TArray result = new TArray(typeof(string), count);
 
             int i = 0;
-			foreach(string fName in functions.Keys)
-				result[i++] = fName;
+            foreach(string fName in l)
+                result[i++] = fName;
 
-			return result;
+            return result;
 		}
-
-		private const string help = "Vytvoøí øadu (Array) s názvy všech zaregistrovaných funkcí";
 	}
 }

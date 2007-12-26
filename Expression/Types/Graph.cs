@@ -377,6 +377,18 @@ namespace PavelStransky.Expression {
 
                 gv[ParametersIndications.MarginR] = m;
             }
+
+            // Bude legenda
+            bool isBLegend = (bool)gv[ParametersIndications.BLegend];
+
+            if(isBLegend) {
+                int m = (int)gv[ParametersIndications.MarginR];
+
+                m += (int)gv[ParametersIndications.BLegendWidth];
+                m += 10;
+
+                gv[ParametersIndications.MarginR] = m;
+            }
         }
 
         /// <summary>
@@ -451,6 +463,20 @@ namespace PavelStransky.Expression {
                         maxY = bmaxY;
                 }
 
+                bool isDefBColorMinValue = gv.IsDefault(ParametersIndications.BColorMinValue);
+                bool isDefBColorMiddleValue = gv.IsDefault(ParametersIndications.BColorMiddleValue);
+                bool isDefBColorMaxValue = gv.IsDefault(ParametersIndications.BColorMaxValue);
+
+                double mMax = m.Max();
+                double mMin = m.Min();
+
+                if(isDefBColorMinValue)
+                    gv[ParametersIndications.BColorMinValue] = mMin;
+                if(isDefBColorMiddleValue)
+                    gv[ParametersIndications.BColorMiddleValue] = (mMax + mMin) / 2.0;
+                if(isDefBColorMaxValue)
+                    gv[ParametersIndications.BColorMaxValue] = mMax;
+
                 maxAbs = m.MaxAbs();
             }
 
@@ -500,6 +526,13 @@ namespace PavelStransky.Expression {
                 gv[ParametersIndications.PixelH] = (maxY - minY) * pixelDY;
             }
 
+            // Hranice pro legendu
+            if(gv.IsDefault(ParametersIndications.BLegendMinY))
+                gv[ParametersIndications.BLegendMinY] = minY;
+            if(gv.IsDefault(ParametersIndications.BLegendMaxY))
+                gv[ParametersIndications.BLegendMaxY] = maxY;
+
+            // Uložení zmìn
             gv[ParametersIndications.MatrixAbs] = maxAbs;
 
             gv[ParametersIndications.MinX] = minX;

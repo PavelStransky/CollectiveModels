@@ -1048,56 +1048,146 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to bcolorminus.
+        ///   Looks up a localized string similar to bcolormax.
         /// </summary>
-        internal static string GPBColorMinus {
+        internal static string GPBColorMax {
             get {
-                return ResourceManager.GetString("GPBColorMinus", resourceCulture);
+                return ResourceManager.GetString("GPBColorMax", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Color of the minimal negative value of the background image.
+        ///   Looks up a localized string similar to Color of the maximal value of the background image.
         /// </summary>
-        internal static string GPBColorMinusDescription {
+        internal static string GPBColorMaxDescription {
             get {
-                return ResourceManager.GetString("GPBColorMinusDescription", resourceCulture);
+                return ResourceManager.GetString("GPBColorMaxDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to bcolorplus.
+        ///   Looks up a localized string similar to bcolormaxvalue.
         /// </summary>
-        internal static string GPBColorPlus {
+        internal static string GPBColorMaxValue {
             get {
-                return ResourceManager.GetString("GPBColorPlus", resourceCulture);
+                return ResourceManager.GetString("GPBColorMaxValue", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Color of the maximal positive value of the background image.
+        ///   Looks up a localized string similar to Maximal value of the background image.
         /// </summary>
-        internal static string GPBColorPlusDescription {
+        internal static string GPBColorMaxValueDescription {
             get {
-                return ResourceManager.GetString("GPBColorPlusDescription", resourceCulture);
+                return ResourceManager.GetString("GPBColorMaxValueDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to bcolorzero.
+        ///   Looks up a localized string similar to bcolormiddle.
         /// </summary>
-        internal static string GPBColorZero {
+        internal static string GPBColorMiddle {
             get {
-                return ResourceManager.GetString("GPBColorZero", resourceCulture);
+                return ResourceManager.GetString("GPBColorMiddle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Color of the zero value of the background image.
+        ///   Looks up a localized string similar to Color of the middle value of the background image.
         /// </summary>
-        internal static string GPBColorZeroDescription {
+        internal static string GPBColorMiddleDescription {
             get {
-                return ResourceManager.GetString("GPBColorZeroDescription", resourceCulture);
+                return ResourceManager.GetString("GPBColorMiddleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolormiddlevalue.
+        /// </summary>
+        internal static string GPBColorMiddleValue {
+            get {
+                return ResourceManager.GetString("GPBColorMiddleValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Middle value of the background image.
+        /// </summary>
+        internal static string GPBColorMiddleValueDescription {
+            get {
+                return ResourceManager.GetString("GPBColorMiddleValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolormin.
+        /// </summary>
+        internal static string GPBColorMin {
+            get {
+                return ResourceManager.GetString("GPBColorMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of the minimal value of the background image.
+        /// </summary>
+        internal static string GPBColorMinDescription {
+            get {
+                return ResourceManager.GetString("GPBColorMinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolorminvalue.
+        /// </summary>
+        internal static string GPBColorMinValue {
+            get {
+                return ResourceManager.GetString("GPBColorMinValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal value of the background image.
+        /// </summary>
+        internal static string GPBColorMinValueDescription {
+            get {
+                return ResourceManager.GetString("GPBColorMinValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolorspecial.
+        /// </summary>
+        internal static string GPBColorSpecial {
+            get {
+                return ResourceManager.GetString("GPBColorSpecial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of a special value of the background image.
+        /// </summary>
+        internal static string GPBColorSpecialDescription {
+            get {
+                return ResourceManager.GetString("GPBColorSpecialDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bcolorspecialvalue.
+        /// </summary>
+        internal static string GPBColorSpecialValue {
+            get {
+                return ResourceManager.GetString("GPBColorSpecialValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special value of the background image.
+        /// </summary>
+        internal static string GPBColorSpecialValueDescription {
+            get {
+                return ResourceManager.GetString("GPBColorSpecialValueDescription", resourceCulture);
             }
         }
         
@@ -1134,6 +1224,42 @@ namespace PavelStransky.Expression {
         internal static string GPBLegendFSizeDescription {
             get {
                 return ResourceManager.GetString("GPBLegendFSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blegendmaxy.
+        /// </summary>
+        internal static string GPBLegendMaxY {
+            get {
+                return ResourceManager.GetString("GPBLegendMaxY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal y value of the position of the legend.
+        /// </summary>
+        internal static string GPBLegendMaxYDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendMaxYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blegendminy.
+        /// </summary>
+        internal static string GPBLegendMinY {
+            get {
+                return ResourceManager.GetString("GPBLegendMinY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal y value of the position of the legend.
+        /// </summary>
+        internal static string GPBLegendMinYDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendMinYDescription", resourceCulture);
             }
         }
         
@@ -2394,6 +2520,15 @@ namespace PavelStransky.Expression {
         internal static string HelpFFTSpectrum {
             get {
                 return ResourceManager.GetString("HelpFFTSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns names of all registered functions which begin with specified string.
+        /// </summary>
+        internal static string HelpFNames {
+            get {
+                return ResourceManager.GetString("HelpFNames", resourceCulture);
             }
         }
         
@@ -4380,18 +4515,18 @@ namespace PavelStransky.Expression {
         /// <summary>
         ///   Looks up a localized string similar to a.
         /// </summary>
-        internal static string PDeflate1 {
+        internal static string PDeflate {
             get {
-                return ResourceManager.GetString("PDeflate1", resourceCulture);
+                return ResourceManager.GetString("PDeflate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Array to be deflated.
         /// </summary>
-        internal static string PDeflate1Description {
+        internal static string PDeflateDescription {
             get {
-                return ResourceManager.GetString("PDeflate1Description", resourceCulture);
+                return ResourceManager.GetString("PDeflateDescription", resourceCulture);
             }
         }
         

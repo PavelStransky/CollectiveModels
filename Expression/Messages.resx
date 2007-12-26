@@ -450,23 +450,53 @@ Length of the second vector: {1}</value>
   <data name="GPBColorDescription" xml:space="preserve">
     <value>Color of the background</value>
   </data>
-  <data name="GPBColorMinus" xml:space="preserve">
-    <value>bcolorminus</value>
+  <data name="GPBColorMax" xml:space="preserve">
+    <value>bcolormax</value>
   </data>
-  <data name="GPBColorMinusDescription" xml:space="preserve">
-    <value>Color of the minimal negative value of the background image</value>
+  <data name="GPBColorMaxDescription" xml:space="preserve">
+    <value>Color of the maximal value of the background image</value>
   </data>
-  <data name="GPBColorPlus" xml:space="preserve">
-    <value>bcolorplus</value>
+  <data name="GPBColorMaxValue" xml:space="preserve">
+    <value>bcolormaxvalue</value>
   </data>
-  <data name="GPBColorPlusDescription" xml:space="preserve">
-    <value>Color of the maximal positive value of the background image</value>
+  <data name="GPBColorMaxValueDescription" xml:space="preserve">
+    <value>Maximal value of the background image</value>
   </data>
-  <data name="GPBColorZero" xml:space="preserve">
-    <value>bcolorzero</value>
+  <data name="GPBColorMiddle" xml:space="preserve">
+    <value>bcolormiddle</value>
   </data>
-  <data name="GPBColorZeroDescription" xml:space="preserve">
-    <value>Color of the zero value of the background image</value>
+  <data name="GPBColorMiddleDescription" xml:space="preserve">
+    <value>Color of the middle value of the background image</value>
+  </data>
+  <data name="GPBColorMiddleValue" xml:space="preserve">
+    <value>bcolormiddlevalue</value>
+  </data>
+  <data name="GPBColorMiddleValueDescription" xml:space="preserve">
+    <value>Middle value of the background image</value>
+  </data>
+  <data name="GPBColorMin" xml:space="preserve">
+    <value>bcolormin</value>
+  </data>
+  <data name="GPBColorMinDescription" xml:space="preserve">
+    <value>Color of the minimal value of the background image</value>
+  </data>
+  <data name="GPBColorMinValue" xml:space="preserve">
+    <value>bcolorminvalue</value>
+  </data>
+  <data name="GPBColorMinValueDescription" xml:space="preserve">
+    <value>Minimal value of the background image</value>
+  </data>
+  <data name="GPBColorSpecial" xml:space="preserve">
+    <value>bcolorspecial</value>
+  </data>
+  <data name="GPBColorSpecialDescription" xml:space="preserve">
+    <value>Color of a special value of the background image</value>
+  </data>
+  <data name="GPBColorSpecialValue" xml:space="preserve">
+    <value>bcolorspecialvalue</value>
+  </data>
+  <data name="GPBColorSpecialValueDescription" xml:space="preserve">
+    <value>Special value of the background image</value>
   </data>
   <data name="GPBLegend" xml:space="preserve">
     <value>blegend</value>
@@ -479,6 +509,18 @@ Length of the second vector: {1}</value>
   </data>
   <data name="GPBLegendFSizeDescription" xml:space="preserve">
     <value>Font size of the legend of the background image</value>
+  </data>
+  <data name="GPBLegendMaxY" xml:space="preserve">
+    <value>blegendmaxy</value>
+  </data>
+  <data name="GPBLegendMaxYDescription" xml:space="preserve">
+    <value>Maximal y value of the position of the legend</value>
+  </data>
+  <data name="GPBLegendMinY" xml:space="preserve">
+    <value>blegendminy</value>
+  </data>
+  <data name="GPBLegendMinYDescription" xml:space="preserve">
+    <value>Minimal y value of the position of the legend</value>
   </data>
   <data name="GPBLegendWidth" xml:space="preserve">
     <value>blegendwidth</value>
@@ -899,6 +941,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpFFTSpectrum" xml:space="preserve">
     <value>Gives the spectrum of a vector using Fast Fourier Transform (FFT)</value>
+  </data>
+  <data name="HelpFNames" xml:space="preserve">
+    <value>Returns names of all registered functions which begin with specified string</value>
   </data>
   <data name="HelpFraction" xml:space="preserve">
     <value>Exact fraction</value>
@@ -1560,10 +1605,10 @@ Length of the second vector: {1}</value>
   <data name="PDefaultValueDescription" xml:space="preserve">
     <value>Default value of the variable</value>
   </data>
-  <data name="PDeflate1" xml:space="preserve">
+  <data name="PDeflate" xml:space="preserve">
     <value>a</value>
   </data>
-  <data name="PDeflate1Description" xml:space="preserve">
+  <data name="PDeflateDescription" xml:space="preserve">
     <value>Array to be deflated</value>
   </data>
   <data name="PDenominator" xml:space="preserve">

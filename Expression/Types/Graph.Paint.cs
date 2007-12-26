@@ -181,9 +181,26 @@ namespace PavelStransky.Expression {
                 BColor bcolor = new BColor(gv);
 
                 for(int i = bLegendT; i < bLegendB; i++) {
-                    double v = bColorMinValue + (i - bLegendT) * bLegendCoef;
+                    double v = bColorMaxValue - (i - bLegendT) * bLegendCoef;
                     Pen p = new Pen(bcolor[v]);
                     g.DrawLine(p, bLegendL, i, bLegendR, i);
+                }
+
+                // Label k legendì
+                bool bLegendLabel = (bool)gv[ParametersIndications.BLegendLabel];
+
+                if(bLegendLabel) {
+                    Color bLegendFColor = (Color)gv[ParametersIndications.BLegendFColor];
+                    Brush bLegendBrush = (new Pen(bLegendFColor)).Brush;
+                    Font font = new Font(baseFontFamilyName, (int)gv[ParametersIndications.BLegendFSize]);
+
+                    string s = bColorMaxValue.ToString("0.000");
+                    SizeF fSize = g.MeasureString(s, font);
+                    g.DrawString(s, font, bLegendBrush, bLegendL + (bLegendWidth - fSize.Width) / 2, bLegendT - fSize.Height);
+
+                    s = bColorMinValue.ToString("0.000");
+                    fSize = g.MeasureString(s, font);
+                    g.DrawString(s, font, bLegendBrush, bLegendL + (bLegendWidth - fSize.Width) / 2, bLegendB);
                 }
             }
 

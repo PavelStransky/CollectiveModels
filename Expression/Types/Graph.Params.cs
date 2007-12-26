@@ -70,6 +70,9 @@ namespace PavelStransky.Expression {
             BLegend = 150,
             BLegendWidth = 151,
             BLegendFSize = 152,
+            BLegendFColor = 153,
+            BLegendLabel = 154,
+
             BLegendMinY = 155,
             BLegendMaxY = 156,
         
@@ -224,6 +227,8 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.BLegend, Messages.GPBLegend, Messages.GPBLegendDescription, false);
             groupParams.Add(ParametersIndications.BLegendFSize, Messages.GPBLegendFSize, Messages.GPBLegendFSizeDescription, 10);
             groupParams.Add(ParametersIndications.BLegendWidth, Messages.GPBLegendWidth, Messages.GPBLegendWidthDescription, 30);
+            groupParams.Add(ParametersIndications.BLegendFColor, Messages.GPBLegendFColor, Messages.GPBLegendFColorDescription, Color.Black);
+            groupParams.Add(ParametersIndications.BLegendLabel, Messages.GPBLegendLabel, Messages.GPBLegendLabelDescription, true);
             groupParams.Add(ParametersIndications.BLegendMinY, Messages.GPBLegendMinY, Messages.GPBLegendMinYDescription, -1.0);
             groupParams.Add(ParametersIndications.BLegendMaxY, Messages.GPBLegendMaxY, Messages.GPBLegendMaxYDescription, 1.0);
             groupParams.Add(ParametersIndications.BPSizeX, Messages.GPBPSizeX, Messages.GPBPSizeXDescription, 1);

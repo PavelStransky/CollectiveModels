@@ -1210,6 +1210,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to blegendfcolor.
+        /// </summary>
+        internal static string GPBLegendFColor {
+            get {
+                return ResourceManager.GetString("GPBLegendFColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font color of the legend of the background image.
+        /// </summary>
+        internal static string GPBLegendFColorDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendFColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to blegendfsize.
         /// </summary>
         internal static string GPBLegendFSize {
@@ -1224,6 +1242,24 @@ namespace PavelStransky.Expression {
         internal static string GPBLegendFSizeDescription {
             get {
                 return ResourceManager.GetString("GPBLegendFSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blegendlabel.
+        /// </summary>
+        internal static string GPBLegendLabel {
+            get {
+                return ResourceManager.GetString("GPBLegendLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the label of the legend is to be shown.
+        /// </summary>
+        internal static string GPBLegendLabelDescription {
+            get {
+                return ResourceManager.GetString("GPBLegendLabelDescription", resourceCulture);
             }
         }
         

@@ -504,11 +504,23 @@ Length of the second vector: {1}</value>
   <data name="GPBLegendDescription" xml:space="preserve">
     <value>True if the legend of the background image are to be displayed</value>
   </data>
+  <data name="GPBLegendFColor" xml:space="preserve">
+    <value>blegendfcolor</value>
+  </data>
+  <data name="GPBLegendFColorDescription" xml:space="preserve">
+    <value>Font color of the legend of the background image</value>
+  </data>
   <data name="GPBLegendFSize" xml:space="preserve">
     <value>blegendfsize</value>
   </data>
   <data name="GPBLegendFSizeDescription" xml:space="preserve">
     <value>Font size of the legend of the background image</value>
+  </data>
+  <data name="GPBLegendLabel" xml:space="preserve">
+    <value>blegendlabel</value>
+  </data>
+  <data name="GPBLegendLabelDescription" xml:space="preserve">
+    <value>True if the label of the legend is to be shown</value>
   </data>
   <data name="GPBLegendMaxY" xml:space="preserve">
     <value>blegendmaxy</value>

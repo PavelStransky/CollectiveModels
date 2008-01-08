@@ -640,24 +640,26 @@ namespace PavelStransky.Expression {
                 this.groupParamValues = (TArray)param.Get();
                 this.itemParamValues = (TArray)param.Get();
 
-                this.graphParamValues.AddDefaultParams(globalParams);
-                int nGroups = (int)this.graphParamValues[ParametersIndications.NumGroups];
+                if(this.graphParamValues != null && this.groupParamValues != null && this.itemParamValues != null) {
+                    this.graphParamValues.AddDefaultParams(globalParams);
+                    int nGroups = (int)this.graphParamValues[ParametersIndications.NumGroups];
 
-                for(int g = 0; g < nGroups; g++) {
-                    GraphParameterValues gv = this.groupParamValues[g] as GraphParameterValues;
-                    TArray acv = this.itemParamValues[g] as TArray;
+                    for(int g = 0; g < nGroups; g++) {
+                        GraphParameterValues gv = this.groupParamValues[g] as GraphParameterValues;
+                        TArray acv = this.itemParamValues[g] as TArray;
 
-                    gv.AddDefaultParams(groupParams);
-                    int nCurves = (int)gv[ParametersIndications.NumCurves];
+                        gv.AddDefaultParams(groupParams);
+                        int nCurves = (int)gv[ParametersIndications.NumCurves];
 
-                    for(int i = 0; i < nCurves; i++)
-                        (acv[i] as GraphParameterValues).AddDefaultParams(curveParams);
-                
-                    this.SetMinMax(gv);
-                    this.SetBorders(gv);
+                        for(int i = 0; i < nCurves; i++)
+                            (acv[i] as GraphParameterValues).AddDefaultParams(curveParams);
+
+                        this.SetMinMax(gv);
+                        this.SetBorders(gv);
+                    }
+
+                    this.bitmap = new Bitmap[nGroups];
                 }
-
-                this.bitmap = new Bitmap[nGroups];
             }
             else if(import.VersionNumber >= 4) {
                 //this.item = (TArray)param.Get();

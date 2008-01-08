@@ -126,8 +126,16 @@
     <Compile Include="Functions\Graphics\SetGraphParams.cs" />
     <Compile Include="Functions\Help\GParamHelp.cs" />
     <Compile Include="Functions\Help\GParams.cs" />
+    <Compile Include="Functions\Math\Cos.cs" />
+    <Compile Include="Functions\Math\Cosh.cs" />
+    <Compile Include="Functions\Math\Cot.cs" />
+    <Compile Include="Functions\Math\Coth.cs" />
+    <Compile Include="Functions\Math\Exp.cs" />
     <Compile Include="Functions\Math\ReplaceInterval.cs" />
     <Compile Include="Functions\Math\ReplaceValue.cs" />
+    <Compile Include="Functions\Math\Sinh.cs" />
+    <Compile Include="Functions\Math\Tan.cs" />
+    <Compile Include="Functions\Math\Tanh.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
     <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />

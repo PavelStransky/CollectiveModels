@@ -894,6 +894,18 @@ Length of the second vector: {1}</value>
   <data name="HelpContext" xml:space="preserve">
     <value>Creates a new context</value>
   </data>
+  <data name="HelpCos" xml:space="preserve">
+    <value>Cosine of the value</value>
+  </data>
+  <data name="HelpCosh" xml:space="preserve">
+    <value>Hyperbolic cosine of the value</value>
+  </data>
+  <data name="HelpCot" xml:space="preserve">
+    <value>Cotangent of the value</value>
+  </data>
+  <data name="HelpCoth" xml:space="preserve">
+    <value>Hyperbolic cotangent of the value</value>
+  </data>
   <data name="HelpDeflate" xml:space="preserve">
     <value>Given array transforms into one dimensional array</value>
   </data>
@@ -938,6 +950,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpExit" xml:space="preserve">
     <value>Sends the request to close the program</value>
+  </data>
+  <data name="HelpExp" xml:space="preserve">
+    <value>Exponential of the value</value>
   </data>
   <data name="HelpExport" xml:space="preserve">
     <value>Saves a variable to a file</value>
@@ -1300,7 +1315,10 @@ Length of the second vector: {1}</value>
     <value>Shows a graph</value>
   </data>
   <data name="HelpSin" xml:space="preserve">
-    <value>Sinus of the value</value>
+    <value>Sine of the value</value>
+  </data>
+  <data name="HelpSinh" xml:space="preserve">
+    <value>Hyperbolic sine of the value</value>
   </data>
   <data name="HelpSmooth" xml:space="preserve">
     <value>Smooths a vector</value>
@@ -1325,6 +1343,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpSumSquare" xml:space="preserve">
     <value>Sum of squares of values of all elements in the object</value>
+  </data>
+  <data name="HelpTan" xml:space="preserve">
+    <value>Tangent of the value</value>
+  </data>
+  <data name="HelpTanh" xml:space="preserve">
+    <value>Hyperbolic tangent of the value</value>
   </data>
   <data name="HelpTestWWW" xml:space="preserve">
     <value>Tries to read text from specified URI</value>

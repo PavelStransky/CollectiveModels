@@ -6,13 +6,13 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Sine
+    /// Hyperbolic Sine
     /// </summary>
-    public class Sin: FncMathD {
-        public override string Help { get { return Messages.HelpSin; } }
+    public class Sinh: FncMathD {
+        public override string Help { get { return Messages.HelpSinh; } }
 
         protected override double FnDouble(double x, params object[] p) {
-            return System.Math.Sin(x);
+            return System.Math.Sinh(x);
         }
     }
 }

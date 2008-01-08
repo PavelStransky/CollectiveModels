@@ -2380,6 +2380,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cosine of the value.
+        /// </summary>
+        internal static string HelpCos {
+            get {
+                return ResourceManager.GetString("HelpCos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hyperbolic cosine of the value.
+        /// </summary>
+        internal static string HelpCosh {
+            get {
+                return ResourceManager.GetString("HelpCosh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cotangent of the value.
+        /// </summary>
+        internal static string HelpCot {
+            get {
+                return ResourceManager.GetString("HelpCot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hyperbolic cotangent of the value.
+        /// </summary>
+        internal static string HelpCoth {
+            get {
+                return ResourceManager.GetString("HelpCoth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given array transforms into one dimensional array.
         /// </summary>
         internal static string HelpDeflate {
@@ -2511,6 +2547,15 @@ namespace PavelStransky.Expression {
         internal static string HelpExit {
             get {
                 return ResourceManager.GetString("HelpExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exponential of the value.
+        /// </summary>
+        internal static string HelpExp {
+            get {
+                return ResourceManager.GetString("HelpExp", resourceCulture);
             }
         }
         
@@ -3595,11 +3640,20 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sinus of the value.
+        ///   Looks up a localized string similar to Sine of the value.
         /// </summary>
         internal static string HelpSin {
             get {
                 return ResourceManager.GetString("HelpSin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hyperbolic sine of the value.
+        /// </summary>
+        internal static string HelpSinh {
+            get {
+                return ResourceManager.GetString("HelpSinh", resourceCulture);
             }
         }
         
@@ -3672,6 +3726,24 @@ namespace PavelStransky.Expression {
         internal static string HelpSumSquare {
             get {
                 return ResourceManager.GetString("HelpSumSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tangent of the value.
+        /// </summary>
+        internal static string HelpTan {
+            get {
+                return ResourceManager.GetString("HelpTan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hyperbolic tangent of the value.
+        /// </summary>
+        internal static string HelpTanh {
+            get {
+                return ResourceManager.GetString("HelpTanh", resourceCulture);
             }
         }
         

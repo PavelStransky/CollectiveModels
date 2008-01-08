@@ -6,13 +6,13 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Sine
+    /// Cotangent
     /// </summary>
-    public class Sin: FncMathD {
-        public override string Help { get { return Messages.HelpSin; } }
+    public class Cot: FncMathD {
+        public override string Help { get { return Messages.HelpCot; } }
 
         protected override double FnDouble(double x, params object[] p) {
-            return System.Math.Sin(x);
+            return 1.0 / System.Math.Tan(x);
         }
     }
 }

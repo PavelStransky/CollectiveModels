@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</ProjectGuid>
+    <ProjectGuid>{0E123D9C-0150-4474-BD57-BB4E463ECC82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PavelStransky.Core</RootNamespace>

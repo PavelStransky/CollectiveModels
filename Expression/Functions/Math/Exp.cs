@@ -6,13 +6,13 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Sine
+    /// Exponential
     /// </summary>
-    public class Sin: FncMathD {
-        public override string Help { get { return Messages.HelpSin; } }
+    public class Exp: FncMathD {
+        public override string Help { get { return Messages.HelpExp; } }
 
         protected override double FnDouble(double x, params object[] p) {
-            return System.Math.Sin(x);
+            return System.Math.Exp(x);
         }
     }
 }

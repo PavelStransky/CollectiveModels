@@ -16,8 +16,8 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(3);
 
-            this.SetParam(0, true, true, false, Messages.PExpression, Messages.PExpressionDescription, null);
-            this.SetParam(1, true, true, false, Messages.PFileName, Messages.PFileNameDescription, null, typeof(string));
+            this.SetParam(0, true, true, false, Messages.PFileName, Messages.PFileNameDescription, null, typeof(string));
+            this.SetParam(1, true, true, false, Messages.PExpression, Messages.PExpressionDescription, null);
             this.SetParam(2, false, true, false, Messages.PFileType, Messages.PFileTypeDescription, "binary", typeof(string));
         }
 

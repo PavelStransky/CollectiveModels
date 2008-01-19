@@ -2893,6 +2893,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns true if the values are equal within given difference.
+        /// </summary>
+        internal static string HelpIsEqual {
+            get {
+                return ResourceManager.GetString("HelpIsEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix.
         /// </summary>
         internal static string HelpJacobi {
@@ -4761,6 +4770,24 @@ namespace PavelStransky.Expression {
         internal static string PEnergyDescription {
             get {
                 return ResourceManager.GetString("PEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.
+        /// </summary>
+        internal static string PError {
+            get {
+                return ResourceManager.GetString("PError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal error.
+        /// </summary>
+        internal static string PErrorDescription {
+            get {
+                return ResourceManager.GetString("PErrorDescription", resourceCulture);
             }
         }
         

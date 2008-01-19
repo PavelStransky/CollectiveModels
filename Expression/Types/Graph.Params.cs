@@ -284,13 +284,13 @@ namespace PavelStransky.Expression {
             curveParams.Add(ParametersIndications.PSize, Messages.GPPSize, Messages.GPPSizeDescription, 2);
             curveParams.Add(ParametersIndications.PColorFnc, Messages.GPPColorFnc, Messages.GPPColorFncDescription, string.Empty);
             curveParams.Add(ParametersIndications.FPColor, Messages.GPFPColor, Messages.GPFPColorDescription, Color.DarkRed);
-            curveParams.Add(ParametersIndications.FPStyle, Messages.GPFPStyle, Messages.GPFPStyleDescription, PointStyles.FSquare);
+            curveParams.Add(ParametersIndications.FPStyle, Messages.GPFPStyle, Messages.GPFPStyleDescription, PointStyles.None);
             curveParams.Add(ParametersIndications.FPSize, Messages.GPFPSize, Messages.GPFPSizeDescription, 2);
             curveParams.Add(ParametersIndications.LPColor, Messages.GPLPColor, Messages.GPLPColorDescription, Color.DarkGreen);
-            curveParams.Add(ParametersIndications.LPStyle, Messages.GPLPStyle, Messages.GPLPStyleDescription, PointStyles.FSquare);
+            curveParams.Add(ParametersIndications.LPStyle, Messages.GPLPStyle, Messages.GPLPStyleDescription, PointStyles.None);
             curveParams.Add(ParametersIndications.LPSize, Messages.GPLPSize, Messages.GPLPSizeDescription, 2);
         }
-
+        
         // Okraj v promilích
         private const int defaultMargin = 30;
         private const int defaultMarginAxeL = 80;

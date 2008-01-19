@@ -74,6 +74,9 @@ namespace PavelStransky.Forms {
         /// <param name="x">X - ová souøadnice myši</param>
         /// <param name="y">Y - ová souøadnice myši</param>
         public int ActiveGraph(int x, int y) {
+            if(this.graphs == null)
+                return -1;
+
             for(int i = this.graphs.Length - 1; i >= 0; i--) {
                 GraphItem graph = this.graphs[i];
                 if(graph.IsActive(this.ClientRectangle, x, y))

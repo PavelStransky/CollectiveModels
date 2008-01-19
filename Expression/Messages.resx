@@ -1065,6 +1065,9 @@ Length of the second vector: {1}</value>
   <data name="HelpIntervalV" xml:space="preserve">
     <value>Creates points for interval</value>
   </data>
+  <data name="HelpIsEqual" xml:space="preserve">
+    <value>Returns true if the values are equal within given difference</value>
+  </data>
   <data name="HelpJacobi" xml:space="preserve">
     <value>Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix</value>
   </data>
@@ -1688,6 +1691,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="PEnergyDescription" xml:space="preserve">
     <value>Energy of the system</value>
+  </data>
+  <data name="PError" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="PErrorDescription" xml:space="preserve">
+    <value>Maximal error</value>
   </data>
   <data name="PEVectors" xml:space="preserve">
     <value>evectors</value>

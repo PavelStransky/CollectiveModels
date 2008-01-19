@@ -351,7 +351,7 @@ namespace PavelStransky.Expression.Functions {
                             }
                         }
 
-                        itemParams = new TArray(typeof(TArray), groups);
+                        itemParams = new TArray(typeof(TArray), nGroups);
                         for(int g = 0; g < nGroups; g++)
                             itemParams[g] = ct;
                     }

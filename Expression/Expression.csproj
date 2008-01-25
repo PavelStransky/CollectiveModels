@@ -126,6 +126,7 @@
     <Compile Include="Functions\Graphics\SetGraphParams.cs" />
     <Compile Include="Functions\Help\GParamHelp.cs" />
     <Compile Include="Functions\Help\GParams.cs" />
+    <Compile Include="Functions\List\Merge.cs" />
     <Compile Include="Functions\Math\Cos.cs" />
     <Compile Include="Functions\Math\Cosh.cs" />
     <Compile Include="Functions\Math\Cot.cs" />

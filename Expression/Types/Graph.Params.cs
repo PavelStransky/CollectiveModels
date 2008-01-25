@@ -118,13 +118,16 @@ namespace PavelStransky.Expression {
             GridColorY = 411,
             GridWidthY = 412,
 
+            CLegend = 500,
+            CLegendWidth = 501,
+            CLegendFSize = 502,
+            CLegendFColor = 503,
+
             LColor = 1000,
             LStyle = 1001,
             LWidth = 1002,
             LName = 1003,
-
-            LabelColor = 1010,
-            LabelFSize = 1011,
+            LDash = 1004,
 
             PColor = 1020,
             PStyle = 1021,
@@ -138,6 +141,8 @@ namespace PavelStransky.Expression {
             LPColor = 1040,
             LPStyle = 1041,
             LPSize = 1042,
+
+            Clip = 1050,
 
             // Tajné parametry
             GroupMaxLength = 10000,
@@ -272,15 +277,19 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.GridColorY, Messages.GPGridColorY, Messages.GPGridColorYDescription, Color.LightGray);
             groupParams.Add(ParametersIndications.GridWidthY, Messages.GPGridWidthY, Messages.GPGridWidthYDescription, 1);
 
+            groupParams.Add(ParametersIndications.CLegend, Messages.GPCLegend, Messages.GPCLegendDescription, false);
+            groupParams.Add(ParametersIndications.CLegendFSize, Messages.GPCLegendFSize, Messages.GPCLegendFSizeDescription, 10);
+            groupParams.Add(ParametersIndications.CLegendWidth, Messages.GPCLegendWidth, Messages.GPCLegendWidthDescription, 100);
+            groupParams.Add(ParametersIndications.CLegendFColor, Messages.GPCLegendFColor, Messages.GPCLegendFColorDescription, Color.Black);
+            
             curveParams = new GraphParameterDefinitions();
             curveParams.Add(ParametersIndications.LColor, Messages.GPLColor, Messages.GPLColorDescription, Color.Blue);
             curveParams.Add(ParametersIndications.LStyle, Messages.GPLStyle, Messages.GPLStyleDescription, LineStyles.Curve);
             curveParams.Add(ParametersIndications.LWidth, Messages.GPLWidth, Messages.GPLWidthDescription, 1);
             curveParams.Add(ParametersIndications.LName, Messages.GPLName, Messages.GPLNameDescription, string.Empty);
-            curveParams.Add(ParametersIndications.LabelColor, Messages.GPLabelColor, Messages.GPLabelColorDescription, Color.Blue);
-            curveParams.Add(ParametersIndications.LabelFSize, Messages.GPLabelFSize, Messages.GPLabelFSizeDescription, 10);
+            curveParams.Add(ParametersIndications.LDash, Messages.GPLDash, Messages.GPLDashDescription, System.Drawing.Drawing2D.DashStyle.Solid);
             curveParams.Add(ParametersIndications.PColor, Messages.GPPColor, Messages.GPPColorDescription, Color.Brown);
-            curveParams.Add(ParametersIndications.PStyle, Messages.GPPStyle, Messages.GPPStyleDescription, PointStyles.FSquare);
+            curveParams.Add(ParametersIndications.PStyle, Messages.GPPStyle, Messages.GPPStyleDescription, PointStyles.FCircle);
             curveParams.Add(ParametersIndications.PSize, Messages.GPPSize, Messages.GPPSizeDescription, 2);
             curveParams.Add(ParametersIndications.PColorFnc, Messages.GPPColorFnc, Messages.GPPColorFncDescription, string.Empty);
             curveParams.Add(ParametersIndications.FPColor, Messages.GPFPColor, Messages.GPFPColorDescription, Color.DarkRed);
@@ -289,6 +298,7 @@ namespace PavelStransky.Expression {
             curveParams.Add(ParametersIndications.LPColor, Messages.GPLPColor, Messages.GPLPColorDescription, Color.DarkGreen);
             curveParams.Add(ParametersIndications.LPStyle, Messages.GPLPStyle, Messages.GPLPStyleDescription, PointStyles.None);
             curveParams.Add(ParametersIndications.LPSize, Messages.GPLPSize, Messages.GPLPSizeDescription, 2);
+            curveParams.Add(ParametersIndications.Clip, Messages.GPClip, Messages.GPClipDescription, true);
         }
         
         // Okraj v promilích

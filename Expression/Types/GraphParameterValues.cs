@@ -82,6 +82,13 @@ namespace PavelStransky.Expression {
                             value = (double)(int)value;
                     }
 
+                    else if(dvalue is System.Drawing.Drawing2D.DashStyle) {
+                        if(value is string)
+                            value = Enum.Parse(typeof(System.Drawing.Drawing2D.DashStyle), value as string, true);
+                        else if(value is Vector)
+                            dvalue = value;
+                    }
+
                     if(value.GetType() != dvalue.GetType())
                         throw new ExpressionException(string.Format(Messages.EMBadGraphParamType, name),
                             string.Format(Messages.EMBadGraphParamTypeDetail, dvalue.GetType().FullName, value.GetType().FullName));

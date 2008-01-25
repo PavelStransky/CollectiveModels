@@ -159,6 +159,10 @@ namespace PavelStransky.Expression {
             int nCurves = (int)gv[ParametersIndications.NumCurves];
             Matrix background = (Matrix)gv[ParametersIndications.DataBackground];
 
+            // Legenda ke køivkám - potøebujeme její šíøku
+            bool cLegend = (bool)gv[ParametersIndications.CLegend];
+            int cLegendWidth = (int)gv[ParametersIndications.CLegendWidth];
+            
             // Legenda k pozadí
             bool bLegend = (bool)gv[ParametersIndications.BLegend];
 
@@ -175,8 +179,8 @@ namespace PavelStransky.Expression {
                 
                 double bLegendCoef = (bColorMaxValue - bColorMinValue) / (bLegendB - bLegendT);
 
-                int bLegendL = rectangle.Right - bLegendWidth - 5;
-                int bLegendR = rectangle.Right - 5;
+                int bLegendR = rectangle.Right - 5 - (cLegend ? cLegendWidth + 10 : 0);
+                int bLegendL = bLegendR - bLegendWidth;
 
                 BColor bcolor = new BColor(gv);
 
@@ -201,6 +205,48 @@ namespace PavelStransky.Expression {
                     s = bColorMinValue.ToString("0.000");
                     fSize = g.MeasureString(s, font);
                     g.DrawString(s, font, bLegendBrush, bLegendL + (bLegendWidth - fSize.Width) / 2, bLegendB);
+                }
+            }
+
+            // Legenda ke køivkám
+            if(cLegend) {
+                int cLegendR = rectangle.Right - 5;
+                int cLegendL = cLegendR - cLegendWidth;
+
+                Color cLegendFColor = (Color)gv[ParametersIndications.CLegendFColor];
+                Brush cLegendBrush = (new Pen(cLegendFColor)).Brush;
+                Font font = new Font(baseFontFamilyName, (int)gv[ParametersIndications.CLegendFSize]);
+
+                SizeF fSize = g.MeasureString("0", font);
+                int d = (int)(fSize.Height + 4);
+
+                Point[] p = new Point[4];
+                for(int i = 0; i < 4; i++)
+                    p[i] = new Point(cLegendL + i * cLegendWidth / 9, rectangleM.Bottom - d / 2);
+
+                for(int i = nCurves - 1; i >= 0; i--) {
+                    GraphParameterValues iv = aiv[i] as GraphParameterValues;
+
+                    Color lineColor = (Color)iv[ParametersIndications.LColor];
+                    float lineWidth = (int)iv[ParametersIndications.LWidth];
+                    Graph.LineStyles lineStyle = (Graph.LineStyles)iv[ParametersIndications.LStyle];
+                    Color pointColor = (Color)iv[ParametersIndications.PColor];
+                    Graph.PointStyles pointStyle = (Graph.PointStyles)iv[ParametersIndications.PStyle];
+                    int pointSize = (int)iv[ParametersIndications.PSize];
+
+                    Pen linePen = new Pen(lineColor, lineWidth);
+                    Pen pointPen = new Pen(pointColor);
+
+                    this.SetDashStyle(linePen, iv[ParametersIndications.LDash]);
+
+                    string s = (string)iv[ParametersIndications.LName];
+                    g.DrawString(s, font, cLegendBrush, cLegendL + cLegendWidth / 3 + 5, rectangleM.Bottom - (nCurves - i) * d + 2);
+
+                    this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
+                    this.DrawLine(g, p, linePen, lineStyle);
+
+                    for(int j = 0; j < 4; j++)
+                        p[j].Y -= d;
                 }
             }
 
@@ -283,8 +329,14 @@ namespace PavelStransky.Expression {
                     Graph.PointStyles pointStyle = (Graph.PointStyles)iv[ParametersIndications.PStyle];
                     int pointSize = (int)iv[ParametersIndications.PSize];
 
+                    bool clip = (bool)iv[ParametersIndications.Clip];
+                    if(clip)
+                        g.SetClip(rectangleM);
+
                     Pen linePen = new Pen(lineColor, lineWidth);
                     Pen pointPen = new Pen(pointColor);
+
+                    this.SetDashStyle(linePen, iv[ParametersIndications.LDash]);
 
                     if(p.Length >= 2)
                         this.DrawLine(g, p, linePen, lineStyle);
@@ -302,16 +354,6 @@ namespace PavelStransky.Expression {
                         }
 
                         this.DrawPoints(g, errorPoints, pointPen, Graph.PointStyles.HLines, 5);
-                    }
-
-                    string lineName = (string)iv[ParametersIndications.LName];
-
-                    if(lineName != string.Empty) {
-                        Color labelColor = (Color)iv[ParametersIndications.LabelColor];
-                        Brush labelBrush = (new Pen(labelColor)).Brush;
-                        Font font = new Font(baseFontFamilyName, (int)iv[ParametersIndications.LabelFSize]);
-                        float stringHeight = g.MeasureString(lineName, font).Height;
-                        g.DrawString(lineName, font, labelBrush, rectangleM.Left, (float)(offset.Y - stringHeight / 2.0));
                     }
 
                     // Barva bodù podle funkce
@@ -339,6 +381,9 @@ namespace PavelStransky.Expression {
                         Pen firstPointPen = new Pen(firstPointColor);
                         this.DrawPoints(g, firstPoint, firstPointPen, firstPointStyle, firstPointSize);
                     }
+
+                    if(clip)
+                        g.ResetClip();
                 }
             }
 
@@ -709,6 +754,25 @@ namespace PavelStransky.Expression {
                     g.DrawLine(pen, point.X - pointSized2, point.Y, point.X + pointSize - pointSized2, point.Y);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Nastaví pro dané pero styl èáry
+        /// </summary>
+        /// <param name="pen">Dané pero</param>
+        /// <param name="dash">Objekt pro dash</param>
+        private void SetDashStyle(Pen pen, object dash) {
+            if(dash is Vector) {
+                Vector v = dash as Vector;
+                int vl = v.Length;
+                float[] f = new float[vl];
+                for(int j = 0; j < vl; j++)
+                    f[j] = (float)v[j];
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+                pen.DashPattern = f;
+            }
+            else if(dash is System.Drawing.Drawing2D.DashStyle)
+                pen.DashStyle = (System.Drawing.Drawing2D.DashStyle)dash;
         }
 
         private string baseFontFamilyName = "Arial";

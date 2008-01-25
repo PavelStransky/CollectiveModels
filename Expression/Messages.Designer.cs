@@ -1426,6 +1426,96 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to clegend.
+        /// </summary>
+        internal static string GPCLegend {
+            get {
+                return ResourceManager.GetString("GPCLegend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the legend of the curves are to be displayed.
+        /// </summary>
+        internal static string GPCLegendDescription {
+            get {
+                return ResourceManager.GetString("GPCLegendDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to clegendfcolor.
+        /// </summary>
+        internal static string GPCLegendFColor {
+            get {
+                return ResourceManager.GetString("GPCLegendFColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font color of the legend of the curves.
+        /// </summary>
+        internal static string GPCLegendFColorDescription {
+            get {
+                return ResourceManager.GetString("GPCLegendFColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to clegendfsize.
+        /// </summary>
+        internal static string GPCLegendFSize {
+            get {
+                return ResourceManager.GetString("GPCLegendFSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size of the legend of the curves.
+        /// </summary>
+        internal static string GPCLegendFSizeDescription {
+            get {
+                return ResourceManager.GetString("GPCLegendFSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to clegendwidth.
+        /// </summary>
+        internal static string GPCLegendWidth {
+            get {
+                return ResourceManager.GetString("GPCLegendWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width of the legend of the curves.
+        /// </summary>
+        internal static string GPCLegendWidthDescription {
+            get {
+                return ResourceManager.GetString("GPCLegendWidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to clip.
+        /// </summary>
+        internal static string GPClip {
+            get {
+                return ResourceManager.GetString("GPClip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the curve should be clipped inside the graph region.
+        /// </summary>
+        internal static string GPClipDescription {
+            get {
+                return ResourceManager.GetString("GPClipDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fpcolor.
         /// </summary>
         internal static string GPFPColor {
@@ -1624,42 +1714,6 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to labelcolor.
-        /// </summary>
-        internal static string GPLabelColor {
-            get {
-                return ResourceManager.GetString("GPLabelColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Color of the label of the curve.
-        /// </summary>
-        internal static string GPLabelColorDescription {
-            get {
-                return ResourceManager.GetString("GPLabelColorDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to labelfsize.
-        /// </summary>
-        internal static string GPLabelFSize {
-            get {
-                return ResourceManager.GetString("GPLabelFSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Font size of the curve.
-        /// </summary>
-        internal static string GPLabelFSizeDescription {
-            get {
-                return ResourceManager.GetString("GPLabelFSizeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to lcolor.
         /// </summary>
         internal static string GPLColor {
@@ -1674,6 +1728,24 @@ namespace PavelStransky.Expression {
         internal static string GPLColorDescription {
             get {
                 return ResourceManager.GetString("GPLColorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ldash.
+        /// </summary>
+        internal static string GPLDash {
+            get {
+                return ResourceManager.GetString("GPLDash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line dashing (dash, dot, dashdot, vector(...)).
+        /// </summary>
+        internal static string GPLDashDescription {
+            get {
+                return ResourceManager.GetString("GPLDashDescription", resourceCulture);
             }
         }
         
@@ -3100,6 +3172,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merges lists into one list.
+        /// </summary>
+        internal static string HelpMerge {
+            get {
+                return ResourceManager.GetString("HelpMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator -.
         /// </summary>
         internal static string HelpMinus {
@@ -4032,6 +4113,24 @@ namespace PavelStransky.Expression {
         internal static string P1JoinDescription {
             get {
                 return ResourceManager.GetString("P1JoinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to l.
+        /// </summary>
+        internal static string P1Merge {
+            get {
+                return ResourceManager.GetString("P1Merge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lists to be merged.
+        /// </summary>
+        internal static string P1MergeDescription {
+            get {
+                return ResourceManager.GetString("P1MergeDescription", resourceCulture);
             }
         }
         

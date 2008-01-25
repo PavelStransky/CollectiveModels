@@ -576,6 +576,36 @@ Length of the second vector: {1}</value>
   <data name="GPBPSizeYDescription" xml:space="preserve">
     <value>Size of the points of the background image in the y-direction</value>
   </data>
+  <data name="GPCLegend" xml:space="preserve">
+    <value>clegend</value>
+  </data>
+  <data name="GPCLegendDescription" xml:space="preserve">
+    <value>True if the legend of the curves are to be displayed</value>
+  </data>
+  <data name="GPCLegendFColor" xml:space="preserve">
+    <value>clegendfcolor</value>
+  </data>
+  <data name="GPCLegendFColorDescription" xml:space="preserve">
+    <value>Font color of the legend of the curves</value>
+  </data>
+  <data name="GPCLegendFSize" xml:space="preserve">
+    <value>clegendfsize</value>
+  </data>
+  <data name="GPCLegendFSizeDescription" xml:space="preserve">
+    <value>Font size of the legend of the curves</value>
+  </data>
+  <data name="GPCLegendWidth" xml:space="preserve">
+    <value>clegendwidth</value>
+  </data>
+  <data name="GPCLegendWidthDescription" xml:space="preserve">
+    <value>Width of the legend of the curves</value>
+  </data>
+  <data name="GPClip" xml:space="preserve">
+    <value>clip</value>
+  </data>
+  <data name="GPClipDescription" xml:space="preserve">
+    <value>True if the curve should be clipped inside the graph region</value>
+  </data>
   <data name="GPFPColor" xml:space="preserve">
     <value>fpcolor</value>
   </data>
@@ -642,23 +672,17 @@ Length of the second vector: {1}</value>
   <data name="GPIntervalDescription" xml:space="preserve">
     <value>Interval of the animation (ms)</value>
   </data>
-  <data name="GPLabelColor" xml:space="preserve">
-    <value>labelcolor</value>
-  </data>
-  <data name="GPLabelColorDescription" xml:space="preserve">
-    <value>Color of the label of the curve</value>
-  </data>
-  <data name="GPLabelFSize" xml:space="preserve">
-    <value>labelfsize</value>
-  </data>
-  <data name="GPLabelFSizeDescription" xml:space="preserve">
-    <value>Font size of the curve</value>
-  </data>
   <data name="GPLColor" xml:space="preserve">
     <value>lcolor</value>
   </data>
   <data name="GPLColorDescription" xml:space="preserve">
     <value>Color of the line of curve</value>
+  </data>
+  <data name="GPLDash" xml:space="preserve">
+    <value>ldash</value>
+  </data>
+  <data name="GPLDashDescription" xml:space="preserve">
+    <value>Line dashing (dash, dot, dashdot, vector(...))</value>
   </data>
   <data name="GPLName" xml:space="preserve">
     <value>lname</value>
@@ -1134,6 +1158,9 @@ Length of the second vector: {1}</value>
   <data name="HelpMean" xml:space="preserve">
     <value>Calculates mean of a vector</value>
   </data>
+  <data name="HelpMerge" xml:space="preserve">
+    <value>Merges lists into one list</value>
+  </data>
   <data name="HelpMinus" xml:space="preserve">
     <value>Operator -</value>
   </data>
@@ -1445,6 +1472,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="P1JoinDescription" xml:space="preserve">
     <value>Data to be joined</value>
+  </data>
+  <data name="P1Merge" xml:space="preserve">
+    <value>l</value>
+  </data>
+  <data name="P1MergeDescription" xml:space="preserve">
+    <value>Lists to be merged</value>
   </data>
   <data name="P1Norm" xml:space="preserve">
     <value>v</value>

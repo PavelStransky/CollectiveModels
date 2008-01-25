@@ -236,6 +236,7 @@ namespace PavelStransky.Expression {
 
                     maxLength = System.Math.Max(maxLength, (ac[i] as PointVector).Length);
 
+                    this.SetColors(cv, i);
                     this.SetColorFncBuffer(cv);
                 }
 
@@ -253,9 +254,25 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
-        /// Pokud máme funkci pro barvy, 
+        /// Nastaví barvy køivkám a bodùm
         /// </summary>
-        /// <param name="cv"></param>
+        /// <param name="cv">Parametry køivky</param>
+        /// <param name="i">Index køivky</param>
+        private void SetColors(GraphParameterValues cv, int i) {
+            bool isDefLineColor = cv.IsDefault(ParametersIndications.LColor);
+            bool isDefPointColor = cv.IsDefault(ParametersIndications.PColor);
+
+            if(isDefLineColor)
+                cv[ParametersIndications.LColor] = ColorArray.GetColor(i);
+
+            if(isDefPointColor)
+                cv[ParametersIndications.PColor] = ColorArray.GetColor(i);
+        }
+
+        /// <summary>
+        /// Pokud máme funkci pro barvy, vytvoøí barvový buffer
+        /// </summary>
+        /// <param name="cv">Parametry køivky</param>
         private void SetColorFncBuffer(GraphParameterValues cv) {
             string colorFnc = (string)cv[ParametersIndications.PColorFnc];
 
@@ -378,13 +395,25 @@ namespace PavelStransky.Expression {
                 gv[ParametersIndications.MarginR] = m;
             }
 
-            // Bude legenda
+            // Bude legenda k obrázku pozadí
             bool isBLegend = (bool)gv[ParametersIndications.BLegend];
 
             if(isBLegend) {
                 int m = (int)gv[ParametersIndications.MarginR];
 
                 m += (int)gv[ParametersIndications.BLegendWidth];
+                m += 10;
+
+                gv[ParametersIndications.MarginR] = m;
+            }
+
+            // Bude legenda ke køivkám
+            bool isCLegend = (bool)gv[ParametersIndications.CLegend];
+
+            if(isCLegend) {
+                int m = (int)gv[ParametersIndications.MarginR];
+
+                m += (int)gv[ParametersIndications.CLegendWidth];
                 m += 10;
 
                 gv[ParametersIndications.MarginR] = m;
@@ -651,8 +680,10 @@ namespace PavelStransky.Expression {
                         gv.AddDefaultParams(groupParams);
                         int nCurves = (int)gv[ParametersIndications.NumCurves];
 
-                        for(int i = 0; i < nCurves; i++)
+                        for(int i = 0; i < nCurves; i++) {
                             (acv[i] as GraphParameterValues).AddDefaultParams(curveParams);
+                            this.SetColors(acv[i] as GraphParameterValues, i);
+                        }
 
                         this.SetMinMax(gv);
                         this.SetBorders(gv);

@@ -283,6 +283,51 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Entropie systému S = -Sum(ev[j]^2 ln(ev[j]^2))
+        /// </summary>
+        /// <remarks>M.S. Santhanam et al., arXiv:chao-dyn/9704002v1</remarks>
+        public virtual Vector GetEntropy() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++)
+                    result[i] -= ev[j] * ev[j] * System.Math.Log(ev[j] * ev[j]);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Number of principal components
+        /// </summary>
+        public virtual Vector GetPCN() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++)
+                    result[i] += ev[j] * ev[j] * ev[j] * ev[j];
+
+                result[i] = 1.0 / result[i];
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Koeficient pro výpoèet druhého invariantu
         /// </summary>
         /// <param name="j">Index k vlnové funkci</param>
@@ -494,6 +539,22 @@ namespace PavelStransky.GCM {
 
                 result[q1, q2] = this.eigenVectors[n][i];
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Souèet složek vektorù s hranièními hodnotami kvantových èísel
+        /// </summary>
+        public Vector LastEVElementsSumAbs() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++)
+                result[i] = this.LastEVElements(i, 0).SumAbs();
 
             return result;
         }

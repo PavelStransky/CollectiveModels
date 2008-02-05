@@ -132,7 +132,10 @@
     <Compile Include="Functions\Math\Cot.cs" />
     <Compile Include="Functions\Math\Coth.cs" />
     <Compile Include="Functions\Math\Exp.cs" />
+    <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
+    <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
+    <Compile Include="Functions\Quantum\PCN.cs" />
     <Compile Include="Functions\Unsorted\IsEqual.cs" />
     <Compile Include="Functions\Math\ReplaceInterval.cs" />
     <Compile Include="Functions\Math\ReplaceValue.cs" />

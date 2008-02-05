@@ -1101,6 +1101,9 @@ Length of the second vector: {1}</value>
   <data name="HelpLaguerre" xml:space="preserve">
     <value>Value of the Laguerre polynomial</value>
   </data>
+  <data name="HelpLastEVElements" xml:space="preserve">
+    <value>Returns last elements of components of eigenvectors; all quantum numbers are taken into account</value>
+  </data>
   <data name="HelpLegendre" xml:space="preserve">
     <value>Value of the Legendre polynomial</value>
   </data>
@@ -1547,6 +1550,12 @@ Length of the second vector: {1}</value>
   </data>
   <data name="P3InitialConditionDescription" xml:space="preserve">
     <value>Additional parameter (angular momentum)</value>
+  </data>
+  <data name="P3LastEVElements" xml:space="preserve">
+    <value>bindex</value>
+  </data>
+  <data name="P3LastEVElementsDescription" xml:space="preserve">
+    <value>Order of the elements from the back</value>
   </data>
   <data name="P3Poincare" xml:space="preserve">
     <value>points</value>

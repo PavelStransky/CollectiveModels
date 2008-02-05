@@ -19,12 +19,25 @@ namespace PavelStransky.Math {
         // X
 
         #region Konstruktory
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="lengthX">Délka X (poèet øádkù)</param>
-		/// <param name="lengthY">Délka Y (poèet sloupcù)</param>
-		public Matrix(int lengthX, int lengthY) {
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="lengthX">Délka X (poèet øádkù)</param>
+        /// <param name="lengthY">Délka Y (poèet sloupcù)</param>
+        /// <param name="v">Poèáteèní hodnota</param>
+        public Matrix(int lengthX, int lengthY, double v)
+            : this(lengthX, lengthY) {
+            for(int i = 0; i < lengthX; i++)
+                for(int j = 0; j < lengthY; j++)
+                    this.item[i, j] = v;
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="lengthX">Délka X (poèet øádkù)</param>
+        /// <param name="lengthY">Délka Y (poèet sloupcù)</param>
+        public Matrix(int lengthX, int lengthY) {
             this.item = new double[lengthX, lengthY];
 		}
 

@@ -498,6 +498,58 @@ namespace PavelStransky.GCM {
             return result;
         }
 
+        /// <summary>
+        /// Vektor s posledními hodnotami od konce
+        /// </summary>
+        /// <param name="index">Poøadí od konce</param>
+        /// <param name="n">Poøadí vlastní hodnoty</param>
+        public Vector LastEVElements(int n, int index) {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            int num = this.GetBasisLength();
+
+            int maxq1 = this.GetBasisQuantumNumber1(-1);
+            int maxq2 = this.GetBasisQuantumNumber2(-1);
+
+            Matrix m = new Matrix(maxq1, maxq2, double.NaN);
+
+            for(int i = 0; i < num; i++) {
+                int q1 = this.GetBasisQuantumNumber1(i);
+                int q2 = this.GetBasisQuantumNumber2(i);
+
+                m[q1, q2] = this.eigenVectors[n][i];
+            }
+
+            Vector result;
+            if(maxq1 > maxq2) {
+                result = new Vector(maxq1);
+
+                for(int i = 0; i < maxq1; i++) {
+                    int k = 0;
+                    for(int j = maxq2 - 1; j >= 0; j--)
+                        if(!double.IsNaN(m[i, j]) && k++ >= index) {
+                            result[i] = m[i, j];
+                            break;
+                        }
+                }
+            }
+            else {
+                result = new Vector(maxq2);
+
+                for(int j = 0; j < maxq2; j++) {
+                    int k = 0;
+                    for(int i = maxq1 - 1; i >= 0; i--)
+                        if(!double.IsNaN(m[i, j]) && k++ >= index) {
+                            result[j] = m[i, j];
+                            break;
+                        }
+                }
+            }
+
+            return result;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Pøidá další parametry pro uložení

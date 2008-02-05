@@ -13,26 +13,44 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="color">Èíslo barvy</param>
         public static Color GetColor(int color) {
+            Color result;
+
             switch(color) {
-                case 0: return Color.Black;
-                case 1: return Color.Red;
-                case 2: return Color.Green;
-                case 3: return Color.Blue;
-                case 4: return Color.Magenta;
-                case 5: return Color.Cyan;
-                case 6: return Color.Yellow;
-                case 7: return Color.White;
-                case 8: return Color.DarkGray;
-                case 9: return Color.LightCoral;
-                case 10: return Color.LightGreen;
-                case 11: return Color.LightBlue;
-                case 12: return Color.LightPink;
-                case 13: return Color.LightCyan;
-                case 14: return Color.LightYellow;
-                case 15: return Color.LightGray;
+                case 0: result = Color.Black; break;
+                case 1: result = Color.Red; break;
+                case 2: result = Color.Green; break;
+                case 3: result = Color.Blue; break;
+                case 4: result = Color.Magenta; break;
+                case 5: result = Color.Cyan; break;
+                case 6: result = Color.Yellow; break;
+                case 7: result = Color.White; break;
+                case 8: result = Color.DarkGray; break;
+                case 9: result = Color.LightCoral; break;
+                case 10: result = Color.LightGreen; break;
+                case 11: result = Color.LightBlue; break;
+                case 12: result = Color.LightPink; break;
+                case 13: result = Color.LightCyan; break;
+                case 14: result = Color.LightYellow; break;
+                case 15: result = Color.LightGray; break;
+                case 16: result = Color.Orange; break;
+                default: result = Color.FromKnownColor((KnownColor)color); break;
             }
 
-            return Color.Black;
+            return result;
+        }
+
+        /// <summary>
+        /// Barva
+        /// </summary>
+        /// <param name="color">Èíslo barvy</param>
+        /// <param name="exceptionColor">Výjimka</param>
+        public static Color GetColor(int color, Color exceptionColor) {
+            Color result = GetColor(color);
+
+            if(result.ToArgb() == exceptionColor.ToArgb())
+                result = GetColor(160 - color);
+
+            return result;
         }
     }
 }

@@ -236,7 +236,7 @@ namespace PavelStransky.Expression {
 
                     maxLength = System.Math.Max(maxLength, (ac[i] as PointVector).Length);
 
-                    this.SetColors(cv, i);
+                    this.SetColors(gv, cv, i);
                     this.SetColorFncBuffer(cv);
                 }
 
@@ -257,16 +257,17 @@ namespace PavelStransky.Expression {
         /// Nastaví barvy køivkám a bodùm
         /// </summary>
         /// <param name="cv">Parametry køivky</param>
+        /// <param name="gv">Parametry skupiny</param>
         /// <param name="i">Index køivky</param>
-        private void SetColors(GraphParameterValues cv, int i) {
+        private void SetColors(GraphParameterValues gv, GraphParameterValues cv, int i) {
             bool isDefLineColor = cv.IsDefault(ParametersIndications.LColor);
             bool isDefPointColor = cv.IsDefault(ParametersIndications.PColor);
 
             if(isDefLineColor)
-                cv[ParametersIndications.LColor] = ColorArray.GetColor(i);
+                cv[ParametersIndications.LColor] = ColorArray.GetColor(i, (Color)gv[ParametersIndications.BColor]);
 
             if(isDefPointColor)
-                cv[ParametersIndications.PColor] = ColorArray.GetColor(i);
+                cv[ParametersIndications.PColor] = ColorArray.GetColor(i, (Color)gv[ParametersIndications.BColor]);
         }
 
         /// <summary>
@@ -682,7 +683,7 @@ namespace PavelStransky.Expression {
 
                         for(int i = 0; i < nCurves; i++) {
                             (acv[i] as GraphParameterValues).AddDefaultParams(curveParams);
-                            this.SetColors(acv[i] as GraphParameterValues, i);
+                            this.SetColors(gv, acv[i] as GraphParameterValues, i);
                         }
 
                         this.SetMinMax(gv);

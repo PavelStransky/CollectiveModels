@@ -957,6 +957,9 @@ Length of the second vector: {1}</value>
   <data name="HelpEnergy" xml:space="preserve">
     <value>For given dynamical system and position in the phase space calculates the energy</value>
   </data>
+  <data name="HelpEntropy" xml:space="preserve">
+    <value>Entropy of eigenvalues</value>
+  </data>
   <data name="HelpEnvelopeMatrixG" xml:space="preserve">
     <value>Generates an envelope matrix in Gaussian form (according to PRL 65, 529 (1990))</value>
   </data>
@@ -1104,6 +1107,9 @@ Length of the second vector: {1}</value>
   <data name="HelpLastEVElements" xml:space="preserve">
     <value>Returns last elements of components of eigenvectors; all quantum numbers are taken into account</value>
   </data>
+  <data name="HelpLastEVElementsSumAbs" xml:space="preserve">
+    <value>Returns absolute value of the sum of last elements of components of eigenvectors</value>
+  </data>
   <data name="HelpLegendre" xml:space="preserve">
     <value>Value of the Legendre polynomial</value>
   </data>
@@ -1190,6 +1196,9 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpOpJoin" xml:space="preserve">
     <value>Operator ~ (joins numbers together into vector, joins strings and lists)</value>
+  </data>
+  <data name="HelpPCN" xml:space="preserve">
+    <value>Number of principal components of eigenvalues</value>
   </data>
   <data name="HelpPeresInvariantG" xml:space="preserve">
     <value>Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by time averaged Peres invariant</value>

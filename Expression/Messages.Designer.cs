@@ -922,7 +922,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to titlecolorx.
+        ///   Looks up a localized string similar to atitlecolorx.
         /// </summary>
         internal static string GPATitleColorX {
             get {
@@ -940,7 +940,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to titlecolory.
+        ///   Looks up a localized string similar to atitlecolory.
         /// </summary>
         internal static string GPATitleColorY {
             get {
@@ -958,7 +958,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to titlefsizex.
+        ///   Looks up a localized string similar to atitlefsizex.
         /// </summary>
         internal static string GPATitleFSizeX {
             get {
@@ -976,7 +976,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to titlefsizey.
+        ///   Looks up a localized string similar to atitlefsizey.
         /// </summary>
         internal static string GPATitleFSizeY {
             get {

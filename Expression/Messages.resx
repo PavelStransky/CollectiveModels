@@ -409,25 +409,25 @@ Length of the second vector: {1}</value>
     <value>True if the x-axis at the top is to be shown</value>
   </data>
   <data name="GPATitleColorX" xml:space="preserve">
-    <value>titlecolorx</value>
+    <value>atitlecolorx</value>
   </data>
   <data name="GPATitleColorXDescription" xml:space="preserve">
     <value>Color of the x-axis</value>
   </data>
   <data name="GPATitleColorY" xml:space="preserve">
-    <value>titlecolory</value>
+    <value>atitlecolory</value>
   </data>
   <data name="GPATitleColorYDescription" xml:space="preserve">
     <value>Color of the y-axis</value>
   </data>
   <data name="GPATitleFSizeX" xml:space="preserve">
-    <value>titlefsizex</value>
+    <value>atitlefsizex</value>
   </data>
   <data name="GPATitleFSizeXDescription" xml:space="preserve">
     <value>Font size of the x-axis</value>
   </data>
   <data name="GPATitleFSizeY" xml:space="preserve">
-    <value>titlefsizey</value>
+    <value>atitlefsizey</value>
   </data>
   <data name="GPATitleFSizeYDescription" xml:space="preserve">
     <value>Font size of the y-axis</value>

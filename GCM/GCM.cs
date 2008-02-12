@@ -124,7 +124,7 @@ namespace PavelStransky.GCM {
             GCMBisectionFunction bf = new GCMBisectionFunction(this, gamma, e);
             Bisection bisection = new Bisection(bf.Function);
 
-            Vector extremalBeta = this.ExtremalBeta(gamma);
+            Vector extremalBeta = (Vector)this.ExtremalBeta(gamma).Sort();
             if(extremalBeta.Length == 1) {  // Jen jeden extrém - minimum v 0
                 double extremalV = this.VBG(extremalBeta[0], gamma);
                 if(e < extremalV)

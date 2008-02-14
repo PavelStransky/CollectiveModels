@@ -265,7 +265,7 @@ namespace PavelStransky.GCM {
             return this.Psi(x, n) * this.Psi(y, n);
         }
 
-        protected override double SecondInvariantCoef(int j) {
+        protected override double PeresInvariantCoef(int j) {
             throw new Exception("The method or operation is not implemented.");
         }
     }

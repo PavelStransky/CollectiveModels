@@ -58,7 +58,7 @@ namespace PavelStransky.GCM {
                 double v2 = this.VBG(betaMin2, gamma);
                 double v3 = 0.0;
 
-                if(v1 < v2 && v1 < v3) {        // v1 nejmenší
+                if(v1 <= v2 && v1 < v3) {        // v1 nejmenší
                     result[0] = betaMin1;
                     if(v2 < v3) {
                         result[1] = betaMin2;
@@ -124,7 +124,7 @@ namespace PavelStransky.GCM {
             GCMBisectionFunction bf = new GCMBisectionFunction(this, gamma, e);
             Bisection bisection = new Bisection(bf.Function);
 
-            Vector extremalBeta = (Vector)this.ExtremalBeta(gamma).Sort();
+            Vector extremalBeta = (Vector)this.ExtremalBeta(gamma);
             if(extremalBeta.Length == 1) {  // Jen jeden extrém - minimum v 0
                 double extremalV = this.VBG(extremalBeta[0], gamma);
                 if(e < extremalV)

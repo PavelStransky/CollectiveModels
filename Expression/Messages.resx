@@ -1329,8 +1329,8 @@ Length of the second vector: {1}</value>
   <data name="HelpSave" xml:space="preserve">
     <value>Saves current document into a file</value>
   </data>
-  <data name="HelpSecondInvariant" xml:space="preserve">
-    <value>Returns the second invariant of a quantum system</value>
+  <data name="HelpPeresInvariant" xml:space="preserve">
+    <value>Returns the Peres invariant of a quantum system</value>
   </data>
   <data name="HelpSeparator" xml:space="preserve">
     <value>Operator ; (separator)</value>
@@ -2317,6 +2317,6 @@ Length of the second vector: {1}</value>
     <value>If you do Vlowk you need to specify the number of mesh points for the model space and the large space. You need also to define the cutoff for the model in space in fm^- 1 and the in principal infinite integration limit set it to 20 fm^-1.  Recall that the NN interactions is fitted up to 350 MeV.</value>
   </data>
   <data name="ToArrayEMNotTextFile" xml:space="preserve">
-    <value>Given file must be text file, not binary.</value>
+    <value>Given file must be a text file, not a binary one.</value>
   </data>
 </root>

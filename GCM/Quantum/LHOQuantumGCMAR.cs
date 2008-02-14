@@ -56,7 +56,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(2) hbar^2 * (d / d phi)^2
         /// </summary>
-        protected override double SecondInvariantCoef(int n) {
+        protected override double PeresInvariantCoef(int n) {
             double d = this.index.M[n] * this.Hbar;
             return d * d;
         }

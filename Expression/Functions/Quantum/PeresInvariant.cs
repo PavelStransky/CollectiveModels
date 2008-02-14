@@ -7,10 +7,10 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Returns the second invariant of a quantum system
+    /// Returns the Peres invariant of a quantum system
     /// </summary>
-    public class SecondInvariant: Fnc {
-        public override string Help { get { return Messages.HelpSecondInvariant; } }
+    public class PeresInvariant: Fnc {
+        public override string Help { get { return Messages.HelpPeresInvariant; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return (arguments[0] as LHOQuantumGCM).GetSecondInvariant();
+            return (arguments[0] as LHOQuantumGCM).GetPeresInvariant();
         }
     }
 }

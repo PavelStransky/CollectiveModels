@@ -303,7 +303,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(5)
         /// </summary>
-        protected override double SecondInvariantCoef(int n) {
+        protected override double PeresInvariantCoef(int n) {
             int lambda = 3 * this.index.Mu[n];
             return lambda * (lambda + 3) * this.Hbar * this.Hbar;
         }

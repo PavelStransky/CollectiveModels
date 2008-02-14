@@ -264,7 +264,7 @@ namespace PavelStransky.GCM {
         /// Druhý invariant
         /// </summary>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public virtual Vector GetSecondInvariant() {
+        public virtual Vector GetPeresInvariant() {
             if(!this.isComputed)
                 throw new GCMException(Messages.EMNotComputed);
 
@@ -276,7 +276,7 @@ namespace PavelStransky.GCM {
                 int length = ev.Length;
 
                 for(int j = 0; j < length; j++) 
-                    result[i] += ev[j] * ev[j] * this.SecondInvariantCoef(j);
+                    result[i] += ev[j] * ev[j] * this.PeresInvariantCoef(j);
             }
 
             return result;
@@ -298,7 +298,8 @@ namespace PavelStransky.GCM {
                 int length = ev.Length;
 
                 for(int j = 0; j < length; j++)
-                    result[i] -= ev[j] * ev[j] * System.Math.Log(ev[j] * ev[j]);
+                    if(ev[j] != 0.0)
+                        result[i] -= ev[j] * ev[j] * System.Math.Log(ev[j] * ev[j]);
             }
 
             return result;
@@ -331,7 +332,7 @@ namespace PavelStransky.GCM {
         /// Koeficient pro výpoèet druhého invariantu
         /// </summary>
         /// <param name="j">Index k vlnové funkci</param>
-        protected abstract double SecondInvariantCoef(int j);
+        protected abstract double PeresInvariantCoef(int j);
 
         #region Vlnové funkce
         /// <summary>

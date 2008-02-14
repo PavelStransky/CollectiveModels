@@ -529,8 +529,11 @@ namespace PavelStransky.Forms {
 
             if(e.Cancel)
                 (this.MdiParent as MainForm).OpenedFileNames.Clear();
-            else if(e.CloseReason == CloseReason.MdiFormClosing && this.fileName != null && this.fileName != string.Empty)
-                (this.MdiParent as MainForm).OpenedFileNames.Add(this.fileName);
+            else {
+                this.context.Clear();
+                if(e.CloseReason == CloseReason.MdiFormClosing && this.fileName != null && this.fileName != string.Empty)
+                    (this.MdiParent as MainForm).OpenedFileNames.Add(this.fileName);
+            }
         }
 
         /// <summary>

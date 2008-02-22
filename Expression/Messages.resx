@@ -2319,4 +2319,16 @@ Length of the second vector: {1}</value>
   <data name="ToArrayEMNotTextFile" xml:space="preserve">
     <value>Given file must be a text file, not a binary one.</value>
   </data>
+  <data name="HelpIsOdd" xml:space="preserve">
+    <value>True if the number is odd</value>
+  </data>
+  <data name="PInteger" xml:space="preserve">
+    <value>i</value>
+  </data>
+  <data name="PIntegerDescription" xml:space="preserve">
+    <value>Integer number</value>
+  </data>
+  <data name="HelpIsEven" xml:space="preserve">
+    <value>True if the number is even</value>
+  </data>
 </root>

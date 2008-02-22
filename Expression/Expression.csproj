@@ -127,6 +127,8 @@
     <Compile Include="Functions\Help\GParamHelp.cs" />
     <Compile Include="Functions\Help\GParams.cs" />
     <Compile Include="Functions\List\Merge.cs" />
+    <Compile Include="Functions\Logic\IsEven.cs" />
+    <Compile Include="Functions\Logic\IsOdd.cs" />
     <Compile Include="Functions\Math\Cos.cs" />
     <Compile Include="Functions\Math\Cosh.cs" />
     <Compile Include="Functions\Math\Cot.cs" />

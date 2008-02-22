@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            bool result = true;
+            bool result = false;
 
             foreach(bool b in arguments)
                 result = result || b;

@@ -2569,6 +2569,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For given dynamical system returns the minimum possible energy.
+        /// </summary>
+        internal static string HelpEnergyMin {
+            get {
+                return ResourceManager.GetString("HelpEnergyMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entropy of eigenvalues.
         /// </summary>
         internal static string HelpEntropy {
@@ -2997,6 +3006,24 @@ namespace PavelStransky.Expression {
         internal static string HelpIsOdd {
             get {
                 return ResourceManager.GetString("HelpIsOdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns true if the Poincare section on the given energy is fully regular; otherwise returns false.
+        /// </summary>
+        internal static string HelpIsRegularPS {
+            get {
+                return ResourceManager.GetString("HelpIsRegularPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0).
+        /// </summary>
+        internal static string HelpIsRegularTrajectory {
+            get {
+                return ResourceManager.GetString("HelpIsRegularTrajectory", resourceCulture);
             }
         }
         
@@ -3622,6 +3649,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the energy for which the regular behavior starts breaking into the chaotic.
+        /// </summary>
+        internal static string HelpRegularityBreak {
+            get {
+                return ResourceManager.GetString("HelpRegularityBreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removes bad points (NaN, Infinity) from Vector or PointVector.
         /// </summary>
         internal static string HelpRemoveBadPoints {
@@ -3690,15 +3726,6 @@ namespace PavelStransky.Expression {
         internal static string HelpSALIG {
             get {
                 return ResourceManager.GetString("HelpSALIG", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0).
-        /// </summary>
-        internal static string HelpSALIR {
-            get {
-                return ResourceManager.GetString("HelpSALIR", resourceCulture);
             }
         }
         
@@ -4945,6 +4972,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to emax.
+        /// </summary>
+        internal static string PEnergyMax {
+            get {
+                return ResourceManager.GetString("PEnergyMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum considered energy (energy for which the system is chaotic).
+        /// </summary>
+        internal static string PEnergyMaxDescription {
+            get {
+                return ResourceManager.GetString("PEnergyMaxDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to emin.
+        /// </summary>
+        internal static string PEnergyMin {
+            get {
+                return ResourceManager.GetString("PEnergyMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum considered energy (energy for which the system is fully regular).
+        /// </summary>
+        internal static string PEnergyMinDescription {
+            get {
+                return ResourceManager.GetString("PEnergyMinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to e.
         /// </summary>
         internal static string PError {
@@ -5913,6 +5976,24 @@ namespace PavelStransky.Expression {
         internal static string PPrecisionDescription {
             get {
                 return ResourceManager.GetString("PPrecisionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to precisione.
+        /// </summary>
+        internal static string PPrecisionEnergy {
+            get {
+                return ResourceManager.GetString("PPrecisionEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Precision of the determination of the energy.
+        /// </summary>
+        internal static string PPrecisionEnergyDescription {
+            get {
+                return ResourceManager.GetString("PPrecisionEnergyDescription", resourceCulture);
             }
         }
         

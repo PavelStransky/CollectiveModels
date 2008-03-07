@@ -118,7 +118,10 @@
     <Compile Include="ExpressionException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
+    <Compile Include="Functions\Dynamics\EnergyMin.cs" />
+    <Compile Include="Functions\Dynamics\IsRegularPS.cs" />
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
+    <Compile Include="Functions\Dynamics\RegularityBreak.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
     <Compile Include="Functions\FncException.cs" />
@@ -217,7 +220,7 @@
     <Compile Include="Functions\Dynamics\PotentialRoots.cs" />
     <Compile Include="Functions\Dynamics\SALI.cs" />
     <Compile Include="Functions\Dynamics\SALIG.cs" />
-    <Compile Include="Functions\Dynamics\SALIR.cs" />
+    <Compile Include="Functions\Dynamics\IsRegularTrajectory.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryM.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryP.cs" />
     <Compile Include="Functions\Graphics\Show.cs" />

@@ -36,7 +36,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precision);
 
-            while(System.Math.Abs(emax - emin) > precision) {
+            while(System.Math.Abs(emax - emin) > precisione) {
                 double e = (emax + emin) * 0.5;
                 guider.Write(string.Format("E = {0} ", e));
                 bool r = sali.IsRegularGraph(e, sizex, sizey, guider);

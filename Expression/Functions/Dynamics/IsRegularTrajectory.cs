@@ -9,8 +9,8 @@ namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Distinguishes using SALI whether the trajectory is regular (1) or chaotic (0)
     /// </summary>
-    public class SALIR: Fnc {
-        public override string Help { get { return Messages.HelpSALIR; } }
+    public class IsRegularTrajectory: Fnc {
+        public override string Help { get { return Messages.HelpIsRegularTrajectory; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(3);

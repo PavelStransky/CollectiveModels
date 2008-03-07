@@ -197,7 +197,7 @@ namespace PavelStransky.GCM {
         public override string ToString() {
             StringBuilder s = new StringBuilder();
             s.Append(string.Format("A = {0,10:#####0.000}\nB = {1,10:#####0.000}\nC = {2,10:#####0.000}\nK = {3,10:#####0.000}", this.A, this.B, this.C, this.K));
-            s.Append(string.Format("I = {0,10:#####0.000}", this.Invariant));
+            s.Append(string.Format("\nI = {0,10:#####0.000}", this.Invariant));
             s.Append("\n\n");
 
             Vector beta = this.ExtremalBeta(0.0);

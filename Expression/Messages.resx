@@ -2358,4 +2358,10 @@ Length of the second vector: {1}</value>
   <data name="HelpEnergyMin" xml:space="preserve">
     <value>For given dynamical system returns the minimum possible energy</value>
   </data>
+  <data name="MsgRegularityBreak" xml:space="preserve">
+    <value>Searching for the break of regularity on the interval E=({0}, {1}).</value>
+  </data>
+  <data name="MsgStartTime" xml:space="preserve">
+    <value>Start time: {0}</value>
+  </data>
 </root>

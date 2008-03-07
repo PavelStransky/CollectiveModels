@@ -4090,6 +4090,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Searching for the break of regularity on the interval E=({0}, {1})..
+        /// </summary>
+        internal static string MsgRegularityBreak {
+            get {
+                return ResourceManager.GetString("MsgRegularityBreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start time: {0}.
+        /// </summary>
+        internal static string MsgStartTime {
+            get {
+                return ResourceManager.GetString("MsgStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reading page of nucleus {0}....
         /// </summary>
         internal static string NuDatReadNucleusPage {

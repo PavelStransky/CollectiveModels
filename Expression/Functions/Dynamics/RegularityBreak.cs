@@ -4,6 +4,7 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.GCM;
+using PavelStransky.Core;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -36,6 +37,10 @@ namespace PavelStransky.Expression.Functions.Def {
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precision);
 
+            DateTime startTime = DateTime.Now;
+            guider.WriteLine(string.Format(Messages.MsgRegularityBreak, emin, emax));
+            guider.WriteLine(string.Format(Messages.MsgStartTime, startTime));
+
             while(System.Math.Abs(emax - emin) > precisione) {
                 double e = (emax + emin) * 0.5;
                 guider.Write(string.Format("E = {0} ", e));
@@ -46,6 +51,8 @@ namespace PavelStransky.Expression.Functions.Def {
                 else
                     emax = e;
             }
+
+            guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
 
             return (emin + emax) * 0.5; 
         }

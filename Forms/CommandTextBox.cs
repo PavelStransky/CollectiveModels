@@ -166,12 +166,12 @@ namespace PavelStransky.Forms {
 
         // Èasovaè (pøekreslujeme vždy po urèité dobì po zmìnì, protože pøekreslování je
         // bohužel hroznì èasovì nároèné)
-        private System.Timers.Timer tRecalculate, tRedraw;
+        private System.Timers.Timer tRedraw;
 
-        private BackgroundWorker workerRecalculate;
         private Highlight highlight;
 
         private bool recalculating = false;
+        private bool redrawing = false;
 
         /// <summary>
         /// True, pokud chceme zobrazovat zvýrazòování syntaxe
@@ -205,20 +205,10 @@ namespace PavelStransky.Forms {
         /// Nastaví èasovaèe pro pøekreslování syntaxe
         /// </summary>
         private void SetTimers() {
-            this.tRecalculate = new System.Timers.Timer();
-            this.tRecalculate.Interval = 1500;
-            this.tRecalculate.AutoReset = false;
-            this.tRecalculate.Elapsed += new System.Timers.ElapsedEventHandler(tRecalculate_Elapsed);
-
             this.tRedraw = new System.Timers.Timer();
             this.tRedraw.Interval = 2000;
             this.tRedraw.AutoReset = false;
             this.tRedraw.Elapsed += new System.Timers.ElapsedEventHandler(tRedraw_Elapsed);
-
-            this.workerRecalculate = new BackgroundWorker();
-            this.workerRecalculate.WorkerReportsProgress = false;
-            this.workerRecalculate.WorkerSupportsCancellation = false;
-            this.workerRecalculate.DoWork += new DoWorkEventHandler(workerRecalculate_DoWork);
         }
 
         /// <summary>
@@ -233,6 +223,13 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="h">True, chceme-li syntaxi zvýraznit</param>
         private void HighlightSyntax(bool h) {
+            this.redrawing = true;
+
+            PavelStransky.Core.Export export =
+                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd.txt", false);
+            export.Write(this.Text);
+            export.Close();
+
             int selectionStart = this.SelectionStart;
             int selectionLength = this.SelectionLength;
             int firstShowedChar = this.GetCharIndexFromPosition(new Point(this.Margin.Left, this.Margin.Top));
@@ -262,6 +259,13 @@ namespace PavelStransky.Forms {
             this.ResumeRedrawing();
 
             this.Invalidate();
+
+            export =
+                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd1.txt", false);
+            export.Write(this.Rtf);
+            export.Close();
+
+            this.redrawing = false;
         }
 
         /// <summary>
@@ -272,46 +276,21 @@ namespace PavelStransky.Forms {
             this.HighlightSyntax(true);
         }
 
-        /// <summary>
-        /// Stisk klávesy - indikuje zmìnu textu, pøepoèítáváme
-        /// </summary>
-        protected override void OnKeyPress(KeyPressEventArgs e) {
-            base.OnKeyPress(e);
-            this.tRecalculate.Start();
-        }
-
-        /// <summary>
-        /// Stisk myšky - znovu rozjedeme vykreslování
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnMouseClick(MouseEventArgs e) {
-            this.tRedraw.Stop();
-            base.OnMouseClick(e);
-            this.tRedraw.Start();
+        protected override void OnTextChanged(EventArgs e) {
+            base.OnTextChanged(e);
+            if(!this.redrawing)
+                this.Recalculate();
         }
 
         // Delegát kvùli Invoke
         private delegate void InvokeDelegate();
 
         /// <summary>
-        /// Pøepoèítání formátování
+        /// Provede pøepoèítání
         /// </summary>
-        private void tRecalculate_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
-            if(!this.IsDisposed)
-                this.Invoke(new InvokeDelegate(this.RecalculateSyntax));
-        }
-
-        /// <summary>
-        /// This.Text mùžeme naèíst jen ve vlastním threadu, ale poèítat chci na pozadí.
-        /// Proto tahle šaráda.
-        /// </summary>
-        private void RecalculateSyntax() {
-            this.workerRecalculate.RunWorkerAsync(this.Text);
-        }
-
-        void workerRecalculate_DoWork(object sender, DoWorkEventArgs e) {
+        private void Recalculate() {
             this.recalculating = true;
-            this.highlight.CheckSyntax(e.Argument as string);
+            this.highlight.CheckSyntax(this.Text);
             this.recalculating = false;
             this.tRedraw.Start();
         }
@@ -324,7 +303,6 @@ namespace PavelStransky.Forms {
                 if(this.recalculating)
                     this.tRedraw.Start();
                 else {
-                    this.tRecalculate.Stop();
                     this.Invoke(new InvokeDelegate(this.HighlightSyntax));
                 }
             }
@@ -372,7 +350,7 @@ namespace PavelStransky.Forms {
         protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e) {
             base.OnPreviewKeyDown(e);
             
-            if(e.Control && !this.tRecalculate.Enabled && !this.showedBracketPair) {
+            if(e.Control && !this.showedBracketPair) {
                 this.bracketPair = this.highlight.FindSecondBracket(this.SelectionStart);
                 this.ShowBracketPair(true);
             }
@@ -489,7 +467,6 @@ namespace PavelStransky.Forms {
             this.ResumeRedrawing();
             this.Invalidate();
 
-            this.tRecalculate.Start();
             this.tRedraw.Start();
         }
         #endregion

@@ -61,6 +61,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There must be an array in the file..
+        /// </summary>
+        internal static string EMArrayInFile {
+            get {
+                return ResourceManager.GetString("EMArrayInFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Object type in the file: &apos;{0}&apos;..
+        /// </summary>
+        internal static string EMArrayInFileDetail {
+            get {
+                return ResourceManager.GetString("EMArrayInFileDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Arrays for function &apos;{0}&apos; do not have the same sizes (dimensions)..
         /// </summary>
         internal static string EMBadArrayDimensions {
@@ -477,6 +495,15 @@ namespace PavelStransky.Expression {
         internal static string EMStringCharMissing {
             get {
                 return ResourceManager.GetString("EMStringCharMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of the items of the array cannot be &apos;{0}&apos;..
+        /// </summary>
+        internal static string EMTypeInFile {
+            get {
+                return ResourceManager.GetString("EMTypeInFile", resourceCulture);
             }
         }
         
@@ -2322,6 +2349,15 @@ namespace PavelStransky.Expression {
         internal static string HelpArcTan {
             get {
                 return ResourceManager.GetString("HelpArcTan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text file of an array reform is such way that the items will be in the columns.
+        /// </summary>
+        internal static string HelpArrayFileToColumn {
+            get {
+                return ResourceManager.GetString("HelpArrayFileToColumn", resourceCulture);
             }
         }
         

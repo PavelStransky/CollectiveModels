@@ -84,7 +84,10 @@ namespace PavelStransky.Expression.Functions.Def {
                 int[] rindex = (int[])result.StartEnumIndex.Clone();
 
                 do {
-                    result[rindex] = (fo as ICloneable).Clone();
+                    if(fo is ICloneable)
+                        result[rindex] = (fo as ICloneable).Clone();
+                    else
+                        result[rindex] = fo;
                 } while(TArray.MoveNext(count, rindex, result.StartEnumIndex, result.EndEnumIndex));
 
                 return result;

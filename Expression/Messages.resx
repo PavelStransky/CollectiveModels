@@ -2364,4 +2364,16 @@ Length of the second vector: {1}</value>
   <data name="MsgStartTime" xml:space="preserve">
     <value>Start time: {0}</value>
   </data>
+  <data name="EMArrayInFile" xml:space="preserve">
+    <value>There must be an array in the file.</value>
+  </data>
+  <data name="EMArrayInFileDetail" xml:space="preserve">
+    <value>Object type in the file: '{0}'.</value>
+  </data>
+  <data name="EMTypeInFile" xml:space="preserve">
+    <value>Type of the items of the array cannot be '{0}'.</value>
+  </data>
+  <data name="HelpArrayFileToColumn" xml:space="preserve">
+    <value>Text file of an array reform is such way that the items will be in the columns</value>
+  </data>
 </root>

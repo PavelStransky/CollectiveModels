@@ -34,8 +34,11 @@ namespace PavelStransky.Expression.Functions {
 			this.CheckArguments(evaluatedArguments, guider.ArrayEvaluation);
 			this.AddPath(guider.Context, evaluatedArguments);
 
-			return this.EvaluateArray(guider, evaluatedArguments);
-		}
+            if(guider.ArrayEvaluation)
+                return this.EvaluateArray(guider, evaluatedArguments);
+            else
+                return this.EvaluateFn(guider, evaluatedArguments);
+        }
 
         /// <summary>
         /// Nastaví cestu (z kontextu vytáhne pøíslušný adresáø)

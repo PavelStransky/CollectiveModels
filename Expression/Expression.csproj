@@ -141,6 +141,7 @@
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
     <Compile Include="Functions\Quantum\PCN.cs" />
+    <Compile Include="Functions\Unsorted\ArrayFileToColumn.cs" />
     <Compile Include="Functions\Unsorted\IsEqual.cs" />
     <Compile Include="Functions\Math\ReplaceInterval.cs" />
     <Compile Include="Functions\Math\ReplaceValue.cs" />

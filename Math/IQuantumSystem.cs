@@ -25,10 +25,17 @@ namespace PavelStransky.Math {
         int NumEV { get;}
 
         /// <summary>
-        /// Matice s hustotou vlastní funkce
+        /// Hustota vlastní funkce - více bodù
+        /// </summary>
+        /// <param name="n">Èíslo nebo èísla vlastních funkcí</param>
+        /// <param name="interval">Oblast hodnot k zhobrazení (seøazená ve tvaru minx, maxx, numx, ...)</param>
+        object ProbabilityDensity(int []n, IOutputWriter writer, params Vector[] interval);
+
+        /// <summary>
+        /// Amplituda vlastní funkce - jeden bod
         /// </summary>
         /// <param name="n">Èíslo vlastní funkce</param>
-        /// <param name="interval">Oblast hodnot k zhobrazení (seøazená ve tvaru minx, maxx, numx, ...)</param>
-        Matrix[] DensityMatrix(int []n, IOutputWriter writer, params Vector[] interval);
+        /// <param name="interval">Souøadnice k zobrazení</param>
+        double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x);
     }
 }

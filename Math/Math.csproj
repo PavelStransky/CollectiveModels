@@ -99,6 +99,7 @@
     <Compile Include="ComplexVector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DiscreteInterval.cs" />
     <Compile Include="Dynamics\AverageInvariant.cs" />
     <Compile Include="Dynamics\DynamicalSystem.cs" />
     <Compile Include="Dynamics\ExactBounds.cs" />

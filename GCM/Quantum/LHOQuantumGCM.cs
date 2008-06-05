@@ -501,7 +501,7 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public virtual Matrix[] DensityMatrix(int[] n, IOutputWriter writer, params Vector[] interval) {
+        public object ProbabilityDensity(int[] n, IOutputWriter writer, params Vector[] interval) {
             DiscreteInterval intx = new DiscreteInterval(interval[0]);
             DiscreteInterval inty = new DiscreteInterval(interval[1]);
 
@@ -515,6 +515,25 @@ namespace PavelStransky.GCM {
                 for(int i = 0; i < numx; i++)
                     for(int j = 0; j < numy; j++)
                         result[l][i, j] *= result[l][i, j];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí hustotu vlnové funkce v daném bodì
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="x">Bod</param>
+        public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed); 
+            
+            Vector ev = this.eigenVectors[n];
+            int length = this.GetBasisLength();
+
+            double result = 0;
+            for(int k = 0; k < length; k++)
+                result += ev[k] * this.PsiXY(x[0], x[1], k);
 
             return result;
         }

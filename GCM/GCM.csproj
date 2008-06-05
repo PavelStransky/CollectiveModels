@@ -76,7 +76,6 @@
     <Compile Include="Quantum\Fortran\QuantumGCM.cs" />
     <Compile Include="Quantum\Fortran\RadialMatrixElement.cs" />
     <Compile Include="Quantum\Fortran\RAIndex.cs" />
-    <Compile Include="Quantum\DiscreteInterval.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

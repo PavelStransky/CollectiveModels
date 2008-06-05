@@ -292,8 +292,14 @@ namespace PavelStransky.Expression {
                         c.SetVariable("x", p.X);
                         c.SetVariable("y", p.Y);
 
-                        Vector v = (fnc.Evaluate(c) as Variable).Item as Vector;
-                        buffer[i] = Color.FromArgb((int)v[0], (int)v[1], (int)v[2]);
+                        object v = (fnc.Evaluate(c) as Variable).Item;
+                        if(v is string)
+                            buffer[i] = Color.FromName(v as string);
+                        else if(v is int)
+                            buffer[i] = ColorArray.GetColor((int)v);
+                        else if(v is Vector && (v as Vector).Length == 3) {
+                            buffer[i] = Color.FromArgb((int)(255.0 * ((Vector)v)[0]), (int)(255.0 * ((Vector)v)[1]), (int)(255.0 * ((Vector)v)[2]));
+                        } 
                     }
                 }
 
@@ -546,6 +552,16 @@ namespace PavelStransky.Expression {
 
             // Hranice pro vykreslení pozadí (v pixelech)
             if(m.NumItems() > 0) {
+                if(bmaxX == bminX) {
+                    bminX -= 0.5;
+                    bmaxX += 0.5;
+                }
+
+                if(bmaxY == bminY) {
+                    bminY -= 0.5;
+                    bmaxY += 0.5;
+                }
+
                 double pixelDX = ((m.LengthX - 1) * (int)gv[ParametersIndications.BPSizeX]) / (bmaxX - bminX);
                 double pixelDY = ((m.LengthY - 1) * (int)gv[ParametersIndications.BPSizeY]) / (bmaxY - bminY);
 

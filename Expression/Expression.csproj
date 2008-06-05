@@ -137,10 +137,14 @@
     <Compile Include="Functions\Math\Cot.cs" />
     <Compile Include="Functions\Math\Coth.cs" />
     <Compile Include="Functions\Math\Exp.cs" />
+    <Compile Include="Functions\Math\PAX.cs" />
+    <Compile Include="Functions\Math\PT3Potential.cs" />
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
     <Compile Include="Functions\Quantum\PCN.cs" />
+    <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
+    <Compile Include="Functions\Quantum\PT3.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumn.cs" />
     <Compile Include="Functions\Unsorted\IsEqual.cs" />
     <Compile Include="Functions\Math\ReplaceInterval.cs" />

@@ -68,6 +68,8 @@ namespace PavelStransky.Expression {
                 return new PT1(this);
             else if(typeName == typeof(PT2).FullName)
                 return new PT2(this);
+            else if(typeName == typeof(PT3).FullName)
+                return new PT3(this);
             else
                 return base.CreateObject(typeName);
         }

@@ -36,6 +36,11 @@ namespace PavelStransky.Expression.Functions.Def {
                 return d;
             }
 
+            else if(t == typeof(List)) {
+                this.CheckArgumentsMaxNumber(arguments, start + 1);
+                return new List();
+            }
+
             else if(t == typeof(Vector)) {
                 this.CheckArgumentsMaxNumber(arguments, start + 2);
                 this.CheckArgumentsType(arguments, start + 1, false, typeof(int));

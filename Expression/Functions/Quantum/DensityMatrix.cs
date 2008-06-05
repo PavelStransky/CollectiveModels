@@ -7,21 +7,17 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Vrátí matici hustot vlastní funkce
+    /// Returns a vector or a matrix with the probability density of the wave function(s)
     /// </summary>
     public class DensityMatrix : Fnc {
-        public override string Help { get { return help; } }
-        public override string ParametersHelp { get { return parameters; } }
+        public override string Help { get { return Messages.HelpDensityMatrix; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
+        protected override void CreateParameters() {
+            this.SetNumParams(3, true);
 
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(IQuantumSystem));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int), typeof(TArray));
-
-            int count = evaluatedArguments.Count;
-            for(int i = 2; i < count; i++)
-                this.CheckArgumentsType(evaluatedArguments, i, evaluateArray, typeof(Vector));
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, false, Messages.PEVIndexes, Messages.PEVIndexesDescription, null, typeof(int), typeof(TArray));
+            this.SetParam(2, true, true, false, Messages.PInterval, Messages.PIntervalDescription, null, typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -51,15 +47,18 @@ namespace PavelStransky.Expression.Functions.Def {
             for(int i = 2; i < count; i++)
                 interval[i - 2] = arguments[i] as Vector;
 
-            Matrix[] result = qs.DensityMatrix(n, guider, interval);
+            object result = qs.ProbabilityDensity(n, guider, interval);
 
-            if(one)
-                return result[0];
+            if(one) {
+                if(result is Vector[])
+                    return (result as Vector[])[0];
+                else if(result is Matrix[])
+                    return (result as Matrix[])[0];
+            }
             else
-                return new TArray(result);
-        }
+                return new TArray(result as Array);
 
-        private const string help = "Vrátí matici hustot vlastní funkce";
-        private const string parameters = "IQuantumSystem; èíslo vlastní funkce (int); oblast výpoètu (Vector, prvky (minx, maxx, numx, ...))";
+            return null;
+        }
     }
 }

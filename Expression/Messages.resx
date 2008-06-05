@@ -2376,4 +2376,37 @@ Length of the second vector: {1}</value>
   <data name="HelpArrayFileToColumn" xml:space="preserve">
     <value>Text file of an array reform is such way that the items will be in the columns</value>
   </data>
+  <data name="HelpPT3" xml:space="preserve">
+    <value>Creates a class PT3 for studying quantum phase transitions (CASP potential)</value>
+  </data>
+  <data name="HelpPT3Potential" xml:space="preserve">
+    <value>Value of the potential of the system PT3</value>
+  </data>
+  <data name="HelpDensityMatrix" xml:space="preserve">
+    <value>Returns a vector or a matrix with the probability density of the wave function(s)</value>
+  </data>
+  <data name="HelpPAX" xml:space="preserve">
+    <value>Returns the probability amplitude of the wave function in the required point (only 1D systems)</value>
+  </data>
+  <data name="HelpProbabilityAmplitude" xml:space="preserve">
+    <value>Returns the probability amplitude of the wave function in the required point</value>
+  </data>
+  <data name="PEVIndexes" xml:space="preserve">
+    <value>evn</value>
+  </data>
+  <data name="PEVIndexesDescription" xml:space="preserve">
+    <value>Index of an eigenvector or eigenvectors (Array) </value>
+  </data>
+  <data name="PInterval" xml:space="preserve">
+    <value>interval</value>
+  </data>
+  <data name="PIntervalDescription" xml:space="preserve">
+    <value>Interval in the format (min, max, num)</value>
+  </data>
+  <data name="PQuantumSystem" xml:space="preserve">
+    <value>q</value>
+  </data>
+  <data name="PQuantumSystemDescription" xml:space="preserve">
+    <value>Quantum system</value>
+  </data>
 </root>

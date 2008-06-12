@@ -2362,6 +2362,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Text file of an array reform is such way that the items will be in the columns.
+        /// </summary>
+        internal static string HelpArrayFileToColumnY {
+            get {
+                return ResourceManager.GetString("HelpArrayFileToColumnY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator of assignment.
         /// </summary>
         internal static string HelpAssignment {
@@ -5841,6 +5850,24 @@ namespace PavelStransky.Expression {
         internal static string PNumberOfPointsDetail {
             get {
                 return ResourceManager.GetString("PNumberOfPointsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to numx.
+        /// </summary>
+        internal static string PNumberXItems {
+            get {
+                return ResourceManager.GetString("PNumberXItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of items with independent x values.
+        /// </summary>
+        internal static string PNumberXItemsDescription {
+            get {
+                return ResourceManager.GetString("PNumberXItemsDescription", resourceCulture);
             }
         }
         

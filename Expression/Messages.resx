@@ -2409,4 +2409,13 @@ Length of the second vector: {1}</value>
   <data name="PQuantumSystemDescription" xml:space="preserve">
     <value>Quantum system</value>
   </data>
+  <data name="HelpArrayFileToColumnY" xml:space="preserve">
+    <value>Text file of an array reform is such way that the items will be in the columns</value>
+  </data>
+  <data name="PNumberXItems" xml:space="preserve">
+    <value>numx</value>
+  </data>
+  <data name="PNumberXItemsDescription" xml:space="preserve">
+    <value>Number of items with independent x values</value>
+  </data>
 </root>

@@ -3613,6 +3613,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convert an array of pointvectors into a matrix.
+        /// </summary>
+        internal static string HelpPV2DToMatrix {
+            get {
+                return ResourceManager.GetString("HelpPV2DToMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates Gaussian distributed random numbers with given variance and mean.
         /// </summary>
         internal static string HelpRandomG {
@@ -5521,6 +5530,60 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to intervalx.
+        /// </summary>
+        internal static string PIntervalX {
+            get {
+                return ResourceManager.GetString("PIntervalX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval in the format (minx, maxx, numx).
+        /// </summary>
+        internal static string PIntervalXDescription {
+            get {
+                return ResourceManager.GetString("PIntervalXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to intervaly.
+        /// </summary>
+        internal static string PIntervalY {
+            get {
+                return ResourceManager.GetString("PIntervalY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval in the format (miny, maxy, numy).
+        /// </summary>
+        internal static string PIntervalYDescription {
+            get {
+                return ResourceManager.GetString("PIntervalYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to intervalz.
+        /// </summary>
+        internal static string PIntervalZ {
+            get {
+                return ResourceManager.GetString("PIntervalZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval in the format (minz, maxz, numz).
+        /// </summary>
+        internal static string PIntervalZDescription {
+            get {
+                return ResourceManager.GetString("PIntervalZDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to item.
         /// </summary>
         internal static string PItem {
@@ -6156,6 +6219,24 @@ namespace PavelStransky.Expression {
         internal static string PPrecisionEnergyDescription {
             get {
                 return ResourceManager.GetString("PPrecisionEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pva.
+        /// </summary>
+        internal static string PPVArray {
+            get {
+                return ResourceManager.GetString("PPVArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Array or list of pointvectors.
+        /// </summary>
+        internal static string PPVArrayDescription {
+            get {
+                return ResourceManager.GetString("PPVArrayDescription", resourceCulture);
             }
         }
         

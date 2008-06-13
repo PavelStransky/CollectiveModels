@@ -145,6 +145,7 @@
     <Compile Include="Functions\Quantum\PCN.cs" />
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
     <Compile Include="Functions\Quantum\PT3.cs" />
+    <Compile Include="Functions\Unsorted\PV2DToMatrix.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumn.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumnY.cs" />
     <Compile Include="Functions\Unsorted\IsEqual.cs" />

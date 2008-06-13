@@ -2418,4 +2418,31 @@ Length of the second vector: {1}</value>
   <data name="PNumberXItemsDescription" xml:space="preserve">
     <value>Number of items with independent x values</value>
   </data>
+  <data name="HelpPV2DToMatrix" xml:space="preserve">
+    <value>Convert an array of pointvectors into a matrix</value>
+  </data>
+  <data name="PIntervalX" xml:space="preserve">
+    <value>intervalx</value>
+  </data>
+  <data name="PIntervalXDescription" xml:space="preserve">
+    <value>Interval in the format (minx, maxx, numx)</value>
+  </data>
+  <data name="PIntervalY" xml:space="preserve">
+    <value>intervaly</value>
+  </data>
+  <data name="PIntervalYDescription" xml:space="preserve">
+    <value>Interval in the format (miny, maxy, numy)</value>
+  </data>
+  <data name="PIntervalZ" xml:space="preserve">
+    <value>intervalz</value>
+  </data>
+  <data name="PIntervalZDescription" xml:space="preserve">
+    <value>Interval in the format (minz, maxz, numz)</value>
+  </data>
+  <data name="PPVArray" xml:space="preserve">
+    <value>pva</value>
+  </data>
+  <data name="PPVArrayDescription" xml:space="preserve">
+    <value>Array or list of pointvectors</value>
+  </data>
 </root>

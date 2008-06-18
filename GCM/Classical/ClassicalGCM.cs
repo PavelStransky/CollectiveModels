@@ -204,7 +204,7 @@ namespace PavelStransky.GCM {
             s.Append(string.Format("Extrémy:"));
 
             for(int i = 0; i < beta.Length; i++)
-                s.Append(string.Format("\nV({0,1:0.000}) = {1,1:0.000}", beta[i], this.VBG(beta[i], 0.0)));
+                s.Append(string.Format("\nV({0,1:0.000000}) = {1,1:0.000000}", beta[i], this.VBG(beta[i], 0.0)));
 
             return s.ToString();
         }

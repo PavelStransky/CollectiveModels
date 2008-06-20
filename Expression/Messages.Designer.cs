@@ -2533,6 +2533,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removes values from a vector or pointvector that are larger or smaller than given bounds.
+        /// </summary>
+        internal static string HelpCrop {
+            get {
+                return ResourceManager.GetString("HelpCrop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the second derivative.
+        /// </summary>
+        internal static string HelpD2 {
+            get {
+                return ResourceManager.GetString("HelpD2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given array transforms into one dimensional array.
         /// </summary>
         internal static string HelpDeflate {
@@ -3609,6 +3627,15 @@ namespace PavelStransky.Expression {
         internal static string HelpPT3Potential {
             get {
                 return ResourceManager.GetString("HelpPT3Potential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns sum of logarithms of differences between E_i and other energies.
+        /// </summary>
+        internal static string HelpPTSumLn {
+            get {
+                return ResourceManager.GetString("HelpPTSumLn", resourceCulture);
             }
         }
         
@@ -6223,6 +6250,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ppt.
+        /// </summary>
+        internal static string PPT {
+            get {
+                return ResourceManager.GetString("PPT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase transition object.
+        /// </summary>
+        internal static string PPTDescription {
+            get {
+                return ResourceManager.GetString("PPTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pva.
         /// </summary>
         internal static string PPVArray {
@@ -6763,6 +6808,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to xmax.
+        /// </summary>
+        internal static string PXMaxBound {
+            get {
+                return ResourceManager.GetString("PXMaxBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum x bound.
+        /// </summary>
+        internal static string PXMaxBoundDescription {
+            get {
+                return ResourceManager.GetString("PXMaxBoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xmin.
+        /// </summary>
+        internal static string PXMinBound {
+            get {
+                return ResourceManager.GetString("PXMinBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum x bound.
+        /// </summary>
+        internal static string PXMinBoundDescription {
+            get {
+                return ResourceManager.GetString("PXMinBoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to y.
         /// </summary>
         internal static string PY {
@@ -6777,6 +6858,42 @@ namespace PavelStransky.Expression {
         internal static string PYDescription {
             get {
                 return ResourceManager.GetString("PYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ymax.
+        /// </summary>
+        internal static string PYMaxBound {
+            get {
+                return ResourceManager.GetString("PYMaxBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum y bound.
+        /// </summary>
+        internal static string PYMaxBoundDescription {
+            get {
+                return ResourceManager.GetString("PYMaxBoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ymin.
+        /// </summary>
+        internal static string PYMinBound {
+            get {
+                return ResourceManager.GetString("PYMinBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum y bound.
+        /// </summary>
+        internal static string PYMinBoundDescription {
+            get {
+                return ResourceManager.GetString("PYMinBoundDescription", resourceCulture);
             }
         }
         

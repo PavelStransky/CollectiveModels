@@ -139,12 +139,14 @@
     <Compile Include="Functions\Math\Exp.cs" />
     <Compile Include="Functions\Math\PAX.cs" />
     <Compile Include="Functions\Math\PT3Potential.cs" />
+    <Compile Include="Functions\Quantum\D2.cs" />
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
     <Compile Include="Functions\Quantum\PCN.cs" />
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
     <Compile Include="Functions\Quantum\PT3.cs" />
+    <Compile Include="Functions\Quantum\PTSumLn.cs" />
     <Compile Include="Functions\Unsorted\PV2DToMatrix.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumn.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumnY.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Functions\Math\Sinh.cs" />
     <Compile Include="Functions\Math\Tan.cs" />
     <Compile Include="Functions\Math\Tanh.cs" />
+    <Compile Include="Functions\Vector\Crop.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
     <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />

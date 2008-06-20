@@ -2445,4 +2445,43 @@ Length of the second vector: {1}</value>
   <data name="PPVArrayDescription" xml:space="preserve">
     <value>Array or list of pointvectors</value>
   </data>
+  <data name="HelpCrop" xml:space="preserve">
+    <value>Removes values from a vector or pointvector that are larger or smaller than given bounds</value>
+  </data>
+  <data name="PXMaxBound" xml:space="preserve">
+    <value>xmax</value>
+  </data>
+  <data name="PXMaxBoundDescription" xml:space="preserve">
+    <value>Maximum x bound</value>
+  </data>
+  <data name="PXMinBound" xml:space="preserve">
+    <value>xmin</value>
+  </data>
+  <data name="PXMinBoundDescription" xml:space="preserve">
+    <value>Minimum x bound</value>
+  </data>
+  <data name="PYMaxBound" xml:space="preserve">
+    <value>ymax</value>
+  </data>
+  <data name="PYMaxBoundDescription" xml:space="preserve">
+    <value>Maximum y bound</value>
+  </data>
+  <data name="PYMinBound" xml:space="preserve">
+    <value>ymin</value>
+  </data>
+  <data name="PYMinBoundDescription" xml:space="preserve">
+    <value>Minimum y bound</value>
+  </data>
+  <data name="HelpD2" xml:space="preserve">
+    <value>Returns the second derivative</value>
+  </data>
+  <data name="HelpPTSumLn" xml:space="preserve">
+    <value>Returns sum of logarithms of differences between E_i and other energies</value>
+  </data>
+  <data name="PPT" xml:space="preserve">
+    <value>ppt</value>
+  </data>
+  <data name="PPTDescription" xml:space="preserve">
+    <value>Phase transition object</value>
+  </data>
 </root>

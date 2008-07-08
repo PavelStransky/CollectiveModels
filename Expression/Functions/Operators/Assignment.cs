@@ -14,31 +14,34 @@ namespace PavelStransky.Expression.Functions.Def {
         public override OperatorPriority Priority { get { return OperatorPriority.AssignmentPriority; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(2);
+            this.SetNumParams(2, true);
             this.SetParam(0, true, false, false, Messages.P1Assignment, Messages.P1AssignmentDescription, null);
-            this.SetParam(1, true, true, false, Messages.P2AssignmentDescription, Messages.P2Assignment, null);
+            this.SetParam(1, true, false, false, Messages.P2Assignment, Messages.P2AssignmentDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            object leftSide = arguments[0];
-            this.result = arguments[1];
+            int count = arguments.Count - 1;
 
+            this.result = Atom.EvaluateAtomObject(guider, arguments[count]);
             if(this.result == null)
                 throw new FncException(Messages.EMNullValue);
 
             if(this.result as ICloneable != null)
                 this.result = (this.result as ICloneable).Clone();
 
-            if(leftSide is Indexer) {
-                (leftSide as Indexer).Evaluate(guider, this.AssignFn);
-                return this.result;
+            for(int i = 0; i < count; i++) {
+                object leftSide = arguments[i];
+                if(leftSide is Indexer) 
+                    (leftSide as Indexer).Evaluate(guider, this.AssignFn);
+                
+                else if(leftSide is string) 
+                    guider.Context.SetVariable(leftSide as string, this.result);
+                
+                else
+                    throw new FncException(Messages.EMBadAssignment, leftSide.GetType().FullName);
             }
-            else if(leftSide is string) {
-                guider.Context.SetVariable(leftSide as string, this.result);
-                return arguments[1];
-            }
-            else
-                throw new FncException(Messages.EMBadAssignment, leftSide.GetType().FullName);
+
+            return this.result;
         }
 
         private object result;

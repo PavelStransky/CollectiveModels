@@ -263,7 +263,7 @@ namespace PavelStransky.Expression {
 
                 int smallIntervals;
                 int smallIntervalsOffset;
-                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Width, (double)gv[ParametersIndications.MinX], (double)gv[ParametersIndications.MaxX]);
+                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Width, (double)gv[ParametersIndications.MinX], (double)gv[ParametersIndications.MaxX], (double)gv[ParametersIndications.AMajorTicksX], (int)gv[ParametersIndications.AMinorTicksX]);
 
                 int length = v.Length;
 
@@ -293,7 +293,7 @@ namespace PavelStransky.Expression {
 
                 int smallIntervals;
                 int smallIntervalsOffset;
-                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Height, (double)gv[ParametersIndications.MinY], (double)gv[ParametersIndications.MaxY]);
+                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Height, (double)gv[ParametersIndications.MinY], (double)gv[ParametersIndications.MaxY], (double)gv[ParametersIndications.AMajorTicksY], (int)gv[ParametersIndications.AMinorTicksY]);
 
                 int length = v.Length;
 
@@ -424,7 +424,7 @@ namespace PavelStransky.Expression {
 
                 int smallIntervals;
                 int smallIntervalsOffset;
-                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Width, (double)gv[ParametersIndications.MinX], (double)gv[ParametersIndications.MaxX]);
+                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Width, (double)gv[ParametersIndications.MinX], (double)gv[ParametersIndications.MaxX], (double)gv[ParametersIndications.AMajorTicksX], (int)gv[ParametersIndications.AMinorTicksX]);
 
                 int length = v.Length;
                 Point[] pT = new Point[length];
@@ -495,7 +495,7 @@ namespace PavelStransky.Expression {
 
                 int smallIntervals;
                 int smallIntervalsOffset;
-                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Height, (double)gv[ParametersIndications.MinY], (double)gv[ParametersIndications.MaxY]);
+                Vector v = this.GetAxesPoints(out smallIntervals, out smallIntervalsOffset, rectangleM.Height, (double)gv[ParametersIndications.MinY], (double)gv[ParametersIndications.MaxY], (double)gv[ParametersIndications.AMajorTicksY], (int)gv[ParametersIndications.AMinorTicksY]);
 
                 int length = v.Length;
                 Point[] pL = new Point[length];
@@ -607,40 +607,50 @@ namespace PavelStransky.Expression {
         /// <param name="pixels">Poèet bodù na obrazovce</param>
         /// <param name="min">Minimální hodnota</param>
         /// <param name="max">Maximální hodnota</param>
-        private Vector GetAxesPoints(out int smallIntervals, out int smallIntervalsOffset, int pixels, double min, double max) {
-            double wholeInterval = max - min;
+        /// <param name="majorTicks">Vzdálenost velkých Tikù (s popisky)</param>
+        /// <param name="minorTicks">Poèet malých Tikù</param>
+        private Vector GetAxesPoints(out int smallIntervals, out int smallIntervalsOffset, int pixels, double min, double max, double majorTicks, int minorTicks) {
+            double largeInterval = 0.0;
 
-            int numPoints = pixels / axePointInterval;
-            if(numPoints <= 0) {
-                smallIntervals = 0;
-                smallIntervalsOffset = 0;
-                return new Vector(0);
-            }
+            if(majorTicks < 0.0) {
+                double wholeInterval = max - min;
 
-            double logInterval = System.Math.Log10(wholeInterval / numPoints);
-            double intervalOrder = System.Math.Floor(logInterval);
-            logInterval = logInterval - intervalOrder;
+                int numPoints = pixels / axePointInterval;
+                if(numPoints <= 0) {
+                    smallIntervals = 0;
+                    smallIntervalsOffset = 0;
+                    return new Vector(0);
+                }
 
-            double largeInterval = System.Math.Pow(10.0, intervalOrder + 1);
-            smallIntervals = 1;
+                double logInterval = System.Math.Log10(wholeInterval / numPoints);
+                double intervalOrder = System.Math.Floor(logInterval);
+                logInterval = logInterval - intervalOrder;
 
-            if(logInterval < System.Math.Log10(2.0)) {
-                largeInterval /= 5.0;
+                largeInterval = System.Math.Pow(10.0, intervalOrder + 1);
                 smallIntervals = 2;
+
+                if(logInterval < System.Math.Log10(2.0)) {
+                    largeInterval /= 5.0;
+                }
+                else if(logInterval < System.Math.Log10(5.0)) {
+                    largeInterval /= 2.0;
+                    smallIntervals = 5;
+                }
             }
-            else if(logInterval < System.Math.Log10(5.0)) {
-                largeInterval /= 2.0;
-                smallIntervals = 5;
+            else {
+                largeInterval = majorTicks;
+                smallIntervals = 1;
             }
-            else
-                smallIntervals = 2;
+
+            if(minorTicks >= 0)
+                smallIntervals = minorTicks + 1;
 
             double x = min;
             double interval = largeInterval / smallIntervals;
             x /= interval;
             x = System.Math.Ceiling(x);
             x *= interval;
-
+        
             int length = (int)(max / interval) - (int)(min / interval);
             if(min * max <= 0)
                 length++;

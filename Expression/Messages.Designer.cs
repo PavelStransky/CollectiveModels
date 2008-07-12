@@ -670,6 +670,78 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to amajorticksx.
+        /// </summary>
+        internal static string GPAMajorTicksX {
+            get {
+                return ResourceManager.GetString("GPAMajorTicksX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance between major ticks on the x-axis; negative value for default distance.
+        /// </summary>
+        internal static string GPAMajorTicksXDescription {
+            get {
+                return ResourceManager.GetString("GPAMajorTicksXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to amajorticksy.
+        /// </summary>
+        internal static string GPAMajorTicksY {
+            get {
+                return ResourceManager.GetString("GPAMajorTicksY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance between major ticks on the y-axis; negative value for default distance.
+        /// </summary>
+        internal static string GPAMajorTicksYDescription {
+            get {
+                return ResourceManager.GetString("GPAMajorTicksYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to aminorticksx.
+        /// </summary>
+        internal static string GPAMinorTicksX {
+            get {
+                return ResourceManager.GetString("GPAMinorTicksX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of minor ticks between major ticks on the x-axis; negative value for default minor ticks.
+        /// </summary>
+        internal static string GPAMinorTicksXDescription {
+            get {
+                return ResourceManager.GetString("GPAMinorTicksXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to aminorticksy.
+        /// </summary>
+        internal static string GPAMinorTicksY {
+            get {
+                return ResourceManager.GetString("GPAMinorTicksY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of minor ticks between major ticks on the y-axis; negative value for default minor ticks.
+        /// </summary>
+        internal static string GPAMinorTicksYDescription {
+            get {
+                return ResourceManager.GetString("GPAMinorTicksYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to animcurve.
         /// </summary>
         internal static string GPAnimCurve {

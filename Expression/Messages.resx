@@ -2484,4 +2484,28 @@ Length of the second vector: {1}</value>
   <data name="PPTDescription" xml:space="preserve">
     <value>Phase transition object</value>
   </data>
+  <data name="GPAMajorTicksX" xml:space="preserve">
+    <value>amajorticksx</value>
+  </data>
+  <data name="GPAMajorTicksXDescription" xml:space="preserve">
+    <value>Distance between major ticks on the x-axis; negative value for default distance</value>
+  </data>
+  <data name="GPAMajorTicksY" xml:space="preserve">
+    <value>amajorticksy</value>
+  </data>
+  <data name="GPAMajorTicksYDescription" xml:space="preserve">
+    <value>Distance between major ticks on the y-axis; negative value for default distance</value>
+  </data>
+  <data name="GPAMinorTicksX" xml:space="preserve">
+    <value>aminorticksx</value>
+  </data>
+  <data name="GPAMinorTicksXDescription" xml:space="preserve">
+    <value>Number of minor ticks between major ticks on the x-axis; negative value for default minor ticks</value>
+  </data>
+  <data name="GPAMinorTicksY" xml:space="preserve">
+    <value>aminorticksy</value>
+  </data>
+  <data name="GPAMinorTicksYDescription" xml:space="preserve">
+    <value>Number of minor ticks between major ticks on the y-axis; negative value for default minor ticks</value>
+  </data>
 </root>

@@ -1021,6 +1021,78 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ashowticksb.
+        /// </summary>
+        internal static string GPAShowTicksB {
+            get {
+                return ResourceManager.GetString("GPAShowTicksB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the ticks on the bottom axis are to be shown.
+        /// </summary>
+        internal static string GPAShowTicksBDescription {
+            get {
+                return ResourceManager.GetString("GPAShowTicksBDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowticksl.
+        /// </summary>
+        internal static string GPAShowTicksL {
+            get {
+                return ResourceManager.GetString("GPAShowTicksL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the ticks on the left axis are to be shown.
+        /// </summary>
+        internal static string GPAShowTicksLDescription {
+            get {
+                return ResourceManager.GetString("GPAShowTicksLDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowticksr.
+        /// </summary>
+        internal static string GPAShowTicksR {
+            get {
+                return ResourceManager.GetString("GPAShowTicksR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the ticks on the right axis are to be shown.
+        /// </summary>
+        internal static string GPAShowTicksRDescription {
+            get {
+                return ResourceManager.GetString("GPAShowTicksRDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ashowtickst.
+        /// </summary>
+        internal static string GPAShowTicksT {
+            get {
+                return ResourceManager.GetString("GPAShowTicksT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the ticks on the top axis are to be shown.
+        /// </summary>
+        internal static string GPAShowTicksTDescription {
+            get {
+                return ResourceManager.GetString("GPAShowTicksTDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to atitlecolorx.
         /// </summary>
         internal static string GPATitleColorX {

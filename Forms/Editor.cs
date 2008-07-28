@@ -157,13 +157,23 @@ namespace PavelStransky.Forms {
 
                     if(position.X >= 0.0)
                         graphForm.Location = new Point((int)position.X, graphForm.Location.Y);
+
                     if(position.Y >= 0.0)
                         graphForm.Location = new Point(graphForm.Location.X, (int)position.Y);
-                    if(size.X > 0.0)
-                        graphForm.Size = new Size((int)size.X, graphForm.Size.Height);
-                    if(size.Y > 0.0)
-                        graphForm.Size = new Size(graphForm.Size.Width, (int)size.Y);
 
+                    if(size.X > 0.0) {
+                        graphForm.Size = new Size((int)size.X, graphForm.Size.Height);
+                        graphForm.RealWidth = (int)size.X;
+                    }
+                    else
+                        graphForm.RealWidth = 0;
+
+                    if(size.Y > 0.0) {
+                        graphForm.Size = new Size(graphForm.Size.Width, (int)size.Y);
+                        graphForm.RealHeight = (int)size.Y;
+                    }
+                    else
+                        graphForm.RealHeight = 0;
 
                     graphForm.Show();
                     this.Activate();

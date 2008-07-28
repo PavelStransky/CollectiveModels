@@ -2508,4 +2508,28 @@ Length of the second vector: {1}</value>
   <data name="GPAMinorTicksYDescription" xml:space="preserve">
     <value>Number of minor ticks between major ticks on the y-axis; negative value for default minor ticks</value>
   </data>
+  <data name="GPAShowTicksB" xml:space="preserve">
+    <value>ashowticksb</value>
+  </data>
+  <data name="GPAShowTicksBDescription" xml:space="preserve">
+    <value>True if the ticks on the bottom axis are to be shown</value>
+  </data>
+  <data name="GPAShowTicksL" xml:space="preserve">
+    <value>ashowticksl</value>
+  </data>
+  <data name="GPAShowTicksLDescription" xml:space="preserve">
+    <value>True if the ticks on the left axis are to be shown</value>
+  </data>
+  <data name="GPAShowTicksR" xml:space="preserve">
+    <value>ashowticksr</value>
+  </data>
+  <data name="GPAShowTicksRDescription" xml:space="preserve">
+    <value>True if the ticks on the right axis are to be shown</value>
+  </data>
+  <data name="GPAShowTicksT" xml:space="preserve">
+    <value>ashowtickst</value>
+  </data>
+  <data name="GPAShowTicksTDescription" xml:space="preserve">
+    <value>True if the ticks on the top axis are to be shown</value>
+  </data>
 </root>

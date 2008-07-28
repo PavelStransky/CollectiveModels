@@ -395,6 +395,9 @@ namespace PavelStransky.Expression {
                 int yT = rectangleM.Top;
                 int yB = rectangleM.Bottom;
 
+                bool showTicksT = (bool)gv[ParametersIndications.AShowTicksT];
+                bool showTicksB = (bool)gv[ParametersIndications.AShowTicksB];
+
                 Color lineColorX = (Color)gv[ParametersIndications.ALColorX];
                 float lineWidthX = (int)gv[ParametersIndications.ALWidthX];
                 Pen linePen = new Pen(lineColorX, lineWidthX);
@@ -407,6 +410,7 @@ namespace PavelStransky.Expression {
                 int pointSizeX = (int)gv[ParametersIndications.APSizeX];
 
                 Font font = new Font(baseFontFamilyName, (int)gv[ParametersIndications.ALabelFSizeX], FontStyle.Bold);
+                bool showLabelX = (bool)gv[ParametersIndications.AShowLabelX];
 
                 if(showAxeT) {
                     Point[] line = new Point[2];
@@ -434,7 +438,7 @@ namespace PavelStransky.Expression {
                     int x = (int)(v[i] * amplify.X + offset.X);
                     pT[i] = new Point(x, yT);
                     pB[i] = new Point(x, yB);
-                    if(((i - smallIntervalsOffset) % smallIntervals) != 0)
+                    if(((i - smallIntervalsOffset) % smallIntervals) != 0 || !showLabelX)
                         continue;
 
                     string numString = v[i].ToString();
@@ -442,18 +446,18 @@ namespace PavelStransky.Expression {
 
                     int xf = x - (int)(ns.Width / 2F);
 
-                    if(showAxeT)
+                    if(showAxeT && showTicksT)
                         g.DrawString(numString, font, numBrush, xf, yT - 5 - (int)ns.Height);
 
-                    if(showAxeB)
+                    if(showAxeB && showTicksB)
                         g.DrawString(numString, font, numBrush, xf, yB + 5);
                 }
 
-                if(showAxeT)
+                if(showAxeT && showTicksT)
                     this.DrawPoints(g, pT, pointPen, pointStyleX, pointSizeX, smallIntervals, smallIntervalsOffset,
                         pointStyleX, pointSizeX / 2);
 
-                if(showAxeB)
+                if(showAxeB && showTicksB)
                     this.DrawPoints(g, pB, pointPen, pointStyleX, pointSizeX, smallIntervals, smallIntervalsOffset,
                         pointStyleX, pointSizeX / 2);
             }
@@ -465,6 +469,9 @@ namespace PavelStransky.Expression {
             if((showAxeL || showAxeR) && !shift) {
                 int xL = rectangleM.Left;
                 int xR = rectangleM.Right;
+
+                bool showTicksL = (bool)gv[ParametersIndications.AShowTicksL];
+                bool showTicksR = (bool)gv[ParametersIndications.AShowTicksR];
 
                 Color lineColorY = (Color)gv[ParametersIndications.ALColorY];
                 float lineWidthY = (int)gv[ParametersIndications.ALWidthY];
@@ -478,6 +485,7 @@ namespace PavelStransky.Expression {
                 int pointSizeY = (int)gv[ParametersIndications.APSizeY];
 
                 Font font = new Font(baseFontFamilyName, (int)gv[ParametersIndications.ALabelFSizeY], FontStyle.Bold);
+                bool showLabelY = (bool)gv[ParametersIndications.AShowLabelY];
 
                 if(showAxeL) {
                     Point[] line = new Point[2];
@@ -505,7 +513,7 @@ namespace PavelStransky.Expression {
                     int y = (int)(-v[i] * amplify.Y + offset.Y);
                     pL[i] = new Point(xL, y);
                     pR[i] = new Point(xR, y);
-                    if(((i - smallIntervalsOffset) % smallIntervals) != 0)
+                    if(((i - smallIntervalsOffset) % smallIntervals) != 0 || !showLabelY)
                         continue;
 
                     string numString = v[i].ToString();
@@ -513,17 +521,17 @@ namespace PavelStransky.Expression {
 
                     int yf = y - (int)(ns.Height / 2F);
 
-                    if(showAxeL)
+                    if(showAxeL && showTicksL)
                         g.DrawString(numString, font, numBrush, xL - 5 - (int)ns.Width, yf);
 
-                    if(showAxeR)
+                    if(showAxeR && showTicksR)
                         g.DrawString(numString, font, numBrush, xR + 5, yf);
                 }
 
-                if(showAxeL)
+                if(showAxeL && showTicksL)
                     this.DrawPoints(g, pL, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
 
-                if(showAxeR)
+                if(showAxeR && showTicksR)
                     this.DrawPoints(g, pR, pointPen, pointStyleY, pointSizeY, smallIntervals, smallIntervalsOffset, pointStyleY, pointSizeY / 2);
             }
 

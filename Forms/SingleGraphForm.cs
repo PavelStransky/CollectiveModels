@@ -27,6 +27,20 @@ namespace PavelStransky.Forms {
         // Data
         private TArray graphs;
 
+        // Skuteèná šíøka a výška podle zadání (kvùli ukládání, velikost okna mùže být totiž nejvýše rovna velikosti pracovní plochy)
+        private int realWidth = 0;
+        private int realHeight = 0;
+
+        /// <summary>
+        /// Skuteèná šíøka okna
+        /// </summary>
+        public int RealWidth { get { return this.realWidth; } set { this.realWidth = value; } }
+
+        /// <summary>
+        /// Skuteèná výška okna
+        /// </summary>
+        public int RealHeight { get { return this.realHeight; } set { this.realHeight = value; } }
+
 		/// <summary>
 		/// Konstruktor
 		/// </summary>

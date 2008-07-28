@@ -219,11 +219,8 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Uloží jeden jednotlivý obrázek do souboru
         /// </summary>
-        /// <param name="rectangle">Základní obrázek (urèuje velikost + pozadí)</param>
         /// <param name="group">Skupina</param>
         /// <param name="time">Èas</param>
-        /// <param name="fileName">Jméno souboru</param>
-        /// <param name="format">Formát souboru</param>
         /// <param name="graphItems">Jednotlivé grafy</param>
         private Bitmap PaintOne(Image baseImage, GraphItem[] graphItems, int group, int time) {
             Bitmap image = new Bitmap(baseImage);
@@ -260,7 +257,16 @@ namespace PavelStransky.Forms {
             else if(extension == "wmf")
                 format = ImageFormat.Wmf;
 
-            Rectangle rectangle = this.graphicsBox.ClientRectangle;
+//          Rectangle rectangle = this.graphicsBox.ClientRectangle;
+            int width = this.RealWidth;
+            if(width <= 0)
+                width = this.graphicsBox.ClientRectangle.Width;
+
+            int height = this.RealHeight;
+            if(height <= 0)
+                height = this.graphicsBox.ClientRectangle.Height;
+
+            Rectangle rectangle = new Rectangle(0, 0, width, height);
             Bitmap baseImage = new Bitmap(rectangle.Width, rectangle.Height);
             Graphics.FromImage(baseImage).FillRectangle(Brushes.White, rectangle);
 
@@ -332,7 +338,17 @@ namespace PavelStransky.Forms {
             if(fName.Length < 3 || fName.IndexOf('.') < 0)
                 throw new FormsException(string.Format(Messages.EMBadFileName, fName));
 
-            Rectangle rectangle = this.graphicsBox.ClientRectangle;
+//          Rectangle rectangle = this.graphicsBox.ClientRectangle;
+
+            int width = this.RealWidth;
+            if(width <= 0)
+                width = this.graphicsBox.ClientRectangle.Width;
+
+            int height = this.RealHeight;
+            if(height <= 0)
+                height = this.graphicsBox.ClientRectangle.Height;
+
+            Rectangle rectangle = new Rectangle(0, 0, width, height);
             Bitmap baseImage = new Bitmap(rectangle.Width, rectangle.Height);
             Graphics.FromImage(baseImage).FillRectangle(Brushes.White, rectangle);
 

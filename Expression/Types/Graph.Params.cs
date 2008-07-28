@@ -98,6 +98,8 @@ namespace PavelStransky.Expression {
             ALabelFSizeX = 242,
             AMinorTicksX = 250,
             AMajorTicksX = 251,
+            AShowTicksT = 260,
+            AShowTicksB = 261,
 
             ATitleY = 300,
             ATitleColorY = 301,
@@ -114,6 +116,8 @@ namespace PavelStransky.Expression {
             ALabelFSizeY = 342,
             AMinorTicksY = 350,
             AMajorTicksY = 351,
+            AShowTicksL = 360,
+            AShowTicksR = 361,
 
             ShowGridX = 400,
             GridColorX = 401,
@@ -261,6 +265,8 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.ALabelFSizeX, Messages.GPALabelFSizeX, Messages.GPALabelFSizeXDescription, 10);
             groupParams.Add(ParametersIndications.AMinorTicksX, Messages.GPAMinorTicksX, Messages.GPAMinorTicksXDescription, -1);
             groupParams.Add(ParametersIndications.AMajorTicksX, Messages.GPAMajorTicksX, Messages.GPAMajorTicksXDescription, -1.0);
+            groupParams.Add(ParametersIndications.AShowTicksT, Messages.GPAShowTicksT, Messages.GPAShowTicksTDescription, true);
+            groupParams.Add(ParametersIndications.AShowTicksB, Messages.GPAShowTicksB, Messages.GPAShowTicksBDescription, true);
 
             groupParams.Add(ParametersIndications.ATitleY, Messages.GPATitleY, Messages.GPATitleYDescription, string.Empty);
             groupParams.Add(ParametersIndications.ATitleColorY, Messages.GPATitleColorY, Messages.GPATitleColorYDescription, Color.Red);
@@ -277,6 +283,8 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.ALabelFSizeY, Messages.GPALabelFSizeY, Messages.GPALabelFSizeYDescription, 10);
             groupParams.Add(ParametersIndications.AMinorTicksY, Messages.GPAMinorTicksY, Messages.GPAMinorTicksYDescription, -1);
             groupParams.Add(ParametersIndications.AMajorTicksY, Messages.GPAMajorTicksY, Messages.GPAMajorTicksYDescription, -1.0);
+            groupParams.Add(ParametersIndications.AShowTicksL, Messages.GPAShowTicksL, Messages.GPAShowTicksLDescription, true);
+            groupParams.Add(ParametersIndications.AShowTicksR, Messages.GPAShowTicksR, Messages.GPAShowTicksRDescription, true);
 
             groupParams.Add(ParametersIndications.ShowGridX, Messages.GPShowGridX, Messages.GPShowGridXDescription, false);
             groupParams.Add(ParametersIndications.GridColorX, Messages.GPGridColorX, Messages.GPGridColorXDescription, Color.LightGray);

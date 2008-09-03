@@ -2532,4 +2532,7 @@ Length of the second vector: {1}</value>
   <data name="GPAShowTicksTDescription" xml:space="preserve">
     <value>True if the ticks on the top axis are to be shown</value>
   </data>
+  <data name="HelpPeresInvariantH0" xml:space="preserve">
+    <value>Returns the H0 Peres invariant of a GCM system</value>
+  </data>
 </root>

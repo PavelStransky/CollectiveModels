@@ -195,6 +195,55 @@ namespace PavelStransky.GCM {
             return lambda * (lambda + 3) * this.Hbar * this.Hbar;
         }
 
+        /// <summary>
+        /// Druhý invariant pro operátor H0
+        /// </summary>
+        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
+        public override Vector GetPeresInvariantH0() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            double omega = this.Omega;
+            double alpha = this.s * this.s;
+            double alpha2 = alpha * alpha;
+            double alpha32 = alpha * System.Math.Sqrt(alpha);
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                double sum = 0.0;
+
+                for(int j = 0; j < length; j++) {
+                    int l = this.index.L[j];
+                    int mu = this.index.Mu[j];
+
+                    int lambda = 3 * mu;
+                    double ro = lambda + 1.5;
+
+                    sum += ev[j] * ev[j] *
+                            (this.Hbar * omega * (2.0 * l + ro + 1.0)
+                                + (this.A - this.A0) * (2.0 * l + ro + 1.0) / alpha
+                                + this.C * (l * (l - 1.0) + (l + ro + 1.0) * (5.0 * l + ro + 2.0)) / alpha2);
+
+                    if(j < length - 1)
+                        sum -= 2.0 * ev[j] * ev[j + 1] *
+                                ((this.A - this.A0) * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) / alpha
+                                    + 2.0 * this.C * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) * (2.0 * l + ro + 2.0) / alpha2);
+
+                    if(j < length - 2)
+                        sum += 2.0 * ev[j] * ev[j + 2] * this.C * System.Math.Sqrt((l + ro + 2.0) * (l + ro + 1.0) * (l + 2.0) * (l + 1.0)) / alpha2;
+                }
+
+                result[i] = sum;
+            }
+
+            return result;
+        }
+
         #region Implementace IExportable
         protected override void Export(IEParam param) {
             if(this.isComputed)

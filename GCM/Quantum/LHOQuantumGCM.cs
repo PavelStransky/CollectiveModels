@@ -283,6 +283,14 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Druhý invariant pro operátor H0
+        /// </summary>
+        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
+        public virtual Vector GetPeresInvariantH0() {
+            return null;
+        }
+
+        /// <summary>
         /// Entropie systému S = -Sum(ev[j]^2 ln(ev[j]^2))
         /// </summary>
         /// <remarks>M.S. Santhanam et al., arXiv:chao-dyn/9704002v1</remarks>

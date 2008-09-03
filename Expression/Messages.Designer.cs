@@ -3586,6 +3586,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the H0 Peres invariant of a GCM system.
+        /// </summary>
+        internal static string HelpPeresInvariantH0 {
+            get {
+                return ResourceManager.GetString("HelpPeresInvariantH0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Pi number.
         /// </summary>
         internal static string HelpPi {

@@ -62,6 +62,54 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Druhý invariant pro operátor H0
+        /// </summary>
+        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
+        public override Vector GetPeresInvariantH0() {
+            if(!this.isComputed)
+                throw new GCMException(Messages.EMNotComputed);
+
+            double omega = this.Omega;
+            double alpha = this.s * this.s;
+            double alpha2 = alpha * alpha;
+            double alpha32 = alpha * this.s;
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenVectors[i];
+                int length = ev.Length;
+
+                double sum = 0.0;
+
+                for(int j = 0; j < length; j++) {
+                    int n = this.index.N[j];
+                    int m = this.index.M[j];
+
+                    int l = System.Math.Abs(m);
+
+                    sum += ev[j] * ev[j] *
+                            (this.Hbar * omega * (2.0 * n + l + 1.0)
+                                + (this.A - this.A0) * (2.0 * n + l + 1.0) / alpha
+                                + this.C * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0)) / alpha2);
+
+                    if(j < length - 1)
+                        sum -= 2.0 * ev[j] * ev[j + 1] *
+                                ((this.A - this.A0) * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) / alpha
+                                    + 2.0 * this.C * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0) / alpha2);
+
+                    if(j < length - 2)
+                        sum += 2.0 * ev[j] * ev[j + 2] * this.C * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0)) / alpha2;
+                }
+
+                result[i] = sum;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Radiální èást vlnové funkce
         /// </summary>
         /// <param name="n">Hlavní kvantové èíslo</param>

@@ -2875,6 +2875,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export a matrix in three columns format: (x, y, value).
+        /// </summary>
+        internal static string HelpExportMatrix {
+            get {
+                return ResourceManager.GetString("HelpExportMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates an ExtendedClassicalGCM class with mass proportional to beta^2.
         /// </summary>
         internal static string HelpExtendedCGCM1 {
@@ -5953,6 +5962,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to maxx.
+        /// </summary>
+        internal static string PMaxX {
+            get {
+                return ResourceManager.GetString("PMaxX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum x value.
+        /// </summary>
+        internal static string PMaxXDescription {
+            get {
+                return ResourceManager.GetString("PMaxXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxy.
+        /// </summary>
+        internal static string PMaxY {
+            get {
+                return ResourceManager.GetString("PMaxY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum y value.
+        /// </summary>
+        internal static string PMaxYDescription {
+            get {
+                return ResourceManager.GetString("PMaxYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to mean.
         /// </summary>
         internal static string PMean {
@@ -5985,6 +6030,42 @@ namespace PavelStransky.Expression {
         internal static string PMinuendDescription {
             get {
                 return ResourceManager.GetString("PMinuendDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minx.
+        /// </summary>
+        internal static string PMinX {
+            get {
+                return ResourceManager.GetString("PMinX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum x value.
+        /// </summary>
+        internal static string PMinXDescription {
+            get {
+                return ResourceManager.GetString("PMinXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to miny.
+        /// </summary>
+        internal static string PMinY {
+            get {
+                return ResourceManager.GetString("PMinY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum y value.
+        /// </summary>
+        internal static string PMinYDescription {
+            get {
+                return ResourceManager.GetString("PMinYDescription", resourceCulture);
             }
         }
         

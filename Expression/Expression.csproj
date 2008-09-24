@@ -139,6 +139,7 @@
     <Compile Include="Functions\Math\Exp.cs" />
     <Compile Include="Functions\Math\PAX.cs" />
     <Compile Include="Functions\Math\PT3Potential.cs" />
+    <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Quantum\D2.cs" />
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />

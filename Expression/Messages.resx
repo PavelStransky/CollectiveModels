@@ -2535,4 +2535,31 @@ Length of the second vector: {1}</value>
   <data name="HelpPeresInvariantH0" xml:space="preserve">
     <value>Returns the H0 Peres invariant of a GCM system</value>
   </data>
+  <data name="HelpExportMatrix" xml:space="preserve">
+    <value>Export a matrix in three columns format: (x, y, value)</value>
+  </data>
+  <data name="PMaxX" xml:space="preserve">
+    <value>maxx</value>
+  </data>
+  <data name="PMaxXDescription" xml:space="preserve">
+    <value>Maximum x value</value>
+  </data>
+  <data name="PMaxY" xml:space="preserve">
+    <value>maxy</value>
+  </data>
+  <data name="PMaxYDescription" xml:space="preserve">
+    <value>Maximum y value</value>
+  </data>
+  <data name="PMinX" xml:space="preserve">
+    <value>minx</value>
+  </data>
+  <data name="PMinXDescription" xml:space="preserve">
+    <value>Minimum x value</value>
+  </data>
+  <data name="PMinY" xml:space="preserve">
+    <value>miny</value>
+  </data>
+  <data name="PMinYDescription" xml:space="preserve">
+    <value>Minimum y value</value>
+  </data>
 </root>

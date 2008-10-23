@@ -274,7 +274,8 @@ namespace PavelStransky.Forms {
             int nGraphs = graphItems.Length;
 
             int maxNumGroups = this.MaxNumGroups(graphItems);
-
+            int scrollStep = graphItems[0].Graph.ScrollStep;
+            
             // Animujeme skupiny
             if(maxNumGroups > 0) {
                 for(int g = 0; g < maxNumGroups; g++) {
@@ -282,7 +283,7 @@ namespace PavelStransky.Forms {
 
                     // Animujeme i køivky
                     if(maxTime > 0)
-                        for(int t = 0; t <= maxTime; t++)
+                        for(int t = 1; t <= maxTime; t += scrollStep)
                             this.PaintOne(baseImage, graphItems, g, t).Save(string.Format("{0}{1}-{2}.{3}", name, g, t, extension), format);
 
                     // Køivky neanimujeme
@@ -303,7 +304,7 @@ namespace PavelStransky.Forms {
 
                 // Animujeme køivky
                 if(maxTime > 0)
-                    for(int t = 0; t <= maxTime; t++) {
+                    for(int t = 1; t <= maxTime; t += scrollStep) {
                         this.PaintOne(baseImage, graphItems, -1, t).Save(string.Format("{0}-{1}.{2}", name, t, extension), format);
 
                         this.bwSaveSeq.ReportProgress(t * 100 / maxTime);
@@ -361,13 +362,14 @@ namespace PavelStransky.Forms {
             // Animujeme skupiny
             if(maxNumGroups > 0) {
                 AnimGIFBuffer buffer = new AnimGIFBuffer(interval, fName);
+                int scrollStep = graphItems[0].Graph.ScrollStep;
 
                 for(int g = 0; g < maxNumGroups; g++) {
                     int maxTime = this.MaxTime(graphItems, g);
 
                     // Animujeme i køivky
                     if(maxTime > 0)
-                        for(int t = 0; t <= maxTime; t++)
+                        for(int t = 1; t <= maxTime; t += scrollStep)
                             buffer.Add(this.PaintOne(baseImage, graphItems, g, t));
 
                     // Køivky neanimujeme
@@ -391,8 +393,9 @@ namespace PavelStransky.Forms {
                 // Animujeme køivky
                 if(maxTime > 0) {
                     AnimGIFBuffer buffer = new AnimGIFBuffer(interval, fName);
+                    int scrollStep = graphItems[0].Graph.ScrollStep;
 
-                    for(int t = 0; t <= maxTime; t++) {
+                    for(int t = 1; t <= maxTime; t += scrollStep) {
                         buffer.Add(this.PaintOne(baseImage, graphItems, -1, t));
 
                         this.bwSaveAnim.ReportProgress(t * 100 / maxTime);

@@ -516,6 +516,26 @@ namespace PavelStransky.Math {
             return System.Math.Exp(-x);
         }
 
+        /// <summary>
+        /// Hodnota Brodyho rozdìlení
+        /// </summary>
+        /// <param name="x">x</param>
+        /// <param name="b">Brodyho parametr</param>
+        public static double Brody(double x, double b) {
+            double alpha = System.Math.Exp(GammaLog((b + 2.0) / (b + 1.0)) * (b + 1));
+            return (b + 1.0) * alpha * System.Math.Pow(x, b) * System.Math.Exp(-alpha * System.Math.Pow(x, b + 1));
+        }
+
+        /// <summary>
+        /// Hodnota kumulovaného Brodyho rozdìlení
+        /// </summary>
+        /// <param name="x">x</param>
+        /// <param name="b">Brodyho parametr</param>
+        public static double CumulBrody(double x, double b) {
+            double alpha = System.Math.Exp(GammaLog((b + 2.0) / (b + 1.0)) * (b + 1));
+            return 1 - System.Math.Exp(-alpha * System.Math.Pow(x, b + 1));
+        }
+
         private static double[] gammaLogKoef;
         private const int maxIteration = 1000;
         private const double epsilon = 1E-10;

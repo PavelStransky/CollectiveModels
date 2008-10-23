@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 
+using PavelStransky.Math;
 using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
@@ -12,7 +13,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
-            this.SetParam(0, true, true, false, Messages.PToArray1, Messages.PToArray1Description, null, typeof(FileData), typeof(List));
+            this.SetParam(0, true, true, false, Messages.PToArray1, Messages.PToArray1Description, null, typeof(FileData), typeof(List), typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -27,6 +28,17 @@ namespace PavelStransky.Expression.Functions.Def {
 
             else if(item is List)
                 return (item as List).ToTArray();
+
+            else if(item is Vector){
+                Vector v = item as Vector;
+                int length = v.Length;
+
+                TArray result = new TArray(typeof(double), length);
+                for(int i = 0; i < length; i++)
+                    result[i] = v[i];
+
+                return result;
+            }
 
             return null;
         }

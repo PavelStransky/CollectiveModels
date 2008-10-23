@@ -138,7 +138,7 @@ namespace PavelStransky.Forms {
             bool changed = this.animGroup;
 
             if(this.animCurve) {
-                this.time++;
+                this.time += this.scrollStep;
                 if(this.time > this.graph.MaxTime(this.group)) {
                     this.time = 1;
                     moveGroup = true;
@@ -161,6 +161,21 @@ namespace PavelStransky.Forms {
 
             if(changed)
                 this.parent.Invalidate();
+        }
+
+        /// <summary>
+        /// Pozastaví èasovaè
+        /// </summary>
+        public void PauseTimer() {
+            this.timer.Stop();
+        }
+
+        /// <summary>
+        /// Rozebìhne èasovaè
+        /// </summary>
+        public void StartTimer() {
+            if(this.animCurve || this.animGroup) 
+                this.timer.Start();
         }
 
         /// <summary>

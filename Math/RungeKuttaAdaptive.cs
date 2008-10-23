@@ -65,8 +65,8 @@ namespace PavelStransky.Math {
             // Inicializujeme meze
             Vector bounds = this.dynamicalSystem.Bounds(this.dynamicalSystem.E(initialX));
             
-            this.scale = new Vector(4);
-            for(int i = 0; i < 4; i++)
+            this.scale = new Vector(2 * this.dynamicalSystem.DegreesOfFreedom);
+            for(int i = 0; i < 2 * this.dynamicalSystem.DegreesOfFreedom; i++)
                 this.scale[i] = bounds[2 * i + 1] - bounds[2 * i];
 
             base.Init(initialX);

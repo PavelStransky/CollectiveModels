@@ -65,6 +65,21 @@ namespace PavelStransky.Math {
             return x;
         }
 
+        /// <summary>
+        /// Hodnota Brodyho rozdìlení
+        /// </summary>
+        /// <param name="b">Brodyho parametr</param>
+        public static double GetBrody(double b) {
+            double x, y;
+
+            do {
+                x = random.NextDouble() * maxx;
+                y = random.NextDouble() * maxy;
+            } while(SpecialFunctions.Brody(x, b) < y);
+
+            return x;
+        }
+
         private const double maxx = 10.0;
         private const double maxy = 1.5;
     }

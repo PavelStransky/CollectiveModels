@@ -150,6 +150,21 @@ namespace PavelStransky.Math {
                     result[index, j + 1] = this.x[i][j];
             }
 
+            // Doplnìní chybìjících bodù
+            for(int i = 0; i < numPoints - 1; i++) {
+                Vector oldr = result.GetRowVector(i);
+                int j = 1;
+
+                while(result[i + j,0] == 0.0)
+                    j++;
+
+                Vector newr = result.GetRowVector(i + j);
+
+                for(int k = 1; k < j; k++)
+                    for(int l = 0; l < length; l++)
+                        result[k + i, l] = oldr[l] + k * (newr[l] - oldr[l]) / j;
+            }
+
             return result;
         }
 

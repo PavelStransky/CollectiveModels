@@ -365,7 +365,20 @@ namespace PavelStransky.Expression {
                     else
                         this.DrawPoints(g, p, colorBuffer, pointStyle, pointSize);
 
-                    // První a poslední bod
+                    if(clip)
+                        g.ResetClip();
+                }
+
+                // První a poslední bod (kreslí se pozdìji, aby byly nad všemi køivkami
+                for(int i = 0; i < nCurves; i++) {
+                    GraphParameterValues iv = aiv[i] as GraphParameterValues;
+                    PointVector data = (PointVector)iv[ParametersIndications.DataCurves];
+
+                    if(shift)
+                        offset.Y = (i + 1) * rectangleM.Height / (nCurves + 2);
+
+                    Point[] p = this.PointArrayToDraw(data, offset, amplify, time);
+
                     if(p.Length > 0) {
                         Point[] lastPoint = new Point[1]; lastPoint[0] = p[p.Length - 1];
                         Color lastPointColor = (Color)iv[ParametersIndications.LPColor];
@@ -381,10 +394,8 @@ namespace PavelStransky.Expression {
                         Pen firstPointPen = new Pen(firstPointColor);
                         this.DrawPoints(g, firstPoint, firstPointPen, firstPointStyle, firstPointSize);
                     }
-
-                    if(clip)
-                        g.ResetClip();
                 }
+            
             }
 
             // X - ová osa

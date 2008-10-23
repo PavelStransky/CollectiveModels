@@ -801,7 +801,7 @@ namespace PavelStransky.Math {
 
 			int j = 0;
 			for(int i = 0; i < intervals; i++) {
-				result[i].X = min + step*((double)i + 0.5);
+                result[i].X = min + step * ((double)i + 0.5);
 				result[i].Y = 0;
 				while((sorted[j] <= min + step*(i + 1)) && (j < sorted.Length - 1)) {
 					result[i].Y++;
@@ -867,7 +867,7 @@ namespace PavelStransky.Math {
 
 			int j = 0;
 			for(int i = 0; i < intervals; i++) {
-				result[i].X = min + step*((double)i + 0.5);
+                result[i].X = min + step * ((double)i + 0.5);
 				result[i].Y = i == 0 ? 0 : result[i - 1].Y;
 				while((sorted[j] <= min + step * (i + 1)) && (j < sorted.Length - 1)) {
 					result[i].Y++;
@@ -878,13 +878,54 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
-		/// <summary>
-		/// Vrátí odhad distribuèní funkce náhodného vektoru
-		/// </summary>
-		/// <param name="intervals">Poèet intervalù</param>
-		/// <param name="minX">Poèáteèní bod intervalu, od kterého se distribuèní funkce poèítá</param>
-		/// <param name="maxX">Koneèný bod intervalu, do kterého se distribuèní funkce poèítá</param>
-		public PointVector DistributionFunction(int intervals, double minX, double maxX) {
+        /// <summary>
+        /// Vrátí kumulovaný histogram vektoru
+        /// </summary>
+        /// <param name="interval">Points of the interval</param>
+        /// <returns></returns>
+        public PointVector CumulativeHistogram(Vector interval) {
+            int lengthR = interval.Length - 1;
+            int length = this.Length;
+
+            PointVector result = new PointVector(lengthR);
+
+            for(int i = 0; i < lengthR; i++) {
+                double minx = interval[i];
+                double maxx = interval[i + 1];
+                result[i].X = 0.5 * (minx + maxx);
+
+                for(int j = 0; j < length; j++) {
+                    double x = this[j];
+
+                    if(x < maxx)
+                        result[i].Y++;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí pøesný kumulovaný histogram
+        /// </summary>
+        public PointVector CumulativeHistogram() {
+            Vector v = this.Sort() as Vector;
+            int length = v.Length;
+
+            PointVector result = new PointVector(length);
+            for(int i = 0; i < length; i++)
+                result[i] = new PointD(v[i], i + 1);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí odhad distribuèní funkce náhodného vektoru
+        /// </summary>
+        /// <param name="intervals">Poèet intervalù</param>
+        /// <param name="minX">Poèáteèní bod intervalu, od kterého se distribuèní funkce poèítá</param>
+        /// <param name="maxX">Koneèný bod intervalu, do kterého se distribuèní funkce poèítá</param>
+        public PointVector DistributionFunction(int intervals, double minX, double maxX) {
 			PointVector result = this.CumulativeHistogram(intervals, minX, maxX);
 			return result * new PointD(1, 1.0 / result[intervals].Y);
 		}

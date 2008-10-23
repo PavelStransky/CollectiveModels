@@ -6,35 +6,30 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
-	/// Vytvoøí kumulovaný histogram vektoru
+	/// Creates a cumulative histogram of a vector with a given binning
 	/// </summary>
 	public class CumulHistogram: Fnc {
-		public override string Help {get {return help;}}
-		public override string ParametersHelp {get {return parameters;}}
+		public override string Help {get {return Messages.HelpCumulHistogram;}}
 
-		protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-			this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-			this.CheckArgumentsMaxNumber(evaluatedArguments, 4);
+        protected override void CreateParameters() {
+            this.SetNumParams(2);
 
-            this.ConvertInt2Double(evaluatedArguments, 2);
-            this.ConvertInt2Double(evaluatedArguments, 3);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(Vector));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(double));
-            this.CheckArgumentsType(evaluatedArguments, 3, evaluateArray, typeof(double));
-		}
+            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector));
+            this.SetParam(1, false, true, false, Messages.P1Histogram, Messages.P1HistogramDescription, null,
+                typeof(Vector), typeof(int));
+        }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Vector v = (Vector)arguments[0];
 
-            double min = (arguments.Count > 2) ? (double)arguments[2] : v.Min();
-            double max = (arguments.Count > 3) ? (double)arguments[3] : v.Max();
+            if(arguments[1] == null)
+                return v.CumulativeHistogram();
+            else if(arguments[1] is int)
+                return v.CumulativeHistogram((int)arguments[1], v.Min(), v.Max());
+            else if(arguments[1] is Vector)
+                return v.CumulativeHistogram((Vector)arguments[1]);
 
-		    return v.CumulativeHistogram((int)arguments[1], min, max);
-		}
-
-		private const string help = "Vytvoøí kumulovaný histogram vektoru pro zadaný poèet intervalù";
-		private const string parameters = "Vector; poèet intervalù (int) [;minimální hodnota (double) [;maximální hodnota (double)]]";
+            return null;
+        }
 	}
 }

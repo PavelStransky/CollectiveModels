@@ -20,11 +20,46 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLongNumber();
+            Test.PokusMinimumBrody();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        static void PokusMinimumBrody() {
+            double result = 0.0;
+            double num = 10;
+
+            for(int j = 0; j < num; j++) {
+                int length = 1000;
+                Vector brodyv = new Vector(length);
+                for(int i = 0; i < length; i++)
+                    brodyv[i] = RMTDistribution.GetBrody(0.2);
+
+                PointVector cb = brodyv.CumulativeHistogram();
+                for(int i = 0; i < length; i++)
+                    cb[i].Y /= length;
+
+                BrodyFit brf = new BrodyFit(cb);
+                double br = brf.Fit(0.0001);
+                Console.WriteLine("Brody = {0}", br);
+                result += br;
+            }
+
+            Console.WriteLine("Mean = {0}", result / num);
+        }
+
+        /// <summary>
+        /// Pokus na minimum, 14.10.2008
+        /// </summary>
+        static void PokusMinimum() {
+            Bisection b = new Bisection(PokusMinimumFnc);
+            Console.WriteLine("Minimum = {0}", b.Minimum(-5, 5, 0.001));
+        }
+
+        static double PokusMinimumFnc(double x) {
+            return (x - 2) * (x - 3);
+        }
 
         /// <summary>
         /// Pokus na dlouhá èísla

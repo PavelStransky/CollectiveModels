@@ -93,6 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bisection.cs" />
+    <Compile Include="BrodyFit.cs" />
     <Compile Include="Complex.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -238,5 +238,21 @@ namespace PavelStransky.Forms {
                 this.SetGraph(graphs, numColumns);
         }
         #endregion
+
+        private void cmnStopAnimation_Click(object sender, EventArgs e) {
+            GraphItem[] graphItems = this.graphicsBox.GraphItems;
+            int count = graphItems.Length;
+
+            for(int i = 0; i < count; i++)
+                graphItems[i].PauseTimer();
+        }
+
+        private void cmnStartAnimation_Click(object sender, EventArgs e) {
+            GraphItem[] graphItems = this.graphicsBox.GraphItems;
+            int count = graphItems.Length;
+
+            for(int i = 0; i < count; i++)
+                graphItems[i].StartTimer();
+        }
     }
 }

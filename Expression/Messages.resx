@@ -2562,4 +2562,52 @@ Length of the second vector: {1}</value>
   <data name="PMinYDescription" xml:space="preserve">
     <value>Minimum y value</value>
   </data>
+  <data name="HelpBrody" xml:space="preserve">
+    <value>Value of Brody distribution</value>
+  </data>
+  <data name="HelpCumulBrody" xml:space="preserve">
+    <value>Value of cumulative Brody distribution</value>
+  </data>
+  <data name="HelpCumulBrodyFit" xml:space="preserve">
+    <value>Returns the best Brody fit according to chi square test</value>
+  </data>
+  <data name="HelpCumulHistogram" xml:space="preserve">
+    <value>Creates a cumulative histogram of a vector with a given binning</value>
+  </data>
+  <data name="HelpRandomBrody" xml:space="preserve">
+    <value>Value with Brody distribution</value>
+  </data>
+  <data name="HelpRandomVectorBrody" xml:space="preserve">
+    <value>Generates a vector with Brody distributed components</value>
+  </data>
+  <data name="P1CumulBrodyFit" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="P1CumulBrodyFitDescription" xml:space="preserve">
+    <value>Pointvector with cumulative spacings</value>
+  </data>
+  <data name="PBrody" xml:space="preserve">
+    <value>omega</value>
+  </data>
+  <data name="PBrodyDescription" xml:space="preserve">
+    <value>Brody parameter</value>
+  </data>
+  <data name="HelpGamma" xml:space="preserve">
+    <value>Gamma function</value>
+  </data>
+  <data name="EMBadPMasses" xml:space="preserve">
+    <value>Vector of masses must have {0} components. You have input {1} components.</value>
+  </data>
+  <data name="HelpThreeBody" xml:space="preserve">
+    <value>Creates ThreeBody class</value>
+  </data>
+  <data name="PMasses" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="PMassesDescription" xml:space="preserve">
+    <value>Masses of the bodies</value>
+  </data>
+  <data name="HelpTwoBody" xml:space="preserve">
+    <value>Creates TwoBody class</value>
+  </data>
 </root>

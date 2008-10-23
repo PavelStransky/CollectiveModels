@@ -104,6 +104,10 @@
       <Project>{1F119B82-E6B3-4FF0-A026-72AC1D452DA6}</Project>
       <Name>IBM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ManyBody\ManyBody.csproj">
+      <Project>{89B81AB2-D8A5-4A88-9A1D-43B09E9DC4F5}</Project>
+      <Name>ManyBody</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Name>Math</Name>
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
@@ -122,6 +126,8 @@
     <Compile Include="Functions\Dynamics\IsRegularPS.cs" />
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreak.cs" />
+    <Compile Include="Functions\Dynamics\ThreeBody.cs" />
+    <Compile Include="Functions\Dynamics\TwoBody.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
     <Compile Include="Functions\FncException.cs" />
@@ -132,11 +138,14 @@
     <Compile Include="Functions\List\Merge.cs" />
     <Compile Include="Functions\Logic\IsEven.cs" />
     <Compile Include="Functions\Logic\IsOdd.cs" />
+    <Compile Include="Functions\Math\Brody.cs" />
     <Compile Include="Functions\Math\Cos.cs" />
     <Compile Include="Functions\Math\Cosh.cs" />
     <Compile Include="Functions\Math\Cot.cs" />
     <Compile Include="Functions\Math\Coth.cs" />
+    <Compile Include="Functions\Math\CumulBrody.cs" />
     <Compile Include="Functions\Math\Exp.cs" />
+    <Compile Include="Functions\Math\Gamma.cs" />
     <Compile Include="Functions\Math\PAX.cs" />
     <Compile Include="Functions\Math\PT3Potential.cs" />
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
@@ -149,6 +158,9 @@
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
     <Compile Include="Functions\Quantum\PT3.cs" />
     <Compile Include="Functions\Quantum\PTSumLn.cs" />
+    <Compile Include="Functions\Statistics\CumulBrodyFit.cs" />
+    <Compile Include="Functions\Statistics\RandomBrody.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorBrody.cs" />
     <Compile Include="Functions\Unsorted\PV2DToMatrix.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumn.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumnY.cs" />

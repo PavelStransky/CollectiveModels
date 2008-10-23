@@ -7,6 +7,7 @@ using PavelStransky.GCM;
 using PavelStransky.IBM;
 using PavelStransky.PT;
 using PavelStransky.Expression;
+using PavelStransky.ManyBody;
 
 namespace PavelStransky.Expression {
     /// <summary>
@@ -70,6 +71,10 @@ namespace PavelStransky.Expression {
                 return new PT2(this);
             else if(typeName == typeof(PT3).FullName)
                 return new PT3(this);
+            else if(typeName == typeof(ThreeBody).FullName || typeName == "PavelStransky.ThreeBody.ThreeBody")
+                return new ThreeBody(this);
+            else if(typeName == typeof(TwoBody).FullName)
+                return new TwoBody(this);
             else
                 return base.CreateObject(typeName);
         }

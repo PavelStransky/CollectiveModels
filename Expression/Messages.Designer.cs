@@ -172,6 +172,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vector of masses must have {0} components. You have input {1} components..
+        /// </summary>
+        internal static string EMBadPMasses {
+            get {
+                return ResourceManager.GetString("EMBadPMasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to String &apos;{0}&apos; has not been determined as a valid type..
         /// </summary>
         internal static string EMBadTypeName {
@@ -2560,6 +2569,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value of Brody distribution.
+        /// </summary>
+        internal static string HelpBrody {
+            get {
+                return ResourceManager.GetString("HelpBrody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a ClassicalGCM class (nonrotating case with simple kinetic term).
         /// </summary>
         internal static string HelpCGCM {
@@ -2682,6 +2700,33 @@ namespace PavelStransky.Expression {
         internal static string HelpCrop {
             get {
                 return ResourceManager.GetString("HelpCrop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of cumulative Brody distribution.
+        /// </summary>
+        internal static string HelpCumulBrody {
+            get {
+                return ResourceManager.GetString("HelpCumulBrody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the best Brody fit according to chi square test.
+        /// </summary>
+        internal static string HelpCumulBrodyFit {
+            get {
+                return ResourceManager.GetString("HelpCumulBrodyFit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a cumulative histogram of a vector with a given binning.
+        /// </summary>
+        internal static string HelpCumulHistogram {
+            get {
+                return ResourceManager.GetString("HelpCumulHistogram", resourceCulture);
             }
         }
         
@@ -2943,6 +2988,15 @@ namespace PavelStransky.Expression {
         internal static string HelpFullHelp {
             get {
                 return ResourceManager.GetString("HelpFullHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gamma function.
+        /// </summary>
+        internal static string HelpGamma {
+            get {
+                return ResourceManager.GetString("HelpGamma", resourceCulture);
             }
         }
         
@@ -3811,6 +3865,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value with Brody distribution.
+        /// </summary>
+        internal static string HelpRandomBrody {
+            get {
+                return ResourceManager.GetString("HelpRandomBrody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates Gaussian distributed random numbers with given variance and mean.
         /// </summary>
         internal static string HelpRandomG {
@@ -3870,6 +3933,15 @@ namespace PavelStransky.Expression {
         internal static string HelpRandomU {
             get {
                 return ResourceManager.GetString("HelpRandomU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with Brody distributed components.
+        /// </summary>
+        internal static string HelpRandomVectorBrody {
+            get {
+                return ResourceManager.GetString("HelpRandomVectorBrody", resourceCulture);
             }
         }
         
@@ -4216,6 +4288,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates ThreeBody class.
+        /// </summary>
+        internal static string HelpThreeBody {
+            get {
+                return ResourceManager.GetString("HelpThreeBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the duration of the calculation.
         /// </summary>
         internal static string HelpTime {
@@ -4284,6 +4365,15 @@ namespace PavelStransky.Expression {
         internal static string HelpTrajectoryP {
             get {
                 return ResourceManager.GetString("HelpTrajectoryP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates TwoBody class.
+        /// </summary>
+        internal static string HelpTwoBody {
+            get {
+                return ResourceManager.GetString("HelpTwoBody", resourceCulture);
             }
         }
         
@@ -4419,6 +4509,24 @@ namespace PavelStransky.Expression {
         internal static string P1AssignmentDescription {
             get {
                 return ResourceManager.GetString("P1AssignmentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        internal static string P1CumulBrodyFit {
+            get {
+                return ResourceManager.GetString("P1CumulBrodyFit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pointvector with cumulative spacings.
+        /// </summary>
+        internal static string P1CumulBrodyFitDescription {
+            get {
+                return ResourceManager.GetString("P1CumulBrodyFitDescription", resourceCulture);
             }
         }
         
@@ -4995,6 +5103,24 @@ namespace PavelStransky.Expression {
         internal static string PBoolDescription {
             get {
                 return ResourceManager.GetString("PBoolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to omega.
+        /// </summary>
+        internal static string PBrody {
+            get {
+                return ResourceManager.GetString("PBrody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brody parameter.
+        /// </summary>
+        internal static string PBrodyDescription {
+            get {
+                return ResourceManager.GetString("PBrodyDescription", resourceCulture);
             }
         }
         
@@ -5886,6 +6012,24 @@ namespace PavelStransky.Expression {
         internal static string PLowerBoundDescription {
             get {
                 return ResourceManager.GetString("PLowerBoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
+        internal static string PMasses {
+            get {
+                return ResourceManager.GetString("PMasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Masses of the bodies.
+        /// </summary>
+        internal static string PMassesDescription {
+            get {
+                return ResourceManager.GetString("PMassesDescription", resourceCulture);
             }
         }
         

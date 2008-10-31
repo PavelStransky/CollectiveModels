@@ -225,10 +225,10 @@ namespace PavelStransky.Forms {
         private void HighlightSyntax(bool h) {
             this.redrawing = true;
 
-            PavelStransky.Core.Export export =
-                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd.txt", false);
-            export.Write(this.Text);
-            export.Close();
+//            PavelStransky.Core.Export export =
+//                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd.txt", false);
+//            export.Write(this.Text);
+//            export.Close();
 
             int selectionStart = this.SelectionStart;
             int selectionLength = this.SelectionLength;
@@ -260,10 +260,10 @@ namespace PavelStransky.Forms {
 
             this.Invalidate();
 
-            export =
-                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd1.txt", false);
-            export.Write(this.Rtf);
-            export.Close();
+//            export =
+//                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd1.txt", false);
+//            export.Write(this.Rtf);
+//            export.Close();
 
             this.redrawing = false;
         }

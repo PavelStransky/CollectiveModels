@@ -9,6 +9,7 @@ namespace PavelStransky.GCM {
     /// </summary>
     public class LHOPolarIndex {
         private int[] indexn, indexm;
+        private int[] lengthm;              // Poèet n pro jednotlivé m
         private int maxE;
 
         // Maximální indexy
@@ -47,25 +48,58 @@ namespace PavelStransky.GCM {
 
             // Zjistíme poèet
             int length = 0;
-            for(int m = mBoundMin; m <= mBoundMax; m += mInc)
+            int rows = 0;
+            for(int m = mBoundMin; m <= mBoundMax; m += mInc) {
                 for(int n = 0; n <= (maxE - 1 - System.Math.Abs(m)) / 2; n++)
                     length++;
+                rows++;
+            }
 
             // Generujeme
             this.indexn = new int[length];
             this.indexm = new int[length];
+            this.lengthm = new int[rows];
 
             int i = 0;
-            for(int m = mBoundMin; m <= mBoundMax; m += mInc)
+            int j = 0;
+            for(int m = mBoundMin; m <= mBoundMax; m += mInc) {
+                this.lengthm[j++] = i;
                 for(int n = 0; n <= (maxE - 1 - System.Math.Abs(m)) / 2; n++) {
                     this.indexm[i] = m;
                     this.indexn[i] = n;
                     i++;
                 }
-
+            }
 
             this.maxM = System.Math.Max(mBoundMax, System.Math.Abs(mBoundMin));
             this.maxN = (maxE - 1) / 2;
+        }
+
+        /// <summary>
+        /// Vrací index prvku s kvantovými èísly m, n.
+        /// Pokud prvek neexistuje, vrací -1
+        /// </summary>
+        /// <param name="n">Index n</param>
+        /// <param name="m">Index m</param>
+        /// <returns></returns>
+        public int this[int n, int m] {
+            get {
+                int length = this.Length;
+                int llength = this.lengthm.Length;
+
+                for(int i = 0; i < llength; i++) {
+                    int j = this.lengthm[i];
+                    if(this.indexm[j] == m) {
+                        int result = j + n;
+                        if(result < length && this.indexm[result] == m)
+                            return result;
+                        else
+                            return -1;
+                    }
+                }
+
+                return -1;
+            }
         }
 
         /// <summary>

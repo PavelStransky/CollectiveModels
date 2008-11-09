@@ -278,12 +278,12 @@ namespace PavelStransky.GCM {
                 for(int j = 0; j < length; j++) 
                     result[i] += ev[j] * ev[j] * this.PeresInvariantCoef(j);
             }
-
+                      
             return result;
         }
 
         /// <summary>
-        /// Druhý invariant pro operátor H0
+        /// Druhý invariant pro operátor H0 = beta^3 cos(3 gamma)
         /// </summary>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
         public virtual Vector GetPeresInvariantH0() {

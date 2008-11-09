@@ -260,10 +260,10 @@ namespace PavelStransky.Forms {
 
             this.Invalidate();
 
-//            export =
-//                new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd1.txt", false);
-//            export.Write(this.Rtf);
-//            export.Close();
+ //           export =
+ //               new PavelStransky.Core.Export("c:\\Documents and Settings\\Pavel\\Plocha\\prd1.txt", false);
+ //           export.Write(this.Rtf);
+ //           export.Close();
 
             this.redrawing = false;
         }

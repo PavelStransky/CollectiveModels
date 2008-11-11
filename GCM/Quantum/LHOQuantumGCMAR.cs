@@ -65,7 +65,7 @@ namespace PavelStransky.GCM {
         /// Druhý invariant pro operátor H0
         /// </summary>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public Vector GetPeresInvariantH01() {
+        public override Vector GetPeresInvariantH0() {
             if(!this.isComputed)
                 throw new GCMException(Messages.EMNotComputed);
 
@@ -110,10 +110,11 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Druhý invariant pro operátor H0
+        /// Druhý invariant pro operátor H0 
+        /// (zkouška poèítat pøímo <beta^3 cos(3 gamma)>, zatím nefunguje)
         /// </summary>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public override Vector GetPeresInvariantH0() {
+        public Vector GetPeresInvariantH01() {
             if(!this.isComputed)
                 throw new GCMException(Messages.EMNotComputed);
 

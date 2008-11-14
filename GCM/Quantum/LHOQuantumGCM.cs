@@ -289,7 +289,7 @@ namespace PavelStransky.GCM {
         public virtual Vector GetPeresInvariantH0() {
             return null;
         }
-
+       
         /// <summary>
         /// Entropie systému S = -Sum(ev[j]^2 ln(ev[j]^2))
         /// </summary>

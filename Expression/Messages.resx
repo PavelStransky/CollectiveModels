@@ -2532,9 +2532,6 @@ Length of the second vector: {1}</value>
   <data name="GPAShowTicksTDescription" xml:space="preserve">
     <value>True if the ticks on the top axis are to be shown</value>
   </data>
-  <data name="HelpPeresInvariantH0" xml:space="preserve">
-    <value>Returns the H0 Peres invariant of a GCM system</value>
-  </data>
   <data name="HelpExportMatrix" xml:space="preserve">
     <value>Export a matrix in three columns format: (x, y, value)</value>
   </data>
@@ -2609,5 +2606,11 @@ Length of the second vector: {1}</value>
   </data>
   <data name="HelpTwoBody" xml:space="preserve">
     <value>Creates TwoBody class</value>
+  </data>
+  <data name="PPeresOperatorType" xml:space="preserve">
+    <value>ptype</value>
+  </data>
+  <data name="PPeresOperatorTypeDescription" xml:space="preserve">
+    <value>Type of Peres operator (0...L2, 1...H', 2...Hosc)</value>
   </data>
 </root>

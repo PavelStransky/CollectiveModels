@@ -64,11 +64,7 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Druhý invariant pro operátor H0
         /// </summary>
-        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public override Vector GetPeresInvariantH0() {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
+        protected override Vector GetPeresInvariantHPrime() {
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
@@ -110,14 +106,9 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
-        /// Druhý invariant pro operátor H0 
-        /// (zkouška poèítat pøímo <beta^3 cos(3 gamma)>, zatím nefunguje)
+        /// Druhý invariant pro operátor H v oscilátorové bázi
         /// </summary>
-        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public Vector GetPeresInvariantH01() {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
+        protected override Vector GetPeresInvariantHOscillator() {
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
@@ -126,37 +117,15 @@ namespace PavelStransky.GCM {
             int count = this.eigenVectors.Length;
             Vector result = new Vector(count);
 
-            for(int f = 0; f < count; f++) {
-                Vector ev = this.eigenVectors[f];
-                int length = ev.Length;
+            for(int i = 0; i < count; i++) {
+                int n = this.index.N[i];
+                int m = this.index.M[i];
 
-                double sum = 0.0;
+                int l = System.Math.Abs(m);
 
-                for(int i = 0; i < length; i++) {
-                    int n = this.index.N[i];
-                    int m = this.index.M[i];
-
-                    int l = System.Math.Abs(m);
-
-                    int f0 = this.index[n, m + 3];
-                    if(f0 < 0) 
-                        continue;
-
-                    double k = (m == 0) ? 1.0 / System.Math.Sqrt(2.0) : 0.5;
-
-                    sum += ev[f] * ev[f0] * System.Math.Sqrt((n + l + 3.0) * (n + l + 2.0) * (n + l + 1.0)) / alpha32;
-
-                    if(f0 < length - 1 && this.index.N[f0 + 1] == n + 1)
-                        sum -= ev[f] * ev[f0 + 1] * k * 3.0 * System.Math.Sqrt((n + 1.0) * (n + l + 3.0) * (n + l + 2.0)) / alpha32;
-
-                    if(f0 < length - 2 && this.index.N[f0 + 2] == n + 2)
-                        sum += ev[f] * ev[f0 + 2] * k * 3.0 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0)) / alpha32;
-
-                    if(f0 < length - 3 && this.index.N[f0 + 3] == n + 3)
-                        sum -= ev[f] * ev[f0 + 3] * k * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0)) / alpha32;
-                }
-
-                result[f] = sum;
+                result[i] += this.Hbar * omega * (2 * n + l + 1);
+                result[i] += (this.A - this.A0) * (2 * n + l + 1) / alpha;
+                result[i] += this.C * (n * (n - 1) + (n + l + 1) * (5 * n + l + 2)) / alpha2;
             }
 
             return result;

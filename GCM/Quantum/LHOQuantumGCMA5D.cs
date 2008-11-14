@@ -199,10 +199,7 @@ namespace PavelStransky.GCM {
         /// Druhý invariant pro operátor H0
         /// </summary>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public override Vector GetPeresInvariantH0() {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
+        protected override Vector GetPeresInvariantHPrime() {
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
@@ -229,16 +226,43 @@ namespace PavelStransky.GCM {
                                 + (this.A - this.A0) * (2.0 * l + ro + 1.0) / alpha
                                 + this.C * (l * (l - 1.0) + (l + ro + 1.0) * (5.0 * l + ro + 2.0)) / alpha2);
 
-                    if(j < length - 1)
+                    if(j < length - 1 && this.index.L[j + 1] == l + 1)
                         sum -= 2.0 * ev[j] * ev[j + 1] *
                                 ((this.A - this.A0) * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) / alpha
                                     + 2.0 * this.C * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) * (2.0 * l + ro + 2.0) / alpha2);
 
-                    if(j < length - 2)
+                    if(j < length - 2 && this.index.L[j + 2] == l + 2)
                         sum += 2.0 * ev[j] * ev[j + 2] * this.C * System.Math.Sqrt((l + ro + 2.0) * (l + ro + 1.0) * (l + 2.0) * (l + 1.0)) / alpha2;
                 }
 
                 result[i] = sum;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Druhý invariant pro operátor H v oscilátorové bázi
+        /// </summary>
+        protected override Vector GetPeresInvariantHOscillator() {
+            double omega = this.Omega;
+            double alpha = this.s * this.s;
+            double alpha2 = alpha * alpha;
+            double alpha32 = alpha * this.s;
+
+            int count = this.eigenVectors.Length;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                int l = this.index.L[i];
+                int mu = this.index.Mu[i];
+
+                int lambda = 3 * mu;
+                double ro = lambda + 1.5;
+
+                result[i] += this.Hbar * omega * (2 * l + ro + 1);
+                result[i] += (this.A - this.A0) * (2 * l + ro + 1) / alpha;
+                result[i] += this.C * (l * (l - 1) + (l + ro + 1) * (5 * l + ro + 2)) / alpha2;
             }
 
             return result;

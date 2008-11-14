@@ -8,6 +8,12 @@ using PavelStransky.Core;
 using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.GCM {
+    public enum PeresInvariantTypes {
+        L2 = 0, 
+        HPrime = 1, 
+        HOscillator = 2
+    }
+
     /// <summary>
     /// Kvantový GCM 
     /// </summary>
@@ -263,11 +269,37 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Druhý invariant
         /// </summary>
+        /// <param name="type">Typ Peresova operátoru</param>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public virtual Vector GetPeresInvariant() {
+        public virtual Vector GetPeresInvariant(PeresInvariantTypes type) {
             if(!this.isComputed)
                 throw new GCMException(Messages.EMNotComputed);
 
+            if(type == PeresInvariantTypes.L2) {
+                return this.GetPeresInvariantL2();
+            }
+
+            else if(type == PeresInvariantTypes.HPrime) {
+                return this.GetPeresInvariantHPrime();
+            }
+
+            else if(type == PeresInvariantTypes.HOscillator) {
+                return this.GetPeresInvariantHOscillator();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Koeficient pro výpoèet druhého invariantu
+        /// </summary>
+        /// <param name="j">Index k vlnové funkci</param>
+        protected abstract double PeresInvariantCoef(int j);
+
+        /// <summary>
+        /// Peresùv operátor L2
+        /// </summary>
+        protected virtual Vector GetPeresInvariantL2() {
             int count = this.eigenVectors.Length;
             Vector result = new Vector(count);
 
@@ -275,21 +307,27 @@ namespace PavelStransky.GCM {
                 Vector ev = this.eigenVectors[i];
                 int length = ev.Length;
 
-                for(int j = 0; j < length; j++) 
+                for(int j = 0; j < length; j++)
                     result[i] += ev[j] * ev[j] * this.PeresInvariantCoef(j);
             }
-                      
+
             return result;
         }
 
         /// <summary>
-        /// Druhý invariant pro operátor H0 = beta^3 cos(3 gamma)
+        /// Peresùv operátor H'
         /// </summary>
-        /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public virtual Vector GetPeresInvariantH0() {
+        protected virtual Vector GetPeresInvariantHPrime() {
             return null;
         }
-       
+
+        /// <summary>
+        /// Peresùv operátor H v oscilátorové bázi
+        /// </summary>
+        protected virtual Vector GetPeresInvariantHOscillator() {
+            return null;
+        }
+
         /// <summary>
         /// Entropie systému S = -Sum(ev[j]^2 ln(ev[j]^2))
         /// </summary>
@@ -335,12 +373,6 @@ namespace PavelStransky.GCM {
 
             return result;
         }
-
-        /// <summary>
-        /// Koeficient pro výpoèet druhého invariantu
-        /// </summary>
-        /// <param name="j">Index k vlnové funkci</param>
-        protected abstract double PeresInvariantCoef(int j);
 
         #region Vlnové funkce
         /// <summary>

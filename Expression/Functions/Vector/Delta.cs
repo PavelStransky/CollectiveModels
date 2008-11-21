@@ -19,7 +19,6 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Vector v = arguments[0] as Vector;
 
-
             int length = v.Length;
             Vector result = new Vector(length);
 

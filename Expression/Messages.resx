@@ -2613,4 +2613,22 @@ Length of the second vector: {1}</value>
   <data name="PPeresOperatorTypeDescription" xml:space="preserve">
     <value>Type of Peres operator (0...L2, 1...H', 2...Hosc)</value>
   </data>
+  <data name="HelpBenford" xml:space="preserve">
+    <value>Returns a histogram according to Benford's law</value>
+  </data>
+  <data name="HelpTSIntegrate" xml:space="preserve">
+    <value>Integrates a time series S_{i}=sum_{j=1}^{i}(s_{j}-&lt;s&gt;)</value>
+  </data>
+  <data name="PBenfordFirstDigit" xml:space="preserve">
+    <value>fdigit</value>
+  </data>
+  <data name="PBenfordFirstDigitDescription" xml:space="preserve">
+    <value>First digit for the Benford's law</value>
+  </data>
+  <data name="PBenfordNumDigitDescription" xml:space="preserve">
+    <value>Number of digits taken into account in the Benford's law</value>
+  </data>
+  <data name="PBenfordNumDigits" xml:space="preserve">
+    <value>ndigits</value>
+  </data>
 </root>

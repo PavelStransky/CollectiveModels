@@ -179,6 +179,7 @@
     <Compile Include="Functions\Statistics\CumulBrodyFit.cs" />
     <Compile Include="Functions\Statistics\RandomBrody.cs" />
     <Compile Include="Functions\Statistics\RandomVectorBrody.cs" />
+    <Compile Include="Functions\Unsorted\Benford.cs" />
     <Compile Include="Functions\Unsorted\PV2DToMatrix.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumn.cs" />
     <Compile Include="Functions\Unsorted\ArrayFileToColumnY.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Functions\Math\Tan.cs" />
     <Compile Include="Functions\Math\Tanh.cs" />
     <Compile Include="Functions\Vector\Crop.cs" />
+    <Compile Include="Functions\Vector\TSIntegrate.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
     <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />

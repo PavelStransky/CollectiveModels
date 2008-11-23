@@ -31,6 +31,9 @@ namespace PavelStransky.Forms {
         // True, pokud ukládáme text pro web
         private bool saveWeb;
 
+        // Køivky k exportu
+        private CurveToExport curveToExport = new CurveToExport();
+
         /// <summary>
         /// Vytvoøí pozadí pracantùm
         /// </summary>
@@ -99,16 +102,68 @@ namespace PavelStransky.Forms {
             this.sfdText.ShowDialog();
         }
 
+        /// <summary>
+        /// Soukromá tøída, která shromažïuje informace skupinách a køivkách
+        /// </summary>
+        private class CurvesInfo {
+            private int group;
+            private int curve;
+            private int points;
+
+            /// <summary>
+            /// Skupina
+            /// </summary>
+            public int Group { get { return this.group; } }
+
+            /// <summary>
+            /// Køivka ve skupinì
+            /// </summary>
+            public int Curve { get { return this.curve; } }
+
+            /// <summary>
+            /// Konstruktor
+            /// </summary>
+            /// <param name="group">Skupina</param>
+            /// <param name="curve">Køivka</param>
+            /// <param name="points">Poèet bodù</param>
+            public CurvesInfo(int group, int curve, int points) {
+                this.group = group;
+                this.curve = curve;
+                this.points = points;
+            }
+
+            public override string ToString() {
+                return string.Format("{0} - {1} ({2})", this.group, this.curve, this.points);
+            }
+        }
+
         private void sfdText_FileOk(object sender, CancelEventArgs e) {
             WinMain.SetExportDirectoryFromFile(this.sfdText.FileName);
+
+            if(this.saveWeb) {
+                Graph graph = this.graphs[this.activeGraph] as Graph;
+                int groups = graph.NumGroups();
+
+                this.curveToExport.CBCurves.Items.Clear();
+                for(int g = 0; g < groups; g++) {
+                    int curves = graph.NumCurves(g);
+                    for(int c = 0; c < curves; c++)
+                        this.curveToExport.CBCurves.Items.Add(
+                            new CurvesInfo(g, c, graph.NumPoints(g, c)));
+                }
+
+                this.curveToExport.CBCurves.SelectedIndex = 0;
+                if(this.curveToExport.ShowDialog() == DialogResult.Cancel) 
+                    return;
+            }
 
             Export export = new Export(this.sfdText.FileName, false);
 
             // Ukládá jen jednu první køivku (mùže být dost nekonzistentní se vším!)
             if(this.saveWeb) {
-
                 Graph g = this.graphs[this.activeGraph] as Graph;
-                g.ExportWWW(export, 0, 0, this.realWidth, this.realHeight);
+                CurvesInfo c = this.curveToExport.CBCurves.SelectedItem as CurvesInfo;
+                g.ExportWWW(export, c.Group, c.Curve, this.realWidth, this.realHeight);
             }
             else if(this.saveAll)
                 this.graphs.Export(export);
@@ -197,7 +252,7 @@ namespace PavelStransky.Forms {
 
             for(int i = 0; i < nGraphs; i++) {
                 if(graphItems[i].Graph.AnimGroup)
-                    maxNumGroups = System.Math.Max(maxNumGroups, graphItems[i].Graph.NumGroups);
+                    maxNumGroups = System.Math.Max(maxNumGroups, graphItems[i].Graph.NumGroups());
             }
 
             return maxNumGroups;
@@ -239,8 +294,8 @@ namespace PavelStransky.Forms {
 
                 int g = group;
                 if(graph.AnimGroup) {
-                    if(group >= graph.NumGroups)
-                        g = graph.NumGroups - 1;
+                    if(group >= graph.NumGroups())
+                        g = graph.NumGroups() - 1;
                 }
                 else
                     g = graphItems[i].ActualGroup;

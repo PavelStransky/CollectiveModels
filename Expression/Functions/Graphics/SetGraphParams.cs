@@ -27,7 +27,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Graph graph = arguments[0] as Graph;
 
-            int[] groups = graph.NumCurves;
+            int[] groups = graph.NumCurves();
 
             // 2. parametr - vlastnosti grafu (string nebo Context)
             object item = arguments.Count > 1 ? arguments[1] : null;

@@ -87,7 +87,7 @@ namespace PavelStransky.Forms {
             this.timer.Interval = this.graph.AnimInterval;
 
             this.group = 0;
-            this.nGroups = this.graph.NumGroups;
+            this.nGroups = this.graph.NumGroups();
             this.scrollStep = this.graph.ScrollStep;
 
             this.graph.FinishedBackground += new Graph.FinishedBackgroundEventHandler(graph_FinishedBackground);

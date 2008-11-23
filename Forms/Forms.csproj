@@ -148,6 +148,12 @@
     <Compile Include="CommandTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CurveToExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CurveToExport.Designer.cs">
+      <DependentUpon>CurveToExport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,6 +213,10 @@
     <EmbeddedResource Include="CommandTextBox.resx">
       <DependentUpon>CommandTextBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CurveToExport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CurveToExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor.resx">
       <SubType>Designer</SubType>

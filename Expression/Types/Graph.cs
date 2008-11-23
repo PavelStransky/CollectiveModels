@@ -20,21 +20,41 @@ namespace PavelStransky.Expression {
         /// <summary>
         /// Poèet skupin grafu
         /// </summary>
-        public int NumGroups { get { return (int)this.graphParamValues[ParametersIndications.NumGroups]; } }
+        public int NumGroups() {
+            return (int)this.graphParamValues[ParametersIndications.NumGroups];
+        }
 
         /// <summary>
         /// Poèet køivek grafu
         /// </summary>
-        public int[] NumCurves {
-            get {
-                int nGroups = (int)this.graphParamValues[ParametersIndications.NumGroups];
-                int[] result = new int[nGroups];
+        public int[] NumCurves() {
+            int nGroups = (int)this.graphParamValues[ParametersIndications.NumGroups];
+            int[] result = new int[nGroups];
 
-                for(int i = 0; i < nGroups; i++)
-                    result[i] = (int)(this.groupParamValues[i] as GraphParameterValues)[ParametersIndications.NumCurves];
+            for(int i = 0; i < nGroups; i++)
+                result[i] = (int)(this.groupParamValues[i] as GraphParameterValues)[ParametersIndications.NumCurves];
 
-                return result;
-            }
+            return result;
+        }
+
+        /// <summary>
+        /// Poèet køivek grafu dané skupiny
+        /// </summary>
+        /// <param name="group">Skupina</param>
+        public int NumCurves(int group) {
+            return (int)(this.groupParamValues[group] as GraphParameterValues)[ParametersIndications.NumCurves];
+        }
+
+        /// <summary>
+        /// Poèet bodù køivky
+        /// </summary>
+        /// <param name="group">Skupina</param>
+        /// <param name="curve">Køivka ve skupinì</param>
+        public int NumPoints(int group, int curve) {
+            TArray aiv = this.itemParamValues[group] as TArray;
+            GraphParameterValues iv = aiv[curve] as GraphParameterValues;
+            PointVector data = iv[ParametersIndications.DataCurves] as PointVector;
+            return data.Length;
         }
 
         /// <summary>

@@ -680,9 +680,7 @@ namespace PavelStransky.Expression {
         /// Uloží hlavièku pro Web (velikost okna a minimální a maximální hodnotu)
         /// </summary>
         /// <param name="export">Export</param>
-        public virtual void ExportWWW(Export export, int group, int curve, int width, int height) {
-            export.Write(typeof(string).FullName, this.graphParamValues[ParametersIndications.Comment]);
-
+        public virtual void ExportWWW(Export export, int group, int curve, int width, int height, bool onlyY) {
             GraphParameterValues gv = this.groupParamValues[group] as GraphParameterValues;
             export.Write(typeof(double).FullName, gv[ParametersIndications.MinX]);
             export.Write(typeof(double).FullName, gv[ParametersIndications.MaxX]);
@@ -698,7 +696,13 @@ namespace PavelStransky.Expression {
             TArray aiv = this.itemParamValues[group] as TArray;
             GraphParameterValues av = aiv[curve] as GraphParameterValues;
             PointVector data = av[ParametersIndications.DataCurves] as PointVector;
-            export.Write(typeof(PointVector).FullName, data);
+
+            if(onlyY)
+                export.Write(data.VectorY);
+            else
+                export.Write(data);
+
+            export.Write(typeof(string).FullName, this.graphParamValues[ParametersIndications.Comment]);
         }
 
         #region Implementace IExportable

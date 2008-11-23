@@ -153,6 +153,7 @@ namespace PavelStransky.Forms {
                 }
 
                 this.curveToExport.CBCurves.SelectedIndex = 0;
+                this.curveToExport.OnlyY = false;
                 if(this.curveToExport.ShowDialog() == DialogResult.Cancel) 
                     return;
             }
@@ -163,7 +164,7 @@ namespace PavelStransky.Forms {
             if(this.saveWeb) {
                 Graph g = this.graphs[this.activeGraph] as Graph;
                 CurvesInfo c = this.curveToExport.CBCurves.SelectedItem as CurvesInfo;
-                g.ExportWWW(export, c.Group, c.Curve, this.realWidth, this.realHeight);
+                g.ExportWWW(export, c.Group, c.Curve, this.realWidth, this.realHeight, this.curveToExport.OnlyY);
             }
             else if(this.saveAll)
                 this.graphs.Export(export);

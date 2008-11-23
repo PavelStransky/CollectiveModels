@@ -120,7 +120,7 @@ namespace PavelStransky.Forms {
             // 
             this.cmnSaveForWeb.Name = "cmnSaveForWeb";
             this.cmnSaveForWeb.Size = new System.Drawing.Size(248, 22);
-            this.cmnSaveForWeb.Text = "Uložit data pro &web";
+            this.cmnSaveForWeb.Text = "Uložit data pro &web...";
             this.cmnSaveForWeb.Click += new System.EventHandler(this.cmnSaveForWeb_Click);
             // 
             // cmnSeparator0

@@ -19,5 +19,10 @@ namespace PavelStransky.Forms {
         /// Combo box køivek
         /// </summary>
         public ComboBox CBCurves { get { return this.cbCurves; } }
+
+        /// <summary>
+        /// True, pokud chceme ukládat jen y hodnoty
+        /// </summary>
+        public bool OnlyY { get { return this.chkOnlyY.Checked; } set { this.chkOnlyY.Checked = value; } }
     }
 }

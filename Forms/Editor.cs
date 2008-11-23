@@ -31,7 +31,12 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Kontext
         /// </summary>
-        public Context Context { get { return this.context; } }
+        public Context Context { 
+            get {
+                this.context.Directory = WinMain.Directory;
+                return this.context; 
+            } 
+        }
 
         /// <summary>
         /// Dialog Uložit
@@ -61,30 +66,8 @@ namespace PavelStransky.Forms {
                 return this.fileName;
             }
             set {
-                if(Path.IsPathRooted(fileName))
-                    this.Directory = Path.GetDirectoryName(fileName);
-
                 this.fileName = value;
                 this.SetCaption();
-            }
-        }
-
-        /// <summary>
-        /// Nastaví / vyzvedne aktuální adresáø
-        /// </summary>
-        public string Directory {
-            get {
-                if(this.context.Directory != string.Empty)
-                    return this.context.Directory;
-                else {
-                    FileInfo f = new FileInfo(tmpFile);
-                    return f.DirectoryName;
-                }
-            }
-
-            set {
-                this.Context.Directory = value;
-                this.saveFileDialog.InitialDirectory = value;
             }
         }
 
@@ -162,14 +145,14 @@ namespace PavelStransky.Forms {
                         graphForm.Location = new Point(graphForm.Location.X, (int)position.Y);
 
                     if(size.X > 0.0) {
-                        graphForm.Size = new Size((int)size.X, graphForm.Size.Height);
+                        graphForm.ClientSize = new Size((int)size.X, graphForm.ClientSize.Height);
                         graphForm.RealWidth = (int)size.X;
                     }
                     else
                         graphForm.RealWidth = 0;
 
                     if(size.Y > 0.0) {
-                        graphForm.Size = new Size(graphForm.Size.Width, (int)size.Y);
+                        graphForm.ClientSize = new Size(graphForm.ClientSize.Width, (int)size.Y);
                         graphForm.RealHeight = (int)size.Y;
                     }
                     else
@@ -376,8 +359,10 @@ namespace PavelStransky.Forms {
         /// <returns></returns>
         public bool Save() {
             if(this.fileName == null || this.fileName == string.Empty) {
+                this.saveFileDialog.InitialDirectory = WinMain.Directory;
+
                 if(this.saveFileDialog.ShowDialog() == DialogResult.OK) {
-                    this.Directory = Path.GetDirectoryName(saveFileDialog.FileName);
+                    WinMain.SetDirectoryFromFile(saveFileDialog.FileName);
                     return this.Save(this.saveFileDialog.FileName);
                 }
                 else
@@ -392,9 +377,10 @@ namespace PavelStransky.Forms {
         /// </summary>
         public bool SaveAs() {
             this.saveFileDialog.FileName = this.fileName;
+            this.saveFileDialog.InitialDirectory = WinMain.Directory;
 
             if(this.saveFileDialog.ShowDialog() == DialogResult.OK) {
-                this.Directory = Path.GetDirectoryName(saveFileDialog.FileName);
+                WinMain.SetDirectoryFromFile(saveFileDialog.FileName);
                 return this.Save(this.saveFileDialog.FileName);
             }
             else
@@ -409,7 +395,7 @@ namespace PavelStransky.Forms {
         public bool Save(string fileName) {
             // Upravení jména souboru
             if(!Path.IsPathRooted(fileName))
-                fileName = Path.Combine(this.Directory, fileName);
+                fileName = Path.Combine(WinMain.Directory, fileName);
 
             if(!Path.HasExtension(fileName))
                 fileName = string.Format("{0}.{1}", fileName, WinMain.FileExtGcm);

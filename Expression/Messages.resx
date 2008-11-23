@@ -2631,4 +2631,10 @@ Length of the second vector: {1}</value>
   <data name="PBenfordNumDigits" xml:space="preserve">
     <value>ndigits</value>
   </data>
+  <data name="GPCommentDescription" xml:space="preserve">
+    <value>Comment of a graph</value>
+  </data>
+  <data name="GPComment" xml:space="preserve">
+    <value>comment</value>
+  </data>
 </root>

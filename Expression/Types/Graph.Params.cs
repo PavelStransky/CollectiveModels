@@ -39,6 +39,8 @@ namespace PavelStransky.Expression {
             RWindowW = 22,
             RWindowH = 23,
 
+            Comment = 30,
+
             AnimCurve = 100,
             BColor = 101,
 
@@ -213,6 +215,8 @@ namespace PavelStransky.Expression {
             globalParams.Add(ParametersIndications.RWindowT, Messages.GPRWindowT, Messages.GPRWindowTDescription, 0.0);
             globalParams.Add(ParametersIndications.RWindowW, Messages.GPRWindowW, Messages.GPRWindowWDescription, 1.0);
             globalParams.Add(ParametersIndications.RWindowH, Messages.GPRWindowH, Messages.GPRWindowHDescription, 1.0);
+
+            globalParams.Add(ParametersIndications.Comment, Messages.GPComment, Messages.GPCommentDescription, string.Empty);
 
             groupParams = new GraphParameterDefinitions();
             groupParams.Add(ParametersIndications.AnimCurve, Messages.GPAnimCurve, Messages.GPAnimCurveDescription, false);

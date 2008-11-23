@@ -28,6 +28,9 @@ namespace PavelStransky.Forms {
         // True, pokud jsme zvolili, že se bude ukládat vše
         private bool saveAll;
 
+        // True, pokud ukládáme text pro web
+        private bool saveWeb;
+
         /// <summary>
         /// Vytvoøí pozadí pracantùm
         /// </summary>
@@ -59,31 +62,55 @@ namespace PavelStransky.Forms {
         }
 
         private void cmnSaveOneText_Click(object sender, EventArgs e) {
-            this.sfdText.InitialDirectory = WinMain.Directory;
+            this.sfdText.InitialDirectory = WinMain.ExportDirectory;
+
             if(this.sfdText.FileName == string.Empty)
                 this.sfdText.FileName = this.Text;
 
             this.sfdText.Title = Messages.TSaveOneText;
             this.saveAll = false;
+            this.saveWeb = false;
+
+            this.sfdText.ShowDialog();
+        }
+
+        private void cmnSaveForWeb_Click(object sender, EventArgs e) {
+            this.sfdText.InitialDirectory = WinMain.ExportDirectory;
+
+            if(this.sfdText.FileName == string.Empty)
+                this.sfdText.FileName = this.Text;
+
+            this.sfdText.Title = Messages.TSaveForWeb;
+            this.saveWeb = true;
 
             this.sfdText.ShowDialog();
         }
 
         private void cmnSaveAllText_Click(object sender, EventArgs e) {
-            this.sfdText.InitialDirectory = WinMain.Directory;
+            this.sfdText.InitialDirectory = WinMain.ExportDirectory;
+
             if(this.sfdText.FileName == string.Empty)
                 this.sfdText.FileName = this.Text;
 
             this.sfdText.Title = Messages.TSaveAllText;
             this.saveAll = true;
+            this.saveWeb = false;
 
             this.sfdText.ShowDialog();
         }
 
         private void sfdText_FileOk(object sender, CancelEventArgs e) {
+            WinMain.SetExportDirectoryFromFile(this.sfdText.FileName);
+
             Export export = new Export(this.sfdText.FileName, false);
 
-            if(this.saveAll)
+            // Ukládá jen jednu první køivku (mùže být dost nekonzistentní se vším!)
+            if(this.saveWeb) {
+
+                Graph g = this.graphs[this.activeGraph] as Graph;
+                g.ExportWWW(export, 0, 0, this.realWidth, this.realHeight);
+            }
+            else if(this.saveAll)
                 this.graphs.Export(export);
             else
                 (this.graphs[this.activeGraph] as Graph).Export(export);
@@ -92,7 +119,8 @@ namespace PavelStransky.Forms {
         }
 
         private void cmnSaveOneAnim_Click(object sender, EventArgs e) {
-            this.sfdAnim.InitialDirectory = WinMain.Directory;
+            this.sfdAnim.InitialDirectory = WinMain.ExportDirectory;
+
             if(this.sfdAnim.FileName == string.Empty)
                 this.sfdAnim.FileName = this.Text;
 
@@ -103,7 +131,8 @@ namespace PavelStransky.Forms {
         }
 
         private void cmnSaveAllAnim_Click(object sender, EventArgs e) {
-            this.sfdAnim.InitialDirectory = WinMain.Directory;
+            this.sfdAnim.InitialDirectory = WinMain.ExportDirectory;
+
             if(this.sfdAnim.FileName == string.Empty)
                 this.sfdAnim.FileName = this.Text;
 
@@ -114,7 +143,9 @@ namespace PavelStransky.Forms {
         }
 
         private void cmnSaveOneSeq_Click(object sender, EventArgs e) {
-            this.sfdSeq.InitialDirectory = WinMain.Directory;
+            this.sfdSeq.InitialDirectory = WinMain.ExportDirectory;
+            this.sfdSeq.DefaultExt = WinMain.SeqExtension;
+
             if(this.sfdSeq.FileName == string.Empty)
                 this.sfdSeq.FileName = this.Text;
 
@@ -125,7 +156,9 @@ namespace PavelStransky.Forms {
         }
 
         private void cmnSaveAllSeq_Click(object sender, EventArgs e) {
-            this.sfdSeq.InitialDirectory = WinMain.Directory;
+            this.sfdSeq.InitialDirectory = WinMain.ExportDirectory;
+            this.sfdSeq.DefaultExt = WinMain.SeqExtension;
+
             if(this.sfdSeq.FileName == string.Empty)
                 this.sfdSeq.FileName = this.Text;
 
@@ -136,10 +169,13 @@ namespace PavelStransky.Forms {
         }
 
         private void sfdAnim_FileOk(object sender, CancelEventArgs e) {
+            WinMain.SetExportDirectoryFromFile(this.sfdAnim.FileName);
             this.SaveAnim(this.sfdAnim.FileName);
         }
 
         private void sfdSeq_FileOk(object sender, CancelEventArgs e) {
+            WinMain.SetExportDirectoryFromFile(this.sfdSeq.FileName);
+            WinMain.SetSeqExtensionFromFile(this.sfdSeq.FileName);
             this.SaveSeq(this.sfdSeq.FileName);
         }
 

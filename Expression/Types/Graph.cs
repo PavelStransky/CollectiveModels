@@ -656,6 +656,31 @@ namespace PavelStransky.Expression {
             }
         }
 
+        /// <summary>
+        /// Uloží hlavièku pro Web (velikost okna a minimální a maximální hodnotu)
+        /// </summary>
+        /// <param name="export">Export</param>
+        public virtual void ExportWWW(Export export, int group, int curve, int width, int height) {
+            export.Write(typeof(string).FullName, this.graphParamValues[ParametersIndications.Comment]);
+
+            GraphParameterValues gv = this.groupParamValues[group] as GraphParameterValues;
+            export.Write(typeof(double).FullName, gv[ParametersIndications.MinX]);
+            export.Write(typeof(double).FullName, gv[ParametersIndications.MaxX]);
+            export.Write(typeof(double).FullName, gv[ParametersIndications.MinY]);
+            export.Write(typeof(double).FullName, gv[ParametersIndications.MaxY]);
+            export.Write(typeof(int).FullName, width);
+            export.Write(typeof(int).FullName, height);
+            export.Write(typeof(int).FullName, gv[ParametersIndications.MarginL]);
+            export.Write(typeof(int).FullName, gv[ParametersIndications.MarginR]);
+            export.Write(typeof(int).FullName, gv[ParametersIndications.MarginT]);
+            export.Write(typeof(int).FullName, gv[ParametersIndications.MarginB]);
+
+            TArray aiv = this.itemParamValues[group] as TArray;
+            GraphParameterValues av = aiv[curve] as GraphParameterValues;
+            PointVector data = av[ParametersIndications.DataCurves] as PointVector;
+            export.Write(typeof(PointVector).FullName, data);
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží obsah do souboru

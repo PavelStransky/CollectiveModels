@@ -170,7 +170,6 @@ namespace PavelStransky.Forms {
         private void New() {
             Editor editor = new Editor();
             this.SetDialogProperties(editor.SaveFileDialog);
-            editor.Directory = WinMain.Directory;
             editor.MdiParent = this;
             editor.Show();
 
@@ -184,6 +183,7 @@ namespace PavelStransky.Forms {
         /// Otevøít
         /// </summary>
         private void mnFileOpen_Click(object sender, EventArgs e) {
+            this.openFileDialog.InitialDirectory = WinMain.Directory;
             this.openFileDialog.ShowDialog();
         }
 
@@ -192,6 +192,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void openFileDialog_FileOk(object sender, CancelEventArgs e) {
             WinMain.SetDirectoryFromFile(this.openFileDialog.FileName);
+
             this.Open(this.openFileDialog.FileName);
             this.SetMenu();
         }

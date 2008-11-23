@@ -28,6 +28,8 @@ namespace PavelStransky.Forms {
             this.lblRestProcess = new System.Windows.Forms.Label();
             this.graphicsBox = new PavelStransky.Forms.GraphicsBox();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmnSaveForWeb = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnSeparator0 = new System.Windows.Forms.ToolStripSeparator();
             this.cmnSaveOneText = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnSaveOneAnim = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnSaveOneSeq = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,6 +100,8 @@ namespace PavelStransky.Forms {
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmnSaveForWeb,
+            this.cmnSeparator0,
             this.cmnSaveOneText,
             this.cmnSaveOneAnim,
             this.cmnSaveOneSeq,
@@ -109,72 +113,84 @@ namespace PavelStransky.Forms {
             this.cmnStopAnimation,
             this.cmnStartAnimation});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(250, 214);
+            this.contextMenu.Size = new System.Drawing.Size(249, 242);
             this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
+            // 
+            // cmnSaveForWeb
+            // 
+            this.cmnSaveForWeb.Name = "cmnSaveForWeb";
+            this.cmnSaveForWeb.Size = new System.Drawing.Size(248, 22);
+            this.cmnSaveForWeb.Text = "Uložit data pro &web";
+            this.cmnSaveForWeb.Click += new System.EventHandler(this.cmnSaveForWeb_Click);
+            // 
+            // cmnSeparator0
+            // 
+            this.cmnSeparator0.Name = "cmnSeparator0";
+            this.cmnSeparator0.Size = new System.Drawing.Size(245, 6);
             // 
             // cmnSaveOneText
             // 
             this.cmnSaveOneText.Name = "cmnSaveOneText";
-            this.cmnSaveOneText.Size = new System.Drawing.Size(249, 22);
+            this.cmnSaveOneText.Size = new System.Drawing.Size(248, 22);
             this.cmnSaveOneText.Text = "&Uložit data jako text...";
             this.cmnSaveOneText.Click += new System.EventHandler(this.cmnSaveOneText_Click);
             // 
             // cmnSaveOneAnim
             // 
             this.cmnSaveOneAnim.Name = "cmnSaveOneAnim";
-            this.cmnSaveOneAnim.Size = new System.Drawing.Size(249, 22);
+            this.cmnSaveOneAnim.Size = new System.Drawing.Size(248, 22);
             this.cmnSaveOneAnim.Text = "Uložit jako &GIF (animovaný)...";
             this.cmnSaveOneAnim.Click += new System.EventHandler(this.cmnSaveOneAnim_Click);
             // 
             // cmnSaveOneSeq
             // 
             this.cmnSaveOneSeq.Name = "cmnSaveOneSeq";
-            this.cmnSaveOneSeq.Size = new System.Drawing.Size(249, 22);
+            this.cmnSaveOneSeq.Size = new System.Drawing.Size(248, 22);
             this.cmnSaveOneSeq.Text = "Uložit jako &obrázek (sekvenènì)...";
             this.cmnSaveOneSeq.Click += new System.EventHandler(this.cmnSaveOneSeq_Click);
             // 
             // cmnSeparator1
             // 
             this.cmnSeparator1.Name = "cmnSeparator1";
-            this.cmnSeparator1.Size = new System.Drawing.Size(246, 6);
+            this.cmnSeparator1.Size = new System.Drawing.Size(245, 6);
             // 
             // cmnSaveAllText
             // 
             this.cmnSaveAllText.Name = "cmnSaveAllText";
-            this.cmnSaveAllText.Size = new System.Drawing.Size(249, 22);
+            this.cmnSaveAllText.Size = new System.Drawing.Size(248, 22);
             this.cmnSaveAllText.Text = "Vše jako &text...";
             this.cmnSaveAllText.Click += new System.EventHandler(this.cmnSaveAllText_Click);
             // 
             // cmnSaveAllAnim
             // 
             this.cmnSaveAllAnim.Name = "cmnSaveAllAnim";
-            this.cmnSaveAllAnim.Size = new System.Drawing.Size(249, 22);
+            this.cmnSaveAllAnim.Size = new System.Drawing.Size(248, 22);
             this.cmnSaveAllAnim.Text = "Vše jako GIF (&animovanì)...";
             this.cmnSaveAllAnim.Click += new System.EventHandler(this.cmnSaveAllAnim_Click);
             // 
             // cmnSaveAllSeq
             // 
             this.cmnSaveAllSeq.Name = "cmnSaveAllSeq";
-            this.cmnSaveAllSeq.Size = new System.Drawing.Size(249, 22);
+            this.cmnSaveAllSeq.Size = new System.Drawing.Size(248, 22);
             this.cmnSaveAllSeq.Text = "Vše jako obrázek (&sekvenènì)...";
             this.cmnSaveAllSeq.Click += new System.EventHandler(this.cmnSaveAllSeq_Click);
             // 
             // cmnSeparator2
             // 
             this.cmnSeparator2.Name = "cmnSeparator2";
-            this.cmnSeparator2.Size = new System.Drawing.Size(246, 6);
+            this.cmnSeparator2.Size = new System.Drawing.Size(245, 6);
             // 
             // cmnStopAnimation
             // 
             this.cmnStopAnimation.Name = "cmnStopAnimation";
-            this.cmnStopAnimation.Size = new System.Drawing.Size(249, 22);
+            this.cmnStopAnimation.Size = new System.Drawing.Size(248, 22);
             this.cmnStopAnimation.Text = "Pozastavit animaci";
             this.cmnStopAnimation.Click += new System.EventHandler(this.cmnStopAnimation_Click);
             // 
             // cmnStartAnimation
             // 
             this.cmnStartAnimation.Name = "cmnStartAnimation";
-            this.cmnStartAnimation.Size = new System.Drawing.Size(249, 22);
+            this.cmnStartAnimation.Size = new System.Drawing.Size(248, 22);
             this.cmnStartAnimation.Text = "Spustit animaci";
             this.cmnStartAnimation.Click += new System.EventHandler(this.cmnStartAnimation_Click);
             // 
@@ -228,5 +244,7 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.ToolStripSeparator cmnSeparator2;
         private System.Windows.Forms.ToolStripMenuItem cmnStopAnimation;
         private System.Windows.Forms.ToolStripMenuItem cmnStartAnimation;
+        private System.Windows.Forms.ToolStripMenuItem cmnSaveForWeb;
+        private System.Windows.Forms.ToolStripSeparator cmnSeparator0;
     }
 }

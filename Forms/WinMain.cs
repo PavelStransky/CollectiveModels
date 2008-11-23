@@ -13,12 +13,26 @@ namespace PavelStransky.Forms {
     /// </summary>
     public class WinMain {
         private static string directory;
+        private static string exportDirectory;
+
+        private static string seqExtension;
+
         private static bool playSounds;
 
         /// <summary>
-        /// Aktuální adresáø
+        /// Aktuální adresáø, kam se ukládají soubory *.gcm
         /// </summary>
         public static string Directory { get { return directory; }}
+
+        /// <summary>
+        /// Adresáø, kam se exportuje a ukládají obrázky
+        /// </summary>
+        public static string ExportDirectory { get { return exportDirectory; } }
+
+        /// <summary>
+        /// Nastavená pøípona sekvence obrázkù
+        /// </summary>
+        public static string SeqExtension { get { return seqExtension; } }
 
         /// <summary>
         /// True, pokud se pøehrávají zvuky
@@ -32,6 +46,24 @@ namespace PavelStransky.Forms {
         public static void SetDirectoryFromFile(string fName) {
             FileInfo f = new FileInfo(fName);
             directory = f.DirectoryName;
+        }
+
+        /// <summary>
+        /// Nastaví adresáø pro export podle názvu souboru
+        /// </summary>
+        /// <param name="fName">Název souboru</param>
+        public static void SetExportDirectoryFromFile(string fName) {
+            FileInfo f = new FileInfo(fName);
+            exportDirectory = f.DirectoryName;
+        }
+
+        /// <summary>
+        /// Nastaví pøíponu pro sekvenci obrázkù podle názvu souboru
+        /// </summary>
+        /// <param name="fName">Název souboru</param>
+        public static void SetSeqExtensionFromFile(string fName) {
+            FileInfo f = new FileInfo(fName);
+            seqExtension = f.Extension.Replace(".", "");
         }
 
         public static string FileFilterTxt { get { return defaultFileFilterTxt; } }
@@ -65,6 +97,18 @@ namespace PavelStransky.Forms {
             else
                 directory = defaultDirectory;
 
+            object exportDir = GetRegistryValue(registryKeyExportDirectory);
+            if(exportDir is string && exportDir as string != string.Empty)
+                exportDirectory = exportDir as string;
+            else
+                exportDirectory = directory;
+
+            object seqExt = GetRegistryValue(registryKeySeqExtension);
+            if(seqExt is string && seqExt as string != string.Empty)
+                seqExtension = seqExt as string;
+            else
+                seqExt = FileExtPicture;
+
             object fncDir = GetRegistryValue(registryKeyFncDirectory);
             if(fncDir is string && fncDir as string != string.Empty)
                 Context.FncDirectory = fncDir as string;
@@ -92,6 +136,8 @@ namespace PavelStransky.Forms {
         /// </summary>
         public static void SaveSettings(){
             SetRegistryValue(registryKeyDirectory, directory);
+            SetRegistryValue(registryKeyExportDirectory, exportDirectory);
+            SetRegistryValue(registryKeySeqExtension, seqExtension);
             SetRegistryValue(registryKeyFncDirectory, Context.FncDirectory);
             SetRegistryValue(registryKeyGlobalContextDirectory, Context.GlobalContextDirectory);
             SetRegistryValue(registryKeyPlaySounds, playSounds);
@@ -203,6 +249,8 @@ namespace PavelStransky.Forms {
         private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
 
         private const string registryKeyDirectory = "Directory";
+        private const string registryKeyExportDirectory = "ExportDirectory";
+        private const string registryKeySeqExtension = "SeqExtension";
         private const string registryKeyFncDirectory = "FncDirectory";
         private const string registryKeyGlobalContextDirectory = "GlobalContextDirectory";
         private const string registryKeyPlaySounds = "PlaySounds";

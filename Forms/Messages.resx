@@ -129,6 +129,9 @@
   <data name="TSaveAllText" xml:space="preserve">
     <value>Save data of all graph items as text</value>
   </data>
+  <data name="TSaveForWeb" xml:space="preserve">
+    <value>Save data with size of the window and limits (for web)</value>
+  </data>
   <data name="TSaveOneAnim" xml:space="preserve">
     <value>Save data of one graph item as (animated) GIF</value>
   </data>

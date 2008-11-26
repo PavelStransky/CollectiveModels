@@ -376,11 +376,11 @@ namespace PavelStransky.Forms {
                     // Animujeme i køivky
                     if(maxTime > 0)
                         for(int t = 1; t <= maxTime; t += scrollStep)
-                            this.PaintOne(baseImage, graphItems, g, t).Save(string.Format("{0}{1}-{2}.{3}", name, g, t, extension), format);
+                            this.PaintOne(baseImage, graphItems, g, t).Save(string.Format("{0}_{1}-{2}.{3}", name, g, t, extension), format);
 
                     // Køivky neanimujeme
                     else
-                        this.PaintOne(baseImage, graphItems, g, -1).Save(string.Format("{0}{1}.{2}", name, g, extension), format);
+                        this.PaintOne(baseImage, graphItems, g, -1).Save(string.Format("{0}_{1}.{2}", name, g, extension), format);
 
                     this.bwSaveSeq.ReportProgress(g * 100 / maxNumGroups);
 

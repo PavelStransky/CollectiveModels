@@ -682,6 +682,7 @@ namespace PavelStransky.Expression {
         /// <param name="export">Export</param>
         public virtual void ExportWWW(Export export, int group, int curve, int width, int height, bool onlyY) {
             GraphParameterValues gv = this.groupParamValues[group] as GraphParameterValues;
+            export.Write(typeof(int).FullName, this.NumGroups());
             export.Write(typeof(double).FullName, gv[ParametersIndications.MinX]);
             export.Write(typeof(double).FullName, gv[ParametersIndications.MaxX]);
             export.Write(typeof(double).FullName, gv[ParametersIndications.MinY]);

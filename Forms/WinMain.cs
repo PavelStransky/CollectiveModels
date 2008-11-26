@@ -235,7 +235,7 @@ namespace PavelStransky.Forms {
 
         private const string defaultFileFilterTxt = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
         private const string defaultFileFilterGif = "Obrázek (*.gif)|*.gif|Všechny soubory (*.*)|*.*";
-        private const string defaultFileFilterPicture = "Obrázek GIF (*.gif)|*.gif|Obrázek JPG (*.jpg)|*.jpg|Obrázek PNG (*.png)|*.png|Obrázek WMF (*.wmf)|*.wmf";
+        private const string defaultFileFilterPicture = "Obrázek PNG (*.png)|*.png|Obrázek GIF (*.gif)|*.gif|Obrázek JPG (*.jpg)|*.jpg|Obrázek WMF (*.wmf)|*.wmf";
         private const string defaultFileFilterGcm = "Soubory s daty (GCM) (*.gcm)|*.gcm|Všechny soubory (*.*)|*.*";
         private const string defaultFileExtGcm = "gcm";
         private const string defaultFileExtTxt = "txt";

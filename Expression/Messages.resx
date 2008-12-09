@@ -2637,4 +2637,12 @@ Length of the second vector: {1}</value>
   <data name="GPComment" xml:space="preserve">
     <value>comment</value>
   </data>
+  <data name="HelpExportVector3D" xml:space="preserve">
+    <value>Export three vectors in three columns format: (v, x, y)</value>
+  </data>
+  <data name="EMNotEqualLengthDetail3" xml:space="preserve">
+    <value>Length of the first object: {0}
+Length of the second object: {1}
+Length of the third object: {2}</value>
+  </data>
 </root>

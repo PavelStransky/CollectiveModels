@@ -390,6 +390,17 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length of the first object: {0}
+        ///Length of the second object: {1}
+        ///Length of the third object: {2}.
+        /// </summary>
+        internal static string EMNotEqualLengthDetail3 {
+            get {
+                return ResourceManager.GetString("EMNotEqualLengthDetail3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The elements of the given list have not equal types..
         /// </summary>
         internal static string EMNotEqualTypes {
@@ -2952,6 +2963,15 @@ namespace PavelStransky.Expression {
         internal static string HelpExportMatrix {
             get {
                 return ResourceManager.GetString("HelpExportMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export three vectors in three columns format: (v, x, y).
+        /// </summary>
+        internal static string HelpExportVector3D {
+            get {
+                return ResourceManager.GetString("HelpExportVector3D", resourceCulture);
             }
         }
         

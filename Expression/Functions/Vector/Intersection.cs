@@ -45,8 +45,8 @@ namespace PavelStransky.Expression.Functions.Def {
                     y /= d;
 
                     // Existuje prùnik
-                    if(((x >= x1min && x <= x1max) || (x >= x1max && x <= x1min)) && ((y >= y1min && y <= y1max) || (y >= y1max && y <= y1min))
-                        && ((x >= x2min && x <= x2max) || (x >= x2max && x <= x2min)) && ((y >= y2min && y <= y2max) || (y >= y2max && y <= y2min)))
+                    if(((x >= x1min && x <= x1max) || (x >= x1max && x <= x1min) || (x1min == x1max)) && ((y >= y1min && y <= y1max) || (y >= y1max && y <= y1min) || (y1min == y1max))
+                        && ((x >= x2min && x <= x2max) || (x >= x2max && x <= x2min) || (x2min == x2max)) && ((y >= y2min && y <= y2max) || (y >= y2max && y <= y2min) || (y2min == y2max)))
                         r.Add(new PointD(x, y));
                 }
             }

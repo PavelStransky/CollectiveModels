@@ -137,7 +137,7 @@ namespace PavelStransky.Forms {
         public static void SaveSettings(){
             SetRegistryValue(registryKeyDirectory, directory);
             SetRegistryValue(registryKeyExportDirectory, exportDirectory);
-            SetRegistryValue(registryKeySeqExtension, seqExtension);
+            SetRegistryValue(registryKeySeqExtension, seqExtension == null ? defaultFileExtPicture : seqExtension);
             SetRegistryValue(registryKeyFncDirectory, Context.FncDirectory);
             SetRegistryValue(registryKeyGlobalContextDirectory, Context.GlobalContextDirectory);
             SetRegistryValue(registryKeyPlaySounds, playSounds);

@@ -2645,4 +2645,13 @@ Length of the second vector: {1}</value>
 Length of the second object: {1}
 Length of the third object: {2}</value>
   </data>
+  <data name="HelpConvexConcave" xml:space="preserve">
+    <value>For GCM system returns the negative energy for which the border changes from convex to concave shape</value>
+  </data>
+  <data name="P2ConvexConcave" xml:space="preserve">
+    <value>cctype</value>
+  </data>
+  <data name="P2ConvexConcaveDescription" xml:space="preserve">
+    <value>0...Change of island shape, 1...Change of outer shape</value>
+  </data>
 </root>

@@ -141,6 +141,7 @@
     <Compile Include="ExpressionException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
+    <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />
     <Compile Include="Functions\Dynamics\IsRegularPS.cs" />
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />

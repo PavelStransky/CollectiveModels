@@ -2654,4 +2654,13 @@ Length of the third object: {2}</value>
   <data name="P2ConvexConcaveDescription" xml:space="preserve">
     <value>0...Change of island shape, 1...Change of outer shape</value>
   </data>
+  <data name="HelpIntersection" xml:space="preserve">
+    <value>Finds all intersection points of two pointvectors</value>
+  </data>
+  <data name="PPointVector" xml:space="preserve">
+    <value>pv</value>
+  </data>
+  <data name="PPointVectorDescription" xml:space="preserve">
+    <value>pointvector</value>
+  </data>
 </root>

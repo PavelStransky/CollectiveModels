@@ -192,6 +192,7 @@
     <Compile Include="Functions\Math\Tan.cs" />
     <Compile Include="Functions\Math\Tanh.cs" />
     <Compile Include="Functions\Vector\Crop.cs" />
+    <Compile Include="Functions\Vector\Intersection.cs" />
     <Compile Include="Functions\Vector\TSIntegrate.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
     <Compile Include="Types\Graph.BColor.cs" />

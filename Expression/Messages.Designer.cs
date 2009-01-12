@@ -3282,6 +3282,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finds all intersection points of two pointvectors.
+        /// </summary>
+        internal static string HelpIntersection {
+            get {
+                return ResourceManager.GetString("HelpIntersection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns an array of integer numbers beginning and ending with given numbers (and with given step).
         /// </summary>
         internal static string HelpInterval {
@@ -6680,6 +6689,24 @@ namespace PavelStransky.Expression {
         internal static string PPointDescription {
             get {
                 return ResourceManager.GetString("PPointDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pv.
+        /// </summary>
+        internal static string PPointVector {
+            get {
+                return ResourceManager.GetString("PPointVector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pointvector.
+        /// </summary>
+        internal static string PPointVectorDescription {
+            get {
+                return ResourceManager.GetString("PPointVectorDescription", resourceCulture);
             }
         }
         

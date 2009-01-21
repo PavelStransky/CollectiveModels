@@ -12,8 +12,8 @@ namespace PavelStransky.Expression.Functions.Def {
     public class ExtendedCGCM2 : FncExtendedCGCM {
         public override string Help { get { return Messages.HelpExtendedCGCM2; } }
 
-        protected override object Create(double a, double b, double c, double k, double p) {
-            return new ExtendedClassicalGCM2(a, b, c, k, p);
+        protected override object Create(double a, double b, double c, double k, double kappa, double lambda) {
+            return new ExtendedClassicalGCM2(a, b, c, k, kappa, lambda);
         }
     }
 }

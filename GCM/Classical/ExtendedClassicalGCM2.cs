@@ -10,14 +10,7 @@ namespace PavelStransky.GCM {
     /// <summary>
     /// Klasický GCM s kinetickým èlenem v Hamiltoniánu úmìrným beta^2
     /// </summary>
-    public class ExtendedClassicalGCM2 : ClassicalGCM, IDynamicalSystem, IExportable {
-        // Generátor náhodných èísel
-        private Random random = new Random();
-
-        // Rozšíøený parametr
-        private double lambda;
-        public double Lambda { get { return this.lambda; } set { this.lambda = value; } }
-
+    public class ExtendedClassicalGCM2 : ExtendedClassicalGCM1 {
         /// <summary>
         /// Kinetická energie
         /// </summary>
@@ -27,7 +20,7 @@ namespace PavelStransky.GCM {
         /// <param name="py">Hybnost y</param>
         public override double T(double x, double y, double px, double py) {
             double b2 = x * x + y * y;
-            return 1.0 / (2.0 * this.K) * (1 + this.Lambda * b2) * (px * px + py * py);
+            return 1.0 / (2.0 * this.K) * (this.Lambda + this.Kappa * b2) * (px * px + py * py);
         }
 
         /// <summary>
@@ -41,8 +34,8 @@ namespace PavelStransky.GCM {
             double dVdx = 2.0 * this.A * x[0] + 3.0 * this.B * (x[0] * x[0] - x[1] * x[1]) + 4.0 * this.C * x[0] * b2;
             double dVdy = 2.0 * x[1] * (this.A - 3.0 * this.B * x[0] + 2.0 * this.C * b2);
 
-            double e = 1.0 / this.K * (1 + this.Lambda * b2);
-            double f = -this.Lambda / this.K * (x[2] * x[2] + x[3] * x[3]);
+            double e = 1.0 / this.K * (this.Lambda + this.Kappa * b2);
+            double f = -this.Kappa / this.K * (x[2] * x[2] + x[3] * x[3]);
 
             result[0] = e * x[2];
             result[1] = e * x[3];
@@ -65,9 +58,9 @@ namespace PavelStransky.GCM {
             double dV2dxdy = (-6.0 * this.B + 8.0 * this.C * x[0]) * x[1];
             double dV2dydy = 2.0 * (this.A - 3.0 * this.B * x[0] + 2.0 * this.C * (x[0] * x[0] + 3.0 * x[1] * x[1]));
 
-            double e = 1.0 / this.K * (1 + this.Lambda * b2);
-            double f = -this.Lambda / this.K * (x[2] * x[2] + x[3] * x[3]);
-            double g = 2 * this.Lambda / this.K;
+            double e = 1.0 / this.K * (this.Lambda + this.Kappa * b2);
+            double f = -this.Kappa / this.K * (x[2] * x[2] + x[3] * x[3]);
+            double g = 2 * this.Kappa / this.K;
 
             result[0, 0] = g * x[0] * x[2];
             result[0, 1] = g * x[1] * x[2];
@@ -97,67 +90,18 @@ namespace PavelStransky.GCM {
         /// <param name="b">Parametr B</param>
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr K</param>
+        /// <param name="kappa">Parametr kappa</param>
         /// <param name="lambda">Parametr Lambda</param>
-        public ExtendedClassicalGCM2(double a, double b, double c, double k, double lambda)
-            : base(a, b, c, k) {
-            this.lambda = lambda;
-        }
-
-        /// <summary>
-        /// Vypíše parametry GCM modelu
-        /// </summary>
-        public override string ToString() {
-            StringBuilder s = new StringBuilder();
-            s.Append(string.Format("A = {0,10:#####0.000}\nB = {1,10:#####0.000}\nC = {2,10:#####0.000}\nK = {3,10:#####0.000}\nlambda = {4,10:#####0.000}", this.A, this.B, this.C, this.K, this.Lambda));
-            s.Append(string.Format("I = {0,10:#####0.000}", this.Invariant));
-            s.Append("\n\n");
-
-            Vector beta = this.ExtremalBeta(0.0);
-            s.Append(string.Format("Extrémy:"));
-
-            for(int i = 0; i < beta.Length; i++)
-                s.Append(string.Format("\nV({0,1:0.000}) = {1,1:0.000}", beta[i], this.VBG(beta[i], 0.0)));
-
-            return s.ToString();
-        }
+        public ExtendedClassicalGCM2(double a, double b, double c, double k, double kappa, double lambda)
+            : base(a, b, c, k, kappa, lambda) {}
 
         #region Implementace IExportable
-        /// <summary>
-        /// Uloží GCM tøídu do souboru
-        /// </summary>
-        /// <param name="export">Export</param>
-        public override void Export(Export export) {
-            IEParam param = new IEParam();
-
-            param.Add(this.A, "A");
-            param.Add(this.B, "B");
-            param.Add(this.C, "C");
-            param.Add(this.K, "K");
-            param.Add(this.Lambda, "Lambda");
-
-            param.Export(export);
-
-        }
-
         /// <summary>
         /// Naète GCM tøídu ze souboru textovì
         /// </summary>
         /// <param name="import">Import</param>
-        public ExtendedClassicalGCM2(Core.Import import) {
-            IEParam param = new IEParam(import);
-
-            this.A = (double)param.Get(-1.0);
-            this.B = (double)param.Get(1.0);
-            this.C = (double)param.Get(1.0);
-            this.K = (double)param.Get(1.0);
-            this.Lambda = (double)param.Get(1.0);
-        }
+        public ExtendedClassicalGCM2(Core.Import import)
+        : base(import) {}
         #endregion
-
-        private const double poincareTime = 100;
-        private const int degreesOfFreedom = 2;
-
-        private const string errorMessageInitialCondition = "Pro zadanou energii {0} nelze nagenerovat poèáteèní podmínky.";
-        private const string errorMessageNonzeroJ = "Tøída {0} umí poèítat pouze s nulovým úhlovým momentem. Pro nenulový úhlový moment použij {1}.";
     }
 }

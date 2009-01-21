@@ -14,9 +14,10 @@ namespace PavelStransky.GCM {
         // Generátor náhodných èísel
         private Random random = new Random();
 
-        // Rozšíøený parametr
-        private double kappa;
+        // Rozšíøené parametry
+        private double kappa, lambda;
         public double Kappa { get { return this.kappa; } set { this.kappa = value; } }
+        public double Lambda { get { return this.lambda; } set { this.lambda = value; } }
 
         /// <summary>
         /// Kinetická energie
@@ -27,7 +28,7 @@ namespace PavelStransky.GCM {
         /// <param name="py">Hybnost y</param>
         public override double T(double x, double y, double px, double py) {
             double b2 = x * x + y * y;
-            return 1.0 / (2.0 * this.K * (1 + this.Kappa * b2)) * (px * px + py * py);
+            return 1.0 / (2.0 * this.K * (this.Lambda + this.Kappa * b2)) * (px * px + py * py);
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace PavelStransky.GCM {
             double dVdx = 2.0 * this.A * x[0] + 3.0 * this.B * (x[0] * x[0] - x[1] * x[1]) + 4.0 * this.C * x[0] * b2;
             double dVdy = 2.0 * x[1] * (this.A - 3.0 * this.B * x[0] + 2.0 * this.C * b2);
 
-            double e = 1.0 / (this.K * (1 + this.Kappa * b2));
+            double e = 1.0 / (this.K * (this.Lambda + this.Kappa * b2));
             double f = this.K * this.Kappa * e * e * (x[2] * x[2] + x[3] * x[3]);
 
             result[0] = e * x[2];
@@ -65,7 +66,7 @@ namespace PavelStransky.GCM {
             double dV2dxdy = (-6.0 * this.B + 8.0 * this.C * x[0]) * x[1];
             double dV2dydy = 2.0 * (this.A - 3.0 * this.B * x[0] + 2.0 * this.C * (x[0] * x[0] + 3.0 * x[1] * x[1]));
 
-            double e = 1.0 / (this.K * (1 + this.Kappa * b2));
+            double e = 1.0 / (this.K * (this.Lambda + this.Kappa * b2));
             double f = this.K * this.Kappa * e * e * (x[2] * x[2] + x[3] * x[3]);
             double g = 4.0 * this.K * this.Kappa * e;
             double h = -2.0 * this.Kappa * e;
@@ -99,9 +100,11 @@ namespace PavelStransky.GCM {
         /// <param name="c">Parametr C</param>
         /// <param name="k">Parametr K</param>
         /// <param name="kappa">Parametr Kappa</param>
-        public ExtendedClassicalGCM1(double a, double b, double c, double k, double kappa)
+        /// <param name="lambda">Parametr Lambda</param>
+        public ExtendedClassicalGCM1(double a, double b, double c, double k, double kappa, double lambda)
             : base(a, b, c, k) {
             this.kappa = kappa;
+            this.lambda = lambda;
         }
 
         /// <summary>
@@ -109,7 +112,8 @@ namespace PavelStransky.GCM {
         /// </summary>
         public override string ToString() {
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("A = {0,10:#####0.000}\nB = {1,10:#####0.000}\nC = {2,10:#####0.000}\nK = {3,10:#####0.000}\nkappa = {4,10:#####0.000}", this.A, this.B, this.C, this.K, this.Kappa));
+            s.Append(string.Format("A = {0,10:#####0.000}\nB = {1,10:#####0.000}\nC = {2,10:#####0.000}\nK = {3,10:#####0.000}\nkappa = {4,10:#####0.000}\nlambda = {5,10:#####0.000}\n",
+                this.A, this.B, this.C, this.K, this.Kappa, this.Lambda));
             s.Append(string.Format("I = {0,10:#####0.000}", this.Invariant));
             s.Append("\n\n");
 
@@ -135,6 +139,7 @@ namespace PavelStransky.GCM {
             param.Add(this.C, "C");
             param.Add(this.K, "K");
             param.Add(this.Kappa, "Kappa");
+            param.Add(this.Lambda, "Lambda");
 
             param.Export(export);
         }
@@ -151,13 +156,8 @@ namespace PavelStransky.GCM {
             this.C = (double)param.Get(1.0);
             this.K = (double)param.Get(1.0);
             this.Kappa = (double)param.Get(1.0);
+            this.Lambda = (double)param.Get(1.0);
         }
         #endregion
-
-        private const double poincareTime = 100;
-        private const int degreesOfFreedom = 2;
-
-        private const string errorMessageInitialCondition = "Pro zadanou energii {0} nelze nagenerovat poèáteèní podmínky.";
-        private const string errorMessageNonzeroJ = "Tøída {0} umí poèítat pouze s nulovým úhlovým momentem. Pro nenulový úhlový moment použij {1}.";
     }
 }

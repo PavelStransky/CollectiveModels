@@ -70,7 +70,7 @@ namespace PavelStransky.Math {
             
             // Odhady parametrù regrese
             double a = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx * sumx);
-            double b = (sumy - v[1] * sumx) / n;
+            double b = (sumy - a * sumx) / n;
 
             v[1] = a;
             v[0] = b;

@@ -69,7 +69,7 @@ namespace PavelStransky.GCM {
             double e = 1.0 / (this.K * (this.Lambda + this.Kappa * b2));
             double f = this.K * this.Kappa * e * e * (x[2] * x[2] + x[3] * x[3]);
             double g = 4.0 * this.K * this.Kappa * e;
-            double h = -2.0 * this.K * * this.Kappa * e * e;
+            double h = -2.0 * this.K * this.Kappa * e * e;
 
             result[0, 0] = h * x[0] * x[2];
             result[0, 1] = h * x[1] * x[2];

@@ -2663,4 +2663,7 @@ Length of the third object: {2}</value>
   <data name="PPointVectorDescription" xml:space="preserve">
     <value>pointvector</value>
   </data>
+  <data name="HelpNegation" xml:space="preserve">
+    <value>Operator ! (boolean NOT)</value>
+  </data>
 </root>

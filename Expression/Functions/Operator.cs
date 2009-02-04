@@ -13,13 +13,14 @@ namespace PavelStransky.Expression.Functions {
         AssignmentPriority = 1,
         BoolOrPriority = 2,
         BoolAndPriority = 3,
-        ComparePriority = 4,
-        JoinPriority = 5,
-        IntervalPriority = 6,
-        SumPriority = 7,
-        ProductPriority = 8,
-        PowerPriority = 9,
-        MaxPriority = 10
+        BoolNegPriority = 4,
+        ComparePriority = 5,
+        JoinPriority = 6,
+        IntervalPriority = 7,
+        SumPriority = 8,
+        ProductPriority = 9,
+        PowerPriority = 10,
+        MaxPriority = 11
     }
     
     /// <summary>

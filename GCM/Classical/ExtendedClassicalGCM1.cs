@@ -80,7 +80,7 @@ namespace PavelStransky.GCM {
             result[1, 3] = e;
 
             result[2, 0] = f * (1 - g * x[0] * x[0]) - dV2dxdx;
-            result[2, 1] = -g * x[0] * x[1] - dV2dxdy;
+            result[2, 1] = -f * g * x[0] * x[1] - dV2dxdy;
             result[2, 2] = -result[0, 0];
             result[2, 3] = -result[1, 0];
 

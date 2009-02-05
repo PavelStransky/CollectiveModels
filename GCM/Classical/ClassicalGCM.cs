@@ -183,6 +183,38 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Meze v souøadnicích x, y, px, py seøazené do vektoru o 8 složkách (xmin, xmax, ...)
+        /// </summary>
+        /// <param name="e">Energie</param>
+        public Vector Bounds(double e) {
+            Vector result = new Vector(8);
+            Vector roots = this.Roots(e, 0.0);
+
+            if(roots.Length != 0) {
+                result[0] = roots.Min();
+                result[1] = roots.Max();
+
+                // Meze v y jsou dané maximem v x
+                result[2] = -roots.MaxAbs();
+                result[3] = -result[2];
+
+                // Koeficient pøed kinetickým èlenem
+                double extremalBeta = this.ExtremalBeta(0.0)[0];
+                double koef = this.T(extremalBeta, 0.0, 1.0, 0.0);
+                double tbracket = (e - this.V(extremalBeta, 0.0)) / koef;
+
+                // Meze v px, py jsou stejné a symetrické
+                result[4] = -System.Math.Sqrt(tbracket);
+                result[5] = -result[4];
+
+                result[6] = result[4];
+                result[7] = result[5];
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Peresùv invariant
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>

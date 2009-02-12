@@ -145,7 +145,8 @@
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />
     <Compile Include="Functions\Dynamics\IsRegularPS.cs" />
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
-    <Compile Include="Functions\Dynamics\RegularityBreak.cs" />
+    <Compile Include="Functions\Dynamics\RegularityBreakCurvature.cs" />
+    <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
     <Compile Include="Functions\Dynamics\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TwoBody.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />

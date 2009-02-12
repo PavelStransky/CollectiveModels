@@ -2334,7 +2334,7 @@ Length of the second vector: {1}</value>
   <data name="HelpIsRegularPS" xml:space="preserve">
     <value>Returns true if the Poincare section on the given energy is fully regular; otherwise returns false</value>
   </data>
-  <data name="HelpRegularityBreak" xml:space="preserve">
+  <data name="HelpRegularityBreakSALI" xml:space="preserve">
     <value>Returns the energy for which the regular behavior starts breaking into the chaotic</value>
   </data>
   <data name="PEnergyMax" xml:space="preserve">
@@ -2665,5 +2665,20 @@ Length of the third object: {2}</value>
   </data>
   <data name="HelpNegation" xml:space="preserve">
     <value>Operator ! (boolean NOT)</value>
+  </data>
+  <data name="HelpRegularityBreakCurvature" xml:space="preserve">
+    <value>Returns the energy for which there should be, according to the geometrical theory of chaos, the transition between regular and chaotic behaviour</value>
+  </data>
+  <data name="PXSection" xml:space="preserve">
+    <value>xsection</value>
+  </data>
+  <data name="PXSectionDescription" xml:space="preserve">
+    <value>True if the section at x == 0 should be computed</value>
+  </data>
+  <data name="POneOrientation" xml:space="preserve">
+    <value>oneorientation</value>
+  </data>
+  <data name="POneOrientationDescription" xml:space="preserve">
+    <value>True if only one orientation of the crossing of the plane shall be considered</value>
   </data>
 </root>

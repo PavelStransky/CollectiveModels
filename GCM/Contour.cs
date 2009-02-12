@@ -25,6 +25,15 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Konstruktor s poctem korenu
+        /// </summary>
+        /// <param name="rootNumber">Pocet korenu</param>
+        public Contour(int rootNumber) {
+            this.points = new ArrayList[rootNumber];
+            this.chains = new ArrayList();
+        }
+
+        /// <summary>
         /// Zaène pøidávání koøenù do øetìzcù
         /// </summary>
         public void Begin() {

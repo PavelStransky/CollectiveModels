@@ -321,7 +321,7 @@ namespace PavelStransky.GCM {
         /// <param name="n">Poèet bodù v jedné køivce</param>
         /// <param name="lowerEV">True pokud poèítáme nižší vlastní hodnotu</param>
         public PointVector[] VMatrixContours(double e, int n, bool lowerEV) {
-            Contour contour = new Contour();
+            Contour contour = new Contour(6);
 
             contour.Begin();
             for(int i = 1; i < equipotentialDivision; i++) {
@@ -334,7 +334,7 @@ namespace PavelStransky.GCM {
             contour.RemoveShort();
             contour.Join();
 
-            return contour.GetPointVector(); 
+            return n > 0 ? contour.GetPointVector(n) : contour.GetPointVector();
         }
 
         private const double zeroValue = 10E-7;

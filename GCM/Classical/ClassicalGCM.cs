@@ -131,9 +131,13 @@ namespace PavelStransky.GCM {
                 result[2] = 0.0;
                 result[3] = 0.0;
 
-                if(this.E(result) < e)
+                if(this.E(result) < e) {
+                    result[2] = double.NaN;
+                    result[3] = double.NaN;
+
                     if(this.IC(result, e))
                         break;
+                }
 
             } while(true);
 
@@ -151,21 +155,25 @@ namespace PavelStransky.GCM {
             double koef = this.T(ic[0], ic[1], 1.0, 0.0);
             double tbracket = (e - this.V(ic[0], ic[1])) / koef;
 
-            if(ic[2] == 0.0) {
+            if(double.IsNaN(ic[2]) && double.IsNaN(ic[3])) {
                 ic[2] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
 
                 if(this.random.Next(2) == 0)
                     ic[2] = -ic[2];
             }
 
-            tbracket -= ic[2] * ic[2];
+            if(double.IsNaN(ic[2]))
+                tbracket -= ic[3] * ic[3];
+            else
+                tbracket -= ic[2] * ic[2];
+
             if(tbracket < 0.0)
                 return false;
 
-            ic[3] = System.Math.Sqrt(tbracket);
-
-            if(this.random.Next(2) == 0)
-                ic[3] = -ic[3];
+            if(double.IsNaN(ic[2]))
+                ic[2] = System.Math.Sqrt(tbracket) * (this.random.Next(2) == 0 ? -1.0 : 1.0);
+            else
+                ic[3] = System.Math.Sqrt(tbracket) * (this.random.Next(2) == 0 ? -1.0 : 1.0);
 
             return true;
         }

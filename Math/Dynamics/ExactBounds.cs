@@ -5,18 +5,18 @@ using System.Text;
 namespace PavelStransky.Math {
     public class ExactBounds {
         /// <summary>
-        /// Zpøesnìní mezí pro výpoèet v souøadnicích x, vx
+        /// Zpøesnìní mezí pro výpoèet
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="e">Energie</param>
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
         /// <param name="numIterations">Poèet iterací pro zpøesnìní</param>
-        public static Vector ExactBoundsXVx(IDynamicalSystem dynamicalSystem, double e, int n1, int n2, int numIterations) {
+        public static Vector ComputeExactBounds(IDynamicalSystem dynamicalSystem, double e, int n1, int n2, int numIterations) {
             // Základní pøibližné meze
-            Vector boundX = dynamicalSystem.Bounds(e);
+            Vector boundX = 1.2 * dynamicalSystem.Bounds(e);
 
-            // Nìkolikrát iterujeme pro zpøesnìní mezí
+            // Nìkolikrát iterujeme pro zpøesnìní mezí (meze X, Vx)
             for(int iteration = 0; iteration < numIterations; iteration++) {
                 // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
                 double kx = (boundX[1] - boundX[0]) / (n1 - 1);
@@ -36,7 +36,7 @@ namespace PavelStransky.Math {
                         ic[0] = kx * i + x0;
                         ic[1] = 0.0;
                         ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                        ic[3] = 0.0;
+                        ic[3] = double.NaN;
 
                         if(dynamicalSystem.IC(ic, e)) {
                             foundIC = true;
@@ -60,7 +60,7 @@ namespace PavelStransky.Math {
                         ic[0] = kx * i + x0;
                         ic[1] = 0.0;
                         ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                        ic[3] = 0.0;
+                        ic[3] = double.NaN;
 
                         if(dynamicalSystem.IC(ic, e)) {
                             foundIC = true;
@@ -84,7 +84,7 @@ namespace PavelStransky.Math {
                         ic[0] = kx * i + x0;
                         ic[1] = 0.0;
                         ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                        ic[3] = 0.0;
+                        ic[3] = double.NaN;
 
                         if(dynamicalSystem.IC(ic, e)) {
                             foundIC = true;
@@ -108,7 +108,7 @@ namespace PavelStransky.Math {
                         ic[0] = kx * i + x0;
                         ic[1] = 0.0;
                         ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                        ic[3] = 0.0;
+                        ic[3] = double.NaN;
 
                         if(dynamicalSystem.IC(ic, e)) {
                             foundIC = true;
@@ -117,6 +117,112 @@ namespace PavelStransky.Math {
                     }
                     if(foundIC) {
                         boundX[5] = ky * (j + 1) + y0;
+                        break;
+                    }
+                }
+            }
+
+            // Nìkolikrát iterujeme pro zpøesnìní mezí (meze Y, Vy)
+            for(int iteration = 0; iteration < numIterations; iteration++) {
+                // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
+                double kx = (boundX[3] - boundX[2]) / (n1 - 1);
+                double x0 = boundX[2];
+                double ky = (boundX[7] - boundX[6]) / (n2 - 1);
+                double y0 = boundX[6];
+
+                // Poèáteèní podmínky
+                Vector ic = new Vector(4);
+
+                // Hledání optimální oblasti
+                bool foundIC = false;
+
+                // Smìr 1
+                for(int i = 1; i < n1; i++) {
+                    for(int j = 1; j < n2; j++) {
+                        ic[0] = 0.0;
+                        ic[1] = kx * i + x0;
+                        ic[2] = double.NaN;
+                        ic[3] = ky * j + y0;
+
+                        if(dynamicalSystem.IC(ic, e)) {
+                            foundIC = true;
+                            break;
+                        }
+                    }
+                    if(foundIC) {
+                        boundX[2] = kx * (i - 2) + x0;
+                        break;
+                    }
+                }
+
+                kx = (boundX[3] - boundX[2]) / (n1 - 1);
+                x0 = boundX[2];
+
+                foundIC = false;
+
+                // Smìr 4
+                for(int j = 1; j < n2; j++) {
+                    for(int i = 1; i < n1; i++) {
+                        ic[0] = 0.0;
+                        ic[1] = kx * i + x0;
+                        ic[2] = double.NaN;
+                        ic[3] = ky * j + y0;
+
+                        if(dynamicalSystem.IC(ic, e)) {
+                            foundIC = true;
+                            break;
+                        }
+                    }
+                    if(foundIC) {
+                        boundX[6] = ky * (j - 2) + y0;
+                        break;
+                    }
+                }
+
+                ky = (boundX[7] - boundX[6]) / (n2 - 1);
+                y0 = boundX[6];
+
+                foundIC = false;
+
+                // Smìr 3
+                for(int i = n2 - 2; i >= 0; i--) {
+                    for(int j = 1; j < n2; j++) {
+                        ic[0] = 0.0;
+                        ic[1] = kx * i + x0;
+                        ic[2] = double.NaN;
+                        ic[3] = ky * j + y0;
+
+                        if(dynamicalSystem.IC(ic, e)) {
+                            foundIC = true;
+                            break;
+                        }
+                    }
+                    if(foundIC) {
+                        boundX[3] = kx * (i + 1) + x0;
+                        break;
+                    }
+                }
+
+                kx = (boundX[3] - boundX[2]) / (n1 - 1);
+                x0 = boundX[2];
+
+                foundIC = false;
+
+                // Smìr 2
+                for(int j = n2 - 2; j >= 0; j--) {
+                    for(int i = 1; i < n1; i++) {
+                        ic[0] = 0.0;
+                        ic[1] = kx * i + x0;
+                        ic[2] = double.NaN;
+                        ic[3] = ky * j + y0;
+
+                        if(dynamicalSystem.IC(ic, e)) {
+                            foundIC = true;
+                            break;
+                        }
+                    }
+                    if(foundIC) {
+                        boundX[7] = ky * (j + 1) + y0;
                         break;
                     }
                 }

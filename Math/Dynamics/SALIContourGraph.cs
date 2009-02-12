@@ -8,7 +8,7 @@ using PavelStransky.Core;
 namespace PavelStransky.Math {
     /// <summary>
     /// Tøída, která na základì SALI vytvoøí konturovaný graf 
-    /// (zatím pro speciální øez rovinou y)
+    /// (Pouze pro speciální øezy rovinou x nebo y)
     /// </summary>
     public class SALIContourGraph: SALI {
         /// <summary>
@@ -28,11 +28,15 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection) {
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX) {
             RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision);
 
+            int indexS = isX ? 0 : 1;    // Index promìnné, kterou vede øez
+            int indexG1 = isX ? 1 : 0;   // První index pro graf
+            int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
+
             this.x = initialX;
-            double oldy = this.x[1];
+            double oldy = this.x[indexS];
             int finished = 0;
             bool result = false;
 
@@ -40,8 +44,8 @@ namespace PavelStransky.Math {
 
             Vector w1 = new Vector(initialX.Length);
             Vector w2 = new Vector(initialX.Length);
-            w1[0] = 1;
-            w2[initialX.Length / 2] = 1;
+            w1[indexG1] = 1;
+            w2[indexG2] = 1;
 
             double step = this.rungeKutta.Precision;
             double time = 0.0;
@@ -65,11 +69,13 @@ namespace PavelStransky.Math {
 
                     step = newStep;
 
-                    double y = this.x[1];
-                    if(y * oldy <= 0) {
+                    double y = this.x[indexS];
+
+                    // Druhá varianta jen v pøípadì, že øežeme X
+                    if((y <= 0 && oldy > 0) || (y > 0 && oldy <= 0 && !isX)) {
                         Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
-                        poincareSection[finished].X = v[0];
-                        poincareSection[finished].Y = v[2];
+                        poincareSection[finished].X = v[indexG1];
+                        poincareSection[finished].Y = v[indexG2];
                         finished++;
 
                         if(finished >= poincareSection.Length)
@@ -102,13 +108,6 @@ namespace PavelStransky.Math {
             return result;
         }
 
-        /// <param name="e">Energie</param>
-        /// <param name="n1">Rozmìr x výsledné matice</param>
-        /// <param name="n2">Rozmìr vx výsledné matice</param>
-        public ArrayList Compute(double e, int n1, int n2) {
-            return this.Compute(e, n1, n2, null);
-        }
-
         /// <summary>
         /// Vrátí true, pokud je daný graf celý regulární
         /// </summary>
@@ -116,15 +115,19 @@ namespace PavelStransky.Math {
         /// <param name="n1">Rozmìr x grafu (interní parametr)</param>
         /// <param name="n2">Rozmìr vx výsledné matice (interní parametr)</param>
         /// <param name="writer">Výpis na konzoli</param>
-        public bool IsRegularGraph(double e, int n1, int n2, IOutputWriter writer) {
+        public bool IsRegularGraph(double e, int n1, int n2, bool isX, IOutputWriter writer) {
             // Výpoèet mezí
-            Vector boundX = ExactBounds.ExactBoundsXVx(this.dynamicalSystem, e, n1, n2, 3);
+            Vector boundX = ExactBounds.ComputeExactBounds(this.dynamicalSystem, e, n1, n2, 3);
+
+            int indexS = isX ? 0 : 1;    // Index promìnné, kterou vede øez
+            int indexG1 = isX ? 1 : 0;   // První index pro graf
+            int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
 
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
-            double kx = (boundX[1] - boundX[0]) / (n1 - 1);
-            double x0 = boundX[0];
-            double ky = (boundX[5] - boundX[4]) / (n2 - 1);
-            double y0 = boundX[4];
+            double kx = (boundX[2 * indexG1 + 1] - boundX[2 * indexG1]) / (n1 - 1);
+            double x0 = boundX[2 * indexG1];
+            double ky = (boundX[2 * indexG2 + 1] - boundX[2 * indexG2]) / (n2 - 1);
+            double y0 = boundX[2 * indexG2];
 
             // Poèáteèní podmínky
             Vector ic = new Vector(4);
@@ -141,16 +144,24 @@ namespace PavelStransky.Math {
                     if(trPassed[i, j] != 0)
                         continue;
 
-                    ic[0] = kx * i + x0;
-                    ic[1] = 0.0;
-                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                    ic[3] = 0.0;
-
+                    if(isX) {
+                        ic[0] = 0.0;
+                        ic[1] = kx * i + x0;
+                        ic[2] = double.NaN;
+                        ic[3] = ky * j + y0;
+                    }
+                    else {
+                        ic[0] = kx * i + x0;
+                        ic[1] = 0.0;
+                        ic[2] = ky * j + y0;
+                        ic[3] = double.NaN;
+                    }
+                    
                     if(this.dynamicalSystem.IC(ic, e)) {
                         PointVector section = new PointVector(0);
 
                         // Nalezli jsme neregulární trajektorii - konec výpoètu
-                        if(!this.IsRegularPS(ic, section)) {
+                        if(!this.IsRegularPS(ic, section, isX)) {
                             writer.WriteLine(string.Format(" {0} (irregular)", SpecialFormat.Format(DateTime.Now - startTime)));
                             return false;
                         }
@@ -172,21 +183,35 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Poèítá pro danou energii
+        /// Vypoèítá a obarví Poincarého øez v promìnných X, Vx
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="n1">Rozmìr x výsledné matice</param>
+        /// <param name="n2">Rozmìr vx výsledné matice</param>
+        public ArrayList Compute(double e, int n1, int n2) {
+            return this.Compute(e, n1, n2, false, null);
+        }
+
+        /// <summary>
+        /// Poèítá po danou energii a pro øez X, Vx
         /// </summary>
         /// <param name="e">Energie</param>
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
         /// <param name="writer">Výpis na konzoli</param>
-        public ArrayList Compute(double e, int n1, int n2, IOutputWriter writer) {
+        public ArrayList Compute(double e, int n1, int n2, bool isX, IOutputWriter writer) {
             // Výpoèet mezí
-            Vector boundX = ExactBounds.ExactBoundsXVx(this.dynamicalSystem, e, n1, n2, 3);
+            Vector boundX = ExactBounds.ComputeExactBounds(this.dynamicalSystem, e, n1, n2, 3);
+
+            int indexS = isX ? 0 : 1;    // Index promìnné, kterou vede øez
+            int indexG1 = isX ? 1 : 0;   // První index pro graf
+            int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
 
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
-            double kx = (boundX[1] - boundX[0]) / (n1 - 1);
-            double x0 = boundX[0];
-            double ky = (boundX[5] - boundX[4]) / (n2 - 1);
-            double y0 = boundX[4];
+            double kx = (boundX[2 * indexG1 + 1] - boundX[2 * indexG1]) / (n1 - 1);
+            double x0 = boundX[2 * indexG1];
+            double ky = (boundX[2 * indexG2 + 1] - boundX[2 * indexG2]) / (n2 - 1);
+            double y0 = boundX[2 * indexG2];
 
             // Poèáteèní podmínky
             Vector ic = new Vector(4);
@@ -207,14 +232,22 @@ namespace PavelStransky.Math {
                     if(trPassed[i, j] != 0)
                         continue;
 
-                    ic[0] = kx * i + x0;
-                    ic[1] = 0.0;
-                    ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                    ic[3] = 0.0;
-
+                    if(isX) {
+                        ic[0] = 0.0;
+                        ic[1] = kx * i + x0;
+                        ic[2] = double.NaN;
+                        ic[3] = ky * j + y0;
+                    }
+                    else {
+                        ic[0] = kx * i + x0;
+                        ic[1] = 0.0;
+                        ic[2] = ky * j + y0;
+                        ic[3] = double.NaN;
+                    }
+                   
                     if(this.dynamicalSystem.IC(ic, e)) {
                         PointVector section = new PointVector(0);
-                        int sali = this.IsRegularPS(ic, section) ? 1 : 0;
+                        int sali = this.IsRegularPS(ic, section, isX) ? 1 : 0;
                         regular += sali;
                         total++;
 

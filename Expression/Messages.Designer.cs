@@ -4074,11 +4074,20 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the energy for which there should be, according to the geometrical theory of chaos, the transition between regular and chaotic behaviour.
+        /// </summary>
+        internal static string HelpRegularityBreakCurvature {
+            get {
+                return ResourceManager.GetString("HelpRegularityBreakCurvature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the energy for which the regular behavior starts breaking into the chaotic.
         /// </summary>
-        internal static string HelpRegularityBreak {
+        internal static string HelpRegularityBreakSALI {
             get {
-                return ResourceManager.GetString("HelpRegularityBreak", resourceCulture);
+                return ResourceManager.GetString("HelpRegularityBreakSALI", resourceCulture);
             }
         }
         
@@ -6612,6 +6621,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to oneorientation.
+        /// </summary>
+        internal static string POneOrientation {
+            get {
+                return ResourceManager.GetString("POneOrientation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if only one orientation of the crossing of the plane shall be considered.
+        /// </summary>
+        internal static string POneOrientationDescription {
+            get {
+                return ResourceManager.GetString("POneOrientationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to n.
         /// </summary>
         internal static string POrder {
@@ -7382,6 +7409,24 @@ namespace PavelStransky.Expression {
         internal static string PXMinBoundDescription {
             get {
                 return ResourceManager.GetString("PXMinBoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xsection.
+        /// </summary>
+        internal static string PXSection {
+            get {
+                return ResourceManager.GetString("PXSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the section at x == 0 should be computed.
+        /// </summary>
+        internal static string PXSectionDescription {
+            get {
+                return ResourceManager.GetString("PXSectionDescription", resourceCulture);
             }
         }
         

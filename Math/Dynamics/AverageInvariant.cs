@@ -32,7 +32,7 @@ namespace PavelStransky.Math {
         /// <param name="writer">Výpis na konzoli</param>
         public ArrayList Compute(double e, double time, int n1, int n2, IOutputWriter writer) {
             // Výpoèet mezí
-            Vector boundX = ExactBounds.ExactBoundsXVx(this.dynamicalSystem, e, n1, n2, 3);
+            Vector boundX = ExactBounds.ComputeExactBounds(this.dynamicalSystem, e, n1, n2, 3);
 
             // Koeficienty pro rychlý pøepoèet mezi indexy a souøadnicemi n = kx + x0
             double kx = (boundX[1] - boundX[0]) / (n1 - 1);
@@ -62,7 +62,7 @@ namespace PavelStransky.Math {
                     ic[0] = kx * i + x0;
                     ic[1] = 0.0;
                     ic[2] = ky * j + y0; if(ic[2] == 0.0) ic[2] = double.Epsilon;
-                    ic[3] = 0.0;
+                    ic[3] = double.NaN;
 
                     if(this.dynamicalSystem.IC(ic, e)) {
                         ArrayList ps = new ArrayList();

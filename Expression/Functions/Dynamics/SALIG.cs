@@ -13,13 +13,14 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpSALIG; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(5);
+            this.SetNumParams(6);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
             this.SetParam(2, true, true, false, Messages.PSizeX, Messages.PSizeXDescription, null, typeof(int));
             this.SetParam(3, true, true, false, Messages.PSizeY, Messages.PSizeYDescription, null, typeof(int));
             this.SetParam(4, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
+            this.SetParam(5, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -29,9 +30,10 @@ namespace PavelStransky.Expression.Functions.Def {
             int sizex = (int)arguments[2];
             int sizey = (int)arguments[3];
             double precision = (double)arguments[4];
+            bool isX = (bool)arguments[5];
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precision);
-            ArrayList a = sali.Compute(e, sizex, sizey, guider);
+            ArrayList a = sali.Compute(e, sizex, sizey, isX, guider);
 
             List result = new List();
             result.AddRange(a);

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Collections;
 
 using PavelStransky.Core;
 
@@ -497,6 +498,82 @@ namespace PavelStransky.Math {
 
             return result;
         }
+
+        /// <summary>
+        /// Najde všechny body, ve kterých se dané køivky protínají
+        /// </summary>
+        /// <param name="v">Druhá køivka</param>
+        public PointVector Intersection(PointVector v) {
+            int length1 = this.Length;
+            int length2 = v.Length;
+
+            ArrayList r = new ArrayList();
+
+            for(int i = 1; i < length1; i++) {
+                double x1min = this[i - 1].X;
+                double y1min = this[i - 1].Y;
+                double x1max = this[i].X;
+                double y1max = this[i].Y;
+
+                for(int j = 1; j < length2; j++) {
+                    double x2min = v[j - 1].X;
+                    double y2min = v[j - 1].Y;
+                    double x2max = v[j].X;
+                    double y2max = v[j].Y;
+
+                    double d = (x1max - x1min) * (y2max - y2min) - (y1max - y1min) * (x2max - x2min);
+                    double x = ((y1min * x1max - y1max * x1min) * (x2max - x2min) + (y2max * x2min - y2min * x2max) * (x1max - x1min));
+                    x /= d;
+                    double y = ((y1min * x1max - y1max * x1min) * (y2max - y2min) + (y2max * x2min - y2min * x2max) * (y1max - y1min));
+                    y /= d;
+
+/*                  ((bc-ad)(h-g)+(d-c)(fg-eh))/((d-c)(f-e)-(b-a)(h-g))
+                    ((ad-bc)(f-e)+(b-a)(fg-eh))/((d-c)(f-e)-(b-a)(h-g))
+
+                    x -> (a d (g - h) + b c (-g + h) + (c - d) (f g - e h))/(
+                     d (e - f) + c (-e + f) + (a - b) (g - h)), y -> (
+                     a (d (e - f) + f g - e h) + b (c (-e + f) - f g + e h))/(
+                     d (e - f) + c (-e + f) + (a - b) (g - h)) */
+                    
+                    // Existuje prùnik
+                    if(((x >= x1min && x <= x1max) || (x >= x1max && x <= x1min) || (x1min == x1max)) && ((y >= y1min && y <= y1max) || (y >= y1max && y <= y1min) || (y1min == y1max))
+                        && ((x >= x2min && x <= x2max) || (x >= x2max && x <= x2min) || (x2min == x2max)) && ((y >= y2min && y <= y2max) || (y >= y2max && y <= y2min) || (y2min == y2max)))
+                        r.Add(new PointD(x, y));
+                }
+            }
+
+            int count = r.Count;
+            PointVector result = new PointVector(count);
+            for(int i = 0; i < count; i++)
+                result[i] = (PointD)r[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrací true, pokud je daný bod uvnitø køivky zadané vektorem bodù
+        /// </summary>
+        /// <param name="point">Bod, který zkoumáme</param>
+        /// <remarks>Algoritmus - Point in polygon</remarks>
+        public bool IsInside(PointD point) {
+            int length = this.Length;
+            bool result = false;
+
+            double x = point.X;
+            double y = point.Y;
+
+            int j = length - 1;
+
+            for(int i = 0; i < length; i++) {                
+                if((this[i].Y < y && this[j].Y >= y) || (this[j].Y < y && this[i].Y >= y)) {
+                    if(this[i].X + (y - this[i].Y) / (this[j].Y - this[i].Y) * (this[j].X - this[i].X) < x)
+                        result = !result;                    
+                }
+                j = i;
+            }
+
+            return result;
+        }        
 
 		/// <summary>
 		/// Vektor pøevede na textový øetìzec

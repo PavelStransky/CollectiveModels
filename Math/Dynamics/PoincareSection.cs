@@ -45,7 +45,8 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="numPoints">Poèet bodù øezu</param>
-        public PointVector Compute(Vector initialX, int numPoints) {
+        /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
+        public PointVector Compute(Vector initialX, int numPoints, bool oneOrientation) {
             PointVector result = new PointVector(numPoints);
             int finished = 0;
             Vector x = initialX;
@@ -63,8 +64,10 @@ namespace PavelStransky.Math {
                 step = newStep;
 
                 double newsp = newx * this.plane;
+
+                // jedna èi obì orientace prùchodu
                 if((newsp <= this.crossPoint && sp > this.crossPoint) ||
-                    (sp <= this.crossPoint && newsp > this.crossPoint)) {
+                    (!oneOrientation && sp <= this.crossPoint && newsp > this.crossPoint)) {
                     Vector v = (x - newx) * (sp / (newsp - sp)) + x;
                     result[finished].X = v[this.i1];
                     result[finished].Y = v[this.i2];

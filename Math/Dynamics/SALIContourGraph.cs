@@ -44,8 +44,8 @@ namespace PavelStransky.Math {
 
             Vector w1 = new Vector(initialX.Length);
             Vector w2 = new Vector(initialX.Length);
-            w1[indexG1] = 1;
-            w2[indexG2] = 1;
+            w1[0] = 1;
+            w2[2] = 1;
 
             double step = this.rungeKutta.Precision;
             double time = 0.0;
@@ -72,7 +72,7 @@ namespace PavelStransky.Math {
                     double y = this.x[indexS];
 
                     // Druhá varianta jen v pøípadì, že øežeme X
-                    if((y <= 0 && oldy > 0) || (y > 0 && oldy <= 0 && !isX)) {
+                    if((y <= 0 && oldy > 0) || (!isX && y > 0 && oldy <= 0)) {
                         Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
                         poincareSection[finished].X = v[indexG1];
                         poincareSection[finished].Y = v[indexG2];

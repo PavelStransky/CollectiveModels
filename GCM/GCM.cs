@@ -324,8 +324,8 @@ namespace PavelStransky.GCM {
             Contour contour = new Contour(6);
 
             contour.Begin();
-            for(int i = 1; i < equipotentialDivision; i++) {
-                double gamma = i * System.Math.PI / equipotentialDivision;
+            for(int i = 1; i < vmatrixzerodivision; i++) {
+                double gamma = i * System.Math.PI / vmatrixzerodivision;
                 Vector roots = this.VMatrixPMChange(e, gamma, lowerEV);
                 contour.Add(roots, gamma);
             }
@@ -339,6 +339,6 @@ namespace PavelStransky.GCM {
 
         private const double zeroValue = 10E-7;
         private const int equipotentialDivision = 4001;
-        private const int vmatrixzerodivision = 4001;
+        private const int vmatrixzerodivision = 8765;
     }
 }

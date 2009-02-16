@@ -14,7 +14,21 @@ namespace PavelStransky.Math {
         /// <param name="numIterations">Poèet iterací pro zpøesnìní</param>
         public static Vector ComputeExactBounds(IDynamicalSystem dynamicalSystem, double e, int n1, int n2, int numIterations) {
             // Základní pøibližné meze
-            Vector boundX = 1.2 * dynamicalSystem.Bounds(e);
+            Vector boundX = dynamicalSystem.Bounds(e);
+
+            // Dolní meze násobíme 1.2, pokud jsou záporné, 0.8, pokud jsou kladné
+            for(int i = 0; i < boundX.Length; i += 2) 
+                if(boundX[i] > 0.0)
+                    boundX[i] *= 0.8;
+                else
+                    boundX[i] *= 1.2;
+
+            // Horní meze obrácenì
+            for(int i = 1; i < boundX.Length; i += 2)
+                if(boundX[i] > 0.0)
+                    boundX[i] *= 1.2;
+                else
+                    boundX[i] *= 0.8;
 
             // Nìkolikrát iterujeme pro zpøesnìní mezí (meze X, Vx)
             for(int iteration = 0; iteration < numIterations; iteration++) {

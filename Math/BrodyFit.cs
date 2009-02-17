@@ -28,7 +28,8 @@ namespace PavelStransky.Math {
             
             double result = 0.0;
             for(int i = 0; i < length; i++) {
-                double r = SpecialFunctions.CumulBrody(data[i].X, x) - data[i].Y;
+                double r = (SpecialFunctions.CumulBrody(data[i].X, x) - data[i].Y) / System.Math.Sqrt(data[i].Y);
+//                double r = (SpecialFunctions.CumulBrody(data[i].X, x) - data[i].Y);
                 result += r * r;
             }
 
@@ -36,7 +37,7 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Provede fit a vrátí hodnotu Brodyho parametru
+        /// Provede chi^2 fit a vrátí hodnotu Brodyho parametru
         /// </summary>
         /// <param name="precision">Pøesnost výpoètu</param>
         public double Fit(double precision) {

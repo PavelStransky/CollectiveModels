@@ -149,6 +149,51 @@ namespace PavelStransky.Math {
             return invariant / time;
         }
 
+        /// <summary>
+        /// Vypoèítá závislost Peresova invariantu na èase
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="time">Èas</param>
+        public PointVector TimeDependence(Vector initialX, double time) {
+            PointVector result = new PointVector(defaultNumPoints);
+
+            int finished = 0;
+            
+            Vector x = initialX;
+
+            double step = this.rungeKutta.Precision;
+            double t = 0.0;
+
+            this.rungeKutta.Init(initialX);
+
+            // Nultý krok
+            result[finished].X = t;
+            result[finished].Y = this.dynamicalSystem.PeresInvariant(x);
+            finished++;
+
+            do {
+                double newStep;
+
+                x += this.rungeKutta.Step(x, ref step, out newStep);
+
+                t += step;
+                step = newStep;
+
+                result[finished].X = t;
+                result[finished].Y = this.dynamicalSystem.PeresInvariant(x);
+                finished++;
+
+                if(finished >= result.Length)
+                    result.Length = result.Length * 3 / 2;
+
+            } while(t < time);
+
+            result.Length = finished;
+
+            return result;
+        }
+
+        private const int defaultNumPoints = 500;
         private const string errorMessageBadDimension = "Poèet stupòù volnosti pro výpoèet konturovaného grafu podle SALI musí být rovnen 2.";
     }
 }

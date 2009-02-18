@@ -2681,4 +2681,7 @@ Length of the third object: {2}</value>
   <data name="POneOrientationDescription" xml:space="preserve">
     <value>True if only one orientation of the crossing of the plane shall be considered</value>
   </data>
+  <data name="HelpPeresInvariantT" xml:space="preserve">
+    <value>Calculates the dependence of classical Peres invariant on time for given trajectory</value>
+  </data>
 </root>

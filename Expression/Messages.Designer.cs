@@ -3723,6 +3723,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the dependence of classical Peres invariant on time for given trajectory.
+        /// </summary>
+        internal static string HelpPeresInvariantT {
+            get {
+                return ResourceManager.GetString("HelpPeresInvariantT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Pi number.
         /// </summary>
         internal static string HelpPi {

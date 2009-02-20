@@ -199,12 +199,16 @@ namespace PavelStransky.GCM {
         /// Vytvoøí tøídu ekvipotenciální køivky
         /// </summary>
         /// <param name="e">Energie</param>
-        private Contour CreateContour(double e) {
+        /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
+        private Contour CreateContour(double e, int div) {
             Contour contour = new Contour();
 
+            if(div <= 0)
+                div = defaultDivision;
+
             contour.Begin();
-            for(int i = 1; i < equipotentialDivision; i++) {
-                double gamma = i * System.Math.PI / equipotentialDivision;
+            for(int i = 1; i < div; i++) {
+                double gamma = i * System.Math.PI / div;
                 Vector roots = this.NonzeroRoots(e, gamma);
                 contour.Add(roots, gamma);
             }
@@ -219,20 +223,11 @@ namespace PavelStransky.GCM {
         /// <summary>
         /// Vypoèítá ekvipotenciální køivky
         /// </summary>
-        /// <param name="e">Zadaná energie</param>
-        public PointVector[] EquipotentialContours(double e) {
-            Contour contour = this.CreateContour(e);
-            return contour.GetPointVector();
-        }
-
-        /// <summary>
-        /// Vypoèítá ekvipotenciální køivky
-        /// </summary>
         /// <param name="e">Enegie</param>
         /// <param name="n">Maximální poèet bodù v jedné køivce</param>
-        /// <returns></returns>
-        public PointVector[] EquipotentialContours(double e, int n) {
-            Contour contour = this.CreateContour(e);
+        /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
+        public PointVector[] EquipotentialContours(double e, int n, int div) {
+            Contour contour = this.CreateContour(e, div);
             return contour.GetPointVector(n);
         }
 
@@ -292,7 +287,7 @@ namespace PavelStransky.GCM {
 
             ArrayList a = new ArrayList();
 
-            int l = vmatrixzerodivision / 20;
+            int l = defaultDivision / 20;
             double last = vf.Function(-betamax);
 
             for(int i = 1; i < l; i++) {
@@ -319,13 +314,17 @@ namespace PavelStransky.GCM {
         /// </summary>
         /// <param name="e">Energie</param>
         /// <param name="n">Poèet bodù v jedné køivce</param>
+        /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
         /// <param name="lowerEV">True pokud poèítáme nižší vlastní hodnotu</param>
-        public PointVector[] VMatrixContours(double e, int n, bool lowerEV) {
+        public PointVector[] VMatrixContours(double e, int n, int div, bool lowerEV) {
             Contour contour = new Contour(6);
 
+            if(div <= 0)
+                div = defaultDivision;
+
             contour.Begin();
-            for(int i = 1; i < vmatrixzerodivision; i++) {
-                double gamma = i * System.Math.PI / vmatrixzerodivision;
+            for(int i = 1; i < div; i++) {
+                double gamma = i * System.Math.PI / div;
                 Vector roots = this.VMatrixPMChange(e, gamma, lowerEV);
                 contour.Add(roots, gamma);
             }
@@ -334,11 +333,10 @@ namespace PavelStransky.GCM {
             contour.RemoveShort();
             contour.Join();
 
-            return n > 0 ? contour.GetPointVector(n) : contour.GetPointVector();
+            return contour.GetPointVector(n);
         }
 
         private const double zeroValue = 10E-7;
-        private const int equipotentialDivision = 4001;
-        private const int vmatrixzerodivision = 8765;
+        private const int defaultDivision = 4001;
     }
 }

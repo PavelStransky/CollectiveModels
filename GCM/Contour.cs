@@ -193,37 +193,31 @@ namespace PavelStransky.GCM {
         public PointVector[] GetPointVector(int pvItemNumber) {
             PointVector[] result = new PointVector[this.chains.Count];
 
-            for(int i = 0; i < result.Length; i++) {
-                ArrayList a = (ArrayList)this.chains[i];
+            if(pvItemNumber <= 0) {
+                for(int i = 0; i < result.Length; i++) {
+                    ArrayList a = (ArrayList)this.chains[i];
+                    result[i] = new PointVector(a.Count + 1);
 
-                pvItemNumber = System.Math.Min(pvItemNumber, a.Count);
-                result[i] = new PointVector(pvItemNumber + 1);
+                    for(int j = 0; j < a.Count; j++)
+                        result[i][j] = (PointDPolar)a[j];
 
-                for(int j = 0; j < pvItemNumber; j++)
-                    result[i][j] = (PointDPolar)a[j * a.Count / pvItemNumber];
-
-                // Zacyklení dat
-                result[i][pvItemNumber] = result[i][0];
+                    // Zacyklení dat
+                    result[i][a.Count] = result[i][0];
+                }
             }
+            else {
+                for(int i = 0; i < result.Length; i++) {
+                    ArrayList a = (ArrayList)this.chains[i];
 
-            return result;
-        }
+                    pvItemNumber = System.Math.Min(pvItemNumber, a.Count);
+                    result[i] = new PointVector(pvItemNumber + 1);
 
-        /// <summary>
-        /// Vrátí výsledky jako øadu PointVector
-        /// </summary>
-        public PointVector[] GetPointVector() {
-            PointVector[] result = new PointVector[this.chains.Count];
+                    for(int j = 0; j < pvItemNumber; j++)
+                        result[i][j] = (PointDPolar)a[j * a.Count / pvItemNumber];
 
-            for(int i = 0; i < result.Length; i++) {
-                ArrayList a = (ArrayList)this.chains[i];
-                result[i] = new PointVector(a.Count + 1);
-
-                for(int j = 0; j < a.Count; j++)
-                    result[i][j] = (PointDPolar)a[j];
-
-                // Zacyklení dat
-                result[i][a.Count] = result[i][0];
+                    // Zacyklení dat
+                    result[i][pvItemNumber] = result[i][0];
+                }
             }
 
             return result;

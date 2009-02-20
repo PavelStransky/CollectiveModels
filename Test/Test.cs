@@ -306,7 +306,7 @@ namespace PavelStransky.Test {
         /// </summary>
         private static void PokusGCMContour() {
             ClassicalGCM gcm = new ClassicalGCM(-1, 1, 1, 1);
-            PointVector[] p = gcm.EquipotentialContours(-0.1);
+            PointVector[] p = gcm.EquipotentialContours(-0.1, 0, 0);
 
             FileStream f = new FileStream("c:\\tmp\\gcm.txt", FileMode.Create);
             StreamWriter t = new StreamWriter(f);

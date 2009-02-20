@@ -2684,4 +2684,10 @@ Length of the third object: {2}</value>
   <data name="HelpPeresInvariantT" xml:space="preserve">
     <value>Calculates the dependence of classical Peres invariant on time for given trajectory</value>
   </data>
+  <data name="PDivision" xml:space="preserve">
+    <value>div</value>
+  </data>
+  <data name="PDivisionDescription" xml:space="preserve">
+    <value>Number of points dividing the 2pi interval</value>
+  </data>
 </root>

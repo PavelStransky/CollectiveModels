@@ -43,13 +43,13 @@ namespace PavelStransky.Expression.Functions.Def {
             double minE = extremV[0] + precision;
             double saddleE = extremV[1] - precision;
 
-            if(this.IsConvex(gcm.EquipotentialContours(saddleE)[0]))
+            if(this.IsConvex(gcm.EquipotentialContours(saddleE, 0, 0)[0]))
                 return 0;
 
             // Hledani minima metodou puleni intervalu
             while(System.Math.Abs(saddleE - minE) > precision) {
                 double e = (saddleE + minE) * 0.5;
-                if(this.IsConvex(gcm.EquipotentialContours(e)[0]))
+                if(this.IsConvex(gcm.EquipotentialContours(e, 0, 0)[0]))
                     minE = e;
                 else
                     saddleE = e;

@@ -5478,6 +5478,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to div.
+        /// </summary>
+        internal static string PDivision {
+            get {
+                return ResourceManager.GetString("PDivision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of points dividing the 2pi interval.
+        /// </summary>
+        internal static string PDivisionDescription {
+            get {
+                return ResourceManager.GetString("PDivisionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to d2.
         /// </summary>
         internal static string PDivisor {

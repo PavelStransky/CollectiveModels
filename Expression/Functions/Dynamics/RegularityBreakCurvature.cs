@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
             this.SetParam(1, true, true, true, Messages.PEnergyMin, Messages.PEnergyMinDescription, null, typeof(double));
             this.SetParam(2, true, true, true, Messages.PEnergyMax, Messages.PEnergyMaxDescription, null, typeof(double));
-            this.SetParam(3, false, true, false, Messages.P3Equipotential, Messages.P3EquipotentialDescription, 0, typeof(int));
+            this.SetParam(3, false, true, false, Messages.PDivision, Messages.PDivisionDescription, 0, typeof(int));
             this.SetParam(4, false, true, true, Messages.PPrecisionEnergy, Messages.PPrecisionEnergyDescription, defaultPrecision, typeof(double));
         }
 
@@ -30,7 +30,7 @@ namespace PavelStransky.Expression.Functions.Def {
             double emin = (double)arguments[1];
             double emax = (double)arguments[2];
 
-            int n = (int)arguments[3];
+            int div = (int)arguments[3];
 
             double precisione = (double)arguments[4];
 
@@ -43,10 +43,10 @@ namespace PavelStransky.Expression.Functions.Def {
                 guider.Write(string.Format("E = {0}...", e));
 
                 guider.Write("E");
-                PointVector[] equipotential = gcm.EquipotentialContours(e, n);
+                PointVector[] equipotential = gcm.EquipotentialContours(e, 0, div);
 
                 guider.Write("V");
-                PointVector[] vzero = gcm.VMatrixContours(e, n, true);
+                PointVector[] vzero = gcm.VMatrixContours(e, 0, div, true);
 
                 int el = equipotential.Length;
                 int vl = vzero.Length;

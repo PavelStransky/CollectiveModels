@@ -13,11 +13,12 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpEquipotential; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(3);
+            this.SetNumParams(4);
 
             this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
-            this.SetParam(2, false, true, false, Messages.P3Equipotential, Messages.P3EquipotentialDescription, null, typeof(int));
+            this.SetParam(2, false, true, false, Messages.P3Equipotential, Messages.P3EquipotentialDescription, 0, typeof(int));
+            this.SetParam(3, false, true, false, Messages.PDivision, Messages.PDivisionDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -25,10 +26,7 @@ namespace PavelStransky.Expression.Functions.Def {
             double e = (double)arguments[1];
 
             PointVector[] equipotentials;
-            if(arguments[2] != null)
-                equipotentials = gcm.EquipotentialContours(e, (int)arguments[2]);
-            else
-                equipotentials = gcm.EquipotentialContours(e);
+            equipotentials = gcm.EquipotentialContours(e, (int)arguments[2], (int)arguments[3]);
 
             int length = equipotentials.Length;
             TArray result = new TArray(typeof(PointVector), length);

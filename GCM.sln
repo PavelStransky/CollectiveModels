@@ -22,9 +22,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManyBody", "ManyBody\ManyBody.csproj", "{89B81AB2-D8A5-4A88-9A1D-43B09E9DC4F5}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{96EED724-E19D-4E34-BE7E-D98962DE0526}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 12
+		SccNumberOfProjects = 13
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Expression\\Expression.csproj
 		SccProjectName1 = \u0022$/CollectiveModels/Expression\u0022,\u0020OBAAAAAA
@@ -59,6 +61,9 @@ Global
 		SccProjectUniqueName11 = ManyBody\\ManyBody.csproj
 		SccLocalPath11 = .
 		SccProjectFilePathRelativizedFromConnection11 = ManyBody\\
+		SccProjectUniqueName12 = Setup\\Setup.vdproj
+		SccLocalPath12 = .
+		SccProjectFilePathRelativizedFromConnection12 = Setup\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -241,6 +246,16 @@ Global
 		{89B81AB2-D8A5-4A88-9A1D-43B09E9DC4F5}.Release|Win32.ActiveCfg = Release|Any CPU
 		{89B81AB2-D8A5-4A88-9A1D-43B09E9DC4F5}.Release|x86.ActiveCfg = Release|x86
 		{89B81AB2-D8A5-4A88-9A1D-43B09E9DC4F5}.Release|x86.Build.0 = Release|x86
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Debug|.NET.ActiveCfg = Debug
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Debug|Any CPU.ActiveCfg = Debug
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Debug|Win32.ActiveCfg = Debug
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Debug|x86.ActiveCfg = Debug
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|.NET.ActiveCfg = Release
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|Any CPU.ActiveCfg = Release
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|Mixed Platforms.ActiveCfg = Release
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|Win32.ActiveCfg = Release
+		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

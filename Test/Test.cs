@@ -4,6 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using System.Xml;
+
 using PavelStransky.Core;
 using PavelStransky.IBM;
 using PavelStransky.Math;
@@ -20,11 +22,36 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusMinimumBrody();
+            Test.PokusXML();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 5.3.2009
+        /// </summary>
+        static void PokusXML() {
+            XmlDocument doc = new XmlDocument();
+
+            XmlElement lesson = doc.CreateElement("Lesson");
+            XmlAttribute attless = doc.CreateAttribute("Number");
+            attless.Value = "1";
+
+            lesson.SetAttributeNode(attless);
+
+            XmlElement e = doc.CreateElement("Expression");
+            e.InnerText = "Hallo";
+            lesson.AppendChild(e);
+
+            e = doc.CreateElement("Meaning");
+            e.InnerText = "Nazdar";
+            lesson.AppendChild(e);
+
+            doc.AppendChild(lesson);
+
+            doc.Save("c:\\tmp.xml");
+        }
 
         static void PokusMinimumBrody() {
             double result = 0.0;

@@ -2690,4 +2690,13 @@ Length of the third object: {2}</value>
   <data name="PDivisionDescription" xml:space="preserve">
     <value>Number of points dividing the 2pi interval</value>
   </data>
+  <data name="HelpList" xml:space="preserve">
+    <value>Creates a list of all parameters</value>
+  </data>
+  <data name="P3PointVector" xml:space="preserve">
+    <value>p</value>
+  </data>
+  <data name="P3PointVectorDescription" xml:space="preserve">
+    <value>Other points</value>
+  </data>
 </root>

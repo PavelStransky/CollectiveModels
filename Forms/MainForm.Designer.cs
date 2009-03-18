@@ -74,26 +74,26 @@ namespace PavelStransky.Forms {
             this.mnFileSaveAs,
             this.mnFileSeparator2,
             this.mnExit});
-            this.mnFile.Text = "&Soubor";
+            this.mnFile.Text = "&File";
             // 
             // mnFileNew
             // 
             this.mnFileNew.Index = 0;
             this.mnFileNew.Shortcut = System.Windows.Forms.Shortcut.CtrlN;
-            this.mnFileNew.Text = "&Nové";
+            this.mnFileNew.Text = "&New";
             this.mnFileNew.Click += new System.EventHandler(this.mnFileNew_Click);
             // 
             // mnFileOpen
             // 
             this.mnFileOpen.Index = 1;
             this.mnFileOpen.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
-            this.mnFileOpen.Text = "&Otevøít...";
+            this.mnFileOpen.Text = "&Open...";
             this.mnFileOpen.Click += new System.EventHandler(this.mnFileOpen_Click);
             // 
             // mnFileClose
             // 
             this.mnFileClose.Index = 2;
-            this.mnFileClose.Text = "&Zavøít";
+            this.mnFileClose.Text = "&Close";
             this.mnFileClose.Click += new System.EventHandler(this.mnFileClose_Click);
             // 
             // mnFileSeparator1
@@ -105,13 +105,13 @@ namespace PavelStransky.Forms {
             // 
             this.mnFileSave.Index = 4;
             this.mnFileSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
-            this.mnFileSave.Text = "&Uložit";
+            this.mnFileSave.Text = "&Save";
             this.mnFileSave.Click += new System.EventHandler(this.mnFileSave_Click);
             // 
             // mnFileSaveAs
             // 
             this.mnFileSaveAs.Index = 5;
-            this.mnFileSaveAs.Text = "&Uložit jako...";
+            this.mnFileSaveAs.Text = "Save &as...";
             this.mnFileSaveAs.Click += new System.EventHandler(this.mnFileSaveAs_Click);
             // 
             // mnFileSeparator2
@@ -122,7 +122,7 @@ namespace PavelStransky.Forms {
             // mnExit
             // 
             this.mnExit.Index = 7;
-            this.mnExit.Text = "&Konec";
+            this.mnExit.Text = "&Exit";
             this.mnExit.Click += new System.EventHandler(this.mnExit_Click);
             // 
             // mnSettings
@@ -131,18 +131,18 @@ namespace PavelStransky.Forms {
             this.mnSettings.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.mnSetttingsRegistry,
             this.mnSettingsPlaySounds});
-            this.mnSettings.Text = "&Nastavení";
+            this.mnSettings.Text = "&Settings";
             // 
             // mnSetttingsRegistry
             // 
             this.mnSetttingsRegistry.Index = 0;
-            this.mnSetttingsRegistry.Text = "&Registrace ve Windows";
+            this.mnSetttingsRegistry.Text = "&Registration in Windows";
             this.mnSetttingsRegistry.Click += new System.EventHandler(this.mnSetttingsRegistry_Click);
             // 
             // mnSettingsPlaySounds
             // 
             this.mnSettingsPlaySounds.Index = 1;
-            this.mnSettingsPlaySounds.Text = "&Pøehrávat zvuky";
+            this.mnSettingsPlaySounds.Text = "S&ounds";
             this.mnSettingsPlaySounds.Click += new System.EventHandler(this.mnSettingsPlaySounds_Click);
             // 
             // mnWindow
@@ -154,36 +154,36 @@ namespace PavelStransky.Forms {
             this.mnTileHorizontal,
             this.mnTileVertical,
             this.mnArrangeIcons});
-            this.mnWindow.Text = "&Okno";
+            this.mnWindow.Text = "&Window";
             // 
             // MnCascade
             // 
             this.MnCascade.Index = 0;
-            this.MnCascade.Text = "&Uspoøádat";
+            this.MnCascade.Text = "&Cascade";
             this.MnCascade.Click += new System.EventHandler(this.MnCascade_Click);
             // 
             // mnTileHorizontal
             // 
             this.mnTileHorizontal.Index = 1;
-            this.mnTileHorizontal.Text = "&Vodorovnì";
+            this.mnTileHorizontal.Text = "Tile h&orizontally";
             this.mnTileHorizontal.Click += new System.EventHandler(this.mnTileHorizontal_Click);
             // 
             // mnTileVertical
             // 
             this.mnTileVertical.Index = 2;
-            this.mnTileVertical.Text = "&Svisle";
+            this.mnTileVertical.Text = "Tile &vertically";
             this.mnTileVertical.Click += new System.EventHandler(this.mnTileVertical_Click);
             // 
             // mnArrangeIcons
             // 
             this.mnArrangeIcons.Index = 3;
-            this.mnArrangeIcons.Text = "Seøadit &ikony";
+            this.mnArrangeIcons.Text = "&Arrange icons";
             this.mnArrangeIcons.Click += new System.EventHandler(this.mnArrangeIcons_Click);
             // 
             // mnHideToTray
             // 
             this.mnHideToTray.Index = 3;
-            this.mnHideToTray.Text = "S&krýt";
+            this.mnHideToTray.Text = "&Hide";
             this.mnHideToTray.Click += new System.EventHandler(this.mnHideToTray_Click);
             // 
             // openFileDialog

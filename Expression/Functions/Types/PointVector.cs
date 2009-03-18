@@ -13,16 +13,18 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpPointVector; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(2);
+            this.SetNumParams(3, true);
 
             this.SetParam(0, true, true, false, Messages.P1PointVector, Messages.P1PointVectorDescription, null,
                 typeof(Vector), typeof(List), typeof(TArray), typeof(PointD));
             this.SetParam(1, false, true, false, Messages.P2PointVector, Messages.P2PointVectorDescription, null, 
                 typeof(Vector), typeof(PointD));
+            this.SetParam(2, false, true, false, Messages.P3PointVector, Messages.P3PointVectorDescription, null,
+                typeof(PointD));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            if(arguments[1] == null) {
+            if(arguments[1] == null) { // Jen jeden argument
                 if(arguments[0] is Vector)
                     return new PointVector(arguments[0] as Vector);
 
@@ -64,7 +66,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     }
                 }
             }
-            else {
+            else if(arguments[2] == null) { // Dva argumenty
                 if(arguments[0] is Vector) {
                     Vector v1 = arguments[0] as Vector;
                     Vector v2 = arguments[1] as Vector;
@@ -93,6 +95,17 @@ namespace PavelStransky.Expression.Functions.Def {
                     }
                     return result;
                 }
+            }
+            else { // Více než dva argumenty
+                PointVector result = new PointVector(arguments.Count);
+                int i = 0;
+                foreach(object o in arguments) {
+                    if(o is PointD)
+                        result[i++] = (PointD)o;
+                    else
+                        this.BadTypeError(o, i);
+                }
+                return result;
             }
 
             return null;

@@ -37,7 +37,7 @@ namespace PavelStransky.Forms {
             this.rbNew.Size = new System.Drawing.Size(55, 17);
             this.rbNew.TabIndex = 7;
             this.rbNew.TabStop = true;
-            this.rbNew.Text = "Nové";
+            this.rbNew.Text = "New";
             this.rbNew.UseVisualStyleBackColor = false;
 
             this.Controls.Add(this.rbNew);

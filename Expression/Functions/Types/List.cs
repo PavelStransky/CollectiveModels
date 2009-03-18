@@ -5,12 +5,16 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Z argumentù funkce vytvoøí seznam
+    /// Creates a list of all parameters
     /// </summary>
     public class FnList: Fnc {
         public override string Name { get { return name; } }
-        public override string Help { get { return help; } }
-        public override string ParametersHelp { get { return parameters; } }
+        public override string Help { get { return Messages.HelpList; } }
+
+        protected override void CreateParameters() {
+            this.SetNumParams(1, true);
+            this.SetParam(0, false, true, false, Messages.PItem, Messages.PItemDescription, null);
+        }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             List result = new List();
@@ -22,7 +26,5 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         private const string name = "list";
-        private const string help = "Z argumentù funkce vytvoøí seznam (List)";
-        private const string parameters = "prvky seznamu";
     }
 }

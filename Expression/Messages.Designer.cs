@@ -3534,6 +3534,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a list of all parameters.
+        /// </summary>
+        internal static string HelpList {
+            get {
+                return ResourceManager.GetString("HelpList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logarithm of the value (with specified base).
         /// </summary>
         internal static string HelpLog {
@@ -4979,6 +4988,24 @@ namespace PavelStransky.Expression {
         internal static string P3PoincareDescription {
             get {
                 return ResourceManager.GetString("P3PoincareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to p.
+        /// </summary>
+        internal static string P3PointVector {
+            get {
+                return ResourceManager.GetString("P3PointVector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other points.
+        /// </summary>
+        internal static string P3PointVectorDescription {
+            get {
+                return ResourceManager.GetString("P3PointVectorDescription", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>
-    /// V bodu nebo vektoru bodù prohodí souøadnice X a Y
+    /// Swaps X and Y coordinates in a Point or PointVector
     /// </summary>
     public class SwapXY : FunctionDefinition {
         public override string Help { get { return help; } }

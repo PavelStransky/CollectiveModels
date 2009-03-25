@@ -6,52 +6,51 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
-    /// Array of Vectors or Array of PointVectors joins into one Vector
+    /// Joins 1D Arrays into one array
 	/// </summary>
-	public class Join: Fnc {
-		public override string Help {get {return Messages.HelpJoin;}}
+	public class JoinArray: Fnc {
+		public override string Help {get {return Messages.HelpJoinArray;}}
 
         protected override void CreateParameters() {
             this.SetNumParams(1, true);
-
-            this.SetParam(0, true, true, false, Messages.P1Join, Messages.P1JoinDescription, null, typeof(Vector), typeof(PointVector), typeof(TArray));
+            this.SetParam(0, true, true, false, Messages.P1JoinArray, Messages.P1JoinArrayDescription, null, typeof(TArray));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            object item = arguments[0];
+            int count = arguments.Count;
+            int items = 0;
+            Type type = null;
 
-            if(item is Vector || item is PointVector)
-                return item;
+            for(int i = 0; i < count; i++) {
+                if(!(arguments[i] is TArray))
+                    this.BadTypeError(arguments[i], i);
 
-            TArray ta = item as TArray;
+                TArray a = arguments[i] as TArray;
+                if(type == null)
+                    type = a.GetItemType();
 
-            if(ta.GetItemType() == typeof(Vector)) {
-                int length = ta.GetNumElements();
-                Vector[]vector = new Vector[length];
+                if(a.Rank > 1)
+                    throw new FncException(Messages.EMNot1D, string.Format(Messages.EMRankDetail, a.Rank));
 
-                ta.ResetEnumerator();
+                if(type != a.GetItemType())
+                    throw new FncException(Messages.EMBadArrayItemType,
+                        string.Format(Messages.EMBadArrayItemTypeDetail, type, a.GetItemType()));
 
-                int i = 0;
-                foreach(Vector v in ta)
-                    vector[i++] = v;
-
-                return Vector.Join(vector);
+                items += a.GetNumElements();
             }
 
-            else if(ta.GetItemType() == typeof(PointVector)) {
-                int length = ta.GetNumElements();
-                PointVector[] vector = new PointVector[length];
+            TArray result = new TArray(type, items);
+            int ri = 0;
 
-                ta.ResetEnumerator();
+            for(int i = 0; i < count; i++) {
+                TArray a = arguments[i] as TArray;
+                int length = a.Length;
 
-                int i = 0;
-                foreach(PointVector v in ta)
-                    vector[i++] = v;
-
-                return PointVector.Join(vector);
+                for(int j = 0; j < length; j++)
+                    result[ri++] = a[j];
             }
 
-            return null;
+            return result;
         }
-	}
+    }
 }

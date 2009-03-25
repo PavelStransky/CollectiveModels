@@ -1098,8 +1098,8 @@ Length of the second vector: {1}</value>
   <data name="HelpJacobi" xml:space="preserve">
     <value>Eigensystem of a matrix calculated using Jacobi method; before calculation it makes symmetrization of a matrix</value>
   </data>
-  <data name="HelpJoin" xml:space="preserve">
-    <value>Array of vectors or array of pointVectors joins into one Vector</value>
+  <data name="HelpJoinArray" xml:space="preserve">
+    <value>Joins 1D Arrays into one array</value>
   </data>
   <data name="HelpLaguerre" xml:space="preserve">
     <value>Value of the Laguerre polynomial</value>
@@ -1479,10 +1479,10 @@ Length of the second vector: {1}</value>
   <data name="P1IntegrateDescription" xml:space="preserve">
     <value>Curve</value>
   </data>
-  <data name="P1Join" xml:space="preserve">
-    <value>v</value>
+  <data name="P1JoinArray" xml:space="preserve">
+    <value>a</value>
   </data>
-  <data name="P1JoinDescription" xml:space="preserve">
+  <data name="P1JoinArrayDescription" xml:space="preserve">
     <value>Data to be joined</value>
   </data>
   <data name="P1Merge" xml:space="preserve">
@@ -2713,5 +2713,12 @@ Length of the third object: {2}</value>
   </data>
   <data name="P1SwapXYDescription" xml:space="preserve">
     <value>Object with x and y coordinates</value>
+  </data>
+  <data name="EMBadArrayItemType" xml:space="preserve">
+    <value>Objects in the arrays must have the same type.</value>
+  </data>
+  <data name="EMBadArrayItemTypeDetail" xml:space="preserve">
+    <value>First differing type: {0}
+Second differing type: {1}</value>
   </data>
 </root>

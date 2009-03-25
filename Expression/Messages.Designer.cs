@@ -98,6 +98,25 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Objects in the arrays must have the same type..
+        /// </summary>
+        internal static string EMBadArrayItemType {
+            get {
+                return ResourceManager.GetString("EMBadArrayItemType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First differing type: {0}
+        ///Second differing type: {1}.
+        /// </summary>
+        internal static string EMBadArrayItemTypeDetail {
+            get {
+                return ResourceManager.GetString("EMBadArrayItemTypeDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It is possible to assign only to variable or indexer, not to &apos;{0}&apos;..
         /// </summary>
         internal static string EMBadAssignment {
@@ -3390,11 +3409,11 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Array of vectors or array of pointVectors joins into one Vector.
+        ///   Looks up a localized string similar to Joins 1D Arrays into one array.
         /// </summary>
-        internal static string HelpJoin {
+        internal static string HelpJoinArray {
             get {
-                return ResourceManager.GetString("HelpJoin", resourceCulture);
+                return ResourceManager.GetString("HelpJoinArray", resourceCulture);
             }
         }
         
@@ -4722,20 +4741,20 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to v.
+        ///   Looks up a localized string similar to a.
         /// </summary>
-        internal static string P1Join {
+        internal static string P1JoinArray {
             get {
-                return ResourceManager.GetString("P1Join", resourceCulture);
+                return ResourceManager.GetString("P1JoinArray", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Data to be joined.
         /// </summary>
-        internal static string P1JoinDescription {
+        internal static string P1JoinArrayDescription {
             get {
-                return ResourceManager.GetString("P1JoinDescription", resourceCulture);
+                return ResourceManager.GetString("P1JoinArrayDescription", resourceCulture);
             }
         }
         

@@ -20,7 +20,8 @@ namespace PavelStransky.Expression.Functions.Def {
             List result = new List();
 
             foreach(object o in arguments)
-                result.Add(o);
+                if(o != null)
+                    result.Add(o);
 
             return result;
         }

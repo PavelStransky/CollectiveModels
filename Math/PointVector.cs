@@ -573,12 +573,34 @@ namespace PavelStransky.Math {
             }
 
             return result;
-        }        
+        }
 
-		/// <summary>
-		/// Vektor pøevede na textový øetìzec
-		/// </summary>
-		public override string ToString() {
+        /// <summary>
+        /// Pointvector pøetvoøí do tvaru schodu
+        /// </summary>
+        public PointVector StairsX() {
+            int length = this.Length;
+            if(length <= 1)
+                return (PointVector)this.Clone();
+
+            double x = this[0].X - (this[1].X - this[0].X) / 2;
+
+            PointVector result = new PointVector(2 * length);
+            for(int i = 0; i < length; i++) {
+                result[2 * i] = new PointD(x, this[i].Y);
+                if(i < length - 1)
+                    x = this[i].X + (this[i + 1].X - this[i].X) / 2;
+                else
+                    x = this[i].X + (this[i].X - this[i - 1].X) / 2;
+                result[2 * i + 1] = new PointD(x, this[i].Y);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Vektor pøevede na textový øetìzec
+        /// </summary>
+        public override string ToString() {
 			StringBuilder result = new StringBuilder();
 
 			for(int i = 0; i < this.Length; i++) {

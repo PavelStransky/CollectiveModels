@@ -2373,7 +2373,7 @@ Length of the second vector: {1}</value>
   <data name="EMTypeInFile" xml:space="preserve">
     <value>Type of the items of the array cannot be '{0}'.</value>
   </data>
-  <data name="HelpArrayFileToColumn" xml:space="preserve">
+  <data name="HelpArrayFileToColumns" xml:space="preserve">
     <value>Text file of an array reform is such way that the items will be in the columns</value>
   </data>
   <data name="HelpPT3" xml:space="preserve">
@@ -2409,7 +2409,7 @@ Length of the second vector: {1}</value>
   <data name="PQuantumSystemDescription" xml:space="preserve">
     <value>Quantum system</value>
   </data>
-  <data name="HelpArrayFileToColumnY" xml:space="preserve">
+  <data name="HelpArrayFileToColumnsY" xml:space="preserve">
     <value>Text file of an array reform is such way that the items will be in the columns</value>
   </data>
   <data name="PNumberXItems" xml:space="preserve">
@@ -2698,5 +2698,20 @@ Length of the third object: {2}</value>
   </data>
   <data name="P3PointVectorDescription" xml:space="preserve">
     <value>Other points</value>
+  </data>
+  <data name="HelpArrayFileToColumn" xml:space="preserve">
+    <value>Text file of an array reform is such way that the items will be in one column separated by an empty line</value>
+  </data>
+  <data name="HelpStairsX" xml:space="preserve">
+    <value>Creates stairs from a pointvector</value>
+  </data>
+  <data name="HelpSwapXY" xml:space="preserve">
+    <value>Swaps X and Y coordinates</value>
+  </data>
+  <data name="P1SwapXY" xml:space="preserve">
+    <value>xy</value>
+  </data>
+  <data name="P1SwapXYDescription" xml:space="preserve">
+    <value>Object with x and y coordinates</value>
   </data>
 </root>

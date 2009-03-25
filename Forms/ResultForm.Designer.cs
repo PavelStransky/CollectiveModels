@@ -36,7 +36,7 @@ namespace PavelStransky.Forms {
             this.lblCommand.Name = "lblCommand";
             this.lblCommand.Size = new System.Drawing.Size(49, 13);
             this.lblCommand.TabIndex = 0;
-            this.lblCommand.Text = "Pøíkaz:";
+            this.lblCommand.Text = "Command:";
             // 
             // txtCommand
             // 
@@ -60,7 +60,7 @@ namespace PavelStransky.Forms {
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(62, 13);
             this.lblResult.TabIndex = 2;
-            this.lblResult.Text = "Výsledek:";
+            this.lblResult.Text = "Result:";
             // 
             // txtResult
             // 
@@ -85,7 +85,7 @@ namespace PavelStransky.Forms {
             this.btInterrupt.Name = "btInterrupt";
             this.btInterrupt.Size = new System.Drawing.Size(86, 22);
             this.btInterrupt.TabIndex = 4;
-            this.btInterrupt.Text = "Pøerušit";
+            this.btInterrupt.Text = "Interrupt";
             this.btInterrupt.UseVisualStyleBackColor = true;
             this.btInterrupt.Visible = false;
             this.btInterrupt.Click += new System.EventHandler(this.btInterrupt_Click);
@@ -97,7 +97,7 @@ namespace PavelStransky.Forms {
             this.lblComputing.Name = "lblComputing";
             this.lblComputing.Size = new System.Drawing.Size(129, 13);
             this.lblComputing.TabIndex = 5;
-            this.lblComputing.Text = "Aktuální poèítaný pøíkaz:";
+            this.lblComputing.Text = "Actual calculated expression:";
             this.lblComputing.Visible = false;
             // 
             // btPause
@@ -107,7 +107,7 @@ namespace PavelStransky.Forms {
             this.btPause.Name = "btPause";
             this.btPause.Size = new System.Drawing.Size(82, 22);
             this.btPause.TabIndex = 6;
-            this.btPause.Text = "Pozastavit";
+            this.btPause.Text = "Pause";
             this.btPause.UseVisualStyleBackColor = true;
             this.btPause.Visible = false;
             this.btPause.Click += new System.EventHandler(this.btPause_Click);
@@ -120,7 +120,7 @@ namespace PavelStransky.Forms {
             this.btContinue.Name = "btContinue";
             this.btContinue.Size = new System.Drawing.Size(82, 22);
             this.btContinue.TabIndex = 7;
-            this.btContinue.Text = "Pokraèovat";
+            this.btContinue.Text = "Continue";
             this.btContinue.UseVisualStyleBackColor = true;
             this.btContinue.Visible = false;
             this.btContinue.Click += new System.EventHandler(this.btContinue_Click);
@@ -132,7 +132,7 @@ namespace PavelStransky.Forms {
             this.btRecalculate.Name = "btRecalculate";
             this.btRecalculate.Size = new System.Drawing.Size(126, 22);
             this.btRecalculate.TabIndex = 8;
-            this.btRecalculate.Text = "Znovu spoèítat";
+            this.btRecalculate.Text = "Calculate again";
             this.btRecalculate.UseVisualStyleBackColor = true;
             this.btRecalculate.Visible = false;
             this.btRecalculate.Click += new System.EventHandler(this.btRecalculate_Click);
@@ -147,7 +147,7 @@ namespace PavelStransky.Forms {
             this.chkAsync.Name = "chkAsync";
             this.chkAsync.Size = new System.Drawing.Size(125, 17);
             this.chkAsync.TabIndex = 9;
-            this.chkAsync.Text = "Poèítat asynchronnì";
+            this.chkAsync.Text = "Asynchronous calculation";
             this.chkAsync.UseVisualStyleBackColor = true;
             // 
             // chkWrap
@@ -158,7 +158,7 @@ namespace PavelStransky.Forms {
             this.chkWrap.Name = "chkWrap";
             this.chkWrap.Size = new System.Drawing.Size(76, 17);
             this.chkWrap.TabIndex = 10;
-            this.chkWrap.Text = "Zalamovat";
+            this.chkWrap.Text = "Wrap";
             this.chkWrap.UseVisualStyleBackColor = true;
             this.chkWrap.CheckedChanged += new System.EventHandler(this.chkWrap_CheckedChanged);
             // 
@@ -171,7 +171,7 @@ namespace PavelStransky.Forms {
             this.lblLblStartTime.Name = "lblLblStartTime";
             this.lblLblStartTime.Size = new System.Drawing.Size(107, 13);
             this.lblLblStartTime.TabIndex = 11;
-            this.lblLblStartTime.Text = "Zaèátek výpoètu:";
+            this.lblLblStartTime.Text = "Calculation start time:";
             // 
             // lblStartTime
             // 
@@ -192,7 +192,7 @@ namespace PavelStransky.Forms {
             this.lblLblDuration.Name = "lblLblDuration";
             this.lblLblDuration.Size = new System.Drawing.Size(41, 13);
             this.lblLblDuration.TabIndex = 13;
-            this.lblLblDuration.Text = "Doba:";
+            this.lblLblDuration.Text = "Duration:";
             // 
             // lblDuration
             // 
@@ -232,7 +232,7 @@ namespace PavelStransky.Forms {
             this.Name = "ResultForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Výpoèet...";
+            this.Text = "Calculation...";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.ResultForm_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.ResultForm_DragEnter);
             this.ResumeLayout(false);

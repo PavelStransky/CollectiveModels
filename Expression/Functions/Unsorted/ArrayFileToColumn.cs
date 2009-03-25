@@ -9,10 +9,10 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Text file of an array reform is such way that the items will be in the columns
+    /// Text file of an array reform is such a way that the items will be in one column separated by an empty line
     /// </summary>
-    public class ArrayFileToColumns: FncIE {
-        public override string Help { get { return Messages.HelpArrayFileToColumns; } }
+    public class ArrayFileToColumn: FncIE {
+        public override string Help { get { return Messages.HelpArrayFileToColumn; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
@@ -33,6 +33,7 @@ namespace PavelStransky.Expression.Functions.Def {
             int[] index = new int[rank];
             string []sindex = tr.ReadLine().Trim().Split('\t');
 
+            // Total number of elements in an array
             int count = 1;
             for(int i = 0; i < rank; i++) {
                 index[i] = int.Parse(sindex[i]);
@@ -44,51 +45,23 @@ namespace PavelStransky.Expression.Functions.Def {
             if(type1 != typeof(Vector).FullName && type1 != typeof(PointVector).FullName)
                 throw new ExpressionException(string.Format(Messages.EMTypeInFile, type1));
 
-            ArrayList lines = new ArrayList();
-            lines.Add(new StringBuilder());
-            int cl = 1;
+            FileStream g = new FileStream(arguments[1] as string, FileMode.Create);
+            StreamWriter tw = new StreamWriter(g);
 
             for(int i = 0; i < count; i++) {
                 int nitems = int.Parse(tr.ReadLine());
 
-                for(int j = 0; j < nitems; j++) {
-                    StringBuilder line;
-                    string rline = tr.ReadLine();
+                for(int j = 0; j < nitems; j++) 
+                    tw.WriteLine(tr.ReadLine());
 
-                    int tabs0 = (lines[0] as StringBuilder).ToString().Split('\t').Length - rline.Trim().Split('\t').Length;
-
-                    if(cl <= j) {
-                        line = new StringBuilder();
-                        line.Append('\t', tabs0);
-                        lines.Add(line);
-                        cl++;
-                    }
-                    else {
-                        line = lines[j] as StringBuilder;
-
-                        if(j != 0) {
-                            int tabs1 = (lines[j] as StringBuilder).ToString().Split('\t').Length;
-                            line.Append('\t', tabs0 - tabs1 + 1);
-                        }
-                        else if(line.Length != 0)
-                            line.Append('\t');
-                    }
-
-                    line.Append(rline);
-                }
+                tw.WriteLine();
             }
 
             tr.Close();
             f.Close();
 
-            f = new FileStream(arguments[1] as string, FileMode.Create);
-            StreamWriter tw = new StreamWriter(f);
-
-            foreach(StringBuilder l in lines)
-                tw.WriteLine(l);
-
             tw.Close();
-            f.Close();
+            g.Close();
 
             return null;
         }

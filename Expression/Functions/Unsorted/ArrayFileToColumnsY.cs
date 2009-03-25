@@ -11,8 +11,8 @@ namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Text file of an array reform is such a way that the items will be in the columns
     /// </summary>
-    public class ArrayFileToColumnY: FncIE {
-        public override string Help { get { return Messages.HelpArrayFileToColumnY; } }
+    public class ArrayFileToColumnsY: FncIE {
+        public override string Help { get { return Messages.HelpArrayFileToColumnsY; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(3);

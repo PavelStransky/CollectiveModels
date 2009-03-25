@@ -2535,7 +2535,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Text file of an array reform is such way that the items will be in the columns.
+        ///   Looks up a localized string similar to Text file of an array reform is such way that the items will be in one column separated by an empty line.
         /// </summary>
         internal static string HelpArrayFileToColumn {
             get {
@@ -2546,9 +2546,18 @@ namespace PavelStransky.Expression {
         /// <summary>
         ///   Looks up a localized string similar to Text file of an array reform is such way that the items will be in the columns.
         /// </summary>
-        internal static string HelpArrayFileToColumnY {
+        internal static string HelpArrayFileToColumns {
             get {
-                return ResourceManager.GetString("HelpArrayFileToColumnY", resourceCulture);
+                return ResourceManager.GetString("HelpArrayFileToColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text file of an array reform is such way that the items will be in the columns.
+        /// </summary>
+        internal static string HelpArrayFileToColumnsY {
+            get {
+                return ResourceManager.GetString("HelpArrayFileToColumnsY", resourceCulture);
             }
         }
         
@@ -4326,6 +4335,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates stairs from a pointvector.
+        /// </summary>
+        internal static string HelpStairsX {
+            get {
+                return ResourceManager.GetString("HelpStairsX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sum of all elements in the object.
         /// </summary>
         internal static string HelpSum {
@@ -4349,6 +4367,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSumSquare {
             get {
                 return ResourceManager.GetString("HelpSumSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swaps X and Y coordinates.
+        /// </summary>
+        internal static string HelpSwapXY {
+            get {
+                return ResourceManager.GetString("HelpSwapXY", resourceCulture);
             }
         }
         
@@ -4781,6 +4808,24 @@ namespace PavelStransky.Expression {
         internal static string P1RegressionDescription {
             get {
                 return ResourceManager.GetString("P1RegressionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xy.
+        /// </summary>
+        internal static string P1SwapXY {
+            get {
+                return ResourceManager.GetString("P1SwapXY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Object with x and y coordinates.
+        /// </summary>
+        internal static string P1SwapXYDescription {
+            get {
+                return ResourceManager.GetString("P1SwapXYDescription", resourceCulture);
             }
         }
         

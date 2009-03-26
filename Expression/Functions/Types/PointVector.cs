@@ -64,6 +64,8 @@ namespace PavelStransky.Expression.Functions.Def {
                         else
                             this.BadTypeError(o, 0);
                     }
+
+                    return result;
                 }
             }
             else if(arguments[2] == null) { // Dva argumenty

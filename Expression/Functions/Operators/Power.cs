@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(string), 
                 typeof(LongNumber), typeof(LongFraction));
             this.SetParam(1, true, true, false, Messages.PExponent, Messages.PExponentDescription, null,
-                typeof(int), typeof(double));
+                typeof(int), typeof(double), typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -32,6 +32,16 @@ namespace PavelStransky.Expression.Functions.Def {
                     return (int)System.Math.Pow((int)left, (int)right);
                 else if(right is double)
                     return System.Math.Pow((int)left, (double)right);
+                else if(right is Vector) {
+                    Vector v = right as Vector;
+                    int length = v.Length;
+
+                    Vector result = new Vector(length);
+                    for(int i = 0; i < length; i++)
+                        result[i] = System.Math.Pow((int)left, v[i]);
+
+                    return result;
+                }
             }
 
             else if(left is double) {
@@ -39,6 +49,16 @@ namespace PavelStransky.Expression.Functions.Def {
                     return System.Math.Pow((double)left, (int)right);
                 else if(right is double)
                     return System.Math.Pow((double)left, (double)right);
+                else if(right is Vector) {
+                    Vector v = right as Vector;
+                    int length = v.Length;
+
+                    Vector result = new Vector(length);
+                    for(int i = 0; i < length; i++)
+                        result[i] = System.Math.Pow((double)left, v[i]);
+
+                    return result;
+                }
             }
 
             else if(left is LongNumber) {

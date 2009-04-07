@@ -26,7 +26,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             string type = tr.ReadLine().Trim();
             if(type != typeof(TArray).FullName)
-                throw new ExpressionException(Messages.EMArrayInFile, string.Format(Messages.EMArrayInFileDetail, type));
+                throw new FncException(this, Messages.EMArrayInFile, string.Format(Messages.EMArrayInFileDetail, type));
 
             int rank = int.Parse(tr.ReadLine());
 
@@ -43,7 +43,7 @@ namespace PavelStransky.Expression.Functions.Def {
             string type1 = tr.ReadLine().Trim();
 
             if(type1 != typeof(Vector).FullName && type1 != typeof(PointVector).FullName)
-                throw new ExpressionException(string.Format(Messages.EMTypeInFile, type1));
+                throw new FncException(this, string.Format(Messages.EMTypeInFile, type1));
 
             FileStream g = new FileStream(arguments[1] as string, FileMode.Create);
             StreamWriter tw = new StreamWriter(g);

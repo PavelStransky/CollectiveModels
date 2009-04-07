@@ -45,7 +45,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     }
 
             if(gi == null) 
-                throw new FncException(string.Format(Messages.EMBadParameterName, name));
+                throw new FncException(this, string.Format(Messages.EMBadParameterName, name));
 
             result.Append(' ');
             result.Append('\'');

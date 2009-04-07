@@ -30,8 +30,8 @@ namespace PavelStransky.Forms {
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.btStart = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tHelp = new System.Windows.Forms.Timer(this.components);
             this.chkHighlightSyntax = new System.Windows.Forms.CheckBox();
+            this.tHelp = new System.Windows.Forms.Timer(this.components);
             this.mrbResult = new PavelStransky.Forms.MultipleRadioButton();
             this.txtCommand = new PavelStransky.Forms.CommandTextBox();
             this.SuspendLayout();
@@ -46,17 +46,13 @@ namespace PavelStransky.Forms {
             this.btStart.Text = ">";
             this.toolTip.SetToolTip(this.btStart, "Spustit výpoèet (F5)");
             this.btStart.UseVisualStyleBackColor = true;
+            this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
             // toolTip
             // 
             this.toolTip.AutoPopDelay = 20000;
             this.toolTip.InitialDelay = 500;
             this.toolTip.ReshowDelay = 100;
-            // 
-            // tHelp
-            // 
-            this.tHelp.Interval = 150;
-            this.tHelp.Tick += new System.EventHandler(this.tHelp_Tick);
             // 
             // chkHighlightSyntax
             // 
@@ -69,6 +65,11 @@ namespace PavelStransky.Forms {
             this.toolTip.SetToolTip(this.chkHighlightSyntax, "Zvýrazòování syntaxe");
             this.chkHighlightSyntax.UseVisualStyleBackColor = true;
             this.chkHighlightSyntax.CheckedChanged += new System.EventHandler(this.chkHighlightSyntax_CheckedChanged);
+            // 
+            // tHelp
+            // 
+            this.tHelp.Interval = 150;
+            this.tHelp.Tick += new System.EventHandler(this.tHelp_Tick);
             // 
             // mrbResult
             // 
@@ -97,10 +98,10 @@ namespace PavelStransky.Forms {
             this.txtCommand.TabIndex = 6;
             this.txtCommand.Text = "";
             this.txtCommand.WordWrap = false;
+            this.txtCommand.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtCommand_MouseDown);
             this.txtCommand.ExecuteCommand += new PavelStransky.Forms.CommandTextBox.ExecuteCommandEventHandler(this.txtCommand_ExecuteCommand);
             this.txtCommand.HighlightItemPointed += new PavelStransky.Forms.CommandTextBox.HighlightItemPointedEventHandler(this.txtCommand_HighlightItemPointed);
             this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
-            this.txtCommand.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtCommand_MouseDown);
             // 
             // Editor
             // 

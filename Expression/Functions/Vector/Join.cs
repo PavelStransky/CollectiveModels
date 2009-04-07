@@ -30,10 +30,12 @@ namespace PavelStransky.Expression.Functions.Def {
                     type = a.GetItemType();
 
                 if(a.Rank > 1)
-                    throw new FncException(Messages.EMNot1D, string.Format(Messages.EMRankDetail, a.Rank));
+                    throw new FncException(this, Messages.EMNot1D, string.Format(Messages.EMRankDetail, a.Rank));
 
                 if(type != a.GetItemType())
-                    throw new FncException(Messages.EMBadArrayItemType,
+                    throw new FncException(
+                        this,
+                        Messages.EMBadArrayItemType,
                         string.Format(Messages.EMBadArrayItemTypeDetail, type, a.GetItemType()));
 
                 items += a.GetNumElements();

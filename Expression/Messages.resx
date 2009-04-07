@@ -2721,4 +2721,10 @@ Length of the third object: {2}</value>
     <value>First differing type: {0}
 Second differing type: {1}</value>
   </data>
+  <data name="EMBadFunctionName" xml:space="preserve">
+    <value>Unknown function '{0}'.</value>
+  </data>
+  <data name="EMFunctionExists" xml:space="preserve">
+    <value>Function '{0}' already exists in the dictionary and cannot be added.</value>
+  </data>
 </root>

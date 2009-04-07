@@ -546,6 +546,14 @@ namespace PavelStransky.Forms {
             this.txtCommand.Highlighting = this.chkHighlightSyntax.Checked;
         }
 
+        /// <summary>
+        /// Tlaèítko spuštìní výpoètu
+        /// </summary>
+        private void btStart_Click(object sender, EventArgs e) {
+            this.txtCommand.RunSelectedText();
+            this.txtCommand.Focus();
+        }
+
         #region Nápovìda pomocí ToolTipu
         // Objekt, ze kterého se bude zobrazovat toolTip
         private Highlight.HighlightItem toolTipItem;

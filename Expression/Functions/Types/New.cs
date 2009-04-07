@@ -22,7 +22,15 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         private object EvaluateOne(Guider guider, ArrayList arguments, int start) {
-            Type t = Atom.ParseType(arguments[start] as string);
+            Type t;
+
+            try {
+                t = Atom.ParseType(arguments[start] as string);
+            }
+            catch(Exception e) {
+                // Nepodaøilo se urèit typ promìnné
+                throw new FncException(this, e.Message);
+            }
 
             if(t == typeof(int)) {
                 int i = 0;

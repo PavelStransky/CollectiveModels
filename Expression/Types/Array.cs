@@ -640,13 +640,13 @@ namespace PavelStransky.Expression {
         /// <param name="enumType">Typ enumerátoru</param>
         public void SetEnumerator(TArrayEnumType enumType) {
             if(enumType == TArrayEnumType.Vector && this.type != typeof(double) && this.type != typeof(int))
-                throw new TArrayException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double), this.type));
+                throw new ListException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double), this.type));
 
             if(enumType == TArrayEnumType.Matrix) {
                 if(this.type != typeof(double) && this.type != typeof(int))
-                    throw new TArrayException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double), this.type));
+                    throw new ListException(errorMessageBadType, string.Format(errorMessageBadTypeDetail, typeof(double), this.type));
                 if(this.Rank < 2)
-                    throw new TArrayException(errorMessageBadRank);
+                    throw new ListException(errorMessageBadRank);
             }
 
             this.enumType = enumType;
@@ -787,29 +787,5 @@ namespace PavelStransky.Expression {
 
         private const string errorMessageShrink = "It is not possible to shrink in dimension {0}.";
         private static string errorMessageShrinkDetail = "There must be only one element." + Environment.NewLine + "Number of elements: {0}";
-    }
-
-    /// <summary>
-    /// Výjimka pøi provádìní øady
-    /// </summary>
-    public class TArrayException: DetailException {
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="message">Text chybového hlášení</param>
-        public TArrayException(string message) : base(message) { }
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="message">Text chybového hlášení</param>
-        public TArrayException(string message, Exception innerException) : base(message, innerException) { }
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="message">Text chybového hlášení</param>
-        /// <param name="detailMessage">Detail chyby</param>
-        public TArrayException(string message, string detailMessage) : base(message, detailMessage) { }
     }
 }

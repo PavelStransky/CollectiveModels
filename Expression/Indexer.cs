@@ -472,7 +472,7 @@ namespace PavelStransky.Expression {
 
                 if(type == typeof(int)) {
                     if(!ta.Is1D)
-                        throw new ExpressionException(string.Format(errorMessageBadIndexRank, ta.Rank),
+                        throw new IndexerException(string.Format(errorMessageBadIndexRank, ta.Rank),
                             string.Format(errorMessageDetail, this.expression));
 
                     int length = ta.GetNumElements();
@@ -490,7 +490,7 @@ namespace PavelStransky.Expression {
                 }
             }
 
-            throw new ExpressionException(string.Format(errorMessageBadIndexType, depth, type.FullName),
+            throw new IndexerException(string.Format(errorMessageBadIndexType, depth, type.FullName),
                 string.Format(errorMessageDetail, this.expression));
         }
 
@@ -500,7 +500,7 @@ namespace PavelStransky.Expression {
 		/// <param name="needed">Poèet potøebných indexù</param>
 		/// <param name="count">Poèet zadaných indexù</param>
 		private object ManyIndexesError(int needed, int count) {
-			throw new ExpressionException(string.Format(errorMessageManyIndexes, count, needed),
+			throw new IndexerException(string.Format(errorMessageManyIndexes, count, needed),
 				string.Format(errorMessageDetail, this.expression));
 		}
 

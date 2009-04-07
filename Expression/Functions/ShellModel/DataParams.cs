@@ -70,7 +70,7 @@ namespace PavelStransky.Expression {
                 if(context.Contains(name)) {
                     object value = context[name];
                     if(value.GetType() != this.types[i] as Type)
-                        throw new ExpressionException(string.Format(Messages.EMBadParamType, name),
+                        throw new ParamsException(string.Format(Messages.EMBadParamType, name),
                             string.Format(Messages.EMBadParamTypeDetail, (this.types[i] as Type).FullName, (value.GetType()).FullName));
                     this.values[i] = value;
                 }

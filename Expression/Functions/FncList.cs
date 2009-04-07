@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions {
 		public Fnc this[string functionName] {
 			get {
 				if(!this.Contains(functionName))
-					throw new FncException(string.Format(errorMessageBadFunctionName, functionName));
+					throw new FncListException(string.Format(Messages.EMBadFunctionName, functionName));
 				else
 					return base[functionName] as Fnc;
 			}
@@ -26,11 +26,8 @@ namespace PavelStransky.Expression.Functions {
 			string functionName = function.Name.ToLower();
 
 			if(this.Contains(functionName))
-				throw new FncException(string.Format(errorMessageFunctionExists, functionName));
+				throw new FncListException(string.Format(Messages.EMFunctionExists, functionName));
 			this.Add(functionName, function);
 		}
-
-		private const string errorMessageBadFunctionName = "Neznámá funkce '{0}'.";
-		private const string errorMessageFunctionExists = "Funkce '{0}' již ve slovníku funckcí existuje.";
 	}
 }

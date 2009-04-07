@@ -43,11 +43,11 @@ namespace PavelStransky.Expression {
         /// <param name="fileName">Name of the file</param>
         public void Read(string fileName) {
             if(fileName == null || fileName == string.Empty)
-                throw new ExpressionException(Messages.EMNoFile);
+                throw new FileDataException(Messages.EMNoFile);
 
             FileInfo fInfo = new FileInfo(fileName);
             if(!fInfo.Exists)
-                throw new ExpressionException(string.Format(Messages.EMFileNotExist, fileName));
+                throw new FileDataException(string.Format(Messages.EMFileNotExist, fileName));
 
             FileStream f = new FileStream(fileName, FileMode.Open);
 
@@ -79,7 +79,7 @@ namespace PavelStransky.Expression {
         /// <param name="fileName">Name of the file</param>
         public void Write(string fileName) {
             if(fileName == null || fileName == string.Empty)
-                throw new ExpressionException(Messages.EMNoFile);
+                throw new FileDataException(Messages.EMNoFile);
 
             FileStream f = new FileStream(fileName, FileMode.Create);
 

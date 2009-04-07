@@ -267,15 +267,29 @@ namespace PavelStransky.Forms {
         /// <param name="exc">Vyjímka</param>
         private void CatchException(Exception exc) {
             DetailException dexc = exc as DetailException;
-            ExpressionException eexc = exc as ExpressionException;
+            PositionTextException pexc = exc as PositionTextException;
 
             if(WinMain.PlaySounds)
                 soundFailure.Play();
 
-            if(eexc != null)
-                MessageBox.Show(this, string.Format("{0}\n\n{1}\n\nPozice: {2}, {3}", eexc.Message, eexc.DetailMessage, eexc.Position1, eexc.Position2));
+            if(pexc != null) {
+                string[] s = pexc.TextParts();
+                    StringBuilder e = new StringBuilder();
+                e.Append(s[0]);
+                if(s.Length > 1)
+                {
+                    e.Append("\n->");
+                    e.Append(s[1]);
+                }
+                if(s.Length > 2)
+                {
+                    e.Append("<-\n");
+                    e.Append(s[2]);
+                }
+                MessageBox.Show(this, string.Format("{0}\n\n{1}", pexc.GetText("\n\n"), e.ToString()), Messages.EMCalculationError);
+            }
             else if(dexc != null)
-                MessageBox.Show(this, string.Format("{0}\n\n{1}", dexc.Message, dexc.DetailMessage));
+                MessageBox.Show(this, dexc.GetText("\n\n"));
             else
                 MessageBox.Show(this, exc.Message);
 

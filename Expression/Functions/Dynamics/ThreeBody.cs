@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Vector m = arguments[0] as Vector;
             if(m.Length != 3)
-                throw new FncException(string.Format(Messages.EMBadPMasses, 3, m.Length));
+                throw new FncException(this, string.Format(Messages.EMBadPMasses, 3, m.Length));
             return new ThreeBody(m);
         }
 

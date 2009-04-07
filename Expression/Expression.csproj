@@ -138,7 +138,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtomException.cs" />
     <Compile Include="ExpressionException.cs" />
+    <Compile Include="FileDataException.cs" />
+    <Compile Include="FncListException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
@@ -200,6 +203,12 @@
     <Compile Include="Functions\Vector\Stairs.cs" />
     <Compile Include="Functions\Vector\SwapXY.cs" />
     <Compile Include="Functions\Vector\TSIntegrate.cs" />
+    <Compile Include="IndexerException.cs" />
+    <Compile Include="ParamsException.cs" />
+    <Compile Include="ParseException.cs" />
+    <Compile Include="PositionTextException.cs" />
+    <Compile Include="ListException.cs" />
+    <Compile Include="TArrayException.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
     <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />
@@ -525,6 +534,7 @@
     <Compile Include="Variable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VariableException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages.resx">

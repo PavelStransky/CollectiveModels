@@ -74,7 +74,9 @@ namespace PavelStransky.Expression.Functions.Def {
                     Vector v2 = arguments[1] as Vector;
 
                     if(v1.Length != v2.Length)
-                        throw new FncException(string.Format(Messages.EMNotEqualVectorLength, this.Name),
+                        throw new FncException(
+                            this,
+                            string.Format(Messages.EMNotEqualVectorLength, this.Name),
                             string.Format(Messages.EMNotEqualVectorLengthDetail, v1.Length, v2.Length));
 
                     PointVector result = new PointVector(v1.Length);

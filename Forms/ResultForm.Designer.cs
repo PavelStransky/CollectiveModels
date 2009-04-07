@@ -34,7 +34,7 @@ namespace PavelStransky.Forms {
             this.lblCommand.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblCommand.Location = new System.Drawing.Point(4, 0);
             this.lblCommand.Name = "lblCommand";
-            this.lblCommand.Size = new System.Drawing.Size(49, 13);
+            this.lblCommand.Size = new System.Drawing.Size(65, 13);
             this.lblCommand.TabIndex = 0;
             this.lblCommand.Text = "Command:";
             // 
@@ -58,7 +58,7 @@ namespace PavelStransky.Forms {
             this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblResult.Location = new System.Drawing.Point(4, 150);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(62, 13);
+            this.lblResult.Size = new System.Drawing.Size(47, 13);
             this.lblResult.TabIndex = 2;
             this.lblResult.Text = "Result:";
             // 
@@ -95,9 +95,9 @@ namespace PavelStransky.Forms {
             this.lblComputing.AutoSize = true;
             this.lblComputing.Location = new System.Drawing.Point(4, 150);
             this.lblComputing.Name = "lblComputing";
-            this.lblComputing.Size = new System.Drawing.Size(129, 13);
+            this.lblComputing.Size = new System.Drawing.Size(159, 13);
             this.lblComputing.TabIndex = 5;
-            this.lblComputing.Text = "Actual calculated expression:";
+            this.lblComputing.Text = "Output of calculated expression:";
             this.lblComputing.Visible = false;
             // 
             // btPause
@@ -145,7 +145,7 @@ namespace PavelStransky.Forms {
             this.chkAsync.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAsync.Location = new System.Drawing.Point(8, 323);
             this.chkAsync.Name = "chkAsync";
-            this.chkAsync.Size = new System.Drawing.Size(125, 17);
+            this.chkAsync.Size = new System.Drawing.Size(147, 17);
             this.chkAsync.TabIndex = 9;
             this.chkAsync.Text = "Asynchronous calculation";
             this.chkAsync.UseVisualStyleBackColor = true;
@@ -154,9 +154,9 @@ namespace PavelStransky.Forms {
             // 
             this.chkWrap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkWrap.AutoSize = true;
-            this.chkWrap.Location = new System.Drawing.Point(285, 323);
+            this.chkWrap.Location = new System.Drawing.Point(309, 323);
             this.chkWrap.Name = "chkWrap";
-            this.chkWrap.Size = new System.Drawing.Size(76, 17);
+            this.chkWrap.Size = new System.Drawing.Size(52, 17);
             this.chkWrap.TabIndex = 10;
             this.chkWrap.Text = "Wrap";
             this.chkWrap.UseVisualStyleBackColor = true;
@@ -169,7 +169,7 @@ namespace PavelStransky.Forms {
             this.lblLblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblLblStartTime.Location = new System.Drawing.Point(5, 350);
             this.lblLblStartTime.Name = "lblLblStartTime";
-            this.lblLblStartTime.Size = new System.Drawing.Size(107, 13);
+            this.lblLblStartTime.Size = new System.Drawing.Size(130, 13);
             this.lblLblStartTime.TabIndex = 11;
             this.lblLblStartTime.Text = "Calculation start time:";
             // 
@@ -177,7 +177,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStartTime.AutoSize = true;
-            this.lblStartTime.Location = new System.Drawing.Point(106, 350);
+            this.lblStartTime.Location = new System.Drawing.Point(139, 350);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(52, 13);
             this.lblStartTime.TabIndex = 12;
@@ -190,7 +190,7 @@ namespace PavelStransky.Forms {
             this.lblLblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblLblDuration.Location = new System.Drawing.Point(200, 350);
             this.lblLblDuration.Name = "lblLblDuration";
-            this.lblLblDuration.Size = new System.Drawing.Size(41, 13);
+            this.lblLblDuration.Size = new System.Drawing.Size(59, 13);
             this.lblLblDuration.TabIndex = 13;
             this.lblLblDuration.Text = "Duration:";
             // 
@@ -198,7 +198,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(235, 350);
+            this.lblDuration.Location = new System.Drawing.Point(265, 350);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(47, 13);
             this.lblDuration.TabIndex = 14;

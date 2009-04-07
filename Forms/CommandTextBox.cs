@@ -43,6 +43,52 @@ namespace PavelStransky.Forms {
         }
 
         /// <summary>
+        /// Kontroluje text, který má být spuštìn, na syntaktickou správnost
+        /// </summary>
+        private string CheckTextForExecution() {
+            // Pokud je délka výbìru 0, spustíme aktuální pøíkaz, jinak spouštíme výbìr
+            if(this.SelectionLength == 0) {
+                int selectionStart = this.SelectionStart;
+
+                // Zaèátek pøíkazu
+                int commandStart = selectionStart + 1;
+                do {
+                    commandStart = this.PreviousIndexOf(this.Text, semicolon, commandStart - 1);
+                    if(commandStart < 0)
+                        commandStart = 0;
+                } while(Atom.IsInBracket(this.Text, commandStart));
+
+                while(this.Text[commandStart] == semicolon)
+                    commandStart++;
+
+                int commandEnd = selectionStart - 1;
+                do {
+                    commandEnd = this.NextIndexOf(this.Text, semicolon, commandEnd + 1);
+                    if(commandEnd < 0)
+                        commandEnd = this.Text.Length;
+                } while(Atom.IsInBracket(this.Text.Substring(commandStart, commandEnd - commandStart), 0) && commandEnd != this.Text.Length);
+
+                while(commandEnd != this.Text.Length && this.Text[commandEnd] == semicolon)
+                    commandEnd++;
+
+                if(this.Text[commandEnd - 1] != semicolon)
+                    throw new Exception(errorMessageNotClosed);
+
+                this.SelectionStart = commandStart;
+                this.SelectionLength = commandEnd - commandStart;
+            }
+
+            return this.SelectedText;
+        }
+
+        /// <summary>
+        /// Spustí oznaèený text
+        /// </summary>
+        public void RunSelectedText() {
+            this.OnExecuteCommand(new ExecuteCommandEventArgs(this.CheckTextForExecution(), false));
+        }
+
+        /// <summary>
         /// Pøi stisknutém tlaèítku
         /// </summary>
         protected override void OnKeyDown(KeyEventArgs e) {
@@ -51,39 +97,7 @@ namespace PavelStransky.Forms {
             base.OnKeyDown(e);
 
             if(!e.Alt && !e.Shift && e.KeyValue == 116) {
-                // Pokud je délka výbìru 0, spustíme aktuální pøíkaz, jinak spouštíme výbìr
-                if(this.SelectionLength == 0) {
-                    int selectionStart = this.SelectionStart;
-
-                    // Zaèátek pøíkazu
-                    int commandStart = selectionStart + 1;
-                    do {
-                        commandStart = this.PreviousIndexOf(this.Text, semicolon, commandStart - 1);
-                        if(commandStart < 0)
-                            commandStart = 0;
-                    } while(Atom.IsInBracket(this.Text, commandStart));
-
-                    while(this.Text[commandStart] == semicolon)
-                        commandStart++;
-
-                    int commandEnd = selectionStart - 1;
-                    do {
-                        commandEnd = this.NextIndexOf(this.Text, semicolon, commandEnd + 1);
-                        if(commandEnd < 0)
-                            commandEnd = this.Text.Length;
-                    } while(Atom.IsInBracket(this.Text.Substring(commandStart, commandEnd - commandStart), 0) && commandEnd != this.Text.Length);
-
-                    while(commandEnd != this.Text.Length && this.Text[commandEnd] == semicolon)
-                        commandEnd++;
-
-                    if(this.Text[commandEnd - 1] != semicolon)
-                        throw new Exception(errorMessageNotClosed);
-
-                    this.SelectionStart = commandStart;
-                    this.SelectionLength = commandEnd - commandStart;
-                }
-
-                this.OnExecuteCommand(new ExecuteCommandEventArgs(this.SelectedText, e.Control));
+                this.OnExecuteCommand(new ExecuteCommandEventArgs(this.CheckTextForExecution(), e.Control));
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }

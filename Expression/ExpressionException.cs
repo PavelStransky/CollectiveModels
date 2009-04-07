@@ -8,44 +8,34 @@ namespace PavelStransky.Expression {
     /// <summary>
     /// Výjimka ve tøídì Expression
     /// </summary>
-    public class ExpressionException: DetailException {
-        private int position1 = -1;
-        private int position2 = -1;
+    public class ExpressionException: PositionTextException {
+        private Expression expression = null;
 
         /// <summary>
         /// Konstruktor
         /// </summary>
+        /// <param name="expression">Výraz</param>
         /// <param name="message">Text chybového hlášení</param>
         /// <param name="position">Pozice chyby</param>
-        public ExpressionException(string message, params int[] position)
-            : base(message) {
-            if(position.Length > 0)
-                this.position1 = position[0];
-            if(position.Length > 1)
-                this.position2 = position[1];
-        }
+        public ExpressionException(Expression expression, string message, params int[] position)
+            : base(expression.Expression, message, position) {
+            this.expression = expression;
+       }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
+        /// <param name="expression">Výraz</param>
         /// <param name="message">Text chybového hlášení</param>
         /// <param name="position">Pozice chyby</param>
-        public ExpressionException(string message, string detailMessage, params int[] position)
-            : base(message, detailMessage) {
-            if(position.Length > 0)
-                this.position1 = position[0];
-            if(position.Length > 1)
-                this.position2 = position[1];
+        public ExpressionException(Expression expression, string message, string detailMessage, params int[] position)
+            : base(expression.Expression, message, detailMessage, position) {
+            this.expression = expression;
         }
 
         /// <summary>
-        /// Pozice chyby (zaèátek)
+        /// Výraz
         /// </summary>
-        public int Position1 { get { return this.position1; } }
-
-        /// <summary>
-        /// Pozice chyby (konec)
-        /// </summary>
-        public int Position2 { get { return this.position2; } }
+        public Expression Expression { get { return this.expression; } }
     }
 }

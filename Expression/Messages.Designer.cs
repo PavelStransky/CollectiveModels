@@ -135,6 +135,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown function &apos;{0}&apos;..
+        /// </summary>
+        internal static string EMBadFunctionName {
+            get {
+                return ResourceManager.GetString("EMBadFunctionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter &apos;{0}&apos; in graph parameters has bad type..
         /// </summary>
         internal static string EMBadGraphParamType {
@@ -250,6 +259,15 @@ namespace PavelStransky.Expression {
         internal static string EMFileNotExist {
             get {
                 return ResourceManager.GetString("EMFileNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Function &apos;{0}&apos; already exists in the dictionary and cannot be added..
+        /// </summary>
+        internal static string EMFunctionExists {
+            get {
+                return ResourceManager.GetString("EMFunctionExists", resourceCulture);
             }
         }
         

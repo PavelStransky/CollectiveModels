@@ -39,7 +39,7 @@ namespace PavelStransky.Expression.Functions {
                 fileStream.Close();
             }
             catch {
-                throw new ExpressionException(string.Format(errorMessageFunctionNotExists, this.fncName));
+                throw new FncException(this, string.Format(errorMessageFunctionNotExists, this.fncName));
             }
 
             Expression e = new Expression(fileText);

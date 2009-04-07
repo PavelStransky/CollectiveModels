@@ -171,7 +171,7 @@ namespace PavelStransky.Expression.Functions {
                 if(o == null)
                     evaluatedArguments[i] = p.DefaultValue;
                 if(o == null && p.Obligatory && i < l)
-                    throw new FncException(string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
+                    throw new FncException(this, string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
 
                 if(p.IntToDouble)
                     this.ConvertInt2Double(evaluatedArguments, i);
@@ -184,7 +184,7 @@ namespace PavelStransky.Expression.Functions {
                 ParameterItem p = this.parameters[j];
 
                 if(p.Obligatory)
-                    throw new FncException(string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
+                    throw new FncException(this, string.Format(Messages.EMObligatoryParameter, p.Name, i, this.Name));
 
                 evaluatedArguments.Add(p.DefaultValue);
             }
@@ -198,6 +198,7 @@ namespace PavelStransky.Expression.Functions {
         protected void CheckArgumentsMinNumber(ArrayList args, int number) {
             if(args.Count < number)
                 throw new FncException(
+                    this,
                     string.Format(Messages.EMFewArgs, this.Name),
                     string.Format(Messages.EMInvalidNumberArgsDetail, number, args.Count));
         }
@@ -210,6 +211,7 @@ namespace PavelStransky.Expression.Functions {
         protected void CheckArgumentsMaxNumber(ArrayList args, int number) {
             if(args.Count > number)
                 throw new FncException(
+                    this,
                     string.Format(Messages.EMManyArgs, this.Name),
                     string.Format(Messages.EMInvalidNumberArgsDetail, number, args.Count));
         }
@@ -222,6 +224,7 @@ namespace PavelStransky.Expression.Functions {
         protected void CheckArgumentsNumber(ArrayList args, int number) {
             if(args.Count != number)
                 throw new FncException(
+                    this,
                     string.Format(Messages.EMInvalidNumberArgs, this.Name),
                     string.Format(Messages.EMInvalidNumberArgsDetail, number, args.Count));
         }
@@ -265,10 +268,12 @@ namespace PavelStransky.Expression.Functions {
                 } while(at != null);
 
                 throw new FncException(
+                    this,
                     string.Format(Messages.EMBadParamType, i + 1, this.Name),
                     string.Format(Messages.EMBadParamTypeDetail, type.FullName, at.FullName));
             }
             throw new FncException(
+                this,
                 string.Format(Messages.EMBadParamType, i + 1, this.Name),
                 string.Format(Messages.EMBadParamTypeDetail, type.FullName, t.FullName));
         }
@@ -322,6 +327,7 @@ namespace PavelStransky.Expression.Functions {
             }
 
             throw new FncException(
+                this,
                 string.Format(Messages.EMBadParamType, i + 1, this.Name),
                 string.Format(Messages.EMBadParamTypeDetail, ts, (args[i] is TArray && evaluateArray) ? (args[i] as TArray).GetItemType() : args[i].GetType()));
         }
@@ -407,6 +413,7 @@ namespace PavelStransky.Expression.Functions {
         protected void CheckArrayLengths(TArray a1, TArray a2) {
             if(!TArray.IsEqualDimension(a1, a2)) 
                 throw new FncException(
+                    this,
                     string.Format(Messages.EMBadArrayDimensions, this.Name),
                     string.Format(Messages.EMBadArrayDimensionsDetail, a1.LengthsString(), a2.LengthsString()));
         }
@@ -484,6 +491,7 @@ namespace PavelStransky.Expression.Functions {
 		/// <param name="item">Prvek</param>
 		protected object BadTypeError(object item, int i) {
 			throw new FncException(
+                this,
                 string.Format(Messages.EMBadParamType, i + 1, this.Name),
 				string.Format(Messages.EMBadParamTypeDetail, this.parameters[i].TypesNames, item.GetType().FullName));
 		}

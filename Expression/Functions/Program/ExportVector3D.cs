@@ -39,7 +39,9 @@ namespace PavelStransky.Expression.Functions.Def {
                 int lengthZ = z.Length;
 
                 if(lengthX != lengthY && lengthX != lengthZ)
-                    throw new FncException(Messages.EMNotEqualLength,
+                    throw new FncException(
+                        this,
+                        Messages.EMNotEqualLength,
                         string.Format(Messages.EMNotEqualLengthDetail3, lengthX, lengthY, lengthZ));
 
                 for(int i = 0; i < lengthX; i++)

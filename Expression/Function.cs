@@ -38,7 +38,7 @@ namespace PavelStransky.Expression
                 this.function = functions[fncName];
 
             else if((this.function = Functions.UserFnc.CreateUserFunction(fncName)) == null)
-                throw new ExpressionException(string.Format(errorMessageFunctionNotExists, fncName));
+                throw new AtomException(expression, string.Format(errorMessageFunctionNotExists, fncName));
 
             foreach(string s in (parts[1] as ArrayList))
 				this.arguments.Add(this.CreateAtomObject(s));

@@ -180,6 +180,7 @@ namespace PavelStransky.Expression.Functions {
             foreach(int[] i in this.reversedCompatibility) {
                 if(lengths[2 * i[0]] >= 0 && lengths[2 * i[1]] >= 0)
                     throw new FncException(
+                        this,
                         string.Format(Messages.EMParametersCompatibility, this.Name, this.Parameters[0].Types[i[0]].FullName, this.Parameters[0].Types[i[1]].FullName));
             }
         }
@@ -194,7 +195,9 @@ namespace PavelStransky.Expression.Functions {
         /// <returns>New length</returns>
         private int SetLength(int oldLength, int newLength, bool checkSize, Type type) {
             if(checkSize && oldLength != newLength && oldLength >= 0)
-                throw new FncException(string.Format(Messages.EMParametersDifferentLength, this.Name, type.FullName),
+                throw new FncException(
+                    this,
+                    string.Format(Messages.EMParametersDifferentLength, this.Name, type.FullName),
                     string.Format(Messages.EMParametersDifferentLengthDetail, oldLength, newLength));
 
             return System.Math.Max(oldLength, newLength);
@@ -207,6 +210,7 @@ namespace PavelStransky.Expression.Functions {
         /// <param name="right">Pravý výraz</param>
         protected object BadTypeCompatibility(object left, object right) {
             throw new FncException(
+                this,
                 string.Format(Messages.EMParametersCompatibility, this.Name, left.GetType().FullName, right.GetType().FullName));
         }
     }

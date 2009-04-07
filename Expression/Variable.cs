@@ -1,5 +1,7 @@
 using System;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Expression {
 	/// <summary>
 	/// Promìnná
@@ -29,7 +31,7 @@ namespace PavelStransky.Expression {
         private void CheckName(string name) {
             // No space
             if(name.IndexOf(' ') >= 0)
-                throw new ExpressionException(string.Format(Messages.EMBadVariableName, name), Messages.EMBadVariableNameNoSpace);
+                throw new VariableException(string.Format(Messages.EMBadVariableName, name), Messages.EMBadVariableNameNoSpace);
 
             int length = name.Length;
             for(int i = 0; i < length; i++) {
@@ -40,7 +42,7 @@ namespace PavelStransky.Expression {
                     || c == '_' 
                     || (i > 0 && ((c >= '1' && c <= '9')
                         || c == '0' || c == '-'))))
-                    throw new ExpressionException(string.Format(Messages.EMBadVariableName, name),
+                    throw new VariableException(string.Format(Messages.EMBadVariableName, name),
                         string.Format(Messages.EMBadVariableNameInvalidCharacter, c, i));
             }
         }

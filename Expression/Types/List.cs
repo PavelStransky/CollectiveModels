@@ -64,7 +64,7 @@ namespace PavelStransky.Expression {
             int count = this.Count;
 
             if(this.Count == 0)
-                throw new ExpressionException(Messages.EMZeroLengthList);
+                throw new ListException(Messages.EMZeroLengthList);
 
             bool isDouble = false;
             bool isInt = false;
@@ -80,7 +80,7 @@ namespace PavelStransky.Expression {
             }
 
             if(isOther && (isDouble || isInt))
-                throw new ExpressionException(Messages.EMListToArrayConvert);
+                throw new ListException(Messages.EMListToArrayConvert);
 
             TArray result;
             if(isDouble)
@@ -115,7 +115,7 @@ namespace PavelStransky.Expression {
                 if(t == null)
                     t = o.GetType();
                 else if(t != o.GetType())
-                    throw new ExpressionException(Messages.EMNotEqualTypes);
+                    throw new ListException(Messages.EMNotEqualTypes);
             }
 
             return t;

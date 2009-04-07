@@ -128,6 +128,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     resultt = (DateTime)arguments[0] - (DateTime)arguments[1];
                 else
                     throw new FncException(
+                        this,
                         string.Format(Messages.EMManyArgs, this.Name),
                         string.Format(Messages.EMInvalidNumberArgsDetail, 2, count));
 

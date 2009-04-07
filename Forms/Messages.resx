@@ -120,6 +120,9 @@
   <data name="EMBadFileName" xml:space="preserve">
     <value>Bad file name: '{0}'</value>
   </data>
+  <data name="EMCalculationError" xml:space="preserve">
+    <value>Calculation error</value>
+  </data>
   <data name="TSaveAllAnim" xml:space="preserve">
     <value>Save data of all graph items as (animated) GIF</value>
   </data>

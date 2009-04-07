@@ -123,7 +123,8 @@ namespace PavelStransky.Expression {
                             SyntaxPosition.AfterValue, SyntaxPosition.AfterVariableOrFunction)
                             && k == 1)))
                             highlight.Add(HighlightTypes.Error, i,
-                                new ExpressionException(
+                                new AtomException(
+                                    e,
                                     Messages.EMInvalidBracketPosition,
                                     string.Format(Messages.EMInvalidBracketPositionDetail, openBracketChars[k]),
                                     i));
@@ -146,14 +147,16 @@ namespace PavelStransky.Expression {
                     else if(e[i] == closeBracketChars[k]) {
                         if(CheckPositionType(position, SyntaxPosition.AfterOperator))
                             highlight.Add(HighlightTypes.Error, i,
-                                new ExpressionException(
+                                new AtomException(
+                                    e,
                                     Messages.EMInvalidBracketPosition,
                                     string.Format(Messages.EMInvalidBracketPositionDetail, closeBracketChars[k]),
                                     i));
 
                         if(numBrackets.Count == 1)
                             highlight.Add(HighlightTypes.Error, i,
-                                new ExpressionException(
+                                new AtomException(
+                                    e,
                                     Messages.EMInvalidBracketPosition,
                                     string.Format(Messages.EMInvalidBracketPositionDetailCloseBeforeOpen, closeBracketChars[k], openBracketChars[k]),
                                     i));
@@ -169,7 +172,8 @@ namespace PavelStransky.Expression {
                             for(int l = 0; l < n; l++)
                                 if(nb[l] != nbp[l]) {
                                     highlight.Add(HighlightTypes.Error, i,
-                                        new ExpressionException(
+                                        new AtomException(
+                                            e,
                                             Messages.EMInvalidBracketPosition,
                                             string.Format(Messages.EMInvalidBracketPositionDetailBracketMixing, openBracketChars[(k + 1) % 2], closeBracketChars[k]),
                                             i, nbp[n]));
@@ -206,7 +210,8 @@ namespace PavelStransky.Expression {
                 else if(e[i] == endVariableChar) {
                     if(((int[])numBrackets[0])[1] <= 0)
                         highlight.Add(HighlightTypes.Error, i,
-                            new ExpressionException(
+                            new AtomException(
+                                e,
                                 Messages.EMInvalidEndVariablePosition,
                                 i));
                     else
@@ -225,13 +230,14 @@ namespace PavelStransky.Expression {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
                         highlight.Add(HighlightTypes.Error, i, j,
-                            new ExpressionException(
+                            new AtomException(
+                                e,
                                 string.Format(Messages.EMInvalidPosition, "String"),
                                 i));
 
                     else if(j > length)
                         highlight.Add(HighlightTypes.Error, i, j - 1,
-                            new ExpressionException(Messages.EMStringCharMissing, i));
+                            new AtomException(e, Messages.EMStringCharMissing, i));
 
                     else
                         highlight.Add(HighlightTypes.String, i, j);
@@ -244,7 +250,8 @@ namespace PavelStransky.Expression {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
                         highlight.Add(HighlightTypes.Error, i, j,
-                            new ExpressionException(
+                            new AtomException(
+                                e,
                                 string.Format(Messages.EMInvalidPosition, "Variable"),
                                 i));
                     else
@@ -258,7 +265,8 @@ namespace PavelStransky.Expression {
                     if(!CheckPositionType(position,
                         SyntaxPosition.Beginning, SyntaxPosition.AfterOperator))
                         highlight.Add(HighlightTypes.Error, i, j,
-                            new ExpressionException(
+                            new AtomException(
+                                e,
                                 string.Format(Messages.EMInvalidPosition, "Number"),
                                 i));
                     else
@@ -276,14 +284,14 @@ namespace PavelStransky.Expression {
                 }
 
                 else{
-                    highlight.Add(HighlightTypes.Error, i, new ExpressionException(Messages.EMInvalidCharacter, i));
+                    highlight.Add(HighlightTypes.Error, i, new AtomException(e, Messages.EMInvalidCharacter, i));
                     i++;
                 }
             }
 
             if(CheckPositionType(position, SyntaxPosition.AfterOperator))
                 highlight.Add(HighlightTypes.Error, i,
-                    new ExpressionException(Messages.EMInvalidExpressionEnd, i));
+                    new AtomException(e, Messages.EMInvalidExpressionEnd, i));
 
 
 
@@ -292,7 +300,8 @@ namespace PavelStransky.Expression {
                 if(item.HighlightType == HighlightTypes.Function) {
                     string fnName = (string)item.Comment;
                     if(fnName[0] != '_' && !functions.Contains(fnName)) {
-                        item.SetError(new ExpressionException(
+                        item.SetError(new AtomException(
+                            e,
                             string.Format(Messages.EMFunctionNotExist, fnName), item.Start));
                     }
                 }
@@ -783,7 +792,7 @@ namespace PavelStransky.Expression {
             else if(p == "long")
                 return typeof(LongNumber);
 
-            throw new ExpressionException(string.Format(Messages.EMBadTypeName, p));
+            throw new ParseException(string.Format(Messages.EMBadTypeName, p));
         }
 
 		/// <summary>
@@ -796,7 +805,7 @@ namespace PavelStransky.Expression {
 			else if(e == boolFalse)
 				return false;
 			else
-				throw new ExpressionException(Messages.EMBadBoolValue);
+				throw new ParseException(string.Format(Messages.EMBadBoolValue, e));
 		}
 
 		/// <summary>

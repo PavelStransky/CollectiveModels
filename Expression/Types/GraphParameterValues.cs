@@ -90,7 +90,7 @@ namespace PavelStransky.Expression {
                     }
 
                     if(value.GetType() != dvalue.GetType())
-                        throw new ExpressionException(string.Format(Messages.EMBadGraphParamType, name),
+                        throw new ParamsException(string.Format(Messages.EMBadGraphParamType, name),
                             string.Format(Messages.EMBadGraphParamTypeDetail, dvalue.GetType().FullName, value.GetType().FullName));
                 }
 

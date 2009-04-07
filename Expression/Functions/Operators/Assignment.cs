@@ -24,7 +24,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             this.result = Atom.EvaluateAtomObject(guider, arguments[count]);
             if(this.result == null)
-                throw new FncException(Messages.EMNullValue);
+                throw new FncException(this, Messages.EMNullValue);
 
             if(this.result as ICloneable != null)
                 this.result = (this.result as ICloneable).Clone();
@@ -38,7 +38,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     guider.Context.SetVariable(leftSide as string, this.result);
                 
                 else
-                    throw new FncException(Messages.EMBadAssignment, leftSide.GetType().FullName);
+                    throw new FncException(this, Messages.EMBadAssignment, leftSide.GetType().FullName);
             }
 
             return this.result;

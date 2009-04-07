@@ -79,6 +79,222 @@ namespace PavelStransky.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Context reading failed.\n\nDetails: {0}.
+        /// </summary>
+        internal static string EMContextOpen {
+            get {
+                return ResourceManager.GetString("EMContextOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parent editor window for the form &apos;{0}&apos; has not been found..
+        /// </summary>
+        internal static string EMNoParentEditor {
+            get {
+                return ResourceManager.GetString("EMNoParentEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression is not closed. Calculation cannot be started..
+        /// </summary>
+        internal static string EMNotClosed {
+            get {
+                return ResourceManager.GetString("EMNotClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading data from the file &apos;{0}&apos; failed.\n\nDetails: {1}.
+        /// </summary>
+        internal static string EMOpenFailed {
+            get {
+                return ResourceManager.GetString("EMOpenFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading error!.
+        /// </summary>
+        internal static string EMOpenFailedCaption {
+            get {
+                return ResourceManager.GetString("EMOpenFailedCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation in progress in window &apos;{0}&apos;. New calculation in this window cannot be started..
+        /// </summary>
+        internal static string EMRun {
+            get {
+                return ResourceManager.GetString("EMRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving data to the file &apos;{0}&apos; failed.\n\nDetails: {1}.
+        /// </summary>
+        internal static string EMSaveFailed {
+            get {
+                return ResourceManager.GetString("EMSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving error!.
+        /// </summary>
+        internal static string EMSaveFailedCaption {
+            get {
+                return ResourceManager.GetString("EMSaveFailedCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project file (GCM) (*.gcm)|*.gcm|All files (*.*)|*.*.
+        /// </summary>
+        internal static string FilterGCM {
+            get {
+                return ResourceManager.GetString("FilterGCM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image (*.gif)|*.gif|All files (*.*)|*.*.
+        /// </summary>
+        internal static string FilterGif {
+            get {
+                return ResourceManager.GetString("FilterGif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PNG image (*.png)|*.png|GIF image (*.gif)|*.gif|JPG image (*.jpg)|*.jpg|WMF image (*.wmf)|*.wmf|All files (*.*)|*.*.
+        /// </summary>
+        internal static string FilterPicture {
+            get {
+                return ResourceManager.GetString("FilterPicture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text files (*.txt)|*.txt|All files (*.*)|*.*.
+        /// </summary>
+        internal static string FilterTxt {
+            get {
+                return ResourceManager.GetString("FilterTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation in progress....
+        /// </summary>
+        internal static string MCalculating {
+            get {
+                return ResourceManager.GetString("MCalculating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation time: {0}.
+        /// </summary>
+        internal static string MCalculationTime {
+            get {
+                return ResourceManager.GetString("MCalculationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data has been changed. Do you want to save the project?.
+        /// </summary>
+        internal static string MChanged {
+            get {
+                return ResourceManager.GetString("MChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save changes?.
+        /// </summary>
+        internal static string MChangedCaption {
+            get {
+                return ResourceManager.GetString("MChangedCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation in progress in window &apos;{0}&apos;! Do you really want to stop the calculation and close the window?.
+        /// </summary>
+        internal static string MClose {
+            get {
+                return ResourceManager.GetString("MClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close window?.
+        /// </summary>
+        internal static string MCloseCaption {
+            get {
+                return ResourceManager.GetString("MCloseCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading error!.
+        /// </summary>
+        internal static string MContextOpenCaption {
+            get {
+                return ResourceManager.GetString("MContextOpenCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File &apos;{0}&apos; has been changed. Do you want to save the project?.
+        /// </summary>
+        internal static string MFileChanged {
+            get {
+                return ResourceManager.GetString("MFileChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished.
+        /// </summary>
+        internal static string MFinished {
+            get {
+                return ResourceManager.GetString("MFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interrupted.
+        /// </summary>
+        internal static string MInterrupted {
+            get {
+                return ResourceManager.GetString("MInterrupted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paused.
+        /// </summary>
+        internal static string MPaused {
+            get {
+                return ResourceManager.GetString("MPaused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program for analysing nuclear collective models (GCM, IBM).
+        /// </summary>
+        internal static string ProgramDescription {
+            get {
+                return ResourceManager.GetString("ProgramDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save data of all graph items as (animated) GIF.
         /// </summary>
         internal static string TSaveAllAnim {

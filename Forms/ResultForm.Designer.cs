@@ -188,7 +188,7 @@ namespace PavelStransky.Forms {
             this.lblLblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLblDuration.AutoSize = true;
             this.lblLblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLblDuration.Location = new System.Drawing.Point(200, 350);
+            this.lblLblDuration.Location = new System.Drawing.Point(220, 350);
             this.lblLblDuration.Name = "lblLblDuration";
             this.lblLblDuration.Size = new System.Drawing.Size(59, 13);
             this.lblLblDuration.TabIndex = 13;
@@ -198,7 +198,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(265, 350);
+            this.lblDuration.Location = new System.Drawing.Point(285, 350);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(47, 13);
             this.lblDuration.TabIndex = 14;

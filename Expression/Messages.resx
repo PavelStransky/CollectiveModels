@@ -2727,4 +2727,7 @@ Second differing type: {1}</value>
   <data name="EMFunctionExists" xml:space="preserve">
     <value>Function '{0}' already exists in the dictionary and cannot be added.</value>
   </data>
+  <data name="EMContext" xml:space="preserve">
+    <value>Context error:</value>
+  </data>
 </root>

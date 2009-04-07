@@ -295,30 +295,4 @@ namespace PavelStransky.Expression {
         private const string piVariable = "_pi";
         private const string globalContextFileName = "global.ctx";
     }
-
-	/// <summary>
-	/// Výjimka ve tøídì Context
-	/// </summary>
-	public class ContextException: DetailException {
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public ContextException(string message) : base(errMessage + message) {}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		public ContextException(string message, Exception innerException) : base(errMessage + message, innerException) {}
-
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="message">Text chybového hlášení</param>
-		/// <param name="detailMessage">Detail chyby</param>
-		public ContextException(string message, string detailMessage) : base(errMessage + message, detailMessage) {}
-
-		private const string errMessage = "Na kontextu došlo k chybì: ";
-	}
 }

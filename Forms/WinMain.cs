@@ -66,10 +66,10 @@ namespace PavelStransky.Forms {
             seqExtension = f.Extension.Replace(".", "");
         }
 
-        public static string FileFilterTxt { get { return defaultFileFilterTxt; } }
-        public static string FileFilterGif { get { return defaultFileFilterGif; } }
-        public static string FileFilterGcm { get { return defaultFileFilterGcm; } }
-        public static string FileFilterPicture { get { return defaultFileFilterPicture; } }
+        public static string FileFilterTxt { get { return Messages.FilterTxt; } }
+        public static string FileFilterGif { get { return Messages.FilterGif; } }
+        public static string FileFilterGcm { get { return Messages.FilterGCM; } }
+        public static string FileFilterPicture { get { return Messages.FilterPicture; } }
         public static string FileExtGcm { get { return defaultFileExtGcm; } }
         public static string FileExtTxt { get { return defaultFileExtTxt; } }
         public static string FileExtGif { get { return defaultFileExtGif; } }
@@ -219,7 +219,7 @@ namespace PavelStransky.Forms {
 
             if(state) {
                 Registry.ClassesRoot.CreateSubKey('.' + WinMain.FileExtGcm).SetValue(string.Empty, keyName);
-                Registry.ClassesRoot.CreateSubKey(keyName).SetValue(string.Empty, programDescription);
+                Registry.ClassesRoot.CreateSubKey(keyName).SetValue(string.Empty, Messages.ProgramDescription);
                 Registry.ClassesRoot.CreateSubKey(string.Format("{0}\\DefaultIcon", keyName)).SetValue(string.Empty, string.Format("{0},0", path));
                 Registry.ClassesRoot.CreateSubKey(string.Format(commandEntryName, keyName)).SetValue(string.Empty, string.Format(commandEntryFormat, path));
             }
@@ -233,10 +233,6 @@ namespace PavelStransky.Forms {
             }
         }
 
-        private const string defaultFileFilterTxt = "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*";
-        private const string defaultFileFilterGif = "Obrázek (*.gif)|*.gif|Všechny soubory (*.*)|*.*";
-        private const string defaultFileFilterPicture = "Obrázek PNG (*.png)|*.png|Obrázek GIF (*.gif)|*.gif|Obrázek JPG (*.jpg)|*.jpg|Obrázek WMF (*.wmf)|*.wmf";
-        private const string defaultFileFilterGcm = "Soubory s daty (GCM) (*.gcm)|*.gcm|Všechny soubory (*.*)|*.*";
         private const string defaultFileExtGcm = "gcm";
         private const string defaultFileExtTxt = "txt";
         private const string defaultFileExtGif = "gif";
@@ -246,7 +242,6 @@ namespace PavelStransky.Forms {
 
         private const string commandEntryName = "{0}\\shell\\open\\command";
         private const string commandEntryFormat = "\"{0}\" \"%1\"";
-        private const string programDescription = "Program for analysing nuclear collective models (GCM, IBM)";
 
         private const string registryKeyDirectory = "Directory";
         private const string registryKeyExportDirectory = "ExportDirectory";

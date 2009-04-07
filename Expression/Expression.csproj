@@ -138,10 +138,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AtomException.cs" />
-    <Compile Include="ExpressionException.cs" />
-    <Compile Include="FileDataException.cs" />
-    <Compile Include="FncListException.cs" />
+    <Compile Include="Exceptions\AtomException.cs" />
+    <Compile Include="Exceptions\ContextException.cs" />
+    <Compile Include="Exceptions\ExpressionException.cs" />
+    <Compile Include="Exceptions\FileDataException.cs" />
+    <Compile Include="Exceptions\FncListException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
@@ -203,12 +204,12 @@
     <Compile Include="Functions\Vector\Stairs.cs" />
     <Compile Include="Functions\Vector\SwapXY.cs" />
     <Compile Include="Functions\Vector\TSIntegrate.cs" />
-    <Compile Include="IndexerException.cs" />
-    <Compile Include="ParamsException.cs" />
-    <Compile Include="ParseException.cs" />
-    <Compile Include="PositionTextException.cs" />
-    <Compile Include="ListException.cs" />
-    <Compile Include="TArrayException.cs" />
+    <Compile Include="Exceptions\IndexerException.cs" />
+    <Compile Include="Exceptions\ParamsException.cs" />
+    <Compile Include="Exceptions\ParseException.cs" />
+    <Compile Include="Exceptions\PositionTextException.cs" />
+    <Compile Include="Exceptions\ListException.cs" />
+    <Compile Include="Exceptions\TArrayException.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
     <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />
@@ -534,7 +535,7 @@
     <Compile Include="Variable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VariableException.cs" />
+    <Compile Include="Exceptions\VariableException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages.resx">

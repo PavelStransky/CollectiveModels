@@ -123,6 +123,78 @@
   <data name="EMCalculationError" xml:space="preserve">
     <value>Calculation error</value>
   </data>
+  <data name="EMContextOpen" xml:space="preserve">
+    <value>Context reading failed.\n\nDetails: {0}</value>
+  </data>
+  <data name="EMNoParentEditor" xml:space="preserve">
+    <value>Parent editor window for the form '{0}' has not been found.</value>
+  </data>
+  <data name="EMNotClosed" xml:space="preserve">
+    <value>The expression is not closed. Calculation cannot be started.</value>
+  </data>
+  <data name="EMOpenFailed" xml:space="preserve">
+    <value>Reading data from the file '{0}' failed.\n\nDetails: {1}</value>
+  </data>
+  <data name="EMOpenFailedCaption" xml:space="preserve">
+    <value>Reading error!</value>
+  </data>
+  <data name="EMRun" xml:space="preserve">
+    <value>Calculation in progress in window '{0}'. New calculation in this window cannot be started.</value>
+  </data>
+  <data name="EMSaveFailed" xml:space="preserve">
+    <value>Saving data to the file '{0}' failed.\n\nDetails: {1}</value>
+  </data>
+  <data name="EMSaveFailedCaption" xml:space="preserve">
+    <value>Saving error!</value>
+  </data>
+  <data name="FilterGCM" xml:space="preserve">
+    <value>Project file (GCM) (*.gcm)|*.gcm|All files (*.*)|*.*</value>
+  </data>
+  <data name="FilterGif" xml:space="preserve">
+    <value>Image (*.gif)|*.gif|All files (*.*)|*.*</value>
+  </data>
+  <data name="FilterPicture" xml:space="preserve">
+    <value>PNG image (*.png)|*.png|GIF image (*.gif)|*.gif|JPG image (*.jpg)|*.jpg|WMF image (*.wmf)|*.wmf|All files (*.*)|*.*</value>
+  </data>
+  <data name="FilterTxt" xml:space="preserve">
+    <value>Text files (*.txt)|*.txt|All files (*.*)|*.*</value>
+  </data>
+  <data name="MCalculating" xml:space="preserve">
+    <value>Calculation in progress...</value>
+  </data>
+  <data name="MCalculationTime" xml:space="preserve">
+    <value>Calculation time: {0}</value>
+  </data>
+  <data name="MChanged" xml:space="preserve">
+    <value>Data has been changed. Do you want to save the project?</value>
+  </data>
+  <data name="MChangedCaption" xml:space="preserve">
+    <value>Save changes?</value>
+  </data>
+  <data name="MClose" xml:space="preserve">
+    <value>Calculation in progress in window '{0}'! Do you really want to stop the calculation and close the window?</value>
+  </data>
+  <data name="MCloseCaption" xml:space="preserve">
+    <value>Close window?</value>
+  </data>
+  <data name="MContextOpenCaption" xml:space="preserve">
+    <value>Reading error!</value>
+  </data>
+  <data name="MFileChanged" xml:space="preserve">
+    <value>File '{0}' has been changed. Do you want to save the project?</value>
+  </data>
+  <data name="MFinished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="MInterrupted" xml:space="preserve">
+    <value>Interrupted</value>
+  </data>
+  <data name="MPaused" xml:space="preserve">
+    <value>Paused</value>
+  </data>
+  <data name="ProgramDescription" xml:space="preserve">
+    <value>Program for analysing nuclear collective models (GCM, IBM)</value>
+  </data>
   <data name="TSaveAllAnim" xml:space="preserve">
     <value>Save data of all graph items as (animated) GIF</value>
   </data>

@@ -245,6 +245,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Context error:.
+        /// </summary>
+        internal static string EMContext {
+            get {
+                return ResourceManager.GetString("EMContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Function &apos;{0}&apos; has not enough arguments..
         /// </summary>
         internal static string EMFewArgs {

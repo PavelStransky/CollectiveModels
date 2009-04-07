@@ -918,7 +918,7 @@ namespace PavelStransky.Expression {
                         parts.Add(e.Substring(k, i - k).Trim());
                     }
 
-                    if(separator)
+                    if(separator && e[i] == separatorChar)
                         parts.Add(string.Empty);
 
                     parts.Add(functions[e.Substring(i, j - i)]);

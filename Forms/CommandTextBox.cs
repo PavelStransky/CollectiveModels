@@ -72,7 +72,7 @@ namespace PavelStransky.Forms {
                     commandEnd++;
 
                 if(this.Text[commandEnd - 1] != semicolon)
-                    throw new Exception(errorMessageNotClosed);
+                    throw new FormsException(Messages.EMNotClosed);
 
                 this.SelectionStart = commandStart;
                 this.SelectionLength = commandEnd - commandStart;
@@ -106,7 +106,7 @@ namespace PavelStransky.Forms {
                 int selectionStart = this.SelectionStart;
                 int selectionLength = this.SelectionLength;
                 string text = this.Text;
-                string selectedText = text.Substring(selectionStart, selectionLength).Replace(newLine, newLine + tab);
+                string selectedText = text.Substring(selectionStart, selectionLength).Replace(Environment.NewLine, Environment.NewLine + tab);
 
                 this.Text = text.Substring(0, selectionStart);
                 this.Text += tab;
@@ -485,9 +485,7 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        private const string newLine = "\r\n";
         private const char semicolon = ';';
         private const string tab = "   ";
-        private const string errorMessageNotClosed = "Pøíkaz není uzavøený nebo nekonèí støedníkem, nelze jej vyhodnotit!";
     }
 }

@@ -248,16 +248,11 @@ namespace PavelStransky.Forms {
 
                 this.OnFileOpened(new FileNameEventArgs(fileName));
             }
-            catch(DetailException e) {
-                MessageBox.Show(this, string.Format(messageFailedOpenDetail, fileName, e.Message, e.DetailMessage),
-                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
-                if(editor != null)
-                    editor.Close();
-            }
             catch(Exception e) {
-                MessageBox.Show(this, string.Format(messageFailedOpen, fileName, e.Message),
-                    captionFailedOpen, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                DetailException de = e as DetailException;
+
+                MessageBox.Show(this, string.Format(Messages.EMOpenFailed, fileName, de != null ? de.GetText("\n\n") : e.Message),
+                    Messages.EMOpenFailedCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
 
                 if(editor != null)
                     editor.Close();
@@ -295,7 +290,7 @@ namespace PavelStransky.Forms {
                 }
             }
 
-            throw new FormsException(string.Format(errorMessageEditorNotFound, form.Name));
+            throw new FormsException(string.Format(Messages.EMNoParentEditor, form.Name));
         }
 
         /// <summary>
@@ -565,12 +560,6 @@ namespace PavelStransky.Forms {
         }
 
         #endregion
-
-        private const string messageFailedOpen = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
-        private const string messageFailedOpenDetail = "Otevøení souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
-        private const string captionFailedOpen = "Chyba!";
-
-        private const string errorMessageEditorNotFound = "K formuláøi {0} nebyl nalezen rodièovský editor!";
 
         private const string registryKeyPositionX = "PositionX";
         private const string registryKeyPositionY = "PositionY";

@@ -310,8 +310,8 @@ namespace PavelStransky.Forms {
                     ResultForm resultForm = childForm as ResultForm;
                     if(resultForm != null && resultForm.Calculating) {
                         DialogResult result = MessageBox.Show(this,
-                            string.Format(messageClose, resultForm.Name),
-                            captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                            string.Format(Messages.MClose, resultForm.Name),
+                            Messages.MCloseCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                         switch(result) {
                             case DialogResult.Yes:
@@ -339,8 +339,8 @@ namespace PavelStransky.Forms {
         private bool CheckForChanges() {
             if(this.Modified) {
                 DialogResult result = MessageBox.Show(this,
-                    this.fileName == string.Empty ? messageChanged : string.Format(messageFileChanged, this.fileName),
-                    captionFileChanged, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                    this.fileName == string.Empty ? Messages.MChanged : string.Format(Messages.MFileChanged, this.fileName),
+                    Messages.MChangedCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
                 if(result == DialogResult.Cancel)
                     return false;
@@ -435,26 +435,17 @@ namespace PavelStransky.Forms {
                 this.Modified = false;            
                 this.SetCaption();
             }
-            catch(DetailException e) {
-                export.Close();
-                
-                // Doèasný soubor, do kterého jsme ukládali, smažeme
-                if(File.Exists(fileNameSave))
-                    File.Delete(fileNameSave);
-
-                MessageBox.Show(this, string.Format(messageFailedSaveDetail, fileName, e.Message, e.DetailMessage),
-                    captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return false;
-            }
             catch(Exception e) {
+                DetailException de = e as DetailException;
+
                 export.Close();
 
                 // Doèasný soubor, do kterého jsme ukládali, smažeme
                 if(File.Exists(fileNameSave))
                     File.Delete(fileNameSave);
 
-                MessageBox.Show(this, string.Format(messageFailedSave, fileName, e.Message),
-                    captionFailedSave, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(this, string.Format(Messages.EMSaveFailed, fileName, de != null ? de.GetText("\n\n") : e.Message),
+                    Messages.EMSaveFailedCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 return false;
             }
 
@@ -489,7 +480,7 @@ namespace PavelStransky.Forms {
 
             if(f.Calculating) {
                 f.Activate();
-                MessageBox.Show(this, messageCalculationRunning);
+                MessageBox.Show(this, Messages.EMRun);
                 this.Activate();
             }
             else {
@@ -680,8 +671,8 @@ namespace PavelStransky.Forms {
                 catch(Exception e) {
                     this.context = new Context();
                     DialogResult result = MessageBox.Show(this,
-                        string.Format(messageContextError, e.Message),
-                        captionContextError, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        string.Format(Messages.EMContextOpen, e.Message),
+                        Messages.MContextOpenCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else {
@@ -734,21 +725,6 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        private const string messageFileChanged = "Soubor '{0}' byl zmìnìn. Chcete zmìny uložit?";
-        private const string messageChanged = "Data nejsou uložena. Chcete je uložit?";
-        private const string captionFileChanged = "Uložení souboru";
-
-        private const string messageFailedSave = "Uložení do souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}";
-        private const string messageFailedSaveDetail = "Uložení do souboru '{0}' se nezdaøilo.\n\nPodrobnosti: {1}\n\n{2}";
-        private const string captionFailedSave = "Chyba!";
-
-        private const string messageClose = "V oknì {0} probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
-        private const string captionClose = "Varování";
-
-        private const string messageContextError = "Nepodaøilo se otevøít kontext.\n\nPodrobnosti: {0}";
-        private const string captionContextError = "Chyba!";
-
-        private const string messageCalculationRunning = "V aktuálním oknì probíhá výpoèet, nelze spustit nový výpoèet!";
         private const string defaultResultWindowName = "Result{0}";
 
         private const string defaultName = "Utitled";

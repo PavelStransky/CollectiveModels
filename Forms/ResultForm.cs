@@ -206,7 +206,7 @@ namespace PavelStransky.Forms {
 
                 // Nastavení ovládacích prvkù
                 this.txtResult.Clear();
-                this.SetCaption(captionCalculating);
+                this.SetCaption(Messages.MCalculating);
                 this.SetButtons();
 
                 this.SetStartTime();
@@ -296,7 +296,7 @@ namespace PavelStransky.Forms {
             this.calculating = false;
             this.paused = false;
 
-            this.SetCaption(captionInterrupted);
+            this.SetCaption(Messages.MInterrupted);
             this.SetButtons();
 
             this.OnCalcFinished(new FinishedEventArgs(false));
@@ -312,7 +312,7 @@ namespace PavelStransky.Forms {
             this.calculating = false;
             this.paused = false;
 
-            this.SetCaption(captionFinished);
+            this.SetCaption(Messages.MFinished);
             this.SetButtons();
 
             if(WinMain.PlaySounds)
@@ -320,7 +320,7 @@ namespace PavelStransky.Forms {
 
             if(this.txtResult.Text != string.Empty)
                 this.txtResult.Text += Environment.NewLine;
-            this.txtResult.Text += string.Format(timeText, SpecialFormat.Format(duration));
+            this.txtResult.Text += string.Format(Messages.MCalculationTime, SpecialFormat.Format(duration));
 
             if(result != null) {
                 if(result is Variable)
@@ -361,7 +361,7 @@ namespace PavelStransky.Forms {
             bool result = false;
 
             if(this.calculating) {
-                DialogResult dialogResult = MessageBox.Show(this, string.Format(messageClose, this.Name), captionClose, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                DialogResult dialogResult = MessageBox.Show(this, string.Format(Messages.MClose, this.Name), Messages.MCloseCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if(dialogResult == DialogResult.Yes)
                     this.calcThread.Abort();
@@ -386,7 +386,7 @@ namespace PavelStransky.Forms {
             this.calcThread.Suspend();
 
             // Nastavení ovládacích prvkù
-            this.SetCaption(captionPaused);
+            this.SetCaption(Messages.MPaused);
             this.paused = true;
             this.SetButtons();
 
@@ -400,7 +400,7 @@ namespace PavelStransky.Forms {
             this.calcThread.Resume();
 
             // Nastavení ovládacích prvkù
-            this.SetCaption(captionCalculating);
+            this.SetCaption(Messages.MCalculating);
             this.paused = false;
             this.SetButtons();
 
@@ -540,16 +540,7 @@ namespace PavelStransky.Forms {
         }
         #endregion
 
-        private const string timeText = "Doba výpoètu: {0}";
         private const string captionFormat = "{0} - {1}";
-
-        private const string messageClose = "V oknì probíhá výpoèet. Opravdu chcete okno uzavøít a výpoèet ukonèit?";
-        private const string captionClose = "Varování";
-
-        private const string captionCalculating = "Probíhá výpoèet...";
-        private const string captionFinished = "Hotovo";
-        private const string captionInterrupted = "Pøerušeno";
-        private const string captionPaused = "Pozastaveno";
 
         private const string soundSuccessFile = "success.wav";
         private const string soundFailureFile = "failure.wav";

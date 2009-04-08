@@ -1,0 +1,44 @@
+b = _p1;
+hbar = _p2;
+num = _p3;
+parity = safevalue(_p4; 0);    %% Parity of states (0...all, 1... odd, 2... even)
+
+a = -1.0;
+c = 1.0;
+k = 1.0;
+
+%% Minimum potenciálu na ose x
+xmin = (-3*b - sqrt(9*b*b - 32*a*c)) / (8*c);
+Vmin = a*xmin*xmin + b*xmin*xmin*xmin + c*xmin*xmin*xmin*xmin;
+
+%% Tuhosti
+kx = 2*a + 6*b*xmin + 12*c*xmin*xmin;
+ky = 2*a - 6*b*xmin + 4*c*xmin*xmin;
+
+%% Frekvence
+omegax = sqrt(kx / k);
+omegay = sqrt(ky / k);
+
+o = omegax + omegay;
+
+maxe = 0.5 * (hbar * o + 
+   sqrt(hbar * hbar * o * o - 4.0 * hbar * hbar * (0.25 * o * o - 2 * omegax * omegay * num)));
+
+maxx = 4 * maxe / (hbar * omegax) + 1;
+print("Maxx = " ~ int(maxx) ~ " ");
+
+ev = list();
+for(i = 0; i < maxx;
+  (maxy = 4 * (maxe - (i + 0.5) * hbar * omegax) / (hbar * omegay) + 1;
+   for(j = if(parity == 1; 1; 0); j < maxy; 
+     (add(ev; Vmin + hbar*(omegax*(i + 0.5) + omegay*(j + 0.5)));
+      j = j + if(parity == 0; 1; 2))
+  ); i = i + 1)
+);
+
+ev = vector(ev);
+printline(length(ev)[0]);
+
+if(num > 0;
+ev = sort(ev)[0:num];
+ev = vector());

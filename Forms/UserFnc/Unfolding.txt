@@ -1,0 +1,29 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Provede unfolding dat %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+data = _p1;            %% Data (Vector)
+rorder = _p2;          %% Øád regrese
+
+%% Histogram
+ch = cumulhistogram(data);
+g1 = graph(histogram(data; 50); ; ; "title = \"Spektrální hustota pøed unfoldingem\";");
+
+%% Spektrální funkce a aproximace
+approx = _Approximation(ch; rorder; "title = \"Spektrální funkce pøed unfoldingem a aproximace\";");
+g2 = getvar(approx; g);
+r = getvar(approx; r);
+
+%% Unfolding
+datauf = polynom(data; r);
+
+huf = histogram(datauf; 50);
+datauf = datauf * sum(gety(huf)) / max(getx(huf));   %% Normalizace na strøední hustotu spacingu = 1
+huf = histogram(datauf; 50);
+
+g3 = graph(huf; ; ; "title = \"Unfoldovaná hustota spektra\";");
+
+show(array(g1; g2; g3); "Unfolding"; 1);
+
+clear(g1; g2; g3);
+clear(approx); 
+clear(ch; huf);

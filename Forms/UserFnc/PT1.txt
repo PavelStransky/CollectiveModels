@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates eigenvalues and creates graph for a system used for studying quantum phase transitions %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+numev = _p1;
+hbar = _p2;
+graph = safevalue(_p3; true);
+minm = safevalue(_p4; -0.2);
+maxm = safevalue(_p5; 0.2);
+diffm = safevalue(_p6; 0.005);
+numevcalculated = safevalue(_p7; 5 * numev);
+omega0 = safevalue(_p8; 1.0);
+evgraph = safevalue(_p9; true);
+
+dm = maxm - minm;
+
+printline("Calculating eigenvalues...");
+
+for((m = minm; e = list(); ml = list()); 
+m < maxm;
+(t = pt1(m; omega0; hbar);
+ print(string(m; "0.00000") ~ " ");
+ computespectrum(t; numevcalculated; false; numev);
+
+ add(e; evalues(t));
+ add(ml; m);
+
+ m = m + diffm));
+
+if(graph;
+(l = length(ml)[0];
+ mine = e[0][0];
+ maxe = e[0][$];
+
+ x = intervalv(-3; 3; 100);
+ dx = x[$] - x[0];
+
+ printline("Creating data for graph...");
+
+ for((i = 0; pv = list(); st = list());
+ i < numev;
+ (add(pv; pointvector(vector(ml); vector(e[][i])));
+  add(st; "");
+  i = i + 1);
+ (add(st; "lcolor = \"red\"; lwidth = 2;");
+  add(st; "lcolor = \"green\"; lwidth = 2;");
+  st = toarray(st)));
+
+ printline("Creating animation...");
+
+ for((i = 0; pvall = list());
+ i < l;
+ (pv1 = pv;
+  add(pv1; pointvector(vector(ml[i]; ml[i]); vector(mine; maxe)));
+
+  y = pt1potential(x; ml[i]);
+  add(pv1; pointvector((x - x[0]) * dm / dx + maxm; y));
+
+  if(evgraph;
+  for(j = 0; j < numev;
+  (add(pv1; pointvector(vector(maxm + 0.1 * dm; maxm + 0.9 * dm); vector(e[i][j]; e[i][j])));
+  j = j + 1)));
+
+  pv1 = toarray(pv1);
+  add(pvall; pv1);
+  i = i + 1);
+  pvall = toarray(pvall));;
+
+ printline("Creating graph...");
+
+ gstyle = "maxy = " ~ maxe ~ "; miny = " ~ mine ~ "; maxx = " ~ (2.0 * dm + minm) ~ "; minx = " ~ minm ~ "; lstyle = \"line\"; lcolor = \"blue\"; pstyle = \"none\";";
+ show(graph(pvall; ; ; gstyle; ; st); "PT1");
+
+ clear(x; y); 
+ clear(pv; l; i; st);
+ clear(mine; maxe);
+ clear(pv1)
+));
+
+clear(t; ml; m; dm);

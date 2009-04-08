@@ -1,0 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Provede aproximaci dat polynomem daného stupnì %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+data = _p1;                   %% Data (Pointvector)
+rorder = _p2;                 %% Øád regrese
+format = safevalue(_p3; "");  %% Formát grafu
+
+r = regression(data; rorder);
+x = getx(data);
+y = polynom(x; r);
+errors = norm(y - gety(data));
+approx = pointvector(x; y);
+
+g = graph(array(data; approx); ; ; 
+format;
+"subtitle = \"Chyby = " ~ errors ~ "\";"; 
+array(""; "pstyle = \"none\"; lcolor = \"red\"; lwidth = 2;")); 
+
+clear(x; y; approx);

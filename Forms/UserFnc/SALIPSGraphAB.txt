@@ -1,0 +1,43 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows a graph of freg(B) dependence calculated using SALI Poincare section %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+la = _p1;      %% List of A
+lsga = _p2;     %% List of salig results
+lb = _p3;      %% List of B
+lsgb = _p4;     %% List of salig results
+
+lengtha = length(lsga)[0];
+lengthb = length(lsgb)[0];
+
+%% Preparation - conversion to array and sorting
+if(lengtha > 0; 
+(la = toarray(la);
+ lsga = toarray(lsga);
+ lsga = sort(lsga; la);
+ la = sort(la)
+));
+
+lb = toarray(lb);
+lsgb = toarray(lsgb);
+lsgb = sort(lsgb; lb);
+lb = sort(lb);
+
+p = list();
+
+%% We have to start with B
+for(i = 0; i < lengthb;
+(if(lb[i] < 1.0; add(p; point(lb[i] - 2; if(lsgb[i][4] == 0; 1.0; lsgb[i][5] / lsgb[i][4]))));
+ i = i + 1));
+
+for(i = 0; i < lengtha;
+(add(p; point(la[i]; if(lsga[i][4] == 0; 1.0; lsga[i][5] / lsga[i][4])));
+ i = i + 1));
+
+p = pointvector(p);
+
+style = "miny = 0; maxy = 1; minx = -2; maxx = 1; lcolor = \"blue\"; pstyle = \"none\";
+ atitlex = \"B\"; atitley = \"freg\";
+ marginl = 70;";
+
+show(graph(p; ; ; style); "freg"; ; ; point(400; 300));
+

@@ -1,0 +1,18 @@
+b = _p1;
+maxE = _p2;
+num = _p3;
+
+%% GCM objekt
+g = cgcm(-1; b; 1; 1);
+
+%% Meze v x pro zadanou maximální energii
+r = potentialroots(g; maxE; 0);
+
+x = intervalv(r[0]; r[$]; num);
+
+for((p = list(); i = 0); 
+i < length(x)[0];
+(add(p; point(x[i]; energy(g; vector(x[i]; 0; 0; 0))));
+i = i + 1));
+
+p = pointvector(p);

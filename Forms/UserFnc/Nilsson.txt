@@ -1,0 +1,62 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Nilson levels without spin-orbit term %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+delta = _p1;                 %% Deltas
+N = _p2;                     %% Main quantum number
+omega = safevalue(_p3; 1.0); %% Principal omega 
+
+qn = list();
+
+%% Determine quantum numbers
+for(nz = 0; nz <= N; 
+(for(np = 0; np <= N - nz;
+ (for(ml = 0; ml <= N - nz - 2*np;
+  (add(qn; array(nz; np; ml));
+   ml = ml + 1)
+  );
+  np = np + 1)
+ );
+ nz = nz + 1)
+);
+
+%% Calculate level dependences
+l = length(qn)[0];
+numpoints = length(delta)[0];
+pv = list();
+
+for(i = 0; i < l;
+(pv1 = list();
+
+ n = qn[i];
+ nz = n[0];
+ np = n[1];
+ ml = n[2];
+
+ for(j = 0; j < numpoints;
+ (d = delta[j];
+  omegad = omega * (1.0 + 2.0 * d * d / 3.0);
+  omegaz = omegad * sqrt(1 - 4.0 * d / 3.0);
+  omegax = omegad * sqrt(1 + 2.0 * d / 3.0);
+  e = omegaz * (nz + 0.5) + omegax * (2 * np + ml + 1);
+
+  add(pv1; point(d; e));
+
+  j = j + 1)
+ );
+
+ %% There might be some divergences (square roots of negative numbers)
+ add(pv; removebadpoints(pointvector(pv1)));
+
+ i = i + 1)
+);
+
+pv = toarray(pv);
+
+show(graph(pv; ; ; "pstyle = \"none\";"); "Level dependence");
+
+clear(nz; np; ml);
+clear(i; j);
+clear(l; numpoints);
+clear(pv1);
+clear(n; d);
+clear(omegad; omegaz; omegax; e);

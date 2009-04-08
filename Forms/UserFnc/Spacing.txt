@@ -1,0 +1,45 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Vypoèítá NNS ze zadané øady %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+datauf = _p1;
+histogrampoints = _p2;
+brody = safevalue(_p3; -1);
+
+%% datauf = datauf[5:($ - 5)];
+
+usp = sort(spacing(sort(datauf)));
+
+usp = usp[5:($ - 5)];
+
+hsp = histogram(usp; histogrampoints);
+hsp = hsp / point(1; integrate(hsp));
+
+x = getx(hsp);
+y = goe(x);
+wigner = pointvector(x; y);
+y = poisson(x);
+poisson = pointvector(x; y);
+
+if(brody < 0;
+(g = graph(array(hsp; wigner; poisson); ; ;
+  "title = \"NNS a srování s Wignerem\";"; ;
+  array(""; 
+   "pstyle = \"none\"; lcolor = \"red\"; lwidth = 2; lstyle=\"curve\";";
+   "pstyle = \"none\"; lcolor = \"green\"; lwidth = 2; lstyle=\"curve\";")); 
+);
+(y = brody(x; brody);
+ brody = pointvector(x; y);
+ g = graph(array(hsp; wigner; poisson; brody); ; ;
+  "title = \"NNS a srování s Wignerem\";"; ;
+  array(""; 
+   "pstyle = \"none\"; lcolor = \"red\"; lwidth = 2; lstyle=\"curve\";";
+   "pstyle = \"none\"; lcolor = \"green\"; lwidth = 2; lstyle=\"curve\";";
+   "pstyle = \"none\"; lcolor = \"blue\"; lwidth = 2; lstyle=\"curve\";"))
+));
+
+show(g; "Nearest neighbor spacing");
+
+clear(x; y);
+clear(wigner; poisson);
+clear(g);
+clear(hsp);

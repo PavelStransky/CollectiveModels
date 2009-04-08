@@ -1,0 +1,11 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Generování náhodného signálu %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+channels = _p1; %% Poèet kanálù
+l = _p2;        %% Délka signálu v jednom kanálu
+
+for
+((i = 0; signal = array());
+ i < channels;
+ (signal = signal & randvector(l);
+  i = i + 1));

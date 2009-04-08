@@ -1,0 +1,80 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates eigenvalues and creates graph for a system used for studying quantum phase transitions %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+numev = _p1;
+hbar = _p2;
+graph = safevalue(_p3; true);
+mina = safevalue(_p4; -1);
+maxa = safevalue(_p5; 1);
+diffa = safevalue(_p6; 0.005);
+b = safevalue(_p7; 0);
+numevcalculated = safevalue(_p8; 5 * numev);
+omega0 = safevalue(_p9; 1.0);
+evgraph = safevalue(_p10; true);
+
+da = maxa - mina;
+
+printline("Calculating eigenvalues...");
+
+for((a = mina; e = list(); al = list()); 
+a < maxa;
+(t = pt3(a; b; omega0; hbar);
+ print(string(a; "0.00000") ~ " ");
+ computespectrum(t; numevcalculated; false; numev);
+
+ add(e; evalues(t));
+ add(al; a);
+
+ a = a + diffa));
+
+if(graph;
+(l = length(al)[0];
+ mine = e[0][0];
+ maxe = e[$][$];
+
+ x = intervalv(-3; 3; 100);
+ dx = x[$] - x[0];
+
+ printline("Creating data for graph...");
+
+ for((i = 0; pv = list(); st = list());
+ i < numev;
+ (add(pv; pointvector(vector(al); vector(e[][i])));
+  add(st; "");
+  i = i + 1);
+ (add(st; "lcolor = \"red\"; lwidth = 2;");
+  add(st; "lcolor = \"green\"; lwidth = 2;");
+  st = toarray(st)));
+
+ printline("Creating animation...");
+
+ for((i = 0; pvall = list());
+ i < l;
+ (pv1 = pv;
+  add(pv1; pointvector(vector(al[i]; al[i]); vector(mine; maxe)));
+
+  y = pt3potential(x; al[i]; b);
+  add(pv1; pointvector((x - x[0]) * da / dx + maxa; y));
+
+  if(evgraph;
+  for(j = 0; j < numev;
+  (add(pv1; pointvector(vector(maxa + 0.1 * da; maxa + 0.9 * da); vector(e[i][j]; e[i][j])));
+  j = j + 1)));
+
+  pv1 = toarray(pv1);
+  add(pvall; pv1);
+  i = i + 1);
+  pvall = toarray(pvall));;
+
+ printline("Creating graph...");
+
+ gstyle = "maxy = " ~ maxe ~ "; miny = " ~ mine ~ "; maxx = " ~ (2.0 * da + mina) ~ "; minx = " ~ mina ~ "; lcolor = \"blue\"; lstyle = \"line\"; pstyle = \"none\";";
+ show(graph(pvall; ; ; gstyle; ; st); "PT3");
+
+ clear(x; y); 
+ clear(l; i; st);
+ clear(mine; maxe);
+ clear(pv1)
+));
+
+clear(t; al; a; da);

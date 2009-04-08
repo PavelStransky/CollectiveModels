@@ -1,0 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates freg point using SALI Poincare section graph %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+e = _p1;
+regular = _p2;
+ic = _p3;
+
+ici = list();
+num = length(ic)[0] + 1;
+
+print(num);
+
+print(" B...");
+print(time(
+ for(i = 0; i < 100;
+ (g = cgcm(-1; i / 100.0; 1; 1);
+  add(ici; ic1 = initialcondition(g; e));
+  regular[i] = regular[i] + isregulartrajectory(g; ic1);
+  i = i + 1))
+));
+
+print(" A...");
+printline(time(
+ for(; i <= 200;
+ (g = cgcm((i - 200) / 100.0; 1; 1; 1);
+  add(ici; ic1 = initialcondition(g; e));
+  regular[i] = regular[i] + isregulartrajectory(g; ic1);
+  i = i + 1))
+));
+
+add(ic; ici);
+
+style = "miny = 0; maxy = 1; minx = -2; maxx = 0; lcolor = \"blue\"; pstyle = \"none\";
+ atitlex = \"B A\"; atitley = \"freg\";
+ marginl = 70; title = \"N = " ~ num ~ "\";";
+
+p = pointvector(intervalv(-2; 0; 201); vector(regular) / num);
+show(graph(p; ; ; style); "freg");
+
+clear(ic1; i);

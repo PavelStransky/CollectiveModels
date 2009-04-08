@@ -1,0 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Vytvoøí kontury ke grafùm vlastních funkcí %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+g = _p1;    %% Objekt QGCM
+num = _p2;  %% Poèet vlastních funkcí
+
+e = evalues(g)[0:num];
+
+contour = list();
+for(i = 0;
+i < num;
+(printline(i);
+add(contour; equipotential(g; e[i]; 100));
+i = i + 1));
+
+contour = toarray(contour);

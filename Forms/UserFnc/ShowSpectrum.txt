@@ -1,0 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%
+%% Zobrazí spektrum %%
+%%%%%%%%%%%%%%%%%%%%%%
+e = _p1;                %% Spektrum
+
+l = length(e)[0];
+
+for(
+(p = list();
+ i = 0); 
+i < l;
+(add(p; pointvector(array(point(0;e[i]); point(1;e[i]))));
+ i = i + 1
+));
+
+show(graph(p; ; ; 
+"pstyle = \"none\"; minx = -1; maxx = 2;"); "Spektrum");

@@ -1,0 +1,41 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows an animated second invariant %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+g = _p1;
+num = _p2;
+numanim = _p3;
+myformat = safevalue(_p4; "");
+
+s = peresinvariant(g);
+e = evalues(g);
+
+pv = pointvector(e; s)[0:num];
+
+p = list();
+
+for(i = 0; i < numanim;
+(add(p; array(pointvector(vector(e[i]); vector(s[i])); pv));
+ i = i + 1));
+
+p = toarray(p);
+
+style = "
+ miny = 0;
+ psizex = 5; psizey = 5; 
+ psize = 7; pcolor = \"blue\";
+ pstyle = \"fcircle\"; lstyle = \"none\"; 
+ pcolorx = 0; pcolory = 0; clip = false;
+ atitlex = \"E\"; atitley = \"L2\";
+ interval = 1000; animgroup = true;";
+
+st = array("psize = 14; pcolor = \"red\";");
+
+gst = list();
+for(i = 0; i < numanim;
+(add(gst; "gtitle = \"L2(" ~ string(e[i]; "0.000") ~ ") = " ~ string(s[i]; "0.000") ~ "\";");
+ i = i + 1));
+
+gst = toarray(gst);
+
+%%show(graph(p ; ; ; style ~ myformat; gst; st); "L2 Invariant"; ; ; point(350; 300));
+show(graph(p ; ; ; style ~ myformat; gst; st); "peres_lattice"; ; ; point(350; 300));

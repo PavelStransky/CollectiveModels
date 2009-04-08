@@ -1,0 +1,69 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows an animated graph of Poincare Sections %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lb = _p1;                        %% List of B (E)
+lsg = _p2;                       %% List of salig results
+interval = safevalue(_p3; -1);   %% Interval of animation
+ch = safevalue(_p4; "B");       %% Variable name
+
+lb = toarray(lb);
+lsg = toarray(lsg);
+
+lsg = sort(lsg; lb);
+lb = sort(lb);
+
+minx = min(vector(lsg[][1][0]));
+maxx = max(vector(lsg[][1][1]));
+
+miny = min(vector(lsg[][1][4]));
+maxy = max(vector(lsg[][1][5]));
+
+lbs = 
+ #("gtitle = \"" ~ ch ~ " = " ~ string(lb; "0.000") ~ "\";
+    bminx = " ~ lsg[][1][0] ~ "; minx = bminx; 
+    bmaxx = " ~ lsg[][1][1] ~ "; maxx = bmaxx;
+    bminy = " ~ lsg[][1][4] ~ "; miny = bminy;
+    bmaxy = " ~ lsg[][1][5] ~ "; maxy = bmaxy;");
+
+
+style = if(interval > 0; "animgroup = true; interval = " ~ interval ~ ";"; "animgroup = false;");
+style = style ~ 
+ "bcolorspecial = \"white\"; bcolormin = \"red\"; bcolormax = \"blue\";
+  bcolorminvalue = 0;
+  bcolorspecialvalue = -1;";
+
+show(g1 = graph(; 
+ lsg[][0]; 
+ ; 
+ style ~ "atitlex = \"x\"; atitley = \"px\";"; 
+ lbs); "Contour graph"; ; ; point(500; 400));
+
+%% Animovaný graf regularity
+l = length(lsg)[0];
+freg1 = new("pointvector"; l);
+
+for(i = 0; i < l;
+(freg1[i] = point(lb[i]; if(lsg[i][4] == 0; 1.0; lsg[i][5] / lsg[i][4]));
+ i = i + 1));
+
+freg1 = smooth(freg1);
+
+freg = list();
+for(i = 0; i < l;
+(add(freg; array(pointvector(freg1[i]); freg1));
+ i = i + 1));
+
+freg = toarray(freg);
+
+fstyle = array("psize = 10; pstyle = \"fcircle\"; pcolor = \"red\";");
+
+fs = list();
+for(i = 0; i < l;
+(add(fs; "gtitle = \"freg(" ~ string(lb[i]; "0.000") ~ ") = " ~ string(gety(freg1[i]); "0.000") ~ "\";");
+ i = i + 1));
+
+show(g2 = graph(freg; ; ; 
+style ~ "lcolor = \"blue\"; marginl = 70; minx = 0.0; miny = 0.0; maxy = 1.0; atitlex = \"" ~ ch ~ "\"; atitley = \"freg\"; pstyle = \"none\";"; 
+toarray(fs); 
+fstyle); 
+"freg"; ; ; point(600; 400));

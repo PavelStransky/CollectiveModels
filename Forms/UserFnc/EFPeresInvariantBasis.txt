@@ -1,0 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows an animated second invariant %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+g = _p1;
+e0 = _p2; 
+num = _p3;
+numanim = _p4;
+myformat = safevalue(_p5; "");
+
+e = evalues(g);
+
+pv = pointvector(e[0:num]; e0[0:num]);
+
+p = list();
+
+for(i = 0; i < numanim;
+(add(p; array(pointvector(vector(e[i]); vector(e0[i])); pv));
+ i = i + 1));
+
+p = toarray(p);
+
+style = "
+ psizex = 5; psizey = 5; 
+ psize = 7; pcolor = \"green\";
+ pstyle = \"fcircle\"; lstyle = \"none\"; 
+ pcolorx = 0; pcolory = 0; clip = false;
+ atitlex = \"E\"; atitley = \"H0\";
+ interval = 1000; animgroup = true;";
+
+st = array("psize = 18; pcolor = \"red\";");
+
+gst = list();
+for(i = 0; i < numanim;
+(add(gst; "gtitle = \"H'(" ~ string(e[i]; "0.000") ~ ") = " ~ string(e0[i]; "0.000") ~ "\";");
+ i = i + 1));
+
+gst = toarray(gst);
+
+%%show(graph(p ; ; ; style ~ myformat; gst; st); "Invariant v bázi B=0"; ; ; point(350; 300));
+show(graph(p ; ; ; style ~ myformat; gst; st); "peres_lattice_b"; ; ; point(350; 300));

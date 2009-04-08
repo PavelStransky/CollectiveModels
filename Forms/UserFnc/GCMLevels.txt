@@ -1,0 +1,100 @@
+b = _p1;                         %% Parametr B v GCM
+hbar = _p2;                      %% Planckova konstanta
+e = _p3;                         %% Vlastní hodnoty
+numlho = safevalue(_p4; 0);      %% Poèet zobrazovaných hladin 2D LHO
+numanim = safevalue(_p5; 1);     %% Poèet hladin k animaci
+myformat = safevalue(_p6; "");   %% Vlastní formátování
+extrae = safevalue(_p7; 0);      %% Extra energie (napø. energie zlomu)
+parity = safevalue(_p8; 0);	 %% Parita hladin numlho (0... vše, 1...lichá, 2...sudá)
+
+%% Odpovídající hladiny LHO
+if(numlho > 0; elho = getvar(_quadraticapprox(b; hbar; numlho; parity); ev));
+
+%% Minimální hodnota x v potenciálu
+q = lhoqgcmare(-1; b; 1; 1; 1; hbar);
+emax = e[$] + abs(e[$] - e[0]) / 25.0;
+xmin = potentialroots(q; emax; 0)[0];
+xmax = potentialroots(q; emax; 0)[$];
+xminlho = xmin - (xmax - xmin) / 10.0;
+
+%% Potenciál
+p = getvar(_gcmpotential(b; emax; 30); p);
+
+%% Cyklus pøes HLADINY
+line = list(); format = list();
+add(line; pointvector(new("vector"; length(e)[0]); e));
+add(format; "lstyle = pstyle = \"none\";");
+
+for(i = 0; 
+i < length(e)[0];
+(
+   x = potentialroots(q; e[i]; 0);
+
+   if(i < numlho;
+   (%%add(line; pointvector(vector(xminlho; xmin; x[0]); vector(elho[i]; elho[i]; e[i])));
+    %%add(format; "lcolor = \"red\"; lstyle = \"line\";")));
+    add(line; pointvector(vector(xminlho; xmin); vector(elho[i]; elho[i])));
+    add(line; pointvector(vector(xmin; x[0]); vector(elho[i]; e[i])));
+    add(format; "lcolor = \"red\"; lstyle = \"line\";");
+    add(format; "lcolor = \"red\"; lstyle = \"line\";")));
+
+   if((length(x)[0]) == 2; 
+      (add(line; pointvector(vector(x[0]; x[1]); vector(e[i]; e[i])));
+       add(format; "lcolor = \"green\";"));
+      (add(line; pointvector(vector(x[0]; x[1]); vector(e[i]; e[i]));
+         pointvector(vector(x[2]; x[3]); vector(e[i]; e[i])));
+       add(format; "lcolor = \"green\";"; "lcolor = \"green\";")));
+
+   i = i + 1
+));
+
+%% Extra energie
+if(extrae != 0;
+   (extrax = potentialroots(q; extrae; 0);
+    if((length(extrax)[0]) == 2; 
+       (add(line; pointvector(vector(extrax[0]; extrax[1]); vector(extrae; extrae)));
+        add(format; "lcolor = \"orange\"; lwidth = 3;"));
+       (add(line; pointvector(vector(extrax[0]; extrax[1]); vector(extrae; extrae));
+          pointvector(vector(extrax[2]; extrax[3]); vector(extrae; extrae)));
+        add(format; "lcolor = \"orange\"; lwidth = 3;"; "lcolor = \"orange\"; lwidth = 3;")))));
+
+%% Cyklus pøes HLADINY
+for((lg = list(); fg = list(); fgroups = list(); i = 0);
+i < numanim;
+(
+   x = potentialroots(q; e[i]; 0);
+
+   if((length(x)[0]) == 2; 
+   (add(lg; toarray(line ~ (point(x[0]; e[i]) ~ point(x[1]; e[i])) ~ p));
+    add(fg; toarray(format ~ "lcolor = \"blue\"; lwidth = 3;" ~ "lstyle = \"curve\"; lcolor = \"yellow\"; lwidth = 2;")));
+   (add(lg; toarray(line ~ (point(x[0]; e[i]) ~ point(x[1]; e[i])) ~ (point(x[2]; e[i]) ~ point(x[3]; e[i])) ~ p));
+    add(fg; toarray(format ~ "lcolor = \"blue\"; lwidth = 3;" ~ "lcolor = \"blue\"; lwidth = 3;" ~
+                          "lstyle = \"curve\"; lcolor = \"yellow\"; lwidth = 2;"))));
+
+    add(fgroups; "gtitle = \"E(" ~ i ~ ") = " ~ string(e[i]; "0.000") ~ "\";");
+   i = i + 1
+);
+if(numanim > 0; 
+(line = lg; format = fg; clear(lg); clear(fg); fgroups = toarray(fgroups)); 
+(add(line; p); add(format; "lstyle = \"curve\"; lcolor = \"yellow\"; lwidth = 2;")))
+);
+
+line = toarray(line);
+format = toarray(format);
+
+%% q už nebudeme potøebovat
+clear(q);
+
+style = "
+ pstyle=\"none\";
+ fsizex=12; fsizey=12; psizex=8; psizey=8; lwidthx=2; lwidthy=2; 
+ pcolorx=0; lcolorx=0; pcolory=0; lcolory=0;
+ atitlex = \"beta\"; atitley = \"E\";
+ title=\"B = " ~ b ~ "\";" ~ myformat; 
+
+%% Graf
+g = graph(line;
+; ; style;
+if(numanim > 0; fgroups);
+format
+);

@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Vykreslí závislost stopy Hamiltonovy matice na parameru a0 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+a = _p1;
+a0 = _p2;
+hbar = _p3;
+maxE = _p4;
+
+p = list();
+
+a0min = a0 / 100.0;
+a0max = 10.0 * a0;
+
+for(
+ ai = a0min; 
+ ai < a0max;
+ (g = lhoqgcmare(a; 1; 1; 1; ai; hbar);
+  add(p; point(ai; hamiltonianmatrixtrace(g; maxE)));
+  ai = ai + a0min
+));
+
+p = pointvector(p);
+mina0 = sort(getx(p); gety(p))[0];
+besta0 = mina0 / 2;
+
+show(graph(p; ; ; 
+"title=\"Min A0 = " ~ string(mina0; "0.#####") ~ "\"; 
+ gtitle = \"Best A0 = " ~ string(besta0; "0.#####") ~ "\"; gtitlecolor = \"red\";
+ atitlex = \"A0\"; atitley = \"Tr H\";
+ marginl = 90; pstyle = \"none\";
+ miny = 0; maxy = " ~ (gety(p)[$] * 5) ~ ";"
+); "Trace dependence");
+printline("Best a0 = " ~ besta0);

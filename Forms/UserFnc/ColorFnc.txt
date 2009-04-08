@@ -1,0 +1,3 @@
+x = safevalue(_p1; 0);
+y = safevalue(_p2; 0);
+cf = int(y);

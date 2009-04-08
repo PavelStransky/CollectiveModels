@@ -1,0 +1,56 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows a graph of freg(B) dependence calculated using SALI Poincare section %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lbm = _p1;      %% List of B (negative A)
+lsgbm = _p2;    %% List of salig results
+la = _p3;       %% List of A
+lsga = _p4;     %% List of salig results
+lbp = _p5;      %% List of B positive A)
+lsgbp = _p6;    %% List of salig results
+
+lengtha = length(lsga)[0];
+lengthbm = length(lsgbm)[0];
+lengthbp = length(lsgbp)[0];
+
+%% Preparation - conversion to array and sorting
+if(lengtha > 0; 
+(la = toarray(la);
+ lsga = toarray(lsga);
+ lsga = sort(lsga; la);
+ la = sort(la)
+));
+
+if(lengthbp > 0; 
+(lbp = toarray(lbp);
+ lsgbp = toarray(lsgbp);
+ lsgbp = sortdesc(lsgbp; lbp);
+ lbp = sortdesc(lbp)
+));
+
+lbm = toarray(lbm);
+lsgbm = toarray(lsgbm);
+lsgbm = sort(lsgbm; lbm);
+lbm = sort(lbm);
+
+p = list();
+
+%% We have to start with B (negative A)
+for(i = 0; i < lengthbm;
+(if(lbm[i] < 1.0; add(p; point(lbm[i] - 2; if(lsgbm[i][4] == 0; 1.0; lsgbm[i][5] / lsgbm[i][4]))));
+ i = i + 1));
+
+for(i = 0; i < lengtha;
+(add(p; point(la[i]; if(lsga[i][4] == 0; 1.0; lsga[i][5] / lsga[i][4])));
+ i = i + 1));
+
+for(i = 0; i < lengthbp;
+(if(lbp[i] < 1.0; add(p; point(2 - lbp[i]; if(lsgbp[i][4] == 0; 1.0; lsgbp[i][5] / lsgbp[i][4]))));
+ i = i + 1));
+
+p = pointvector(p);
+
+style = "miny = 0; maxy = 1; minx = -2; maxx = 2; lcolor = \"blue\"; pstyle = \"none\";
+ atitlex = \"B\"; atitley = \"freg\";
+ marginl = 70;";
+
+show(graph(p; ; ; style); "freg"; ; ; point(400; 300));

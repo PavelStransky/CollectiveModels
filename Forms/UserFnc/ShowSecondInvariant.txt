@@ -1,0 +1,32 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Zobrazí druhý invariant a odliší body s rùznou paritou %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+g = _p1;
+
+printline("Naèítám data...");
+e = evalues(g);
+d = secondinvariant(g);
+p = parity(g);
+
+%% Rozdìlení stavù na sudou a lichou paritu
+printline("Dìlím stavy podle parity...");
+
+evenparity = array();
+oddparity = array();
+l = length(p)[0];
+
+for(i = 0; i < l;
+(if(p[i] < 0.0; oddparity = oddparity & point(e[i]; d[i]);
+             evenparity = evenparity & point(e[i]; d[i]));
+ i = i + 1));
+
+printline("Sudá:  " + (length(evenparity)[0]) + " (modrá)");
+printline("Lichá: " + (length(oddparity)[0]) + " (oranžová)");
+
+show(graph(
+ pointvector(oddparity) & pointvector(evenparity); ; ; 
+ "lstyle = \"none\";" +
+ "pstyle = \"fcircle\"; psize = 3;" +
+ "title = \"Second Invariant\";"; 
+ "pcolor = \"orange\";" & "pcolor = \"blue\";");
+"Second Invariant");

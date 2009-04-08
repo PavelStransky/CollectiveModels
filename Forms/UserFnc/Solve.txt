@@ -1,0 +1,60 @@
+%% Parametry
+b = _p1;
+maxE = _p2;                          %% Energie
+hbar = _p3;                          %% Planckova konstanta
+a0min = _p4;
+a0step = _p5;
+a0max = _p6;
+
+%% Vnitøní parametry
+g = lhoqgcmrl(-1; b; 1; 1; 1; hbar);
+s = hamiltonianmatrixsize(g; maxE);  %% Rozmìr Hamiltonovy matice
+s1 = s / 100;                        %% 1 %
+s5 = s / 20;                         %% 5 %
+s10 = s / 10;                        %% 10 %
+s25 = s / 4;                         %% 25 %
+numev = 50;                          %% Poèet vlastních hodnot, ze
+                                     %% které se uchovávají
+%% Výsledky
+em = array(); 
+ep = array();
+t = array();
+evsum1 = array(); 
+evsum5 = array();
+evsum10 = array();
+evsum25 = array();
+x = array();
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Hlavní cyklus FOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for(a0 = a0min;
+
+a0 <= a0max;
+
+(printclear(); 
+print(a0 + " ");
+
+g = lhoqgcmrl(-1; b; 1; 1; a0; hbar);
+computespectrum(g; maxE; true; s25; 3000);
+
+em = em & (evalues(g)[0...numev]);
+ep = ep & (evalues(g)[($ - numev)...$]);
+t = t & hamiltonianmatrixtrace(g; maxE; 3000);
+
+evsum1 = evsum1 & sumabs(evectors(g)[0...s1;($ - maxE)...$]);
+evsum5 = evsum5 & sumabs(evectors(g)[0...s5;($ - maxE)...$]);
+evsum10 = evsum10 & sumabs(evectors(g)[0...s10;($ - maxE)...$]);
+evsum25 = evsum25 & sumabs(evectors(g)[;($ - maxE)...$]);
+
+x = x & a0;
+a0 = a0 + a0step;
+
+%% Zobrazení výsledkù
+@DisplayResults(x; em; ep; 
+array(s1; s5; s10; s25);
+array(evsum1; evsum5; evsum10; evsum25);
+t)
+));
+
+clear(g);

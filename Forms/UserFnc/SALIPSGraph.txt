@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows a graph of freg(B) dependence calculated using SALI Poincare section %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lb = _p1;      %% List of B
+lsg = _p2;     %% List of salig results
+
+lb = toarray(lb);
+lsg = toarray(lsg);
+
+lsg = sort(lsg; lb);
+lb = sort(lb);
+
+l = length(lsg)[0];
+p = new("pointvector"; l);
+
+for(i = 0; i < l;
+(p[i] = point(lb[i]; if(lsg[i][4] == 0; 1.0; lsg[i][5] / lsg[i][4]));
+ i = i + 1));
+
+style = "miny = 0; maxy = 1; minx = 0; lcolor = \"blue\"; pstyle = \"none\";
+ atitlex = \"B\"; atitley = \"freg\";
+ marginl = 70;";
+
+show(graph(p; ; ; style); "freg"; ; ; point(400; 300));
+

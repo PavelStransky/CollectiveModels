@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates freg point using SALI Poincare section graph %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+a = _p1;
+b = _p2;
+e = _p3;
+size = safevalue(_p4; 100);    %% Size of the lattice
+extended = safevalue(_p5; 0);  %% Extended type - 1,2
+kappa = safevalue(_p6; 1);
+lambda = safevalue(_p7; 1);
+
+if(extended == 0;
+(printline("A = " ~ a ~ ", B = " ~ b ~ ", E = " ~ e);
+ gcm = cgcm(a; b; 1; 1)
+));
+
+if(extended == 1;
+(printline("Extended1: A = " ~ a ~ ", B = " ~ b ~ ", kappa = " ~ kappa ~ ", lambda = " ~ lambda ~ ", E = " ~ e);
+ gcm = extendedcgcm1(a; b; 1; 1; kappa; lambda)
+));
+
+if(extended == 2;
+(printline("Extended2: A = " ~ a ~ ", B = " ~ b ~ ", kappa = " ~ kappa ~ ", lambda = " ~ lambda ~ ", E = " ~ e);
+ gcm = extendedcgcm2(a; b; 1; 1; kappa; lambda)
+));
+
+sg = salig(gcm; e; size; size; 0; true);
+dg = show(graph(; sg[0]; ; "title = \"A = " ~ a ~ ", B = " ~ b ~ "\";"); "Contour graph");
+
+printline("freg = " ~ (sg[5] / sg[4]));
+printline();

@@ -1,0 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates dependence freg(B) using Brody parameter %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+e = _p1;
+step = safevalue(_p2; 50);
+length = safevalue(_p3; 1000);
+rorder = safevalue(_p5; 3);            %% ÿ·d regrese
+
+r = list();
+x = list();
+
+imax = int((length(e)[0] - length) / step);
+
+for(i = 0; i < imax;
+(datauf = getvar(_UnfoldingC(e[(i * step):(i * step + length)]; rorder); datauf);
+ usp = cumulhistogram(spacing(sort(datauf))) / point(1; length);
+ rbrody = cumulbrodyfit(usp; 0.001);
+
+ printline(rbrody);
+
+ add(r; 1.0 - rbrody);
+ add(x; (e[i * step] + e[i * step + length]) / 2.0);
+i = i + 1));
+
+freg = pointvector(vector(x); vector(r));
+
+show(graph(array(freg)); "fregC");

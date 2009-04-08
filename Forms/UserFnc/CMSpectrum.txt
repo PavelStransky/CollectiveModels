@@ -1,0 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Funkce vytvoøí spektrum korelaèních matic %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+signal = _p1;                 %% Øada vektorù
+windowsize = _p2;             %% Velikost okna
+overlap = safevalue(_p3; 0);  %% Pøekrytí oken
+shift = safevalue(_p4; 0);    %% Posun mezi kanály
+
+channels = length(signal)[0];
+l = length(signal)[1];
+
+numwindows = l / (windowsize - overlap) - 1;
+printline("Poèet oken: " + numwindows);
+
+for
+((k = 0; e = array());
+ k < numwindows;
+ (if((k - ((k / 10) * 10)) == 0; printline(k));
+  i1 = k * (windowsize - overlap);
+  i2 = i1 + windowsize - 1;
+  a = snormalize(signal[;i1...i2]);
+  m = cm(a; shift);
+  e = e & eigensystem(m)[0];
+  k = k + 1
+));
+
+clear(a); clear(m); clear(k);

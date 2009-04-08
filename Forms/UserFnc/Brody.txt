@@ -1,0 +1,44 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Z NNS napoèítá Brodyho parametr %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+usp = _p1;
+histogrampoints = _p2;
+rorder = safevalue(_p3; 1);
+
+if(type(usp) == "vector"; usp = array(usp));
+
+ihsp = cumulhistogram(join(usp); histogrampoints);
+ihsp = ihsp / point(1.0; gety(ihsp)[$]);
+
+for(
+ (brody = list(); i = 0); 
+ i < length(ihsp)[0];
+ (add(brody; point(log(getx(ihsp[i])); log(log(1.0 / (1.0 - gety(ihsp[i]))))));
+  i = i + 1));
+brody = removebadpoints(pointvector(brody));
+
+rbrody = linearregression(brody);
+x = getx(brody);
+y = polynom(x; rbrody[0:1]);
+errors = norm(y - gety(brody));
+approx = pointvector(x; y);
+
+approxp = pointvector(x; x);
+approxgoe = pointvector(x; -0.241564 + 2.0 * x);
+
+%% Graf pro Brodyho parametr
+show(graph(array(brody; approx; approxp; approxgoe); ; ; 
+"title = \"Brodyho parametr a aproximace\"; lstyle = \"line\";";
+array("subtitle = \"Chyby = " ~ errors ~ ", B = " ~ string((rbrody[1] - 1); "0.000") ~ "\";");
+array("";
+"pstyle = \"none\"; lcolor = \"blue\"; lwidth = 2;";
+"pstyle = \"none\"; lcolor = \"green\"; lwidth = 2;";
+"pstyle = \"none\"; lcolor = \"red\"; lwidth = 2;"
+)); "Brody");
+
+clear(x; y);
+clear(brody);
+clear(approx);
+clear(ihsp);
+clear(i);
+clear(errors);

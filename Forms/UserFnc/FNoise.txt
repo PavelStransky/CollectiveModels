@@ -1,0 +1,49 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates dependence freg(B) using Brody parameter %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+e = _p1;
+step = safevalue(_p2; 50);
+length = safevalue(_p3; 512);
+rorder = safevalue(_p4; 3);            %% ÿ·d regrese
+
+x = list();
+r = list();
+re = list();
+
+imax = int((length(e)[0] - length + step) / step);
+
+for(i = 0; i < imax;
+(datauf = getvar(_UnfoldingC(e[(i * step):(i * step + length)]; rorder); datauf);
+ udelta = delta(sort(datauf));
+ spectrum = fftspectrum(udelta)[1:$];
+
+ xs = log(getx(spectrum));
+ ys = log(gety(spectrum));
+
+ spectrum = pointvector(xs; ys);
+
+ rfft = linearregression(spectrum[safevalue(_p5; 0:$)]);
+ printline(rfft);
+
+ approx = pointvector(xs; polynom(xs; rfft[0:1]));
+
+ add(x; (e[i * step] + e[i * step + length]) / 2.0);
+
+ add(r; -1.0 - rfft[1]);
+ add(re; rfft[4]);
+
+ show(array(
+ graph(histogram(datauf; 20));
+ graph(udelta); 
+ graph(array(spectrum; approx); ; ; ; ; array("lstyle = \"none\"; psize = 3;";
+"pstyle = \"none\"; lcolor = \"red\"; lwidth = 2;"))));
+
+i = i + 1));
+
+freg = pointvector(vector(x); vector(r));
+frege = vector(re);
+show(graph(freg; ; frege); "1/f noise");
+
+clear(rfft);
+clear(i; spectrum; datauf; udelta);
+clear(xs; ys);

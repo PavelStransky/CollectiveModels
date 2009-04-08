@@ -1,0 +1,38 @@
+%% Parametry
+x = _p1;
+em = _p2;
+ep = _p3;
+s = _p4;
+evsum = _p5;
+t = _p6;
+
+%% Vytvoøení EN - závislost vlastní hodnoty na lambda
+for((enm = array(); enp = array(); i = 0); 
+i < length(em)[1];
+(enm = enm & pointvector(vector(x); vector(em[;i])); 
+enp = enp & pointvector(vector(x); vector(ep[;i])); 
+i = i + 1); save());
+
+%% Zobrazení závislosti vlastní hodnoty na lambda
+gr = array();
+gr = gr & graph(enm[0...$];;; "pstyle = \"none\"; title=\"Minimální hladiny (0 - 50)\";");
+gr = gr & graph(enp[0...$];;; "pstyle = \"none\"; title=\"Vyšší hladiny (" + (s[3] - 50) + " - " + s[3] + ")\";");
+
+gr = gr & graph(pointvector(vector(x); vector(sum(em;1)));;; "title=\"Souèet\";");
+gr = gr & graph(pointvector(vector(x); vector(sum(ep;1)));;; "title=\"Souèet\";");
+
+show(gr; "Hladiny"; 2);
+
+%% Zobrazení vlastních vektorù - v øádce
+gr = array();
+gr = gr & graph(pointvector(vector(x); vector(evsum[0]));;; "title=\"Vlastní vektory (0 - " + s[0] + ")\";");
+gr = gr & graph(pointvector(vector(x); vector(evsum[1]));;; "title=\"Vlastní vektory (0 - " + s[1] + ")\";");
+gr = gr & graph(pointvector(vector(x); vector(evsum[2]));;; "title=\"Vlastní vektory (0 - " + s[2] + ")\";");
+gr = gr & graph(pointvector(vector(x); vector(evsum[3]));;; "title=\"Vlastní vektory (0 - " + s[3] + ")\";");
+show(gr; "Vektory"; 2); 
+clear(gr);
+
+%% Stopa matice
+tr = pointvector(vector(x); vector(t));
+show(graph(tr); "Stopa");
+printline(tr);

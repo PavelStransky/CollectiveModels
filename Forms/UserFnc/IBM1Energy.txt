@@ -1,0 +1,14 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates the energies of IBM1 model with known quantum numbers %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+qn = _p1;
+epsilon = _p2;
+alpha = _p3;
+beta = _p4;
+gamma = _p5;
+
+nd = qn[0];
+v = qn[1];
+L = qn[2];
+
+E = epsilon * nd + alpha * nd * (nd + 4) + beta * v * (v + 3) + gamma * L * (L + 1);

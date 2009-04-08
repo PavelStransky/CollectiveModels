@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Shows and compares spectra %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+e = _p1;                         %% Spectra
+min = safevalue(_p2; 0);         %% Minimální hladina
+max = safevalue(_p3; int(min(vector(#length(e)[][0]))));
+                                 %% Maximální hladina
+join = safevalue(_p4; false);    %% True if there should be shown lines joining different sets of levels
+ground0 = safevalue(_p5; false); %% True if the lowest level should be set to 0
+gstyle = safevalue(_p6; "");     %% Style of the graph
+
+ground = e[][min];
+
+p = list();
+style = list();
+
+%% Spectra
+for(
+i = min; 
+i < max;
+(for(
+ j = 0;
+ j < length(e)[0];
+ (e1 = if(ground0; e[j][i] - ground[j]; e[j][i]);
+  add(p; pointvector(vector(2 * j; 2 * j + 1); vector(e1; e1)));
+  add(style; "lcolor = " ~ (j + 1) ~ ";");
+  j = j + 1));
+ i = i + 1
+));
+
+%% Joins
+if(join;
+ for(
+ i = min; 
+ i < max;
+ (for(
+  j = 1;
+  j < length(e)[0];
+  (e1 = if(ground0; e[j - 1][i] - ground[j - 1]; e[j - 1][i]);
+   e2 = if(ground0; e[j][i] - ground[j]; e[j][i]);
+   add(p; pointvector(vector(2 * j - 1; 2 * j); vector(e1; e2)));
+   add(style; "lcolor = vector(0.8; 0.8; 0.8);");
+   j = j + 1));
+  i = i + 1
+ ))
+);
+
+style;
+p;
+
+show(graph(toarray(p); ; ; 
+"pstyle = \"none\"; minx = -1; maxx = " ~ (2 * length(e)[0]) ~ "; showaxex = false; showaxey = false;";;
+toarray(style)); "Comparison of spectra");

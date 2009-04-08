@@ -1,0 +1,44 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Calculates dependence freg(B) using Brody parameter %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+e = _p1;
+step = safevalue(_p2; 50);
+length = safevalue(_p3; 1000);
+histogrampoints = safevalue(_p4; 50);  %% Poèet bodù histogramu
+rorder = safevalue(_p5; 3);            %% Øád regrese
+
+r = list();
+rp = list();
+rm = list();
+
+x = list();
+x1 = list();
+x2 = list();
+
+imax = int((length(e)[0] - length) / step);
+
+for(i = 0; i < imax;
+(datauf = getvar(_Unfolding(e[(i * step):(i * step + length)]; rorder); datauf);
+ usp = getvar(_Spacing(datauf; histogrampoints); usp);
+ rbrody = getvar(_Brody(usp; histogrampoints); rbrody);
+ usp = getvar(_Spacing(datauf; histogrampoints; rbrody[1] - 1); usp);
+
+ printline(rbrody);
+
+ add(r; 2.0 - rbrody[1]);
+ add(rp; 2.0 - rbrody[1] + rbrody[4]);
+ add(rm; 2.0 - rbrody[1] - rbrody[4]);
+ add(x; (e[i * step] + e[i * step + length]) / 2.0);
+ add(x1; e[i * step]);
+ add(x2; e[i * step + length]);
+i = i + 1));
+
+freg = pointvector(vector(x); vector(r));
+fregp = pointvector(vector(x); vector(rp));
+fregm = pointvector(vector(x); vector(rm));
+
+freg1 = pointvector(vector(x1); vector(r));
+freg2 = pointvector(vector(x2); vector(r));
+
+show(graph(array(freg; fregp; fregm)); "freg");
+show(graph(array(freg; freg1; freg2)); "freg12");

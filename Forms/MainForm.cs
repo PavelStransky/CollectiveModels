@@ -112,6 +112,8 @@ namespace PavelStransky.Forms {
             this.lastOpenedFiles = new LastOpenedFiles(-1, this.mnFile);
             this.lastOpenedFiles.Click += new FileNameEventHandler(lastOpenedFiles_Click);
             this.FileOpened += new FileNameEventHandler(this.lastOpenedFiles.AddFile);
+
+            this.Text = string.Format("{0} ({1})", this.Text, Application.ProductVersion);
         }
 
         /// <summary>

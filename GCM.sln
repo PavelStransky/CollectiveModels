@@ -24,9 +24,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManyBody", "ManyBody\ManyBo
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{96EED724-E19D-4E34-BE7E-D98962DE0526}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHO", "CHO\CHO.csproj", "{985D55BE-F9EA-447A-9468-75BC5A12806A}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 14
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Expression\\Expression.csproj
 		SccProjectName1 = \u0022$/CollectiveModels/Expression\u0022,\u0020OBAAAAAA
@@ -64,6 +66,9 @@ Global
 		SccProjectUniqueName12 = Setup\\Setup.vdproj
 		SccLocalPath12 = .
 		SccProjectFilePathRelativizedFromConnection12 = Setup\\
+		SccProjectUniqueName13 = CHO\\CHO.csproj
+		SccLocalPath13 = .
+		SccProjectFilePathRelativizedFromConnection13 = CHO\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -258,6 +263,20 @@ Global
 		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|Mixed Platforms.ActiveCfg = Release
 		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|Win32.ActiveCfg = Release
 		{96EED724-E19D-4E34-BE7E-D98962DE0526}.Release|x86.ActiveCfg = Release
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|.NET.ActiveCfg = Release|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

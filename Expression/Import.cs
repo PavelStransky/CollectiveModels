@@ -8,6 +8,7 @@ using PavelStransky.IBM;
 using PavelStransky.PT;
 using PavelStransky.Expression;
 using PavelStransky.ManyBody;
+using PavelStransky.CHO;
 
 namespace PavelStransky.Expression {
     /// <summary>
@@ -75,6 +76,8 @@ namespace PavelStransky.Expression {
                 return new ThreeBody(this);
             else if(typeName == typeof(TwoBody).FullName)
                 return new TwoBody(this);
+            else if(typeName == typeof(CoupledHarmonicOscillator).FullName)
+                return new CoupledHarmonicOscillator(this);
             else
                 return base.CreateObject(typeName);
         }

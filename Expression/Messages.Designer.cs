@@ -2689,6 +2689,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a Coupled harmonic oscillator class.
+        /// </summary>
+        internal static string HelpCHO {
+            get {
+                return ResourceManager.GetString("HelpCHO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a ClassicalIBM class.
         /// </summary>
         internal static string HelpCIBM {
@@ -5506,6 +5515,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lambda.
+        /// </summary>
+        internal static string PCouplingConstant {
+            get {
+                return ResourceManager.GetString("PCouplingConstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coupling constant.
+        /// </summary>
+        internal static string PCouplingConstantDescription {
+            get {
+                return ResourceManager.GetString("PCouplingConstantDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to default.
         /// </summary>
         internal static string PDefaultValue {
@@ -6300,6 +6327,24 @@ namespace PavelStransky.Expression {
         /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
+        internal static string PMass {
+            get {
+                return ResourceManager.GetString("PMass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mass.
+        /// </summary>
+        internal static string PMassDescription {
+            get {
+                return ResourceManager.GetString("PMassDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
         internal static string PMasses {
             get {
                 return ResourceManager.GetString("PMasses", resourceCulture);
@@ -7014,6 +7059,24 @@ namespace PavelStransky.Expression {
         internal static string PQuantumSystemDescription {
             get {
                 return ResourceManager.GetString("PQuantumSystemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to k.
+        /// </summary>
+        internal static string PRigidity {
+            get {
+                return ResourceManager.GetString("PRigidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rigidity.
+        /// </summary>
+        internal static string PRigidityDescription {
+            get {
+                return ResourceManager.GetString("PRigidityDescription", resourceCulture);
             }
         }
         

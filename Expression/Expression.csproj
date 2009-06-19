@@ -107,6 +107,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\CHO\CHO.csproj">
+      <Project>{985D55BE-F9EA-447A-9468-75BC5A12806A}</Project>
+      <Name>CHO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
       <Name>Core</Name>
@@ -145,6 +149,7 @@
     <Compile Include="Exceptions\FncListException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
+    <Compile Include="Functions\Dynamics\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />
     <Compile Include="Functions\Dynamics\IsRegularPS.cs" />

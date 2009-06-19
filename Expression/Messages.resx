@@ -2730,4 +2730,25 @@ Second differing type: {1}</value>
   <data name="EMContext" xml:space="preserve">
     <value>Context error:</value>
   </data>
+  <data name="HelpCHO" xml:space="preserve">
+    <value>Creates a Coupled harmonic oscillator class</value>
+  </data>
+  <data name="PCouplingConstant" xml:space="preserve">
+    <value>lambda</value>
+  </data>
+  <data name="PCouplingConstantDescription" xml:space="preserve">
+    <value>Coupling constant</value>
+  </data>
+  <data name="PMass" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="PMassDescription" xml:space="preserve">
+    <value>Mass</value>
+  </data>
+  <data name="PRigidity" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="PRigidityDescription" xml:space="preserve">
+    <value>Rigidity</value>
+  </data>
 </root>

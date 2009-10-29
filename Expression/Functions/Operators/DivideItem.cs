@@ -32,8 +32,6 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             int[] lengths = this.GetTypesLength(arguments, true);
 
-            int k = 0;
-
             // Výpoèet 
             if(lengths[4] >= 0) {       // Vektor
                 int lengthv = lengths[4];
@@ -41,6 +39,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
                 for(int i = 0; i < lengthv; i++) {
                     resultv[i] = 1.0;
+                    int k = 0;
                     foreach(object o in arguments) {
                         if(k == 0) {
                             if(o is Vector)
@@ -72,6 +71,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 for(int i = 0; i < lengthmx; i++)
                     for(int j = 0; j < lengthmy; j++) {
                         resultm[i, j] = 1.0;
+                        int k = 0;
                         foreach(object o in arguments) {
                             if(k == 0) {
                                 if(o is Matrix)
@@ -98,6 +98,8 @@ namespace PavelStransky.Expression.Functions.Def {
             else if(lengths[8] >= 0) {  // PointD
                 double x = 1.0;
                 double y = 1.0;
+
+                int k = 0;
 
                 foreach(PointD p in arguments) {
                     if(k == 0 ) {
@@ -149,6 +151,8 @@ namespace PavelStransky.Expression.Functions.Def {
             else if(lengths[0] >= 0 && lengths[2] < 0) {    // int
                 int resulti = 1;
 
+                int k = 0;
+
                 foreach(int i in arguments) {
                     if(k == 0)
                         resulti *= i;
@@ -162,6 +166,8 @@ namespace PavelStransky.Expression.Functions.Def {
 
             else {                      // double a int - výsledek double
                 double resultd = 1.0;
+
+                int k = 0;
 
                 foreach(object o in arguments) {
                     if(k == 0) {

@@ -89,12 +89,12 @@ namespace PavelStransky.Expression.Functions.Def {
                 else if(arguments[0] is PointD) {
                     int count = arguments.Count;
 
-                    PointVector result = new PointVector(count);
+                    PointVector result = new PointVector(2);
                     int i = 0;
                     foreach(object o in arguments) {
-                        if(o is PointD)
+                       if(o is PointD)
                             result[i++] = (PointD)o;
-                        else
+                       else if(o != null)
                             this.BadTypeError(arguments, i);
                     }
                     return result;

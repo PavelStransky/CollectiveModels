@@ -2751,4 +2751,25 @@ Second differing type: {1}</value>
   <data name="PRigidityDescription" xml:space="preserve">
     <value>Rigidity</value>
   </data>
+  <data name="POrderOfSquareRoot" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="POrderOfSquareRootDescription" xml:space="preserve">
+    <value>Order of square root</value>
+  </data>
+  <data name="HelpMaxima" xml:space="preserve">
+    <value>Returns maxima of a given function</value>
+  </data>
+  <data name="HelpMinima" xml:space="preserve">
+    <value>Returns minima of a given function</value>
+  </data>
+  <data name="HelpAvoidedCrossings" xml:space="preserve">
+    <value>Finds points of all avoided crossings for PT3</value>
+  </data>
+  <data name="PLevel" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="PLevelDescription" xml:space="preserve">
+    <value>Index of eigenstate</value>
+  </data>
 </root>

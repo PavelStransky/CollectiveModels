@@ -153,6 +153,8 @@
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />
     <Compile Include="Functions\Dynamics\IsRegularPS.cs" />
+    <Compile Include="Functions\Dynamics\Maxima.cs" />
+    <Compile Include="Functions\Dynamics\Minima.cs" />
     <Compile Include="Functions\Dynamics\PeresInvariantT.cs" />
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakCurvature.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />
     <Compile Include="Functions\Program\ExportVector3D.cs" />
+    <Compile Include="Functions\Quantum\AvoidedCrossings.cs" />
     <Compile Include="Functions\Quantum\D2.cs" />
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />

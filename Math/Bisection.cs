@@ -28,6 +28,9 @@ namespace PavelStransky.Math {
             double f1 = this.function(x1);
             double f2 = this.function(x2);
 
+            if(precision <= 0.0)
+                precision = defaultPrecision;
+
             if(double.IsNaN(f1) || double.IsNaN(f2))
                 return double.NaN;
 

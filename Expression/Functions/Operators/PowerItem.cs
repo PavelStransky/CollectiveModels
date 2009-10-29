@@ -21,6 +21,17 @@ namespace PavelStransky.Expression.Functions.Def {
                 typeof(LongNumber), typeof(LongFraction));
             this.SetParam(1, true, true, false, Messages.PExponent, Messages.PExponentDescription, null,
                 typeof(int), typeof(double), typeof(Vector), typeof(Matrix));
+
+            this.AddCompatibility(typeof(int), typeof(int));
+            this.AddCompatibility(typeof(int), typeof(double));
+            this.AddCompatibility(typeof(int), typeof(Vector));
+            this.AddCompatibility(typeof(int), typeof(Matrix));
+            this.AddCompatibility(typeof(double), typeof(int));
+            this.AddCompatibility(typeof(double), typeof(double));
+            this.AddCompatibility(typeof(double), typeof(Vector));
+            this.AddCompatibility(typeof(double), typeof(Matrix));
+            this.AddCompatibility(typeof(LongNumber), typeof(int));
+            this.AddCompatibility(typeof(LongFraction), typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

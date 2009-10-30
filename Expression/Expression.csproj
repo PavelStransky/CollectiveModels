@@ -184,6 +184,7 @@
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />
     <Compile Include="Functions\Program\ExportVector3D.cs" />
+    <Compile Include="Functions\Quantum\AvoidedCrossing.cs" />
     <Compile Include="Functions\Quantum\AvoidedCrossings.cs" />
     <Compile Include="Functions\Quantum\D2.cs" />
     <Compile Include="Functions\Quantum\Entropy.cs" />

@@ -2617,6 +2617,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finds precise position of the avoided crossing of two levels (minimum of their distance).
+        /// </summary>
+        internal static string HelpAvoidedCrossing {
+            get {
+                return ResourceManager.GetString("HelpAvoidedCrossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finds points of all avoided crossings for PT3.
         /// </summary>
         internal static string HelpAvoidedCrossings {
@@ -4930,6 +4939,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to n1.
+        /// </summary>
+        internal static string P2AvoidedCrossing {
+            get {
+                return ResourceManager.GetString("P2AvoidedCrossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Index of the first level.
+        /// </summary>
+        internal static string P2AvoidedCrossingDescription {
+            get {
+                return ResourceManager.GetString("P2AvoidedCrossingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of a variable that will be copied from actual context.
         /// </summary>
         internal static string P2ContextDescription {
@@ -5025,6 +5052,24 @@ namespace PavelStransky.Expression {
         internal static string P2PointVectorDescription {
             get {
                 return ResourceManager.GetString("P2PointVectorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to n2.
+        /// </summary>
+        internal static string P3AvoidedCrossing {
+            get {
+                return ResourceManager.GetString("P3AvoidedCrossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Index of the second level.
+        /// </summary>
+        internal static string P3AvoidedCrossingDescription {
+            get {
+                return ResourceManager.GetString("P3AvoidedCrossingDescription", resourceCulture);
             }
         }
         
@@ -5137,6 +5182,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bmin.
+        /// </summary>
+        internal static string P4AvoidedCrossing {
+            get {
+                return ResourceManager.GetString("P4AvoidedCrossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimal b for the calculation.
+        /// </summary>
+        internal static string P4AvoidedCrossingDescription {
+            get {
+                return ResourceManager.GetString("P4AvoidedCrossingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pglobal.
         /// </summary>
         internal static string P4Graph {
@@ -5169,6 +5232,24 @@ namespace PavelStransky.Expression {
         internal static string P4PoincareDescription {
             get {
                 return ResourceManager.GetString("P4PoincareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bmax.
+        /// </summary>
+        internal static string P5AvoidedCrossing {
+            get {
+                return ResourceManager.GetString("P5AvoidedCrossing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximal b for the calculation.
+        /// </summary>
+        internal static string P5AvoidedCrossingDescription {
+            get {
+                return ResourceManager.GetString("P5AvoidedCrossingDescription", resourceCulture);
             }
         }
         

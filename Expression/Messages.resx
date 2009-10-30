@@ -2772,4 +2772,31 @@ Second differing type: {1}</value>
   <data name="PLevelDescription" xml:space="preserve">
     <value>Index of eigenstate</value>
   </data>
+  <data name="HelpAvoidedCrossing" xml:space="preserve">
+    <value>Finds precise position of the avoided crossing of two levels (minimum of their distance)</value>
+  </data>
+  <data name="P2AvoidedCrossing" xml:space="preserve">
+    <value>n1</value>
+  </data>
+  <data name="P2AvoidedCrossingDescription" xml:space="preserve">
+    <value>Index of the first level</value>
+  </data>
+  <data name="P3AvoidedCrossing" xml:space="preserve">
+    <value>n2</value>
+  </data>
+  <data name="P3AvoidedCrossingDescription" xml:space="preserve">
+    <value>Index of the second level</value>
+  </data>
+  <data name="P4AvoidedCrossing" xml:space="preserve">
+    <value>bmin</value>
+  </data>
+  <data name="P4AvoidedCrossingDescription" xml:space="preserve">
+    <value>Minimal b for the calculation</value>
+  </data>
+  <data name="P5AvoidedCrossing" xml:space="preserve">
+    <value>bmax</value>
+  </data>
+  <data name="P5AvoidedCrossingDescription" xml:space="preserve">
+    <value>Maximal b for the calculation</value>
+  </data>
 </root>

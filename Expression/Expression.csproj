@@ -181,6 +181,7 @@
     <Compile Include="Functions\Math\Gamma.cs" />
     <Compile Include="Functions\Math\PAX.cs" />
     <Compile Include="Functions\Math\PT3Potential.cs" />
+    <Compile Include="Functions\Matrix\BTW.cs" />
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />
     <Compile Include="Functions\Program\ExportVector3D.cs" />

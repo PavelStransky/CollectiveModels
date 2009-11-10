@@ -2689,6 +2689,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bak-Tang-Wiesenfeld sandpile celular automaton.
+        /// </summary>
+        internal static string HelpBTW {
+            get {
+                return ResourceManager.GetString("HelpBTW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a ClassicalGCM class (nonrotating case with simple kinetic term).
         /// </summary>
         internal static string HelpCGCM {
@@ -5637,6 +5646,24 @@ namespace PavelStransky.Expression {
         internal static string PCouplingConstantDescription {
             get {
                 return ResourceManager.GetString("PCouplingConstantDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c.
+        /// </summary>
+        internal static string PCriticalValue {
+            get {
+                return ResourceManager.GetString("PCriticalValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical value.
+        /// </summary>
+        internal static string PCriticalValueDescription {
+            get {
+                return ResourceManager.GetString("PCriticalValueDescription", resourceCulture);
             }
         }
         

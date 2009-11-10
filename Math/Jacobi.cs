@@ -86,7 +86,7 @@ namespace PavelStransky.Math {
             this.eigenVector = new Vector[size];
             this.eigenValue = new double[size];
 
-            Matrix p = source.Clone();
+            Matrix p = (Matrix)source.Clone();
 
             Vector b = new Vector(size);
             Vector z = new Vector(size);

@@ -2799,4 +2799,13 @@ Second differing type: {1}</value>
   <data name="P5AvoidedCrossingDescription" xml:space="preserve">
     <value>Maximal b for the calculation</value>
   </data>
+  <data name="HelpBTW" xml:space="preserve">
+    <value>Bak-Tang-Wiesenfeld sandpile celular automaton</value>
+  </data>
+  <data name="PCriticalValue" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="PCriticalValueDescription" xml:space="preserve">
+    <value>Critical value</value>
+  </data>
 </root>

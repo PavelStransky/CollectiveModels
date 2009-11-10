@@ -9,7 +9,7 @@ namespace PavelStransky.Math {
 	/// <summary>
 	/// Implementace operací s maticemi
 	/// </summary>
-	public class Matrix: IExportable {
+	public class Matrix: IExportable, ICloneable {
 		private double [,] item;
 
 		// +--------> Y
@@ -424,7 +424,7 @@ namespace PavelStransky.Math {
 		/// <summary>
 		/// Vytvoøí kopii matice
 		/// </summary>
-		public Matrix Clone() {
+		public object Clone() {
 			return new Matrix(this.item.Clone() as double[,]);
 		}
 
@@ -1023,7 +1023,7 @@ namespace PavelStransky.Math {
 		/// a øádky mìly stejnou normu
 		/// </summary>
 		private Matrix Balance() {
-			Matrix result = this.Clone();
+			Matrix result = (Matrix)this.Clone();
 
 			const double radix = 2.0;
 			const double sqradix = 4.0;
@@ -1074,7 +1074,7 @@ namespace PavelStransky.Math {
 		/// (matice, která má pod diagonálou nenulový prvek a vše níž je nulové)
 		/// </summary>
 		private Matrix Hessenberg() {
-			Matrix result = this.Clone();
+			Matrix result = (Matrix)this.Clone();
 
 			for(int i = 1; i < result.Length - 1; i++) {
 				int jMax = i;

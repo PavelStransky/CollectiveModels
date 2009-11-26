@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions.Def {
             ComplexVector cv = arguments[0] is Vector ? (arguments[0] as Vector).ToComplexVector() : (arguments[0] as ComplexVector);
 
             ComplexVector result = FFT.Compute(cv);
-            return FFT.PowerSpectrum(result, (double)arguments[1]);
+                return FFT.PowerSpectrum(result, (double)arguments[1]);
         }
     }
 }

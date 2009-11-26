@@ -23,9 +23,10 @@ namespace PavelStransky.Expression.Functions.Def {
             Vector result = new Vector(length);
 
             double v0 = v[0];
+            double mean = (v.LastItem - v[0]) / (length - 1);       // Mean spacing
 
             for(int i = 0; i < length; i++)
-                result[i] = v[i] - v0 - i;
+                result[i] = v[i] - v0 - i * mean;
 
             return result;
         }

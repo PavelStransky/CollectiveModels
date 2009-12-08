@@ -10,8 +10,8 @@ namespace PavelStransky.Expression.Functions.Def {
     /// Number of principal components of eigenvector
     /// </summary>
     /// <remarks>PRE 71, 046116 (2005)</remarks>
-    public class PCN: Fnc {
-        public override string Help { get { return Messages.HelpPCN; } }
+    public class SymmetryParameter: Fnc {
+        public override string Help { get { return Messages.HelpSymmetryParameter; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return (arguments[0] as Vector).NumPrincipalComponents();
+            return (arguments[0] as Vector).Symmetry();
         }
     }
 }

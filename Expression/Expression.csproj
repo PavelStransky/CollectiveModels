@@ -182,7 +182,9 @@
     <Compile Include="Functions\Math\PAX.cs" />
     <Compile Include="Functions\Math\PT3Potential.cs" />
     <Compile Include="Functions\Matrix\BTW.cs" />
+    <Compile Include="Functions\Matrix\CorrelatedSignal.cs" />
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
+    <Compile Include="Functions\Matrix\Transpose.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />
     <Compile Include="Functions\Program\ExportVector3D.cs" />
     <Compile Include="Functions\Quantum\AvoidedCrossing.cs" />
@@ -191,7 +193,7 @@
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
-    <Compile Include="Functions\Quantum\PCN.cs" />
+    <Compile Include="Functions\Vector\PCN.cs" />
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
     <Compile Include="Functions\Quantum\PT3.cs" />
     <Compile Include="Functions\Quantum\PTSumLn.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Functions\Vector\Intersection.cs" />
     <Compile Include="Functions\Vector\Stairs.cs" />
     <Compile Include="Functions\Vector\SwapXY.cs" />
+    <Compile Include="Functions\Vector\SymmetryParameter.cs" />
     <Compile Include="Functions\Vector\TSIntegrate.cs" />
     <Compile Include="Exceptions\IndexerException.cs" />
     <Compile Include="Exceptions\ParamsException.cs" />

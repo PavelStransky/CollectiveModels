@@ -351,29 +351,6 @@ namespace PavelStransky.GCM {
             return result;
         }
 
-        /// <summary>
-        /// Number of principal components
-        /// </summary>
-        public virtual Vector GetPCN() {
-            if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
-
-            int count = this.eigenVectors.Length;
-            Vector result = new Vector(count);
-
-            for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenVectors[i];
-                int length = ev.Length;
-
-                for(int j = 0; j < length; j++)
-                    result[i] += ev[j] * ev[j] * ev[j] * ev[j];
-
-                result[i] = 1.0 / result[i];
-            }
-
-            return result;
-        }
-
         #region Vlnové funkce
         /// <summary>
         /// Vlnová funkce v souøadnicích x, y

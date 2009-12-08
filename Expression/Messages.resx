@@ -1198,7 +1198,7 @@ Length of the second vector: {1}</value>
     <value>Operator ~ (joins numbers together into vector, joins strings and lists)</value>
   </data>
   <data name="HelpPCN" xml:space="preserve">
-    <value>Number of principal components of eigenvalues</value>
+    <value>Number of principal components of eigenvector</value>
   </data>
   <data name="HelpPeresInvariantG" xml:space="preserve">
     <value>Creates matrix with Poincaré section by the plane y = 0 for 2D system; contours are determined by time averaged Peres invariant</value>
@@ -2807,5 +2807,80 @@ Second differing type: {1}</value>
   </data>
   <data name="PCriticalValueDescription" xml:space="preserve">
     <value>Critical value</value>
+  </data>
+  <data name="HelpCM" xml:space="preserve">
+    <value>Calculates correlation matrix</value>
+  </data>
+  <data name="HelpCorrelatedSignal" xml:space="preserve">
+    <value>Creates correlated signal according to the article PRE 71, 046116 (2005)</value>
+  </data>
+  <data name="HelpSymmetryParameter" xml:space="preserve">
+    <value>Symmetry parameter of eigenvector</value>
+  </data>
+  <data name="HelpTranspose" xml:space="preserve">
+    <value>Transposition of a matrix</value>
+  </data>
+  <data name="MsgCorrelatedSignalRegion1Start" xml:space="preserve">
+    <value>Creating time matrix in the region 1</value>
+  </data>
+  <data name="MsgCorrelatedSignalRegion2Start" xml:space="preserve">
+    <value>Creating time matrix in the transitional region 2</value>
+  </data>
+  <data name="MsgCorrelatedSignalRegion3Start" xml:space="preserve">
+    <value>Creating time matrix in the region 3</value>
+  </data>
+  <data name="P1CorrelatedSignal" xml:space="preserve">
+    <value>f</value>
+  </data>
+  <data name="P1CorrelatedSignalDescription" xml:space="preserve">
+    <value>Frequencies of the signals</value>
+  </data>
+  <data name="P2CM" xml:space="preserve">
+    <value>normalize</value>
+  </data>
+  <data name="P2CMDescription" xml:space="preserve">
+    <value>True if the signal should be normalized</value>
+  </data>
+  <data name="P2CorrelatedSignal" xml:space="preserve">
+    <value>delta1</value>
+  </data>
+  <data name="P2CorrelatedSignalDescription" xml:space="preserve">
+    <value>Phase shifts in the first region</value>
+  </data>
+  <data name="P3CorrelatedSignal" xml:space="preserve">
+    <value>t1</value>
+  </data>
+  <data name="P3CorrelatedSignalDescription" xml:space="preserve">
+    <value>Time length of the first region</value>
+  </data>
+  <data name="P4CorrelatedSignal" xml:space="preserve">
+    <value>t2</value>
+  </data>
+  <data name="P4CorrelatedSignalDescription" xml:space="preserve">
+    <value>Time length of the second (transitional) region</value>
+  </data>
+  <data name="P5CorrelatedSignal" xml:space="preserve">
+    <value>delta3</value>
+  </data>
+  <data name="P5CorrelatedSignalDescription" xml:space="preserve">
+    <value>Phase shifts in the third region</value>
+  </data>
+  <data name="P6CorrelatedSignal" xml:space="preserve">
+    <value>t3</value>
+  </data>
+  <data name="P6CorrelatedSignalDescription" xml:space="preserve">
+    <value>Time length of the third region</value>
+  </data>
+  <data name="P7CorrelatedSignal" xml:space="preserve">
+    <value>tbase</value>
+  </data>
+  <data name="P7CorrelatedSignalDescription" xml:space="preserve">
+    <value>Time base constant</value>
+  </data>
+  <data name="PShift" xml:space="preserve">
+    <value>shift</value>
+  </data>
+  <data name="PShiftDescription" xml:space="preserve">
+    <value>Time shift of the signals</value>
   </data>
 </root>

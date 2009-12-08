@@ -2770,6 +2770,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates correlation matrix.
+        /// </summary>
+        internal static string HelpCM {
+            get {
+                return ResourceManager.GetString("HelpCM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computes spectrum of a LHOQuantumGCM object.
         /// </summary>
         internal static string HelpComputeSpectrum {
@@ -2793,6 +2802,15 @@ namespace PavelStransky.Expression {
         internal static string HelpConvexConcave {
             get {
                 return ResourceManager.GetString("HelpConvexConcave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates correlated signal according to the article PRE 71, 046116 (2005).
+        /// </summary>
+        internal static string HelpCorrelatedSignal {
+            get {
+                return ResourceManager.GetString("HelpCorrelatedSignal", resourceCulture);
             }
         }
         
@@ -3814,7 +3832,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of principal components of eigenvalues.
+        ///   Looks up a localized string similar to Number of principal components of eigenvector.
         /// </summary>
         internal static string HelpPCN {
             get {
@@ -4480,6 +4498,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Symmetry parameter of eigenvector.
+        /// </summary>
+        internal static string HelpSymmetryParameter {
+            get {
+                return ResourceManager.GetString("HelpSymmetryParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tangent of the value.
         /// </summary>
         internal static string HelpTan {
@@ -4588,6 +4615,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transposition of a matrix.
+        /// </summary>
+        internal static string HelpTranspose {
+            get {
+                return ResourceManager.GetString("HelpTranspose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Integrates a time series S_{i}=sum_{j=1}^{i}(s_{j}-&lt;s&gt;).
         /// </summary>
         internal static string HelpTSIntegrate {
@@ -4678,6 +4714,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating time matrix in the region 1.
+        /// </summary>
+        internal static string MsgCorrelatedSignalRegion1Start {
+            get {
+                return ResourceManager.GetString("MsgCorrelatedSignalRegion1Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating time matrix in the transitional region 2.
+        /// </summary>
+        internal static string MsgCorrelatedSignalRegion2Start {
+            get {
+                return ResourceManager.GetString("MsgCorrelatedSignalRegion2Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating time matrix in the region 3.
+        /// </summary>
+        internal static string MsgCorrelatedSignalRegion3Start {
+            get {
+                return ResourceManager.GetString("MsgCorrelatedSignalRegion3Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to `.
         /// </summary>
         internal static string MsgParsing {
@@ -4737,6 +4800,24 @@ namespace PavelStransky.Expression {
         internal static string P1AssignmentDescription {
             get {
                 return ResourceManager.GetString("P1AssignmentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to f.
+        /// </summary>
+        internal static string P1CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P1CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frequencies of the signals.
+        /// </summary>
+        internal static string P1CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P1CorrelatedSignalDescription", resourceCulture);
             }
         }
         
@@ -4966,6 +5047,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to normalize.
+        /// </summary>
+        internal static string P2CM {
+            get {
+                return ResourceManager.GetString("P2CM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the signal should be normalized.
+        /// </summary>
+        internal static string P2CMDescription {
+            get {
+                return ResourceManager.GetString("P2CMDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of a variable that will be copied from actual context.
         /// </summary>
         internal static string P2ContextDescription {
@@ -4989,6 +5088,24 @@ namespace PavelStransky.Expression {
         internal static string P2ConvexConcaveDescription {
             get {
                 return ResourceManager.GetString("P2ConvexConcaveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delta1.
+        /// </summary>
+        internal static string P2CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P2CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase shifts in the first region.
+        /// </summary>
+        internal static string P2CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P2CorrelatedSignalDescription", resourceCulture);
             }
         }
         
@@ -5079,6 +5196,24 @@ namespace PavelStransky.Expression {
         internal static string P3AvoidedCrossingDescription {
             get {
                 return ResourceManager.GetString("P3AvoidedCrossingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to t1.
+        /// </summary>
+        internal static string P3CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P3CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time length of the first region.
+        /// </summary>
+        internal static string P3CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P3CorrelatedSignalDescription", resourceCulture);
             }
         }
         
@@ -5209,6 +5344,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to t2.
+        /// </summary>
+        internal static string P4CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P4CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time length of the second (transitional) region.
+        /// </summary>
+        internal static string P4CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P4CorrelatedSignalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pglobal.
         /// </summary>
         internal static string P4Graph {
@@ -5263,6 +5416,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to delta3.
+        /// </summary>
+        internal static string P5CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P5CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase shifts in the third region.
+        /// </summary>
+        internal static string P5CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P5CorrelatedSignalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pgroups.
         /// </summary>
         internal static string P5Graph {
@@ -5299,6 +5470,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to t3.
+        /// </summary>
+        internal static string P6CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P6CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time length of the third region.
+        /// </summary>
+        internal static string P6CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P6CorrelatedSignalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pcurves.
         /// </summary>
         internal static string P6Graph {
@@ -5331,6 +5520,24 @@ namespace PavelStransky.Expression {
         internal static string P6PoincareDescription {
             get {
                 return ResourceManager.GetString("P6PoincareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tbase.
+        /// </summary>
+        internal static string P7CorrelatedSignal {
+            get {
+                return ResourceManager.GetString("P7CorrelatedSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time base constant.
+        /// </summary>
+        internal static string P7CorrelatedSignalDescription {
+            get {
+                return ResourceManager.GetString("P7CorrelatedSignalDescription", resourceCulture);
             }
         }
         
@@ -7320,6 +7527,24 @@ namespace PavelStransky.Expression {
         internal static string PSCoefDescription {
             get {
                 return ResourceManager.GetString("PSCoefDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shift.
+        /// </summary>
+        internal static string PShift {
+            get {
+                return ResourceManager.GetString("PShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time shift of the signals.
+        /// </summary>
+        internal static string PShiftDescription {
+            get {
+                return ResourceManager.GetString("PShiftDescription", resourceCulture);
             }
         }
         

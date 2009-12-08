@@ -1016,7 +1016,8 @@ namespace PavelStransky.Math {
 
 			int length = this.Length;
 			for(int i = 0; i < length; i++) {
-				double pow2 = this[i] * this[i];
+				double pow2 = this[i];
+                pow2 *= pow2;
 				result += pow2 * pow2;
 			}
 			result *= length;

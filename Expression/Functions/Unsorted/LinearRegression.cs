@@ -13,12 +13,14 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
-            this.SetParam(0, true, true, false, Messages.P1Regression, Messages.P1RegressionDescription, null, typeof(PointVector));
+            this.SetParam(0, true, true, false, Messages.P1Regression, Messages.P1RegressionDescription, null, typeof(PointVector), typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            PointVector pointVector = arguments[0] as PointVector;
-            return Regression.ComputeLinear(pointVector);
+            if(arguments[0] is Vector)
+                return Regression.ComputeLinear(new PointVector(arguments[0] as Vector));
+            else
+                return Regression.ComputeLinear(arguments[0] as PointVector);
         }
     }
 }

@@ -2091,10 +2091,10 @@ Length of the second vector: {1}</value>
   <data name="PSignalDescription" xml:space="preserve">
     <value>Sampled signal </value>
   </data>
-  <data name="PSize" xml:space="preserve">
+  <data name="PMatrixSize" xml:space="preserve">
     <value>size</value>
   </data>
-  <data name="PSizeDescription" xml:space="preserve">
+  <data name="PMatrixSizeDescription" xml:space="preserve">
     <value>Size of the matrix</value>
   </data>
   <data name="PSizeWindow" xml:space="preserve">
@@ -2882,5 +2882,8 @@ Second differing type: {1}</value>
   </data>
   <data name="PShiftDescription" xml:space="preserve">
     <value>Time shift of the signals</value>
+  </data>
+  <data name="HelpMatrixUnit" xml:space="preserve">
+    <value>Creates a unit matrix</value>
   </data>
 </root>

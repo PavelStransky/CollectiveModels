@@ -3688,6 +3688,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a unit matrix.
+        /// </summary>
+        internal static string HelpMatrixUnit {
+            get {
+                return ResourceManager.GetString("HelpMatrixUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns maxima of a given function.
         /// </summary>
         internal static string HelpMaxima {
@@ -6775,6 +6784,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to size.
+        /// </summary>
+        internal static string PMatrixSize {
+            get {
+                return ResourceManager.GetString("PMatrixSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the matrix.
+        /// </summary>
+        internal static string PMatrixSizeDescription {
+            get {
+                return ResourceManager.GetString("PMatrixSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to emax.
         /// </summary>
         internal static string PMaxEnergy {
@@ -7563,24 +7590,6 @@ namespace PavelStransky.Expression {
         internal static string PSignalDescription {
             get {
                 return ResourceManager.GetString("PSignalDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to size.
-        /// </summary>
-        internal static string PSize {
-            get {
-                return ResourceManager.GetString("PSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Size of the matrix.
-        /// </summary>
-        internal static string PSizeDescription {
-            get {
-                return ResourceManager.GetString("PSizeDescription", resourceCulture);
             }
         }
         

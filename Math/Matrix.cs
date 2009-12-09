@@ -58,11 +58,24 @@ namespace PavelStransky.Math {
         }
         #endregion
 
+        /// <summary>
+        /// Vrátí jednotkovou matici
+        /// </summary>
+        /// <param name="length">Dimenze matice</param>
+        static public Matrix Unit(int length) {
+            Matrix result = new Matrix(length);
+
+            for(int i = 0; i < length; i++)
+                result[i, i] = 1.0;
+
+            return result;
+        }
+
         #region Vlastnosti
         /// <summary>
-		/// Poèet øádkù matice
-		/// </summary>
-		public int LengthX {get {return this.item.GetLength(0);}}
+        /// Poèet øádkù matice
+        /// </summary>
+        public int LengthX { get { return this.item.GetLength(0); } }
 
 		/// <summary>
 		/// Poèet sloupcù matice
@@ -395,18 +408,6 @@ namespace PavelStransky.Math {
 					result[j, i] = this[i, j];
 
 			return result;
-		}
-
-		/// <summary>
-		/// Vytvoøí jednotkovou matici
-		/// </summary>
-		public static Matrix Unit(int length) {
-            Matrix result = new Matrix(length);
-
-            for(int i = 0; i < length; i++)
-                result[i, i] = 1;
-
-            return result;
 		}
 
 		/// <summary>

@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
-            this.SetParam(0, true, true, false, Messages.PSize, Messages.PSizeDescription, null, typeof(int));
+            this.SetParam(0, true, true, false, Messages.PMatrixSize, Messages.PMatrixSizeDescription, null, typeof(int));
             this.SetParam(1, true, true, true, Messages.PVariance, Messages.PVarianceDescription, null, typeof(double));
         }
 

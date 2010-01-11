@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
             this.SetParam(2, true, true, true, Messages.PTime, Messages.PTimeDescription, null, typeof(double));
-            this.SetParam(3, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
+            this.SetParam(3, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

@@ -6676,6 +6676,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to omit.
+        /// </summary>
+        internal static string PLinesOmit {
+            get {
+                return ResourceManager.GetString("PLinesOmit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How many lines to omit.
+        /// </summary>
+        internal static string PLinesOmitDescription {
+            get {
+                return ResourceManager.GetString("PLinesOmitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to lb.
         /// </summary>
         internal static string PLowerBound {

@@ -2886,4 +2886,10 @@ Second differing type: {1}</value>
   <data name="HelpMatrixUnit" xml:space="preserve">
     <value>Creates a unit matrix</value>
   </data>
+  <data name="PLinesOmit" xml:space="preserve">
+    <value>omit</value>
+  </data>
+  <data name="PLinesOmitDescription" xml:space="preserve">
+    <value>How many lines to omit</value>
+  </data>
 </root>

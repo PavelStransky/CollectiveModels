@@ -14,10 +14,11 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpImport; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(2);
+            this.SetNumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PFileName, Messages.PFileNameDescription, null, typeof(string));
             this.SetParam(1, false, true, false, Messages.PFileType, Messages.PFileTypeDescription, "binary", typeof(string));
+            this.SetParam(2, false, true, false, Messages.PLinesOmit, Messages.PLinesOmitDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -25,11 +26,13 @@ namespace PavelStransky.Expression.Functions.Def {
 
 			string fileName = arguments[0] as string;
 
-            if(arguments.Count == 2 && (string)arguments[1] == "matlab") {
+            if((string)arguments[1] == "matlab") {
+                int linesOmit = (int)arguments[2];
+
                 // Import dat z matlabu - matice, nevíme, jaké má rozmìry
                 FileStream f = new FileStream(fileName, FileMode.Open);
                 StreamReader t = new StreamReader(f);
-                result = this.ImportMatlab(t);
+                result = this.ImportMatlab(t, linesOmit);
                 t.Close();
                 f.Close();
             }
@@ -46,10 +49,14 @@ namespace PavelStransky.Expression.Functions.Def {
 		/// Provede import dat z matlabu
 		/// </summary>
 		/// <param name="t">StreamReader</param>
-		private object ImportMatlab(StreamReader t) {
+        /// <param name="linesOmit">Poèet vynechaných øádek</param>
+		private object ImportMatlab(StreamReader t, int linesOmit) {
 			ArrayList rows = new ArrayList();
 
 			int columns = -1;
+
+            for(int i = 0; i < linesOmit; i++)
+                t.ReadLine();
 
 			string s;
 			while((s = t.ReadLine()) != null) {

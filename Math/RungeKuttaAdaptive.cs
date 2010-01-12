@@ -30,14 +30,17 @@ namespace PavelStransky.Math {
             VectorFunction equation = this.dynamicalSystem.Equation;
 
             do {
-                Vector rightSide0 = equation(x);
-                Vector rightSide1 = equation(x + step * b[0, 0] * rightSide0);
-                Vector rightSide2 = equation(x + step * (b[1, 0] * rightSide0 + b[1, 1] * rightSide1));
-                Vector rightSide3 = equation(x + step * (b[2, 0] * rightSide0 + b[2, 1] * rightSide1 + b[2, 2] * rightSide2));
-                Vector rightSide4 = equation(x + step * (b[3, 0] * rightSide0 + b[3, 1] * rightSide1 + b[3, 2] * rightSide2 + b[3, 3] * rightSide3));
-                Vector rightSide5 = equation(x + step * (b[4, 0] * rightSide0 + b[4, 1] * rightSide1 + b[4, 2] * rightSide2 + b[4, 3] * rightSide3 + b[4, 4] * rightSide4));
+                Matrix bstep = b * step;
 
-                Vector error = step * (dc[0] * rightSide0 + dc[2] * rightSide2 + dc[3] * rightSide3 + dc[4] * rightSide4 + dc[5] * rightSide5);
+                Vector rightSide0 = equation(x);
+                Vector rightSide1 = equation(Vector.Summarize(x, bstep[0, 0], rightSide0));
+                Vector rightSide2 = equation(Vector.Summarize(x, bstep[1, 0], rightSide0, bstep[1, 1], rightSide1));
+                Vector rightSide3 = equation(Vector.Summarize(x, bstep[2, 0], rightSide0, bstep[2, 1], rightSide1, bstep[2, 2], rightSide2));
+                Vector rightSide4 = equation(Vector.Summarize(x, bstep[3, 0], rightSide0, bstep[3, 1], rightSide1, bstep[3, 2], rightSide2, bstep[3, 3], rightSide3));
+                Vector rightSide5 = equation(Vector.Summarize(x, bstep[4, 0], rightSide0, bstep[4, 1], rightSide1, bstep[4, 2], rightSide2, bstep[4, 3], rightSide3, bstep[4, 4], rightSide4));
+
+                Vector error = step * Vector.Summarize(dc[0], rightSide0, dc[2], rightSide2, dc[3], rightSide3, dc[4], rightSide4, dc[5], rightSide5);
+
                 Vector verror = Vector.ItemDiv(error, scale);
                 double maxerror = verror.Abs().Max() / this.precision;
 
@@ -47,7 +50,7 @@ namespace PavelStransky.Math {
                     else
                         newStep = step * 5.0;
 
-                    return step * (c5[0] * rightSide0 + c5[2] * rightSide2 + c5[3] * rightSide3 + c5[5] * rightSide5);
+                    return step * Vector.Summarize(c5[0], rightSide0, c5[2], rightSide2, c5[3], rightSide3, c5[5], rightSide5);
                 }
 
                 newStep = safety * step * System.Math.Pow(maxerror, powerShrink);

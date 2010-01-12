@@ -299,12 +299,77 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Seète vektory a vynásobí danými koeficienty
         /// </summary>
+        public static Vector Summarize(Vector v1, double d2, Vector v2, double d3, Vector v3) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = v1[i] + d2 * v2[i] + d3 * v3[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(Vector v1, double d2, Vector v2, double d3, Vector v3, double d4, Vector v4) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = v1[i] + d2 * v2[i] + d3 * v3[i] + d4 * v4[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(Vector v1, double d2, Vector v2, double d3, Vector v3, double d4, Vector v4, double d5, Vector v5) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = v1[i] + d2 * v2[i] + d3 * v3[i] + d4 * v4[i] + d5 * v5[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(Vector v1, double d2, Vector v2, double d3, Vector v3, double d4, Vector v4, double d5, Vector v5, double d6, Vector v6) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = v1[i] + d2 * v2[i] + d3 * v3[i] + d4 * v4[i] + d5 * v5[i] + d6 * v6[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
         public static Vector Summarize(double d1, Vector v1, double d2, Vector v2, double d3, Vector v3, double d4, Vector v4) {
             int length = v1.Length;
             Vector result = new Vector(length);
 
             for(int i = 0; i < length; i++)
                 result[i] = d1 * v1[i] + d2 * v2[i] + d3 * v3[i] + d4 * v4[i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Seète vektory a vynásobí danými koeficienty
+        /// </summary>
+        public static Vector Summarize(double d1, Vector v1, double d2, Vector v2, double d3, Vector v3, double d4, Vector v4, double d5, Vector v5) {
+            int length = v1.Length;
+            Vector result = new Vector(length);
+
+            for(int i = 0; i < length; i++)
+                result[i] = d1 * v1[i] + d2 * v2[i] + d3 * v3[i] + d4 * v4[i] + d5 * v5[i];
 
             return result;
         }

@@ -7,7 +7,7 @@ namespace PavelStransky.Math {
     /// Urèí, zda zadaná trajektorie je regulární nebo chaotická na základì metody SALI
     /// (Smaller Alignment Index)
     /// </summary>
-    public class SALI:DynamicalSystem {
+    public class SALI: DynamicalSystem {
         // Aktuální souøadnice a rychlosti
         protected Vector x;
 
@@ -24,7 +24,7 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
         public SALI(IDynamicalSystem dynamicalSystem, double precision)
-            : base(dynamicalSystem, precision != 0.0 ? precision : defaultPrecision, RungeKuttaMethods.Normal) {
+            : base(dynamicalSystem, precision != 0.0 ? precision : defaultPrecision, RungeKuttaMethods.Adapted) {
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace PavelStransky.Math {
         /// <param name="time">Èas</param>
         public PointVector TimeDependence(Vector initialX, double time) {
             PointVector result = new PointVector(defaultNumPoints);
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision);
+            RungeKuttaAdaptive rkw = new RungeKuttaAdaptive(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision / 100.0);
 
             int finished = 0;
 
@@ -61,24 +61,46 @@ namespace PavelStransky.Math {
             double t = 0;
 
             this.rungeKutta.Init(initialX);
+            
+            Vector scale = new Vector(initialX.Length);
+            for(int i = 0; i < scale.Length; i++)
+                scale[i] = 1.0;
+
+            rkw.SetScale(scale, true);
 
             do {
                 for(int i = 0; i < 1000; i++) {
-                    double newStep, tStep;
+                    double newStep, tStep1, tStep2;
 
-                    this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
-                    w1 += rkw.Step(w1, ref step, out tStep);
-                    w2 += rkw.Step(w2, ref step, out tStep);
+                    Vector addX = this.rungeKutta.Step(this.x, ref step, out newStep);
+
+                    double oldStepW1 = step;
+                    Vector addW1 = rkw.Step(w1, ref step, out tStep1);
+
+                    double oldStepW2 = step;
+                    Vector addW2 = rkw.Step(w2, ref step, out tStep2);
+
+                    if(step != oldStepW1 || step != oldStepW2) {
+                        step = System.Math.Min(System.Math.Min(step, oldStepW1), oldStepW2);
+                        
+                        addX = this.rungeKutta.Step(this.x, ref step, out newStep);
+                        addW1 = rkw.Step(w1, ref step, out tStep1);
+                        addW2 = rkw.Step(w2, ref step, out tStep2);
+                    }
+
+                    this.x += addX;
+                    w1 += addW1;
+                    w2 += addW2;
 
                     t += step;
 
-                    step = newStep;
+                    step = System.Math.Min(System.Math.Min(newStep, tStep1), tStep2);
                 }
 
-                w1 = w1.EuklideanNormalization();
-                w2 = w2.EuklideanNormalization();
+//                w1 = w1.EuklideanNormalization();
+//                w2 = w2.EuklideanNormalization();
 
-                double sali = this.AlignmentIndex(w1, w2);
+                double sali = this.AlignmentIndex(w1.EuklideanNormalization(), w2.EuklideanNormalization());
 
                 result[finished].X = t;
                 result[finished].Y = sali;
@@ -146,7 +168,7 @@ namespace PavelStransky.Math {
             } while(true);
         }
 
-        protected const double defaultPrecision = 1E-3;
+        protected const double defaultPrecision = 1E-12;
         protected const int defaultNumPoints = 500;
         protected const double maxTime = 500;
         

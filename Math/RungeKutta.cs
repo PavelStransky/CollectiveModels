@@ -13,7 +13,7 @@ namespace PavelStransky.Math {
         protected IDynamicalSystem dynamicalSystem;
 
         // Rovnice (jen pro klasickou RK, jinak se musí použít dynamický systém)
-        private VectorFunction equation;
+        protected VectorFunction equation;
 
         protected Vector[] x;
         protected Vector time;

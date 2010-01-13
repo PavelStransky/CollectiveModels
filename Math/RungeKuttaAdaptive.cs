@@ -9,6 +9,7 @@ namespace PavelStransky.Math {
     /// </summary>
     public class RungeKuttaAdaptive: RungeKutta {
         private Vector scale;
+        private bool autoScale = false;
 
         /// <summary>
         /// Konstruktor
@@ -18,6 +19,14 @@ namespace PavelStransky.Math {
         public RungeKuttaAdaptive(IDynamicalSystem dynamicalSystem, double precision)
             : base(dynamicalSystem, precision != 0.0 ? precision : defaultPrecision) {
         }
+        
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="equation">Pravá strana rovnic</param>
+        /// <param name="precision">Pøesnost výpoètu</param>
+        public RungeKuttaAdaptive(VectorFunction equation, double precision)
+            : base(equation, precision) { }      
 
         /// <summary>
         /// Jeden krok výpoètu
@@ -27,7 +36,10 @@ namespace PavelStransky.Math {
         /// <param name="newStep">Nový krok</param>
         /// <returns>Vypoèítaný pøírùstek</returns>
         public override Vector Step(Vector x, ref double step, out double newStep) {
-            VectorFunction equation = this.dynamicalSystem.Equation;
+            VectorFunction equation = this.equation;
+
+            if(this.autoScale)
+                this.SetAutoScale(x);
 
             do {
                 Matrix bstep = b * step;
@@ -41,7 +53,7 @@ namespace PavelStransky.Math {
 
                 Vector error = step * Vector.Summarize(dc[0], rightSide0, dc[2], rightSide2, dc[3], rightSide3, dc[4], rightSide4, dc[5], rightSide5);
 
-                Vector verror = Vector.ItemDiv(error, scale);
+                Vector verror = Vector.ItemDiv(error, this.scale);
                 double maxerror = verror.Abs().Max() / this.precision;
 
                 if(maxerror <= 1.0) {
@@ -61,16 +73,38 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Nastaví manuálnì škálu výpoètu (bez volání funkce Init)
+        /// </summary>
+        /// <param name="scale">škála</param>
+        /// <param name="autoScale">true, pokud budeme nastavovat škálu automaticky v prùbìhu výpoètu</param>
+        public void SetScale(Vector scale, bool autoScale) {
+            this.scale = scale;
+            this.autoScale = autoScale;
+        }
+
+        /// <summary>
+        /// Nastaví automaticky škálu
+        /// </summary>
+        /// <param name="x">Vektor x</param>
+        private void SetAutoScale(Vector x) {
+            int length = this.scale.Length;
+
+            for(int i = 0; i < length; i++)
+                this.scale[i] = System.Math.Max(this.scale[i], System.Math.Abs(x[i]));
+        }
+
+        /// <summary>
         /// Øeší rovnici s poèáteèními podmínkami po èas time
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         public override void Init(Vector initialX) {
-            // Inicializujeme meze
-            Vector bounds = this.dynamicalSystem.Bounds(this.dynamicalSystem.E(initialX));
-            
-            this.scale = new Vector(2 * this.dynamicalSystem.DegreesOfFreedom);
-            for(int i = 0; i < 2 * this.dynamicalSystem.DegreesOfFreedom; i++)
-                this.scale[i] = bounds[2 * i + 1] - bounds[2 * i];
+            if(this.dynamicalSystem != null) {
+                // Inicializujeme meze
+                Vector bounds = this.dynamicalSystem.Bounds(this.dynamicalSystem.E(initialX));
+                this.scale = new Vector(2 * this.dynamicalSystem.DegreesOfFreedom);
+                for(int i = 0; i < 2 * this.dynamicalSystem.DegreesOfFreedom; i++)
+                    this.scale[i] = bounds[2 * i + 1] - bounds[2 * i];
+            }
 
             base.Init(initialX);
         }

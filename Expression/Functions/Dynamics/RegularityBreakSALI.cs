@@ -14,16 +14,19 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpRegularityBreakSALI; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(8);
+            this.SetNumParams(11);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.PEnergyMin, Messages.PEnergyMinDescription, null, typeof(double));
             this.SetParam(2, true, true, true, Messages.PEnergyMax, Messages.PEnergyMaxDescription, null, typeof(double));
             this.SetParam(3, true, true, false, Messages.PSizeX, Messages.PSizeXDescription, null, typeof(int));
             this.SetParam(4, true, true, false, Messages.PSizeY, Messages.PSizeYDescription, null, typeof(int));
-            this.SetParam(5, false, true, true, Messages.PPrecisionEnergy, Messages.PPrecisionEnergyDescription, defaultPrecision, typeof(double));
-            this.SetParam(6, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
-            this.SetParam(7, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
+            this.SetParam(5, false, true, true, Messages.PPrecisionEnergy, Messages.PPrecisionEnergyDescription, 1E-3, typeof(double));
+            this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
+            this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(8, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
+            this.SetParam(9, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(10, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -34,10 +37,13 @@ namespace PavelStransky.Expression.Functions.Def {
             int sizex = (int)arguments[3];
             int sizey = (int)arguments[4];
             double precisione = (double)arguments[5];
-            double precision = (double)arguments[6];
+            RungeKuttaMethods rkMethodT = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[6], true);
+            double precisionT = (double)arguments[7];
+            RungeKuttaMethods rkMethodW = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[8], true);
+            double precisionW = (double)arguments[9];
             bool isX = (bool)arguments[7];
 
-            SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precision);
+            SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
 
             DateTime startTime = DateTime.Now;
             guider.WriteLine(string.Format(Messages.MsgRegularityBreak, emin, emax));
@@ -58,7 +64,5 @@ namespace PavelStransky.Expression.Functions.Def {
 
             return (emin + emax) * 0.5; 
         }
-
-        private const double defaultPrecision = 1E-3;
     }
 }

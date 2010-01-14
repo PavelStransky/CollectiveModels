@@ -44,8 +44,15 @@ namespace PavelStransky.Expression.Functions.Def {
             else
                 return this.BadTypeError(arguments[1], 1);
 
-            Trajectory trajectory = new Trajectory(dynamicalSystem, precision, timeStep, rkMethod);
-            return trajectory.Compute(ic, t);
+            Trajectory trajectory = new Trajectory(dynamicalSystem, precision, rkMethod);
+            return this.Result(trajectory, ic, t, timeStep);
+        }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+        protected virtual object Result(Trajectory trajectory, Vector ic, double t, double timeStep) {
+            return trajectory.Compute(ic, t, timeStep);
         }
     }
 }

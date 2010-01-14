@@ -50,13 +50,13 @@ namespace PavelStransky.Expression.Functions.Def {
             else
                 return this.BadTypeError(arguments[1], 1);
 
-            PoincareSection ps = new PoincareSection(dynamicalSystem, plane, i1, i2, precision, rkMethod);
+            PoincareSection ps = new PoincareSection(dynamicalSystem, precision, rkMethod);
 
             PointVector result;
             int numAttemps = 0;
             while(true) {
                 try {
-                    result = ps.Compute(ic, numPoints, oneOrientation);
+                    result = ps.Compute(plane, i1, i2, ic, numPoints, oneOrientation);
                     break;
                 }
                 catch(PoincareSectionException exc) {

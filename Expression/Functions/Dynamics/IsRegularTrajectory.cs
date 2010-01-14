@@ -13,11 +13,14 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpIsRegularTrajectory; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(3);
+            this.SetNumParams(6);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
-            this.SetParam(2, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
+            this.SetParam(2, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
+            this.SetParam(3, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(4, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
+            this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -35,9 +38,12 @@ namespace PavelStransky.Expression.Functions.Def {
             else
                 return this.BadTypeError(arguments[1], 1);
 
-            double precision = (double)arguments[2];
+            RungeKuttaMethods rkMethodT = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[2], true);
+            double precisionT = (double)arguments[3];
+            RungeKuttaMethods rkMethodW = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[4], true);
+            double precisionW = (double)arguments[5];
 
-            SALI sali = new SALI(dynamicalSystem, precision);
+            SALI sali = new SALI(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
 
             if(sali.IsRegular(ic))
                 return 1;

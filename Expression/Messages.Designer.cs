@@ -3157,6 +3157,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smooths a vector in such a manner that all components before computed position are used for averaging.
+        /// </summary>
+        internal static string HelpFullSmooth {
+            get {
+                return ResourceManager.GetString("HelpFullSmooth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gamma function.
         /// </summary>
         internal static string HelpGamma {
@@ -4602,6 +4611,15 @@ namespace PavelStransky.Expression {
         internal static string HelpTrace {
             get {
                 return ResourceManager.GetString("HelpTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For given energy or a trajectory given by its initial condition calculates the length of the trajectory.
+        /// </summary>
+        internal static string HelpTrajectoryLength {
+            get {
+                return ResourceManager.GetString("HelpTrajectoryLength", resourceCulture);
             }
         }
         

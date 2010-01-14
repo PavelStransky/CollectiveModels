@@ -1,27 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 
 namespace PavelStransky.Math {
     /// <summary>
     /// Poèítá trajektorii dynamického systému
     /// </summary>
-    public class Trajectory: DynamicalSystem {
-        private double timeStep;
-        private RungeKutta rk;
+    public class Trajectory {
+        private RungeKutta rungeKutta;
+        private IDynamicalSystem dynamicalSystem;
+        private double precision;
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výsledku</param>
-        /// <param name="timeStep">Èasový krok výsledku</param>
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
-        public Trajectory(IDynamicalSystem dynamicalSystem, double precision, double timeStep, RungeKuttaMethods rkMethod)
-            : base(dynamicalSystem) {
-
-            this.timeStep = timeStep;
-            this.rk = this.CreateRungeKutta(precision, rkMethod);
+        public Trajectory(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod) {
+            this.dynamicalSystem = dynamicalSystem;
+            this.precision = precision;
+            this.rungeKutta = RungeKutta.CreateRungeKutta(dynamicalSystem, precision, rkMethod);
         }
 
         /// <summary>
@@ -30,27 +30,107 @@ namespace PavelStransky.Math {
         /// x, y, ...
         /// vx, vy, ...
         /// </summary>
-        /// <param name="ic">Poèáteèní podmínky (souøadnice, rychlosti)</param>
+        /// <param name="initialX">Poèáteèní podmínky (souøadnice, rychlosti)</param>
         /// <param name="time">Doba, po kterou bude trajektorie poèítána</param>
-        public Matrix Compute(Vector x, double time) {
-            this.rk.Solve(x, time);
+        /// <param name="timeStep">Èasový krok výsledku</param>
+        public Matrix Compute(Vector initialX, double time, double timeStep) {
+            // Poèet promìnných
+            int length = initialX.Length;
+            double t = 0.0;
+            double tNext = timeStep;
 
-            Matrix m;
+            Vector x = initialX;
 
-            if(this.timeStep == 0)
-                m = this.rk.GetMatrix();
-            else
-                m = this.rk.GetMatrix(timeStep);
+            ArrayList trajectory = new ArrayList();
+            ArrayList tt = new ArrayList();
 
-            for(int i = 0; i < m.LengthX; i += 100) {
-                Vector y = new Vector(m.LengthY - 1);
-                for(int j = 1; j < m.LengthY; j++)
-                    y[j - 1] = m[i, j];
+            double step = this.precision;
+            this.rungeKutta.Init(initialX);
 
-                Console.WriteLine("Time = {0}\tEnergy = {1}", m[i, 0], this.dynamicalSystem.E(y));
+            do {
+                while(t < tNext) {
+                    double newStep;
+                    x += this.rungeKutta.Step(x, ref step, out newStep);
+                    t += step;
+
+                    step = System.Math.Min(newStep, tNext);
+                }
+
+                trajectory.Add(x);
+                tt.Add(t);
+                tNext += timeStep;
+            } while(t < time);
+
+            int count = trajectory.Count;
+
+            // Transformace èasu
+            Vector tv = new Vector(count);
+            int j = 0;
+            foreach(double d in tt)
+                tv[j++] = d;
+
+            // Transformace dat
+            Matrix result = new Matrix(count, length + 1);
+            j = 0;
+            foreach(Vector v in trajectory) {
+                for(int k = 0; k < length; k++)
+                    result[j, k + 1] = v[k];
+                result[j, 0] = tv[j];
+                j++;
             }
 
-            return m;
+            return result;
+        }
+
+        /// <summary>
+        /// Spoèítá délku trajektorie v závislosti na èase
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky (souøadnice, rychlosti)</param>
+        /// <param name="time">Doba, po kterou bude trajektorie poèítána</param>
+        /// <param name="timeStep">Èasový krok výsledku</param>
+        public PointVector Length(Vector initialX, double time, double timeStep) {
+            // Poèet promìnných
+            int length = initialX.Length;
+            double t = 0.0;
+            double tNext = timeStep;
+
+            Vector x = initialX;
+
+            ArrayList data = new ArrayList();
+
+            double step = this.precision;
+            this.rungeKutta.Init(initialX);
+
+            double totalLength = 0.0;
+            do {
+                while(t < tNext) {
+                    double newStep;
+                    Vector newX = this.rungeKutta.Step(x, ref step, out newStep);
+
+                    double l = 0.0;
+                    for(int i = 0; i < length / 2; i++) {
+                        double c = (x[i] - newX[i]);
+                        l += c * c;
+                    }
+                    totalLength += System.Math.Sqrt(l);
+
+                    t += step;
+                    step = System.Math.Min(newStep, tNext);
+                }
+
+                data.Add(new PointD(t, totalLength));
+                tNext += timeStep;
+            } while(t < time);
+
+            int count = data.Count;
+
+            // Transformace dat
+            PointVector result = new PointVector(count);
+            int j = 0;
+            foreach(PointD p in data)
+                result[j++] = p;
+
+            return result;
         }
     }
 }

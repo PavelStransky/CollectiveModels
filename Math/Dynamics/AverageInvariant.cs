@@ -10,17 +10,24 @@ namespace PavelStransky.Math {
     /// Tøída, která na základì zprùmìrovaného Peresova invariantu vytvoøí konturovaný graf 
     /// (zatím pro speciální øez rovinou y)
     /// </summary>
-    public class AverageInvariant: DynamicalSystem {
+    public class AverageInvariant {
+        private IDynamicalSystem dynamicalSystem;
+        private RungeKutta rungeKutta;
+        private double precision;
+
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výsledku</param>
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
-        public AverageInvariant(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod)
-            : base(dynamicalSystem, precision, rkMethod) {
+        public AverageInvariant(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod) {
             if(dynamicalSystem.DegreesOfFreedom != 2)
-                throw new Exception(errorMessageBadDimension);
+                throw new Exception(Messages.EMBadDimension);
+
+            this.precision = precision;
+            this.dynamicalSystem = dynamicalSystem;
+            this.rungeKutta = RungeKutta.CreateRungeKutta(dynamicalSystem, precision, rkMethod);
         }
 
         /// <summary>
@@ -122,7 +129,7 @@ namespace PavelStransky.Math {
             Vector x = ic;
             double y = x[1];
 
-            double step = this.rungeKutta.Precision;
+            double step = this.precision;
             double time = 0;
 
             this.rungeKutta.Init(ic);
@@ -161,7 +168,7 @@ namespace PavelStransky.Math {
             
             Vector x = initialX;
 
-            double step = this.rungeKutta.Precision;
+            double step = this.precision;
             double t = 0.0;
 
             this.rungeKutta.Init(initialX);
@@ -194,6 +201,6 @@ namespace PavelStransky.Math {
         }
 
         private const int defaultNumPoints = 500;
-        private const string errorMessageBadDimension = "Poèet stupòù volnosti pro výpoèet konturovaného grafu podle SALI musí být rovnen 2.";
+        private const string errorMessageBadDimension = "";
     }
 }

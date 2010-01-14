@@ -9,52 +9,31 @@ namespace PavelStransky.Math {
     public enum RungeKuttaMethods { Normal, Energy, Adapted }
 
     public class RungeKutta {
-        // Dynamický systém
-        protected IDynamicalSystem dynamicalSystem;
-
         // Rovnice (jen pro klasickou RK, jinak se musí použít dynamický systém)
         protected VectorFunction equation;
-
-        protected Vector[] x;
-        protected Vector time;
-        protected double precision;
-
-        public double Precision { get { return this.precision; } }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výpoètu</param>
-        public RungeKutta(IDynamicalSystem dynamicalSystem, double precision)
-            : this(new VectorFunction(dynamicalSystem.Equation), precision) {
-            this.dynamicalSystem = dynamicalSystem;
+        public RungeKutta(IDynamicalSystem dynamicalSystem)
+            : this(new VectorFunction(dynamicalSystem.Equation)) {
         }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="equation">Pravá strana rovnic</param>
-        /// <param name="precision">Pøesnost výpoètu</param>
-        public RungeKutta(VectorFunction equation, double precision) {
+        public RungeKutta(VectorFunction equation) {
             this.equation = equation;
-            this.precision = (precision == 0.0 ? defaultPrecision : precision);
         }
 
         /// <summary>
-        /// Zmìní délku pole výsledku
+        /// Inicializuje výpoèet
         /// </summary>
-        /// <param name="numPoints">Nový poèet bodù</param>
-        protected void ChangeLength(int numPoints) {
-            Vector[] newx = new Vector[numPoints];
-            this.time.Length = numPoints;
-
-            numPoints = System.Math.Min(this.x.Length, numPoints);
-            for(int i = 0; i < numPoints; i++)
-                newx[i] = this.x[i];
-
-            this.x = newx;
-        }
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        public virtual void Init(Vector initialX) { }
 
         /// <summary>
         /// Jeden krok výpoètu
@@ -85,105 +64,49 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Øeší rovnici s poèáteèními podmínkami po èas time
+        /// Vytvoøí správný typ RungeKutta tøídy
         /// </summary>
-        /// <param name="t">Doba výpoètu</param>
-        /// <param name="initialX">Poèáteèní podmínky</param>
-        /// <param name="precision">Pøesnost výpoètu</param>
-        public virtual void Solve(Vector initialX, double t) {
-            // Poèet promìnných
-            int length = initialX.Length;
-            int numPoints = initialNumPoints;
-
-            this.x = new Vector[numPoints];
-            this.x[0] = initialX;
-
-            this.time = new Vector(numPoints);
-            this.time[0] = 0;
-
-            double step = this.precision;
-            int i = 0;
-
-            this.Init(initialX);
-
-            while(this.time[i] < t) {
-                if(i + 1 >= numPoints) {
-                    numPoints = numPoints * 3 / 2;
-                    this.ChangeLength(numPoints);
-                }
-
-                double newStep;
-                this.x[i + 1] = this.x[i] + this.Step(this.x[i], ref step, out newStep);
-                this.time[i + 1] = this.time[i] + step;
-
-                i++;
-
-                step = newStep;
+        /// <param name="dynamicalSystem">Dynamický systém</param>
+        /// <param name="rkMethod">Metoda k výpoètu RK</param>
+        /// <param name="precision">Pøesnost metody</param>
+        public static RungeKutta CreateRungeKutta(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod) {
+            switch(rkMethod) {
+                case RungeKuttaMethods.Normal: return new RungeKutta(dynamicalSystem);
+                case RungeKuttaMethods.Energy: return new RungeKuttaEnergy(dynamicalSystem, precision);
+                case RungeKuttaMethods.Adapted: return new RungeKuttaAdaptive(dynamicalSystem, precision);
             }
 
-            this.ChangeLength(i);
+            return null;
         }
 
         /// <summary>
-        /// Inicializuje výpoèet
+        /// Vytvoøí správný typ RungeKutta tøídy
         /// </summary>
-        /// <param name="initialX">Vektor poèáteèních podmínek</param>
-        public virtual void Init(Vector initialX) {
+        /// <param name="dynamicalSystem">Dynamický systém</param>
+        /// <param name="rkMethod">Metoda k výpoètu RK</param>
+        public static RungeKutta CreateRungeKutta(IDynamicalSystem dynamicalSystem, RungeKuttaMethods rkMethod) {
+            switch(rkMethod) {
+                case RungeKuttaMethods.Normal: return new RungeKutta(dynamicalSystem);
+                case RungeKuttaMethods.Energy: return new RungeKuttaEnergy(dynamicalSystem);
+                case RungeKuttaMethods.Adapted: return new RungeKuttaAdaptive(dynamicalSystem);
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Vrátí výsledky v matici o sloupcích time, x, vx
+        /// Vytvoøí správný typ RungeKutta tøídy
         /// </summary>
-        /// <param name="timeStep">Èasový krok výsledku</param>
-        public Matrix GetMatrix(double timeStep) {
-            int length = this.x[0].Length;
-            double interval = this.time[this.time.Length - 1] - this.time[0];
-            int numPoints = (int)(interval / timeStep) + 1;
-
-            Matrix result = new Matrix(numPoints, 2 * length + 1);
-
-            for(int i = 0; i < this.time.Length; i++) {
-                int index = (int)((this.time[i] - this.time[0]) / timeStep);
-                result[index, 0] = this.time[i];
-
-                for(int j = 0; j < length; j++)
-                    result[index, j + 1] = this.x[i][j];
+        /// <param name="dynamicalSystem">Dynamický systém</param>
+        /// <param name="rkMethod">Metoda k výpoètu RK</param>
+        /// <param name="precision">Pøesnost metody</param>
+        public static RungeKutta CreateRungeKutta(VectorFunction function, double precision, RungeKuttaMethods rkMethod) {
+            switch(rkMethod) {
+                case RungeKuttaMethods.Normal: return new RungeKutta(function);
+                case RungeKuttaMethods.Adapted: return new RungeKuttaAdaptive(function, precision);
             }
 
-            // Doplnìní chybìjících bodù
-            for(int i = 0; i < numPoints - 1; i++) {
-                Vector oldr = result.GetRowVector(i);
-                int j = 1;
-
-                while(result[i + j,0] == 0.0)
-                    j++;
-
-                Vector newr = result.GetRowVector(i + j);
-
-                for(int k = 1; k < j; k++)
-                    for(int l = 0; l < length; l++)
-                        result[k + i, l] = oldr[l] + k * (newr[l] - oldr[l]) / j;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Vrátí výsledky v matici o sloupcích time, x, vx
-        /// </summary>
-        public Matrix GetMatrix() {
-            int length = this.x[0].Length;
-            int numPoints = this.time.Length;
-            Matrix result = new Matrix(numPoints, length + 1);
-
-            for(int i = 0; i < numPoints; i++) {
-                result[i, 0] = this.time[i];
-
-                for(int j = 0; j < length; j++)
-                    result[i, j + 1] = this.x[i][j];
-            }
-
-            return result;
+            return null;
         }
 
         private const double defaultPrecision = 1E-3;

@@ -281,7 +281,7 @@ namespace PavelStransky.Test {
         /// </summary>
         public static void PokusSaliContourGraph() {
             ClassicalIBM ibm = new ClassicalIBM(0.7, -0.3);
-            SALIContourGraph sali = new SALIContourGraph(ibm, 0);
+            SALIContourGraph sali = new SALIContourGraph(ibm, 0, RungeKuttaMethods.Normal);
             Matrix m = sali.Compute(0, 100, 100)[0] as Matrix;
         }
 
@@ -298,8 +298,8 @@ namespace PavelStransky.Test {
             double b = c.E(ic);
             double j = c.J(ic).EuklideanNorm();
 
-            Trajectory t = new Trajectory(c, 1E-10, 1, RungeKuttaMethods.Adapted);
-            Matrix result = t.Compute(ic, 10);
+            Trajectory t = new Trajectory(c, 1E-10, RungeKuttaMethods.Adapted);
+            Matrix result = t.Compute(ic, 10, 1);
             Vector r = result.GetRowVector(5);
             Vector r1 = new Vector(r.Length - 1);
             for(int i = 0; i < r1.Length; i++)

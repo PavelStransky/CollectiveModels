@@ -2892,4 +2892,10 @@ Second differing type: {1}</value>
   <data name="PLinesOmitDescription" xml:space="preserve">
     <value>How many lines to omit</value>
   </data>
+  <data name="HelpFullSmooth" xml:space="preserve">
+    <value>Smooths a vector in such a manner that all components before computed position are used for averaging</value>
+  </data>
+  <data name="HelpTrajectoryLength" xml:space="preserve">
+    <value>For given energy or a trajectory given by its initial condition calculates the length of the trajectory</value>
+  </data>
 </root>

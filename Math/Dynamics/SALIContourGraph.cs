@@ -17,10 +17,24 @@ namespace PavelStransky.Math {
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výsledku</param>
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
-        public SALIContourGraph(IDynamicalSystem dynamicalSystem, double precision)
-            : base(dynamicalSystem, precision) {
+        public SALIContourGraph(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod)
+            : base(dynamicalSystem, precision, rkMethod) {
             if(dynamicalSystem.DegreesOfFreedom != 2)
-                throw new Exception(errorMessageBadDimension);
+                throw new Exception(Messages.EMBadDimension);
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="dynamicalSystem">Dynamický systém</param>
+        /// <param name="precisionT">Pøesnost výsledku trajektorie</param>
+        /// <param name="rkMethodT">Metoda k výpoètu trajektorie</param>
+        /// <param name="precisionW">Pøesnost výsledku odchylek</param>
+        /// <param name="rkMethodW">Metoda k výpoètu odchylek</param>
+        public SALIContourGraph(IDynamicalSystem dynamicalSystem, double precisionT, RungeKuttaMethods rkMethodT, double precisionW, RungeKuttaMethods rkMethodW)
+            : base(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW) {
+            if(dynamicalSystem.DegreesOfFreedom != 2)
+                throw new Exception(Messages.EMBadDimension);
         }
 
         /// <summary>
@@ -29,44 +43,30 @@ namespace PavelStransky.Math {
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
         public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX) {
-            RungeKutta rkw = new RungeKutta(new VectorFunction(this.DeviationEquation), this.rungeKutta.Precision);
-
             int indexS = isX ? 0 : 1;    // Index promìnné, kterou vede øez
             int indexG1 = isX ? 1 : 0;   // První index pro graf
             int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
 
-            this.x = initialX;
-            double oldy = this.x[indexS];
-            int finished = 0;
+            double oldy = initialX[indexS];
             bool result = false;
 
-            poincareSection.Length = defaultNumPoints;
+            ArrayList crossings = new ArrayList();
 
-            Vector w1 = new Vector(initialX.Length);
-            Vector w2 = new Vector(initialX.Length);
-            w1[0] = 1;
-            w2[2] = 1;
-
-            double step = this.rungeKutta.Precision;
-            double time = 0.0;
+            double step = System.Math.Min(this.precisionT, this.precisionW);
+            double timeStep = 1.0;
+            double t = 0.0;
+            double tNext = timeStep;
 
             MeanQueue queue = new MeanQueue(window);
 
-            int i1 = (int)(1.0 / step);
-
-            this.rungeKutta.Init(initialX);
+            this.Init(initialX);
 
             do {
-                for(int i = 0; i < i1; i++) {
+                while(t < tNext){
                     Vector oldx = this.x;
-                    double newStep, tStep;
 
-                    this.x += this.rungeKutta.Step(this.x, ref step, out newStep);
-                    w1 += rkw.Step(w1, ref step, out tStep);
-                    w2 += rkw.Step(w2, ref step, out tStep);
-
-                    time += step;
-
+                    double newStep = this.Step(ref step);
+                    t += step;
                     step = newStep;
 
                     double y = this.x[indexS];
@@ -74,37 +74,34 @@ namespace PavelStransky.Math {
                     // Druhá varianta jen v pøípadì, že øežeme X
                     if((y <= 0 && oldy > 0) || (!isX && y > 0 && oldy <= 0)) {
                         Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
-                        poincareSection[finished].X = v[indexG1];
-                        poincareSection[finished].Y = v[indexG2];
-                        finished++;
-
-                        if(finished >= poincareSection.Length)
-                            poincareSection.Length = poincareSection.Length * 3 / 2;
+                        crossings.Add(new PointD(v[indexG1], v[indexG2]));
                     }
                     oldy = y;
                 }
 
-                w1 = w1.EuklideanNormalization();
-                w2 = w2.EuklideanNormalization();
-
-                double ai = this.AlignmentIndex(w1, w2);
+                double ai = this.AlignmentIndex();
                 double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
                 queue.Set(logAI);
 
                 double meanSALI = queue.Mean;
 
-                if(meanSALI > 6.0 + time / 1000.0) {
+                if(meanSALI > 6.0 + t / 1000.0) {
                     result = false;
                     break;
                 }
-                if(meanSALI < (time - 1000.0) / 300.0) {
+                if(meanSALI < (t - 1000.0) / 300.0) {
                     result = true;
                     break;
                 }
 
             } while(true);
 
-            poincareSection.Length = finished;
+            // Pøevod øady na PointVector
+            poincareSection.Length = crossings.Count;
+            int j = 0;
+            foreach(PointD p in crossings)
+                poincareSection[j++] = p;
+
             return result;
         }
 
@@ -302,7 +299,5 @@ namespace PavelStransky.Math {
 
             return result;
         }
-
-        private const string errorMessageBadDimension = "Poèet stupòù volnosti pro výpoèet konturovaného grafu podle SALI musí být rovnen 2.";
     }
 }

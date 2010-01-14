@@ -121,14 +121,13 @@
     </Compile>
     <Compile Include="DiscreteInterval.cs" />
     <Compile Include="Dynamics\AverageInvariant.cs" />
-    <Compile Include="Dynamics\DynamicalSystem.cs" />
     <Compile Include="Dynamics\ExactBounds.cs" />
     <Compile Include="Dynamics\SALIContourGraph.cs" />
     <Compile Include="Dynamics\Trajectory.cs" />
     <Compile Include="FFT.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDynamicalSystem.cs" />
+    <Compile Include="Dynamics\IDynamicalSystem.cs" />
     <Compile Include="Delegates.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -142,6 +141,11 @@
     <Compile Include="LongNumber.cs" />
     <Compile Include="Matrix.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="NormalDistribution.cs">
       <SubType>Code</SubType>
@@ -158,9 +162,9 @@
     <Compile Include="Primes.cs" />
     <Compile Include="Regression.cs" />
     <Compile Include="RMTDistribution.cs" />
-    <Compile Include="RungeKutta.cs" />
-    <Compile Include="RungeKuttaAdaptive.cs" />
-    <Compile Include="RungeKuttaEnergy.cs" />
+    <Compile Include="Dynamics\RungeKutta.cs" />
+    <Compile Include="Dynamics\RungeKuttaAdaptive.cs" />
+    <Compile Include="Dynamics\RungeKuttaEnergy.cs" />
     <Compile Include="Dynamics\SALI.cs" />
     <Compile Include="SpecialFunctions.cs" />
     <Compile Include="Spline.cs">
@@ -175,6 +179,13 @@
       <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Messages.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

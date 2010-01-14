@@ -10,6 +10,9 @@ namespace PavelStransky.Math {
     public class RungeKuttaAdaptive: RungeKutta {
         private Vector scale;
         private bool autoScale = false;
+        private IDynamicalSystem dynamicalSystem;
+
+        private double precision;
 
         /// <summary>
         /// Konstruktor
@@ -17,7 +20,9 @@ namespace PavelStransky.Math {
         /// <param name="dynamicalSystem">Dynamický systém</param>
         /// <param name="precision">Pøesnost výpoètu</param>
         public RungeKuttaAdaptive(IDynamicalSystem dynamicalSystem, double precision)
-            : base(dynamicalSystem, precision != 0.0 ? precision : defaultPrecision) {
+            : base(dynamicalSystem) {
+            this.dynamicalSystem = dynamicalSystem;
+            this.SetPrecision(precision);
         }
         
         /// <summary>
@@ -26,7 +31,54 @@ namespace PavelStransky.Math {
         /// <param name="equation">Pravá strana rovnic</param>
         /// <param name="precision">Pøesnost výpoètu</param>
         public RungeKuttaAdaptive(VectorFunction equation, double precision)
-            : base(equation, precision) { }      
+            : base(equation) {
+
+            this.autoScale = true;
+            this.SetPrecision(precision);
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="equation">Pravá strana rovnic</param>
+        public RungeKuttaAdaptive(VectorFunction equation)
+            : this(equation, defaultPrecision) {
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="dynamicalSystem">Dynamický systém</param>
+        /// <param name="precision">Pøesnost výpoètu</param>
+        public RungeKuttaAdaptive(IDynamicalSystem dynamicalSystem)
+            : this(dynamicalSystem, defaultPrecision) {
+        }
+
+        /// <summary>
+        /// Nastaví pøesnost: pokud je pøesnost nekladná, bude to defaultPrecision
+        /// </summary>
+        /// <param name="precision">Pøeesnost</param>
+        public void SetPrecision(double precision) {
+            if(precision <= 0.0)
+                this.precision = defaultPrecision;
+            else
+                this.precision = precision;
+        }
+
+        /// <summary>
+        /// Nastaví parametry výpoètu
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        public override void Init(Vector initialX) {
+            if(this.dynamicalSystem != null) {
+                Vector bounds = this.dynamicalSystem.Bounds(this.dynamicalSystem.E(initialX));
+                this.scale = new Vector(2 * this.dynamicalSystem.DegreesOfFreedom);
+                for(int i = 0; i < 2 * this.dynamicalSystem.DegreesOfFreedom; i++)
+                    this.scale[i] = bounds[2 * i + 1] - bounds[2 * i];
+            }
+
+            base.Init(initialX);
+        }
 
         /// <summary>
         /// Jeden krok výpoètu
@@ -89,24 +141,11 @@ namespace PavelStransky.Math {
         private void SetAutoScale(Vector x) {
             int length = this.scale.Length;
 
+            if(this.scale == null)
+                this.scale = new Vector(x.Length);
+
             for(int i = 0; i < length; i++)
                 this.scale[i] = System.Math.Max(this.scale[i], System.Math.Abs(x[i]));
-        }
-
-        /// <summary>
-        /// Øeší rovnici s poèáteèními podmínkami po èas time
-        /// </summary>
-        /// <param name="initialX">Poèáteèní podmínky</param>
-        public override void Init(Vector initialX) {
-            if(this.dynamicalSystem != null) {
-                // Inicializujeme meze
-                Vector bounds = this.dynamicalSystem.Bounds(this.dynamicalSystem.E(initialX));
-                this.scale = new Vector(2 * this.dynamicalSystem.DegreesOfFreedom);
-                for(int i = 0; i < 2 * this.dynamicalSystem.DegreesOfFreedom; i++)
-                    this.scale[i] = bounds[2 * i + 1] - bounds[2 * i];
-            }
-
-            base.Init(initialX);
         }
 
         /// <summary>

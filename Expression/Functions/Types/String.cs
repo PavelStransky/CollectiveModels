@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions.Def {
 			this.CheckArgumentsMaxNumber(evaluatedArguments, 2);
 
             this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(int), typeof(double), typeof(DateTime), typeof(PointD),
-                typeof(PointVector), typeof(Vector), typeof(Matrix), typeof(string));
+                typeof(PointVector), typeof(Vector), typeof(Matrix), typeof(string), typeof(TimeSpan));
             this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(string));
 		}
 

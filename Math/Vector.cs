@@ -1104,6 +1104,22 @@ namespace PavelStransky.Math {
 		}
 
         /// <summary>
+        /// Vyhladí vektor tak, že vypoèítá prùmìr ze všech složek, které dané složce pøedcházejí
+        /// </summary>
+        public Vector FullSmooth() {
+            int length = this.Length;
+            Vector result = new Vector(length);
+
+            double sum = 0.0;
+            for(int i = 0; i < length; i++) {
+                sum += this[i];
+                result[i] = sum / (i + 1);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Provede jednoduché vyhlazení vektoru
         /// </summary>
         public Vector Smooth() {

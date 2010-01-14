@@ -160,6 +160,7 @@
     <Compile Include="Functions\Dynamics\RegularityBreakCurvature.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
     <Compile Include="Functions\Dynamics\ThreeBody.cs" />
+    <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />
     <Compile Include="Functions\Dynamics\TwoBody.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
+    <Compile Include="Functions\Vector\FullSmooth.cs" />
     <Compile Include="Functions\Vector\PCN.cs" />
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
     <Compile Include="Functions\Quantum\PT3.cs" />

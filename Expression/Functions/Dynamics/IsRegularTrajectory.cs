@@ -19,8 +19,8 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
             this.SetParam(2, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
             this.SetParam(3, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
-            this.SetParam(4, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
-            this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(4, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
+            this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -40,8 +40,15 @@ namespace PavelStransky.Expression.Functions.Def {
 
             RungeKuttaMethods rkMethodT = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[2], true);
             double precisionT = (double)arguments[3];
-            RungeKuttaMethods rkMethodW = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[4], true);
-            double precisionW = (double)arguments[5];
+
+            RungeKuttaMethods rkMethodW =
+                (string)arguments[4] == string.Empty
+                ? rkMethodT
+                : (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[4], true);
+            double precisionW =
+                (double)arguments[5] <= 0.0
+                ? precisionT
+                : (double)arguments[5];
 
             SALI sali = new SALI(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
 

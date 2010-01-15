@@ -24,8 +24,8 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(5, false, true, true, Messages.PPrecisionEnergy, Messages.PPrecisionEnergyDescription, 1E-3, typeof(double));
             this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
             this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
-            this.SetParam(8, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
-            this.SetParam(9, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(8, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
+            this.SetParam(9, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
             this.SetParam(10, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
         }
 
@@ -37,11 +37,20 @@ namespace PavelStransky.Expression.Functions.Def {
             int sizex = (int)arguments[3];
             int sizey = (int)arguments[4];
             double precisione = (double)arguments[5];
+            
             RungeKuttaMethods rkMethodT = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[6], true);
             double precisionT = (double)arguments[7];
-            RungeKuttaMethods rkMethodW = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[8], true);
-            double precisionW = (double)arguments[9];
-            bool isX = (bool)arguments[7];
+
+            RungeKuttaMethods rkMethodW =
+                (string)arguments[8] == string.Empty
+                ? rkMethodT
+                : (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[8], true);
+            double precisionW =
+                (double)arguments[9] <= 0.0
+                ? precisionT
+                : (double)arguments[9];
+            
+            bool isX = (bool)arguments[10];
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
 

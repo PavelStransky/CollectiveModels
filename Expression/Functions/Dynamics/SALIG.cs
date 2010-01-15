@@ -21,8 +21,8 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(3, true, true, false, Messages.PSizeY, Messages.PSizeYDescription, null, typeof(int));
             this.SetParam(4, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
             this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
-            this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
-            this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
+            this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
             this.SetParam(8, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
         }
 
@@ -34,8 +34,16 @@ namespace PavelStransky.Expression.Functions.Def {
             int sizey = (int)arguments[3];
             RungeKuttaMethods rkMethodT = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[4], true);
             double precisionT = (double)arguments[5];
-            RungeKuttaMethods rkMethodW = (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[6], true);
-            double precisionW = (double)arguments[7];
+            
+            RungeKuttaMethods rkMethodW =
+                (string)arguments[6] == string.Empty
+                ? rkMethodT
+                : (RungeKuttaMethods)Enum.Parse(typeof(RungeKuttaMethods), (string)arguments[6], true);
+            double precisionW =
+                (double)arguments[7] <= 0.0
+                ? precisionT
+                : (double)arguments[7];
+
             bool isX = (bool)arguments[8];
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);

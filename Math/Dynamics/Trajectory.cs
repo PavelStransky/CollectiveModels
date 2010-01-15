@@ -92,7 +92,7 @@ namespace PavelStransky.Math {
             // Poèet promìnných
             int length = initialX.Length;
             double t = 0.0;
-            double tNext = timeStep;
+            double tNext = 0.0;
 
             Vector x = initialX;
 
@@ -108,10 +108,9 @@ namespace PavelStransky.Math {
                     Vector newX = this.rungeKutta.Step(x, ref step, out newStep);
 
                     double l = 0.0;
-                    for(int i = 0; i < length / 2; i++) {
-                        double c = (x[i] - newX[i]);
-                        l += c * c;
-                    }
+                    for(int i = 0; i < length / 2; i++)
+                        l += newX[i] * newX[i];
+                    
                     totalLength += System.Math.Sqrt(l);
 
                     t += step;

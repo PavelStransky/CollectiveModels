@@ -13,6 +13,11 @@ namespace PavelStransky.Math {
         private IDynamicalSystem dynamicalSystem;
 
         private double precision;
+        
+        /// <summary>
+        /// Pøesnost výpoètu
+        /// </summary>
+        public override double Precision { get { return this.precision; } }
 
         /// <summary>
         /// Konstruktor
@@ -120,6 +125,9 @@ namespace PavelStransky.Math {
                 newStep = safety * step * System.Math.Pow(maxerror, powerShrink);
                 newStep = System.Math.Max(newStep, maxStepChange * step);
 
+                if(double.IsNaN(newStep))
+                    return x;
+
                 step = newStep;
             } while(true);
         }
@@ -151,6 +159,55 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Statický konstruktor (inicializuje konstanty)
         /// </summary>
+        /// <remarks>Koeficienty podle Wikipedie</remarks>
+        static void RungeKuttaAdaptiveKonstants() {
+            a = new Vector(5);
+            a[0] = 1.0 / 4.0;
+            a[1] = 3.0 / 8.0;
+            a[2] = 12.0 / 13.0;
+            a[3] = 1.0;
+            a[4] = 1.0 / 2.0;
+
+            b = new Matrix(5, 5);
+            for(int i = 0; i < 4; i++)
+                for(int j = i + 1; j < 5; j++)
+                    b[i, j] = 0;
+
+            b[0, 0] = 1.0 / 4.0;
+            b[1, 0] = 3.0 / 32.0;
+            b[1, 1] = 9.0 / 32.0;
+            b[2, 0] = 1932.0 / 2197.0;
+            b[2, 1] = -7200.0 / 2197.0;
+            b[2, 2] = 7296.0 / 2197.0;
+            b[3, 0] = 439.0 / 216.0;
+            b[3, 1] = -8.0;
+            b[3, 2] = 3680.0 / 513.0;
+            b[3, 3] = -845.0 / 4104.0;
+            b[4, 0] = -8.0 / 27.0;
+            b[4, 1] = 2.0;
+            b[4, 2] = -3544.0 / 2565.0;
+            b[4, 3] = 1859.0 / 4104.0;
+            b[4, 4] = -11.0 / 40.0;
+
+            c4 = new Vector(6);
+            c4[0] = 25.0/216.0;
+            c4[1] = 0;
+            c4[2] = 1408.0 / 2565.0;
+            c4[3] = 2197.0/4104.0;
+            c4[4] = -1.0/5.0;
+            c4[5] = 0;
+
+            c5 = new Vector(6);
+            c5[0] = 16.0 / 135.0;
+            c5[1] = 0;
+            c5[2] = 6656.0 / 12825.0;
+            c5[3] = 28561.0 / 56430.0;
+            c5[4] = -9.0 / 50.0;
+            c5[5] = 2.0 / 55.0;
+
+            dc = c5 - c4;
+        }
+
         static RungeKuttaAdaptive() {
             a = new Vector(5);
             a[0] = 0.2;
@@ -197,7 +254,7 @@ namespace PavelStransky.Math {
 
             dc = c5 - c4;
         }
-
+        
         private static Vector a;
         private static Matrix b;
         private static Vector c4;
@@ -210,6 +267,6 @@ namespace PavelStransky.Math {
         private const double maxStepChange = 0.1;
         private double errorCon = System.Math.Pow((5.0 / safety), 1.0 / powerGrow);
 
-        private const double defaultPrecision = 1E-12;
+        private const double defaultPrecision = 1E-13;
     }
 }

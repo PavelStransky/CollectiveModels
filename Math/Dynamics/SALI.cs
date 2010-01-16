@@ -46,11 +46,10 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>
         public SALI(IDynamicalSystem dynamicalSystem, double precisionT, RungeKuttaMethods rkMethodT, double precisionW, RungeKuttaMethods rkMethodW) {
-            this.precisionW = precisionW;
-            this.precisionT = precisionT;
-
             this.rungeKuttaW = RungeKutta.CreateRungeKutta(this.DeviationEquation, precisionW, rkMethodW);
             this.rungeKuttaT = RungeKutta.CreateRungeKutta(dynamicalSystem, precisionT, rkMethodT);
+            this.precisionW = precisionW > 0.0 ? precisionW : this.rungeKuttaW.Precision;
+            this.precisionT = precisionT > 0.0 ? precisionT : this.rungeKuttaT.Precision;
 
             this.dynamicalSystem = dynamicalSystem;
         }

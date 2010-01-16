@@ -25,9 +25,9 @@ namespace PavelStransky.Math {
             if(dynamicalSystem.DegreesOfFreedom != 2)
                 throw new Exception(Messages.EMBadDimension);
 
-            this.precision = precision;
             this.dynamicalSystem = dynamicalSystem;
             this.rungeKutta = RungeKutta.CreateRungeKutta(dynamicalSystem, precision, rkMethod);
+            this.precision = precision > 0.0 ? precision : this.rungeKutta.Precision;
         }
 
         /// <summary>

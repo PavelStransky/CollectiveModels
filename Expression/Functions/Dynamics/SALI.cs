@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(2, true, true, true, Messages.PTime, Messages.PTimeDescription, null, typeof(double));
             this.SetParam(3, false, true, true, Messages.PTimeStep, Messages.PTimeStepDescription, 0.0, typeof(double));
             this.SetParam(4, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
-            this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-3, typeof(double));
+            this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
             this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
             this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
         }

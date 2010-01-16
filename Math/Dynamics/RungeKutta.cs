@@ -13,6 +13,11 @@ namespace PavelStransky.Math {
         protected VectorFunction equation;
 
         /// <summary>
+        /// Pøesnost výpoètu
+        /// </summary>
+        public virtual double Precision { get { return defaultPrecision; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>

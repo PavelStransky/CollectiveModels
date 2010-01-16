@@ -25,8 +25,8 @@ namespace PavelStransky.Math {
         /// <param name="rkMethod">Metoda k výpoètu RK</param>
         public PoincareSection(IDynamicalSystem dynamicalSystem, double precision, RungeKuttaMethods rkMethod) {
             this.dynamicalSystem = dynamicalSystem;
-            this.precision = precision;
             this.rungeKutta = RungeKutta.CreateRungeKutta(dynamicalSystem, precision, rkMethod);
+            this.precision = precision > 0.0 ? precision : this.rungeKutta.Precision;
         }
 
         /// <summary>

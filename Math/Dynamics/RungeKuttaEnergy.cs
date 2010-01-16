@@ -11,6 +11,11 @@ namespace PavelStransky.Math {
         private IDynamicalSystem dynamicalSystem;
 
         /// <summary>
+        /// Pøesnost výpoètu
+        /// </summary>
+        public override double Precision { get { return this.precision; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="dynamicalSystem">Dynamický systém</param>

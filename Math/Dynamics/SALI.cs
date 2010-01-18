@@ -169,6 +169,7 @@ namespace PavelStransky.Math {
 
             this.Init(initialX);
 
+            int result = 0;
             do {
                 while(t < tNext){
                     double newStep = this.Step(ref step);
@@ -176,19 +177,35 @@ namespace PavelStransky.Math {
                     step = newStep;
                 }
 
-                double ai = this.AlignmentIndex();
-                double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
-                queue.Set(logAI);
-
-                double meanSALI = queue.Mean;
-
-                if(meanSALI > 6.0 + t / 1000.0)
-                    return false;
-                if(meanSALI < (t - 1000.0) / 300.0)
-                    return true;
+                result = this.SALIDecision(t, queue);
+                if(result >= 0)
+                    break;
             } while(true);
+
+            return (result == 1) ? true : false;
         }
-        
+
+        /// <summary>
+        /// Rozhodne, zda je trajektorie regulární èi chaotická
+        /// </summary>
+        /// <param name="queue">Prùmìrovaná data</param>
+        /// <param name="t">Èas</param>
+        /// <returns>-1 pro nerozhodnutou trajektorii, 0 pro chaotickou, 1 pro regulární</returns>
+        protected int SALIDecision(double t, MeanQueue queue) {
+            double ai = this.AlignmentIndex();
+            double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
+            queue.Set(logAI);
+
+            double meanSALI = queue.Mean;
+
+            if(meanSALI > 5.0 + t / 200.0)
+                return 0;
+            if(meanSALI < (t - 500.0) / 50.0) 
+                return 1;
+            
+            return -1;
+        }
+
         protected const int window = 20;
     }
 

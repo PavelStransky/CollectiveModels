@@ -48,7 +48,6 @@ namespace PavelStransky.Math {
             int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
 
             double oldy = initialX[indexS];
-            bool result = false;
 
             ArrayList crossings = new ArrayList();
 
@@ -61,6 +60,7 @@ namespace PavelStransky.Math {
 
             this.Init(initialX);
 
+            int result = 0;
             do {
                 while(t < tNext){
                     Vector oldx = this.x;
@@ -79,21 +79,11 @@ namespace PavelStransky.Math {
                     oldy = y;
                 }
 
-                double ai = this.AlignmentIndex();
-                double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
-                queue.Set(logAI);
-
-                double meanSALI = queue.Mean;
-
-                if(meanSALI > 6.0 + t / 1000.0) {
-                    result = false;
+                result = this.SALIDecision(t, queue);
+                if(result >= 0)
                     break;
-                }
-                if(meanSALI < (t - 1000.0) / 300.0) {
-                    result = true;
-                    break;
-                }
 
+                tNext += timeStep;
             } while(true);
 
             // Pøevod øady na PointVector
@@ -102,7 +92,7 @@ namespace PavelStransky.Math {
             foreach(PointD p in crossings)
                 poincareSection[j++] = p;
 
-            return result;
+            return (result == 1) ? true : false;
         }
 
         /// <summary>

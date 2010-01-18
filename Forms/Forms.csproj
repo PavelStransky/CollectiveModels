@@ -138,7 +138,9 @@
     <Content Include="Failure.WAV">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="gcm.ico" />
+    <Content Include="gcm.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Animation.gif" />
     <Content Include="Success.WAV">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

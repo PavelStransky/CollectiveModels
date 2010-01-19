@@ -399,6 +399,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generation of initial conditions has not been successful. The maximun number of iteration was exceeded..
+        /// </summary>
+        internal static string EMMaxIterationIC {
+            get {
+                return ResourceManager.GetString("EMMaxIterationIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You must specify the name of the file..
         /// </summary>
         internal static string EMNoFile {

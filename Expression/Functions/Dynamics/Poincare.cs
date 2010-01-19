@@ -76,6 +76,6 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         // Maximální poèet pokusù, než bude vyvolána výjimka
-        private const int maxNumAttemps = 10;
+        private const int maxNumAttemps = 20;
     }
 }

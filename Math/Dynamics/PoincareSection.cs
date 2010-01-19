@@ -87,6 +87,53 @@ namespace PavelStransky.Math {
             return result;
         }
 
+        /// <summary>
+        /// True, pokud trajektorie protíná rovinu
+        /// </summary>
+        /// <param name="plane">Rovina øezu</param>
+        /// <param name="i1">Zaznamenávaný index x</param>
+        /// <param name="i2">Zaznamenávaný index y</param>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        public bool CrossPlane(Vector plane, int i1, int i2, Vector initialX) {
+            // Èíslo, které dourèuje rovinu (plane * x == crossPoint)
+            double crossPoint;
+
+            if(plane.Length % 2 == 1) {
+                crossPoint = plane.LastItem;
+                plane.Length = plane.Length - 1;
+            }
+            else {
+                crossPoint = 0;
+            }
+
+            Vector x = initialX;
+            double sp = x * plane;
+
+            double step = this.precision;
+            double time = 0;
+
+            this.rungeKutta.Init(initialX);
+
+            do {
+                double newStep;
+                Vector newx = x + this.rungeKutta.Step(x, ref step, out newStep);
+                time += step;
+                step = newStep;
+
+                double newsp = newx * plane;
+
+                // jedna èi obì orientace prùchodu
+                if((newsp <= crossPoint && sp > crossPoint) || (sp <= crossPoint && newsp > crossPoint))
+                    return true;
+
+                sp = newsp;
+                x = newx;
+
+            } while(time < maxTimeWithoutCross);
+
+            return false;
+        }
+
         private const double maxTimeWithoutCross = 500.0;
     }
 

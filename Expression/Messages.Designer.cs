@@ -2662,6 +2662,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates mean of a PointVector in each of a defined bin.
+        /// </summary>
+        internal static string HelpBinMean {
+            get {
+                return ResourceManager.GetString("HelpBinMean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator &amp;&amp; (boolean product).
         /// </summary>
         internal static string HelpBoolAnd {
@@ -6420,6 +6429,24 @@ namespace PavelStransky.Expression {
         internal static string PHBarDescription {
             get {
                 return ResourceManager.GetString("PHBarDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to htype.
+        /// </summary>
+        internal static string PHistogramType {
+            get {
+                return ResourceManager.GetString("PHistogramType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of histogram (&quot;point&quot; | &quot;line&quot; | &quot;bar&quot;).
+        /// </summary>
+        internal static string PHistogramTypeDescription {
+            get {
+                return ResourceManager.GetString("PHistogramTypeDescription", resourceCulture);
             }
         }
         

@@ -9,6 +9,12 @@ namespace PavelStransky.Math {
 	/// Implementace operací s vektorem
 	/// </summary>
 	public class Vector : ICloneable, IExportable, ISortable {
+        public enum HistogramTypes {
+            Point,
+            Line,
+            Bar
+        }
+
 		// Prvky vektoru
 		private double [] item;
 
@@ -849,29 +855,46 @@ namespace PavelStransky.Math {
 			return System.Math.Sqrt(this.SquaredVariance());
 		}
 
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="intervals">Poèet intervalù</param>
+        /// <param name="min">Poèáteèní hodnota, od které se histogram poèítá</param>
+        /// <param name="max">Maximální hodnota, do které se histogram poèítá</param>
+        public PointVector Histogram(int intervals, double min, double max) {
+            return this.Histogram(intervals, min, max, HistogramTypes.Point);
+        }
+
 		/// <summary>
 		/// Vrátí histogram vektoru
 		/// </summary>
 		/// <param name="intervals">Poèet intervalù</param>
 		/// <param name="min">Poèáteèní hodnota, od které se histogram poèítá</param>
 		/// <param name="max">Maximální hodnota, do které se histogram poèítá</param>
-		public PointVector Histogram(int intervals, double min, double max) {
+        /// <param name="type">Typ histogramu</param>
+		public PointVector Histogram(int intervals, double min, double max, HistogramTypes type) {
 			if(this.Length == 0)
 				throw new VectorException(errorMessageNoData);
 
-			PointVector result = new PointVector(intervals);
+            int lengthR = this.HistogramLength(intervals, type);
+
+			PointVector result = new PointVector(lengthR);
 			Vector sorted = this.Sort() as Vector;
 
 			double step = (max - min) / intervals;
+            double minx = min;
 
 			int j = 0;
 			for(int i = 0; i < intervals; i++) {
-                result[i].X = min + step * ((double)i + 0.5);
-				result[i].Y = 0;
+                double maxx = min + step * i;
+                double y = 0;
 				while((sorted[j] <= min + step*(i + 1)) && (j < sorted.Length - 1)) {
-					result[i].Y++;
+                    y++;
 					j++;
 				}
+
+                this.FillHistogramResult(result, i, minx, maxx, y, type);
+                minx = maxx;
 			}
 
 			return result;
@@ -881,27 +904,79 @@ namespace PavelStransky.Math {
         /// Vrátí histogram vektoru
         /// </summary>
         /// <param name="interval">Points of the interval</param>
-        /// <returns></returns>
         public PointVector Histogram(Vector interval) {
-            int lengthR = interval.Length - 1;
+            return this.Histogram(interval, HistogramTypes.Point);
+        }
+
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="interval">Points of the interval</param>
+        /// <param name="type">Typ histogramu</param>
+        public PointVector Histogram(Vector interval, HistogramTypes type) {
             int length = this.Length;
+            int lengthR = this.HistogramLength(length - 1, type);
 
             PointVector result = new PointVector(lengthR);
 
-            for(int i = 0; i < lengthR; i++) {
+            for(int i = 0; i < length - 1; i++) {
                 double minx = interval[i];
                 double maxx = interval[i + 1];
-                result[i].X = 0.5 * (minx + maxx);
+                int y = 0;
 
                 for(int j = 0; j < length; j++) {
                     double x = this[j];
 
                     if(x >= minx && x < maxx)
-                        result[i].Y++;
+                        y++;
                 }
+
+                this.FillHistogramResult(result, i, minx, maxx, y, type);
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Poèet bodù histogramu
+        /// </summary>
+        /// <param name="length">Poèet intervalù histogramu</param>
+        /// <param name="type">Typ histogramu</param>
+        private int HistogramLength(int length, HistogramTypes type) {
+            if(type == HistogramTypes.Point)
+                return length;
+            else if(type == HistogramTypes.Line)
+                return 2 * length;
+            else if(type == HistogramTypes.Bar)
+                return 4 * length;
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Vyplní jeden bod do histogramu
+        /// </summary>
+        private void FillHistogramResult(PointVector result, int i, double minx, double maxx, double y, HistogramTypes type) {
+            if(type == HistogramTypes.Point) {
+                result[i].X = 0.5 * (minx + maxx);
+                result[i].Y = y;
+            }
+            else if(type == HistogramTypes.Line) {
+                result[2 * i].X = minx;
+                result[2 * i].Y = y;
+                result[2 * i + 1].X = maxx;
+                result[2 * i + 1].Y = y;
+            }
+            else if(type == HistogramTypes.Bar) {
+                result[4 * i].X = minx;
+                result[4 * i].Y = 0;
+                result[4 * i + 1].X = minx;
+                result[4 * i + 1].Y = y;
+                result[4 * i + 2].X = maxx;
+                result[4 * i + 2].Y = y;
+                result[4 * i + 3].X = maxx;
+                result[4 * i + 3].Y = 0;
+            }                
         }
 
         /// <summary>

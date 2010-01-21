@@ -195,6 +195,7 @@
     <Compile Include="Functions\Quantum\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
+    <Compile Include="Functions\Statistics\BinMean.cs" />
     <Compile Include="Functions\Vector\FullSmooth.cs" />
     <Compile Include="Functions\Vector\PCN.cs" />
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />

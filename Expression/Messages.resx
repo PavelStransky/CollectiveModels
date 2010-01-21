@@ -2901,4 +2901,13 @@ Second differing type: {1}</value>
   <data name="EMMaxIterationIC" xml:space="preserve">
     <value>Generation of initial conditions has not been successful. The maximun number of iteration was exceeded.</value>
   </data>
+  <data name="PHistogramType" xml:space="preserve">
+    <value>htype</value>
+  </data>
+  <data name="PHistogramTypeDescription" xml:space="preserve">
+    <value>Type of histogram ("point" | "line" | "bar")</value>
+  </data>
+  <data name="HelpBinMean" xml:space="preserve">
+    <value>Calculates mean of a PointVector in each of a defined bin</value>
+  </data>
 </root>

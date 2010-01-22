@@ -618,28 +618,32 @@ namespace PavelStransky.Math {
         /// <param name="min">Poèáteèní hodnota, od které se histogram poèítá</param>
         /// <param name="max">Maximální hodnota, do které se histogram poèítá</param>
         public PointVector BinMean(int intervals, double min, double max) {
-            PointVector result = new PointVector(intervals);
+            ArrayList bins = new ArrayList();
             PointVector sorted = this.SortX() as PointVector;
 
             double step = (max - min) / intervals;
 
             int j = 0;
             for(int i = 0; i < intervals; i++) {
-                double x = min + step * (i + 0.5);
+                double x = 0;
                 double y = 0;
                 int k = 0;
                 while((sorted[j].X <= min + step * (i + 1)) && (j < sorted.Length - 1)) {
+                    x += sorted[j].X;
                     y += sorted[j].Y;
                     j++;
                     k++;
                 }
 
-                result[i].X = x;
                 if(k != 0)
-                    result[i].Y = y / k;
-                else
-                    result[i].Y = 0;
+                    bins.Add(new PointD(x / k, y / k));
             }
+
+            // Pøevedení na PointVector
+            PointVector result = new PointVector(bins.Count);
+            j = 0;
+            foreach(PointD bin in bins)
+                result[j++] = bin;
 
             return result;
         }
@@ -650,32 +654,36 @@ namespace PavelStransky.Math {
         /// <param name="interval">Points of the interval</param>
         public PointVector BinMean(Vector interval) {
             int length = this.Length;
-            int lengthR = length - 1;
 
-            PointVector result = new PointVector(lengthR);
+            ArrayList bins = new ArrayList();
 
             for(int i = 0; i < length - 1; i++) {
                 double minx = interval[i];
-                double maxx = interval[i + 1]; 
-                
+                double maxx = interval[i + 1];
+
+                double x = 0;
                 double y = 0;
                 int k = 0;
 
                 for(int j = 0; j < length; j++) {
-                    double x = this[j].X;
+                    double x1 = this[j].X;
 
-                    if(x >= minx && x < maxx){
+                    if(x1 >= minx && x1 < maxx){
+                        x += x1;
                         y += this[j].Y;
                         k++;
                     }
                 }
 
-                result[i].X = 0.5 * (minx + maxx);
                 if(k != 0)
-                    result[i].Y = y / k;
-                else
-                    result[i].Y = 0;                
+                    bins.Add(new PointD(x / k, y / k));
             }
+
+            // Pøevedení na PointVector
+            PointVector result = new PointVector(bins.Count);
+            int l = 0;
+            foreach(PointD bin in bins)
+                result[l++] = bin;
 
             return result;
         }

@@ -3238,6 +3238,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns indices of items which are in given relation with given number.
+        /// </summary>
+        internal static string HelpGetIndex {
+            get {
+                return ResourceManager.GetString("HelpGetIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns selected rows from a matrix.
         /// </summary>
         internal static string HelpGetRows {
@@ -5817,6 +5826,24 @@ namespace PavelStransky.Expression {
         internal static string PCommandsDescription {
             get {
                 return ResourceManager.GetString("PCommandsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to operator.
+        /// </summary>
+        internal static string PComparisonOperator {
+            get {
+                return ResourceManager.GetString("PComparisonOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comparison operator (&quot;==&quot; | &quot;!=&quot; | &quot;&gt;&quot; | &quot;&lt;&quot; | &quot;&gt;=&quot; | &quot;&lt;=&quot;);.
+        /// </summary>
+        internal static string PComparisonOperatorDescription {
+            get {
+                return ResourceManager.GetString("PComparisonOperatorDescription", resourceCulture);
             }
         }
         

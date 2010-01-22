@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Collections;
 
 using PavelStransky.Core;
 
@@ -565,11 +566,32 @@ namespace PavelStransky.Math {
             return result;
         }
 
-		#region Funkce Min, Max
-		/// <summary>
-		/// Vrací index nejvìtšího prvku vektoru
-		/// </summary>
-		public int MaxIndex() {
+        /// <summary>
+        /// Vrátí všechny indexy, které splòují podmínku danou hodnotou a operátorem porovnávání
+        /// </summary>
+        /// <param name="x">Hodnota pro porovnávání</param>
+        /// <param name="o">Operátor</param>
+        public int[] GetIndex(double x, ComparisonOperator o) {
+            ArrayList index = new ArrayList();
+
+            int length = this.Length;
+            for(int i = 0; i < length; i++)
+                if(o.Compare(this[i], x))
+                    index.Add(i);
+
+            int[] result = new int[index.Count];
+            int j = 0;
+            foreach(int i in index)
+                result[j++] = i;
+
+            return result;
+        }
+
+        #region Funkce Min, Max
+        /// <summary>
+        /// Vrací index nejvìtšího prvku vektoru
+        /// </summary>
+        public int MaxIndex() {
 			if(this.Length == 0)
 				throw new VectorException(errorMessageNoData);
 

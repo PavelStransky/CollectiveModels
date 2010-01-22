@@ -2910,4 +2910,13 @@ Second differing type: {1}</value>
   <data name="HelpBinMean" xml:space="preserve">
     <value>Calculates mean of a PointVector in each of a defined bin</value>
   </data>
+  <data name="HelpGetIndex" xml:space="preserve">
+    <value>Returns indices of items which are in given relation with given number</value>
+  </data>
+  <data name="PComparisonOperator" xml:space="preserve">
+    <value>operator</value>
+  </data>
+  <data name="PComparisonOperatorDescription" xml:space="preserve">
+    <value>Comparison operator ("==" | "!=" | "&gt;" | "&lt;" | "&gt;=" | "&lt;=");</value>
+  </data>
 </root>

@@ -187,6 +187,7 @@
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Matrix\MatrixUnit.cs" />
     <Compile Include="Functions\Matrix\Transpose.cs" />
+    <Compile Include="Functions\Vector\GetIndex.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />
     <Compile Include="Functions\Program\ExportVector3D.cs" />
     <Compile Include="Functions\Quantum\AvoidedCrossing.cs" />

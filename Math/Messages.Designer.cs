@@ -61,6 +61,15 @@ namespace PavelStransky.Math {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown &apos;{0}&apos; comparison operator..
+        /// </summary>
+        internal static string EMBadComparisonOperator {
+            get {
+                return ResourceManager.GetString("EMBadComparisonOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad number of degrees of freedom..
         /// </summary>
         internal static string EMBadDimension {

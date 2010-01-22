@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Bisection.cs" />
     <Compile Include="BrodyFit.cs" />
+    <Compile Include="ComparisonOperator.cs" />
     <Compile Include="Complex.cs">
       <SubType>Code</SubType>
     </Compile>

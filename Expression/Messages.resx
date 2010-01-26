@@ -1434,11 +1434,8 @@ Length of the second vector: {1}</value>
   <data name="HelpVMatrix" xml:space="preserve">
     <value>cal_{V} matrix (PRL 98, 234301 (2007), expression (27))</value>
   </data>
-  <data name="HelpVMatrixZero1" xml:space="preserve">
-    <value>For GCM system and given energy calculates the line where the lower eigenvalue of V matrix is zero</value>
-  </data>
-  <data name="HelpVMatrixZero2" xml:space="preserve">
-    <value>For GCM system and given energy calculates the line where the higher eigenvalue of V matrix is zero</value>
+  <data name="HelpVMatrixZero" xml:space="preserve">
+    <value>For GCM system and given energy calculates the line where the given eigenvalue of V matrix is zero</value>
   </data>
   <data name="MsgBytes" xml:space="preserve">
     <value>{0} Bytes</value>
@@ -2918,5 +2915,14 @@ Second differing type: {1}</value>
   </data>
   <data name="PComparisonOperatorDescription" xml:space="preserve">
     <value>Comparison operator ("==" | "!=" | "&gt;" | "&lt;" | "&gt;=" | "&lt;=");</value>
+  </data>
+  <data name="HelpVMatrixG" xml:space="preserve">
+    <value>Creates matrix with value of the eigenvalue of cal{V} matrix</value>
+  </data>
+  <data name="PEigenValueIndex" xml:space="preserve">
+    <value>ei</value>
+  </data>
+  <data name="PEigenValueIndexDescription" xml:space="preserve">
+    <value>Index of the eigenvalue (0 is the highest one)</value>
   </data>
 </root>

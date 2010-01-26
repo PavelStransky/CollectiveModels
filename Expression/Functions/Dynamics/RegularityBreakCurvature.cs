@@ -46,7 +46,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 PointVector[] equipotential = gcm.EquipotentialContours(e, 0, div);
 
                 guider.Write("V");
-                PointVector[] vzero = gcm.VMatrixContours(e, 0, div, true);
+                PointVector[] vzero = gcm.VMatrixContours(e, 0, div, 0);
 
                 int el = equipotential.Length;
                 int vl = vzero.Length;

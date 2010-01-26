@@ -4741,20 +4741,20 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For GCM system and given energy calculates the line where the lower eigenvalue of V matrix is zero.
+        ///   Looks up a localized string similar to Creates matrix with value of the eigenvalue of cal{V} matrix.
         /// </summary>
-        internal static string HelpVMatrixZero1 {
+        internal static string HelpVMatrixG {
             get {
-                return ResourceManager.GetString("HelpVMatrixZero1", resourceCulture);
+                return ResourceManager.GetString("HelpVMatrixG", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For GCM system and given energy calculates the line where the higher eigenvalue of V matrix is zero.
+        ///   Looks up a localized string similar to For GCM system and given energy calculates the line where the given eigenvalue of V matrix is zero.
         /// </summary>
-        internal static string HelpVMatrixZero2 {
+        internal static string HelpVMatrixZero {
             get {
-                return ResourceManager.GetString("HelpVMatrixZero2", resourceCulture);
+                return ResourceManager.GetString("HelpVMatrixZero", resourceCulture);
             }
         }
         
@@ -6087,6 +6087,24 @@ namespace PavelStransky.Expression {
         internal static string PDynamicalSystemDescription {
             get {
                 return ResourceManager.GetString("PDynamicalSystemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ei.
+        /// </summary>
+        internal static string PEigenValueIndex {
+            get {
+                return ResourceManager.GetString("PEigenValueIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Index of the eigenvalue (0 is the highest one).
+        /// </summary>
+        internal static string PEigenValueIndexDescription {
+            get {
+                return ResourceManager.GetString("PEigenValueIndexDescription", resourceCulture);
             }
         }
         

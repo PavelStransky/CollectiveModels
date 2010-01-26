@@ -162,8 +162,8 @@
     <Compile Include="Functions\Dynamics\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />
     <Compile Include="Functions\Dynamics\TwoBody.cs" />
-    <Compile Include="Functions\Dynamics\VMatrixZero1.cs" />
-    <Compile Include="Functions\Dynamics\VMatrixZero2.cs" />
+    <Compile Include="Functions\Dynamics\VMatrixG.cs" />
+    <Compile Include="Functions\Dynamics\VMatrixZero.cs" />
     <Compile Include="Functions\FncException.cs" />
     <Compile Include="Functions\FncGraph.cs" />
     <Compile Include="Functions\Graphics\SetGraphParams.cs" />

@@ -52,7 +52,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             SALI sali = new SALI(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
 
-            if(sali.IsRegular(ic))
+            if(sali.IsRegular(ic, guider))
                 return 1;
             else
                 return 0;

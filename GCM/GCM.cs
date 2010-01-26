@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 
 using PavelStransky.Math;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.GCM {
     /// <summary>
@@ -268,12 +269,41 @@ namespace PavelStransky.GCM {
         }
 
         /// <summary>
+        /// Vrátí matici s hodnotami dané vlastní hodnoty matice \cal{V}
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="x">Hodnoty ve smìru x (minx, maxx, numx)</param>
+        /// <param name="y">Hodnoty ve smìru y (miny, maxy, numy)</param>
+        /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
+        public Matrix VMatrixG(double e, Vector vx, Vector vy, int ei) {
+            int lengthX = (int)vx[2];
+            int lengthY = (int)vy[2];
+
+            double minx = vx[0]; double maxx = vx[1]; double koefx = (maxx - minx) / (lengthX - 1);
+            double miny = vy[0]; double maxy = vy[1]; double koefy = (maxy - miny) / (lengthY - 1);
+
+            Matrix result = new Matrix(lengthX, lengthY);
+
+            for(int i = 0; i < lengthX; i++) {
+                double x = i * koefx + minx;
+                for(int j = 0; j < lengthY; j++) {
+                    double y = j * koefy + miny;
+                    Matrix m = this.VMatrix(e, x, y);
+                    Vector ev = LAPackDLL.dsyev(m, false)[0];
+                    result[i, j] = ev[ei];
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Najde bod, kde se mìní znaménko nejnižší vlastní hodnoty z kladné na zápornou
         /// </summary>
         /// <param name="e">Energie</param>
         /// <param name="gamma">Úhel gamma</param>
-        /// <param name="lowerEV">True pokud poèitáme nižší vlastní hodnotu</param>
-        private Vector VMatrixPMChange(double e, double gamma, bool lowerEV) {
+        /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
+        private Vector VMatrixPMChange(double e, double gamma, int ei) {
             Vector roots = this.Roots(e, gamma);
 
             double betamax = 2.0;
@@ -282,7 +312,7 @@ namespace PavelStransky.GCM {
             if(rlength > 0) 
                 betamax = 2.0 * System.Math.Max(System.Math.Abs(roots.FirstItem), System.Math.Abs(roots.LastItem));
 
-            VMatrixBisectionFunction vf = new VMatrixBisectionFunction(this, gamma, e, lowerEV);
+            VMatrixBisectionFunction vf = new VMatrixBisectionFunction(this, gamma, e, ei);
             Bisection bisection = new Bisection(vf.Function);
 
             ArrayList a = new ArrayList();
@@ -315,8 +345,8 @@ namespace PavelStransky.GCM {
         /// <param name="e">Energie</param>
         /// <param name="n">Poèet bodù v jedné køivce</param>
         /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
-        /// <param name="lowerEV">True pokud poèítáme nižší vlastní hodnotu</param>
-        public PointVector[] VMatrixContours(double e, int n, int div, bool lowerEV) {
+        /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
+        public PointVector[] VMatrixContours(double e, int n, int div, int ei) {
             Contour contour = new Contour(6);
 
             if(div <= 0)
@@ -325,7 +355,7 @@ namespace PavelStransky.GCM {
             contour.Begin();
             for(int i = 1; i < div; i++) {
                 double gamma = i * System.Math.PI / div;
-                Vector roots = this.VMatrixPMChange(e, gamma, lowerEV);
+                Vector roots = this.VMatrixPMChange(e, gamma, ei);
                 contour.Add(roots, gamma);
             }
             contour.End();

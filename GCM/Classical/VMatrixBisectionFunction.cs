@@ -12,7 +12,7 @@ namespace PavelStransky.GCM {
     public class VMatrixBisectionFunction {
         private GCM gcm;
         private double gamma, e;
-        private bool lowerEV;
+        private int ei;
 
         /// <summary>
         /// Konstruktor
@@ -20,12 +20,12 @@ namespace PavelStransky.GCM {
         /// <param name="gcm">Tøída GCM</param>
         /// <param name="gamma">Gamma, pro který se bude poèítat</param>
         /// <param name="e">Energie</param>
-        /// <param name="lowerEV">True, pokud se ptáme po nižší vlastní hodnotì</param>
-        public VMatrixBisectionFunction(GCM gcm, double gamma, double e, bool lowerEV) {
+        /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
+        public VMatrixBisectionFunction(GCM gcm, double gamma, double e, int ei) {
             this.gcm = gcm;
             this.gamma = gamma;
             this.e = e;
-            this.lowerEV = lowerEV;
+            this.ei = ei;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace PavelStransky.GCM {
         public double Function(double beta) {
             Matrix m = this.gcm.VMatrixBG(this.e, beta, this.gamma);
             Vector ev = LAPackDLL.dsyev(m, false)[0];
-            return this.lowerEV ? ev[0] : ev[1];
+            return ev[this.ei];
         }
     }
 }

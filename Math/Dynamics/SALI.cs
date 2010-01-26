@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Math {
     /// <summary>
     /// Urèí, zda zadaná trajektorie je regulární nebo chaotická na základì metody SALI
@@ -159,7 +161,7 @@ namespace PavelStransky.Math {
         /// Vrátí true, pokud daná trajektorie je podle SALI regulární
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
-        public bool IsRegular(Vector initialX) {
+        public bool IsRegular(Vector initialX, IOutputWriter writer) {
             double step = System.Math.Min(this.precisionT, this.precisionW);
             double timeStep = 1.0;
             double t = 0.0;
@@ -180,7 +182,12 @@ namespace PavelStransky.Math {
                 result = this.SALIDecision(t, queue);
                 if(result >= 0)
                     break;
+
+                tNext += timeStep;
             } while(true);
+
+            if(writer != null)
+                writer.Write(t);
 
             return (result == 1) ? true : false;
         }

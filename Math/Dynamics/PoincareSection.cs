@@ -30,6 +30,18 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Vypoèítá Poincarého øez v defaultní rovinì (0; 1; 0; 0) pro souøadnice 0; 2
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="numPoints">Poèet bodù øezu</param>
+        public PointVector Compute(Vector initialX, int numPoints) {
+            Vector plane = new Vector(4);
+            plane[1] = 1.0;
+
+            return this.Compute(plane, 0, 2, initialX, numPoints, false);
+        }
+
+        /// <summary>
         /// Vypoèítá Poincarého øez
         /// </summary>
         /// <param name="plane">Rovina øezu</param>

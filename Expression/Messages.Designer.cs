@@ -5344,24 +5344,6 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to points.
-        /// </summary>
-        internal static string P3Poincare {
-            get {
-                return ResourceManager.GetString("P3Poincare", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number of points of the final section.
-        /// </summary>
-        internal static string P3PoincareDescription {
-            get {
-                return ResourceManager.GetString("P3PoincareDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to p.
         /// </summary>
         internal static string P3PointVector {
@@ -6568,6 +6550,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ic.
+        /// </summary>
+        internal static string PInitialCondition {
+            get {
+                return ResourceManager.GetString("PInitialCondition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial conditions.
+        /// </summary>
+        internal static string PInitialConditionDescription {
+            get {
+                return ResourceManager.GetString("PInitialConditionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to i.
         /// </summary>
         internal static string PInteger {
@@ -6987,6 +6987,24 @@ namespace PavelStransky.Expression {
         internal static string PMeanDescription {
             get {
                 return ResourceManager.GetString("PMeanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minCircle.
+        /// </summary>
+        internal static string PMinimumPointsCircle {
+            get {
+                return ResourceManager.GetString("PMinimumPointsCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum points of the circle.
+        /// </summary>
+        internal static string PMinimumPointsCircleDescription {
+            get {
+                return ResourceManager.GetString("PMinimumPointsCircleDescription", resourceCulture);
             }
         }
         
@@ -7527,6 +7545,24 @@ namespace PavelStransky.Expression {
         internal static string PPrecisionEnergyDescription {
             get {
                 return ResourceManager.GetString("PPrecisionEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to points.
+        /// </summary>
+        internal static string PPSPoints {
+            get {
+                return ResourceManager.GetString("PPSPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of points of the final section.
+        /// </summary>
+        internal static string PPSPointsDescription {
+            get {
+                return ResourceManager.GetString("PPSPointsDescription", resourceCulture);
             }
         }
         

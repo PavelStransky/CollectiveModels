@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.P2Poincare, Messages.P2PoincareDescription, null, typeof(Vector), typeof(double));
-            this.SetParam(2, true, true, false, Messages.P3Poincare, Messages.P3PoincareDescription, null, typeof(int));
+            this.SetParam(2, true, true, false, Messages.PPSPoints, Messages.PPSPointsDescription, null, typeof(int));
             this.SetParam(3, true, true, false, Messages.P4Poincare, Messages.P4PoincareDescription, null, typeof(Vector));
             this.SetParam(4, true, true, false, Messages.P5Poincare, Messages.P5PoincareDescription, null, typeof(int));
             this.SetParam(5, true, true, false, Messages.P6Poincare, Messages.P6PoincareDescription, null, typeof(int));

@@ -1563,10 +1563,10 @@ Length of the second vector: {1}</value>
   <data name="P3LastEVElementsDescription" xml:space="preserve">
     <value>Order of the elements from the back</value>
   </data>
-  <data name="P3Poincare" xml:space="preserve">
+  <data name="PPSPoints" xml:space="preserve">
     <value>points</value>
   </data>
-  <data name="P3PoincareDescription" xml:space="preserve">
+  <data name="PPSPointsDescription" xml:space="preserve">
     <value>Number of points of the final section</value>
   </data>
   <data name="P4Graph" xml:space="preserve">
@@ -2924,5 +2924,17 @@ Second differing type: {1}</value>
   </data>
   <data name="PEigenValueIndexDescription" xml:space="preserve">
     <value>Index of the eigenvalue (0 is the highest one)</value>
+  </data>
+  <data name="PInitialCondition" xml:space="preserve">
+    <value>ic</value>
+  </data>
+  <data name="PInitialConditionDescription" xml:space="preserve">
+    <value>Initial conditions</value>
+  </data>
+  <data name="PMinimumPointsCircle" xml:space="preserve">
+    <value>minCircle</value>
+  </data>
+  <data name="PMinimumPointsCircleDescription" xml:space="preserve">
+    <value>Minimum points of the circle</value>
   </data>
 </root>

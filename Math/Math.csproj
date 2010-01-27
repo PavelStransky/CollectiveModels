@@ -123,6 +123,7 @@
     <Compile Include="DiscreteInterval.cs" />
     <Compile Include="Dynamics\AverageInvariant.cs" />
     <Compile Include="Dynamics\ExactBounds.cs" />
+    <Compile Include="Dynamics\PeriodicOrbit.cs" />
     <Compile Include="Dynamics\SALIContourGraph.cs" />
     <Compile Include="Dynamics\Trajectory.cs" />
     <Compile Include="FFT.cs">

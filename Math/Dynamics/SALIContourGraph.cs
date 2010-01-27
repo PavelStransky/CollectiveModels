@@ -42,7 +42,38 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection) {
+            return this.IsRegularPS(initialX, poincareSection, false, 0);
+        }
+        
+        /// <summary>
+        /// Vrátí true, pokud daná trajektorie je podle SALI regulární
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="section">Body øezu (výstup)</param>
+        /// <param name="isX">Poèítáme øez rovinou x == 0</param>
         public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX) {
+            return this.IsRegularPS(initialX, poincareSection, isX, 0);
+        }
+
+        /// <summary>
+        /// Vrátí true, pokud daná trajektorie je podle SALI regulární, a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="section">Body øezu (výstup)</param>
+        /// <param name="numPointsSection">Minimální poèet bodù øezu</param>
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection, int numPointsSection) {
+            return this.IsRegularPS(initialX, poincareSection, false, numPointsSection);
+        }
+        
+        /// <summary>
+        /// Vrátí true, pokud daná trajektorie je podle SALI regulární, a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="section">Body øezu (výstup)</param>
+        /// <param name="isX">Poèítáme øez rovinou x == 0</param>
+        /// <param name="numPointsSection">Minimální poèet bodù øezu</param>
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX, int numPointsSection) {
             int indexS = isX ? 0 : 1;    // Index promìnné, kterou vede øez
             int indexG1 = isX ? 1 : 0;   // První index pro graf
             int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
@@ -61,6 +92,7 @@ namespace PavelStransky.Math {
             this.Init(initialX);
 
             int result = 0;
+            int numPoints = 0;
             do {
                 while(t < tNext){
                     Vector oldx = this.x;
@@ -73,18 +105,17 @@ namespace PavelStransky.Math {
 
                     // Druhá varianta jen v pøípadì, že øežeme X
                     if((y <= 0 && oldy > 0) || (!isX && y > 0 && oldy <= 0)) {
-                        Vector v = (oldx - this.x) * (y / (y - oldy)) + oldx;
+                        Vector v = (oldx - this.x) * (oldy / (y - oldy)) + oldx;
                         crossings.Add(new PointD(v[indexG1], v[indexG2]));
+                        numPoints++;
                     }
                     oldy = y;
                 }
 
                 result = this.SALIDecision(t, queue);
-                if(result >= 0)
-                    break;
 
                 tNext += timeStep;
-            } while(true);
+            } while(result < 0 || numPoints < numPointsSection);
 
             // Pøevod øady na PointVector
             poincareSection.Length = crossings.Count;

@@ -68,6 +68,16 @@ namespace PavelStransky.Math {
         public PointD this[int i] { get { return this.item[i]; } set { this.item[i] = value; } }
 
         /// <summary>
+        /// První prvek vektoru
+        /// </summary>
+        public PointD FirstItem { get { return this.item[0]; } set { this.item[0] = value; } }
+
+        /// <summary>
+        /// Poslední prvek vektoru
+        /// </summary>
+        public PointD LastItem { get { return this.item[this.Length - 1]; } set { this.item[this.Length - 1] = value; } }
+
+        /// <summary>
         /// Délka vektoru bodù
         /// </summary>
         public int Length {
@@ -687,6 +697,65 @@ namespace PavelStransky.Math {
 
             return result;
         }
+
+        /// <summary>
+        /// Spojí body do kruhu tak, aby vzdálenosti mezi sousedními body byly co nejkratší (nemusí nutnì zahrnout všechny body)
+        /// </summary>
+        /// <param name="minCircle">Minimální délka kruhu</param>
+        public PointVector JoinCircle(int minCircle) {
+            int length = this.Length;
+
+            // Použité body
+            bool[] used = new bool[length];
+            for(int i = 0; i < length; i++)
+                used[i] = false;
+
+            // Connecting
+            PointD x0 = this[0];
+            PointD x1 = x0;
+            used[0] = true;
+
+            ArrayList circle = new ArrayList();
+            circle.Add(x0);
+
+            int usedPoints = 1;
+            bool fullCircle = false;
+
+            while(!fullCircle) {
+                double distance = -1.0;
+                int k = -1;
+
+                for(int i = 0; i < length; i++) {
+                    if(used[i])
+                        continue;
+
+                    double d = PointD.Distance(x1, this[i]);
+                    if(distance <= 0.0 || distance > d) {
+                        distance = d;
+                        k = i;
+                    }
+                }
+
+                x1 = this[k];
+                circle.Add(x1);
+                used[k] = true;
+                usedPoints++;
+
+                if(usedPoints > minCircle)
+                    used[0] = false;
+
+                if(k == 0)
+                    fullCircle = true;
+            }
+
+            PointVector result = new PointVector(circle.Count);
+            int j = 0;
+            foreach(PointD p in circle) 
+                result[j++] = p;
+
+            return result;
+        }
+
 
         private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
         private const string errorMessageDifferentLength = "K provedení operace musí mít vektory stejnou délku.";

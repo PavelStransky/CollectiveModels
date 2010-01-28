@@ -6,7 +6,7 @@ using System.Text;
 using PavelStransky.Math;
 using PavelStransky.Core;
 
-namespace PavelStransky.ManyBody {
+namespace PavelStransky.Systems {
     public class TwoBody: IExportable, IDynamicalSystem {
         private Vector m = new Vector(2);
 

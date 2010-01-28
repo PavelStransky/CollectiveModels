@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Urèí, jak mohou být kombinovány indexy radiálních a úhlových maticových elementù
     /// pro urèité hodnoty kvantových èísel.

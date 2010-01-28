@@ -7,7 +7,7 @@ using System.Text;
 using PavelStransky.Math;
 using PavelStransky.Core;
 
-namespace PavelStransky.IBM {
+namespace PavelStransky.Systems {
     public class ClassicalIBM : IDynamicalSystem, IExportable {
         // Generátor náhodných èísel
         private Random random = new Random();

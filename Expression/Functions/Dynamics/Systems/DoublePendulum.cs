@@ -3,7 +3,7 @@ using System.Collections;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
-using PavelStransky.DoublePendulum;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -25,7 +25,7 @@ namespace PavelStransky.Expression.Functions.Def {
             double lambda = (double)arguments[1];
             double gamma = (double)arguments[2];
 
-            return new PavelStransky.DoublePendulum.DoublePendulum(mu, lambda, gamma);
+            return new DoublePendulum(mu, lambda, gamma);
         }
 
         private const string name = "doublependulum";

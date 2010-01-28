@@ -4,7 +4,7 @@ using System.Text;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     public abstract class LHOQuantumGCMAR: LHOQuantumGCM {
         // Indexy báze
         protected LHOPolarIndex index;

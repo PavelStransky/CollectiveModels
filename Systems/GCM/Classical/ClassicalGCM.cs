@@ -5,8 +5,9 @@ using System.Text;
 
 using PavelStransky.Math;
 using PavelStransky.Core;
+using PavelStransky.Systems;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     public class ClassicalGCM: GCM, IExportable, IDynamicalSystem {
         // Generátor náhodných èísel
         private Random random = new Random();

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Naète úhlové maticové elementy ze souboru (èasem bude možná i poèítat :-)
     /// </summary>

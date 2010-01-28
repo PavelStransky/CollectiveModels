@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// A couple of indexes for the 5D LHO basis
     /// </summary>

@@ -5,7 +5,7 @@ using PavelStransky.Math;
 using PavelStransky.DLLWrapper;
 using PavelStransky.Core;
 
-namespace PavelStransky.PT {
+namespace PavelStransky.Systems {
     /// <summary>
     /// System for studying quantum phase transitions
     /// </summary>

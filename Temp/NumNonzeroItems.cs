@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-using PavelStransky.GCM;
+using PavelStransky.Systems;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 

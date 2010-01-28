@@ -3,7 +3,7 @@ using System;
 using PavelStransky.Math;
 using PavelStransky.Core;
 
-namespace PavelStransky.IBM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Výjimka ve tøídì IBM
     /// </summary>

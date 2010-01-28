@@ -2,7 +2,7 @@ using System;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Pøedvypoèítá hodnoty bázové funkce na zadané møížce
     /// </summary>

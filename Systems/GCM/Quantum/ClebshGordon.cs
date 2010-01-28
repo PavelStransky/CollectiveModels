@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     using Math = System.Math;
     class ClebshGordon {
         private double[,] elements;

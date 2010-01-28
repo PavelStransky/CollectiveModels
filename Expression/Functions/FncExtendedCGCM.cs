@@ -3,7 +3,6 @@ using System.Collections;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
-using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions {
     /// <summary>

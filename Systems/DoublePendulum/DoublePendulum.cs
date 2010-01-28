@@ -7,7 +7,7 @@ using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.DoublePendulum {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Double pendulum system
     /// </summary>

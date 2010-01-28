@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.GCM {
+using PavelStransky.Systems;
+
+namespace PavelStransky.Systems {
     /// <summary>
     /// Tøída, která implementuje funkci pro pùlení intervalù
     /// </summary>

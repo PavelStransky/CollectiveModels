@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 using PavelStransky.Math;
+using PavelStransky.Systems;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Tøída, která implementuje funkci pro pùlení intervalù
     /// </summary>

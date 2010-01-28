@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Poèítá radiální maticové elementy potøebné pro výpoèet Hamiltonovy a kvadrupólové matice
     /// (metoda výpoètu popsána v èlánku)

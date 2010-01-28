@@ -5,7 +5,7 @@ using System.Text;
 using PavelStransky.Math;
 using PavelStransky.Core;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>

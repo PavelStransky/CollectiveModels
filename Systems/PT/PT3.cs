@@ -6,7 +6,7 @@ using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.PT {
+namespace PavelStransky.Systems {
     /// <summary>
     /// System for studying quantum phase transitions (CUSP potential)
     /// V = x^4 + a x^2 + b x

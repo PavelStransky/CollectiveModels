@@ -120,6 +120,10 @@
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\Systems\Systems.csproj">
+      <Project>{A516A842-63B3-4D31-885B-454E858A7368}</Project>
+      <Name>Systems</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\AtomException.cs" />

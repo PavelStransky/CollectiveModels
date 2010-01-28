@@ -4,7 +4,7 @@ using System.Text;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Základní tøída GCM modelu, obsahující a obsluhující základní parametry
     /// </summary>

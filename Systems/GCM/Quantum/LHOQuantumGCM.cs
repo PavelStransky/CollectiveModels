@@ -3,11 +3,11 @@ using System.IO;
 using System.Collections;
 
 using PavelStransky.Math;
-using PavelStransky.GCM;
+using PavelStransky.Systems;
 using PavelStransky.Core;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     public enum PeresInvariantTypes {
         L2 = 0, 
         HPrime = 1, 

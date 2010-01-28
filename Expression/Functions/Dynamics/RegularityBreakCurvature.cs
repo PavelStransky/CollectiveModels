@@ -3,8 +3,8 @@ using System.Collections;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
-using PavelStransky.GCM;
 using PavelStransky.Core;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(GCM));
             this.SetParam(1, true, true, true, Messages.PEnergyMin, Messages.PEnergyMinDescription, null, typeof(double));
             this.SetParam(2, true, true, true, Messages.PEnergyMax, Messages.PEnergyMaxDescription, null, typeof(double));
             this.SetParam(3, false, true, false, Messages.PDivision, Messages.PDivisionDescription, 0, typeof(int));
@@ -25,7 +25,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            GCM.GCM gcm = arguments[0] as GCM.GCM;
+            GCM gcm = arguments[0] as GCM;
 
             double emin = (double)arguments[1];
             double emax = (double)arguments[2];

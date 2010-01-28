@@ -2,11 +2,10 @@ using System;
 using System.IO;
 
 using PavelStransky.Math;
-using PavelStransky.GCM;
 using PavelStransky.Core;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Quantum GCM calculated in the basis of the 5D linear harmonic oscilator
     /// (nonrotating case)

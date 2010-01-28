@@ -3,7 +3,7 @@ using System.Collections;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
-using PavelStransky.GCM;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(3);
-            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(PavelStransky.GCM.GCM));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(GCM));
             this.SetParam(1, false, true, false, Messages.P2ConvexConcave, Messages.P2ConvexConcaveDescription, true, typeof(bool));
             this.SetParam(2, false, true, true, Messages.PPrecisionEnergy, Messages.PPrecisionEnergyDescription, defaultPrecision, typeof(double));
         }
@@ -27,7 +27,7 @@ namespace PavelStransky.Expression.Functions.Def {
         /// <param name="arguments"></param>
         /// <returns></returns>
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            PavelStransky.GCM.GCM gcm = arguments[0] as PavelStransky.GCM.GCM;
+            GCM gcm = arguments[0] as GCM;
             bool island = (bool)arguments[1];
             double precision = (double)arguments[2];
 

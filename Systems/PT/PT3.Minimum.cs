@@ -4,7 +4,7 @@ using System.Text;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.PT {
+namespace PavelStransky.Systems {
     public partial class PT3 {
         /// <summary>
         /// Výpoèet minimální vzdálenosti mezi dvìma hladinami

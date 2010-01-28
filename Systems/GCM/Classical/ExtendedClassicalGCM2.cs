@@ -5,8 +5,9 @@ using System.Text;
 
 using PavelStransky.Math;
 using PavelStransky.Core;
+using PavelStransky.Systems;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Klasický GCM s kinetickým èlenem v Hamiltoniánu úmìrným beta^2
     /// </summary>

@@ -4,7 +4,7 @@ using System.Text;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Kvantový GCM, Hamiltonovu matici sestavujeme integrací v x reprezentaci
     /// </summary>

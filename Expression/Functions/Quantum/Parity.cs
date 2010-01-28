@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 
-using PavelStransky.GCM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>

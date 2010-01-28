@@ -2,10 +2,9 @@ using System;
 using System.IO;
 
 using PavelStransky.Math;
-using PavelStransky.GCM;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru jen pro liché stavy
     /// </summary>

@@ -7,7 +7,7 @@
     <ProjectGuid>{A516A842-63B3-4D31-885B-454E858A7368}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Systems</RootNamespace>
+    <RootNamespace>PavelStransky.Systems</RootNamespace>
     <AssemblyName>Systems</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -50,8 +50,8 @@
     <Compile Include="GCM\Exceptions.cs" />
     <Compile Include="GCM\GCM.cs" />
     <Compile Include="GCM\GCMParameters.cs" />
-    <Compile Include="GCM\HenonHeiles.cs" />
-    <Compile Include="GCM\Messages.Designer.cs">
+    <Compile Include="HenonHeiles\HenonHeiles.cs" />
+    <Compile Include="Messages.Designer.cs">
       <DependentUpon>Messages.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,11 +89,25 @@
     <Compile Include="PT\PT3.Minimum.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GCM\Messages.resx">
+    <EmbeddedResource Include="Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLLWrapper\DLLWrapper.csproj">
+      <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
+      <Name>DLLWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Math\Math.csproj">
+      <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
+      <Name>Math</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

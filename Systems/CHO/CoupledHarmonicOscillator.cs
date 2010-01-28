@@ -7,7 +7,7 @@ using System.Text;
 using PavelStransky.Math;
 using PavelStransky.Core;
 
-namespace PavelStransky.CHO {
+namespace PavelStransky.Systems {
     public class CoupledHarmonicOscillator : IDynamicalSystem, IExportable {
         // Generátor náhodných èísel
         private Random random = new Random();

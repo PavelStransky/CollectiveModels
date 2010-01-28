@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     public class QuantumGCM : GCM {
         // Parametry báze kvadratického oscilátoru
         private double b2s, c2s;

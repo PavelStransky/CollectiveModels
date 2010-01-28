@@ -4,7 +4,7 @@ using System.Text;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.IBM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Tøída, která implementuje funkci pro pùlení intervalù
     /// </summary>

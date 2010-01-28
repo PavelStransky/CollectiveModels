@@ -5,7 +5,7 @@ using System.Text;
 using PavelStransky.Math;
 using PavelStransky.DLLWrapper;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Základní tøída GCM modelu
     /// </summary>

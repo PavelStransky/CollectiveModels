@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 using PavelStransky.Math;
-using PavelStransky.GCM;
-using PavelStransky.IBM;
-using PavelStransky.PT;
 using PavelStransky.Expression;
-using PavelStransky.ManyBody;
-using PavelStransky.CHO;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression {
     /// <summary>
@@ -36,50 +32,67 @@ namespace PavelStransky.Expression {
                 return new Context(this);
             else if(typeName == typeof(GraphParameterValues).FullName)
                 return new GraphParameterValues(this);
-            else if(typeName == typeof(ClassicalGCM).FullName)
+            else if(typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
-            else if(typeName == typeof(ExtendedClassicalGCM1).FullName)
+            else if(typeName == typeof(ExtendedClassicalGCM1).FullName || typeName == "PavelStransky.GCM.ExtendedClassicalGCM1")
                 return new ExtendedClassicalGCM1(this);
-            else if(typeName == typeof(ExtendedClassicalGCM2).FullName)
+            else if(typeName == typeof(ExtendedClassicalGCM2).FullName || typeName == "PavelStransky.GCM.ExtendedClassicalGCM2")
                 return new ExtendedClassicalGCM2(this);
-            else if(typeName == typeof(ClassicalGCMJ).FullName)
+            else if(typeName == typeof(ClassicalGCMJ).FullName || typeName == "PavelStransky.GCM.ClassicalGCMJ")
                 return new ClassicalGCMJ(this);
-            else if(typeName == typeof(ClassicalIBM).FullName)
+            else if(typeName == typeof(ClassicalIBM).FullName || typeName == "PavelStransky.IBM.ClassicalIBM")
                 return new ClassicalIBM(this);
             else if(typeName == typeof(Graph).FullName)
                 return new Graph(this);
-            else if(typeName == typeof(LHOQuantumGCMIC).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMC")
+            else if(typeName == typeof(LHOQuantumGCMIC).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMC"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMIC")
                 return new LHOQuantumGCMIC(this);
             else if(typeName == typeof(LHOQuantumGCMIR).FullName
                 || typeName == "PavelStransky.GCM.LHOQuantumGCMR"
-                || typeName == "PavelStransky.GCM.LHOQuantumGCMRL")
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRL"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMIR")
                 return new LHOQuantumGCMIR(this);
-            else if(typeName == typeof(LHOQuantumGCMIRFull).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRFull")
+            else if(typeName == typeof(LHOQuantumGCMIRFull).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRFull"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMIRFull")
                 return new LHOQuantumGCMIRFull(this);
-            else if(typeName == typeof(LHOQuantumGCMIRO).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRLO")
+            else if(typeName == typeof(LHOQuantumGCMIRO).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRLO"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMIRO")
                 return new LHOQuantumGCMIRO(this);
-            else if(typeName == typeof(LHOQuantumGCMI5D).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCM5D")
+            else if(typeName == typeof(LHOQuantumGCMI5D).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCM5D"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMI5D")
                 return new LHOQuantumGCMI5D(this);
-            else if(typeName == typeof(LHOQuantumGCMARO).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRALO")
+            else if(typeName == typeof(LHOQuantumGCMARO).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRALO"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMARO")
                 return new LHOQuantumGCMARO(this);
-            else if(typeName == typeof(LHOQuantumGCMARE).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRALE")
+            else if(typeName == typeof(LHOQuantumGCMARE).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRALE"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMARE")
                 return new LHOQuantumGCMARE(this);
-            else if(typeName == typeof(LHOQuantumGCMA5D).FullName || typeName == "PavelStransky.GCM.LHOQuantumGCMRAL5D")
+            else if(typeName == typeof(LHOQuantumGCMA5D).FullName 
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMRAL5D"
+                || typeName == "PavelStransky.GCM.LHOQuantumGCMA5D")
                 return new LHOQuantumGCMA5D(this);
-            else if(typeName == typeof(PT1).FullName)
+            else if(typeName == typeof(PT1).FullName || typeName == "PavelStransky.PT.PT1")
                 return new PT1(this);
-            else if(typeName == typeof(PT2).FullName)
+            else if(typeName == typeof(PT2).FullName || typeName == "PavelStransky.PT.PT2")
                 return new PT2(this);
-            else if(typeName == typeof(PT3).FullName)
+            else if(typeName == typeof(PT3).FullName || typeName == "PavelStransky.PT.PT3")
                 return new PT3(this);
-            else if(typeName == typeof(ThreeBody).FullName || typeName == "PavelStransky.ThreeBody.ThreeBody")
+            else if(typeName == typeof(ThreeBody).FullName 
+                || typeName == "PavelStransky.ThreeBody.ThreeBody"
+                || typeName == "PavelStransky.ManyBody.ThreeBody")
                 return new ThreeBody(this);
-            else if(typeName == typeof(TwoBody).FullName)
+            else if(typeName == typeof(TwoBody).FullName || typeName == "PavelStransky.ManyBody.TwoBody")
                 return new TwoBody(this);
-            else if(typeName == typeof(CoupledHarmonicOscillator).FullName)
+            else if(typeName == typeof(CoupledHarmonicOscillator).FullName || typeName == "PavelStransky.CHO.CoupledHarmonicOscillator")
                 return new CoupledHarmonicOscillator(this);
-            else if(typeName == typeof(PavelStransky.DoublePendulum.DoublePendulum).FullName)
-                return new PavelStransky.DoublePendulum.DoublePendulum(this);
+            else if(typeName == typeof(DoublePendulum).FullName || typeName == "PavelStransky.DoublePendulum.DoublePendulum")
+                return new DoublePendulum(this);
             else
                 return base.CreateObject(typeName);
         }

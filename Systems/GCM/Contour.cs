@@ -5,7 +5,7 @@ using System.Text;
 
 using PavelStransky.Math;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Uchovává a zpacovává kontury (ekvipotenciální køivky)
     /// </summary>

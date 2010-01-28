@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PavelStransky.GCM {
+namespace PavelStransky.Systems {
     /// <summary>
     /// Tøída, která v sobì zapouzdøuje dvojice indexù - kvantových èísel n, m
     /// pro bázi lineárního harmonického oscilátoru v polárních souøadnicích

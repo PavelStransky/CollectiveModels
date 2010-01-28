@@ -7,10 +7,9 @@ using System.Text.RegularExpressions;
 using System.Xml;
 
 using PavelStransky.Core;
-using PavelStransky.IBM;
 using PavelStransky.Math;
 using PavelStransky.Expression;
-using PavelStransky.GCM;
+using PavelStransky.Systems;
 using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Test {

@@ -117,7 +117,7 @@ namespace PavelStransky.Systems {
             
             Vector r = this.Roots(e, 0);
             if(r.Length == 0)
-                throw new GCMException(string.Format(errorMessageInitialCondition, e));
+                throw new SystemsException(string.Format(errorMessageInitialCondition, e));
 
             // Nalezení nejvìtšího koøenu (v absolutní hodnotì)
             double rmax = System.Math.Abs(r[0]);
@@ -188,7 +188,7 @@ namespace PavelStransky.Systems {
             if(l == 0.0)
                 return this.IC(e);
             else
-                throw new GCMException(string.Format(errorMessageNonzeroJ, this.GetType().FullName, typeof(ClassicalGCMJ).FullName));
+                throw new SystemsException(string.Format(errorMessageNonzeroJ, this.GetType().FullName, typeof(ClassicalGCMJ).FullName));
         }
 
         /// <summary>

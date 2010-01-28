@@ -145,7 +145,7 @@ namespace PavelStransky.Systems {
         /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
         protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            throw new GCMException(string.Format(Messages.EMNotImplemented, "SymmetricBandMatrix", this.GetType().Name));
+            throw new SystemsException(string.Format(Messages.EMNotImplemented, "SymmetricBandMatrix", this.GetType().Name));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace PavelStransky.Systems {
         /// <param name="method">Metoda výpoètu</param>
         public void Compute(int maxE, int numSteps, bool ev, int numev, IOutputWriter writer, ComputeMethod method) {
             if(this.isComputing)
-                throw new GCMException(Messages.EMComputing);
+                throw new SystemsException(Messages.EMComputing);
 
             this.isComputing = true;
 
@@ -273,7 +273,7 @@ namespace PavelStransky.Systems {
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
         public virtual Vector GetPeresInvariant(PeresInvariantTypes type) {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
+                throw new SystemsException(Messages.EMNotComputed);
 
             if(type == PeresInvariantTypes.L2) {
                 return this.GetPeresInvariantL2();
@@ -334,7 +334,7 @@ namespace PavelStransky.Systems {
         /// <remarks>M.S. Santhanam et al., arXiv:chao-dyn/9704002v1</remarks>
         public virtual Vector GetEntropy() {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
+                throw new SystemsException(Messages.EMNotComputed);
 
             int count = this.eigenVectors.Length;
             Vector result = new Vector(count);
@@ -470,7 +470,7 @@ namespace PavelStransky.Systems {
         /// <param name="ry">Rozmìry ve smìru y</param>
         public virtual Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
+                throw new SystemsException(Messages.EMNotComputed);
 
             int numx = intx.Num;
             int numy = inty.Num;
@@ -543,7 +543,7 @@ namespace PavelStransky.Systems {
         /// <param name="x">Bod</param>
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed); 
+                throw new SystemsException(Messages.EMNotComputed); 
             
             Vector ev = this.eigenVectors[n];
             int length = this.GetBasisLength();
@@ -561,7 +561,7 @@ namespace PavelStransky.Systems {
         /// <param name="n">Poøadí vlastní hodnoty</param>
         public Matrix EigenMatrix(int n) {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed); 
+                throw new SystemsException(Messages.EMNotComputed); 
             
             int num = this.GetBasisLength();
 
@@ -585,7 +585,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         public Vector LastEVElementsSumAbs() {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
+                throw new SystemsException(Messages.EMNotComputed);
 
             int count = this.eigenVectors.Length;
             Vector result = new Vector(count);
@@ -603,7 +603,7 @@ namespace PavelStransky.Systems {
         /// <param name="n">Poøadí vlastní hodnoty</param>
         public Vector LastEVElements(int n, int index) {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
+                throw new SystemsException(Messages.EMNotComputed);
 
             int num = this.GetBasisLength();
 

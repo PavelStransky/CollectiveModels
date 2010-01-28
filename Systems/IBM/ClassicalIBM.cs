@@ -42,10 +42,10 @@ namespace PavelStransky.Systems {
         /// <param name="chi">Parametr chi</param>
         public void CheckEtaChi(double eta, double chi) {
             if(eta < minEta || eta > maxEta)
-                throw new IBMException(string.Format(errorMessageParameterOutOfRange, "eta", eta, minEta, maxEta));
+                throw new SystemsException(string.Format(errorMessageParameterOutOfRange, "eta", eta, minEta, maxEta));
 
             if(chi < minChi || chi > maxChi)
-                throw new IBMException(string.Format(errorMessageParameterOutOfRange, "chi", chi, minChi, maxChi));
+                throw new SystemsException(string.Format(errorMessageParameterOutOfRange, "chi", chi, minChi, maxChi));
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace PavelStransky.Systems {
             if(l == 0.0)
                 return this.IC(e);
             else
-                throw new IBMException(string.Format(errorMessageNonzeroJ, this.GetType().FullName));
+                throw new SystemsException(string.Format(errorMessageNonzeroJ, this.GetType().FullName));
         }
 
         /// <summary>

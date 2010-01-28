@@ -47,7 +47,7 @@
     <Compile Include="GCM\Classical\GCMJBisectionFunction.cs" />
     <Compile Include="GCM\Classical\VMatrixBisectionFunction.cs" />
     <Compile Include="GCM\Contour.cs" />
-    <Compile Include="GCM\Exceptions.cs" />
+    <Compile Include="SystemsException.cs" />
     <Compile Include="GCM\GCM.cs" />
     <Compile Include="GCM\GCMParameters.cs" />
     <Compile Include="HenonHeiles\HenonHeiles.cs" />
@@ -78,7 +78,6 @@
     <Compile Include="GCM\Quantum\LHOQuantumGCMIRO.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCMRFull.cs" />
     <Compile Include="IBM\ClassicalIBM.cs" />
-    <Compile Include="IBM\Exceptions.cs" />
     <Compile Include="IBM\IBMBisectionFunction.cs" />
     <Compile Include="ManyBody\ThreeBody.cs" />
     <Compile Include="ManyBody\TwoBody.cs" />

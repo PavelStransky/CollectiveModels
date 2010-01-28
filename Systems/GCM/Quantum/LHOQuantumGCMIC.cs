@@ -214,7 +214,7 @@ namespace PavelStransky.Systems {
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public Matrix NumericalDiff(int n, params Vector[] interval) {
             if(!this.isComputed)
-                throw new GCMException(Messages.EMNotComputed);
+                throw new SystemsException(Messages.EMNotComputed);
 
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
             DiscreteInterval inty = this.ParseRange(interval.Length > 1 ? interval[1] : null);

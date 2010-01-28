@@ -107,10 +107,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\CHO\CHO.csproj">
-      <Project>{985D55BE-F9EA-447A-9468-75BC5A12806A}</Project>
-      <Name>CHO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
       <Name>Core</Name>
@@ -119,30 +115,10 @@
       <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
       <Name>DLLWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DoublePendulum\DoublePendulum.csproj">
-      <Project>{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}</Project>
-      <Name>DoublePendulum</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GCM\GCM.csproj">
-      <Project>{9A261EE9-33BB-4136-B0CA-681BD82B6806}</Project>
-      <Name>GCM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IBM\IBM.csproj">
-      <Project>{1F119B82-E6B3-4FF0-A026-72AC1D452DA6}</Project>
-      <Name>IBM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ManyBody\ManyBody.csproj">
-      <Project>{89B81AB2-D8A5-4A88-9A1D-43B09E9DC4F5}</Project>
-      <Name>ManyBody</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Name>Math</Name>
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\PT\PT.csproj">
-      <Project>{9D156CE1-83FE-4395-95A2-1C384771B3BD}</Project>
-      <Name>PT</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

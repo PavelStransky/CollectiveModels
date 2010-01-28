@@ -37,7 +37,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CHO\CoupledHarmonicOscillator.cs" />
+    <Compile Include="DoublePendulum\DoublePendulum.cs" />
+    <Compile Include="GCM\Classical\ClassicalGCM.cs" />
+    <Compile Include="GCM\Classical\ClassicalGCMJ.cs" />
+    <Compile Include="GCM\Classical\ExtendedClassicalGCM1.cs" />
+    <Compile Include="GCM\Classical\ExtendedClassicalGCM2.cs" />
+    <Compile Include="GCM\Classical\GCMBisectionFunction.cs" />
+    <Compile Include="GCM\Classical\GCMJBisectionFunction.cs" />
+    <Compile Include="GCM\Classical\VMatrixBisectionFunction.cs" />
+    <Compile Include="GCM\Contour.cs" />
+    <Compile Include="GCM\Exceptions.cs" />
+    <Compile Include="GCM\GCM.cs" />
+    <Compile Include="GCM\GCMParameters.cs" />
+    <Compile Include="GCM\HenonHeiles.cs" />
+    <Compile Include="GCM\Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="GCM\Quantum\BasisCache.cs" />
+    <Compile Include="GCM\Quantum\BasisCache2D.cs" />
+    <Compile Include="GCM\Quantum\ClebshGordon.cs" />
+    <Compile Include="GCM\Quantum\Fortran\AngularMatrixElement.cs" />
+    <Compile Include="GCM\Quantum\Fortran\GammaLog.cs" />
+    <Compile Include="GCM\Quantum\Fortran\QuantumGCM.cs" />
+    <Compile Include="GCM\Quantum\Fortran\RadialMatrixElement.cs" />
+    <Compile Include="GCM\Quantum\Fortran\RAIndex.cs" />
+    <Compile Include="GCM\Quantum\LHO5DIndex.cs" />
+    <Compile Include="GCM\Quantum\LHOPolarIndex.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCM.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMA5D.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMAR.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMARE.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMARO.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMI.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMI5D.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMIC.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMIR.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMIRO.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMRFull.cs" />
+    <Compile Include="IBM\ClassicalIBM.cs" />
+    <Compile Include="IBM\Exceptions.cs" />
+    <Compile Include="IBM\IBMBisectionFunction.cs" />
+    <Compile Include="ManyBody\ThreeBody.cs" />
+    <Compile Include="ManyBody\TwoBody.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PT\PT1.cs" />
+    <Compile Include="PT\PT2.cs" />
+    <Compile Include="PT\PT3.cs" />
+    <Compile Include="PT\PT3.Minimum.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GCM\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

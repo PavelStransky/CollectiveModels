@@ -124,10 +124,6 @@
       <Project>{32A09091-75AC-4F78-BB4D-8721DAD0E1CE}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\IBM\IBM.csproj">
-      <Project>{1F119B82-E6B3-4FF0-A026-72AC1D452DA6}</Project>
-      <Name>IBM</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Math\Math.csproj">
       <Name>Math</Name>
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>

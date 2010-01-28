@@ -2937,4 +2937,28 @@ Second differing type: {1}</value>
   <data name="PMinimumPointsCircleDescription" xml:space="preserve">
     <value>Minimum points of the circle</value>
   </data>
+  <data name="HelpDoublePendulum" xml:space="preserve">
+    <value>The double pendulum system</value>
+  </data>
+  <data name="HelpHamiltonianMatrix" xml:space="preserve">
+    <value>Returns Hamiltonian matrix of the given quantum system</value>
+  </data>
+  <data name="PDoublePendulumGamma" xml:space="preserve">
+    <value>gamma</value>
+  </data>
+  <data name="PDoublePendulumGammaDescription" xml:space="preserve">
+    <value>gamma parameter (gravity parameter)</value>
+  </data>
+  <data name="PDoublePendulumLambda" xml:space="preserve">
+    <value>lambda</value>
+  </data>
+  <data name="PDoublePendulumLambdaDescription" xml:space="preserve">
+    <value>lambda parameter (ratio of lengths)</value>
+  </data>
+  <data name="PDoublePendulumMu" xml:space="preserve">
+    <value>mu</value>
+  </data>
+  <data name="PDoublePendulumMuDescription" xml:space="preserve">
+    <value>mu parameter (ratio of masses)</value>
+  </data>
 </root>

@@ -26,9 +26,11 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CHO", "CHO\CHO.csproj", "{985D55BE-F9EA-447A-9468-75BC5A12806A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoublePendulum", "DoublePendulum\DoublePendulum.csproj", "{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 14
+		SccNumberOfProjects = 15
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Expression\\Expression.csproj
 		SccProjectName1 = \u0022$/CollectiveModels/Expression\u0022,\u0020OBAAAAAA
@@ -69,6 +71,9 @@ Global
 		SccProjectUniqueName13 = CHO\\CHO.csproj
 		SccLocalPath13 = .
 		SccProjectFilePathRelativizedFromConnection13 = CHO\\
+		SccProjectUniqueName14 = DoublePendulum\\DoublePendulum.csproj
+		SccLocalPath14 = .
+		SccProjectFilePathRelativizedFromConnection14 = DoublePendulum\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -280,6 +285,20 @@ Global
 		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|Win32.ActiveCfg = Release|Any CPU
 		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|x86.ActiveCfg = Release|Any CPU
 		{985D55BE-F9EA-447A-9468-75BC5A12806A}.Release|x86.Build.0 = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|.NET.ActiveCfg = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

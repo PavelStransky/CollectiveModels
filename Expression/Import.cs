@@ -78,6 +78,8 @@ namespace PavelStransky.Expression {
                 return new TwoBody(this);
             else if(typeName == typeof(CoupledHarmonicOscillator).FullName)
                 return new CoupledHarmonicOscillator(this);
+            else if(typeName == typeof(PavelStransky.DoublePendulum.DoublePendulum).FullName)
+                return new PavelStransky.DoublePendulum.DoublePendulum(this);
             else
                 return base.CreateObject(typeName);
         }

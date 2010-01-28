@@ -119,6 +119,10 @@
       <Project>{6D9B660F-CC5A-4814-A176-1BC2619370ED}</Project>
       <Name>DLLWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DoublePendulum\DoublePendulum.csproj">
+      <Project>{BB8E12BF-80E5-40FA-A51D-26EFA75235F0}</Project>
+      <Name>DoublePendulum</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GCM\GCM.csproj">
       <Project>{9A261EE9-33BB-4136-B0CA-681BD82B6806}</Project>
       <Name>GCM</Name>
@@ -149,7 +153,7 @@
     <Compile Include="Exceptions\FncListException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
-    <Compile Include="Functions\Dynamics\CHO.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />
     <Compile Include="Functions\Dynamics\IsRegularPS.cs" />
@@ -160,9 +164,10 @@
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakCurvature.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
-    <Compile Include="Functions\Dynamics\ThreeBody.cs" />
+    <Compile Include="Functions\Dynamics\Systems\DoublePendulum.cs" />
+    <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />
-    <Compile Include="Functions\Dynamics\TwoBody.cs" />
+    <Compile Include="Functions\Dynamics\Systems\TwoBody.cs" />
     <Compile Include="Functions\Dynamics\VMatrixG.cs" />
     <Compile Include="Functions\Dynamics\VMatrixZero.cs" />
     <Compile Include="Functions\FncException.cs" />
@@ -288,15 +293,15 @@
     <Compile Include="Functions\Context\SetGlobalVar.cs" />
     <Compile Include="Functions\Context\UseContext.cs" />
     <Compile Include="Functions\Dynamics\Bounds.cs" />
-    <Compile Include="Functions\Dynamics\CGCM.cs" />
-    <Compile Include="Functions\Dynamics\CGCMJ.cs" />
-    <Compile Include="Functions\Dynamics\CIBM.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CGCM.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CGCMJ.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CIBM.cs" />
     <Compile Include="Functions\Dynamics\Energy.cs" />
     <Compile Include="Functions\Dynamics\Equipotential.cs" />
     <Compile Include="Functions\FncExtendedCGCM.cs" />
-    <Compile Include="Functions\Dynamics\ExtendedCGCM1.cs" />
-    <Compile Include="Functions\Dynamics\ExtendedCGCM2.cs" />
-    <Compile Include="Functions\Dynamics\HH.cs" />
+    <Compile Include="Functions\Dynamics\Systems\ExtendedCGCM1.cs" />
+    <Compile Include="Functions\Dynamics\Systems\ExtendedCGCM2.cs" />
+    <Compile Include="Functions\Dynamics\Systems\HH.cs" />
     <Compile Include="Functions\Dynamics\InitialCondition.cs" />
     <Compile Include="Functions\Dynamics\Poincare.cs" />
     <Compile Include="Functions\Dynamics\PotentialRoots.cs" />

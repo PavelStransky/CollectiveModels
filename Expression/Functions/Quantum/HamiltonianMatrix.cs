@@ -7,34 +7,27 @@ using PavelStransky.GCM;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Vytvoøí Hamiltonovu matici kvantového systému
+    /// Returns Hamiltonian matrix of the given quantum system
     /// </summary>
     public class HamiltonianMatrix : Fnc {
-        public override string Help { get { return help; } }
-        public override string ParametersHelp { get { return parameters; } }
+        public override string Help { get { return Messages.HelpHamiltonianMatrix; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsMinNumber(evaluatedArguments, 2);
-            this.CheckArgumentsMaxNumber(evaluatedArguments, 3);
-
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCM));
-
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
-            this.CheckArgumentsType(evaluatedArguments, 2, evaluateArray, typeof(int));
+        protected override void CreateParameters() {
+            this.SetNumParams(3);
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(LHOQuantumGCM), typeof(PavelStransky.DoublePendulum.DoublePendulum));
+            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
+            this.SetParam(2, false, true, false, Messages.PNumberOfPoints, Messages.PNumberOfPointsDetail, 0, typeof(int));
         }
+
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            LHOQuantumGCM item = arguments[0] as LHOQuantumGCM;
             int maxE = (int)arguments[1];
-            int numSteps = 0;               // 0 - numsteps je dopoèítáno automaticky
+            int numSteps = (int)arguments[2];
 
-            if(arguments.Count > 2) 
-                numSteps = (int)arguments[2];
-
-            return item.HamiltonianMatrix(maxE, numSteps, guider);
+            if(arguments[0] is LHOQuantumGCM)
+                return (arguments[0] as LHOQuantumGCM).HamiltonianMatrix(maxE, numSteps, guider);
+            else
+                return (arguments[0] as PavelStransky.DoublePendulum.DoublePendulum).HamiltonianMatrix(maxE, numSteps, guider);
         }
-
-        private const string help = "Vytvoøí matici Hamiltoniánu v použité bázi";
-        private const string parameters = "LHOQuantumGCM objekt; MaxE (int); [NumSteps - dìlení møíže (int)]";
     }
 }

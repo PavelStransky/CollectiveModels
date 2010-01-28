@@ -2977,6 +2977,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The double pendulum system.
+        /// </summary>
+        internal static string HelpDoublePendulum {
+            get {
+                return ResourceManager.GetString("HelpDoublePendulum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns a matrix of components of eigenvectors arranged in matrix by indexes.
         /// </summary>
         internal static string HelpEigenMatrix {
@@ -3333,6 +3342,15 @@ namespace PavelStransky.Expression {
         internal static string HelpGUE {
             get {
                 return ResourceManager.GetString("HelpGUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns Hamiltonian matrix of the given quantum system.
+        /// </summary>
+        internal static string HelpHamiltonianMatrix {
+            get {
+                return ResourceManager.GetString("HelpHamiltonianMatrix", resourceCulture);
             }
         }
         
@@ -6051,6 +6069,60 @@ namespace PavelStransky.Expression {
         internal static string PDivisorDescription {
             get {
                 return ResourceManager.GetString("PDivisorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gamma.
+        /// </summary>
+        internal static string PDoublePendulumGamma {
+            get {
+                return ResourceManager.GetString("PDoublePendulumGamma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gamma parameter (gravity parameter).
+        /// </summary>
+        internal static string PDoublePendulumGammaDescription {
+            get {
+                return ResourceManager.GetString("PDoublePendulumGammaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lambda.
+        /// </summary>
+        internal static string PDoublePendulumLambda {
+            get {
+                return ResourceManager.GetString("PDoublePendulumLambda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lambda parameter (ratio of lengths).
+        /// </summary>
+        internal static string PDoublePendulumLambdaDescription {
+            get {
+                return ResourceManager.GetString("PDoublePendulumLambdaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mu.
+        /// </summary>
+        internal static string PDoublePendulumMu {
+            get {
+                return ResourceManager.GetString("PDoublePendulumMu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mu parameter (ratio of masses).
+        /// </summary>
+        internal static string PDoublePendulumMuDescription {
+            get {
+                return ResourceManager.GetString("PDoublePendulumMuDescription", resourceCulture);
             }
         }
         

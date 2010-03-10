@@ -7,25 +7,30 @@ using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Vrátí velikost Hamiltonovy matice
+    /// Dimensions of the Hamiltonian matrix
     /// </summary>
     public class HamiltonianMatrixSize : Fnc {
-        public override string Help { get { return help; } }
-        public override string ParametersHelp { get { return parameters; } }
+        public override string Help { get { return Messages.HelpHamiltonianMatrixSize; } }
 
-        protected override void CheckArguments(ArrayList evaluatedArguments, bool evaluateArray) {
-            this.CheckArgumentsNumber(evaluatedArguments, 2);
-            this.CheckArgumentsType(evaluatedArguments, 0, evaluateArray, typeof(LHOQuantumGCM));
-            this.CheckArgumentsType(evaluatedArguments, 1, evaluateArray, typeof(int));
+        protected override void CreateParameters() {
+            this.SetNumParams(2);
+
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(Vector), typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            LHOQuantumGCM item = arguments[0] as LHOQuantumGCM;
-            int maxE = (int)arguments[1];
-            return item.HamiltonianMatrixSize(maxE);
-        }
+            IQuantumSystem system = arguments[0] as IQuantumSystem;
 
-        private const string help = "Vrátí rozmìry matice Hamiltoniánu v použité bázi";
-        private const string parameters = "LHOQuantumGCM objekt; MaxE (int)";
+            Vector max;
+            if(arguments[1] is int) {
+                max = new Vector(1);
+                max[0] = (int)arguments[1];
+            }
+            else
+                max = arguments[1] as Vector;
+
+            return system.EigenSystem.HamiltonianMatrixSize(max);
+        }
     }
 }

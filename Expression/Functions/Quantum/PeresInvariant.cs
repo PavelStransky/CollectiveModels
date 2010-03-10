@@ -14,13 +14,13 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM));
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(IQuantumSystem));
             this.SetParam(1, false, true, false, Messages.PPeresOperatorType, Messages.PPeresOperatorTypeDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            PeresInvariantTypes type = (PeresInvariantTypes)((int)arguments[1]);
-            return (arguments[0] as LHOQuantumGCM).GetPeresInvariant(type);
+            int type = (int)arguments[1];
+            return (arguments[0] as IQuantumSystem).PeresInvariant(type);
         }
     }
 }

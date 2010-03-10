@@ -6,8 +6,6 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
     public abstract class LHOQuantumGCMAR: LHOQuantumGCM {
-        // Indexy báze
-        protected LHOPolarIndex index;
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -28,60 +26,36 @@ namespace PavelStransky.Systems {
         protected LHOQuantumGCMAR(Core.Import import) : base(import) { }
 
         /// <summary>
-        /// Vytvoøí instanci tøídy LHOPolarIndex
-        /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        protected abstract void CreateIndex(int maxE);
-
-        /// <summary>
-        /// Velikost Hamiltonovy matice
-        /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        public override int HamiltonianMatrixSize(int maxE) {
-            this.CreateIndex(maxE);
-            return this.index.Length;
-        }
-
-        protected override int GetBasisLength() {
-            return this.index.Length;
-        }
-
-        protected override int GetBasisQuantumNumber1(int i) {
-            if(i < 0)
-                return this.index.MaxN + 1;
-            else
-                return this.index.N[i];
-        }
-
-        /// <summary>
         /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(2) hbar^2 * (d / d phi)^2
         /// </summary>
         protected override double PeresInvariantCoef(int n) {
-            double d = this.index.M[n] * this.Hbar;
+            double d = (this.eigenSystem.BasisIndex as LHOPolarIndex).M[n] * this.Hbar;
             return d * d;
         }
 
         /// <summary>
         /// Druhý invariant pro operátor H0
         /// </summary>
-        protected override Vector GetPeresInvariantHPrime() {
+        protected override Vector PeresInvariantHPrime() {
+            LHOPolarIndex index = this.eigenSystem.BasisIndex as LHOPolarIndex;
+
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
             double alpha32 = alpha * this.s;
 
-            int count = this.eigenVectors.Length;
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenVectors[i];
+                Vector ev = this.eigenSystem.GetEigenVector(i);
                 int length = ev.Length;
 
                 double sum = 0.0;
 
                 for(int j = 0; j < length; j++) {
-                    int n = this.index.N[j];
-                    int m = this.index.M[j];
+                    int n = index.N[j];
+                    int m = index.M[j];
 
                     int l = System.Math.Abs(m);
 
@@ -90,12 +64,12 @@ namespace PavelStransky.Systems {
                                 + (this.A - this.A0) * (2.0 * n + l + 1.0) / alpha
                                 + this.C * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0)) / alpha2);
 
-                    if(j < length - 1 && this.index.N[j + 1] == n + 1)
+                    if(j < length - 1 && index.N[j + 1] == n + 1)
                         sum -= 2.0 * ev[j] * ev[j + 1] *
                                 ((this.A - this.A0) * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) / alpha
                                     + 2.0 * this.C * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0) / alpha2);
 
-                    if(j < length - 2 && this.index.N[j + 2] == n + 2) 
+                    if(j < length - 2 && index.N[j + 2] == n + 2) 
                         sum += 2.0 * ev[j] * ev[j + 2] * this.C * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0)) / alpha2;
                 }
 
@@ -108,18 +82,20 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Druhý invariant pro operátor H v oscilátorové bázi
         /// </summary>
-        protected override Vector GetPeresInvariantHOscillator() {
+        protected override Vector PeresInvariantHOscillator() {
+            LHOPolarIndex index = this.eigenSystem.BasisIndex as LHOPolarIndex;
+
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
             double alpha32 = alpha * this.s;
 
-            int count = this.eigenVectors.Length;
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++) {
-                int n = this.index.N[i];
-                int m = this.index.M[i];
+                int n = index.N[i];
+                int m = index.M[i];
 
                 int l = System.Math.Abs(m);
 
@@ -162,7 +138,8 @@ namespace PavelStransky.Systems {
         /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
         /// <param name="x">Souøadnice</param>
         protected double Psi(double x, int i) {
-            return this.Psi(x, this.index.N[i], this.index.M[i]);
+            LHOPolarIndex index = this.eigenSystem.BasisIndex as LHOPolarIndex;
+            return this.Psi(x, index.N[i], index.M[i]);
         }
     }
 }

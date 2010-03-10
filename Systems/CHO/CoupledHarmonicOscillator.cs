@@ -216,6 +216,14 @@ namespace PavelStransky.Systems {
             throw new Exception("The method or operation is not implemented.");
         }
 
+        /// <summary>
+        /// Postprocessing
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public bool PostProcess(Vector x) {
+            return false;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží tøídu do souboru

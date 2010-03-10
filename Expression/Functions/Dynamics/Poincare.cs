@@ -25,6 +25,13 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(8, false, true, false, Messages.POneOrientation, Messages.POneOrientationDescription, false, typeof(bool));
         }
 
+        /// <summary>
+        /// Provede výpoèet
+        /// </summary>
+        protected virtual object Compute(PoincareSection ps, Vector plane, int i1, int i2, Vector ic, int numPoints, bool oneOrientation) {
+            return ps.Compute(plane, i1, i2, ic, numPoints, oneOrientation);
+        }
+
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
             int numPoints = (int)arguments[2];
@@ -51,11 +58,11 @@ namespace PavelStransky.Expression.Functions.Def {
 
             PoincareSection ps = new PoincareSection(dynamicalSystem, precision, rkMethod);
 
-            PointVector result;
+            object result;
             int numAttemps = 0;
             while(true) {
                 try {
-                    result = ps.Compute(plane, i1, i2, ic, numPoints, oneOrientation);
+                    result = this.Compute(ps, plane, i1, i2, ic, numPoints, oneOrientation);
                     break;
                 }
                 catch(PoincareSectionException exc) {

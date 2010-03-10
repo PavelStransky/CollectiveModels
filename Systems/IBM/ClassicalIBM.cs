@@ -288,6 +288,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Postprocessing
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public bool PostProcess(Vector x) {
+            return false;
+        }
+
+        /// <summary>
         /// Vypíše parametry IBM modelu
         /// </summary>
         public override string ToString() {

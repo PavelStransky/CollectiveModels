@@ -8,21 +8,10 @@ using PavelStransky.Core;
 using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Systems {
-    public enum PeresInvariantTypes {
-        L2 = 0, 
-        HPrime = 1, 
-        HOscillator = 2
-    }
-
     /// <summary>
     /// Kvantový GCM 
     /// </summary>
     public abstract class LHOQuantumGCM : GCM, IExportable, IQuantumSystem {
-        /// <summary>
-        /// Metoda výpoètu
-        /// </summary>
-        public enum ComputeMethod { Jacobi, LAPACKBand }
-        
         // Parametr pro LHO
         private double a0;
  
@@ -32,18 +21,6 @@ namespace PavelStransky.Systems {
         // Koeficienty
         protected double s;
         protected double omega;
-
-         // Vlastní hodnoty
-        protected Vector eigenValues;
-
-        // Vlastní vektory
-        protected Vector[] eigenVectors = new Vector[0];
-
-        // True, pokud bylo vypoèteno
-        protected bool isComputed = false;
-
-        // True, pokud již probíhá výpoèet
-        protected bool isComputing = false;
 
         /// <summary>
         /// Planckova konstanta [Js]
@@ -61,26 +38,6 @@ namespace PavelStransky.Systems {
         public double A0 { get { return this.a0; } set { this.a0 = value; } }
 
         /// <summary>
-        /// True, pokud jsou vypoèítané hladiny
-        /// </summary>
-        public bool IsComputed { get { return this.isComputed; } }
-
-        /// <summary>
-        /// První kvantové èíslo v poøadí od 0 s krokem 1
-        /// </summary>
-        protected abstract int GetBasisQuantumNumber1(int i);
-
-        /// <summary>
-        /// Druhé kvantové èíslo v poøadí od 0 s krokem 1
-        /// </summary>
-        protected abstract int GetBasisQuantumNumber2(int i);
-
-        /// <summary>
-        /// Poèet stavù báze
-        /// </summary>
-        protected abstract int GetBasisLength();
-
-        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="a0">Parametr LHO</param>
@@ -94,6 +51,7 @@ namespace PavelStransky.Systems {
             this.a0 = a0;
             this.hbar = hbar;
 
+            this.eigenSystem = new EigenSystem(this);
             this.RefreshConstants();
         }
 
@@ -110,185 +68,108 @@ namespace PavelStransky.Systems {
             this.s = System.Math.Sqrt(this.K * this.omega / this.hbar);      // xi = s*x (Formanek (2.283))
         }
 
+        #region Implementace IQuantumSystem
+        // Systém s vlastními hodnotami
+        protected EigenSystem eigenSystem;
+
+        /// <summary>
+        /// Systém vlastních hodnot
+        /// </summary>
+        public EigenSystem EigenSystem { get { return this.eigenSystem; } }
+
         /// <summary>
         /// Vrátí velikost Hamiltonovy matice v dané bázi
         /// </summary>
-        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
-        public virtual int HamiltonianMatrixSize(int maxE) {
-            return this.HamiltonianMatrix(maxE, 0, null).Length;
+        /// <param name="basisIndex">Parametry báze</param>
+        public virtual double HamiltonianMatrixTrace(BasisIndex basisIndex) {
+            return this.HamiltonianMatrix(basisIndex, null).Trace();
         }
-
-        /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
-        /// <param name="writer">Writer</param>
-        public virtual double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
-            return this.HamiltonianMatrix(maxE, numSteps, writer).Trace();
-        }
-
+        
         /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
-        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        public virtual Matrix HamiltonianMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            return (Matrix)this.HamiltonianSBMatrix(maxE, numSteps, writer);
+        /// <param name="basisIndex">Parametry báze</param>
+        public virtual Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            return (Matrix)this.HamiltonianSBMatrix(basisIndex, writer);
         }
 
         /// <summary>
         /// Napoèítá Hamiltonovu matici jako pásovou matici
         /// </summary>
-        /// <param name="maxE">Nejvyšší øád bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
         /// <param name="writer">Writer</param>
-        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            throw new SystemsException(string.Format(Messages.EMNotImplemented, "SymmetricBandMatrix", this.GetType().Name));
+        /// <param name="basisIndex">Parametry báze</param>
+        public virtual SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            throw new NotImpException(this, "HamiltonianSBMatrix");
         }
-
-        /// <summary>
-        /// Provede výpoèet (diagonalizaci)
-        /// </summary>
-        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
-        /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
-        /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
-        /// <param name="writer">Writer</param>
-        /// <param name="method">Metoda výpoètu</param>
-        public void Compute(int maxE, int numSteps, bool ev, int numev, IOutputWriter writer, ComputeMethod method) {
-            if(this.isComputing)
-                throw new SystemsException(Messages.EMComputing);
-
-            this.isComputing = true;
-
-            try {
-                if(numev <= 0 || numev > this.HamiltonianMatrixSize(maxE))
-                    numev = this.HamiltonianMatrixSize(maxE);
-
-                DateTime startTime = DateTime.Now;
-
-                if(writer != null) {
-                    writer.WriteLine(string.Format("{0} ({1}): Výpoèet {2} vlastních hodnot{3}.",
-                        this.GetType().Name,
-                        startTime,
-                        numev,
-                        ev ? " a vektorù" : string.Empty));
-                    writer.Indent(1);
-                }
-
-                if(method == ComputeMethod.Jacobi) {
-                    Matrix h = this.HamiltonianMatrix(maxE, numSteps, writer);
-
-                    if(writer != null) {
-                        writer.WriteLine(string.Format("Stopa matice: {0}", h.Trace()));
-                        writer.WriteLine(string.Format("Nenulových {0} prvkù z celkových {1}", h.NumNonzeroItems(), h.NumItems()));
-                    }
-
-                    Jacobi jacobi = new Jacobi(h, writer);
-                    jacobi.SortAsc();
-
-                    this.eigenValues = new Vector(jacobi.EigenValue);
-                    this.eigenValues.Length = numev;
-
-                    if(ev) {
-                        this.eigenVectors = new Vector[numev];
-                        for(int i = 0; i < numev; i++)
-                            this.eigenVectors[i] = jacobi.EigenVector[i];
-                    }
-                    else
-                        this.eigenVectors = new Vector[0];
-                }
-
-                else if(method == ComputeMethod.LAPACKBand) {
-                    SymmetricBandMatrix m = this.HamiltonianSBMatrix(maxE, numSteps, writer);
-
-                    if(writer != null) {
-                        writer.WriteLine(string.Format("Stopa matice: {0}", m.Trace()));
-                        writer.Write("Diagonalizace dsbevx...");
-                    }
-
-                    GC.Collect();
-
-                    DateTime startTime1 = DateTime.Now;
-
-                    Vector[] eigenSystem = LAPackDLL.dsbevx(m, ev, 0, numev);
-                    m.Dispose();
-
-                    GC.Collect();
-
-                    if(writer != null)
-                        writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
-
-                    this.eigenValues = eigenSystem[0];
-                    this.eigenValues.Length = numev;
-
-                    if(ev) {
-                        this.eigenVectors = new Vector[numev];
-                        for(int i = 0; i < numev; i++)
-                            this.eigenVectors[i] = eigenSystem[i + 1];
-                    }
-                    else
-                        this.eigenVectors = new Vector[0];
-                }
-
-                if(writer != null) {
-                    writer.WriteLine(string.Format("Souèet vlastních èísel: {0}", this.eigenValues.Sum()));
-                    writer.Indent(-1);
-                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
-                }
-
-                this.isComputed = true;
-            }
-            finally {
-                this.isComputing = false;
-            }
-        }
-
-        /// <summary>
-        /// Vlastní hodnoty
-        /// </summary>
-        public Vector GetEigenValues() {
-            return this.eigenValues;
-        }
-
-        /// <summary>
-        /// Vlastní vektor
-        /// </summary>
-        /// <param name="i">Index vektoru</param>
-        public Vector GetEigenVector(int i) {
-            return this.eigenVectors[i];
-        }
-
-        /// <summary>
-        /// Poèet vlastních vektorù
-        /// </summary>
-        public int NumEV { get { return this.eigenVectors.Length; } }
 
         /// <summary>
         /// Druhý invariant
         /// </summary>
         /// <param name="type">Typ Peresova operátoru</param>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        public virtual Vector GetPeresInvariant(PeresInvariantTypes type) {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed);
-
-            if(type == PeresInvariantTypes.L2) {
-                return this.GetPeresInvariantL2();
+        public virtual Vector PeresInvariant(int type) {
+            if(type == 0) {
+                return this.PeresInvariantL2();
             }
 
-            else if(type == PeresInvariantTypes.HPrime) {
-                return this.GetPeresInvariantHPrime();
+            else if(type == 1) {
+                return this.PeresInvariantHPrime();
             }
 
-            else if(type == PeresInvariantTypes.HOscillator) {
-                return this.GetPeresInvariantHOscillator();
+            else if(type == 2) {
+                return this.PeresInvariantHOscillator();
             }
 
             return null;
         }
+
+        /// <summary>
+        /// Vrátí matici hustot pro vlastní funkce
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
+        public object ProbabilityDensity(int[] n, IOutputWriter writer, params Vector[] interval) {
+            DiscreteInterval intx = new DiscreteInterval(interval[0]);
+            DiscreteInterval inty = new DiscreteInterval(interval[1]);
+
+            Matrix[] result = this.AmplitudeMatrix(n, writer, intx, inty);
+
+            int numn = result.Length;
+            int numx = result[0].LengthX;
+            int numy = result[0].LengthY;
+
+            for(int l = 0; l < numn; l++)
+                for(int i = 0; i < numx; i++)
+                    for(int j = 0; j < numy; j++)
+                        result[l][i, j] *= result[l][i, j];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí hustotu vlnové funkce v daném bodì
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="x">Bod</param>
+        public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {
+            Vector ev = this.eigenSystem.GetEigenVector(n);
+            int length = this.eigenSystem.BasisIndex.Length;
+
+            double result = 0;
+            for(int k = 0; k < length; k++)
+                result += ev[k] * this.PsiXY(x[0], x[1], k);
+            
+            return result;
+        }
+
+        /// <summary>
+        /// Vytvoøí tøídu s parametry báze
+        /// </summary>
+        /// <param name="basisIndex">Parametry báze</param>
+        public abstract BasisIndex CreateBasisIndex(Vector basisIndex);
+        #endregion
+
 
         /// <summary>
         /// Koeficient pro výpoèet druhého invariantu
@@ -299,12 +180,12 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Peresùv operátor L2
         /// </summary>
-        protected virtual Vector GetPeresInvariantL2() {
-            int count = this.eigenVectors.Length;
+        protected virtual Vector PeresInvariantL2() {
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenVectors[i];
+                Vector ev = this.eigenSystem.GetEigenVector(i);
                 int length = ev.Length;
 
                 for(int j = 0; j < length; j++)
@@ -317,14 +198,14 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Peresùv operátor H'
         /// </summary>
-        protected virtual Vector GetPeresInvariantHPrime() {
+        protected virtual Vector PeresInvariantHPrime() {
             return null;
         }
 
         /// <summary>
         /// Peresùv operátor H v oscilátorové bázi
         /// </summary>
-        protected virtual Vector GetPeresInvariantHOscillator() {
+        protected virtual Vector PeresInvariantHOscillator() {
             return null;
         }
 
@@ -333,14 +214,11 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <remarks>M.S. Santhanam et al., arXiv:chao-dyn/9704002v1</remarks>
         public virtual Vector GetEntropy() {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed);
-
-            int count = this.eigenVectors.Length;
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenVectors[i];
+                Vector ev = this.eigenSystem.GetEigenVector(i);
                 int length = ev.Length;
 
                 for(int j = 0; j < length; j++)
@@ -469,9 +347,6 @@ namespace PavelStransky.Systems {
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
         public virtual Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed);
-
             int numx = intx.Num;
             int numy = inty.Num;
 
@@ -481,7 +356,7 @@ namespace PavelStransky.Systems {
             for(int i = 0; i < numn; i++)
                 result[i] = new Matrix(numx, numy);
 
-            int length = this.GetBasisLength();
+            int length = this.eigenSystem.BasisIndex.Length;
             int length100 = length / 100;
 
             DateTime startTime = DateTime.Now;
@@ -490,7 +365,7 @@ namespace PavelStransky.Systems {
                 BasisCache2D cache = new BasisCache2D(intx, inty, k, this.PsiXY);
 
                 for(int l = 0; l < numn; l++) {
-                    Vector ev = this.eigenVectors[n[l]];
+                    Vector ev = this.eigenSystem.GetEigenVector(n[l]);
 
                     for(int i = 0; i < numx; i++)
                         for(int j = 0; j < numy; j++)
@@ -514,67 +389,22 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Vrátí matici hustot pro vlastní funkce
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
-        public object ProbabilityDensity(int[] n, IOutputWriter writer, params Vector[] interval) {
-            DiscreteInterval intx = new DiscreteInterval(interval[0]);
-            DiscreteInterval inty = new DiscreteInterval(interval[1]);
-
-            Matrix[] result = this.AmplitudeMatrix(n, writer, intx, inty);
-
-            int numn = result.Length;
-            int numx = result[0].LengthX;
-            int numy = result[0].LengthY;
-
-            for(int l = 0; l < numn; l++)
-                for(int i = 0; i < numx; i++)
-                    for(int j = 0; j < numy; j++)
-                        result[l][i, j] *= result[l][i, j];
-
-            return result;
-        }
-
-        /// <summary>
-        /// Vrátí hustotu vlnové funkce v daném bodì
-        /// </summary>
-        /// <param name="n">Index vlastní funkce</param>
-        /// <param name="x">Bod</param>
-        public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed); 
-            
-            Vector ev = this.eigenVectors[n];
-            int length = this.GetBasisLength();
-
-            double result = 0;
-            for(int k = 0; k < length; k++)
-                result += ev[k] * this.PsiXY(x[0], x[1], k);
-
-            return result;
-        }
-
-        /// <summary>
         /// Matice s hodnotami vlastních èísel seøazené podle kvantových èísel
         /// </summary>
         /// <param name="n">Poøadí vlastní hodnoty</param>
         public Matrix EigenMatrix(int n) {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed); 
-            
-            int num = this.GetBasisLength();
+            int num = this.eigenSystem.BasisIndex.Length;
 
-            int maxq1 = this.GetBasisQuantumNumber1(-1);
-            int maxq2 = this.GetBasisQuantumNumber2(-1);
+            int maxq1 = this.eigenSystem.BasisIndex.BasisQuantumNumberLength(0);
+            int maxq2 = this.eigenSystem.BasisIndex.BasisQuantumNumberLength(1);
 
             Matrix result = new Matrix(maxq1, maxq2);
 
             for(int i = 0; i < num; i++) {
-                int q1 = this.GetBasisQuantumNumber1(i);
-                int q2 = this.GetBasisQuantumNumber2(i);
+                int q1 = this.eigenSystem.BasisIndex.GetBasisQuantumNumber(0, i);
+                int q2 = this.eigenSystem.BasisIndex.GetBasisQuantumNumber(1, i);
 
-                result[q1, q2] = this.eigenVectors[n][i];
+                result[q1, q2] = this.eigenSystem.GetEigenVector(n)[i];
             }
 
             return result;
@@ -584,10 +414,7 @@ namespace PavelStransky.Systems {
         /// Souèet složek vektorù s hranièními hodnotami kvantových èísel
         /// </summary>
         public Vector LastEVElementsSumAbs() {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed);
-
-            int count = this.eigenVectors.Length;
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++)
@@ -602,21 +429,18 @@ namespace PavelStransky.Systems {
         /// <param name="index">Poøadí od konce</param>
         /// <param name="n">Poøadí vlastní hodnoty</param>
         public Vector LastEVElements(int n, int index) {
-            if(!this.isComputed)
-                throw new SystemsException(Messages.EMNotComputed);
+            int num = this.eigenSystem.BasisIndex.Length;
 
-            int num = this.GetBasisLength();
-
-            int maxq1 = this.GetBasisQuantumNumber1(-1);
-            int maxq2 = this.GetBasisQuantumNumber2(-1);
+            int maxq1 = this.eigenSystem.BasisIndex.BasisQuantumNumberLength(0);
+            int maxq2 = this.eigenSystem.BasisIndex.BasisQuantumNumberLength(1);
 
             Matrix m = new Matrix(maxq1, maxq2, double.NaN);
 
             for(int i = 0; i < num; i++) {
-                int q1 = this.GetBasisQuantumNumber1(i);
-                int q2 = this.GetBasisQuantumNumber2(i);
+                int q1 = this.eigenSystem.BasisIndex.GetBasisQuantumNumber(0, i);
+                int q2 = this.eigenSystem.BasisIndex.GetBasisQuantumNumber(1, i);
 
-                m[q1, q2] = this.eigenVectors[n][i];
+                m[q1, q2] = this.eigenSystem.GetEigenVector(n)[i];
             }
 
             Vector result;
@@ -650,11 +474,6 @@ namespace PavelStransky.Systems {
 
         #region Implementace IExportable
         /// <summary>
-        /// Pøidá další parametry pro uložení
-        /// </summary>
-        protected virtual void Export(IEParam param) { }
-
-        /// <summary>
         /// Uloží výsledky do souboru
         /// </summary>
         /// <param name="export">Export</param>
@@ -667,27 +486,11 @@ namespace PavelStransky.Systems {
             param.Add(this.K, "K");
             param.Add(this.A0, "A0");
             param.Add(this.Hbar, "HBar");
-            param.Add(this.isComputed, "IsComputed");
 
-            if(this.isComputed) {
-                param.Add(this.eigenValues, "EigenValues");
-
-                int numEV = this.NumEV;
-                param.Add(numEV, "EigenVector Number");
-
-                for(int i = 0; i < numEV; i++)
-                    param.Add(this.eigenVectors[i]);
-            }
-
-            this.Export(param);
+            param.Add(this.eigenSystem, "EigenSystem");
 
             param.Export(export);
 		}
-
-        /// <summary>
-        /// Naètení dalších parametrù
-        /// </summary>
-        protected virtual void Import(IEParam param) { }
 
         /// <summary>
         /// Naète výsledky ze souboru
@@ -703,19 +506,19 @@ namespace PavelStransky.Systems {
                 this.K = (double)param.Get(1.0);
                 this.A0 = (double)param.Get(1.0);
                 this.hbar = (double)param.Get(0.1);
-                this.isComputed = (bool)param.Get(false);
 
-                if(this.isComputed) {
-                    this.eigenValues = (Vector)param.Get(null);
+                if(import.VersionNumber < 7) 
+                    this.eigenSystem = new EigenSystem(param);
+                else
+                    this.eigenSystem = (EigenSystem)param.Get();
+                this.eigenSystem.SetParrentQuantumSystem(this);
 
-                    int numEV = (int)param.Get(0);
-                    this.eigenVectors = new Vector[numEV];
-
-                    for(int i = 0; i < numEV; i++)
-                        this.eigenVectors[i] = (Vector)param.Get();
-                }
-
-                this.Import(param);
+                if(import.VersionNumber < 8){
+                    int p = (int)param.Get(0);
+                    Vector v = new Vector(1);
+                    v[0] = p;
+                    this.eigenSystem.SetBasisParams(v);
+                    }
             }
 
             this.RefreshConstants();

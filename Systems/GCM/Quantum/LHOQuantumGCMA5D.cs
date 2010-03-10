@@ -11,8 +11,6 @@ namespace PavelStransky.Systems {
     /// - užití algebraických vztahù namísto integrace
     /// </summary>
     public class LHOQuantumGCMA5D: LHOQuantumGCM {
-        // Indexy báze
-        protected LHO5DIndex index;
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -30,56 +28,39 @@ namespace PavelStransky.Systems {
         public LHOQuantumGCMA5D(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
-        protected override int GetBasisLength() {
-            return this.index.Length;
-        }
+        /// <summary>
+        /// Konstruktor pro Import
+        /// </summary>
+        /// <param name="import">Import</param>
+        public LHOQuantumGCMA5D(Core.Import import) : base(import) { }
 
-        protected override int GetBasisQuantumNumber1(int i) {
-            if(i < 0)
-                return this.index.MaxL + 1;
-            else
-                return this.index.L[i];
-        }
-
-        protected override int GetBasisQuantumNumber2(int i) {
-            if(i < 0)
-                return this.index.MaxMu + 1;
-            else
-                return this.index.Mu[i];
+        /// <summary>
+        /// Vytvoøí instanci tøídy LHO5DIndex
+        /// </summary>
+        /// <param name="basisParams">Parametry báze</param>
+        public override BasisIndex CreateBasisIndex(Vector basisParams) {
+            return new LHO5DIndex(basisParams);
         }
 
         /// <summary>
-        /// Vytvoøí instanci tøídy LHOPolarIndex
+        /// Stopa Hamiltonovy matice
         /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        protected virtual void CreateIndex(int maxE) {
-            if(this.index == null || this.index.MaxE != maxE)
-                this.index = new LHO5DIndex(maxE);
-        }
-
-        /// <summary>
-        /// Velikost Hamiltonovy matice
-        /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        public override int HamiltonianMatrixSize(int maxE) {
-            this.CreateIndex(maxE);
-            return this.index.Length;
-        }
-
-        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
-            this.CreateIndex(maxE);
+        /// <param name="basisIndex">Parametry báze</param>
+        public override double HamiltonianMatrixTrace(BasisIndex basisIndex) {
+            LHO5DIndex index = basisIndex as LHO5DIndex;
+            int maxE = index.MaxE;
 
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
 
-            int length = this.index.Length;
+            int length = this.eigenSystem.BasisIndex.Length;
 
             double result = 0.0;
 
             for(int i = 0; i < length; i++) {
-                int l = this.index.L[i];
-                int mu = this.index.Mu[i];
+                int l = index.L[i];
+                int mu = index.Mu[i];
 
                 int lambda = 3 * mu;
                 double ro = lambda + 1.5;
@@ -92,16 +73,22 @@ namespace PavelStransky.Systems {
             return result;
         }
 
-        protected override SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            this.CreateIndex(maxE);
+        /// <summary>
+        /// Hamiltonova matice v pásovém tvaru
+        /// </summary>
+        /// <param name="basisIndex">Parametry báze</param>
+        /// <param name="writer">Writer</param>
+        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            LHO5DIndex index = basisIndex as LHO5DIndex;
+            int maxE = index.MaxE;
 
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
             double alpha32 = alpha * System.Math.Sqrt(alpha);
 
-            int length = this.index.Length;
-            int bandWidth = maxE;
+            int length = index.Length;
+            int bandWidth = index.BandWidth;
             SymmetricBandMatrix m = new SymmetricBandMatrix(length, bandWidth);
 
             DateTime startTime = DateTime.Now;
@@ -110,15 +97,15 @@ namespace PavelStransky.Systems {
                 writer.Write(string.Format("Pøíprava H ({0} x {1})...", length, length));
 
             for(int i = 0; i < length; i++) {
-                int li = this.index.L[i];
-                int mui = this.index.Mu[i];
+                int li = index.L[i];
+                int mui = index.Mu[i];
 
                 int lambdai = 3 * mui;
                 double roi = lambdai + 1.5;
 
                 for(int j = i; j < length; j++) {
-                    int lj = this.index.L[j];
-                    int muj = this.index.Mu[j];
+                    int lj = index.L[j];
+                    int muj = index.Mu[j];
 
                     int lambdaj = 3 * muj;
                     double roj = lambdaj + 1.5;
@@ -176,8 +163,8 @@ namespace PavelStransky.Systems {
         }
 
         protected override double PsiBG(double beta, double gamma, int n) {
-            int l = this.index.L[n];
-            int mu = this.index.Mu[n];
+            int l = (this.eigenSystem.BasisIndex as LHO5DIndex).L[n];
+            int mu = (this.eigenSystem.BasisIndex as LHO5DIndex).Mu[n];
 
             double beta3 = beta * beta * beta;
             double sin3g = System.Math.Abs(System.Math.Sin(3.0 * gamma));
@@ -190,7 +177,7 @@ namespace PavelStransky.Systems {
         /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(5)
         /// </summary>
         protected override double PeresInvariantCoef(int n) {
-            int lambda = 3 * this.index.Mu[n];
+            int lambda = 3 * (this.eigenSystem.BasisIndex as LHO5DIndex).Mu[n];
             return lambda * (lambda + 3) * this.Hbar * this.Hbar;
         }
 
@@ -198,24 +185,26 @@ namespace PavelStransky.Systems {
         /// Druhý invariant pro operátor H0
         /// </summary>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
-        protected override Vector GetPeresInvariantHPrime() {
+        protected override Vector PeresInvariantHPrime() {
+            LHO5DIndex index = this.eigenSystem.BasisIndex as LHO5DIndex;
+
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
             double alpha32 = alpha * System.Math.Sqrt(alpha);
 
-            int count = this.eigenVectors.Length;
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenVectors[i];
+                Vector ev = this.eigenSystem.GetEigenVector(i);
                 int length = ev.Length;
 
                 double sum = 0.0;
 
                 for(int j = 0; j < length; j++) {
-                    int l = this.index.L[j];
-                    int mu = this.index.Mu[j];
+                    int l = index.L[j];
+                    int mu = index.Mu[j];
 
                     int lambda = 3 * mu;
                     double ro = lambda + 1.5;
@@ -225,12 +214,12 @@ namespace PavelStransky.Systems {
                                 + (this.A - this.A0) * (2.0 * l + ro + 1.0) / alpha
                                 + this.C * (l * (l - 1.0) + (l + ro + 1.0) * (5.0 * l + ro + 2.0)) / alpha2);
 
-                    if(j < length - 1 && this.index.L[j + 1] == l + 1)
+                    if(j < length - 1 && index.L[j + 1] == l + 1)
                         sum -= 2.0 * ev[j] * ev[j + 1] *
                                 ((this.A - this.A0) * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) / alpha
                                     + 2.0 * this.C * System.Math.Sqrt((l + 1.0) * (l + ro + 1.0)) * (2.0 * l + ro + 2.0) / alpha2);
 
-                    if(j < length - 2 && this.index.L[j + 2] == l + 2)
+                    if(j < length - 2 && index.L[j + 2] == l + 2)
                         sum += 2.0 * ev[j] * ev[j + 2] * this.C * System.Math.Sqrt((l + ro + 2.0) * (l + ro + 1.0) * (l + 2.0) * (l + 1.0)) / alpha2;
                 }
 
@@ -243,18 +232,20 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Druhý invariant pro operátor H v oscilátorové bázi
         /// </summary>
-        protected override Vector GetPeresInvariantHOscillator() {
+        protected override Vector PeresInvariantHOscillator() {
+            LHO5DIndex index = this.eigenSystem.BasisIndex as LHO5DIndex;
+            
             double omega = this.Omega;
             double alpha = this.s * this.s;
             double alpha2 = alpha * alpha;
             double alpha32 = alpha * this.s;
 
-            int count = this.eigenVectors.Length;
+            int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
             for(int i = 0; i < count; i++) {
-                int l = this.index.L[i];
-                int mu = this.index.Mu[i];
+                int l = index.L[i];
+                int mu = index.Mu[i];
 
                 int lambda = 3 * mu;
                 double ro = lambda + 1.5;
@@ -266,19 +257,5 @@ namespace PavelStransky.Systems {
 
             return result;
         }
-
-        #region Implementace IExportable
-        protected override void Export(IEParam param) {
-            if(this.isComputed)
-                param.Add(this.index.MaxE, "Maximum Energy of Basis Functions");
-        }
-
-        protected override void Import(IEParam param) {
-            if(this.isComputed)
-                this.CreateIndex((int)param.Get(10));
-        }
-
-        public LHOQuantumGCMA5D(Core.Import import) : base(import) { }
-        #endregion
     }
 }

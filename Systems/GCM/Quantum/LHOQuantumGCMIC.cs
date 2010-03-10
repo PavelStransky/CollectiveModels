@@ -10,13 +10,6 @@ namespace PavelStransky.Systems {
     /// Kvantový GCM v bázi 2D lineárního harmonického oscilátoru
     /// </summary>
     public class LHOQuantumGCMIC : LHOQuantumGCMI {
-        private int maxn;
-
-        /// <summary>
-        /// Maximální hlavní kvantové èíslo
-        /// </summary>
-        public int MaxN { get { return this.IsComputed ? this.maxn : 0; } }
-
         /// <summary>
         /// Konstruktor pro IE
         /// </summary>
@@ -36,49 +29,29 @@ namespace PavelStransky.Systems {
             : base(a, b, c, k, a0, hbar) {
         }
 
-        protected override int GetBasisLength() {
-            return this.maxn * this.maxn;
-        }
-
-        protected override int GetBasisQuantumNumber1(int i) {
-            if(i < 0)
-                return this.maxn;
-            else
-                return i / this.maxn;
-        }
-
-        protected override int GetBasisQuantumNumber2(int i) {
-            if(i < 0)
-                return this.maxn;
-            else
-                return i % this.maxn;
-        }
-
-        protected override int MaximalNumNodes { get { return this.MaxN; } }
-        protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * (this.MaxN + 0.5) / this.A0); } }
+        protected override int MaximalNumNodes { get { return (this.eigenSystem.BasisIndex as LHOCartesianIndex).MaxN; } }
+        protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * ((this.eigenSystem.BasisIndex as LHOCartesianIndex).MaxN + 0.5) / this.A0); } }
         protected override double PsiRange(double range) {
-            return this.Psi(range, this.MaxN);
+            return this.Psi(range, (this.eigenSystem.BasisIndex as LHOCartesianIndex).MaxN);
         }
 
         /// <summary>
-        /// Velikost Hamiltonovy matice
+        /// Vytvoøí instanci tøídy s parametry báze
         /// </summary>
-        /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
-        public override int HamiltonianMatrixSize(int maxn) {
-            return maxn * maxn;
+        /// <param name="basisParams">Parametry báze</param>
+        public override BasisIndex CreateBasisIndex(Vector basisParams) {
+            return new LHOCartesianIndex(basisParams);
         }
 
         /// <summary>
         /// Napoèítá Hamiltonovu matici v bázi LHO 1Dx1D oscilátoru
         /// </summary>
-        /// <param name="maxn">Nejvyšší øád bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
-        /// <param name="writer">Writer</param>        
-        public override Matrix HamiltonianMatrix(int maxn, int numSteps, IOutputWriter writer) {
-            this.maxn = maxn;
-
-            if(numSteps == 0)
-                numSteps = 10 * maxn + 1;
+        /// <param name="basisIndex">Parametry báze</param>
+        /// <param name="writer">Writer</param>
+        public override Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            LHOCartesianIndex index = basisIndex as LHOCartesianIndex;
+            int maxn = index.MaxN;
+            int numSteps = index.NumSteps;
 
             DateTime startTime = DateTime.Now;
 
@@ -176,6 +149,8 @@ namespace PavelStransky.Systems {
         /// <param name="rx">Rozmìry ve smìru x</param>
         /// <param name="ry">Rozmìry ve smìru y</param>
         public override Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
+            LHOCartesianIndex index = this.eigenSystem.BasisIndex as LHOCartesianIndex;
+
             int numn = n.Length;
             int numx = intx.Num;
             int numy = inty.Num;
@@ -185,18 +160,18 @@ namespace PavelStransky.Systems {
             for(int i = 0; i < numn; i++)
                 result[i] = new Matrix(intx.Num, inty.Num);
 
-            int sqrlength = this.GetBasisLength();
+            int sqrlength = index.Length;
             int length = (int)System.Math.Round(System.Math.Sqrt(sqrlength));
 
-            BasisCache cachex = new BasisCache(intx, this.MaxN, this.Psi);
-            BasisCache cachey = new BasisCache(inty, this.MaxN, this.Psi);
+            BasisCache cachex = new BasisCache(intx, index.MaxN, this.Psi);
+            BasisCache cachey = new BasisCache(inty, index.MaxN, this.Psi);
 
             for(int i = 0; i < sqrlength; i++) {
                 int ix = i / length;
                 int iy = i % length;
 
                 for(int j = 0; j < numn; j++) {
-                    Vector ev = this.eigenVectors[n[j]];
+                    Vector ev = this.eigenSystem.GetEigenVector(n[j]);
 
                     for(int sx = 0; sx < intx.Num; sx++)
                         for(int sy = 0; sy < inty.Num; sy++)
@@ -213,7 +188,7 @@ namespace PavelStransky.Systems {
         /// <param name="n">Index vlastní funkce</param>
         /// <param name="interval">Rozmìry v jednotlivých smìrech (uspoøádané ve tvaru [minx, maxx,] numx, ...)</param>
         public Matrix NumericalDiff(int n, params Vector[] interval) {
-            if(!this.isComputed)
+            if(!this.eigenSystem.IsComputed)
                 throw new SystemsException(Messages.EMNotComputed);
 
             DiscreteInterval intx = this.ParseRange(interval.Length > 0 ? interval[0] : null);
@@ -238,7 +213,7 @@ namespace PavelStransky.Systems {
                     //    4 * (M[i + 1, j] + M[i - 1, j] + M[i, j + 1] + M[i, j - 1]) / 3 - 5 * M[i, j]
                     //    ); //O(dx^4)
 
-                    result[sx, sy] = -this.Hbar * this.Hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * this.eigenValues[n];
+                    result[sx, sy] = -this.Hbar * this.Hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * this.eigenSystem.GetEigenValues()[n];
                     result[sx, sy] *= result[sx, sy];
                 }
             }

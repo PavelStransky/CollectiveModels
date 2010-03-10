@@ -35,8 +35,8 @@ namespace PavelStransky.Systems {
             /// <param name="b">Parametr b</param>
             private Vector EigenValues(double b) {
                 PT3 pt3 = new PT3(this.a, b, this.omega0, this.hbar);
-                pt3.Compute(this.maxn, false, this.numev, null);
-                return pt3.GetEigenValues();
+                pt3.EigenSystem.Diagonalize(this.maxn, false, this.numev, null);
+                return pt3.EigenSystem.GetEigenValues();
             }
 
             /// <summary>

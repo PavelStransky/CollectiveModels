@@ -22,7 +22,15 @@ namespace PavelStransky.Math {
         protected IDynamicalSystem dynamicalSystem;
 
         // Aktuální souøadnice a rychlosti
-        protected Vector x;
+        private Vector x;
+        // Jen pro zrychlení
+        private Matrix jacobian;
+        private bool xChanged = true;
+
+        /// <summary>
+        /// Aktuální X
+        /// </summary>
+        protected Vector X { get { return this.x; } set { this.x = value; xChanged = true; } }
 
         // Aktuální odchylky
         protected Vector w1, w2;
@@ -32,7 +40,12 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="w">Vektor deviace</param>
         protected Vector DeviationEquation(Vector w) {
-            return this.dynamicalSystem.Jacobian(this.x) * w;
+            if(xChanged) {
+                jacobian = this.dynamicalSystem.Jacobian(this.X);
+                xChanged = false;
+            }
+            
+            return jacobian * w;
         }
 
         /// <summary>
@@ -73,7 +86,7 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         protected void Init(Vector initialX) {
-            this.x = initialX;
+            this.X = initialX;
             int length = initialX.Length;
 
             this.w1 = new Vector(length);
@@ -100,7 +113,7 @@ namespace PavelStransky.Math {
         protected double Step(ref double step) {
             double newStep, tStep1, tStep2;
 
-            Vector addX = this.rungeKuttaT.Step(this.x, ref step, out newStep);
+            Vector addX = this.rungeKuttaT.Step(this.X, ref step, out newStep);
 
             double oldStepW1 = step;
             Vector addW1 = this.rungeKuttaW.Step(this.w1, ref step, out tStep1);
@@ -111,12 +124,12 @@ namespace PavelStransky.Math {
             if(step != oldStepW1 || step != oldStepW2) {
                 step = System.Math.Min(System.Math.Min(step, oldStepW1), oldStepW2);
 
-                addX = this.rungeKuttaT.Step(this.x, ref step, out newStep);
+                addX = this.rungeKuttaT.Step(this.X, ref step, out newStep);
                 addW1 = this.rungeKuttaW.Step(w1, ref step, out tStep1);
                 addW2 = this.rungeKuttaW.Step(w2, ref step, out tStep2);
             }
 
-            this.x += addX;
+            this.X += addX;
             this.w1 += addW1;
             this.w2 += addW2;
 

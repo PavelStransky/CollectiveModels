@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.DLLWrapper;
 
@@ -27,8 +28,11 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Vypoèítá Hamiltonovu matici (v tomto pøípadì lze poèítat algebraicky)
         /// </summary>
-        /// <param name="maxn">Nejvyšší hodnota kvantového èísla (energie)</param>
-        public override SymmetricBandMatrix HamiltonianSBMatrix(int maxn) {
+        /// <param name="basisIndex">Parametry báze</param>
+        /// <param name="writer">Writer</param>
+        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            int maxn = (basisIndex as PTBasisIndex).MaxN;
+
             SymmetricBandMatrix matrix = new SymmetricBandMatrix(maxn, 4);
 
             double alpha2 = this.omega0 / this.hbar;

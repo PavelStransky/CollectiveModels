@@ -3,6 +3,7 @@ using System.Collections;
 
 using PavelStransky.Math;
 using PavelStransky.Expression;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -18,7 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return (arguments[0] as IQuantumSystem).GetEigenValues();
+            return (arguments[0] as IQuantumSystem).EigenSystem.GetEigenValues();
         }
 
         private const string help = "Vrátí vypoèítané vlastní hodnoty kvantového systému";

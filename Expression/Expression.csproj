@@ -133,6 +133,8 @@
     <Compile Include="Exceptions\FncListException.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
+    <Compile Include="Functions\Dynamics\DPXY.cs" />
+    <Compile Include="Functions\Dynamics\PSTimes.cs" />
     <Compile Include="Functions\Dynamics\Systems\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />
@@ -144,7 +146,8 @@
     <Compile Include="Functions\Dynamics\PeresInvariantG.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakCurvature.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
-    <Compile Include="Functions\Quantum\Systems\DoublePendulum.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CDP.cs" />
+    <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />
     <Compile Include="Functions\Dynamics\Systems\TwoBody.cs" />

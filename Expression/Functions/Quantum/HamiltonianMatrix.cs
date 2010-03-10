@@ -13,21 +13,22 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpHamiltonianMatrix; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(3);
-            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(LHOQuantumGCM), typeof(DoublePendulum));
-            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
-            this.SetParam(2, false, true, false, Messages.PNumberOfPoints, Messages.PNumberOfPointsDetail, 0, typeof(int));
+            this.SetNumParams(2);
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(Vector), typeof(int));
         }
 
-
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            int maxE = (int)arguments[1];
-            int numSteps = (int)arguments[2];
-
-            if(arguments[0] is LHOQuantumGCM)
-                return (arguments[0] as LHOQuantumGCM).HamiltonianMatrix(maxE, numSteps, guider);
+            IQuantumSystem system = (IQuantumSystem)arguments[0];
+            Vector max;
+            if(arguments[1] is int) {
+                max = new Vector(1);
+                max[0] = (int)arguments[1];
+            }
             else
-                return (arguments[0] as DoublePendulum).HamiltonianMatrix(maxE, numSteps, guider);
+                max = arguments[1] as Vector;
+
+            return system.EigenSystem.HamiltonianMatrix(max, guider);
         }
     }
 }

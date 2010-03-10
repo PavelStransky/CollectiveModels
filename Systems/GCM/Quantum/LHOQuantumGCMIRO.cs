@@ -26,30 +26,24 @@ namespace PavelStransky.Systems {
         public LHOQuantumGCMIRO(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
-        public LHOQuantumGCMIRO(Core.Import import) : base(import) { }
-
-        protected override int GetBasisQuantumNumber2(int i) {
-            if(i < 0)
-                return this.index.MaxM / 3 + 2;
-            else
-                return (this.index.M[i] + this.index.MaxM) / 3;
-        }
+        public LHOQuantumGCMIRO(Import import) : base(import) { }
 
         /// <summary>
-        /// Vytvoøí instanci tøídy LHOPolarIndex
+        /// Vytvoøí instanci tøídy LHO5DIndex
         /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        protected override void CreateIndex(int maxE) {
-            if(this.index == null || this.index.MaxE != maxE)
-                this.index = new LHOPolarIndex(maxE, false, 1);            
+        /// <param name="basisParams">Parametry báze</param>
+        public override BasisIndex CreateBasisIndex(Vector basisParams) {
+            return new LHOPolarIndexIO(basisParams);
         }
 
         /// <summary>
         /// Vlnová funkce ve 2D
         /// </summary>
         protected override double PsiBG(double beta, double gamma, int l) {
-            int n = this.index.N[l];
-            int m = this.index.M[l];
+            LHOPolarIndexIO index = this.eigenSystem.BasisIndex as LHOPolarIndexIO;
+            
+            int n = index.N[l];
+            int m = index.M[l];
 
             return this.Psi2D(beta, n, m) * this.Phi2DO(gamma, m);
         }

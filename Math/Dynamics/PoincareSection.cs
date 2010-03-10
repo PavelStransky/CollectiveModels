@@ -51,6 +51,33 @@ namespace PavelStransky.Math {
         /// <param name="numPoints">Poèet bodù øezu</param>
         /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
         public PointVector Compute(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation) {
+            return this.Section(plane, i1, i2, initialX, numPoints, oneOrientation)[0] as PointVector;
+        }
+
+        /// <summary>
+        /// Vrátí doby prùchodù rovinou øezu
+        /// </summary>
+        /// <param name="plane">Rovina øezu</param>
+        /// <param name="i1">Zaznamenávaný index x</param>
+        /// <param name="i2">Zaznamenávaný index y</param>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="numPoints">Poèet bodù øezu</param>
+        /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
+        public Vector SectionTimes(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation) {
+            return this.Section(plane, i1, i2, initialX, numPoints, oneOrientation)[1] as Vector;
+        }
+        
+        /// <summary>
+        /// Vypoèítá Poincarého øez a èasy prùchodù
+        /// </summary>
+        /// <param name="plane">Rovina øezu</param>
+        /// <param name="i1">Zaznamenávaný index x</param>
+        /// <param name="i2">Zaznamenávaný index y</param>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="numPoints">Poèet bodù øezu</param>
+        /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
+        /// <returns>Dva objekty - první s øezem (PointVector), druhý s èasy prùchodu rovinou (Vector)</returns>
+        private object [] Section(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation) {
             // Èíslo, které dourèuje rovinu (plane * x == crossPoint)
             double crossPoint;
 
@@ -61,14 +88,17 @@ namespace PavelStransky.Math {
             else {
                 crossPoint = 0;
             }
-            
-            PointVector result = new PointVector(numPoints);
+
+            PointVector section = new PointVector(numPoints);
+            Vector times = new Vector(numPoints);
+
             int finished = 0;
             Vector x = initialX;
             double sp = x * plane;
 
             double step = this.precision;
             double time = 0;
+            bool postProcessed = false;
 
             this.rungeKutta.Init(initialX);
 
@@ -80,21 +110,31 @@ namespace PavelStransky.Math {
 
                 double newsp = newx * plane;
 
-                // jedna èi obì orientace prùchodu
-                if((newsp <= crossPoint && sp > crossPoint) ||
-                    (!oneOrientation && sp <= crossPoint && newsp > crossPoint)) {
-                    Vector v = (x - newx) * (sp / (newsp - sp)) + x;
-                    result[finished].X = v[i1];
-                    result[finished].Y = v[i2];
-                    finished++;
-                }
+                // Nebyl postprocessing
+                if(!postProcessed)
+                    // jedna èi obì orientace prùchodu
+                    if((newsp <= crossPoint && sp > crossPoint) ||
+                        (!oneOrientation && sp <= crossPoint && newsp > crossPoint)) {
+                        double ratio = sp / (newsp - sp);
+                        Vector v = (x - newx) * ratio + x;
+                        section[finished].X = v[i1];
+                        section[finished].Y = v[i2];
+                        times[finished] = -step * ratio + time;
+                        finished++;
+                    }
+
                 sp = newsp;
+                postProcessed = this.dynamicalSystem.PostProcess(newx);
                 x = newx;
 
-                if (finished == 0 && time > maxTimeWithoutCross)
+                if(finished == 0 && time > maxTimeWithoutCross)
                     throw new PoincareSectionException(Messages.EMNoCross);
 
             } while(finished < numPoints);
+
+            object[] result = new object[2];
+            result[0] = section;
+            result[1] = times;
 
             return result;
         }
@@ -106,7 +146,8 @@ namespace PavelStransky.Math {
         /// <param name="i1">Zaznamenávaný index x</param>
         /// <param name="i2">Zaznamenávaný index y</param>
         /// <param name="initialX">Poèáteèní podmínky</param>
-        public bool CrossPlane(Vector plane, int i1, int i2, Vector initialX) {
+        /// <param name="oneOrientation">True, pokud poèítáme jen jednu orientaci prùchodu rovinou</param>
+        public bool CrossPlane(Vector plane, int i1, int i2, Vector initialX, bool oneOrientation) {
             // Èíslo, které dourèuje rovinu (plane * x == crossPoint)
             double crossPoint;
 
@@ -123,6 +164,7 @@ namespace PavelStransky.Math {
 
             double step = this.precision;
             double time = 0;
+            bool postProcessed = false;
 
             this.rungeKutta.Init(initialX);
 
@@ -135,10 +177,15 @@ namespace PavelStransky.Math {
                 double newsp = newx * plane;
 
                 // jedna èi obì orientace prùchodu
-                if((newsp <= crossPoint && sp > crossPoint) || (sp <= crossPoint && newsp > crossPoint))
-                    return true;
+                // Nebyl postprocessing
+                if(!postProcessed)
+                    // jedna èi obì orientace prùchodu
+                    if((newsp <= crossPoint && sp > crossPoint) ||
+                        (!oneOrientation && sp <= crossPoint && newsp > crossPoint))
+                        return true;
 
                 sp = newsp;
+                postProcessed = this.dynamicalSystem.PostProcess(newx);
                 x = newx;
 
             } while(time < maxTimeWithoutCross);

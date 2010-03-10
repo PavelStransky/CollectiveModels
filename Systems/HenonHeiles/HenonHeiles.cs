@@ -100,6 +100,14 @@ namespace PavelStransky.Systems {
         public HenonHeiles() {
         }
 
+        /// <summary>
+        /// Postprocessing
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public bool PostProcess(Vector x) {
+            return false;
+        }
+
         private const double poincareTime = 100;
         private const int degreesOfFreedom = 2;
    }

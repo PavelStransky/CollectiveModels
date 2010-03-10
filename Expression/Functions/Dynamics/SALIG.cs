@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpSALIG; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(9);
+            this.SetNumParams(10);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
@@ -23,6 +23,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
             this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
             this.SetParam(8, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
+            this.SetParam(9, false, true, false, Messages.POneOrientation, Messages.POneOrientationDescription, false, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -44,9 +45,10 @@ namespace PavelStransky.Expression.Functions.Def {
                 : (double)arguments[7];
 
             bool isX = (bool)arguments[8];
+            bool oneOrientation = (bool)arguments[9];
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
-            ArrayList a = sali.Compute(e, sizex, sizey, isX, guider);
+            ArrayList a = sali.Compute(e, sizex, sizey, isX, oneOrientation, guider);
 
             List result = new List();
             result.AddRange(a);

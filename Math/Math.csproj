@@ -135,7 +135,6 @@
     </Compile>
     <Compile Include="IMinMax.cs" />
     <Compile Include="Import.cs" />
-    <Compile Include="IQuantumSystem.cs" />
     <Compile Include="Jacobi.cs">
       <SubType>Code</SubType>
     </Compile>

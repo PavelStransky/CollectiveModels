@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpInitialCondition; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(7);
+            this.SetNumParams(8);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PDynamicalSystemDescription, null, typeof(IDynamicalSystem));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
@@ -21,6 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(4, false, true, false, Messages.P6Poincare, Messages.P6PoincareDescription, null, typeof(int));
             this.SetParam(5, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, "normal", typeof(string));
             this.SetParam(6, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
+            this.SetParam(7, false, true, false, Messages.POneOrientation, Messages.POneOrientationDescription, false, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -39,10 +40,11 @@ namespace PavelStransky.Expression.Functions.Def {
                 double precision = (double)arguments[6];
 
                 PoincareSection ps = new PoincareSection(dynamicalSystem, precision, rkMethod);
+                bool oneOrientation = (bool)arguments[7];
 
                 for(int i = 0; i < maxNumAttemps; i++ ) {
                     Vector ic = dynamicalSystem.IC(e);
-                    if(ps.CrossPlane(plane, i1, i2, ic))
+                    if(ps.CrossPlane(plane, i1, i2, ic, oneOrientation))
                         return ic;
                 }
 

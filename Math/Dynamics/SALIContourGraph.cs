@@ -43,7 +43,7 @@ namespace PavelStransky.Math {
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
         public bool IsRegularPS(Vector initialX, PointVector poincareSection) {
-            return this.IsRegularPS(initialX, poincareSection, false, 0);
+            return this.IsRegularPS(initialX, poincareSection, false, 0, false);
         }
         
         /// <summary>
@@ -53,9 +53,20 @@ namespace PavelStransky.Math {
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="isX">Poèítáme øez rovinou x == 0</param>
         public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX) {
-            return this.IsRegularPS(initialX, poincareSection, isX, 0);
+            return this.IsRegularPS(initialX, poincareSection, isX, 0, false);
         }
 
+        /// <summary>
+        /// Vrátí true, pokud daná trajektorie je podle SALI regulární
+        /// </summary>
+        /// <param name="initialX">Poèáteèní podmínky</param>
+        /// <param name="section">Body øezu (výstup)</param>
+        /// <param name="isX">Poèítáme øez rovinou x == 0</param>
+        /// <param name="oneOrientation">True, pokud poèítáme jen jednu orientaci prùchodu rovinou</param>
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX, bool oneOrientation) {
+            return this.IsRegularPS(initialX, poincareSection, isX, 0, oneOrientation);
+        }
+        
         /// <summary>
         /// Vrátí true, pokud daná trajektorie je podle SALI regulární, a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
         /// </summary>
@@ -63,7 +74,7 @@ namespace PavelStransky.Math {
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="numPointsSection">Minimální poèet bodù øezu</param>
         public bool IsRegularPS(Vector initialX, PointVector poincareSection, int numPointsSection) {
-            return this.IsRegularPS(initialX, poincareSection, false, numPointsSection);
+            return this.IsRegularPS(initialX, poincareSection, false, numPointsSection, false);
         }
         
         /// <summary>
@@ -73,7 +84,8 @@ namespace PavelStransky.Math {
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="isX">Poèítáme øez rovinou x == 0</param>
         /// <param name="numPointsSection">Minimální poèet bodù øezu</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX, int numPointsSection) {
+        /// <param name="oneOrientation">True, pokud poèítáme jen jednu orientaci prùchodu rovinou</param>
+        public bool IsRegularPS(Vector initialX, PointVector poincareSection, bool isX, int numPointsSection, bool oneOrientation) {
             int indexS = isX ? 0 : 1;    // Index promìnné, kterou vede øez
             int indexG1 = isX ? 1 : 0;   // První index pro graf
             int indexG2 = isX ? 3 : 2;   // Druhý index pro graf
@@ -86,6 +98,7 @@ namespace PavelStransky.Math {
             double timeStep = 1.0;
             double t = 0.0;
             double tNext = timeStep;
+            bool postProcessed = false;
 
             MeanQueue queue = new MeanQueue(window);
 
@@ -95,21 +108,24 @@ namespace PavelStransky.Math {
             int numPoints = 0;
             do {
                 while(t < tNext){
-                    Vector oldx = this.x;
+                    Vector oldx = this.X;
 
                     double newStep = this.Step(ref step);
                     t += step;
                     step = newStep;
 
-                    double y = this.x[indexS];
+                    double y = this.X[indexS];
 
+                    if(!postProcessed)
                     // Druhá varianta jen v pøípadì, že øežeme X
-                    if((y <= 0 && oldy > 0) || (!isX && y > 0 && oldy <= 0)) {
-                        Vector v = (oldx - this.x) * (oldy / (y - oldy)) + oldx;
+                    if((y <= 0 && oldy > 0) || (!oneOrientation && y > 0 && oldy <= 0)) {
+                        Vector v = (oldx - this.X) * (oldy / (y - oldy)) + oldx;
                         crossings.Add(new PointD(v[indexG1], v[indexG2]));
                         numPoints++;
                     }
                     oldy = y;
+
+                    postProcessed = this.dynamicalSystem.PostProcess(this.X);
                 }
 
                 result = this.SALIDecision(t, queue);
@@ -207,7 +223,7 @@ namespace PavelStransky.Math {
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
         public ArrayList Compute(double e, int n1, int n2) {
-            return this.Compute(e, n1, n2, false, null);
+            return this.Compute(e, n1, n2, false, false, null);
         }
 
         /// <summary>
@@ -217,7 +233,8 @@ namespace PavelStransky.Math {
         /// <param name="n1">Rozmìr x výsledné matice</param>
         /// <param name="n2">Rozmìr vx výsledné matice</param>
         /// <param name="writer">Výpis na konzoli</param>
-        public ArrayList Compute(double e, int n1, int n2, bool isX, IOutputWriter writer) {
+        /// <param name="oneOrientation">True, pokud poèítáme jen jednu orientaci prùchodu rovinou</param>
+        public ArrayList Compute(double e, int n1, int n2, bool isX, bool oneOrientation, IOutputWriter writer) {
             // Výpoèet mezí
             Vector boundX = ExactBounds.ComputeExactBounds(this.dynamicalSystem, e, n1, n2, 3);
 
@@ -265,7 +282,7 @@ namespace PavelStransky.Math {
                    
                     if(this.dynamicalSystem.IC(ic, e)) {
                         PointVector section = new PointVector(0);
-                        int sali = this.IsRegularPS(ic, section, isX) ? 1 : 0;
+                        int sali = this.IsRegularPS(ic, section, isX, oneOrientation) ? 1 : 0;
                         regular += sali;
                         total++;
 

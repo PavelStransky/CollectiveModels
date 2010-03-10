@@ -126,4 +126,7 @@
   <data name="EMInvalidObjectTypeImport" xml:space="preserve">
     <value>Ivalid object type '{0}'. Import has not been successful.</value>
   </data>
+  <data name="EMNotImplemented" xml:space="preserve">
+    <value>Method '{0}' in the class '{1}' is not implemented.</value>
+  </data>
 </root>

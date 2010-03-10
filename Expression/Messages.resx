@@ -1918,7 +1918,7 @@ Length of the second vector: {1}</value>
     <value>emax</value>
   </data>
   <data name="PMaxEnergyDescription" xml:space="preserve">
-    <value>Maximum energy (in units of hbar)</value>
+    <value>Maximum energy of the eigenstate and additional parameters</value>
   </data>
   <data name="PMean" xml:space="preserve">
     <value>mean</value>
@@ -2937,8 +2937,8 @@ Second differing type: {1}</value>
   <data name="PMinimumPointsCircleDescription" xml:space="preserve">
     <value>Minimum points of the circle</value>
   </data>
-  <data name="HelpDoublePendulum" xml:space="preserve">
-    <value>The double pendulum system</value>
+  <data name="HelpQuantumDP" xml:space="preserve">
+    <value>The quantum double pendulum system</value>
   </data>
   <data name="HelpHamiltonianMatrix" xml:space="preserve">
     <value>Returns Hamiltonian matrix of the given quantum system</value>
@@ -2960,5 +2960,35 @@ Second differing type: {1}</value>
   </data>
   <data name="PDoublePendulumMuDescription" xml:space="preserve">
     <value>mu parameter (ratio of masses)</value>
+  </data>
+  <data name="HelpHamiltonianMatrixSize" xml:space="preserve">
+    <value>Dimensions of the Hamiltonian matrix</value>
+  </data>
+  <data name="HelpClassicalDP" xml:space="preserve">
+    <value>The classical double pendulum system</value>
+  </data>
+  <data name="HelpDPXY" xml:space="preserve">
+    <value>Transforms angles of DoublePendulum system to (X, Y) coordinates of each body</value>
+  </data>
+  <data name="PDoublePendulum" xml:space="preserve">
+    <value>dp</value>
+  </data>
+  <data name="PDoublePendulumDescription" xml:space="preserve">
+    <value>Double pendulum system</value>
+  </data>
+  <data name="PFileTypeImport" xml:space="preserve">
+    <value>filetype</value>
+  </data>
+  <data name="PFileTypeImportDescription" xml:space="preserve">
+    <value>Type of the file ("binary" | "text" | "matlab" | "digits")</value>
+  </data>
+  <data name="PNumberOfDigits" xml:space="preserve">
+    <value>dn</value>
+  </data>
+  <data name="PNumberOfDigitsDescription" xml:space="preserve">
+    <value>Number of digits to be imported</value>
+  </data>
+  <data name="HelpPSTimes" xml:space="preserve">
+    <value>Calculates times of crossing of the plane of Poincaré section for given energy or trajectory given by its initial condition</value>
   </data>
 </root>

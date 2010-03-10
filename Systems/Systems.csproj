@@ -37,8 +37,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasisIndex.cs" />
     <Compile Include="CHO\CoupledHarmonicOscillator.cs" />
+    <Compile Include="ComputeMethod.cs" />
+    <Compile Include="DoublePendulum\ClassicalDP.cs" />
     <Compile Include="DoublePendulum\DoublePendulum.cs" />
+    <Compile Include="DoublePendulum\DPBasisIndex.cs" />
+    <Compile Include="DoublePendulum\QuantumDP.cs" />
+    <Compile Include="EigenSystem.cs" />
     <Compile Include="GCM\Classical\ClassicalGCM.cs" />
     <Compile Include="GCM\Classical\ClassicalGCMJ.cs" />
     <Compile Include="GCM\Classical\ExtendedClassicalGCM1.cs" />
@@ -47,6 +53,16 @@
     <Compile Include="GCM\Classical\GCMJBisectionFunction.cs" />
     <Compile Include="GCM\Classical\VMatrixBisectionFunction.cs" />
     <Compile Include="GCM\Contour.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHO5DIndexI.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOCartesianIndex.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexE.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexI.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexIFull.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexIO.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexO.cs" />
+    <Compile Include="Import.cs" />
+    <Compile Include="IQuantumSystem.cs" />
+    <Compile Include="PT\PTBasisIndex.cs" />
     <Compile Include="SystemsException.cs" />
     <Compile Include="GCM\GCM.cs" />
     <Compile Include="GCM\GCMParameters.cs" />
@@ -64,8 +80,8 @@
     <Compile Include="GCM\Quantum\Fortran\QuantumGCM.cs" />
     <Compile Include="GCM\Quantum\Fortran\RadialMatrixElement.cs" />
     <Compile Include="GCM\Quantum\Fortran\RAIndex.cs" />
-    <Compile Include="GCM\Quantum\LHO5DIndex.cs" />
-    <Compile Include="GCM\Quantum\LHOPolarIndex.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHO5DIndex.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndex.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCM.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCMA5D.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCMAR.cs" />
@@ -76,7 +92,7 @@
     <Compile Include="GCM\Quantum\LHOQuantumGCMIC.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCMIR.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCMIRO.cs" />
-    <Compile Include="GCM\Quantum\LHOQuantumGCMRFull.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCMIRFull.cs" />
     <Compile Include="IBM\ClassicalIBM.cs" />
     <Compile Include="IBM\IBMBisectionFunction.cs" />
     <Compile Include="ManyBody\ThreeBody.cs" />

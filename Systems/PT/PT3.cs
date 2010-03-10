@@ -36,8 +36,11 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Vypoèítá Hamiltonovu matici (v tomto pøípadì lze poèítat algebraicky)
         /// </summary>
-        /// <param name="maxn">Nejvyšší hodnota kvantového èísla (energie)</param>
-        public override SymmetricBandMatrix HamiltonianSBMatrix(int maxn) {
+        /// <param name="basisIndex">Parametry báze</param>
+        /// <param name="writer">Writer</param>
+        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            int maxn = (basisIndex as PTBasisIndex).MaxN;
+
             SymmetricBandMatrix matrix = new SymmetricBandMatrix(maxn, 4);
 
             double alpha2 = this.omega0 / this.hbar;
@@ -120,8 +123,8 @@ namespace PavelStransky.Systems {
                 writer.Write("Poèet poèítaných hladin...");
 
             PT3 pt3 = new PT3(this.a, -bmax, this.omega0, this.hbar);
-            pt3.Compute(maxn, false, 0, null);
-            Vector ev = pt3.GetEigenValues();
+            pt3.EigenSystem.Diagonalize(maxn, false, 0, null);
+            Vector ev = pt3.EigenSystem.GetEigenValues();
             int numev = ev.Length;
 
             // Nalezení poètu hladin, které budeme poèítat
@@ -150,19 +153,19 @@ namespace PavelStransky.Systems {
 
             // Dvì pøedhodnoty
             pt3 = new PT3(this.a, -bmax - 2.0 * step, this.omega0, this.hbar);
-            pt3.Compute(maxn, false, numev, null);
-            Vector ev0 = pt3.GetEigenValues();
+            pt3.EigenSystem.Diagonalize(maxn, false, numev, null);
+            Vector ev0 = pt3.EigenSystem.GetEigenValues();
 
             pt3 = new PT3(this.a, -bmax - step, this.omega0, this.hbar);
-            pt3.Compute(maxn, false, numev, null);
-            Vector ev1 = pt3.GetEigenValues();
+            pt3.EigenSystem.Diagonalize(maxn, false, numev, null);
+            Vector ev1 = pt3.EigenSystem.GetEigenValues();
 
             // Vlastní cyklus
             int j = 0;
             for(double b = -bmax; b <= bmax; b += step) {
                 pt3 = new PT3(this.a, b, this.omega0, this.hbar);
-                pt3.Compute(maxn, false, numev, null);
-                ev = pt3.GetEigenValues();
+                pt3.EigenSystem.Diagonalize(maxn, false, numev, null);
+                ev = pt3.EigenSystem.GetEigenValues();
 
                 for(int i = 0; i < numev; i++) {
                     if(i > 0) {
@@ -285,17 +288,7 @@ namespace PavelStransky.Systems {
             param.Add(this.a, "a");
             param.Add(this.b, "b");
             param.Add(this.hbar, "HBar");
-            param.Add(this.isComputed, "IsComputed");
-
-            if(this.isComputed) {
-                param.Add(this.eigenValues, "EigenValues");
-
-                int numEV = this.NumEV;
-                param.Add(numEV, "EigenVector Number");
-
-                for(int i = 0; i < numEV; i++)
-                    param.Add(this.eigenVectors[i]);
-            }
+            param.Add(this.eigenSystem, "EigenSystem");
 
             param.Export(export);
         }
@@ -311,17 +304,11 @@ namespace PavelStransky.Systems {
             this.a = (double)param.Get(1.0);
             this.b = (double)param.Get(1.0);
             this.hbar = (double)param.Get(0.1);
-            this.isComputed = (bool)param.Get(false);
 
-            if(this.isComputed) {
-                this.eigenValues = (Vector)param.Get(null);
-
-                int numEV = (int)param.Get(0);
-                this.eigenVectors = new Vector[numEV];
-
-                for(int i = 0; i < numEV; i++)
-                    this.eigenVectors[i] = (Vector)param.Get();
-            }
+            if(import.VersionNumber < 7)
+                this.eigenSystem = new EigenSystem(param);
+            else
+                this.eigenSystem = (EigenSystem)param.Get();
         }
         #endregion
     }

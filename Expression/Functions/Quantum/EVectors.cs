@@ -3,6 +3,7 @@ using System.Collections;
 
 using PavelStransky.Math;
 using PavelStransky.Expression;
+using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -20,10 +21,10 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IQuantumSystem item = arguments[0] as IQuantumSystem;
 
-            int numEV = item.NumEV;
+            int numEV = item.EigenSystem.NumEV;
             TArray result = new TArray(typeof(Vector), numEV);
             for(int i = 0; i < numEV; i++)
-                result[i] = item.GetEigenVector(i);
+                result[i] = item.EigenSystem.GetEigenVector(i);
 
             return result;
         }

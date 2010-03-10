@@ -167,6 +167,14 @@ namespace PavelStransky.Systems {
             return result;
         }
 
+        /// <summary>
+        /// Postprocessing
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public bool PostProcess(Vector x) {
+            return false;
+        }
+
         public double PeresInvariant(Vector x) {
             throw new Exception("The method or operation is not implemented.");
         }

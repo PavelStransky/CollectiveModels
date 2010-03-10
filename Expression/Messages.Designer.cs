@@ -2752,6 +2752,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The classical double pendulum system.
+        /// </summary>
+        internal static string HelpClassicalDP {
+            get {
+                return ResourceManager.GetString("HelpClassicalDP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erase variable from the context.
         /// </summary>
         internal static string HelpClear {
@@ -2977,11 +2986,11 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The double pendulum system.
+        ///   Looks up a localized string similar to Transforms angles of DoublePendulum system to (X, Y) coordinates of each body.
         /// </summary>
-        internal static string HelpDoublePendulum {
+        internal static string HelpDPXY {
             get {
-                return ResourceManager.GetString("HelpDoublePendulum", resourceCulture);
+                return ResourceManager.GetString("HelpDPXY", resourceCulture);
             }
         }
         
@@ -3351,6 +3360,15 @@ namespace PavelStransky.Expression {
         internal static string HelpHamiltonianMatrix {
             get {
                 return ResourceManager.GetString("HelpHamiltonianMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dimensions of the Hamiltonian matrix.
+        /// </summary>
+        internal static string HelpHamiltonianMatrixSize {
+            get {
+                return ResourceManager.GetString("HelpHamiltonianMatrixSize", resourceCulture);
             }
         }
         
@@ -4066,6 +4084,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates times of crossing of the plane of Poincaré section for given energy or trajectory given by its initial condition.
+        /// </summary>
+        internal static string HelpPSTimes {
+            get {
+                return ResourceManager.GetString("HelpPSTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a class PT1 for studying quantum phase transitions.
         /// </summary>
         internal static string HelpPT1 {
@@ -4134,6 +4161,15 @@ namespace PavelStransky.Expression {
         internal static string HelpPV2DToMatrix {
             get {
                 return ResourceManager.GetString("HelpPV2DToMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The quantum double pendulum system.
+        /// </summary>
+        internal static string HelpQuantumDP {
+            get {
+                return ResourceManager.GetString("HelpQuantumDP", resourceCulture);
             }
         }
         
@@ -6073,6 +6109,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dp.
+        /// </summary>
+        internal static string PDoublePendulum {
+            get {
+                return ResourceManager.GetString("PDoublePendulum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double pendulum system.
+        /// </summary>
+        internal static string PDoublePendulumDescription {
+            get {
+                return ResourceManager.GetString("PDoublePendulumDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to gamma.
         /// </summary>
         internal static string PDoublePendulumGamma {
@@ -6393,6 +6447,24 @@ namespace PavelStransky.Expression {
         internal static string PFileTypeDescription {
             get {
                 return ResourceManager.GetString("PFileTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to filetype.
+        /// </summary>
+        internal static string PFileTypeImport {
+            get {
+                return ResourceManager.GetString("PFileTypeImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of the file (&quot;binary&quot; | &quot;text&quot; | &quot;matlab&quot; | &quot;digits&quot;).
+        /// </summary>
+        internal static string PFileTypeImportDescription {
+            get {
+                return ResourceManager.GetString("PFileTypeImportDescription", resourceCulture);
             }
         }
         
@@ -7000,7 +7072,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum energy (in units of hbar).
+        ///   Looks up a localized string similar to Maximum energy of the eigenstate and additional parameters.
         /// </summary>
         internal static string PMaxEnergyDescription {
             get {
@@ -7221,6 +7293,24 @@ namespace PavelStransky.Expression {
         internal static string PNucleusDescription {
             get {
                 return ResourceManager.GetString("PNucleusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dn.
+        /// </summary>
+        internal static string PNumberOfDigits {
+            get {
+                return ResourceManager.GetString("PNumberOfDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of digits to be imported.
+        /// </summary>
+        internal static string PNumberOfDigitsDescription {
+            get {
+                return ResourceManager.GetString("PNumberOfDigitsDescription", resourceCulture);
             }
         }
         

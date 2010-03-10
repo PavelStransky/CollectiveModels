@@ -8,7 +8,7 @@ namespace PavelStransky.Forms {
     /// <summary>
     /// Nová implementace Import (nové typy)
     /// </summary>
-    public class Import : PavelStransky.Expression.Import {
+    public class Import: PavelStransky.Expression.Import {
         /// <summary>
         /// Konstruktor
         /// </summary>

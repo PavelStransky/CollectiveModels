@@ -11,9 +11,6 @@ namespace PavelStransky.Systems {
     /// (nonrotating case)
     /// </summary>
     public class LHOQuantumGCMI5D: LHOQuantumGCMI {
-        // Indexy báze
-        protected LHO5DIndex index;
-
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -26,92 +23,54 @@ namespace PavelStransky.Systems {
         public LHOQuantumGCMI5D(double a, double b, double c, double k, double a0, double hbar)
             : base(a, b, c, k, a0, hbar) { }
 
-        protected override int GetBasisLength() {
-            return this.index.Length;
-        }
+        /// <summary>
+        /// Konstruktor pro Import
+        /// </summary>
+        /// <param name="import">Import</param>
+        public LHOQuantumGCMI5D(Core.Import import) : base(import) { }
 
-        protected override int GetBasisQuantumNumber1(int i) {
-            if(i < 0)
-                return this.index.MaxL + 1;
-            else
-                return this.index.L[i];
-        }
-
-        protected override int GetBasisQuantumNumber2(int i) {
-            if(i < 0)
-                return this.index.MaxMu + 1;
-            else
-                return this.index.Mu[i];
-        }
-
-        protected override int MaximalNumNodes { get { return this.index.MaxMu; } }
-        protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * this.index.MaxE / this.A0); } }
+        protected override int MaximalNumNodes { get { return (this.eigenSystem.BasisIndex as LHO5DIndex).MaxMu; } }
+        protected override double MaximalRange { get { return System.Math.Sqrt(this.Hbar * this.Omega * (this.eigenSystem.BasisIndex as LHO5DIndex).MaxE / this.A0); } }
         protected override double PsiRange(double range) {
-            return this.Psi5D(range, this.index.MaxL, this.index.MaxMu);
+            return this.Psi5D(range, (this.eigenSystem.BasisIndex as LHO5DIndex).MaxL, (this.eigenSystem.BasisIndex as LHO5DIndex).MaxMu);
         }
 
         /// <summary>
         /// Vytvoøí instanci tøídy LHO5DIndex
         /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        protected virtual void CreateIndex(int maxE) {
-            if(this.index == null || this.index.MaxE != maxE)
-                this.index = new LHO5DIndex(maxE);
-        }
-
-        /// <summary>
-        /// Velikost Hamiltonovy matice
-        /// </summary>
-        /// <param name="maxE">Maximální energie</param>
-        public override int HamiltonianMatrixSize(int maxE) {
-            this.CreateIndex(maxE);
-            return this.index.Length;
+        /// <param name="basisParams">Parametry báze</param>
+        public override BasisIndex CreateBasisIndex(Vector basisParams) {
+            return new LHO5DIndexI(basisParams);
         }
 
         /// <summary>
         /// Stopa Hamiltonovy matice
         /// </summary>
-        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
-        /// <param name="writer">Writer</param>
-        public override double HamiltonianMatrixTrace(int maxE, int numSteps, IOutputWriter writer) {
-            if(writer != null)
-                writer.Write(Messages.TraceHM);
-
-            DateTime startTime = DateTime.Now;
-            double result = this.HamiltonianSBMatrix(maxE, numSteps, null, true).Trace();
-
-            if(writer != null) {
-                writer.Write(result);
-                writer.Write(' ');
-                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
-            }
-
-            return result;
+        /// <param name="basisIndex">Parametry báze</param>
+        public override double HamiltonianMatrixTrace(BasisIndex basisIndex) {
+            return this.HamiltonianSBMatrix(basisIndex, null, true).Trace();
         }
 
         /// <summary>
         /// Vypoèítá Hamiltonovu matici do tvaru pásové matice
         /// </summary>
-        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        protected override SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer) {
-            return this.HamiltonianSBMatrix(maxE, numSteps, writer, false);
+        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+            return this.HamiltonianSBMatrix(basisIndex, writer, false);
         }
 
         /// <summary>
         /// Vypoèítá Hamiltonovu matici do tvaru pásové matice
         /// </summary>
-        /// <param name="maxE">Nejvyšší energie bázových funkcí</param>
-        /// <param name="numSteps">Poèet krokù</param>
+        /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
         /// <param name="trace">Calculates only trace of the matrix</param>
-        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(int maxE, int numSteps, IOutputWriter writer, bool trace) {
-            this.CreateIndex(maxE);
+        public virtual SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer, bool trace) {
+            LHO5DIndexI index = basisIndex as LHO5DIndexI;
 
-            if(numSteps == 0)
-                numSteps = 10 * this.index.MaxMu + 1;
+            int maxE = index.MaxE;
+            int numSteps = index.NumSteps;
 
             DateTime startTime = DateTime.Now;
 
@@ -139,8 +98,8 @@ namespace PavelStransky.Systems {
                 vCache2[sb] = this.B * beta2 * beta2 * beta2 * beta;
             }
 
-            int length = this.index.Length;
-            int bandWidth = trace ? 0 : maxE;
+            int length = index.Length;
+            int bandWidth = trace ? 0 : index.BandWidth;
             SymmetricBandMatrix m = new SymmetricBandMatrix(length, bandWidth);
 
             int blockSize = bandWidth + 1;
@@ -153,13 +112,13 @@ namespace PavelStransky.Systems {
 
             DateTime startTime1 = DateTime.Now;
 
-            BasisCache cache2 = new BasisCache(interval, 0, System.Math.Min(blockSize, this.index.Length), this.Psi);
+            BasisCache cache2 = new BasisCache(interval, 0, System.Math.Min(blockSize, index.Length), this.Psi);
             BasisCache cache1 = cache2;
 
             for(int k = 0; k < blockNum; k++) {
                 int i0 = k * blockSize;
-                int i1 = System.Math.Min((k + 1) * blockSize, this.index.Length);
-                int i2 = System.Math.Min((k + 2) * blockSize, this.index.Length);
+                int i1 = System.Math.Min((k + 1) * blockSize, index.Length);
+                int i2 = System.Math.Min((k + 2) * blockSize, index.Length);
 
                 if(writer != null) {
                     writer.Write(k);
@@ -168,12 +127,12 @@ namespace PavelStransky.Systems {
 
                 // Diagonal block
                 for(int i = i0; i < i1; i++) {
-                    int li = this.index.L[i];
-                    int mui = this.index.Mu[i];
+                    int li = index.L[i];
+                    int mui = index.Mu[i];
 
                     for(int j = i; j < i1; j++) {
-                        int lj = this.index.L[j];
-                        int muj = this.index.Mu[j];
+                        int lj = index.L[j];
+                        int muj = index.Mu[j];
 
                         // Selection rule
                         if(mui != muj && System.Math.Abs(mui - muj) != 1)
@@ -219,12 +178,12 @@ namespace PavelStransky.Systems {
 
                     // Nediagonální blok
                     for(int i = i0; i < i1; i++) {
-                        int li = this.index.L[i];
-                        int mui = this.index.Mu[i];
+                        int li = index.L[i];
+                        int mui = index.Mu[i];
 
                         for(int j = i1; j < i2; j++) {
-                            int lj = this.index.L[j];
-                            int muj = this.index.Mu[j];
+                            int lj = index.L[j];
+                            int muj = index.Mu[j];
 
                             // Selection rule
                             if(mui != muj && System.Math.Abs(mui - muj) != 1)
@@ -274,7 +233,8 @@ namespace PavelStransky.Systems {
         /// <param name="i">Index (kvantová èísla zjistíme podle uchované cache indexù)</param>
         /// <param name="x">Souøadnice</param>
         protected double Psi(double x, int i) {
-            return this.Psi5D(x, this.index.L[i], this.index.Mu[i]);
+            LHO5DIndexI index = this.eigenSystem.BasisIndex as LHO5DIndexI;
+            return this.Psi5D(x, index.L[i], index.Mu[i]);
         }
 
         /// <summary>
@@ -283,15 +243,17 @@ namespace PavelStransky.Systems {
         /// <param name="g">Angle gamma</param>
         /// <param name="i">Index</param>
         protected double Phi(double g, int i) {
-            return this.Phi5D(g, this.index.Mu[i]);
+            return this.Phi5D(g, (this.eigenSystem.BasisIndex as LHO5DIndexI).Mu[i]);
         }
 
         /// <summary>
         /// Vlnová funkce ve 2D
         /// </summary>
         protected override double PsiBG(double beta, double gamma, int n) {
-            int l = this.index.L[n];
-            int mu = this.index.Mu[n];
+            LHO5DIndexI index = this.eigenSystem.BasisIndex as LHO5DIndexI;
+            
+            int l = index.L[n];
+            int mu = index.Mu[n];
 
             double beta3 = beta * beta * beta;
             double sin3g = System.Math.Abs(System.Math.Sin(3.0 * gamma));
@@ -303,23 +265,8 @@ namespace PavelStransky.Systems {
         /// Èasová støední hodnota druhého integrálu - Casimirùv operátor SO(5)
         /// </summary>
         protected override double PeresInvariantCoef(int n) {
-            int lambda = 3 * this.index.Mu[n];
+            int lambda = 3 * (this.eigenSystem.BasisIndex as LHO5DIndexI).Mu[n];
             return lambda * (lambda + 3) * this.Hbar * this.Hbar;
         }
-
-        #region Implementace IExportable
-        protected override void Export(IEParam param) {
-            if(this.isComputed)
-                param.Add(this.index.MaxE, "Maximum Energy of Basis Functions");
-        }
-
-        protected override void Import(IEParam param) {
-            if(this.isComputed)
-                this.CreateIndex((int)param.Get(10));
-        }
-
-        public LHOQuantumGCMI5D(Core.Import import) : base(import) { }
-
-        #endregion
     }
 }

@@ -61,11 +61,29 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid index of quantum number {0}..
+        /// </summary>
+        internal static string EMBadQNIndex {
+            get {
+                return ResourceManager.GetString("EMBadQNIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current QuantumGCM object is being calculated. New calculation cannot be begun..
         /// </summary>
         internal static string EMComputing {
             get {
                 return ResourceManager.GetString("EMComputing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The eigenvectors of the system have not been computed..
+        /// </summary>
+        internal static string EMNoEigenVectors {
+            get {
+                return ResourceManager.GetString("EMNoEigenVectors", resourceCulture);
             }
         }
         
@@ -79,20 +97,101 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Method &apos;{0}&apos; in the class &apos;{1}&apos; is not implemented..
+        ///   Looks up a localized string similar to Diagonalization dsbevx ({0} eigenvalues{1})....
         /// </summary>
-        internal static string EMNotImplemented {
+        internal static string MDiagonalizationDSBEVX {
             get {
-                return ResourceManager.GetString("EMNotImplemented", resourceCulture);
+                return ResourceManager.GetString("MDiagonalizationDSBEVX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to , NO eigenvectors.
+        /// </summary>
+        internal static string MDiagonalizationEVNo {
+            get {
+                return ResourceManager.GetString("MDiagonalizationEVNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AND eigenvectors.
+        /// </summary>
+        internal static string MDiagonalizationEVYes {
+            get {
+                return ResourceManager.GetString("MDiagonalizationEVYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diagonalization Jacobi....
+        /// </summary>
+        internal static string MDiagonalizationJacobi {
+            get {
+                return ResourceManager.GetString("MDiagonalizationJacobi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has started the diagonalization of {1}.
+        /// </summary>
+        internal static string MDiagonalizationStart {
+            get {
+                return ResourceManager.GetString("MDiagonalizationStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation of the Hamiltonian matrix....
+        /// </summary>
+        internal static string MHMCalculation {
+            get {
+                return ResourceManager.GetString("MHMCalculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nonzero {0} of {1} elements..
+        /// </summary>
+        internal static string MNonzeroElements {
+            get {
+                return ResourceManager.GetString("MNonzeroElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symmetric band matrix ({0} x {1}).
+        /// </summary>
+        internal static string MSBMatrixDimension {
+            get {
+                return ResourceManager.GetString("MSBMatrixDimension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symmetric matrix ({0} x {0}).
+        /// </summary>
+        internal static string MSMatrixDimension {
+            get {
+                return ResourceManager.GetString("MSMatrixDimension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trace of the matrix: {0}.
+        /// </summary>
+        internal static string MTrace {
+            get {
+                return ResourceManager.GetString("MTrace", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Trace of Hamiltonian matrix....
         /// </summary>
-        internal static string TraceHM {
+        internal static string MTraceHM {
             get {
-                return ResourceManager.GetString("TraceHM", resourceCulture);
+                return ResourceManager.GetString("MTraceHM", resourceCulture);
             }
         }
     }

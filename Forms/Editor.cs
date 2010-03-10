@@ -615,11 +615,11 @@ namespace PavelStransky.Forms {
             // Hlavièka
             if(export.Binary) {
                 export.B.Write(WinMain.RegistryEntryName);
-                export.B.Write(6);
+                export.B.Write(versionNumber);
             }
             else {
                 export.T.WriteLine(WinMain.RegistryEntryName);
-                export.T.WriteLine(6);
+                export.T.WriteLine(versionNumber);
             }
 
             IEParam param = new IEParam();
@@ -726,6 +726,7 @@ namespace PavelStransky.Forms {
         #endregion
 
         private const string defaultResultWindowName = "Result{0}";
+        private const int versionNumber = 8;
 
         private const string defaultName = "Utitled";
         private const string titleFormatFile = "{1} {2}";

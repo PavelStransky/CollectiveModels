@@ -233,6 +233,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Postprocessing
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public bool PostProcess(Vector x) {
+            return false;
+        }
+
+        /// <summary>
         /// Vypíše parametry GCM modelu
         /// </summary>
         public override string ToString() {

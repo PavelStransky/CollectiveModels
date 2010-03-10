@@ -409,6 +409,14 @@ namespace PavelStransky.Systems {
             return this.IC(e, 0.0);
         }
 
+        /// <summary>
+        /// Postprocessing
+        /// </summary>
+        /// <param name="x">Souøadnice a hybnosti</param>
+        public bool PostProcess(Vector x) {
+            return false;
+        }
+
         public bool IC(Vector ic, double e) {
             throw new Exception("The method or operation is not implemented.");
         }

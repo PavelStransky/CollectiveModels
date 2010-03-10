@@ -13,19 +13,24 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpHamiltonianMatrixTrace; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(3);
+            this.SetNumParams(2);
 
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM));
-            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
-            this.SetParam(2, false, true, false, Messages.PNumSteps, Messages.PNumStepsDescription, 0, typeof(int));
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(Vector), typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            LHOQuantumGCM item = arguments[0] as LHOQuantumGCM;
-            int maxE = (int)arguments[1];
-            int numSteps = (int)arguments[2];               // 0 - numsteps je dopoèítáno automaticky
+            LHOQuantumGCM system = arguments[0] as LHOQuantumGCM;
 
-            return item.HamiltonianMatrixTrace(maxE, numSteps, guider);
+            Vector max;
+            if(arguments[1] is int) {
+                max = new Vector(1);
+                max[0] = (int)arguments[1];
+            }
+            else
+                max = arguments[1] as Vector; 
+           
+            return system.EigenSystem.HamiltonianMatrixTrace(max);
         }
     }
 }

@@ -13,31 +13,32 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpComputeSpectrum; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(6);
+            this.SetNumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, null, typeof(LHOQuantumGCM), typeof(PT1));
-            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(int));
+            this.SetParam(0, true, true, false, Messages.PQuantumSystem, Messages.PQuantumSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(Vector), typeof(int));
             this.SetParam(2, false, true, false, Messages.PEVectors, Messages.PEvectorsDescription, false, typeof(bool));
             this.SetParam(3, false, true, false, Messages.PNumEV, Messages.PNumEVDescription, 0, typeof(int));
             this.SetParam(4, false, true, false, Messages.PComputeMethod, Messages.PComputeMethodDescription, "lapackband", typeof(string));
-            this.SetParam(5, false, true, false, Messages.PNumSteps, Messages.PNumStepsDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            object item = arguments[0];
+            IQuantumSystem system = (IQuantumSystem)arguments[0];
+            
+            Vector max;
+            if(arguments[1] is int) {
+                max = new Vector(1);
+                max[0] = (int)arguments[1];
+            }
+            else
+                max = arguments[1] as Vector;
 
-            int maxE = (int)arguments[1];
             bool ev = (bool)arguments[2];
             int numev = (int)arguments[3];                  // 0 - berou se všechny vlastní hodnoty
-            LHOQuantumGCM.ComputeMethod method = (LHOQuantumGCM.ComputeMethod)Enum.Parse(typeof(LHOQuantumGCM.ComputeMethod), (string)arguments[4], true);
-            int numSteps = (int)arguments[5];               // 0 - numsteps je dopoèítáno automaticky
+            ComputeMethod method = (ComputeMethod)Enum.Parse(typeof(ComputeMethod), (string)arguments[4], true);
 
-            if(item is LHOQuantumGCM)
-                (item as LHOQuantumGCM).Compute(maxE, numSteps, ev, numev, guider, method);
-            else if(item is PT1)
-                (item as PT1).Compute(maxE, ev, numev, guider);
-
-            return item;
+            system.EigenSystem.Diagonalize(max, ev, numev, guider, method);
+            return system;
         }
     }
 }

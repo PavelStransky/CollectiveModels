@@ -117,16 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EMBadQNIndex" xml:space="preserve">
+    <value>Invalid index of quantum number {0}.</value>
+  </data>
   <data name="EMComputing" xml:space="preserve">
     <value>Current QuantumGCM object is being calculated. New calculation cannot be begun.</value>
+  </data>
+  <data name="EMNoEigenVectors" xml:space="preserve">
+    <value>The eigenvectors of the system have not been computed.</value>
   </data>
   <data name="EMNotComputed" xml:space="preserve">
     <value>Spectrum has not been calculated yet.</value>
   </data>
-  <data name="EMNotImplemented" xml:space="preserve">
-    <value>Method '{0}' in the class '{1}' is not implemented.</value>
+  <data name="MDiagonalizationDSBEVX" xml:space="preserve">
+    <value>Diagonalization dsbevx ({0} eigenvalues{1})...</value>
   </data>
-  <data name="TraceHM" xml:space="preserve">
+  <data name="MDiagonalizationEVNo" xml:space="preserve">
+    <value>, NO eigenvectors</value>
+  </data>
+  <data name="MDiagonalizationEVYes" xml:space="preserve">
+    <value>AND eigenvectors</value>
+  </data>
+  <data name="MDiagonalizationJacobi" xml:space="preserve">
+    <value>Diagonalization Jacobi...</value>
+  </data>
+  <data name="MDiagonalizationStart" xml:space="preserve">
+    <value>{0} has started the diagonalization of {1}</value>
+  </data>
+  <data name="MHMCalculation" xml:space="preserve">
+    <value>Calculation of the Hamiltonian matrix...</value>
+  </data>
+  <data name="MNonzeroElements" xml:space="preserve">
+    <value>Nonzero {0} of {1} elements.</value>
+  </data>
+  <data name="MSBMatrixDimension" xml:space="preserve">
+    <value>Symmetric band matrix ({0} x {1})</value>
+  </data>
+  <data name="MSMatrixDimension" xml:space="preserve">
+    <value>Symmetric matrix ({0} x {0})</value>
+  </data>
+  <data name="MTrace" xml:space="preserve">
+    <value>Trace of the matrix: {0}</value>
+  </data>
+  <data name="MTraceHM" xml:space="preserve">
     <value>Trace of Hamiltonian matrix...</value>
   </data>
 </root>

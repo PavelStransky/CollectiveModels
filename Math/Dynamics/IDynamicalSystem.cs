@@ -17,14 +17,12 @@ namespace PavelStransky.Math {
         /// Jakobián
         /// </summary>
         /// <param name="x">Souøadnice a rychlosti</param>
-        /// <returns></returns>
         Matrix Jacobian(Vector x);
 
         /// <summary>
         /// Pravá strana pohybových rovnic
         /// </summary>
         /// <param name="x">Souøadnice a rychlosti</param>
-        /// <returns></returns>
         Vector Equation(Vector x);
 
         /// <summary>
@@ -64,5 +62,12 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>
         double PeresInvariant(Vector x);
+
+        /// <summary>
+        /// Postprocessing hodnot (Chceme-li napøíklad dìlat modulo)
+        /// </summary>
+        /// <param name="x">Souøadnice a rychlosti</param>
+        /// <returns>True, pokud jsme dìlali postprocessing</returns>
+        bool PostProcess(Vector x);
     }
 }

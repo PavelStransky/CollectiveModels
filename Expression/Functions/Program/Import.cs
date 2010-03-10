@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetNumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PFileName, Messages.PFileNameDescription, null, typeof(string));
-            this.SetParam(1, false, true, false, Messages.PFileType, Messages.PFileTypeDescription, "binary", typeof(string));
+            this.SetParam(1, false, true, false, Messages.PFileTypeImport, Messages.PFileTypeImportDescription, "binary", typeof(string));
             this.SetParam(2, false, true, false, Messages.PLinesOmit, Messages.PLinesOmitDescription, 0, typeof(int));
         }
 
@@ -26,7 +26,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
 			string fileName = arguments[0] as string;
 
-            if((string)arguments[1] == "matlab") {
+            if((string)arguments[1] == paramMatlab) {
                 int linesOmit = (int)arguments[2];
 
                 // Import dat z matlabu - matice, nevíme, jaké má rozmìry
@@ -34,6 +34,15 @@ namespace PavelStransky.Expression.Functions.Def {
                 StreamReader t = new StreamReader(f);
                 result = this.ImportMatlab(t, linesOmit);
                 t.Close();
+                f.Close();
+            }
+            else if((string)arguments[1] == paramDigits) {
+                int digits = (int)arguments[2];
+
+                // Import èíslic - èíslice jsou v textové formì za sebou;
+                // nevíme, kolik jich je, sdružujeme je do skupin podle poètu digits
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                result = this.ImportDigits(f, digits);
                 f.Close();
             }
             else {
@@ -107,6 +116,43 @@ namespace PavelStransky.Expression.Functions.Def {
 			}
 		}
 
+		/// <summary>
+		/// Provede import ze souboru èíslic a èíslice nastrká do vektoru a seskupí podle poètu digits
+		/// </summary>
+		/// <param name="f">FileStream</param>
+        /// <param name="digits">Poèet èíslic ve skupinì</param>        
+        private Vector ImportDigits(FileStream f, int digits) {
+            ArrayList a = new ArrayList();
+
+            bool finish = false;
+
+            while(!finish) {
+                int n = 0;
+                for(int i = 0; i < digits; i++) {
+                    int d = f.ReadByte() - (int)'0';
+                    if(d < 0) {
+                        finish = true;
+                        break;
+                    }
+                    if(n == 0)
+                        n = d;
+                    else {
+                        n *= 10;
+                        n += d;
+                    }
+                }
+                a.Add(n);
+            }
+
+            int count = a.Count;
+            Vector result = new Vector(count);
+            int j = 0;
+            foreach(int i in a)
+                result[j++] = i;
+            return result;
+        }
+
+        private const string paramDigits = "digits";
 		private const string paramMatlab = "matlab";
 
         private const string name = "import";

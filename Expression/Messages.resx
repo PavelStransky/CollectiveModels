@@ -2991,4 +2991,7 @@ Second differing type: {1}</value>
   <data name="HelpPSTimes" xml:space="preserve">
     <value>Calculates times of crossing of the plane of Poincaré section for given energy or trajectory given by its initial condition</value>
   </data>
+  <data name="HelpOrbit" xml:space="preserve">
+    <value>Finds a periodic orbit using Poincare sections</value>
+  </data>
 </root>

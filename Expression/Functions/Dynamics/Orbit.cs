@@ -6,10 +6,10 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// 
+    /// Finds a periodic orbit using Poincare sections
     /// </summary>
     public class Orbit: Fnc {
-        public override string Help { get { return string.Empty; } }
+        public override string Help { get { return Messages.HelpOrbit; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(5);

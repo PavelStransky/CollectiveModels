@@ -2,12 +2,16 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Security.Permissions;
 
 using Microsoft.Win32;
 
 using PavelStransky.Expression;
 
-namespace PavelStransky.Forms {
+[assembly: RegistryPermissionAttribute(SecurityAction.RequestMinimum,
+    ViewAndModify = "HKEY_CURRENT_USER")]
+namespace PavelStransky.Forms
+{
     /// <summary>
     /// Summary description for WinMain.
     /// </summary>
@@ -218,15 +222,17 @@ namespace PavelStransky.Forms {
             string keyName = RegistryEntryName;
 
             if(state) {
-                Registry.ClassesRoot.CreateSubKey('.' + WinMain.FileExtGcm).SetValue(string.Empty, keyName);
-                Registry.ClassesRoot.CreateSubKey(keyName).SetValue(string.Empty, Messages.ProgramDescription);
-                Registry.ClassesRoot.CreateSubKey(string.Format("{0}\\DefaultIcon", keyName)).SetValue(string.Empty, string.Format("{0},0", path));
-                Registry.ClassesRoot.CreateSubKey(string.Format(commandEntryName, keyName)).SetValue(string.Empty, string.Format(commandEntryFormat, path));
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("software", true).OpenSubKey("classes", true);
+                key.CreateSubKey('.' + WinMain.FileExtGcm).SetValue(string.Empty, keyName);
+                key.CreateSubKey(keyName).SetValue(string.Empty, Messages.ProgramDescription);
+                key.CreateSubKey(string.Format("{0}\\DefaultIcon", keyName)).SetValue(string.Empty, string.Format("{0},0", path));
+                key.CreateSubKey(string.Format(commandEntryName, keyName)).SetValue(string.Empty, string.Format(commandEntryFormat, path));
             }
             else {
                 try {
-                    Registry.ClassesRoot.DeleteSubKeyTree(keyName);
-                    Registry.ClassesRoot.DeleteSubKeyTree('.' + WinMain.FileExtGcm);
+                    RegistryKey key = Registry.CurrentUser.OpenSubKey("software").OpenSubKey("classes");
+                    key.DeleteSubKeyTree(keyName);
+                    key.DeleteSubKeyTree('.' + WinMain.FileExtGcm);
                 }
                 catch(Exception) {
                 }

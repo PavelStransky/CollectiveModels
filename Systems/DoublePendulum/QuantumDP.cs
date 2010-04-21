@@ -68,8 +68,6 @@ namespace PavelStransky.Systems {
             int maxm1 = index.MaxM1;
             int maxm2 = index.MaxM2;
 
-            int minm1 = index.Positive ? 0 : -maxm1;
-
             int dim = index.Length;
             SymmetricBandMatrix matrix = new SymmetricBandMatrix(dim, 2 * maxm2 + 2);
 
@@ -78,7 +76,7 @@ namespace PavelStransky.Systems {
             double c2 = (2.0 + this.Mu - 2.0 * sqrtmu) / this.Mu;
             double c3 = (sqrtmu - 1.0) / (this.Mu * this.Lambda);
 
-            for(int m1 = minm1; m1 <= maxm1; m1++) {
+            for(int m1 = -maxm1; m1 <= maxm1; m1++) {
                 for(int m2 = -maxm2; m2 <= maxm2; m2++) {
                     int i = index[m1, m2];
 
@@ -172,8 +170,6 @@ namespace PavelStransky.Systems {
             int maxm2 = index.MaxM2;
             int dim = index.Length;
 
-            int minm1 = index.Positive ? 0 : -maxm1;
-
             int count = this.eigenSystem.NumEV;
             Vector result = new Vector(count);
 
@@ -188,7 +184,7 @@ namespace PavelStransky.Systems {
 
                 double sum = 0.0;
 
-                for(int m1 = minm1; m1 <= maxm1; m1++) {
+                for(int m1 = -maxm1; m1 <= maxm1; m1++) {
                     for(int m2 = -maxm2; m2 <= maxm2; m2++) {
                         int i = index[m1, m2];
 

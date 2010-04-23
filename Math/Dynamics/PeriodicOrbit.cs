@@ -84,7 +84,10 @@ namespace PavelStransky.Math {
 
                 if(((y <= 0 && oldy > 0) || (y > 0 && oldy <= 0)) && t != 0) {
                     Vector v = (oldx - x) * (oldy / (y - oldy)) + oldx;
-                    if((v[0] - initialX[0] < precision) && (v[2] - initialX[2] < precision) && (v[3] - initialX[3] < precision)) {
+                    if((System.Math.Abs(v[0] - initialX[0]) < precision)
+                        && (System.Math.Abs(v[1] - initialX[1]) < precision)
+                        && (System.Math.Abs(v[2] - initialX[2]) < precision) 
+                        && (System.Math.Abs(v[3] - initialX[3]) < precision)) {
                         t += oldy / (oldy - y) * step;
                         break;
                     }

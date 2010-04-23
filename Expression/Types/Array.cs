@@ -705,7 +705,11 @@ namespace PavelStransky.Expression {
             public bool MoveNext() {
                 if(reseted) {
                     reseted = false;
-                    return true;
+
+                    if(this.endEnumIndex.Length == 1 && this.endEnumIndex[0] < 0)
+                        return false;
+                    else
+                        return true;
                 }
 
                 return TArray.MoveNext(this.rank, this.enumIndex, this.startEnumIndex, this.endEnumIndex);

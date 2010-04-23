@@ -2994,4 +2994,16 @@ Second differing type: {1}</value>
   <data name="HelpOrbit" xml:space="preserve">
     <value>Finds a periodic orbit using Poincare sections</value>
   </data>
+  <data name="HelpIntialConditionX" xml:space="preserve">
+    <value>For given dynamical system and energy generates missing coordinate / momentum in the initial condition</value>
+  </data>
+  <data name="HelpInitialConditionX" xml:space="preserve">
+    <value>For given dynamical system and energy generates missing coordinate / momentum in the initial condition</value>
+  </data>
+  <data name="PComponentIndex" xml:space="preserve">
+    <value>i</value>
+  </data>
+  <data name="PComponentIndexDescription" xml:space="preserve">
+    <value>Index of the component of the vector</value>
+  </data>
 </root>

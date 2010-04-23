@@ -3445,6 +3445,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For given dynamical system and energy generates missing coordinate / momentum in the initial condition.
+        /// </summary>
+        internal static string HelpInitialConditionX {
+            get {
+                return ResourceManager.GetString("HelpInitialConditionX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converts given value to an integer number.
         /// </summary>
         internal static string HelpInt {
@@ -3504,6 +3513,15 @@ namespace PavelStransky.Expression {
         internal static string HelpIntervalV {
             get {
                 return ResourceManager.GetString("HelpIntervalV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For given dynamical system and energy generates missing coordinate / momentum in the initial condition.
+        /// </summary>
+        internal static string HelpIntialConditionX {
+            get {
+                return ResourceManager.GetString("HelpIntialConditionX", resourceCulture);
             }
         }
         
@@ -5889,6 +5907,24 @@ namespace PavelStransky.Expression {
         internal static string PComparisonOperatorDescription {
             get {
                 return ResourceManager.GetString("PComparisonOperatorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to i.
+        /// </summary>
+        internal static string PComponentIndex {
+            get {
+                return ResourceManager.GetString("PComponentIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Index of the component of the vector.
+        /// </summary>
+        internal static string PComponentIndexDescription {
+            get {
+                return ResourceManager.GetString("PComponentIndexDescription", resourceCulture);
             }
         }
         

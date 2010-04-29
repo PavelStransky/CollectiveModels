@@ -147,7 +147,7 @@
     <Compile Include="Functions\Dynamics\RegularityBreakCurvature.cs" />
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
     <Compile Include="Functions\Dynamics\Systems\CDP.cs" />
-    <Compile Include="Functions\Dynamics\Systems\InitialConditionX.cs" />
+    <Compile Include="Functions\Dynamics\InitialConditionX.cs" />
     <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />

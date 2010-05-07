@@ -69,48 +69,65 @@ namespace PavelStransky.Systems {
 
                     Street s1 = null, s2 = null;
 
-                    s1 = this.horizontal[i, j];
-                    if(j + 1 < this.streetsY)
-                        s2 = this.horizontal[i, j + 1];
-                    else {
-                        if(this.topology == TrafficTopology.Cyclic)
-                            s2 = this.horizontal[i, 0];
-                        else if(this.topology == TrafficTopology.SimpleMoebius || this.topology == TrafficTopology.SingleMoebius)
-                            s2 = this.vertical[0, this.streetsY - i - 1];
-                    }
+                    incomming[0] = this.horizontal[i, j];
 
-                    if(i % 2 == 0) {    // Smìr pravo - levý
-                        incomming[0] = s1;
-                        outgoing[0] = s2;
+                    if(i % 2 == 0) { // Smìr pravo - levý
+                        if(j + 1 < this.streetsY)
+                            outgoing[0] = this.horizontal[i, j + 1];
+                        else {
+                            if(this.topology == TrafficTopology.Cyclic)
+                                outgoing[0] = this.horizontal[i, 0];
+                            else if(this.topology == TrafficTopology.SimpleMoebius)
+                                outgoing[0] = this.vertical[0, this.streetsY - i - 1];
+                            else if(this.topology == TrafficTopology.SingleMoebius) 
+                                    outgoing[0] = this.horizontal[i + 1, j];
+                        }
                     }
-                    else {              // Smìr levo - pravý
-                        incomming[0] = s2;
-                        outgoing[0] = s1;
-                    }
-
-                    s1 = this.vertical[i, j];
-                    if(i + 1 < this.streetsX)
-                        s2 = this.vertical[i + 1, j];
                     else {
-                        if(this.topology == TrafficTopology.Cyclic)
-                            s2 = this.vertical[0, j];
-                        else if(this.topology == TrafficTopology.SimpleMoebius)
-                            s2 = this.horizontal[this.streetsX - j - 1, 0];
-                        else if(this.topology == TrafficTopology.SingleMoebius) {
-                            if(j + 1 < this.streetsY)
-                                s2 = this.vertical[1, j + 1];
-                            else
-                                s2 = this.horizontal[j, i];
+                        if(j - 1 >= 0)
+                            outgoing[0] = this.horizontal[i, j - 1];
+                        else {
+                            if(this.topology == TrafficTopology.Cyclic)
+                                outgoing[0] = this.horizontal[i, this.streetsY - 1];
+                            else if(this.topology == TrafficTopology.SimpleMoebius)
+                                outgoing[0] = this.vertical[this.streetsX - 1, this.streetsY - i - 1];
+                            else if(this.topology == TrafficTopology.SingleMoebius) {
+                                if(i + 1 < this.streetsX)
+                                    outgoing[0] = this.horizontal[i + 1, j];
+                                else
+                                    outgoing[0] = this.vertical[i, j];
+                            }
                         }
                     }
 
-                    if(j % 2 == 0) {    // Smìr zdola - nahoru
-                        incomming[1] = s2;
-                        outgoing[1] = s1;
+                    incomming[1]= this.vertical[i, j];
+                    if(j % 2 == 0) { // Smìr zdola - nahoru
+                        if(i - 1 >= 0)
+                            outgoing[1] = this.vertical[i - 1, j];
+                        else {
+                            if(this.topology == TrafficTopology.Cyclic)
+                                outgoing[1] = this.vertical[this.streetsX - 1, j];
+                            else if(this.topology == TrafficTopology.SimpleMoebius)
+                                outgoing[1] = this.horizontal[this.streetsX - j - 1, this.streetsY - 1];
+                            else if(this.topology == TrafficTopology.SingleMoebius)
+                                outgoing[1] = this.vertical[i, j + 1];
+                        }
                     }
-                    else {              // Smìr nahoru - dolù
-                        incomming[1] = s1;
-                        outgoing[1] = s2;
+                    else {
+                        if(i + 1 < this.streetsX)
+                            outgoing[1] = this.vertical[i + 1, j];
+                        else {
+                            if(this.topology == TrafficTopology.Cyclic)
+                                outgoing[1] = this.vertical[0, j];
+                            else if(this.topology == TrafficTopology.SimpleMoebius)
+                                outgoing[1] = this.horizontal[this.streetsX - j - 1, 0];
+                            else if(this.topology == TrafficTopology.SingleMoebius) {
+                                if(j + 1 < this.streetsY)
+                                    outgoing[1] = this.vertical[i, j + 1];
+                                else
+                                    outgoing[1] = this.horizontal[0, 0];
+                            }
+                        }
                     }
 
                     this.crossing[i, j] = new Crossing(incomming, outgoing);
@@ -170,13 +187,13 @@ namespace PavelStransky.Systems {
         /// Provede krok a vrátí stav jako matici
         /// </summary>
         public Matrix GetMatrix() {
-            Matrix result = new Matrix(this.streetsX * (this.streetLengthX + 1) + 1, this.streetsY * (this.streetLengthY + 1) + 1);
+            Matrix result = new Matrix((this.streetsX + 1) * (this.streetLengthX + 1), (this.streetsY + 1) * (this.streetLengthY + 1));
             result.Fill(-1.0);
 
             for(int i = 0; i < this.streetsX; i++)
                 for(int j = 0; j < this.streetsY; j++) {
                     int offsetXh = (i + 1) * (this.streetLengthX + 1) - 1;
-                    int offsetYh = j * (this.streetLengthY + 1);
+                    int offsetYh = (j + (i % 2 == 0 ? 0 : 1)) * (this.streetLengthY + 1);
                     Street sh = this.horizontal[i, j];
                     for(int h = 0; h < this.streetLengthY; h++)
                         if(i % 2 == 0)
@@ -184,7 +201,7 @@ namespace PavelStransky.Systems {
                         else
                             result[offsetXh, offsetYh + h] = sh.GetReverse(h);
 
-                    int offsetXv = i * (this.streetLengthX + 1);
+                    int offsetXv = (i + (j % 2 == 0 ? 1 : 0)) * (this.streetLengthX + 1);
                     int offsetYv = (j + 1) * (this.streetLengthY + 1) - 1;
                     Street sv = this.vertical[i, j];
                     for(int v = 0; v < this.streetLengthX; v++)

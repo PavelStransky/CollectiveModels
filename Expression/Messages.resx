@@ -3006,4 +3006,49 @@ Second differing type: {1}</value>
   <data name="PComponentIndexDescription" xml:space="preserve">
     <value>Index of the component of the vector</value>
   </data>
+  <data name="HelpTraffic" xml:space="preserve">
+    <value>Creates a Traffic class</value>
+  </data>
+  <data name="HelpTrafficIC" xml:space="preserve">
+    <value>Generates initial conditions for the traffic system</value>
+  </data>
+  <data name="HelpTrafficStep" xml:space="preserve">
+    <value>Makes a step of the traffic system</value>
+  </data>
+  <data name="PTraffic" xml:space="preserve">
+    <value>t</value>
+  </data>
+  <data name="PTrafficDescription" xml:space="preserve">
+    <value>Traffic class</value>
+  </data>
+  <data name="P1TrafficIC" xml:space="preserve">
+    <value>ic</value>
+  </data>
+  <data name="P1TrafficICDescription" xml:space="preserve">
+    <value>Value for initial condition</value>
+  </data>
+  <data name="P2TrafficIC" xml:space="preserve">
+    <value>ictype</value>
+  </data>
+  <data name="P2TrafficICDescription" xml:space="preserve">
+    <value>Type of the initial condition ("probability" | "total" | "street")</value>
+  </data>
+  <data name="PStreetLengthX" xml:space="preserve">
+    <value>slx</value>
+  </data>
+  <data name="PStreetLengthXDescription" xml:space="preserve">
+    <value>Length of the street in the X direction</value>
+  </data>
+  <data name="PStreetLengthY" xml:space="preserve">
+    <value>sly</value>
+  </data>
+  <data name="PStreetLengthYDescription" xml:space="preserve">
+    <value>Length of the street in the Y direction</value>
+  </data>
+  <data name="PTrafficTopology" xml:space="preserve">
+    <value>topology</value>
+  </data>
+  <data name="PTrafficTopologyDescription" xml:space="preserve">
+    <value>Topology of the traffic system (boundary conditions) ("cyclic" | "SingleMoebius" | "SimpleMoebius")</value>
+  </data>
 </root>

@@ -414,13 +414,21 @@ namespace PavelStransky.Math {
 		/// Matici vynuluje
 		/// </summary>
 		public void Clear() {
+            this.Fill(0.0);
+		}
+
+        /// <summary>
+        /// Vyplní matici
+        /// </summary>
+        /// <param name="value">Hodnota k vyplnìní</param>
+        public void Fill(double value) {
             int lengthX = this.LengthX;
             int lengthY = this.LengthY;
-            
+
             for(int i = 0; i < lengthX; i++)
-				for(int j = 0; j < lengthY; j++)
-					this[i,j] = 0;
-		}
+                for(int j = 0; j < lengthY; j++)
+                    this[i, j] = value;
+        }
 
 		/// <summary>
 		/// Vytvoøí kopii matice

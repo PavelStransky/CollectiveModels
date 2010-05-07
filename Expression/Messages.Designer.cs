@@ -4723,6 +4723,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a Traffic class.
+        /// </summary>
+        internal static string HelpTraffic {
+            get {
+                return ResourceManager.GetString("HelpTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates initial conditions for the traffic system.
+        /// </summary>
+        internal static string HelpTrafficIC {
+            get {
+                return ResourceManager.GetString("HelpTrafficIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Makes a step of the traffic system.
+        /// </summary>
+        internal static string HelpTrafficStep {
+            get {
+                return ResourceManager.GetString("HelpTrafficStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For given energy or a trajectory given by its initial condition calculates the length of the trajectory.
         /// </summary>
         internal static string HelpTrajectoryLength {
@@ -5146,6 +5173,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ic.
+        /// </summary>
+        internal static string P1TrafficIC {
+            get {
+                return ResourceManager.GetString("P1TrafficIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value for initial condition.
+        /// </summary>
+        internal static string P1TrafficICDescription {
+            get {
+                return ResourceManager.GetString("P1TrafficICDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to x.
         /// </summary>
         internal static string P2Assignment {
@@ -5313,6 +5358,24 @@ namespace PavelStransky.Expression {
         internal static string P2PointVectorDescription {
             get {
                 return ResourceManager.GetString("P2PointVectorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ictype.
+        /// </summary>
+        internal static string P2TrafficIC {
+            get {
+                return ResourceManager.GetString("P2TrafficIC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of the initial condition (&quot;probability&quot; | &quot;total&quot; | &quot;street&quot;).
+        /// </summary>
+        internal static string P2TrafficICDescription {
+            get {
+                return ResourceManager.GetString("P2TrafficICDescription", resourceCulture);
             }
         }
         
@@ -8116,6 +8179,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to slx.
+        /// </summary>
+        internal static string PStreetLengthX {
+            get {
+                return ResourceManager.GetString("PStreetLengthX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length of the street in the X direction.
+        /// </summary>
+        internal static string PStreetLengthXDescription {
+            get {
+                return ResourceManager.GetString("PStreetLengthXDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sly.
+        /// </summary>
+        internal static string PStreetLengthY {
+            get {
+                return ResourceManager.GetString("PStreetLengthY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length of the street in the Y direction.
+        /// </summary>
+        internal static string PStreetLengthYDescription {
+            get {
+                return ResourceManager.GetString("PStreetLengthYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to smatrix.
         /// </summary>
         internal static string PSymmetricMatrix {
@@ -8184,6 +8283,42 @@ namespace PavelStransky.Expression {
         internal static string PToArray1Description {
             get {
                 return ResourceManager.GetString("PToArray1Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to t.
+        /// </summary>
+        internal static string PTraffic {
+            get {
+                return ResourceManager.GetString("PTraffic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traffic class.
+        /// </summary>
+        internal static string PTrafficDescription {
+            get {
+                return ResourceManager.GetString("PTrafficDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to topology.
+        /// </summary>
+        internal static string PTrafficTopology {
+            get {
+                return ResourceManager.GetString("PTrafficTopology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topology of the traffic system (boundary conditions) (&quot;cyclic&quot; | &quot;SingleMoebius&quot; | &quot;SimpleMoebius&quot;).
+        /// </summary>
+        internal static string PTrafficTopologyDescription {
+            get {
+                return ResourceManager.GetString("PTrafficTopologyDescription", resourceCulture);
             }
         }
         

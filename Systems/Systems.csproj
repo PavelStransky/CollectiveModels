@@ -102,6 +102,10 @@
     <Compile Include="PT\PT2.cs" />
     <Compile Include="PT\PT3.cs" />
     <Compile Include="PT\PT3.Minimum.cs" />
+    <Compile Include="Traffic\Crossing.cs" />
+    <Compile Include="Traffic\Street.cs" />
+    <Compile Include="Traffic\Traffic.cs" />
+    <Compile Include="Traffic\TrafficItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages.resx">

@@ -148,6 +148,9 @@
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
     <Compile Include="Functions\Dynamics\Systems\CDP.cs" />
     <Compile Include="Functions\Dynamics\InitialConditionX.cs" />
+    <Compile Include="Functions\Dynamics\Systems\Traffic.cs" />
+    <Compile Include="Functions\Dynamics\TrafficIC.cs" />
+    <Compile Include="Functions\Dynamics\TrafficStep.cs" />
     <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />

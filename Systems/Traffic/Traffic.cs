@@ -295,19 +295,23 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Krok výpoètu
+        /// Kroky výpoètu
         /// </summary>
-        public void Step() {
-            foreach(TrafficItem item in this.trafficItems)
-                item.Step();
+        /// <param name="time">Doba výpoètu</param>
+        public void Step(int time) {
+            for(int t = 0; t < time; t++) {
+                foreach(TrafficItem item in this.trafficItems)
+                    item.Step();
 
-            foreach(TrafficItem item in this.trafficItems)
-                item.FinalizeStep();
+                foreach(TrafficItem item in this.trafficItems)
+                    item.FinalizeStep();
+            }
         }
 
         /// <summary>
         /// Výpoèet po èas T
         /// </summary>
+        /// <param name="time">Doba výpoètu</param>
         public ArrayList Run(int time) {
             ArrayList result = new ArrayList();
 
@@ -315,7 +319,10 @@ namespace PavelStransky.Systems {
             Matrix lights = new Matrix(this.streetsX * this.streetsY, time);
 
             for(int t = 0; t < time; t++) {
-                this.Step();
+                foreach(TrafficItem item in this.trafficItems)
+                    item.Step();
+                foreach(TrafficItem item in this.trafficItems)
+                    item.FinalizeStep();
 
                 velocity[t] = this.Changes() / 2;
 

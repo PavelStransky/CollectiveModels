@@ -4741,6 +4741,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns a matrix showing the state of the traffic system.
+        /// </summary>
+        internal static string HelpTrafficMatrix {
+            get {
+                return ResourceManager.GetString("HelpTrafficMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the parameters of the traffic system.
+        /// </summary>
+        internal static string HelpTrafficParams {
+            get {
+                return ResourceManager.GetString("HelpTrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Runs the traffic system for several time steps.
+        /// </summary>
+        internal static string HelpTrafficRun {
+            get {
+                return ResourceManager.GetString("HelpTrafficRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Makes a step of the traffic system.
         /// </summary>
         internal static string HelpTrafficStep {
@@ -5191,6 +5218,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sensordistance.
+        /// </summary>
+        internal static string P1TrafficParams {
+            get {
+                return ResourceManager.GetString("P1TrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The distance of the sensor from the crossing.
+        /// </summary>
+        internal static string P1TrafficParamsDescription {
+            get {
+                return ResourceManager.GetString("P1TrafficParamsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to x.
         /// </summary>
         internal static string P2Assignment {
@@ -5380,6 +5425,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to shortdistance.
+        /// </summary>
+        internal static string P2TrafficParams {
+            get {
+                return ResourceManager.GetString("P2TrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The short distance for the incomming cars.
+        /// </summary>
+        internal static string P2TrafficParamsDescription {
+            get {
+                return ResourceManager.GetString("P2TrafficParamsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to n2.
         /// </summary>
         internal static string P3AvoidedCrossing {
@@ -5506,6 +5569,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to shortdistancestopped.
+        /// </summary>
+        internal static string P3TrafficParams {
+            get {
+                return ResourceManager.GetString("P3TrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The short distance for the outgoing cars (outgoing street stopped).
+        /// </summary>
+        internal static string P3TrafficParamsDescription {
+            get {
+                return ResourceManager.GetString("P3TrafficParamsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to bmin.
         /// </summary>
         internal static string P4AvoidedCrossing {
@@ -5578,6 +5659,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to mingreen.
+        /// </summary>
+        internal static string P4TrafficParams {
+            get {
+                return ResourceManager.GetString("P4TrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum green time of the traffic lights.
+        /// </summary>
+        internal static string P4TrafficParamsDescription {
+            get {
+                return ResourceManager.GetString("P4TrafficParamsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to bmax.
         /// </summary>
         internal static string P5AvoidedCrossing {
@@ -5646,6 +5745,24 @@ namespace PavelStransky.Expression {
         internal static string P5PoincareDescription {
             get {
                 return ResourceManager.GetString("P5PoincareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxtolerance.
+        /// </summary>
+        internal static string P5TrafficParams {
+            get {
+                return ResourceManager.GetString("P5TrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum tolerance for the incomming cars.
+        /// </summary>
+        internal static string P5TrafficParamsDescription {
+            get {
+                return ResourceManager.GetString("P5TrafficParamsDescription", resourceCulture);
             }
         }
         

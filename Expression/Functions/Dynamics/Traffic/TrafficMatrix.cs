@@ -7,10 +7,10 @@ using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Makes a step of the traffic system
+    /// Returns a matrix showing the state of the traffic system
     /// </summary>
-    public class TrafficStep: Fnc {
-        public override string Help { get { return Messages.HelpTrafficStep; } }
+    public class TrafficMatrix: Fnc {
+        public override string Help { get { return Messages.HelpTrafficMatrix; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
@@ -19,8 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Traffic t = arguments[0] as Traffic;
-            t.Step();
-            return t;
+            return t.GetMatrix();
         }
     }
 }

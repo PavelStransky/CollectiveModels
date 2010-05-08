@@ -149,8 +149,11 @@
     <Compile Include="Functions\Dynamics\Systems\CDP.cs" />
     <Compile Include="Functions\Dynamics\InitialConditionX.cs" />
     <Compile Include="Functions\Dynamics\Systems\Traffic.cs" />
-    <Compile Include="Functions\Dynamics\TrafficIC.cs" />
-    <Compile Include="Functions\Dynamics\TrafficStep.cs" />
+    <Compile Include="Functions\Dynamics\Traffic\TrafficIC.cs" />
+    <Compile Include="Functions\Dynamics\Traffic\TrafficMatrix.cs" />
+    <Compile Include="Functions\Dynamics\Traffic\TrafficParams.cs" />
+    <Compile Include="Functions\Dynamics\Traffic\TrafficRun.cs" />
+    <Compile Include="Functions\Dynamics\Traffic\TrafficStep.cs" />
     <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />

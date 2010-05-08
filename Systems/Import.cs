@@ -107,6 +107,12 @@ namespace PavelStransky.Systems {
                 return new ClassicalDP(this);
             else if(typeName == typeof(EigenSystem).FullName)
                 return new EigenSystem(this);
+            else if(typeName == typeof(Traffic).FullName)
+                return new Traffic(this);
+            else if(typeName == typeof(Street).FullName)
+                return new Street(this);
+            else if(typeName == typeof(Crossing).FullName)
+                return new Crossing(this);
             else
                 return base.CreateObject(typeName);
         }

@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Systems {
-    public class Street: TrafficItem {
+    public class Street: TrafficItem, IExportable {
         private int length;
         private int[] data, newData;
         private int sensorDistance, shortDistance, shortDistanceStopped;
+        private int changes;
 
         private Crossing beginningCrossing, endCrossing;
         private Random random = new Random();
@@ -19,9 +22,27 @@ namespace PavelStransky.Systems {
             this.length = length;
             this.data = new int[this.length];
 
-            this.sensorDistance = length / 2;
+            // Defaultní hodnoty pro parametry systému
+            this.sensorDistance = this.length / 2;
             this.shortDistance = 2;
             this.shortDistanceStopped = 2;
+        }
+
+        /// <summary>
+        /// Nastaví parametry ulice
+        /// </summary>
+        /// <param name="sensorDistance">Vzdálenost sensoru od køižovatky</param>
+        /// <param name="shortDistance">Blízkost køižovatky - pøijíždìjící smìr</param>
+        /// <param name="shortDistanceStopped">Blízkost køižovatky - stojící auta za køižovatkou</param>
+        public void SetParams(int sensorDistance, int shortDistance, int shortDistanceStopped) {
+            if(sensorDistance >= 0)
+                this.sensorDistance = sensorDistance;
+
+            if(shortDistance >= 0)
+                this.shortDistance = shortDistance;
+
+            if(shortDistanceStopped >= 0)
+                this.shortDistanceStopped = shortDistanceStopped;
         }
 
         /// <summary>
@@ -76,6 +97,16 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Poèet aut na dané ulici
+        /// </summary>
+        public override int CarNumber() {
+            int result = 0;
+            for(int i = 0; i < this.length; i++)
+                result += this.data[i];
+            return result;
+        }
+
+        /// <summary>
         /// Vrátí prvek na dané pozici od konce ulice
         /// </summary>
         public int GetReverse(int i) {
@@ -86,8 +117,17 @@ namespace PavelStransky.Systems {
         /// Dokonèí krok
         /// </summary>
         public override void FinalizeStep() {
+            this.changes = 0;
+            for(int i = 0; i < this.length; i++)
+                if(this.data[i] != this.newData[i])
+                    this.changes++;
             this.data = this.newData;
         }
+
+        /// <summary>
+        /// Poèet zmìn v posledním kroku
+        /// </summary>
+        public override int Changes { get { return this.changes; } }
 
         /// <summary>
         /// Poèet aut za detektorem
@@ -171,5 +211,43 @@ namespace PavelStransky.Systems {
                 else
                     this.data[i] = 0;
         }
+ 
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží Traffic tøídu do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            IEParam param = new IEParam();
+
+            param.Add(this.length, "Length");
+            param.Add(this.sensorDistance, "Sensor distance");
+            param.Add(this.shortDistance, "Short distance");
+            param.Add(this.shortDistanceStopped, "Short distance of stopped cars");
+
+            // Auta
+            for(int i = 0; i < this.length; i++)
+                param.Add(this.data[i]);
+
+            param.Export(export);
+        }
+
+        /// <summary>
+        /// Naète Street tøídu ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public Street(Core.Import import) {
+            IEParam param = new IEParam(import);
+
+            this.length = (int)param.Get();
+            this.sensorDistance = (int)param.Get(this.length / 2);
+            this.shortDistance = (int)param.Get(2);
+            this.shortDistanceStopped = (int)param.Get(2);
+
+            this.data = new int[this.length];
+            for(int i = 0; i < this.length; i++)
+                this.data[i] = (int)param.Get();
+        }
+        #endregion
     }
 }

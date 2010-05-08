@@ -21,5 +21,15 @@ namespace PavelStransky.Systems {
         /// Dokonèení kroku
         /// </summary>
         public abstract void FinalizeStep();
+
+        /// <summary>
+        /// Poèet aut
+        /// </summary>
+        public abstract int CarNumber();
+
+        /// <summary>
+        /// Poèet zmìn v pøedchozím kroku
+        /// </summary>
+        public abstract int Changes { get;}
     }
 }

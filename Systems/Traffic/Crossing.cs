@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Systems {
-    public class Crossing: TrafficItem {
+    public class Crossing: TrafficItem, IExportable {
         private int length;
         private Street[] incomming;
         private Street[] outgoing;
@@ -15,28 +17,55 @@ namespace PavelStransky.Systems {
 
         private int minGreen, maxTolerance;
 
-        private int data, newData;
+        private int data, newData, changed;
 
         /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="incomming">Vstupující ulice</param>
         /// <param name="outgoing">Vystupující ulice</param>
-        public Crossing(Street[] incomming, Street[] outgoing) {
-            this.length = incomming.Length;
+        public Crossing(Street[] incomming, Street[] outgoing)
+            : this(incomming.Length) {
+            this.SetStreets(incomming, outgoing);
+        }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="length">Poèet køížení</param>
+        public Crossing(int length) {
+            this.length = length;
+            this.tolerance = new int[this.length];
+            this.minGreen = 10;
+            this.maxTolerance = 43;
+        }
+
+        /// <summary>
+        /// Nastaví vstupující a vystupující ulice
+        /// </summary>
+        /// <param name="incomming">Vstupující ulice</param>
+        /// <param name="outgoing">Vystupující ulice</param>
+        public void SetStreets(Street[] incomming, Street[] outgoing) {
             this.incomming = incomming;
             this.outgoing = outgoing;
-
-            this.tolerance = new int[this.length];
 
             foreach(Street street in this.incomming)
                 street.SetEndCrosing(this);
             foreach(Street street in this.outgoing)
                 street.SetBeginningCrossing(this);
+        }
 
-            this.minGreen = 10;
-            this.maxTolerance = 43;
+        /// <summary>
+        /// Nastaví parametry køižovatky
+        /// </summary>
+        /// <param name="minGreen">Minimální doba zelené (pravidlo 2)</param>
+        /// <param name="maxTolerance">Maximální tolerance (pravidlo 1)</param>
+        public void SetParams(int minGreen, int maxTolerance) {
+            if(minGreen >= 0)
+                this.minGreen = minGreen;
+
+            if(maxTolerance >= 0)
+                this.maxTolerance = maxTolerance;
         }
 
         /// <summary>
@@ -68,6 +97,13 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Poèet aut na køižovatce
+        /// </summary>
+        public override int CarNumber() {
+            return this.data;
+        }
+
+        /// <summary>
         /// Krok výpoètu
         /// </summary>
         public override void Step() {
@@ -79,11 +115,21 @@ namespace PavelStransky.Systems {
         /// Dokonèí krok (pøepne semafor)
         /// </summary>
         public override void FinalizeStep() {
+            if(this.data != this.newData)
+                this.changed = 1;
+            else
+                this.changed = 0;
+
             this.data = this.newData;
             this.greenTime++;
 
             this.ChangeState();
         }
+
+        /// <summary>
+        /// Poèet zmìn
+        /// </summary>
+        public override int Changes { get { return this.changed; } }
 
         /// <summary>
         /// Auto na køižovatce
@@ -194,5 +240,48 @@ namespace PavelStransky.Systems {
                     this.tolerance[i] = 0;
             }
         }
+
+        #region Implementace IExportable
+        /// <summary>
+        /// Uloží Traffic tøídu do souboru
+        /// </summary>
+        /// <param name="export">Export</param>
+        public void Export(Export export) {
+            IEParam param = new IEParam();
+
+            param.Add(this.length, "Length");
+            param.Add(this.state, "State of the traffic lights");
+            param.Add(this.data, "Car in the crossing");
+            param.Add(this.greenTime, "Green time");
+            param.Add(this.minGreen, "Minimum green time");
+            param.Add(this.maxTolerance, "Maximum tolerance");
+
+            // Tolerance
+            for(int i = 0; i < this.length; i++)
+                param.Add(this.tolerance[i]);
+
+            param.Export(export);
+        }
+
+        /// <summary>
+        /// Naète Crossing tøídu ze souboru
+        /// </summary>
+        /// <param name="import">Import</param>
+        public Crossing(Core.Import import) {
+            IEParam param = new IEParam(import);
+
+            this.length = (int)param.Get();
+            this.state = (int)param.Get();
+            this.data = (int)param.Get();
+            this.greenTime = (int)param.Get();
+            this.minGreen = (int)param.Get();
+            this.maxTolerance = (int)param.Get();
+
+            // Tolerance
+            this.tolerance = new int[this.length];
+            for(int i = 0; i < this.length; i++)
+                this.tolerance[i] = (int)param.Get();
+        }
+        #endregion
     }
 }

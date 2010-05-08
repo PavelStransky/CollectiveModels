@@ -39,7 +39,7 @@ namespace PavelStransky.Expression.Functions.Def {
             Traffic.ICType icType = (Traffic.ICType)Enum.Parse(typeof(Traffic.ICType), (string)arguments[2], true);
             
             t.InitialCondition(x, y, icType);
-            return t.GetMatrix();
+            return t;
         }
     }
 }

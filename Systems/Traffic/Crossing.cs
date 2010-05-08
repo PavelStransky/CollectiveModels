@@ -15,7 +15,7 @@ namespace PavelStransky.Systems {
         private int state;
         private int greenTime;
 
-        private int minGreen, maxTolerance;
+        private int minGreen, maxTolerance, cutPlatoon;
 
         private int data, newData, changed;
 
@@ -36,8 +36,10 @@ namespace PavelStransky.Systems {
         public Crossing(int length) {
             this.length = length;
             this.tolerance = new int[this.length];
+
             this.minGreen = 10;
             this.maxTolerance = 43;
+            this.cutPlatoon = 2;
         }
 
         /// <summary>
@@ -60,12 +62,16 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="minGreen">Minimální doba zelené (pravidlo 2)</param>
         /// <param name="maxTolerance">Maximální tolerance (pravidlo 1)</param>
-        public void SetParams(int minGreen, int maxTolerance) {
+        /// <param name="cutPlatton">Maximální poèet aut v blízké vzdálenosti (øezání øady, pravidlo 3)</param>
+        public void SetParams(int minGreen, int maxTolerance, int cutPlatton) {
             if(minGreen >= 0)
                 this.minGreen = minGreen;
 
             if(maxTolerance >= 0)
                 this.maxTolerance = maxTolerance;
+
+            if(cutPlatoon >= 0)
+                this.cutPlatoon = cutPlatoon;
         }
 
         /// <summary>
@@ -124,6 +130,13 @@ namespace PavelStransky.Systems {
             this.greenTime++;
 
             this.ChangeState();
+        }
+
+        /// <summary>
+        /// Vymaže auta z køižovatky
+        /// </summary>
+        public override void Clear() {
+            this.data = 0;
         }
 
         /// <summary>
@@ -206,7 +219,7 @@ namespace PavelStransky.Systems {
             int shortDistance = this.incomming[this.state].ShortDistanceCars();
 
             // Rule 3 - number of the incomming cars in the vicinity of the crossroad
-            if(shortDistance > 0)
+            if(shortDistance <= this.cutPlatoon)
                 return;
 
             // Rule 1
@@ -260,6 +273,8 @@ namespace PavelStransky.Systems {
             for(int i = 0; i < this.length; i++)
                 param.Add(this.tolerance[i]);
 
+            param.Add(this.cutPlatoon, "Cut platoon");
+
             param.Export(export);
         }
 
@@ -281,6 +296,8 @@ namespace PavelStransky.Systems {
             this.tolerance = new int[this.length];
             for(int i = 0; i < this.length; i++)
                 this.tolerance[i] = (int)param.Get();
+
+            this.cutPlatoon = (int)param.Get(2);
         }
         #endregion
     }

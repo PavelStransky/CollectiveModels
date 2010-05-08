@@ -58,12 +58,13 @@ namespace PavelStransky.Systems {
         /// <param name="shortDistanceStopped">Blízkost køižovatky - stojící auta za køižovatkou</param>
         /// <param name="minGreen">Minimální doba zelené</param>
         /// <param name="maxTolerance">Maximální tolerance (pravidlo 1)</param>
-        public void SetParams(int sensorDistance, int shortDistance, int shortDistanceStopped, int minGreen, int maxTolerance) {
+        /// <param name="cutPlatton">Maximální poèet aut v blízké vzdálenosti (øezání øady, pravidlo 3)</param>
+        public void SetParams(int sensorDistance, int shortDistance, int shortDistanceStopped, int minGreen, int maxTolerance, int cutPlatoon) {
             for(int i = 0; i < this.streetsX; i++)
                 for(int j = 0; j < this.streetsY; j++) {
                     this.horizontal[i, j].SetParams(sensorDistance, shortDistance, shortDistanceStopped);
                     this.vertical[i, j].SetParams(sensorDistance, shortDistance, shortDistanceStopped);
-                    this.crossing[i, j].SetParams(minGreen, maxTolerance);
+                    this.crossing[i, j].SetParams(minGreen, maxTolerance, cutPlatoon);
                 }
         }
 
@@ -176,6 +177,11 @@ namespace PavelStransky.Systems {
         /// Nageneruje poèáteèní podmínky
         /// </summary>
         public void InitialCondition(double icx, double icy, ICType type) {
+            // Nulování køižovatek
+            for(int i = 0; i < this.streetsX; i++)
+                for(int j = 0; j < this.streetsY; j++)
+                    this.crossing[i, j].Clear();
+
             switch(type) {
                 case ICType.Probability: {
                         for(int i = 0; i < this.streetsX; i++)

@@ -24,7 +24,7 @@ namespace PavelStransky.Systems {
 
             // Defaultní hodnoty pro parametry systému
             this.sensorDistance = this.length / 2;
-            this.shortDistance = 2;
+            this.shortDistance = 5;
             this.shortDistanceStopped = 2;
         }
 
@@ -167,7 +167,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Vymaže všechna auta z ulice
         /// </summary>
-        public void Clear() {
+        public override void Clear() {
             for(int i = 0; i < this.length; i++)
                 this.data[i] = 0;
         }

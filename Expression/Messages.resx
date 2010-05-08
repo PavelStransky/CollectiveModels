@@ -3090,4 +3090,10 @@ Second differing type: {1}</value>
   <data name="P5TrafficParamsDescription" xml:space="preserve">
     <value>Maximum tolerance for the incomming cars</value>
   </data>
+  <data name="P6TrafficParams" xml:space="preserve">
+    <value>cutplatoon</value>
+  </data>
+  <data name="P6TrafficParamsDescription" xml:space="preserve">
+    <value>Maximum number of cars in the short distance that will pass the lights</value>
+  </data>
 </root>

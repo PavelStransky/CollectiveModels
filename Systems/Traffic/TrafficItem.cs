@@ -28,6 +28,11 @@ namespace PavelStransky.Systems {
         public abstract int CarNumber();
 
         /// <summary>
+        /// Vymaže auta
+        /// </summary>
+        public abstract void Clear();
+
+        /// <summary>
         /// Poèet zmìn v pøedchozím kroku
         /// </summary>
         public abstract int Changes { get;}

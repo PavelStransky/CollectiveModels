@@ -5821,6 +5821,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cutplatoon.
+        /// </summary>
+        internal static string P6TrafficParams {
+            get {
+                return ResourceManager.GetString("P6TrafficParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of cars in the short distance that will pass the lights.
+        /// </summary>
+        internal static string P6TrafficParamsDescription {
+            get {
+                return ResourceManager.GetString("P6TrafficParamsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to tbase.
         /// </summary>
         internal static string P7CorrelatedSignal {

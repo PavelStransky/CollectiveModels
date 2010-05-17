@@ -3096,4 +3096,7 @@ Second differing type: {1}</value>
   <data name="P6TrafficParamsDescription" xml:space="preserve">
     <value>Maximum number of cars in the short distance that will pass the lights</value>
   </data>
+  <data name="HelpCumul" xml:space="preserve">
+    <value>Returns a vector of cumulations sum_{i=0}^{k} s_{k}</value>
+  </data>
 </root>

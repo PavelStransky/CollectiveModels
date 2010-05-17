@@ -2887,6 +2887,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns a vector of cumulations sum_{i=0}^{k} s_{k}.
+        /// </summary>
+        internal static string HelpCumul {
+            get {
+                return ResourceManager.GetString("HelpCumul", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of cumulative Brody distribution.
         /// </summary>
         internal static string HelpCumulBrody {

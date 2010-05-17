@@ -237,6 +237,21 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Celkový poèet pozic na ulicích
+        /// </summary>
+        /// <returns></returns>
+        private int StreetPlace() {
+            return (this.streetsX * this.streetsY) * (this.streetLengthX + streetLengthY);
+        }
+
+        /// <summary>
+        /// Celkový poèet køižovatek
+        /// </summary>
+        private int CrossingNumber() {
+            return this.streetsX * this.streetsY;
+        }
+
+        /// <summary>
         /// Poèet zmìn v posledním kroku
         /// </summary>
         /// <remarks>Mìlo by být sudé èíslo</remarks>
@@ -334,6 +349,9 @@ namespace PavelStransky.Systems {
 
             result.Add(velocity);
             result.Add(lights);
+            result.Add(this.CarNumber());
+            result.Add(this.StreetPlace());
+            result.Add(this.CrossingNumber());
             return result;
         }
 
@@ -416,9 +434,14 @@ namespace PavelStransky.Systems {
             s.Append(string.Format("Street length = ({0}, {1})\n", this.streetLengthX, this.streetLengthY));
             s.Append(string.Format("Topology: {0}\n\n", this.topology.ToString()));
 
-            int places = (this.streetsX * this.streetsY) * (this.streetLengthX + streetLengthY + 1);
+            int streetPlace = this.StreetPlace();
+            int crossings = this.CrossingNumber();
             int cars = this.CarNumber();
-            s.Append(string.Format("Number of places = {0}\n", places));
+            int places = streetPlace + crossings;
+
+            s.Append(string.Format("Number of street places = {0}\n", streetPlace));
+            s.Append(string.Format("Number of crossings = {0}\n", crossings));
+            s.Append(string.Format("Total number of places = {0}\n", places));
             s.Append(string.Format("Number of cars = {0}\n", cars));
             s.Append(string.Format("Density = {0}\n", (double)cars / (double)places));
 

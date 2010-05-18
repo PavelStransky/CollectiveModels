@@ -35,6 +35,8 @@ namespace PavelStransky.Systems {
         /// <param name="length">Poèet køížení</param>
         public Crossing(int length) {
             this.length = length;
+            this.state = -1;
+
             this.tolerance = new int[this.length];
 
             this.minGreen = 10;

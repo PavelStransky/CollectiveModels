@@ -2968,6 +2968,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates a determinant of the matrix.
+        /// </summary>
+        internal static string HelpDeterminant {
+            get {
+                return ResourceManager.GetString("HelpDeterminant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator /.
         /// </summary>
         internal static string HelpDivide {
@@ -4521,6 +4530,15 @@ namespace PavelStransky.Expression {
         internal static string HelpShow {
             get {
                 return ResourceManager.GetString("HelpShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the volume of a simplex given by the vectors of the matrix.
+        /// </summary>
+        internal static string HelpSimplexVolume {
+            get {
+                return ResourceManager.GetString("HelpSimplexVolume", resourceCulture);
             }
         }
         

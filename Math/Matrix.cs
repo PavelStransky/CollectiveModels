@@ -553,6 +553,53 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Vrátí matici, která vznikne z matice pùvodní odstranìním øádku a a sloupce b
+        /// </summary>
+        /// <param name="a">Øádek k odstranìní</param>
+        /// <param name="b">Sloupec k odstranìní</param>
+        public Matrix SubMatrixXY(int a, int b) {
+            int lengthX = this.LengthX;
+            int lengthY = this.LengthY;
+
+            Matrix result = new Matrix(lengthX - 1, lengthY - 1);
+
+            int k = 0;
+            for(int i = 0; i < lengthX; i++) {
+                if(i == a)
+                    continue;
+                int l = 0;
+                for(int j = 0; j < lengthY; j++) {
+                    if(j == b)
+                        continue;
+                    result[k, l] = this[i, j];
+                    l++;
+                }
+                k++;
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Determinant matice
+        /// </summary>
+        public double Determinant() {
+            int length = this.Length;
+            if(this.Length == 1)
+                return this[0, 0];
+
+            double result = 0;
+            for(int i = 0; i < length; i++)
+                if(i % 2 == 0)
+                    result += this[0, i] * this.SubMatrixXY(0, i).Determinant();
+                else
+                    result -= this[0, i] * this.SubMatrixXY(0, i).Determinant();
+
+            return result;
+        }
+
+        /// <summary>
         /// Šíøka pásu, pokud na matici pohlížíme jako na pásovou
         /// </summary>
         public int BandWidth() {

@@ -3099,4 +3099,10 @@ Second differing type: {1}</value>
   <data name="HelpCumul" xml:space="preserve">
     <value>Returns a vector of cumulations sum_{i=0}^{k} s_{k}</value>
   </data>
+  <data name="HelpDeterminant" xml:space="preserve">
+    <value>Calculates a determinant of the matrix</value>
+  </data>
+  <data name="HelpSimplexVolume" xml:space="preserve">
+    <value>Calculates the volume of a simplex given by the vectors of the matrix</value>
+  </data>
 </root>

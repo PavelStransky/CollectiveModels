@@ -22,7 +22,7 @@ namespace PavelStransky.Systems {
 
         private Random random = new Random();
 
-        private int streetLengthX, streetLengthY;
+        private int streetLengthXMin, streetLengthXMax, streetLengthYMin, streetLengthYMax;
         private TrafficTopology topology;
 
         private int streetsX, streetsY;
@@ -36,14 +36,18 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="streetsX">Poèet ulic ve smìru X</param>
         /// <param name="streetsY">Poèet ulic ve smìru Y</param>
-        /// <param name="streetLengthX">Délka ulice X</param>
-        /// <param name="streetLengthY">Délka ulice Y</param>
+        /// <param name="streetLengthXMin">Délka ulice X (minimum)</param>
+        /// <param name="streetLengthXMax">Délka ulice X (maximum)</param>
+        /// <param name="streetLengthYMin">Délka ulice Y (minimum)</param>
+        /// <param name="streetLengthYMax">Délka ulice Y (maximum)</param>
         /// <param name="topology">Topologie</param>
-        public Traffic(int streetsX, int streetsY, int streetLengthX, int streetLengthY, TrafficTopology topology) {
+        public Traffic(int streetsX, int streetsY, int streetLengthXMin, int streetLengthXMax, int streetLengthYMin, int streetLengthYMax, TrafficTopology topology) {
             this.streetsX = streetsX;
             this.streetsY = streetsY;
-            this.streetLengthX = streetLengthX;
-            this.streetLengthY = streetLengthY;
+            this.streetLengthXMax = streetLengthXMax;
+            this.streetLengthXMin = streetLengthXMin;
+            this.streetLengthYMax = streetLengthYMax;
+            this.streetLengthYMin = streetLengthYMin;
 
             this.topology = topology;
 
@@ -81,8 +85,8 @@ namespace PavelStransky.Systems {
             // Ulice
             for(int i = 0; i < this.streetsX; i++)
                 for(int j = 0; j < this.streetsY; j++) {
-                    this.horizontal[i, j] = new Street(streetLengthX);
-                    this.vertical[i, j] = new Street(streetLengthY);
+                    this.horizontal[i, j] = new Street(streetLengthXMin, streetLengthXMax);
+                    this.vertical[i, j] = new Street(streetLengthYMin, streetLengthYMax);
 
                     this.trafficItems.Add(this.horizontal[i, j]);
                     this.trafficItems.Add(this.vertical[i, j]);
@@ -241,7 +245,11 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <returns></returns>
         private int StreetPlace() {
-            return (this.streetsX * this.streetsY) * (this.streetLengthX + streetLengthY);
+            int result = 0;
+            for(int i = 0; i < this.streetsX; i++)
+                for(int j = 0; j < this.streetsY; j++)
+                    result += this.horizontal[i, j].Length + this.vertical[i, j].Length;
+            return result;
         }
 
         /// <summary>
@@ -266,24 +274,24 @@ namespace PavelStransky.Systems {
         /// Provede krok a vrátí stav jako matici
         /// </summary>
         public Matrix GetMatrix() {
-            Matrix result = new Matrix((this.streetsX + 1) * (this.streetLengthX + 1), (this.streetsY + 1) * (this.streetLengthY + 1));
+            Matrix result = new Matrix((this.streetsX + 1) * (this.streetLengthXMax + 1), (this.streetsY + 1) * (this.streetLengthYMax + 1));
             result.Fill(-1.0);
 
             for(int i = 0; i < this.streetsX; i++)
                 for(int j = 0; j < this.streetsY; j++) {
-                    int offsetXh = (i + 1) * (this.streetLengthX + 1) - 1;
-                    int offsetYh = (j + (i % 2 == 0 ? 0 : 1)) * (this.streetLengthY + 1);
+                    int offsetXh = (i + 1) * (this.streetLengthXMax + 1) - 1;
+                    int offsetYh = (j + (i % 2 == 0 ? 0 : 1)) * (this.streetLengthYMax + 1);
                     Street sh = this.horizontal[i, j];
-                    for(int h = 0; h < this.streetLengthY; h++)
+                    for(int h = 0; h < this.streetLengthYMax; h++)
                         if(i % 2 == 0)
                             result[offsetXh, offsetYh + h] = sh.Get(h);
                         else
                             result[offsetXh, offsetYh + h] = sh.GetReverse(h);
 
-                    int offsetXv = (i + (j % 2 == 0 ? 1 : 0)) * (this.streetLengthX + 1);
-                    int offsetYv = (j + 1) * (this.streetLengthY + 1) - 1;
+                    int offsetXv = (i + (j % 2 == 0 ? 1 : 0)) * (this.streetLengthXMax + 1);
+                    int offsetYv = (j + 1) * (this.streetLengthYMax + 1) - 1;
                     Street sv = this.vertical[i, j];
-                    for(int v = 0; v < this.streetLengthX; v++)
+                    for(int v = 0; v < this.streetLengthXMax; v++)
                         if(j % 2 == 0)
                             result[offsetXv + v, offsetYv] = sv.GetReverse(v);
                         else
@@ -365,8 +373,8 @@ namespace PavelStransky.Systems {
 
             param.Add(this.streetsX, "Streets X");
             param.Add(this.streetsY, "Streets Y");
-            param.Add(this.streetLengthX, "Length of the streets X");
-            param.Add(this.streetLengthY, "Length of the streets Y");
+            param.Add(this.streetLengthXMin, "Length of the streets X (min)");
+            param.Add(this.streetLengthYMin, "Length of the streets Y (min)");
             param.Add(this.topology.ToString(), "Topology");
 
             // Ulice
@@ -381,6 +389,9 @@ namespace PavelStransky.Systems {
                 for(int j = 0; j < this.streetsY; j++)
                     param.Add(this.crossing[i, j]);
 
+            param.Add(this.streetLengthXMax, "Length of the streets X (max)");
+            param.Add(this.streetLengthYMax, "Length of the streets Y (max)");
+
             param.Export(export);
         }
 
@@ -393,8 +404,8 @@ namespace PavelStransky.Systems {
 
             this.streetsX = (int)param.Get();
             this.streetsY = (int)param.Get();
-            this.streetLengthX = (int)param.Get();
-            this.streetLengthY = (int)param.Get();
+            this.streetLengthXMin = (int)param.Get();
+            this.streetLengthYMin = (int)param.Get();
 
             this.topology = (TrafficTopology)Enum.Parse(typeof(TrafficTopology), (string)param.Get(), true);
 
@@ -420,6 +431,9 @@ namespace PavelStransky.Systems {
                     this.trafficItems.Add(this.crossing[i, j]);
                 }
 
+            this.streetLengthXMax = (int)param.Get(this.streetLengthXMin);
+            this.streetLengthYMax = (int)param.Get(this.streetLengthYMin);
+
             this.SetTopology();
         }
         #endregion
@@ -431,7 +445,17 @@ namespace PavelStransky.Systems {
             StringBuilder s = new StringBuilder();
 
             s.Append(string.Format("Street mesh = ({0}, {1})\n", this.streetsX, this.streetsY));
-            s.Append(string.Format("Street length = ({0}, {1})\n", this.streetLengthX, this.streetLengthY));
+            s.Append(string.Format("Street length = ("));
+            if(this.streetLengthXMin != this.streetLengthXMax)
+                s.Append(string.Format("({0}, {1})", this.streetLengthXMin, this.streetLengthXMax));
+            else
+                s.Append(this.streetLengthXMin);
+            s.Append(", ");
+            if(this.streetLengthYMin != this.streetLengthYMax)
+                s.Append(string.Format("({0}, {1})", this.streetLengthYMin, this.streetLengthYMax));
+            else
+                s.Append(this.streetLengthYMin);            
+            s.Append(")\n");
             s.Append(string.Format("Topology: {0}\n\n", this.topology.ToString()));
 
             int streetPlace = this.StreetPlace();

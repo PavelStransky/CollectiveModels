@@ -64,8 +64,8 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="minGreen">Minimální doba zelené (pravidlo 2)</param>
         /// <param name="maxTolerance">Maximální tolerance (pravidlo 1)</param>
-        /// <param name="cutPlatton">Maximální poèet aut v blízké vzdálenosti (øezání øady, pravidlo 3)</param>
-        public void SetParams(int minGreen, int maxTolerance, int cutPlatton) {
+        /// <param name="cutPlatoon">Maximální poèet aut v blízké vzdálenosti (øezání øady, pravidlo 3)</param>
+        public void SetParams(int minGreen, int maxTolerance, int cutPlatoon) {
             if(minGreen >= 0)
                 this.minGreen = minGreen;
 

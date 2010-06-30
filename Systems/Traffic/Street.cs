@@ -18,8 +18,8 @@ namespace PavelStransky.Systems {
         /// Konstruktor
         /// </summary>
         /// <param name="length">Délka ulice</param>
-        public Street(int length) {
-            this.length = length;
+        public Street(int lengthMin, int lengthMax) {
+            this.length = random.Next(lengthMin, lengthMax + 1);
             this.data = new int[this.length];
 
             // Defaultní hodnoty pro parametry systému
@@ -90,10 +90,18 @@ namespace PavelStransky.Systems {
         public int Last { get { return this.data[this.length - 1]; } }
 
         /// <summary>
+        /// Délka ulice
+        /// </summary>
+        public int Length { get { return this.length; } }
+
+        /// <summary>
         /// Vrátí prvek na dané pozici
         /// </summary>
         public int Get(int i) {
-            return this.data[i];
+            if(i < this.length)
+                return this.data[i];
+            else
+                return -1;
         }
 
         /// <summary>
@@ -110,7 +118,10 @@ namespace PavelStransky.Systems {
         /// Vrátí prvek na dané pozici od konce ulice
         /// </summary>
         public int GetReverse(int i) {
-            return this.data[this.length - i - 1];
+            if(i < this.length)
+                return this.data[this.length - i - 1];
+            else
+                return -1;
         }
 
         /// <summary>

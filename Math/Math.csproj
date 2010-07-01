@@ -123,6 +123,7 @@
     <Compile Include="DiscreteInterval.cs" />
     <Compile Include="Dynamics\AverageInvariant.cs" />
     <Compile Include="Dynamics\ExactBounds.cs" />
+    <Compile Include="Dynamics\Lyapunov.cs" />
     <Compile Include="Dynamics\PeriodicOrbit.cs" />
     <Compile Include="Dynamics\SALIContourGraph.cs" />
     <Compile Include="Dynamics\Trajectory.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Delegates.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GramSchmidt.cs" />
     <Compile Include="IMinMax.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="Jacobi.cs">
@@ -140,6 +142,7 @@
     </Compile>
     <Compile Include="LongFraction.cs" />
     <Compile Include="LongNumber.cs" />
+    <Compile Include="MathExceptions.cs" />
     <Compile Include="Matrix.cs">
       <SubType>Code</SubType>
     </Compile>

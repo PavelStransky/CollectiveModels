@@ -134,6 +134,7 @@
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\Dynamics\DPXY.cs" />
+    <Compile Include="Functions\Dynamics\Lyapunov.cs" />
     <Compile Include="Functions\Dynamics\PSTimes.cs" />
     <Compile Include="Functions\Dynamics\Systems\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />

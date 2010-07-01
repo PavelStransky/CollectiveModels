@@ -123,6 +123,12 @@
   <data name="EMBadDimension" xml:space="preserve">
     <value>Bad number of degrees of freedom.</value>
   </data>
+  <data name="EMGSLengths" xml:space="preserve">
+    <value>The lengths of vectors must be the same as their number.</value>
+  </data>
+  <data name="EMGSLengthsDetail" xml:space="preserve">
+    <value>Number of vectors: {0}\nLength of vector {1}: {2}</value>
+  </data>
   <data name="EMNoCross" xml:space="preserve">
     <value>The trajectory with given initial conditions does not cross the plane of the Poincaré section.</value>
   </data>

@@ -34,7 +34,7 @@ namespace PavelStransky.Core {
         /// </summary>
         /// <param name="fileName">Soubor k otevøení</param>
         public Export(string fileName, bool binary) {
-            this.f = new FileStream(fileName, FileMode.Create);
+             this.f = new FileStream(fileName, FileMode.Create);
 
             this.binary = binary;
 

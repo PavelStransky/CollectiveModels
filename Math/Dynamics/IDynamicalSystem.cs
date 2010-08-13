@@ -53,6 +53,12 @@ namespace PavelStransky.Math {
         Vector Bounds(double e);
 
         /// <summary>
+        /// Kontrola hranièních podmínek
+        /// </summary>
+        /// <param name="bounds">Hranice</param>
+        Vector CheckBounds(Vector bounds);
+
+        /// <summary>
         /// Poèet stupòù volnosti
         /// </summary>
         int DegreesOfFreedom { get;}

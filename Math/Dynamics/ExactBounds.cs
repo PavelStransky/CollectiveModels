@@ -242,7 +242,7 @@ namespace PavelStransky.Math {
                 }
             }
 
-            return boundX;
+            return dynamicalSystem.CheckBounds(boundX);
         }
     }
 }

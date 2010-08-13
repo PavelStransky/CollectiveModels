@@ -88,6 +88,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Kontrola poèáteèních podmínek
+        /// </summary>
+        /// <param name="bounds">Poèáteèní podmínky</param>
+        public Vector CheckBounds(Vector bounds) {
+            return bounds;
+        }
+
+        /// <summary>
         /// NEFUNGUJE !!!
         /// </summary>
         public double PeresInvariant(Vector x) {

@@ -425,6 +425,14 @@ namespace PavelStransky.Systems {
             throw new Exception("The method or operation is not implemented.");
         }
 
+        /// <summary>
+        /// Kontrola poèáteèních podmínek
+        /// </summary>
+        /// <param name="bounds">Poèáteèní podmínky</param>
+        public Vector CheckBounds(Vector bounds) {
+            return bounds;
+        }
+
         public double PeresInvariant(Vector x) {
             throw new Exception("The method or operation is not implemented.");
         }

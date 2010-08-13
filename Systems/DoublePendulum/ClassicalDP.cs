@@ -354,6 +354,20 @@ namespace PavelStransky.Systems {
             return result;
         }
 
+        /// <summary>
+        /// Kontrola poèáteèních podmínek
+        /// </summary>
+        /// <param name="bounds">Poèáteèní podmínky</param>
+        public Vector CheckBounds(Vector bounds) {
+            // poèáteèní podmínky ve smìru x, y pouze v rozmezí (-pi, pi)
+            bounds[0] = System.Math.Max(bounds[0], -System.Math.PI);
+            bounds[1] = System.Math.Min(bounds[1], System.Math.PI);
+            bounds[2] = System.Math.Max(bounds[2], -System.Math.PI);
+            bounds[3] = System.Math.Min(bounds[3], System.Math.PI);
+
+            return bounds;
+        }
+
         public int DegreesOfFreedom { get { return 2; } }
 
         public double PeresInvariant(Vector x) {

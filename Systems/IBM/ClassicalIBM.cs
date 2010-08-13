@@ -262,8 +262,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// NEFUNGUJE!!!
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
+        /// <param name="e">Energie</param>
         public Vector Bounds(double e) {
             Vector result = new Vector(8);
 
@@ -274,6 +273,14 @@ namespace PavelStransky.Systems {
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Kontrola poèáteèních podmínek
+        /// </summary>
+        /// <param name="bounds">Poèáteèní podmínky</param>
+        public Vector CheckBounds(Vector bounds) {
+            return bounds;
         }
 
         /// <summary>

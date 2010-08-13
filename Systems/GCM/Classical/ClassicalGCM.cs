@@ -224,6 +224,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Kontrola poèáteèních podmínek
+        /// </summary>
+        /// <param name="bounds">Poèáteèní podmínky</param>
+        public Vector CheckBounds(Vector bounds) {
+            return bounds;
+        }
+
+        /// <summary>
         /// Peresùv invariant
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>

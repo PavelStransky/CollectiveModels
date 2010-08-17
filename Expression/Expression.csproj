@@ -186,6 +186,7 @@
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Matrix\MatrixUnit.cs" />
     <Compile Include="Functions\Matrix\Transpose.cs" />
+    <Compile Include="Functions\Statistics\ShotNoise.cs" />
     <Compile Include="Functions\Vector\Cumul.cs" />
     <Compile Include="Functions\Vector\GetIndex.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />

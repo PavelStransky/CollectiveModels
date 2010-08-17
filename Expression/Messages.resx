@@ -3105,4 +3105,25 @@ Second differing type: {1}</value>
   <data name="HelpSimplexVolume" xml:space="preserve">
     <value>Calculates the volume of a simplex given by the vectors of the matrix</value>
   </data>
+  <data name="HelpShotNoise" xml:space="preserve">
+    <value>Generates a vector with shot noise values</value>
+  </data>
+  <data name="PAmplitudes" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="PAmplitudesDescription" xml:space="preserve">
+    <value>Amplitudes of the individual processess</value>
+  </data>
+  <data name="PPoissonianIntensity" xml:space="preserve">
+    <value>lambda</value>
+  </data>
+  <data name="PPoissonianIntensityDescription" xml:space="preserve">
+    <value>Poissonian intensity</value>
+  </data>
+  <data name="PRelaxationRate" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="PRelaxationRateDescription" xml:space="preserve">
+    <value>Relaxation rate</value>
+  </data>
 </root>

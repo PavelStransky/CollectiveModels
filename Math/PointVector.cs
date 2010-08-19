@@ -756,6 +756,37 @@ namespace PavelStransky.Math {
             return result;
         }
 
+        /// <summary>
+        /// Lineárnì navzorkuje daný vektor v daných bodech (použije lineární interpolaci a extrapolaci)
+        /// </summary>
+        /// <param name="points">Koncové body</param>
+        public PointVector Sample(Vector points) {
+            PointVector pv = this.Clone() as PointVector;
+
+            int length = points.Length;
+            PointVector result = new PointVector(length);
+            for(int i = 0; i < length; i++) {
+                double x = points[i];
+
+                if(pv.FirstItem.X > x)
+                    result[i] = PointD.Interpolate(pv[0], pv[1], x);
+                else if(pv.LastItem.X < x)
+                    result[i] = PointD.Interpolate(pv.LastItem, pv[pv.Length - 2], x);
+                else
+                for(int j = 0; j < pv.Length; j++) {
+                    if(pv[j].X == x) {
+                        result[i] = new PointD(x, pv[j].Y);
+                        break;
+                    }
+                    if(pv[j].X > x) {
+                        result[i] = PointD.Interpolate(pv[j - 1], pv[j], x);
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
 
         private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
         private const string errorMessageDifferentLength = "K provedení operace musí mít vektory stejnou délku.";

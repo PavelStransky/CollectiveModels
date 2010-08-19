@@ -73,6 +73,17 @@ namespace PavelStransky.Math {
             return System.Math.Sqrt(dx * dx + dy * dy);
         }
 
+        /// <summary>
+        /// Lineárnì interpoluje (extrapoluje) dva body a vrátí tøetí bod
+        /// </summary>
+        /// <param name="p1">První bod</param>
+        /// <param name="p2">Druhý bod</param>
+        /// <param name="x">Bod, ve kterém hledáme hodnotu</param>
+        public static PointD Interpolate(PointD p1, PointD p2, double x) {
+            double y = (x - p1.X) / (p2.X - p1.X) * (p2.Y - p1.Y) + p1.Y;
+            return new PointD(x, y);
+        }
+
         public override string ToString() {
             return string.Format("X = {0}, Y = {1}", this.x, this.y);
         }

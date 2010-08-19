@@ -219,6 +219,7 @@
     <Compile Include="Functions\Math\Tanh.cs" />
     <Compile Include="Functions\Vector\Crop.cs" />
     <Compile Include="Functions\Vector\Intersection.cs" />
+    <Compile Include="Functions\Vector\Sample.cs" />
     <Compile Include="Functions\Vector\Stairs.cs" />
     <Compile Include="Functions\Vector\SwapXY.cs" />
     <Compile Include="Functions\Vector\SymmetryParameter.cs" />

@@ -3126,4 +3126,13 @@ Second differing type: {1}</value>
   <data name="PRelaxationRateDescription" xml:space="preserve">
     <value>Relaxation rate</value>
   </data>
+  <data name="HelpSample" xml:space="preserve">
+    <value>Samples the pointvector in the points of the given vector</value>
+  </data>
+  <data name="PSamplingPoints" xml:space="preserve">
+    <value>sp</value>
+  </data>
+  <data name="PSamplingPointsDescription" xml:space="preserve">
+    <value>Sapmpling points</value>
+  </data>
 </root>

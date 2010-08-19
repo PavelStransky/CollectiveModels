@@ -4453,6 +4453,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Samples the pointvector in the points of the given vector.
+        /// </summary>
+        internal static string HelpSample {
+            get {
+                return ResourceManager.GetString("HelpSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saves current document into a file.
         /// </summary>
         internal static string HelpSave {
@@ -8166,6 +8175,24 @@ namespace PavelStransky.Expression {
         internal static string PRungeKuttaMethod {
             get {
                 return ResourceManager.GetString("PRungeKuttaMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sp.
+        /// </summary>
+        internal static string PSamplingPoints {
+            get {
+                return ResourceManager.GetString("PSamplingPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sapmpling points.
+        /// </summary>
+        internal static string PSamplingPointsDescription {
+            get {
+                return ResourceManager.GetString("PSamplingPointsDescription", resourceCulture);
             }
         }
         

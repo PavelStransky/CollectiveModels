@@ -2977,6 +2977,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detrended fluctuation analysis of a given time series.
+        /// </summary>
+        internal static string HelpDFA {
+            get {
+                return ResourceManager.GetString("HelpDFA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator /.
         /// </summary>
         internal static string HelpDivide {
@@ -3765,6 +3774,15 @@ namespace PavelStransky.Expression {
         internal static string HelpLog {
             get {
                 return ResourceManager.GetString("HelpLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From both x and y values of a pointvector calculates log_10.
+        /// </summary>
+        internal static string HelpLogLog {
+            get {
+                return ResourceManager.GetString("HelpLogLog", resourceCulture);
             }
         }
         
@@ -8211,6 +8229,24 @@ namespace PavelStransky.Expression {
         internal static string PSamplingRateDescription {
             get {
                 return ResourceManager.GetString("PSamplingRateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        internal static string PScaleParameter {
+            get {
+                return ResourceManager.GetString("PScaleParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scale parameter.
+        /// </summary>
+        internal static string PScaleParameterDescription {
+            get {
+                return ResourceManager.GetString("PScaleParameterDescription", resourceCulture);
             }
         }
         

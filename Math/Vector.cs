@@ -1259,6 +1259,45 @@ namespace PavelStransky.Math {
             return result;
         }
 
+        /// <summary>
+        /// Detrended fluctuation analysis
+        /// </summary>
+        public PointVector DFA() {
+            int length = this.Length;
+            int minlength = 3;
+            int maxlength = length / 3;
+
+            PointVector result = new PointVector(maxlength - minlength + 1);
+
+            for(int i = minlength; i < maxlength; i++) {
+                PointVector v = new PointVector(i);
+                for(int j = 0; j < i; j++)
+                    v[j] = new PointD(j, 0.0);
+
+                int numi = (length - 1) / i + 1;
+                
+                double sqr = 0.0;
+
+                for(int j = 0; j < numi; j++) {
+                    int starti = j * (length - i) / (numi - 1);
+
+                    for(int k = 0; k < i; k++)
+                        v[k].Y = this[starti + k];
+
+                    Vector r = Regression.ComputeLinear(v);
+
+                    for(int k = 0; k < i; k++) {
+                        double d = this[starti + k] - r[0] - r[1] * k;
+                        sqr += d * d;
+                    }
+                }
+
+                result[i - minlength] = new PointD(i, System.Math.Sqrt(sqr / (numi * i)));
+            }
+
+            return result;
+        }
+
         private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
 		private const string errorMessageDifferentLength = "K provedení operace musí mít vektory stejnou délku.";
 		private const string errorMessageMatrixVector = "Pøi násobení matice a vektoru musí mít oba objekty kompatibilní rozmìry.";

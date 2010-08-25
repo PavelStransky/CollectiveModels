@@ -188,6 +188,7 @@
     <Compile Include="Functions\Matrix\Transpose.cs" />
     <Compile Include="Functions\Statistics\ShotNoise.cs" />
     <Compile Include="Functions\Vector\Cumul.cs" />
+    <Compile Include="Functions\Vector\DFA.cs" />
     <Compile Include="Functions\Vector\GetIndex.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />
     <Compile Include="Functions\Program\ExportVector3D.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
     <Compile Include="Functions\Statistics\BinMean.cs" />
     <Compile Include="Functions\Vector\FullSmooth.cs" />
+    <Compile Include="Functions\Vector\LogLog.cs" />
     <Compile Include="Functions\Vector\PCN.cs" />
     <Compile Include="Functions\Quantum\ProbabilityAmplitude.cs" />
     <Compile Include="Functions\Quantum\Systems\PT3.cs" />

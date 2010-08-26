@@ -3147,4 +3147,10 @@ Second differing type: {1}</value>
   <data name="PScaleParameterDescription" xml:space="preserve">
     <value>Scale parameter</value>
   </data>
+  <data name="PAllPoints" xml:space="preserve">
+    <value>allp</value>
+  </data>
+  <data name="PAllPointsDescription" xml:space="preserve">
+    <value>True if you want to include all points</value>
+  </data>
 </root>

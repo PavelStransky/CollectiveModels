@@ -5974,6 +5974,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to allp.
+        /// </summary>
+        internal static string PAllPoints {
+            get {
+                return ResourceManager.GetString("PAllPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if you want to include all points.
+        /// </summary>
+        internal static string PAllPointsDescription {
+            get {
+                return ResourceManager.GetString("PAllPointsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to a.
         /// </summary>
         internal static string PAmplitudes {

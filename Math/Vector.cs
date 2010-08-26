@@ -1262,34 +1262,37 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Detrended fluctuation analysis
         /// </summary>
-        public PointVector DFA() {
+        /// <param name="allPoints">All points for calculation</param>
+        public PointVector DFA(bool allPoints) {
             int length = this.Length;
-            int minlength = 3;
-            int maxlength = length / 3;
+            int minlength = 4;
+            int maxlength = length / 4;
 
             PointVector result = new PointVector(maxlength - minlength + 1);
 
-            for(int i = minlength; i < maxlength; i++) {
+            for(int i = minlength; i <= maxlength; i++) {
                 PointVector v = new PointVector(i);
                 for(int j = 0; j < i; j++)
                     v[j] = new PointD(j, 0.0);
 
-                int numi = (length - 1) / i + 1;
-                
+                int numi = 
+                    allPoints 
+                    ? (length - 1) / i + 1
+                    : length / i;
+
                 double sqr = 0.0;
 
                 for(int j = 0; j < numi; j++) {
-                    int starti = j * (length - i) / (numi - 1);
+                    int starti = 
+                        allPoints
+                        ? j * (length - i) / (numi - 1)
+                        : j * i;
 
                     for(int k = 0; k < i; k++)
                         v[k].Y = this[starti + k];
 
                     Vector r = Regression.ComputeLinear(v);
-
-                    for(int k = 0; k < i; k++) {
-                        double d = this[starti + k] - r[0] - r[1] * k;
-                        sqr += d * d;
-                    }
+                    sqr += r[5];
                 }
 
                 result[i - minlength] = new PointD(i, System.Math.Sqrt(sqr / (numi * i)));

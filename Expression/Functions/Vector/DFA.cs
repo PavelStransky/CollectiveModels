@@ -13,12 +13,15 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpDFA; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(1);
-            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, typeof(Vector));
+            this.SetNumParams(2);
+            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector));
+            this.SetParam(1, false, true, false, Messages.PAllPoints, Messages.PAllPointsDescription, false, typeof(bool)); 
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return (arguments[0] as Vector).DFA();
+            bool allPoints = (bool)arguments[1];
+
+            return (arguments[0] as Vector).DFA(allPoints);
         }
     }
 }

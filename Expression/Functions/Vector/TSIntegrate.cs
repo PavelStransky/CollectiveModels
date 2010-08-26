@@ -26,7 +26,7 @@ namespace PavelStransky.Expression.Functions.Def {
             result[0] = v[0] - mean;
 
             for(int i = 1; i < length; i++)
-                result[i] = result[i - 1] - mean;
+                result[i] = v[i] + result[i - 1] - mean;
 
             return result;
         }

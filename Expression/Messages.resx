@@ -1441,7 +1441,7 @@ Length of the second vector: {1}</value>
     <value>{0} Bytes</value>
   </data>
   <data name="MsgParsing" xml:space="preserve">
-    <value>`</value>
+    <value>Parsing...</value>
   </data>
   <data name="MsgReadingPage" xml:space="preserve">
     <value>Reading page...</value>
@@ -3152,5 +3152,38 @@ Second differing type: {1}</value>
   </data>
   <data name="PAllPointsDescription" xml:space="preserve">
     <value>True if you want to include all points</value>
+  </data>
+  <data name="CDFENucleusPage" xml:space="preserve">
+    <value>Reading nucleus Z={0}, A={1}</value>
+  </data>
+  <data name="PMassNumber" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="PMassNumberDescription" xml:space="preserve">
+    <value>Mass number</value>
+  </data>
+  <data name="PProtonNumber" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="PProtonNumberDescription" xml:space="preserve">
+    <value>Proton number</value>
+  </data>
+  <data name="HelpCDFE" xml:space="preserve">
+    <value>Reads all accessible pieces of information about an izotope from http://cdfe.sinp.msu.ru/cgi-bin/muh/radchartnucl.cgi</value>
+  </data>
+  <data name="HelpCDFEMaxBeta" xml:space="preserve">
+    <value>Find the maximum value of the deformation parameter</value>
+  </data>
+  <data name="PCDFE" xml:space="preserve">
+    <value>cdfe</value>
+  </data>
+  <data name="PCDFEBeta" xml:space="preserve">
+    <value>beta</value>
+  </data>
+  <data name="PCDFEBetaDescription" xml:space="preserve">
+    <value>Which values of beta is going to be taken (0...Qmom, 1...B(E2), 2...Theory)</value>
+  </data>
+  <data name="PCDFEDescription" xml:space="preserve">
+    <value>Result of the function CDFE</value>
   </data>
 </root>

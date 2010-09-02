@@ -61,6 +61,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reading nucleus Z={0}, A={1}.
+        /// </summary>
+        internal static string CDFENucleusPage {
+            get {
+                return ResourceManager.GetString("CDFENucleusPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There must be an array in the file..
         /// </summary>
         internal static string EMArrayInFile {
@@ -2716,6 +2725,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reads all accessible pieces of information about an izotope from http://cdfe.sinp.msu.ru/cgi-bin/muh/radchartnucl.cgi.
+        /// </summary>
+        internal static string HelpCDFE {
+            get {
+                return ResourceManager.GetString("HelpCDFE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find the maximum value of the deformation parameter.
+        /// </summary>
+        internal static string HelpCDFEMaxBeta {
+            get {
+                return ResourceManager.GetString("HelpCDFEMaxBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a ClassicalGCM class (nonrotating case with simple kinetic term).
         /// </summary>
         internal static string HelpCGCM {
@@ -4993,7 +5020,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to `.
+        ///   Looks up a localized string similar to Parsing....
         /// </summary>
         internal static string MsgParsing {
             get {
@@ -6150,6 +6177,42 @@ namespace PavelStransky.Expression {
         internal static string PCDescription {
             get {
                 return ResourceManager.GetString("PCDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cdfe.
+        /// </summary>
+        internal static string PCDFE {
+            get {
+                return ResourceManager.GetString("PCDFE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to beta.
+        /// </summary>
+        internal static string PCDFEBeta {
+            get {
+                return ResourceManager.GetString("PCDFEBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which values of beta is going to be taken (0...Qmom, 1...B(E2), 2...Theory).
+        /// </summary>
+        internal static string PCDFEBetaDescription {
+            get {
+                return ResourceManager.GetString("PCDFEBetaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result of the function CDFE.
+        /// </summary>
+        internal static string PCDFEDescription {
+            get {
+                return ResourceManager.GetString("PCDFEDescription", resourceCulture);
             }
         }
         
@@ -7333,6 +7396,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A.
+        /// </summary>
+        internal static string PMassNumber {
+            get {
+                return ResourceManager.GetString("PMassNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mass number.
+        /// </summary>
+        internal static string PMassNumberDescription {
+            get {
+                return ResourceManager.GetString("PMassNumberDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to matrix.
         /// </summary>
         internal static string PMatrix {
@@ -8067,6 +8148,24 @@ namespace PavelStransky.Expression {
         internal static string PPrecisionEnergyDescription {
             get {
                 return ResourceManager.GetString("PPrecisionEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z.
+        /// </summary>
+        internal static string PProtonNumber {
+            get {
+                return ResourceManager.GetString("PProtonNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proton number.
+        /// </summary>
+        internal static string PProtonNumberDescription {
+            get {
+                return ResourceManager.GetString("PProtonNumberDescription", resourceCulture);
             }
         }
         

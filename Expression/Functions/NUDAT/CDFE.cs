@@ -284,7 +284,8 @@ namespace PavelStransky.Expression.Functions.Def {
             result.Add(data);
 
             guider.Write(string.Format(Messages.MsgBytes, pageContent.Length));
-            guider.WriteLine(". ");
+            guider.Write("...");
+            guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
 
             return result;
         }

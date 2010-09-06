@@ -113,9 +113,14 @@ namespace PavelStransky.Expression.Functions.Def {
                         d.Add(0);
 
                     i2 = number.IndexOf("#");
-                    d.Add(double.Parse(number.Substring(0, i2)));
-                    d.Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
-
+                    if(i2 >= 0) {
+                        d.Add(double.Parse(number.Substring(0, i2)));
+                        d.Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    }
+                    else {
+                        d.Add(double.Parse(number));
+                        d.Add(0.0);
+                    }
                     i1 = pageContent.IndexOf("<td", i1, StringComparison.InvariantCultureIgnoreCase);
                     i1 = pageContent.IndexOf(">", i1 + 1) + 1;
 
@@ -144,8 +149,14 @@ namespace PavelStransky.Expression.Functions.Def {
                         (data[i] as List).Add(0);
 
                     i2 = number.IndexOf("#");
-                    (data[i] as List).Add(double.Parse(number.Substring(0, i2)));
-                    (data[i] as List).Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    if(i2 >= 0) {
+                        (data[i] as List).Add(double.Parse(number.Substring(0, i2)));
+                        (data[i] as List).Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    }
+                    else {
+                        (data[i] as List).Add(double.Parse(number));
+                        (data[i] as List).Add(0.0);
+                    }
 
                     i1 = pageContent.IndexOf("<td", i1, StringComparison.InvariantCultureIgnoreCase);
                     i1 = pageContent.IndexOf(">", i1 + 1) + 1;
@@ -161,6 +172,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     i2 = pageContent.IndexOf("</a", i1, StringComparison.InvariantCultureIgnoreCase);
 
                     string link = pageContent.Substring(i1, i2 - i1);
+                    link.Replace("&nbsp;", " ").Trim();
                     (data[i] as List).Add(link);
 
                     i1 = pageContent.IndexOf("<td", i1, StringComparison.InvariantCultureIgnoreCase);
@@ -175,6 +187,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     i2 = pageContent.IndexOf("</td", i1, StringComparison.InvariantCultureIgnoreCase);
 
                     string link = pageContent.Substring(i1, i2 - i1);
+                    link.Replace("&nbsp;", " ").Trim();
                     (data[i] as List).Add(link);
 
                     i1 = pageContent.IndexOf("<td", i1, StringComparison.InvariantCultureIgnoreCase);
@@ -223,8 +236,14 @@ namespace PavelStransky.Expression.Functions.Def {
                         d.Add(0);
 
                     i2 = number.IndexOf("#");
-                    d.Add(double.Parse(number.Substring(0, i2)));
-                    d.Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    if(i2 >= 0) {
+                        d.Add(double.Parse(number.Substring(0, i2)));
+                        d.Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    }
+                    else {
+                        d.Add(double.Parse(number));
+                        d.Add(0.0);
+                    } 
 
                     i1 = pageContent.IndexOf("<td", i1, StringComparison.InvariantCultureIgnoreCase);
                     i1 = pageContent.IndexOf(">", i1 + 1) + 1;
@@ -272,8 +291,14 @@ namespace PavelStransky.Expression.Functions.Def {
                         d.Add(0);
 
                     i2 = number.IndexOf("#");
-                    d.Add(double.Parse(number.Substring(0, i2)));
-                    d.Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    if(i2 >= 0) {
+                        d.Add(double.Parse(number.Substring(0, i2)));
+                        d.Add(double.Parse(number.Substring(i2 + 1, number.Length - i2 - 1)));
+                    }
+                    else {
+                        d.Add(double.Parse(number));
+                        d.Add(0.0);
+                    } 
 
                     i1 = pageContent.IndexOf("<td", i1, StringComparison.InvariantCultureIgnoreCase);
                     i1 = pageContent.IndexOf(">", i1 + 1) + 1;

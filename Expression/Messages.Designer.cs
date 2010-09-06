@@ -2743,6 +2743,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find the maximum value of the quadrupole deformation.
+        /// </summary>
+        internal static string HelpCDFEMaxQ {
+            get {
+                return ResourceManager.GetString("HelpCDFEMaxQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a ClassicalGCM class (nonrotating case with simple kinetic term).
         /// </summary>
         internal static string HelpCGCM {
@@ -3846,6 +3855,15 @@ namespace PavelStransky.Expression {
         internal static string HelpMatrixUnit {
             get {
                 return ResourceManager.GetString("HelpMatrixUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transforms the matrix with indices (Z, A) to (Z, N).
+        /// </summary>
+        internal static string HelpMatrixZAToNA {
+            get {
+                return ResourceManager.GetString("HelpMatrixZAToNA", resourceCulture);
             }
         }
         

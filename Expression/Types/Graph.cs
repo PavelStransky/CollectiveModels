@@ -265,6 +265,7 @@ namespace PavelStransky.Expression {
                 this.FindMinMax(gv, a);
                 this.SetMinMax(gv);
                 this.SetBorders(gv);
+                this.SetBColorFncBuffer(gv);
 
                 this.itemParamValues[g] = a;
                 this.groupParamValues[g] = gv;
@@ -331,6 +332,48 @@ namespace PavelStransky.Expression {
                 }
 
                 cv[ParametersIndications.PColorFncBuffer] = buffer;
+            }
+        }
+
+        /// <summary>
+        /// Pokud máme funkci pro barvy, vytvoøí barvový buffer
+        /// </summary>
+        /// <param name="cv">Parametry skupiny</param>
+        private void SetBColorFncBuffer(GraphParameterValues cv) {
+            string colorFnc = (string)cv[ParametersIndications.BColorFnc];
+
+            if(colorFnc != string.Empty) {
+                Matrix data = (Matrix)cv[ParametersIndications.DataBackground];
+
+                int lengthX = data.LengthX;
+                int lengthY = data.LengthY;
+
+                TArray buffer = new TArray(typeof(Color), lengthX, lengthY);
+
+                try {
+                    Function fnc = new Function(string.Format("getvar({0}(x; y; z); cf)", colorFnc), null);
+                    Context c = new Context();
+
+                    for(int i = 0; i < lengthX; i++)
+                        for(int j = 0; j < lengthY; j++) {
+                            c.SetVariable("x", i);
+                            c.SetVariable("y", j);
+                            c.SetVariable("z", data[i, j]);
+
+                            object v = (fnc.Evaluate(c) as Variable).Item;
+                            if(v is string)
+                                buffer[i, j] = Color.FromName(v as string);
+                            else if(v is int)
+                                buffer[i, j] = ColorArray.GetColor((int)v);
+                            else if(v is Vector && (v as Vector).Length == 3) {
+                                buffer[i, j] = Color.FromArgb((int)(255.0 * ((Vector)v)[0]), (int)(255.0 * ((Vector)v)[1]), (int)(255.0 * ((Vector)v)[2]));
+                            }
+                        }
+                }
+
+                catch(Exception) { }
+
+                cv[ParametersIndications.BColorFncBuffer] = buffer;
             }
         }
 

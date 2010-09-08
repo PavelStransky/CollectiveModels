@@ -91,7 +91,7 @@ namespace PavelStransky.Expression {
                 for(int j = 0; j < lengthY; j++) {
                     double m = matrix[i, lengthY - j - 1];
 
-                    Color color = bcolor[m];
+                    Color color = bcolor[i, lengthY - j - 1, m];
 
                     int i1 = i * pointSizeX;
                     int j1 = j * pointSizeY;

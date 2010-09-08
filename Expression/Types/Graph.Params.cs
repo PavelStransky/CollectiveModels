@@ -68,6 +68,8 @@ namespace PavelStransky.Expression {
             BColorMiddleValue = 146,
             BColorMaxValue = 147,
             BColorSpecialValue = 148,
+            
+            BColorFnc = 149,
 
             BLegend = 150,
             BLegendWidth = 151,
@@ -176,7 +178,8 @@ namespace PavelStransky.Expression {
             PixelW = 10022,
             PixelH = 10023,
 
-            PColorFncBuffer = 10100
+            PColorFncBuffer = 10100,
+            BColorFncBuffer = 10101
         }
 
         private static GraphParameterDefinitions globalParams;
@@ -241,6 +244,7 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.BColorMiddleValue, Messages.GPBColorMiddleValue, Messages.GPBColorMiddleValueDescription, 0.0);
             groupParams.Add(ParametersIndications.BColorMaxValue, Messages.GPBColorMaxValue, Messages.GPBColorMaxValueDescription, 1.0);
             groupParams.Add(ParametersIndications.BColorSpecialValue, Messages.GPBColorSpecialValue, Messages.GPBColorSpecialValueDescription, 0.0);
+            groupParams.Add(ParametersIndications.BColorFnc, Messages.GPBColorFnc, Messages.GPBColorFncDescription, string.Empty);
             groupParams.Add(ParametersIndications.BLegend, Messages.GPBLegend, Messages.GPBLegendDescription, false);
             groupParams.Add(ParametersIndications.BLegendFSize, Messages.GPBLegendFSize, Messages.GPBLegendFSizeDescription, 10);
             groupParams.Add(ParametersIndications.BLegendWidth, Messages.GPBLegendWidth, Messages.GPBLegendWidthDescription, 30);

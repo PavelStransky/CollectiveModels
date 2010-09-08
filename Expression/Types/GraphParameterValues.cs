@@ -11,7 +11,7 @@ namespace PavelStransky.Expression {
     /// <summary>
     /// Hodnoty parametrù grafu
     /// </summary>
-    public class GraphParameterValues: IExportable,ICloneable {
+    public class GraphParameterValues: IExportable, ICloneable {
         private Hashtable values = new Hashtable();
         private Hashtable isDefault = new Hashtable();
 

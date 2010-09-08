@@ -1303,6 +1303,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bcolorfnc.
+        /// </summary>
+        internal static string GPBColorFnc {
+            get {
+                return ResourceManager.GetString("GPBColorFnc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the background color function.
+        /// </summary>
+        internal static string GPBColorFncDescription {
+            get {
+                return ResourceManager.GetString("GPBColorFncDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to bcolormax.
         /// </summary>
         internal static string GPBColorMax {

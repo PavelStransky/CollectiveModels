@@ -17,6 +17,7 @@ namespace PavelStransky.Expression {
             private Color colorMin, colorMiddle, colorMax, colorSpecial;
             private bool isDefaultMiddle, isDefaultSpecial;
             private double colorMinValue, colorMiddleValue, colorMaxValue, colorSpecialValue;
+            private TArray colorBuffer;
 
             /// <summary>
             /// Konstruktor
@@ -35,15 +36,27 @@ namespace PavelStransky.Expression {
                 this.colorMiddleValue = (double)gv[ParametersIndications.BColorMiddleValue];
                 this.colorMaxValue = (double)gv[ParametersIndications.BColorMaxValue];
                 this.colorSpecialValue = (double)gv[ParametersIndications.BColorSpecialValue];
+
+                this.colorBuffer = (TArray)gv[ParametersIndications.BColorFncBuffer];
             }
 
             /// <summary>
             /// Indexer
             /// </summary>
             /// <param name="v">Hodnota</param>
-            public Color this[double v] {
+            /// <param name="i">Index i</param>
+            /// <param name="j">Index j</param>
+            public Color this[int i, int j, double v] {
                 get {
                     Color result;
+
+                    if(this.colorBuffer != null && i >= 0 && j >= 0) {
+                        object o = this.colorBuffer[i, j];
+                        if(o != null && o is Color) {
+                            result = (Color)o;
+                            return result;
+                        }
+                    }
 
                     if(v == this.colorSpecialValue && !this.isDefaultSpecial)
                         result = this.colorSpecial;

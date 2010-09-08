@@ -157,7 +157,6 @@ namespace PavelStransky.Expression {
             }
 
             int nCurves = (int)gv[ParametersIndications.NumCurves];
-            Matrix background = (Matrix)gv[ParametersIndications.DataBackground];
 
             // Legenda ke køivkám - potøebujeme její šíøku
             bool cLegend = (bool)gv[ParametersIndications.CLegend];
@@ -186,7 +185,7 @@ namespace PavelStransky.Expression {
 
                 for(int i = bLegendT; i < bLegendB; i++) {
                     double v = bColorMaxValue - (i - bLegendT) * bLegendCoef;
-                    Pen p = new Pen(bcolor[v]);
+                    Pen p = new Pen(bcolor[-1, -1, v]);
                     g.DrawLine(p, bLegendL, i, bLegendR, i);
                 }
 

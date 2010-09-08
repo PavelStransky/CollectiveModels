@@ -3192,4 +3192,10 @@ Second differing type: {1}</value>
   <data name="HelpMatrixZAToNA" xml:space="preserve">
     <value>Transforms the matrix with indices (Z, A) to (Z, N)</value>
   </data>
+  <data name="GPBColorFnc" xml:space="preserve">
+    <value>bcolorfnc</value>
+  </data>
+  <data name="GPBColorFncDescription" xml:space="preserve">
+    <value>Name of the background color function</value>
+  </data>
 </root>

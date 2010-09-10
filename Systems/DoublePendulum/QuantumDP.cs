@@ -218,7 +218,101 @@ namespace PavelStransky.Systems {
         }
 
         public object ProbabilityDensity(int[] n, IOutputWriter writer, params Vector[] interval) {
-            throw new Exception("The method or operation is not implemented.");
+            DiscreteInterval intx = new DiscreteInterval(interval[0]);
+            DiscreteInterval inty = new DiscreteInterval(interval[1]);
+
+            Matrix[] amplitude = this.AmplitudeMatrix(n, writer, intx, inty);
+
+            int numn = amplitude.Length / 2;
+            int numx = amplitude[0].LengthX;
+            int numy = amplitude[0].LengthY;
+
+            Matrix[] result = new Matrix[numn];
+
+            for(int l = 0; l < numn; l++) {
+                result[l] = new Matrix(numx, numy);
+
+                for(int i = 0; i < numx; i++)
+                    for(int j = 0; j < numy; j++)
+                        result[l][i, j] = amplitude[l][i, j] * amplitude[l][i, j] + amplitude[l + numn][i, j] * amplitude[l + numn][i, j];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Reálná èást vlnové funkce
+        /// </summary>
+        /// <param name="phi1">Úhel 1</param>
+        /// <param name="phi2">Úhel 2</param>
+        /// <param name="n">Index vlnové funkce</param>
+        private double PsiR(double phi1, double phi2, int n) {
+            DPBasisIndex index = this.eigenSystem.BasisIndex as DPBasisIndex;
+            return System.Math.Cos(index.M1[n] * phi1 + index.M2[n] * phi2) / (2.0 * System.Math.PI);
+        }
+
+        /// <summary>
+        /// Imaginární èást vlnové funkce
+        /// </summary>
+        /// <param name="phi1">Úhel 1</param>
+        /// <param name="phi2">Úhel 2</param>
+        /// <param name="n">Index vlnové funkce</param>
+        private double PsiI(double phi1, double phi2, int n) {
+            DPBasisIndex index = this.eigenSystem.BasisIndex as DPBasisIndex;
+            return System.Math.Sin(index.M1[n] * phi1 + index.M2[n] * phi2) / (2.0 * System.Math.PI);
+        }
+
+        /// <summary>
+        /// Vrátí matici <n|V|n> amplitudy vlastní funkce n
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="rx">Rozmìry ve smìru x</param>
+        /// <param name="ry">Rozmìry ve smìru y</param>
+        public virtual Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
+            int numx = intx.Num;
+            int numy = inty.Num;
+
+            int numn = n.Length;
+
+            // Reálná a imaginární èást (proto 2 * numn)
+            Matrix[] result = new Matrix[2 * numn];
+            for(int i = 0; i < 2 * numn; i++) {
+                result[i] = new Matrix(numx, numy);
+            }
+
+            int length = this.eigenSystem.BasisIndex.Length;
+            int length100 = length / 100;
+
+            DateTime startTime = DateTime.Now;
+
+            for(int k = 0; k < length; k++) {
+                BasisCache2D cacheR = new BasisCache2D(intx, inty, k, this.PsiR);
+                BasisCache2D cacheI = new BasisCache2D(intx, inty, k, this.PsiI);
+
+                for(int l = 0; l < numn; l++) {
+                    Vector ev = this.eigenSystem.GetEigenVector(n[l]);
+
+                    for(int i = 0; i < numx; i++)
+                        for(int j = 0; j < numy; j++) {
+                            result[l][i, j] += ev[k] * cacheR[i, j];
+                            result[l + numn][i, j] += ev[k] * cacheI[i, j];
+                        }
+                }
+
+                if(writer != null)
+                    if((k + 1) % length100 == 0) {
+                        writer.Write('.');
+
+                        if(((k + 1) / length100) % 10 == 0) {
+                            writer.Write((k + 1) / length100);
+                            writer.Write("% ");
+                            writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+                            startTime = DateTime.Now;
+                        }
+                    }
+            }
+
+            return result;
         }
 
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {

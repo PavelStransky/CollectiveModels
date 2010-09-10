@@ -11,6 +11,9 @@ namespace PavelStransky.Systems {
         // Systém s vlastními hodnotami
         private EigenSystem eigenSystem;
 
+        // Parametr nejednoznaènosti kvantování (typicky z rozmezí 0...1)
+        private double a;
+
         /// <summary>
         /// Systém vlastních hodnot
         /// </summary>
@@ -24,11 +27,13 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="mu">Pomìr hmotností t?les</param>
+        /// <param name="mu">Pomìr hmotností tìles</param>
         /// <param name="lambda">Pomìr délek</param>
         /// <param name="gamma">Gravitaèní parametr</param>
-        public QuantumDP(double mu, double lambda, double gamma)
+        /// <param name="a">Parametr nejednoznaènosti kvantování</param>
+        public QuantumDP(double mu, double lambda, double gamma, double a)
             : base(mu, lambda, gamma) {
+            this.a = a;
             this.eigenSystem = new EigenSystem(this);
         }
 
@@ -86,16 +91,18 @@ namespace PavelStransky.Systems {
                     for(int m2p = -maxm2; m2p <= maxm2; m2p++) {
                         int j = index[m1, m2p];
 
+                        double m2m2p = 0.5 * this.a * (m2 * m2 + m2p * m2p) + (1.0 - a) * m2 * m2p;
+
                         if((m2 - m2p) % 2 == 0) {
                             double c2p = System.Math.Pow(c2, System.Math.Abs((m2 - m2p) / 2));
-                            matrix[i, j] = 1.0 / sqrtmu * (m1 * (m1 - m2 - m2p) + m2 * m2p * c1) * c2p;
+                            matrix[i, j] = 1.0 / sqrtmu * (m1 * (m1 - m2 - m2p) + m2m2p * c1) * c2p;
                         }
                         else {
                             int pn = (m2 - m2p - 1) / 2;
                             if(pn < 0)
                                 pn = System.Math.Abs(pn) - 1;
                             double c2p = System.Math.Pow(c2, pn);
-                            matrix[i, j] = c3 * (2 * m2 * m2p - m1 * (m2 + m2p)) * c2p;
+                            matrix[i, j] = c3 * (2 * m2m2p - m1 * (m2 + m2p)) * c2p;
                         }
                     }
 
@@ -329,6 +336,7 @@ namespace PavelStransky.Systems {
 
             IEParam param = new IEParam();
             param.Add(this.eigenSystem, "EigenSystem");
+            param.Add(this.a, "Quantization");
             param.Export(export);
         }
 
@@ -340,6 +348,7 @@ namespace PavelStransky.Systems {
             : base(import) {
             IEParam param = new IEParam(import);
             this.eigenSystem = (EigenSystem)param.Get();
+            this.a = (double)param.Get(0.0);
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
 

@@ -3198,4 +3198,10 @@ Second differing type: {1}</value>
   <data name="GPBColorFncDescription" xml:space="preserve">
     <value>Name of the background color function</value>
   </data>
+  <data name="PDoublePendulumQuantization" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="PDoublePendulumQuantizationDescription" xml:space="preserve">
+    <value>Parameter of the ambiguity of the L_2^2 term in the kinetic term (usually 0...1)</value>
+  </data>
 </root>

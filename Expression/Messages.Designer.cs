@@ -6622,6 +6622,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to a.
+        /// </summary>
+        internal static string PDoublePendulumQuantization {
+            get {
+                return ResourceManager.GetString("PDoublePendulumQuantization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the ambiguity of the L_2^2 term in the kinetic term (usually 0...1).
+        /// </summary>
+        internal static string PDoublePendulumQuantizationDescription {
+            get {
+                return ResourceManager.GetString("PDoublePendulumQuantizationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to dynamicalsystem.
         /// </summary>
         internal static string PDynamicalSystem {

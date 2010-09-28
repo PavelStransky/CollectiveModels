@@ -88,7 +88,6 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="n">Index n</param>
         /// <param name="m">Index m</param>
-        /// <returns></returns>
         public int this[int n, int m] {
             get {
                 int length = this.Length;
@@ -106,6 +105,17 @@ namespace PavelStransky.Systems {
                 }
 
                 return -1;
+            }
+        }
+
+        /// <summary>
+        /// Vrací index prvku s kvantovými èísly m, n.
+        /// Pokud prvek neexistuje, vrací -1
+        /// </summary>
+        /// <param name="basisIndex">Vektor s indexy</param>
+        public override int this[Vector basisIndex] {
+            get {
+                return this[(int)basisIndex[0], (int)basisIndex[1]];
             }
         }
 

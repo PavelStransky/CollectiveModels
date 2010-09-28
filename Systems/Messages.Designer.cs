@@ -97,6 +97,15 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This function is not implemented..
+        /// </summary>
+        internal static string EMNotImplemented {
+            get {
+                return ResourceManager.GetString("EMNotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diagonalization dsbevx ({0} eigenvalues{1})....
         /// </summary>
         internal static string MDiagonalizationDSBEVX {

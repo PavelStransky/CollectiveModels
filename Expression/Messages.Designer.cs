@@ -2680,6 +2680,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time evolution of a given basis vector.
+        /// </summary>
+        internal static string HelpBasisVectorTimeEvolution {
+            get {
+                return ResourceManager.GetString("HelpBasisVectorTimeEvolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns a histogram according to Benford&apos;s law.
         /// </summary>
         internal static string HelpBenford {
@@ -3315,6 +3324,15 @@ namespace PavelStransky.Expression {
         internal static string HelpGetContext {
             get {
                 return ResourceManager.GetString("HelpGetContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets the diagonal of a square matrix.
+        /// </summary>
+        internal static string HelpGetDiagonal {
+            get {
+                return ResourceManager.GetString("HelpGetDiagonal", resourceCulture);
             }
         }
         

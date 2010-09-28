@@ -3204,4 +3204,10 @@ Second differing type: {1}</value>
   <data name="PDoublePendulumQuantizationDescription" xml:space="preserve">
     <value>Parameter of the ambiguity of the L_2^2 term in the kinetic term (usually 0...1)</value>
   </data>
+  <data name="HelpBasisVectorTimeEvolution" xml:space="preserve">
+    <value>Time evolution of a given basis vector</value>
+  </data>
+  <data name="HelpGetDiagonal" xml:space="preserve">
+    <value>Gets the diagonal of a square matrix</value>
+  </data>
 </root>

@@ -155,12 +155,15 @@
     <Compile Include="Functions\Dynamics\Traffic\TrafficParams.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficRun.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficStep.cs" />
+    <Compile Include="Functions\Matrix\GetDiagonal.cs" />
     <Compile Include="Functions\Matrix\MatrixZAToNA.cs" />
     <Compile Include="Functions\Matrix\Determinant.cs" />
     <Compile Include="Functions\Matrix\SimplexVolume.cs" />
     <Compile Include="Functions\NUDAT\CDFE.cs" />
     <Compile Include="Functions\NUDAT\CDFEMaxBeta.cs" />
     <Compile Include="Functions\NUDAT\CDFEMaxQ.cs" />
+    <Compile Include="Functions\Quantum\BasisVectorTimeEvolution.cs" />
+    <Compile Include="Functions\Quantum\HamiltonianAction.cs" />
     <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />

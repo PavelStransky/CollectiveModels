@@ -129,6 +129,9 @@
   <data name="EMNotComputed" xml:space="preserve">
     <value>Spectrum has not been calculated yet.</value>
   </data>
+  <data name="EMNotImplemented" xml:space="preserve">
+    <value>This function is not implemented.</value>
+  </data>
   <data name="MDiagonalizationDSBEVX" xml:space="preserve">
     <value>Diagonalization dsbevx ({0} eigenvalues{1})...</value>
   </data>

@@ -441,7 +441,7 @@ namespace PavelStransky.Forms {
                     text += Environment.NewLine + Path.GetFileName((form as Editor).FileName);
 
             // Text mùže mít maximálnì 64 znakù
-            this.trayIcon.Text = text.Substring(0, System.Math.Min(text.Length, 64));
+            this.trayIcon.Text = text.Substring(0, System.Math.Min(text.Length, 63));
 
             foreach(Form rf in this.MdiChildren) 
                 if(rf as ResultForm != null) {

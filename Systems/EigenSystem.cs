@@ -275,6 +275,65 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Time evolution of the n-th basis vector
+        /// </summary>
+        /// <param name="bi">Index of the basis vector</param>
+        /// <param name="t">Time of the evolution</param>
+        public PointVector TimeEvolution(Vector bi, double t) {
+            int i = this.basisIndex[bi];
+
+            int dim = this.basisIndex.Length;
+            int numEV = this.NumEV;
+
+            Vector re = new Vector(dim);
+            Vector im = new Vector(dim);
+
+            Vector evalues = this.eigenValues;
+
+            for(int k = 0; k < numEV; k++) {
+                Vector ev = this.eigenVectors[k];
+                for(int j = 0; j < dim; j++) {
+                    double c = ev[i] * ev[j];
+                    re[j] += c * System.Math.Cos(-evalues[k] * t);
+                    im[j] += c * System.Math.Sin(-evalues[k] * t);
+                }
+            }
+
+            return new PointVector(re, im);
+        }
+
+        /// <summary>
+        /// Action of a Hamiltonian operator to a given ket
+        /// </summary>
+        /// <param name="ket">Ket</param>
+        public PointVector HamiltonianAction(PointVector ket) {
+            int dim = this.basisIndex.Length;
+            int numEV = this.NumEV;
+
+            Vector re = new Vector(dim);
+            Vector im = new Vector(dim);
+
+            Vector rei = ket.VectorX;
+            Vector imi = ket.VectorY;
+
+            Vector evalues = this.eigenValues;
+
+            for(int i = 0; i < dim; i++) {
+                for(int j = 0; j < numEV; j++) {
+                    Vector ev = this.eigenVectors[j];
+                    double c = evalues[j] * ev[i];
+                    for(int k = 0; k < dim; k++) {
+                        double d = c * ev[k];
+                        re[i] += d * rei[k];
+                        im[i] += d * imi[k];
+                    }
+                }
+            }
+
+            return new PointVector(re, im);
+        }
+
+        /// <summary>
         /// Konstruktor pro naètení staré verze dat (6 a starší)
         /// </summary>
         /// <param name="param">Parametr</param>

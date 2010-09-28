@@ -64,6 +64,17 @@ namespace PavelStransky.Systems {
             }
         }
 
+        /// <summary>
+        /// Vrací index prvku s kvantovými èísly n1, n2.
+        /// Pokud prvek neexistuje, vrací -1
+        /// </summary>
+        /// <param name="basisIndex">Vektor s indexy</param>
+        public override int this[Vector basisIndex] {
+            get {
+                return this[(int)basisIndex[0], (int)basisIndex[1]];
+            }
+        }
+
         public override int BasisQuantumNumberLength(int qn) {
             if(qn == 0 || qn == 1)
                 return this.maxn;

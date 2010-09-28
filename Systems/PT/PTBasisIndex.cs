@@ -43,6 +43,16 @@ namespace PavelStransky.Systems {
         /// </summary>
         public int MaxN { get { return this.maxn; } }
 
+        /// <summary>
+        /// Vrací index prvku 
+        /// </summary>
+        /// <param name="basisIndex">Vektor s indexem</param>
+        public override int this[Vector basisIndex] {
+            get {
+                return (int)basisIndex[0];
+            }
+        }
+
         public override int BasisQuantumNumberLength(int qn) {
             if(qn == 0)
                 return this.maxn;

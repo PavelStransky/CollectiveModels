@@ -34,6 +34,12 @@ namespace PavelStransky.Systems {
         public abstract int Length { get;}
 
         /// <summary>
+        /// Index prvku báze s danımi kvantovımi èísly
+        /// </summary>
+        /// <param name="basisIndex">Kvantová èísla</param>
+        public abstract int this[Vector basisIndex] { get;}
+
+        /// <summary>
         /// Vrátí kvantové èíslo
         /// </summary>
         /// <param name="qn">Index kvantového èísla</param>

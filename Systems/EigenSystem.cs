@@ -279,7 +279,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="bi">Index of the basis vector</param>
         /// <param name="t">Time of the evolution</param>
-        public PointVector TimeEvolution(Vector bi, double t) {
+        public PointVector BasisVectorTimeEvolution(Vector bi, double t) {
             int i = this.basisIndex[bi];
 
             int dim = this.basisIndex.Length;
@@ -292,10 +292,50 @@ namespace PavelStransky.Systems {
 
             for(int k = 0; k < numEV; k++) {
                 Vector ev = this.eigenVectors[k];
+                double sin = System.Math.Sin(evalues[k] * t);
+                double cos = System.Math.Cos(evalues[k] * t);
                 for(int j = 0; j < dim; j++) {
                     double c = ev[i] * ev[j];
-                    re[j] += c * System.Math.Cos(-evalues[k] * t);
-                    im[j] += c * System.Math.Sin(-evalues[k] * t);
+                    re[j] += c * cos;
+                    im[j] -= c * sin;
+                }
+            }
+
+            return new PointVector(re, im);
+        }
+
+        /// <summary>
+        /// Time evolution of the given ket
+        /// </summary>
+        /// <param name="ket">Ket</param>
+        /// <param name="t">Time of the evolution</param>
+        public PointVector TimeEvolution(PointVector ket, double t) {
+            int dim = this.basisIndex.Length;
+            int numEV = this.NumEV;
+
+            Vector re = new Vector(dim);
+            Vector im = new Vector(dim);
+
+            Vector rei = ket.VectorX;
+            Vector imi = ket.VectorY;
+
+            Vector evalues = this.eigenValues;
+
+            for(int i = 0; i < numEV; i++) {
+                Vector ev = this.eigenVectors[i];
+                double cos = System.Math.Cos(evalues[i] * t);
+                double sin = System.Math.Sin(evalues[i] * t);
+
+                for(int j = 0; j < dim; j++) {
+                    if(rei[j] == 0 && imi[j] == 0)
+                        continue;
+                    double re1 = rei[j] * cos + imi[j] * sin;
+                    double im1 = -rei[j] * sin + imi[j] * cos;
+                    for(int k = 0; k < dim; k++) {
+                        double c = ev[j] * ev[k];
+                        re[k] += re1 * c;
+                        im[k] += im1 * c;
+                    }
                 }
             }
 
@@ -318,14 +358,16 @@ namespace PavelStransky.Systems {
 
             Vector evalues = this.eigenValues;
 
-            for(int i = 0; i < dim; i++) {
-                for(int j = 0; j < numEV; j++) {
-                    Vector ev = this.eigenVectors[j];
-                    double c = evalues[j] * ev[i];
+            for(int i = 0; i < numEV; i++) {
+                Vector ev = this.eigenVectors[i];
+                for(int j = 0; j < dim; j++) {
+                    if(rei[j] == 0 && imi[j] == 0)
+                        continue;
+                    double c = evalues[i] * ev[j];
                     for(int k = 0; k < dim; k++) {
                         double d = c * ev[k];
-                        re[i] += d * rei[k];
-                        im[i] += d * imi[k];
+                        re[k] += d * rei[j];
+                        im[k] += d * imi[j];
                     }
                 }
             }

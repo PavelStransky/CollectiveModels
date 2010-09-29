@@ -3210,4 +3210,25 @@ Second differing type: {1}</value>
   <data name="HelpGetDiagonal" xml:space="preserve">
     <value>Gets the diagonal of a square matrix</value>
   </data>
+  <data name="HelpHamiltonianAction" xml:space="preserve">
+    <value>Action of a Hamiltonian on a given ket</value>
+  </data>
+  <data name="HelpOperatorAction" xml:space="preserve">
+    <value>Action of an operator on a given ket</value>
+  </data>
+  <data name="HelpTimeEvolution" xml:space="preserve">
+    <value>Time evolution of a given ket</value>
+  </data>
+  <data name="PKet" xml:space="preserve">
+    <value>ket</value>
+  </data>
+  <data name="PKetDescription" xml:space="preserve">
+    <value>Ket vector</value>
+  </data>
+  <data name="POperatorType" xml:space="preserve">
+    <value>o</value>
+  </data>
+  <data name="POperatorTypeDescription" xml:space="preserve">
+    <value>Type of the operator</value>
+  </data>
 </root>

@@ -3454,6 +3454,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action of a Hamiltonian on a given ket.
+        /// </summary>
+        internal static string HelpHamiltonianAction {
+            get {
+                return ResourceManager.GetString("HelpHamiltonianAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns Hamiltonian matrix of the given quantum system.
         /// </summary>
         internal static string HelpHamiltonianMatrix {
@@ -4026,6 +4035,15 @@ namespace PavelStransky.Expression {
         internal static string HelpNumerator {
             get {
                 return ResourceManager.GetString("HelpNumerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action of an operator on a given ket.
+        /// </summary>
+        internal static string HelpOperatorAction {
+            get {
+                return ResourceManager.GetString("HelpOperatorAction", resourceCulture);
             }
         }
         
@@ -4818,6 +4836,15 @@ namespace PavelStransky.Expression {
         internal static string HelpTime {
             get {
                 return ResourceManager.GetString("HelpTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time evolution of a given ket.
+        /// </summary>
+        internal static string HelpTimeEvolution {
+            get {
+                return ResourceManager.GetString("HelpTimeEvolution", resourceCulture);
             }
         }
         
@@ -7324,6 +7351,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ket.
+        /// </summary>
+        internal static string PKet {
+            get {
+                return ResourceManager.GetString("PKet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ket vector.
+        /// </summary>
+        internal static string PKetDescription {
+            get {
+                return ResourceManager.GetString("PKetDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to l.
         /// </summary>
         internal static string PLength {
@@ -8004,6 +8049,24 @@ namespace PavelStransky.Expression {
         internal static string POneOrientationDescription {
             get {
                 return ResourceManager.GetString("POneOrientationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to o.
+        /// </summary>
+        internal static string POperatorType {
+            get {
+                return ResourceManager.GetString("POperatorType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of the operator.
+        /// </summary>
+        internal static string POperatorTypeDescription {
+            get {
+                return ResourceManager.GetString("POperatorTypeDescription", resourceCulture);
             }
         }
         

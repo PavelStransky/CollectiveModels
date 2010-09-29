@@ -26,7 +26,7 @@ namespace PavelStransky.Expression.Functions.Def {
             Vector basisIndex = (Vector)arguments[1];
             double time = (double)arguments[2];
 
-            return system.EigenSystem.TimeEvolution(basisIndex, time);
+            return system.EigenSystem.BasisVectorTimeEvolution(basisIndex, time);
         }
     }
 }

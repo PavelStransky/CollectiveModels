@@ -164,6 +164,7 @@
     <Compile Include="Functions\NUDAT\CDFEMaxQ.cs" />
     <Compile Include="Functions\Quantum\BasisVectorTimeEvolution.cs" />
     <Compile Include="Functions\Quantum\HamiltonianAction.cs" />
+    <Compile Include="Functions\Quantum\OperatorAction.cs" />
     <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Matrix\MatrixUnit.cs" />
     <Compile Include="Functions\Matrix\Transpose.cs" />
+    <Compile Include="Functions\Quantum\TimeEvolution.cs" />
     <Compile Include="Functions\Statistics\ShotNoise.cs" />
     <Compile Include="Functions\Vector\Cumul.cs" />
     <Compile Include="Functions\Vector\DFA.cs" />

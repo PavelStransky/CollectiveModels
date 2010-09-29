@@ -322,6 +322,27 @@ namespace PavelStransky.Systems {
             return result;
         }
 
+        /// <summary>
+        /// Action of L1 and L2 operator
+        /// </summary>
+        /// <param name="ket">Initial ket</param>
+        /// <param name="op">Operator (0...L1, 1...L2)</param>
+        public PointVector OperatorAction(PointVector ket, int op) {
+            DPBasisIndex index = this.eigenSystem.BasisIndex as DPBasisIndex;
+            int dim = index.Length;
+
+            Vector re = ket.VectorX;
+            Vector im = ket.VectorY;
+
+            for(int i = 0; i < dim; i++) {
+                int m = (op == 0) ? index.M1[i] : index.M2[i];
+                re[i] *= m;
+                im[i] *= m;
+            }
+
+            return new PointVector(re, im);
+        }
+
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {
             throw new Exception("The method or operation is not implemented.");
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 using PavelStransky.Core;
 
@@ -63,6 +64,27 @@ namespace PavelStransky.Systems {
                 this.newData[this.length - 1] = Rule(252, this.data[this.length - 2], this.data[this.length - 1], this.endCrossing.Data);
             else
                 this.newData[this.length - 1] = Rule(184, this.data[this.length - 2], this.data[this.length - 1], this.endCrossing.Data);
+        }
+
+        /// <summary>
+        /// Vybere auta z druhé pozice ulice a tyto pozice vyprázdní
+        /// </summary>
+        public int RandomCollect() {
+            int result = this.data[1];
+            this.data[1] = 0;
+            return result;
+        }
+
+        /// <summary>
+        /// Pokusí se pøidat na druhou pozici ulice auto; pokud tam už auto je, nic nepøidá a vrátí 0
+        /// </summary>
+        /// <returns>Poèet pøidaných aut</returns>
+        public int RandomAdd() {
+            if(this.data[1] == 0) {
+                this.data[1] = 1;
+                return 1;
+            }
+            return 0;
         }
 
         /// <summary>

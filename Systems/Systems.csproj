@@ -119,6 +119,7 @@
     <Compile Include="PT\PT3.cs" />
     <Compile Include="PT\PT3.Minimum.cs" />
     <Compile Include="Traffic\Crossing.cs" />
+    <Compile Include="Traffic\Randomizer.cs" />
     <Compile Include="Traffic\Street.cs" />
     <Compile Include="Traffic\Traffic.cs" />
     <Compile Include="Traffic\TrafficItem.cs" />

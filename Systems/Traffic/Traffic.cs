@@ -11,7 +11,8 @@ namespace PavelStransky.Systems {
         public enum TrafficTopology {
             Cyclic,
             SingleMoebius,
-            SimpleMoebius
+            SimpleMoebius,
+            Random
         }
 
         public enum ICType {
@@ -29,6 +30,7 @@ namespace PavelStransky.Systems {
 
         private Street[,] vertical, horizontal;
         private Crossing[,] crossing;
+        private Randomizer randomizer;
         private ArrayList trafficItems;
 
         /// <summary>
@@ -101,12 +103,17 @@ namespace PavelStransky.Systems {
 
             // Topologie
             this.SetTopology();
+
+            if(this.topology == TrafficTopology.Random)
+                this.trafficItems.Add(this.randomizer);
         }
 
         /// <summary>
         /// Nastaví topologii ulic
         /// </summary>
         private void SetTopology() {
+            this.randomizer = new Randomizer();
+
             for(int i = 0; i < this.streetsX; i++)
                 for(int j = 0; j < this.streetsY; j++) {
                     Street[] incomming = new Street[2];
@@ -118,19 +125,20 @@ namespace PavelStransky.Systems {
                         if(j + 1 < this.streetsY)
                             outgoing[0] = this.horizontal[i, j + 1];
                         else {
-                            if(this.topology == TrafficTopology.Cyclic)
+                            if(this.topology == TrafficTopology.Cyclic || this.topology == TrafficTopology.Random)
                                 outgoing[0] = this.horizontal[i, 0];
                             else if(this.topology == TrafficTopology.SimpleMoebius)
                                 outgoing[0] = this.vertical[0, this.streetsY - i - 1];
                             else if(this.topology == TrafficTopology.SingleMoebius)
                                 outgoing[0] = this.horizontal[i + 1, j];
+                            this.randomizer.Add(outgoing[0]);
                         }
                     }
                     else {
                         if(j - 1 >= 0)
                             outgoing[0] = this.horizontal[i, j - 1];
                         else {
-                            if(this.topology == TrafficTopology.Cyclic)
+                            if(this.topology == TrafficTopology.Cyclic || this.topology == TrafficTopology.Random)
                                 outgoing[0] = this.horizontal[i, this.streetsY - 1];
                             else if(this.topology == TrafficTopology.SimpleMoebius)
                                 outgoing[0] = this.vertical[this.streetsX - 1, this.streetsY - i - 1];
@@ -140,6 +148,7 @@ namespace PavelStransky.Systems {
                                 else
                                     outgoing[0] = this.vertical[i, j];
                             }
+                            this.randomizer.Add(outgoing[0]);
                         }
                     }
 
@@ -148,19 +157,20 @@ namespace PavelStransky.Systems {
                         if(i - 1 >= 0)
                             outgoing[1] = this.vertical[i - 1, j];
                         else {
-                            if(this.topology == TrafficTopology.Cyclic)
+                            if(this.topology == TrafficTopology.Cyclic || this.topology == TrafficTopology.Random)
                                 outgoing[1] = this.vertical[this.streetsX - 1, j];
                             else if(this.topology == TrafficTopology.SimpleMoebius)
                                 outgoing[1] = this.horizontal[this.streetsX - j - 1, this.streetsY - 1];
                             else if(this.topology == TrafficTopology.SingleMoebius)
                                 outgoing[1] = this.vertical[i, j + 1];
+                            this.randomizer.Add(outgoing[1]);
                         }
                     }
                     else {
                         if(i + 1 < this.streetsX)
                             outgoing[1] = this.vertical[i + 1, j];
                         else {
-                            if(this.topology == TrafficTopology.Cyclic)
+                            if(this.topology == TrafficTopology.Cyclic || this.topology == TrafficTopology.Random)
                                 outgoing[1] = this.vertical[0, j];
                             else if(this.topology == TrafficTopology.SimpleMoebius)
                                 outgoing[1] = this.horizontal[this.streetsX - j - 1, 0];
@@ -170,6 +180,7 @@ namespace PavelStransky.Systems {
                                 else
                                     outgoing[1] = this.horizontal[0, 0];
                             }
+                            this.randomizer.Add(outgoing[1]);
                         }
                     }
 
@@ -435,6 +446,9 @@ namespace PavelStransky.Systems {
             this.streetLengthYMax = (int)param.Get(this.streetLengthYMin);
 
             this.SetTopology();
+
+            if(this.topology == TrafficTopology.Random)
+                this.trafficItems.Add(this.randomizer);
         }
         #endregion
 

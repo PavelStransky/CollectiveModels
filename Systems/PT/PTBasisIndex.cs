@@ -44,6 +44,11 @@ namespace PavelStransky.Systems {
         public int MaxN { get { return this.maxn; } }
 
         /// <summary>
+        /// Poèet indexù báze
+        /// </summary>
+        public override int Rank { get { return 1; } }
+
+        /// <summary>
         /// Vrací index prvku 
         /// </summary>
         /// <param name="basisIndex">Vektor s indexem</param>

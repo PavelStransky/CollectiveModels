@@ -275,62 +275,6 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Time evolution of the n-th basis vector
-        /// </summary>
-        /// <param name="bi">Index of the basis vector</param>
-        /// <param name="t">Time of the evolution</param>
-        public PointVector BasisVectorTimeEvolution(Vector bi, double t) {
-            int i = this.basisIndex[bi];
-
-            int dim = this.basisIndex.Length;
-            int numEV = this.NumEV;
-
-            Vector re = new Vector(dim);
-            Vector im = new Vector(dim);
-
-            Vector evalues = this.eigenValues;
-
-            for(int k = 0; k < numEV; k++) {
-                Vector ev = this.eigenVectors[k];
-                double sin = System.Math.Sin(evalues[k] * t);
-                double cos = System.Math.Cos(evalues[k] * t);
-                for(int j = 0; j < dim; j++) {
-                    double c = ev[i] * ev[j];
-                    re[j] += c * cos;
-                    im[j] -= c * sin;
-                }
-            }
-
-            return new PointVector(re, im);
-        }
-
-        /// <summary>
-        /// Hamiltonian action on the n-th basis vector
-        /// </summary>
-        /// <param name="bi">Index of the basis vector</param>
-        /// <param name="squared">True if the square of the Hamiltonian is to be calculated</param>
-        public Vector BasisVectorHamiltonianAction(Vector bi, bool squared) {
-            int i = this.basisIndex[bi];
-
-            int dim = this.basisIndex.Length;
-            int numEV = this.NumEV;
-
-            Vector result = new Vector(dim);
-            Vector evalues = this.eigenValues;
-
-            for(int k = 0; k < numEV; k++) {
-                Vector ev = this.eigenVectors[k];
-                double c = evalues[k] * ev[i];
-                if(squared)
-                    c *= evalues[k];
-                for(int j = 0; j < dim; j++) 
-                    result[j] += c * ev[j];
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Time evolution of the given ket
         /// </summary>
         /// <param name="ket">Ket</param>
@@ -402,6 +346,84 @@ namespace PavelStransky.Systems {
             }
 
             return new PointVector(re, im);
+        }
+
+        /// <summary>
+        /// Na základì kvantových èísel vrátí index daného bázového vektoru
+        /// </summary>
+        /// <param name="bi">Kvantová èísla</param>
+        public int BasisQuantumNumber(Vector bi) {
+            return this.basisIndex[bi];
+        }
+
+        /// <summary>
+        /// Na základì indexu bázového vektoru vrátí jeho vlastní èísla
+        /// </summary>
+        /// <param name="i">Index bázového vektoru</param>
+        public Vector BasisQuantumNumber(int i) {
+            return this.basisIndex[i];
+        }
+
+        /// <summary>
+        /// Vrátí bázový vektor
+        /// </summary>
+        /// <param name="i">Index bázového vektoru</param>
+        public Vector BasisVector(int i) {
+            Vector result = new Vector(this.basisIndex.Length);
+            result[i] = 1.0;
+            return result;
+        }
+
+        /// <summary>
+        /// Pøevede daný stavový vektor obsahující komponenty báze na komponenty vlastních vektorù
+        /// </summary>
+        /// <param name="state">Stavový vektor vyjádøený v rozvoji do báze</param>
+        public PointVector BasisToEV(PointVector state) {
+            int dim = this.basisIndex.Length;
+            int numEV = this.NumEV;
+
+            PointVector result = new PointVector(numEV);
+
+            for(int i = 0; i < numEV; i++) {
+                double x = 0.0;
+                double y = 0.0;
+
+                Vector ev = this.eigenVectors[i];
+
+                for(int j = 0; j < dim; j++) {
+                    x += state[j].X * ev[j];
+                    y += state[j].Y * ev[j];
+                }
+
+                result[i] = new PointD(x, y);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Pøevede daný stavový vektor obsahující komponenty vlastních vektorù na komponenty báze
+        /// </summary>
+        /// <param name="state">Stavový vektor vyjádøený v rozvoji do báze</param>
+        public PointVector EVToBasis(PointVector state) {
+            int dim = this.basisIndex.Length;
+            int numEV = this.NumEV;
+
+            PointVector result = new PointVector(dim);
+
+            for(int i = 0; i < numEV; i++) {
+                double x = state[i].X;
+                double y = state[i].Y;
+
+                Vector ev = this.eigenVectors[i];
+
+                for(int j = 0; j < dim; j++) {
+                    result[j].X += x * ev[j];
+                    result[j].Y += x * ev[j];
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

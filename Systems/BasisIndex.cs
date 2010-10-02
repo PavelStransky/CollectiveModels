@@ -34,10 +34,31 @@ namespace PavelStransky.Systems {
         public abstract int Length { get;}
 
         /// <summary>
+        /// Poèet indexù báze
+        /// </summary>
+        public abstract int Rank { get;}
+
+        /// <summary>
         /// Index prvku báze s danými kvantovými èísly
         /// </summary>
         /// <param name="basisIndex">Kvantová èísla</param>
         public abstract int this[Vector basisIndex] { get;}
+
+        /// <summary>
+        /// Kvantová èísla prvku báze s daným indexem
+        /// </summary>
+        /// <param name="i">Index báze</param>
+        public Vector this[int i] {
+            get {
+                int rank = this.Rank;
+
+                Vector result = new Vector(rank);
+                for(int j = 0; j < rank; j++)
+                    result[j] = this.GetBasisQuantumNumber(j, i);
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// Vrátí kvantové èíslo

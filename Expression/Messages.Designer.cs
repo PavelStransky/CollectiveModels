@@ -2680,6 +2680,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transforms the index of the basis vector into its quantum numbers and vice versa.
+        /// </summary>
+        internal static string HelpBasisQuantumNumber {
+            get {
+                return ResourceManager.GetString("HelpBasisQuantumNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transforms given state vector represented in basis components to a vector expressed in components of eigenvectors.
+        /// </summary>
+        internal static string HelpBasisToEV {
+            get {
+                return ResourceManager.GetString("HelpBasisToEV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns a basis vector.
+        /// </summary>
+        internal static string HelpBasisVector {
+            get {
+                return ResourceManager.GetString("HelpBasisVector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action of a Hamiltonian on a given ket.
         /// </summary>
         internal static string HelpBasisVectorHamiltonianAction {
@@ -3171,6 +3198,15 @@ namespace PavelStransky.Expression {
         internal static string HelpEvalArray {
             get {
                 return ResourceManager.GetString("HelpEvalArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transforms given state vector expanded in eigenvectors components to a vector expressed in components of the basis.
+        /// </summary>
+        internal static string HelpEVToBasis {
+            get {
+                return ResourceManager.GetString("HelpEVToBasis", resourceCulture);
             }
         }
         
@@ -6856,7 +6892,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Index of an eigenvalue (eigenvector).
+        ///   Looks up a localized string similar to Index of an eigenvalue (eigenvector) / quantum numbers.
         /// </summary>
         internal static string PEVIndexDescription {
             get {

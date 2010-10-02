@@ -65,6 +65,11 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Poèet indexù báze
+        /// </summary>
+        public override int Rank { get { return 2; } }
+
+        /// <summary>
         /// Vrací index prvku s kvantovými èísly n1, n2.
         /// Pokud prvek neexistuje, vrací -1
         /// </summary>

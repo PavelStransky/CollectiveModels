@@ -162,8 +162,10 @@
     <Compile Include="Functions\NUDAT\CDFE.cs" />
     <Compile Include="Functions\NUDAT\CDFEMaxBeta.cs" />
     <Compile Include="Functions\NUDAT\CDFEMaxQ.cs" />
-    <Compile Include="Functions\Quantum\BasisVectorHamiltonianAction.cs" />
-    <Compile Include="Functions\Quantum\BasisVectorTimeEvolution.cs" />
+    <Compile Include="Functions\Quantum\BasisQuantumNumber.cs" />
+    <Compile Include="Functions\Quantum\BasisVector.cs" />
+    <Compile Include="Functions\Quantum\BasisToEV.cs" />
+    <Compile Include="Functions\Quantum\EVToBasis.cs" />
     <Compile Include="Functions\Quantum\HamiltonianAction.cs" />
     <Compile Include="Functions\Quantum\OperatorAction.cs" />
     <Compile Include="Functions\Quantum\OperatorExpectDiagonal.cs" />

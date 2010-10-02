@@ -120,6 +120,11 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Poèet indexù báze
+        /// </summary>
+        public override int Rank { get { return 2; } }
+
+        /// <summary>
         /// Maximální energie (vyjádøená v násobcích hbar * Omega)
         /// </summary>
         public int MaxE { get { return this.maxE; } }

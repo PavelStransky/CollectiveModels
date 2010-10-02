@@ -353,11 +353,10 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Expectation value of the diagonal elements <m1 m2|L|m1 m2>
         /// </summary>
-        /// <param name="bi">Index of the basis vector</param>
+        /// <param name="i">Index of the basis vector</param>
         /// <param name="op">Operator (0...L1, 1...L2)</param>
-        public double OperatorExpectDiagonal(Vector bi, int op) {
+        public double OperatorExpectDiagonal(int i, int op) {
             DPBasisIndex index = this.eigenSystem.BasisIndex as DPBasisIndex;
-            int i = index[bi];
             int dim = index.Length;
             int numEV = this.eigenSystem.NumEV;
 

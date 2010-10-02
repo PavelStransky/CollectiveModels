@@ -66,6 +66,11 @@ namespace PavelStransky.Systems {
         public int[] M2 { get { return this.m2; } }
 
         /// <summary>
+        /// Poèet indexù báze
+        /// </summary>
+        public override int Rank { get { return 2; } }
+
+        /// <summary>
         /// Poèet prvkù
         /// </summary>
         public override int Length {
@@ -142,13 +147,9 @@ namespace PavelStransky.Systems {
         public override int GetBasisQuantumNumber(int qn, int i) {
             switch(qn) {
                 case 0:
-                    if(this.positive)
-                        return i;
-                    else
-                        return i - this.maxm1;
-
+                    return this.m1[i];
                 case 1:
-                    return i - this.maxm2;
+                    return this.m2[i];
             }
 
             throw new SystemException(string.Format(Messages.EMBadQNIndex, qn));

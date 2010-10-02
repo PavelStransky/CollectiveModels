@@ -83,6 +83,11 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Poèet indexù báze
+        /// </summary>
+        public override int Rank { get { return 2; } }
+
+        /// <summary>
         /// Vrací index prvku s kvantovými èísly mu, lambda.
         /// Pokud prvek neexistuje, vrací -1
         /// </summary>

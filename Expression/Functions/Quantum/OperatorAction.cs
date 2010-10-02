@@ -22,15 +22,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             QuantumDP system = (QuantumDP)arguments[0];
-            
-            PointVector state = null;
-            if(arguments[1] is Vector) {
-                Vector v = (Vector)arguments[1];
-                state = new PointVector(v, new Vector(v.Length));
-            }
-            else
-                state = (PointVector)arguments[1];
-
+            PointVector state = (arguments[1] is Vector) ? new PointVector(arguments[1] as Vector, 0.0) : (arguments[1] as PointVector);
             int operatorType = (int)arguments[2];
 
             return system.OperatorAction(state, operatorType);

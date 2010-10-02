@@ -1756,7 +1756,7 @@ Length of the second vector: {1}</value>
     <value>evi</value>
   </data>
   <data name="PEVIndexDescription" xml:space="preserve">
-    <value>Index of an eigenvalue (eigenvector)</value>
+    <value>Index of an eigenvalue (eigenvector) / quantum numbers</value>
   </data>
   <data name="PExponent" xml:space="preserve">
     <value>e</value>
@@ -3242,5 +3242,17 @@ Second differing type: {1}</value>
   </data>
   <data name="HelpOperatorExpectDiagonal" xml:space="preserve">
     <value>Expectation value of the diagonal elements &lt;m1 m2|L|m1 m2&gt;</value>
+  </data>
+  <data name="HelpBasisQuantumNumber" xml:space="preserve">
+    <value>Transforms the index of the basis vector into its quantum numbers and vice versa</value>
+  </data>
+  <data name="HelpBasisToEV" xml:space="preserve">
+    <value>Transforms given state vector represented in basis components to a vector expressed in components of eigenvectors</value>
+  </data>
+  <data name="HelpBasisVector" xml:space="preserve">
+    <value>Returns a basis vector</value>
+  </data>
+  <data name="HelpEVToBasis" xml:space="preserve">
+    <value>Transforms given state vector expanded in eigenvectors components to a vector expressed in components of the basis</value>
   </data>
 </root>

@@ -3231,4 +3231,16 @@ Second differing type: {1}</value>
   <data name="POperatorTypeDescription" xml:space="preserve">
     <value>Type of the operator</value>
   </data>
+  <data name="HelpBasisVectorHamiltonianAction" xml:space="preserve">
+    <value>Action of a Hamiltonian on a given ket</value>
+  </data>
+  <data name="PSquared" xml:space="preserve">
+    <value>squared</value>
+  </data>
+  <data name="PSquaredDescription" xml:space="preserve">
+    <value>True if the square of the operator is to be applied</value>
+  </data>
+  <data name="HelpOperatorExpectDiagonal" xml:space="preserve">
+    <value>Expectation value of the diagonal elements &lt;m1 m2|L|m1 m2&gt;</value>
+  </data>
 </root>

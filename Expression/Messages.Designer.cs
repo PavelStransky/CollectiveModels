@@ -2680,6 +2680,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action of a Hamiltonian on a given ket.
+        /// </summary>
+        internal static string HelpBasisVectorHamiltonianAction {
+            get {
+                return ResourceManager.GetString("HelpBasisVectorHamiltonianAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time evolution of a given basis vector.
         /// </summary>
         internal static string HelpBasisVectorTimeEvolution {
@@ -4044,6 +4053,15 @@ namespace PavelStransky.Expression {
         internal static string HelpOperatorAction {
             get {
                 return ResourceManager.GetString("HelpOperatorAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expectation value of the diagonal elements &lt;m1 m2|L|m1 m2&gt;.
+        /// </summary>
+        internal static string HelpOperatorExpectDiagonal {
+            get {
+                return ResourceManager.GetString("HelpOperatorExpectDiagonal", resourceCulture);
             }
         }
         
@@ -8661,6 +8679,24 @@ namespace PavelStransky.Expression {
         internal static string PSpacingDescription {
             get {
                 return ResourceManager.GetString("PSpacingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to squared.
+        /// </summary>
+        internal static string PSquared {
+            get {
+                return ResourceManager.GetString("PSquared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the square of the operator is to be applied.
+        /// </summary>
+        internal static string PSquaredDescription {
+            get {
+                return ResourceManager.GetString("PSquaredDescription", resourceCulture);
             }
         }
         

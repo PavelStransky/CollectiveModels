@@ -305,6 +305,32 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Hamiltonian action on the n-th basis vector
+        /// </summary>
+        /// <param name="bi">Index of the basis vector</param>
+        /// <param name="squared">True if the square of the Hamiltonian is to be calculated</param>
+        public Vector BasisVectorHamiltonianAction(Vector bi, bool squared) {
+            int i = this.basisIndex[bi];
+
+            int dim = this.basisIndex.Length;
+            int numEV = this.NumEV;
+
+            Vector result = new Vector(dim);
+            Vector evalues = this.eigenValues;
+
+            for(int k = 0; k < numEV; k++) {
+                Vector ev = this.eigenVectors[k];
+                double c = evalues[k] * ev[i];
+                if(squared)
+                    c *= evalues[k];
+                for(int j = 0; j < dim; j++) 
+                    result[j] += c * ev[j];
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Time evolution of the given ket
         /// </summary>
         /// <param name="ket">Ket</param>
@@ -346,7 +372,8 @@ namespace PavelStransky.Systems {
         /// Action of a Hamiltonian operator to a given ket
         /// </summary>
         /// <param name="ket">Ket</param>
-        public PointVector HamiltonianAction(PointVector ket) {
+        /// <param name="squared">True if the square of the Hamiltonian is to be calculated</param>
+        public PointVector HamiltonianAction(PointVector ket, bool squared) {
             int dim = this.basisIndex.Length;
             int numEV = this.NumEV;
 
@@ -364,6 +391,8 @@ namespace PavelStransky.Systems {
                     if(rei[j] == 0 && imi[j] == 0)
                         continue;
                     double c = evalues[i] * ev[j];
+                    if(squared)
+                        c *= evalues[i];
                     for(int k = 0; k < dim; k++) {
                         double d = c * ev[k];
                         re[k] += d * rei[j];

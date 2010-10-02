@@ -41,6 +41,18 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Konstruktor
         /// </summary>
+        /// <param name="x">Vektor x - ových hodnot</param>
+        /// <param name="dy">Diference v hodnotách y (implicitnì se zaèíná od 0)</param>
+        public PointVector(Vector x, double dy) {
+            this.item = new PointD[x.Length];
+
+            for(int i = 0; i < this.item.Length; i++)
+                this.item[i] = new PointD(x[i], i * dy);
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         /// <param name="y">Vektor y - ových hodnot</param>
         public PointVector(Vector y) : this(1.0, y) { }
 

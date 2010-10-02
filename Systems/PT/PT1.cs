@@ -271,5 +271,9 @@ namespace PavelStransky.Systems {
         public Vector PeresInvariant(int type) {
             throw new NotImpException(this, "PeresInvariant");
         }
+
+        public Vector PeresInvariant(int type, PointVector state) {
+            throw new NotImpException(this, "PeresInvariant");
+        }
     }
 }

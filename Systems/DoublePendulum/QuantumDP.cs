@@ -335,7 +335,14 @@ namespace PavelStransky.Systems {
             Vector im = ket.VectorY;
 
             for(int i = 0; i < dim; i++) {
-                int m = (op == 0) ? index.M1[i] : index.M2[i];
+                int m = 0;
+                switch(op) {
+                    case 0: m = index.M1[i]; break;
+                    case 1: m = index.M2[i]; break;
+                    case 2: m = index.M1[i]; m *= m; break;
+                    case 3: m = index.M2[i]; m *= m; break;
+                }
+
                 re[i] *= m;
                 im[i] *= m;
             }
@@ -343,8 +350,41 @@ namespace PavelStransky.Systems {
             return new PointVector(re, im);
         }
 
+        /// <summary>
+        /// Expectation value of the diagonal elements <m1 m2|L|m1 m2>
+        /// </summary>
+        /// <param name="bi">Index of the basis vector</param>
+        /// <param name="op">Operator (0...L1, 1...L2)</param>
+        public double OperatorExpectDiagonal(Vector bi, int op) {
+            DPBasisIndex index = this.eigenSystem.BasisIndex as DPBasisIndex;
+            int i = index[bi];
+            int dim = index.Length;
+            int numEV = this.eigenSystem.NumEV;
+
+            double result = 0.0;
+
+            for(int j = 0; j < numEV; j++) {
+                Vector ev = this.eigenSystem.GetEigenVector(j);
+                for(int k = 0; k < dim; k++) {
+                    int m = 0;
+                    switch(op) {
+                        case 0: m = index.M1[k]; break;
+                        case 1: m = index.M2[k]; break;
+                        case 2: m = index.M1[k]; m *= m; break;
+                        case 3: m = index.M2[k]; m *= m; break;
+                    }
+
+                    double d1 = ev[i] * ev[i];
+                    double d2 = ev[k] * ev[k];
+                    result += d1 * d2 * m;
+                }
+            }
+
+            return result;
+        }
+
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImpException(this, "ProbabilityAmplitude");
         }
 
         #region Implementace IExportable

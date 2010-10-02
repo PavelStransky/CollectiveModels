@@ -61,6 +61,24 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid mean energy!.
+        /// </summary>
+        internal static string EMBadMeanEnergy {
+            get {
+                return ResourceManager.GetString("EMBadMeanEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mean energy {0} must be within the interval &lt;0; {1}&gt;..
+        /// </summary>
+        internal static string EMBadMeanEnergyDetail {
+            get {
+                return ResourceManager.GetString("EMBadMeanEnergyDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid index of quantum number {0}..
         /// </summary>
         internal static string EMBadQNIndex {

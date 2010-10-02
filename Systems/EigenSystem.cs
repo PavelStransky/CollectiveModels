@@ -427,6 +427,95 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Partition function
+        /// </summary>
+        /// <param name="T">Temperature</param>
+        public double PartitionFunction(double T) {
+            int numEV = this.NumEV;
+            double result = 0.0;
+
+            for(int i = 0; i < numEV; i++) 
+                result += System.Math.Exp(-this.eigenValues[i] / T);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Mean energy
+        /// </summary>
+        /// <param name="T">Temperature</param>
+        public double MeanEnergy(double T) {
+            int numEV = this.NumEV;
+            double result = 0.0;
+
+            for(int i = 0; i < numEV; i++)
+                result += System.Math.Exp(-this.eigenValues[i] / T) * this.eigenValues[i];
+
+            double pf = this.PartitionFunction(T);
+            // Tady na to bacha!!!
+            if(pf == 0.0)
+                return 0.0;
+            else
+                return result / this.PartitionFunction(T);
+        }
+
+        /// <summary>
+        /// Thermodynamical mean value of a Peres operator
+        /// </summary>
+        /// <param name="T">Temperature</param>
+        /// <param name="type">Type of an operator</param>
+        public double MeanOperator(double T, int type) {
+            int numEV = this.NumEV;
+            double result = 0.0;
+
+            Vector p = this.parrentQuantumSystem.PeresInvariant(type);
+
+            for(int i = 0; i < numEV; i++)
+                result += System.Math.Exp(-this.eigenValues[i] / T) * p[i];
+
+            return result / this.PartitionFunction(T);
+        }
+
+        /// <summary>
+        /// Class for the mean energy bisection
+        /// </summary>
+        private class MeanEnergyBisection {
+            private double e;
+            private RealFunction function;
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="e">Energy</param>
+            public MeanEnergyBisection(RealFunction function, double e) {
+                this.function = function;
+                this.e = e;
+            }
+
+            public double BisectionFunction(double T) {
+                return this.function(T) - e;
+            }
+        }
+
+        /// <summary>
+        /// Calculates a temperature using expression Tr(Ro H) = K
+        /// </summary>
+        /// <param name="e">Mean energy</param>
+        /// <returns></returns>
+        public double QuantumTemperature(double e) {
+            double mine = 0.0;
+            double maxe = this.eigenValues.Sum() / this.NumEV;
+
+            if(e < mine || e > maxe)
+                throw new SystemsException(Messages.EMBadMeanEnergy,
+                    string.Format(Messages.EMBadMeanEnergyDetail, e, maxe));
+
+            MeanEnergyBisection mbf = new MeanEnergyBisection(this.MeanEnergy, e);
+            Bisection b = new Bisection(mbf.BisectionFunction);
+            return b.Solve(1E-3, 1E3);
+        }
+
+        /// <summary>
         /// Konstruktor pro naètení staré verze dat (6 a starší)
         /// </summary>
         /// <param name="param">Parametr</param>

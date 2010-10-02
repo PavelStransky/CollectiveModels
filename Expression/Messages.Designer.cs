@@ -4390,6 +4390,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates a temperature using expression Tr(Ro H) = K.
+        /// </summary>
+        internal static string HelpQuantumTemperature {
+            get {
+                return ResourceManager.GetString("HelpQuantumTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value with Brody distribution.
         /// </summary>
         internal static string HelpRandomBrody {
@@ -4863,6 +4872,15 @@ namespace PavelStransky.Expression {
         internal static string HelpTanh {
             get {
                 return ResourceManager.GetString("HelpTanh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thermodynamical mean value of a Peres operator.
+        /// </summary>
+        internal static string HelpTDMeanOperator {
+            get {
+                return ResourceManager.GetString("HelpTDMeanOperator", resourceCulture);
             }
         }
         
@@ -7729,6 +7747,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e.
+        /// </summary>
+        internal static string PMeanEnergy {
+            get {
+                return ResourceManager.GetString("PMeanEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mean energy.
+        /// </summary>
+        internal static string PMeanEnergyDescription {
+            get {
+                return ResourceManager.GetString("PMeanEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to minCircle.
         /// </summary>
         internal static string PMinimumPointsCircle {
@@ -8841,6 +8877,24 @@ namespace PavelStransky.Expression {
         internal static string PSymmetricMatrixDescription {
             get {
                 return ResourceManager.GetString("PSymmetricMatrixDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T.
+        /// </summary>
+        internal static string PTemperature {
+            get {
+                return ResourceManager.GetString("PTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature.
+        /// </summary>
+        internal static string PTemperatureDescription {
+            get {
+                return ResourceManager.GetString("PTemperatureDescription", resourceCulture);
             }
         }
         

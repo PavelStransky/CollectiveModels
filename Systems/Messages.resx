@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EMBadMeanEnergy" xml:space="preserve">
+    <value>Invalid mean energy!</value>
+  </data>
+  <data name="EMBadMeanEnergyDetail" xml:space="preserve">
+    <value>Mean energy {0} must be within the interval &lt;0; {1}&gt;.</value>
+  </data>
   <data name="EMBadQNIndex" xml:space="preserve">
     <value>Invalid index of quantum number {0}.</value>
   </data>

@@ -3255,4 +3255,22 @@ Second differing type: {1}</value>
   <data name="HelpEVToBasis" xml:space="preserve">
     <value>Transforms given state vector expanded in eigenvectors components to a vector expressed in components of the basis</value>
   </data>
+  <data name="HelpQuantumTemperature" xml:space="preserve">
+    <value>Calculates a temperature using expression Tr(Ro H) = K</value>
+  </data>
+  <data name="PMeanEnergy" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="PMeanEnergyDescription" xml:space="preserve">
+    <value>Mean energy</value>
+  </data>
+  <data name="HelpTDMeanOperator" xml:space="preserve">
+    <value>Thermodynamical mean value of a Peres operator</value>
+  </data>
+  <data name="PTemperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="PTemperatureDescription" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
 </root>

@@ -169,6 +169,7 @@
     <Compile Include="Functions\Quantum\HamiltonianAction.cs" />
     <Compile Include="Functions\Quantum\OperatorAction.cs" />
     <Compile Include="Functions\Quantum\OperatorExpectDiagonal.cs" />
+    <Compile Include="Functions\Quantum\QuantumTemperature.cs" />
     <Compile Include="Functions\Quantum\Systems\QDP.cs" />
     <Compile Include="Functions\Dynamics\Systems\ThreeBody.cs" />
     <Compile Include="Functions\Dynamics\TrajectoryLength.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Functions\Matrix\ExportMatrix.cs" />
     <Compile Include="Functions\Matrix\MatrixUnit.cs" />
     <Compile Include="Functions\Matrix\Transpose.cs" />
+    <Compile Include="Functions\Quantum\TDMeanOperator.cs" />
     <Compile Include="Functions\Quantum\TimeEvolution.cs" />
     <Compile Include="Functions\Statistics\ShotNoise.cs" />
     <Compile Include="Functions\Vector\Cumul.cs" />

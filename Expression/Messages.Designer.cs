@@ -3697,6 +3697,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to True if a given expression is null.
+        /// </summary>
+        internal static string HelpIsNull {
+            get {
+                return ResourceManager.GetString("HelpIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to True if the number is odd.
         /// </summary>
         internal static string HelpIsOdd {
@@ -3801,6 +3810,15 @@ namespace PavelStransky.Expression {
         internal static string HelpLesser {
             get {
                 return ResourceManager.GetString("HelpLesser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transforms the string value of the level angular momentum 1/2- and parity into the numerical form -0.5 and vice versa.
+        /// </summary>
+        internal static string HelpLevelToNumber {
+            get {
+                return ResourceManager.GetString("HelpLevelToNumber", resourceCulture);
             }
         }
         
@@ -7905,6 +7923,24 @@ namespace PavelStransky.Expression {
         internal static string PNonDiagonalValueDescription {
             get {
                 return ResourceManager.GetString("PNonDiagonalValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to level.
+        /// </summary>
+        internal static string PNuclearLevel {
+            get {
+                return ResourceManager.GetString("PNuclearLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level labeling (string format 1/2- or numerical format -0.5).
+        /// </summary>
+        internal static string PNuclearLevelDescription {
+            get {
+                return ResourceManager.GetString("PNuclearLevelDescription", resourceCulture);
             }
         }
         

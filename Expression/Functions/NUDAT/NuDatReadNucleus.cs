@@ -20,6 +20,7 @@ namespace PavelStransky.Expression.Functions.Def {
             EGamma,
             IGamma,
             GammaMult,
+            FinalLevelEnergy,
             FinalLevel,
             Unknown
         }
@@ -38,7 +39,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             UriBuilder ub = new UriBuilder();
             ub.Scheme = "http";
-            ub.Host = "www-nds.iaea.org";
+            ub.Host = "www.nndc.bnl.gov";
             ub.Path = "nudat2/getdataset.jsp";
             ub.Query = string.Format("nucleus={0}", nucleus);
 
@@ -160,8 +161,10 @@ namespace PavelStransky.Expression.Functions.Def {
                         columnTypes.Add(ColumnType.IGamma);
                     else if(td.IndexOf("&gamma;") >= 0 && td.IndexOf("mult.") >= 0)
                         columnTypes.Add(ColumnType.GammaMult);
-                    else if(td.IndexOf("Final") >= 0 && td.IndexOf("level") >= 0)
+                    else if(td.IndexOf("Final") >= 0 && td.IndexOf("level") >= 0) {
+                        columnTypes.Add(ColumnType.FinalLevelEnergy);
                         columnTypes.Add(ColumnType.FinalLevel);
+                    }
                     else
                         columnTypes.Add(ColumnType.Unknown);
                 }
@@ -186,6 +189,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     List xref = new List();
                     string jpi = string.Empty;
                     List eGamma = new List();
+                    List finalLevelEnergy = new List();
                     List finalLevel = new List();
                     string gammaMult = string.Empty;
 
@@ -237,19 +241,22 @@ namespace PavelStransky.Expression.Functions.Def {
                                     gammaMult = td.Replace("<br>", string.Empty);
                                     break;
 
+                                case ColumnType.FinalLevelEnergy:
+                                    string[] fle = td.Replace("<br>", "@").Split('@');
+                                    int lle = fle.Length - 1;
+                                    for(int j = 0; j < lle; j++) {
+                                        PointD le;
+                                        this.ParseDouble(out le, fle[j]);
+                                        le.X /= 1000.0; le.Y /= 1000.0;
+                                        finalLevelEnergy.Add(le);
+                                    }
+                                    break;
+
                                 case ColumnType.FinalLevel:
                                     string[] sfl = td.Replace("<br>", "@").Split('@');
                                     int lfl = sfl.Length - 1;
-                                    for(int j = 0; j < lfl; j++) {
-                                        PointD flp;
-                                        this.ParseDouble(out flp, sfl[j]);
-                                        double fl = flp.X / 1000.0;
-
-                                        int cl = levels.Count;
-                                        for(int k = 0; k < cl; k++)
-                                            if(((levels[k] as List)[0] as PointD).X == fl)
-                                                finalLevel.Add(k);
-                                    }
+                                    for(int j = 0; j < lfl; j++)
+                                        finalLevel.Add(sfl[j]);
                                     break;
                             }
                         }
@@ -263,12 +270,12 @@ namespace PavelStransky.Expression.Functions.Def {
                     level.Add(jpi);
                     level.Add(eGamma);
                     level.Add(gammaMult);
+                    level.Add(finalLevelEnergy);
                     level.Add(finalLevel);
 
                     levels.Add(level);
                 }
             }
-
 
             result.Add(nucleus);
             result.Add(author);
@@ -288,7 +295,12 @@ namespace PavelStransky.Expression.Functions.Def {
             s = string.Empty;
 
             if(i > 0) {
-                int end = text.IndexOf("<p>", i + add);
+                int end1 = text.IndexOf("<p>", i + add);
+                int end2 = text.IndexOf("<u>", i + add);
+                int end = (end1 < end2 && end1 >= 0 || (end2 <= end1 && end2 < 0)) ? end1 : end2;
+                if(end < 0)
+                    end = text.Length - 1;
+
                 s = text.Substring(i + add, end - i - add);
                 s = s.Replace("&nbsp;", string.Empty).Trim();
             }

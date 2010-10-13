@@ -506,9 +506,12 @@ namespace PavelStransky.Systems {
             double mine = 0.0;
             double maxe = this.eigenValues.Sum() / this.NumEV;
 
-            if(e < mine || e > maxe)
+            if(e < mine || e > maxe) {
+                return double.NaN;
+                // Tady je taky RENONC!!!
                 throw new SystemsException(Messages.EMBadMeanEnergy,
                     string.Format(Messages.EMBadMeanEnergyDetail, e, maxe));
+            }
 
             MeanEnergyBisection mbf = new MeanEnergyBisection(this.MeanEnergy, e);
             Bisection b = new Bisection(mbf.BisectionFunction);

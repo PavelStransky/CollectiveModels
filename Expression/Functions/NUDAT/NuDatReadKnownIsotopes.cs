@@ -16,7 +16,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             UriBuilder ub = new UriBuilder();
             ub.Scheme = "http";
-            ub.Host = "www-nds.iaea.org";
+            ub.Host = "www.nndc.bnl.gov";
             ub.Path = "nudat2/index.jsp";
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(ub.Uri);
             request.UserAgent = "CollectiveModels";

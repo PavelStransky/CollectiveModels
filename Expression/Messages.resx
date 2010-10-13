@@ -3273,4 +3273,16 @@ Second differing type: {1}</value>
   <data name="PTemperatureDescription" xml:space="preserve">
     <value>Temperature</value>
   </data>
+  <data name="HelpLevelToNumber" xml:space="preserve">
+    <value>Transforms the string value of the level angular momentum 1/2- and parity into the numerical form -0.5 and vice versa</value>
+  </data>
+  <data name="PNuclearLevel" xml:space="preserve">
+    <value>level</value>
+  </data>
+  <data name="PNuclearLevelDescription" xml:space="preserve">
+    <value>Level labeling (string format 1/2- or numerical format -0.5)</value>
+  </data>
+  <data name="HelpIsNull" xml:space="preserve">
+    <value>True if a given expression is null</value>
+  </data>
 </root>

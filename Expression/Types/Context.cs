@@ -258,7 +258,7 @@ namespace PavelStransky.Expression {
             IEParam param = new IEParam();
 
             foreach(Variable v in this.objects.Values)
-                if(v != null) {
+                if(v != null && v.Name[0] != '$') {
                     param.Add(v.Item, v.Name, null);
                 }
 

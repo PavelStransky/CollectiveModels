@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions.Def
         protected override void CreateParameters() {
             this.SetNumParams(1);
             this.SetParam(0, true, true, false, Messages.PMultiDimensions, Messages.PMultiDimensionsDescription, null,
-                typeof(Vector), typeof(TArray), typeof(Matrix), typeof(List), typeof(PointVector));
+                typeof(Vector), typeof(TArray), typeof(Matrix), typeof(List), typeof(PointVector), typeof(string));
         }
 
 		protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -35,6 +35,9 @@ namespace PavelStransky.Expression.Functions.Def
 
             else if(item is TArray)
                 return new TArray((item as TArray).Lengths);
+
+            else if(item is string)
+                return new TArray((item as string).Length);
 
             return null;
 		}

@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions {
     /// <summary>
     /// Vytvoøí novou uživatelskou funkci
     /// </summary>
-    public class UserFnc : Fnc {
+    public class FileFnc : Fnc {
         private string fncName;
         private bool userContext;   // True, pokud bude první parametr funkce context, na kterém se bude funkce spouštìt
 
@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions {
         /// Konstruktor
         /// </summary>
         /// <param name="fncName">Jméno funkce (vèetnì prefixu)</param>
-        public UserFnc(string fncName) {
+        public FileFnc(string fncName) {
             if(fncName[0] == fncFirstChar) {
                 fncName = fncName.Substring(1);
                 this.userContext = true;
@@ -78,9 +78,9 @@ namespace PavelStransky.Expression.Functions {
         /// </summary>
         /// <param name="fncName">Jméno funkce</param>
         /// <returns>Pokud se nepodaøilo vytvoøit, vrací null</returns>
-        public static UserFnc CreateUserFunction(string fncName) {
+        public static FileFnc CreateFileFunction(string fncName) {
             if(fncName.Length > 0 && fncName[0] == fncFirstChar)
-                return new UserFnc(fncName.Substring(1));
+                return new FileFnc(fncName.Substring(1));
             else
                 return null;
         }

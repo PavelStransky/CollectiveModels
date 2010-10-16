@@ -37,7 +37,7 @@ namespace PavelStransky.Expression
             if(functions.Contains(fncName))
                 this.function = functions[fncName];
 
-            else if((this.function = Functions.UserFnc.CreateUserFunction(fncName)) == null)
+            else if((this.function = Functions.FileFnc.CreateFileFunction(fncName)) == null)
                 throw new AtomException(expression, string.Format(errorMessageFunctionNotExists, fncName));
 
             foreach(string s in (parts[1] as ArrayList))

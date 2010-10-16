@@ -33,6 +33,8 @@ namespace PavelStransky.Expression {
                 return new GraphParameterValues(this);
             else if(typeName == typeof(Graph).FullName)
                 return new Graph(this);
+            else if(typeName == typeof(UserFunction).FullName)
+                return new UserFunction(this);
             else
                 return base.CreateObject(typeName);
         }

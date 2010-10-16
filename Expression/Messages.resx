@@ -3288,4 +3288,28 @@ Second differing type: {1}</value>
   <data name="HelpModulo" xml:space="preserve">
     <value>Modulo operator</value>
   </data>
+  <data name="HelpEvaluate" xml:space="preserve">
+    <value>Evaluates a user function</value>
+  </data>
+  <data name="HelpFunction" xml:space="preserve">
+    <value>Creates a user function using the given text</value>
+  </data>
+  <data name="PFnc" xml:space="preserve">
+    <value>fnc</value>
+  </data>
+  <data name="PFncDescription" xml:space="preserve">
+    <value>User function</value>
+  </data>
+  <data name="PFncText" xml:space="preserve">
+    <value>fnc</value>
+  </data>
+  <data name="PFncTextDescription" xml:space="preserve">
+    <value>Text with the function content</value>
+  </data>
+  <data name="PParam" xml:space="preserve">
+    <value>p</value>
+  </data>
+  <data name="PParamDescription" xml:space="preserve">
+    <value>Parameter of the function</value>
+  </data>
 </root>

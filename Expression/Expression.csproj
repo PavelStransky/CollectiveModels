@@ -156,6 +156,8 @@
     <Compile Include="Functions\Dynamics\Traffic\TrafficRun.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficStep.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
+    <Compile Include="Functions\Types\Function.cs" />
+    <Compile Include="Functions\Unsorted\Evaluate.cs" />
     <Compile Include="Functions\Unsorted\IsNull.cs" />
     <Compile Include="Functions\Matrix\GetDiagonal.cs" />
     <Compile Include="Functions\Matrix\MatrixZAToNA.cs" />
@@ -251,6 +253,7 @@
     <Compile Include="Exceptions\ListException.cs" />
     <Compile Include="Exceptions\TArrayException.cs" />
     <Compile Include="Types\FinishedBackgroundEventArgs.cs" />
+    <Compile Include="Types\Function.cs" />
     <Compile Include="Types\Graph.BColor.cs" />
     <Compile Include="Types\Graph.Paint.cs" />
     <Compile Include="Types\Graph.Worker.cs" />
@@ -546,7 +549,7 @@
     <Compile Include="Functions\Types\PointVector.cs" />
     <Compile Include="Functions\Types\String.cs" />
     <Compile Include="Functions\Types\Vector.cs" />
-    <Compile Include="Functions\UserFnc.cs" />
+    <Compile Include="Functions\FileFnc.cs" />
     <Compile Include="Functions\Vector\Norm.cs" />
     <Compile Include="Functions\Vector\Smooth.cs" />
     <Compile Include="Types\Graph.cs">

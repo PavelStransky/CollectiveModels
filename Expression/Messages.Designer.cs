@@ -3202,6 +3202,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluates a user function.
+        /// </summary>
+        internal static string HelpEvaluate {
+            get {
+                return ResourceManager.GetString("HelpEvaluate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transforms given state vector expanded in eigenvectors components to a vector expressed in components of the basis.
         /// </summary>
         internal static string HelpEVToBasis {
@@ -3333,6 +3342,15 @@ namespace PavelStransky.Expression {
         internal static string HelpFullSmooth {
             get {
                 return ResourceManager.GetString("HelpFullSmooth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a user function using the given text.
+        /// </summary>
+        internal static string HelpFunction {
+            get {
+                return ResourceManager.GetString("HelpFunction", resourceCulture);
             }
         }
         
@@ -7072,6 +7090,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fnc.
+        /// </summary>
+        internal static string PFnc {
+            get {
+                return ResourceManager.GetString("PFnc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User function.
+        /// </summary>
+        internal static string PFncDescription {
+            get {
+                return ResourceManager.GetString("PFncDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fnc.
+        /// </summary>
+        internal static string PFncText {
+            get {
+                return ResourceManager.GetString("PFncText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text with the function content.
+        /// </summary>
+        internal static string PFncTextDescription {
+            get {
+                return ResourceManager.GetString("PFncTextDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fnname.
         /// </summary>
         internal static string PFnName {
@@ -8238,6 +8292,24 @@ namespace PavelStransky.Expression {
         internal static string POrderOfSquareRootDescription {
             get {
                 return ResourceManager.GetString("POrderOfSquareRootDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to p.
+        /// </summary>
+        internal static string PParam {
+            get {
+                return ResourceManager.GetString("PParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the function.
+        /// </summary>
+        internal static string PParamDescription {
+            get {
+                return ResourceManager.GetString("PParamDescription", resourceCulture);
             }
         }
         

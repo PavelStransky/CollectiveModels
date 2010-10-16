@@ -17,6 +17,16 @@ namespace PavelStransky.Expression {
         private Context context;
 
         /// <summary>
+        /// Prázdný konstruktor
+        /// </summary>
+        public UserFunction() {
+            this.text = string.Empty;
+            this.context = null;
+            this.retVariable = string.Empty;
+            this.expression = new Expression(this.text);
+        }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="text">Text funkce</param>
@@ -30,16 +40,34 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
+        /// Text funkce
+        /// </summary>
+        public string Text { get { return this.text; } }
+
+        /// <summary>
+        /// Kontext pro výpoèet
+        /// </summary>
+        /// <returns></returns>
+        private Context CalculationContext(Guider guider) {
+            Context result = this.context;
+            if(result == null) {
+                if(guider == null)
+                    result = new Context();
+                else {
+                    result = new Context(guider.Context.Directory);
+                    guider.Context.OnEvent(new ContextEventArgs(ContextEventType.NewContext, result));
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Vypoèítá funkci
         /// </summary>
         /// <param name="arguments">Argumenty funkce</param>
         /// <param name="guider">Guider</param>
         public object Evaluate(ArrayList arguments, Guider guider) {
-            Context result = this.context;
-            if(result == null) {
-                result = new Context(guider.Context.Directory);
-                guider.Context.OnEvent(new ContextEventArgs(ContextEventType.NewContext, result));
-            }
+            Context result = this.CalculationContext(guider);
 
             // Vytvoøíme parametry funkce
             int count = arguments.Count;
@@ -58,6 +86,32 @@ namespace PavelStransky.Expression {
                 return result;
 
             return result[this.retVariable];           
+        }
+
+        /// <summary>
+        /// Vypoèítá funkce
+        /// </summary>
+        /// <param name="arguments">Argumenty</param>
+        public object EvaluateP(params object []arguments) {
+            Context result = this.CalculationContext(null);
+
+            // Vytvoøíme parametry funkce
+            int length = arguments.Length;
+            for(int i = 0; i < length; i++) {
+                result.SetVariable(string.Format(variableName, i + 1), arguments[i]);
+            }
+
+            this.expression.Evaluate(new Guider(result));
+
+            // Vymažeme parametry funkce
+            for(int i = 0; i < length; i++) {
+                result.Clear(string.Format(variableName, i + 1));
+            }
+
+            if(this.retVariable == string.Empty)
+                return result;
+
+            return result[this.retVariable].Item;           
         }
 
         /// <summary>

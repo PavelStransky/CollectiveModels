@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Collections;
 
 using PavelStransky.Core;
 using PavelStransky.Math;
@@ -295,9 +296,9 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="cv">Parametry køivky</param>
         private void SetColorFncBuffer(GraphParameterValues cv) {
-            string colorFnc = (string)cv[ParametersIndications.PColorFnc];
+            UserFunction colorFnc = (UserFunction)cv[ParametersIndications.PColorFnc];
 
-            if(colorFnc != string.Empty) {
+            if(colorFnc.Text != string.Empty) {
                 PointVector data = (PointVector)cv[ParametersIndications.DataCurves];
 
                 int num = data.Length;
@@ -305,15 +306,9 @@ namespace PavelStransky.Expression {
                 int i = 0;
 
                 try {
-                    Function fnc = new Function(string.Format("getvar({0}(x; y); cf)", colorFnc), null);
-                    Context c = new Context();
-
                     for(i = 0; i < num; i++) {
                         PointD p = data[i];
-                        c.SetVariable("x", p.X);
-                        c.SetVariable("y", p.Y);
-
-                        object v = (fnc.Evaluate(c) as Variable).Item;
+                        object v = colorFnc.EvaluateP(p.X, p.Y);
                         if(v is string)
                             buffer[i] = Color.FromName(v as string);
                         else if(v is int)
@@ -340,9 +335,9 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="cv">Parametry skupiny</param>
         private void SetBColorFncBuffer(GraphParameterValues cv) {
-            string colorFnc = (string)cv[ParametersIndications.BColorFnc];
+            UserFunction colorFnc = (UserFunction)cv[ParametersIndications.BColorFnc];
 
-            if(colorFnc != string.Empty) {
+            if(colorFnc.Text != string.Empty) {
                 Matrix data = (Matrix)cv[ParametersIndications.DataBackground];
 
                 int lengthX = data.LengthX;
@@ -351,16 +346,9 @@ namespace PavelStransky.Expression {
                 TArray buffer = new TArray(typeof(Color), lengthX, lengthY);
 
                 try {
-                    Function fnc = new Function(string.Format("getvar({0}(x; y; z); cf)", colorFnc), null);
-                    Context c = new Context();
-
                     for(int i = 0; i < lengthX; i++)
                         for(int j = 0; j < lengthY; j++) {
-                            c.SetVariable("x", i);
-                            c.SetVariable("y", j);
-                            c.SetVariable("z", data[i, j]);
-
-                            object v = (fnc.Evaluate(c) as Variable).Item;
+                            object v = colorFnc.EvaluateP(i, j, data[i, j]);
                             if(v is string)
                                 buffer[i, j] = Color.FromName(v as string);
                             else if(v is int)

@@ -13,9 +13,9 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpEvaluate; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(2);
+            this.SetNumParams(2, true);
             this.SetParam(0, true, true, false, Messages.PFnc, Messages.PFncDescription, null, typeof(UserFunction));
-            this.SetParam(1, false, true, false, Messages.PParam, Messages.PParam, null);
+            this.SetParam(1, false, true, false, Messages.PParam, Messages.PParamDescription, null);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

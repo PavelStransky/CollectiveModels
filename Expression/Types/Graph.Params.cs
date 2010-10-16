@@ -244,7 +244,7 @@ namespace PavelStransky.Expression {
             groupParams.Add(ParametersIndications.BColorMiddleValue, Messages.GPBColorMiddleValue, Messages.GPBColorMiddleValueDescription, 0.0);
             groupParams.Add(ParametersIndications.BColorMaxValue, Messages.GPBColorMaxValue, Messages.GPBColorMaxValueDescription, 1.0);
             groupParams.Add(ParametersIndications.BColorSpecialValue, Messages.GPBColorSpecialValue, Messages.GPBColorSpecialValueDescription, 0.0);
-            groupParams.Add(ParametersIndications.BColorFnc, Messages.GPBColorFnc, Messages.GPBColorFncDescription, string.Empty);
+            groupParams.Add(ParametersIndications.BColorFnc, Messages.GPBColorFnc, Messages.GPBColorFncDescription, new UserFunction());
             groupParams.Add(ParametersIndications.BLegend, Messages.GPBLegend, Messages.GPBLegendDescription, false);
             groupParams.Add(ParametersIndications.BLegendFSize, Messages.GPBLegendFSize, Messages.GPBLegendFSizeDescription, 10);
             groupParams.Add(ParametersIndications.BLegendWidth, Messages.GPBLegendWidth, Messages.GPBLegendWidthDescription, 30);
@@ -315,7 +315,7 @@ namespace PavelStransky.Expression {
             curveParams.Add(ParametersIndications.PColor, Messages.GPPColor, Messages.GPPColorDescription, Color.Brown);
             curveParams.Add(ParametersIndications.PStyle, Messages.GPPStyle, Messages.GPPStyleDescription, PointStyles.FCircle);
             curveParams.Add(ParametersIndications.PSize, Messages.GPPSize, Messages.GPPSizeDescription, 2);
-            curveParams.Add(ParametersIndications.PColorFnc, Messages.GPPColorFnc, Messages.GPPColorFncDescription, string.Empty);
+            curveParams.Add(ParametersIndications.PColorFnc, Messages.GPPColorFnc, Messages.GPPColorFncDescription, new UserFunction());
             curveParams.Add(ParametersIndications.FPColor, Messages.GPFPColor, Messages.GPFPColorDescription, Color.DarkRed);
             curveParams.Add(ParametersIndications.FPStyle, Messages.GPFPStyle, Messages.GPFPStyleDescription, PointStyles.None);
             curveParams.Add(ParametersIndications.FPSize, Messages.GPFPSize, Messages.GPFPSizeDescription, 2);

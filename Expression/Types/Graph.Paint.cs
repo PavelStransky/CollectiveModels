@@ -356,10 +356,10 @@ namespace PavelStransky.Expression {
                     }
 
                     // Barva bodù podle funkce
-                    string colorFnc = (string)iv[ParametersIndications.PColorFnc];
+                    UserFunction colorFnc = (UserFunction)iv[ParametersIndications.PColorFnc];
                     TArray colorBuffer = (TArray)iv[ParametersIndications.PColorFncBuffer];
 
-                    if(colorFnc == string.Empty || colorBuffer == null)
+                    if(colorFnc.Text == string.Empty || colorBuffer == null)
                         this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
                     else
                         this.DrawPoints(g, p, colorBuffer, pointStyle, pointSize);

@@ -97,8 +97,12 @@ namespace PavelStransky.Expression {
                     int j1 = j * pointSizeY;
 
                     for(int k = 0; k < pointSizeX; k++)
-                        for(int l = 0; l < pointSizeY; l++)
-                             result.SetPixel(i1 + k, j1 + l, color);
+                        for(int l = 0; l < pointSizeY; l++) {
+                            int x = i1 + k - pointSizeX / 2;
+                            int y = j1 + l - pointSizeY / 2;
+                            if(x >= 0 && y >= 0)
+                                result.SetPixel(x, y, color);
+                        }
                 }
 
                 // Žádost o pøerušení procesu

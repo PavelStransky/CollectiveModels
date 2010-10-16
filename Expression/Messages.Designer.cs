@@ -3355,6 +3355,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the text of the function.
+        /// </summary>
+        internal static string HelpFunctionText {
+            get {
+                return ResourceManager.GetString("HelpFunctionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gamma function.
         /// </summary>
         internal static string HelpGamma {

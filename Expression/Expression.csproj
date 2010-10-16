@@ -158,6 +158,7 @@
     <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Types\Function.cs" />
     <Compile Include="Functions\Unsorted\Evaluate.cs" />
+    <Compile Include="Functions\Unsorted\FunctionText.cs" />
     <Compile Include="Functions\Unsorted\IsNull.cs" />
     <Compile Include="Functions\Matrix\GetDiagonal.cs" />
     <Compile Include="Functions\Matrix\MatrixZAToNA.cs" />

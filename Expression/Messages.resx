@@ -3312,4 +3312,7 @@ Second differing type: {1}</value>
   <data name="PParamDescription" xml:space="preserve">
     <value>Parameter of the function</value>
   </data>
+  <data name="HelpFunctionText" xml:space="preserve">
+    <value>Returns the text of the function</value>
+  </data>
 </root>

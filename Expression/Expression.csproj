@@ -155,6 +155,7 @@
     <Compile Include="Functions\Dynamics\Traffic\TrafficParams.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficRun.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficStep.cs" />
+    <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Unsorted\IsNull.cs" />
     <Compile Include="Functions\Matrix\GetDiagonal.cs" />
     <Compile Include="Functions\Matrix\MatrixZAToNA.cs" />

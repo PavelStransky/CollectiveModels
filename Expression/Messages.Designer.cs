@@ -4030,6 +4030,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modulo operator.
+        /// </summary>
+        internal static string HelpModulo {
+            get {
+                return ResourceManager.GetString("HelpModulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mutes the output of a function.
         /// </summary>
         internal static string HelpMute {

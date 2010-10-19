@@ -3187,7 +3187,7 @@ Second differing type: {1}</value>
     <value>Result of the function CDFE</value>
   </data>
   <data name="HelpCDFEMaxQ" xml:space="preserve">
-    <value>Find the maximum value of the quadrupole deformation</value>
+    <value>Find the maximum and minimum value of the quadrupole deformation with its errors</value>
   </data>
   <data name="HelpMatrixZAToNA" xml:space="preserve">
     <value>Transforms the matrix with indices (Z, A) to (Z, N)</value>

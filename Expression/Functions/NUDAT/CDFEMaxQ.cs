@@ -9,7 +9,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Find the maximum value of the quadrupole deformation
+    /// Find the maximum and minimum value of the quadrupole deformation with its errors
     /// </summary>
     public class CDFEMaxQ: Fnc {
         public override string Help { get { return Messages.HelpCDFEMaxQ; } }
@@ -23,8 +23,12 @@ namespace PavelStransky.Expression.Functions.Def {
             List data = arguments[0] as List;
 
             bool first = true;
-            double result = 0.0;
+            double resultMax = 0.0;
+            double resultErrorMax = 0.0;
             int resultSign = 0;
+
+            double resultMin = 0.0;
+            double resultErrorMin = 0.0;
 
             List Qmom = data[1] as List;
             foreach(object o in Qmom) {
@@ -35,7 +39,10 @@ namespace PavelStransky.Expression.Functions.Def {
 
                 if(first) {
                     resultSign = (int)l[0];
-                    result = System.Math.Abs((double)l[1]);
+                    resultMax = System.Math.Abs((double)l[1]);
+                    resultErrorMax = System.Math.Abs((double)l[2]);
+                    resultMin = resultMax;
+                    resultErrorMin = resultErrorMax;
                     first = false;
                 }
                 else {
@@ -43,13 +50,24 @@ namespace PavelStransky.Expression.Functions.Def {
                         resultSign = 0;
                     else
                         resultSign = (int)l[0];
-                    result = System.Math.Max(System.Math.Abs((double)l[1]), result);
+                    if(resultMax < System.Math.Abs((double)l[1]))
+                    {
+                        resultMax = System.Math.Abs((double)l[1]);
+                        resultErrorMax = System.Math.Abs((double)l[2]);
+                    }
+                    if(resultMin > System.Math.Abs((double)l[1])) {
+                        resultMin = System.Math.Abs((double)l[1]);
+                        resultErrorMin = System.Math.Abs((double)l[2]);
+                    }
                 }
             }
 
             List r = new List();
             r.Add(resultSign);
-            r.Add(result);
+            r.Add(resultMax);
+            r.Add(resultErrorMax);
+            r.Add(resultMin);
+            r.Add(resultErrorMin);
             return r;
         }
     }

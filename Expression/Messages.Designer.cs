@@ -2806,7 +2806,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find the maximum value of the quadrupole deformation.
+        ///   Looks up a localized string similar to Find the maximum and minimum value of the quadrupole deformation with its errors.
         /// </summary>
         internal static string HelpCDFEMaxQ {
             get {

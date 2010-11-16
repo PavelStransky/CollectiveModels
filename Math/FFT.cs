@@ -112,9 +112,11 @@ namespace PavelStransky.Math {
 			return data.Length / 2 + 1;
 		}
 			
+        /// <summary>
 		/// Vlastní funkce pro výpoèet spektra
 		/// </summary>
-		/// <param name="fft">Fourierova transformace</param>
+        /// <param name="data">Data</param>
+        /// <param name="samplingRate">Sampling rate</param>
 		public static PointVector PowerSpectrum(ComplexVector data, double samplingRate) {
 			// Rozdíl dvou sousedních frekvencí
 			double fdiff = 1.0 / (samplingRate * data.Length);
@@ -133,6 +135,30 @@ namespace PavelStransky.Math {
 
 			return result;
 		}
+
+        /// <summary>
+        /// Funkce, která vrací fáze frekvencí
+        /// </summary>
+        /// <param name="data">Data</param>
+        /// <param name="samplingRate">Sampling rate</param>
+        public static PointVector Phases(ComplexVector data, double samplingRate) {
+            // Rozdíl dvou sousedních frekvencí
+            double fdiff = 1.0 / (samplingRate * data.Length);
+            int numFrequency = NumFrequency(data);
+
+            PointVector result = new PointVector(numFrequency);
+
+            // Stejnosmìrná složka
+            result[0].X = 0;
+            result[0].Y = data[0].SquaredNorm;
+
+            for(int i = 0; i < numFrequency; i++) {
+                result[i].X = i * fdiff;
+                result[i].Y = data[i].Phase;
+            }
+
+            return result;
+        }
 	}
 
 	/// <summary>

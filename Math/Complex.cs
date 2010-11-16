@@ -114,6 +114,23 @@ namespace PavelStransky.Math {
 		/// </summary>
 		public double SquaredNorm {get {return this.re * this.re + this.im * this.im;}}
 
+        /// <summary>
+        /// Vrátí fázi
+        /// </summary>
+        public double Phase {
+            get {
+                if(this.re == 0) {
+                    if(this.im < 0)
+                        return -System.Math.PI;
+                    else if(this.im > 0)
+                        return System.Math.PI;
+                    else
+                        return 0;
+                }
+                return System.Math.Atan(this.im / this.re);
+            }
+        }
+
 		/// <summary>
 		/// Øetìzec
 		/// </summary>

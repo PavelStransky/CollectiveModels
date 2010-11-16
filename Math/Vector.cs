@@ -936,12 +936,15 @@ namespace PavelStransky.Math {
         /// <param name="interval">Points of the interval</param>
         /// <param name="type">Typ histogramu</param>
         public PointVector Histogram(Vector interval, HistogramTypes type) {
+            if(this.Length == 0)
+                throw new VectorException(errorMessageNoData); 
+            
             int length = this.Length;
-            int lengthR = this.HistogramLength(length - 1, type);
+            int lengthR = this.HistogramLength(interval.Length - 1, type);
 
             PointVector result = new PointVector(lengthR);
 
-            for(int i = 0; i < length - 1; i++) {
+            for(int i = 0; i < interval.Length - 1; i++) {
                 double minx = interval[i];
                 double maxx = interval[i + 1];
                 int y = 0;

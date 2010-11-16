@@ -2770,6 +2770,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Computes spectrum the infinite-well box potential E=sum_i (omega*ni^2) for integer frequencies omega.
+        /// </summary>
+        internal static string HelpBoxSpectrum {
+            get {
+                return ResourceManager.GetString("HelpBoxSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Brody distribution.
         /// </summary>
         internal static string HelpBrody {
@@ -5227,6 +5236,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total number of levels: {0}.
+        /// </summary>
+        internal static string MsgLevelNumber {
+            get {
+                return ResourceManager.GetString("MsgLevelNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parsing....
         /// </summary>
         internal static string MsgParsing {
@@ -5565,6 +5583,24 @@ namespace PavelStransky.Expression {
         internal static string P2AvoidedCrossingDescription {
             get {
                 return ResourceManager.GetString("P2AvoidedCrossingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to omega.
+        /// </summary>
+        internal static string P2BoxSpectrum {
+            get {
+                return ResourceManager.GetString("P2BoxSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frequency in the distinct directions.
+        /// </summary>
+        internal static string P2BoxSpectrumDescription {
+            get {
+                return ResourceManager.GetString("P2BoxSpectrumDescription", resourceCulture);
             }
         }
         

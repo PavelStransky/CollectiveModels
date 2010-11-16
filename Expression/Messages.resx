@@ -3315,4 +3315,16 @@ Second differing type: {1}</value>
   <data name="HelpFunctionText" xml:space="preserve">
     <value>Returns the text of the function</value>
   </data>
+  <data name="HelpBoxSpectrum" xml:space="preserve">
+    <value>Computes spectrum the infinite-well box potential E=sum_i (omega*ni^2) for integer frequencies omega</value>
+  </data>
+  <data name="P2BoxSpectrum" xml:space="preserve">
+    <value>omega</value>
+  </data>
+  <data name="P2BoxSpectrumDescription" xml:space="preserve">
+    <value>Frequency in the distinct directions</value>
+  </data>
+  <data name="MsgLevelNumber" xml:space="preserve">
+    <value>Total number of levels: {0}</value>
+  </data>
 </root>

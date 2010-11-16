@@ -156,6 +156,7 @@
     <Compile Include="Functions\Dynamics\Traffic\TrafficRun.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficStep.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
+    <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Types\Function.cs" />
     <Compile Include="Functions\Unsorted\Evaluate.cs" />
     <Compile Include="Functions\Unsorted\FunctionText.cs" />

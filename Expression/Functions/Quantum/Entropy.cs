@@ -14,11 +14,11 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(1);
-            this.SetParam(0, true, true, false, Messages.PLHOQuantumGCM, Messages.PLHOQuantumGCMDescription, typeof(LHOQuantumGCM));
+            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            return (arguments[0] as LHOQuantumGCM).GetEntropy();
+            return (arguments[0] as Vector).Entropy();
         }
     }
 }

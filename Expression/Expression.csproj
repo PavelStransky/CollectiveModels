@@ -217,7 +217,7 @@
     <Compile Include="Functions\Quantum\AvoidedCrossing.cs" />
     <Compile Include="Functions\Quantum\AvoidedCrossings.cs" />
     <Compile Include="Functions\Quantum\D2.cs" />
-    <Compile Include="Functions\Quantum\Entropy.cs" />
+    <Compile Include="Functions\Vector\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />
     <Compile Include="Functions\Statistics\BinMean.cs" />

@@ -346,11 +346,12 @@ namespace PavelStransky.Systems {
         /// Výpoèet po èas T
         /// </summary>
         /// <param name="time">Doba výpoètu</param>
-        public ArrayList Run(int time) {
+        /// <param name="boundary">Okrajové podmínky pro uøíznutí matice</param>
+        public ArrayList Run(int time, int boundary) {
             ArrayList result = new ArrayList();
 
             Vector velocity = new Vector(time);
-            Matrix lights = new Matrix(this.streetsX * this.streetsY, time);
+            Matrix lights = new Matrix((this.streetsX - 2 * boundary) * (this.streetsY - 2 * boundary), time);
 
             for(int t = 0; t < time; t++) {
                 foreach(TrafficItem item in this.trafficItems)
@@ -361,8 +362,8 @@ namespace PavelStransky.Systems {
                 velocity[t] = this.Changes() / 2;
 
                 int k = 0;
-                for(int i = 0; i < this.streetsX; i++)
-                    for(int j = 0; j < this.streetsY; j++)
+                for(int i = boundary; i < this.streetsX - boundary; i++)
+                    for(int j = boundary; j < this.streetsY - boundary; j++)
                         lights[k++, t] = this.crossing[i, j].State;
             }
 

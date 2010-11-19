@@ -3327,4 +3327,10 @@ Second differing type: {1}</value>
   <data name="MsgLevelNumber" xml:space="preserve">
     <value>Total number of levels: {0}</value>
   </data>
+  <data name="PBoundaryCut" xml:space="preserve">
+    <value>b</value>
+  </data>
+  <data name="PBoundaryCutDescription" xml:space="preserve">
+    <value>Number of points from each side to cut the boundary</value>
+  </data>
 </root>

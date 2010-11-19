@@ -1190,6 +1190,24 @@ namespace PavelStransky.Math {
 			return 1.0 / result;
 		}
 
+        /// <summary>
+        /// Entropie systému S = -Sum(ev[j]^2 ln(ev[j]^2))
+        /// </summary>
+        /// <remarks>M.S. Santhanam et al., arXiv:chao-dyn/9704002v1</remarks>
+        public double Entropy() {
+            double result = 0;
+
+            int length = this.Length;
+            for(int i = 0; i < length; i++) {
+                double pow2 = this[i];
+                pow2 *= pow2;
+                if(pow2 != 0.0)
+                    result -= pow2 * System.Math.Log(pow2);
+            }
+
+            return result;
+        }
+
 		/// <summary>
 		/// Vypoèítá Symmetry parameter vektoru
 		/// </summary>

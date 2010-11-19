@@ -6388,6 +6388,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to b.
+        /// </summary>
+        internal static string PBoundaryCut {
+            get {
+                return ResourceManager.GetString("PBoundaryCut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of points from each side to cut the boundary.
+        /// </summary>
+        internal static string PBoundaryCutDescription {
+            get {
+                return ResourceManager.GetString("PBoundaryCutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to omega.
         /// </summary>
         internal static string PBrody {

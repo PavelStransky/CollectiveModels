@@ -209,26 +209,6 @@ namespace PavelStransky.Systems {
             return null;
         }
 
-        /// <summary>
-        /// Entropie systému S = -Sum(ev[j]^2 ln(ev[j]^2))
-        /// </summary>
-        /// <remarks>M.S. Santhanam et al., arXiv:chao-dyn/9704002v1</remarks>
-        public virtual Vector GetEntropy() {
-            int count = this.eigenSystem.NumEV;
-            Vector result = new Vector(count);
-
-            for(int i = 0; i < count; i++) {
-                Vector ev = this.eigenSystem.GetEigenVector(i);
-                int length = ev.Length;
-
-                for(int j = 0; j < length; j++)
-                    if(ev[j] != 0.0)
-                        result[i] -= ev[j] * ev[j] * System.Math.Log(ev[j] * ev[j]);
-            }
-
-            return result;
-        }
-
         #region Vlnové funkce
         /// <summary>
         /// Vlnová funkce v souøadnicích x, y

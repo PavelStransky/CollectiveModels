@@ -45,6 +45,14 @@ namespace PavelStransky.Expression.Functions.Def {
                 result = this.ImportDigits(f, digits);
                 f.Close();
             }
+            else if((string)arguments[1] == paramMatica) {
+                // Import dat Mathematica - matice
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                StreamReader t = new StreamReader(f);
+                result = this.ImportMatica(t);
+                t.Close();
+                f.Close();
+            }
             else {
                 Import import = new Import(fileName, this.Binary(arguments, 1));
                 result = import.Read();
@@ -54,12 +62,35 @@ namespace PavelStransky.Expression.Functions.Def {
 			return result;
 		}
 
-		/// <summary>
-		/// Provede import dat z matlabu
-		/// </summary>
-		/// <param name="t">StreamReader</param>
+        /// <summary>
+        /// Provede import dat z matiky
+        /// </summary>
+        /// <param name="t">StreamReader</param>
+        private object ImportMatica(StreamReader t) {
+            string s = t.ReadToEnd();
+            string[] items = s.Split('\n');
+
+            Matrix result = null;
+
+            for(int i = 0; i < items.Length; i++) {
+                string[] its = items[i].Replace(" ", "").Split('\t');
+
+                if(result == null)
+                    result = new Matrix(items.Length, its.Length);
+
+                for(int j = 0; j < its.Length; j++)
+                    result[i, j] = double.Parse(its[j]);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Provede import dat z matlabu
+        /// </summary>
+        /// <param name="t">StreamReader</param>
         /// <param name="linesOmit">Poèet vynechaných øádek</param>
-		private object ImportMatlab(StreamReader t, int linesOmit) {
+        private object ImportMatlab(StreamReader t, int linesOmit) {
 			ArrayList rows = new ArrayList();
 
 			int columns = -1;
@@ -154,6 +185,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         private const string paramDigits = "digits";
 		private const string paramMatlab = "matlab";
+        private const string paramMatica = "mathmat";
 
         private const string name = "import";
 	}

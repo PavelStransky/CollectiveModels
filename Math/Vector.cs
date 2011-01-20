@@ -908,9 +908,9 @@ namespace PavelStransky.Math {
 
 			int j = 0;
 			for(int i = 0; i < intervals; i++) {
-                double maxx = min + step * i;
+                double maxx = min + step * (i + 1);
                 double y = 0;
-				while((sorted[j] <= min + step*(i + 1)) && (j < sorted.Length - 1)) {
+				while((j < sorted.Length) && (sorted[j] <= maxx)) {
                     y++;
 					j++;
 				}

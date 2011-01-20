@@ -67,10 +67,10 @@ namespace PavelStransky.Expression.Functions.Def {
         /// </summary>
         /// <param name="t">StreamReader</param>
         private object ImportMatica(StreamReader t) {
-            string s = t.ReadToEnd();
+            string s = t.ReadToEnd().Trim(' ', '\n', '\r', '\t');
             string[] items = s.Split('\n');
 
-            Matrix result = null;
+            Matrix result = null;            
 
             for(int i = 0; i < items.Length; i++) {
                 string[] its = items[i].Replace(" ", "").Split('\t');

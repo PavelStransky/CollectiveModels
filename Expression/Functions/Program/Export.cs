@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 
 using PavelStransky.Core;
 using PavelStransky.Math;
@@ -22,9 +23,41 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            Export export = new Export((string)arguments[0], this.Binary(arguments, 2));
-            export.Write(arguments[1]);
-            export.Close();
+            string type = (string)arguments[2];
+            if(type == "data") {
+                string fileName = arguments[0] as string;
+
+                if(arguments[1] is Vector) {
+                    Vector v = arguments[1] as Vector;
+                    FileStream f = new FileStream(fileName, FileMode.Create);
+                    StreamWriter t = new StreamWriter(f);
+                    for(int i = 0; i < v.Length; i++)
+                        t.WriteLine(v[i]);
+                    t.Close();
+                    f.Close();
+                }
+                else if(arguments[1] is Matrix) {
+                    Matrix m = arguments[1] as Matrix;
+                    FileStream f = new FileStream(fileName, FileMode.Create);
+                    StreamWriter t = new StreamWriter(f);
+
+                    for(int i = 0; i < m.LengthX; i++) {
+                        t.Write(m[i,0]);
+                        for(int j = 1; j < m.LengthY; j++) {
+                            t.Write('\t');
+                            t.Write(m[i, j]);
+                        }
+                        t.WriteLine();
+                    }
+                    t.Close();
+                    f.Close();
+                }
+            }
+            else {
+                Export export = new Export((string)arguments[0], this.Binary(arguments, 2));
+                export.Write(arguments[1]);
+                export.Close();
+            }
 
 			return null;
 		}

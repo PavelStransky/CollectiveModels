@@ -3333,4 +3333,13 @@ Second differing type: {1}</value>
   <data name="PBoundaryCutDescription" xml:space="preserve">
     <value>Number of points from each side to cut the boundary</value>
   </data>
+  <data name="HelpBoxSpectrum3D" xml:space="preserve">
+    <value>Computes spectrum the 3D infinite-well box potential  E = (hbar^2 pi^2)/(2ML^2)[(nx^2+ny^2)e^2a + nz^2 e^-4a] (with a volume conservation condition)</value>
+  </data>
+  <data name="PDeformation" xml:space="preserve">
+    <value>def</value>
+  </data>
+  <data name="PDeformationDescription" xml:space="preserve">
+    <value>Deformation</value>
+  </data>
 </root>

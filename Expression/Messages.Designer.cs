@@ -2779,6 +2779,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Computes spectrum the 3D infinite-well box potential  E = (hbar^2 pi^2)/(2ML^2)[(nx^2+ny^2)e^2a + nz^2 e^-4a] (with a volume conservation condition).
+        /// </summary>
+        internal static string HelpBoxSpectrum3D {
+            get {
+                return ResourceManager.GetString("HelpBoxSpectrum3D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value of Brody distribution.
         /// </summary>
         internal static string HelpBrody {
@@ -6681,6 +6690,24 @@ namespace PavelStransky.Expression {
         internal static string PDeflateDescription {
             get {
                 return ResourceManager.GetString("PDeflateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to def.
+        /// </summary>
+        internal static string PDeformation {
+            get {
+                return ResourceManager.GetString("PDeformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deformation.
+        /// </summary>
+        internal static string PDeformationDescription {
+            get {
+                return ResourceManager.GetString("PDeformationDescription", resourceCulture);
             }
         }
         

@@ -536,6 +536,269 @@ namespace PavelStransky.Math {
             return 1 - System.Math.Exp(-alpha * System.Math.Pow(x, b + 1));
         }
 
+        /// <summary>
+        /// Spherical Bessel functions and their derivatives
+        /// </summary>
+        /// <param name="x">Value of the parameter</param>
+        /// <param name="xnu">Order of the spherical Bessel function</param>
+        /// <returns>Vector (BesselJ, BesselY, BesselJ', BesselY')</returns>
+        /// <remarks>Numerical Recipies, Chapter 6.7</remarks>
+        public static Vector SphericalBesselFunction(double x, double xnu) {
+            double order = xnu + 0.5;
+            double factor = System.Math.Sqrt(System.Math.PI / (2.0 * x));
+
+            Vector result = BesselFunction(x, order);
+            result[0] *= factor;
+            result[1] *= factor;
+            result[2] *= factor; result[2] -= result[0] / (2.0 * x);
+            result[3] *= factor; result[3] -= result[1] / (2.0 * x);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Bessel functions and their derivatives
+        /// </summary>
+        /// <param name="x">Value of the parameter</param>
+        /// <param name="xnu">Order of the Bessel function</param>
+        /// <returns>Vector (BesselJ, BesselY, BesselJ', BesselY')</returns>
+        /// <remarks>Numerical Recipies, Chapter 6.7</remarks>
+        public static Vector BesselFunction(double x, double xnu) {
+            double EPS = 1.0e-16;       // Epsilon
+            double FPMIN = 1.0e-30;
+            double MAXIT = 10000;       // Maximum iterations
+            double XMIN = 2.0;
+
+            Vector result = new Vector(4);
+
+            int nl = (x < XMIN ? (int)(xnu + 0.5) : (int)System.Math.Max(0, xnu - x + 1.5));
+
+            double xmu = xnu - nl;
+            double xmu2 = xmu * xmu;
+            double xi = 1.0 / x;
+            double xi2 = 2.0 * xi;
+            double w = xi2 / System.Math.PI;
+
+            int isign = 1;
+
+            double h = xnu * xi;
+            if(h < FPMIN) 
+                h = FPMIN;
+
+            double b = xi2 * xnu;
+            double d = 0.0;
+            double c = h;
+
+            int i;
+
+            for(i = 1; i <= MAXIT; i++) {
+                b += xi2;
+                d = b - d;
+                if(System.Math.Abs(d) < FPMIN) 
+                    d = FPMIN;
+
+                c = b - 1.0 / c;
+                if(System.Math.Abs(c) < FPMIN) 
+                    c = FPMIN;
+
+                d = 1.0 / d;
+                if(d < 0.0)
+                    isign = -isign;
+
+                double del = c * d;
+                h = del * h;
+
+                if(System.Math.Abs(del - 1.0) < EPS)
+                    break;
+            }
+            if(i > MAXIT)
+                throw new MathException(Messages.EMLargeXBessel);
+
+            double rjl = isign * FPMIN;
+            double rjpl = h * rjl;
+            double rjl1 = rjl;
+            double rjp1 = rjpl;
+            double fact = xnu * xi;
+
+            for(int l = nl; l >= 1; l--) {
+                double rjtemp = fact * rjl + rjpl;
+                fact -= xi;
+                rjpl = fact * rjtemp - rjl;
+                rjl = rjtemp;
+            }
+
+            if(rjl == 0.0) 
+                rjl = EPS;
+
+            double rymu = 0.0;
+            double ry1 = 0.0;
+            double rymup = 0.0;
+            double rjmu = 0.0;
+
+            double f = rjpl / rjl;
+
+            if(x < XMIN) {
+                double x2 = 0.5 * x;
+                double pimu = System.Math.PI * xmu;
+
+                fact = System.Math.Abs(pimu) < EPS ? 1.0 : pimu / System.Math.Sin(pimu);
+                d = -System.Math.Log(x2);
+                
+                double e = xmu * d;
+                double fact2 = System.Math.Abs(e) < EPS ? 1.0 : System.Math.Sinh(e) / e;
+
+                Vector besch = ChebyshevExpansion(xmu);
+
+                double ff = 2.0 / System.Math.PI * fact * (besch[0] * System.Math.Cosh(e) + besch[1] * fact2 * d);
+
+                e = System.Math.Exp(e);
+                
+                double p = e / (besch[2] * System.Math.PI);
+                double q = 1.0 / (e * System.Math.PI * besch[3]);
+                double pimu2 = 0.5 * pimu;
+                double fact3 = System.Math.Abs(pimu2) < EPS ? 1.0 : System.Math.Sin(pimu2) / pimu2;
+                double r = System.Math.PI * pimu2 * fact3 * fact3;
+                
+                c = 1.0;
+                d = -x2 * x2;
+                
+                double sum = ff + r * q;
+                double sum1 = p;
+                
+                for(i = 1; i <= MAXIT; i++) {
+                    ff = (i * ff + p + q) / (i * i - xmu2);
+                    c *= (d / i);
+                    p /= (i - xmu);
+                    q /= (i + xmu);
+                    double del = c * (ff + r * q);
+                    sum += del;
+                    double del1 = c * p - i * del;
+                    sum1 += del1;
+
+                    if(System.Math.Abs(del) < (1.0 + System.Math.Abs(sum)) * EPS)
+                        break;
+                }
+                if(i > MAXIT)
+                    throw new MathException(Messages.EMBesselNotConverge);
+
+                rymu = -sum;
+                ry1 = -sum1 * xi2;
+                rymup = xmu * xi * rymu - ry1;
+                rjmu = w / (rymup - f * rymu);
+            }
+            else {
+                double a = 0.25 - xmu2;
+                double p = -0.5 * xi;
+                double q = 1.0;
+                double br = 2.0 * x;
+                double bi = 2.0;
+
+                fact = a * xi / (p * p + q * q);
+
+                double cr = br + q * fact;
+                double ci = bi + p * fact;
+                double den = br * br + bi * bi;
+                double dr = br / den;
+                double di = -bi / den;
+                double dlr = cr * dr - ci * di;
+                double dli = cr * di + ci * dr;
+                double temp = p * dlr - q * dli;
+
+                q = p * dli + q * dlr;
+                p = temp;
+
+                for(i = 2; i <= MAXIT; i++) {
+                    a += 2 * (i - 1);
+                    bi += 2.0;
+                    dr = a * dr + br;
+                    di = a * di + bi;
+                    if(System.Math.Abs(dr) + System.Math.Abs(di) < FPMIN) 
+                        dr = FPMIN;
+                    
+                    fact = a / (cr * cr + ci * ci);
+                    cr = br + cr * fact;
+                    ci = bi - ci * fact;
+                    if(System.Math.Abs(cr) + System.Math.Abs(ci) < FPMIN) 
+                        cr = FPMIN;
+
+                    den = dr * dr + di * di;
+                    dr /= den;
+                    di /= -den;
+                    dlr = cr * dr - ci * di;
+                    dli = cr * di + ci * dr;
+                    temp = p * dlr - q * dli;
+                    q = p * dli + q * dlr;
+                    p = temp;
+
+                    if(System.Math.Abs(dlr - 1.0) + System.Math.Abs(dli) < EPS) 
+                        break;
+                }
+                if(i > MAXIT)
+                    throw new MathException(Messages.EMBesselNotConverge);
+
+
+                double gam = (p - f) / q;
+                rjmu = System.Math.Sqrt(w / ((p - f) * gam + q));
+                rjmu = rjl > 0 ? System.Math.Abs(rjmu) : -System.Math.Abs(rjmu);
+                rymu = rjmu * gam;
+                rymup = rymu * (p + q / gam);
+                ry1 = xmu * xi * rymu - rymup;
+            }
+            fact = rjmu / rjl;
+            result[0] = rjl1 * fact;
+
+            result[2] = rjp1 * fact;
+            for(i = 1; i <= nl; i++) {
+                double rytemp = (xmu + i) * xi2 * ry1 - rymu;
+                rymu = ry1;
+                ry1 = rytemp;
+            }
+            result[1] = rymu;
+            result[3] = xnu * xi * rymu - ry1;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Chebyshev expansion of a gamma function (for BesselFunction)
+        /// </summary>
+        /// <param name="x">Parameter x</param>
+        private static Vector ChebyshevExpansion(double x) {
+            double[] c1 = {
+                    -1.142022680371168e0,6.5165112670737e-3,
+                    3.087090173086e-4,-3.4706269649e-6,6.9437664e-9,
+                    3.67795e-11,-1.356e-13};
+            double[] c2 = {
+                    1.843740587300905e0,-7.68528408447867e-2,
+                    1.2719271366546e-3,-4.9717367042e-6,-3.31261198e-8,
+                    2.423096e-10,-1.702e-13,-1.49e-15};
+            double xx = 8.0 * x * x - 1.0;
+
+            Vector result = new Vector(4);
+            result[0] = ChebyshevEvaluation(-1.0, 1.0, c1, 7, xx);
+            result[1] = ChebyshevEvaluation(-1.0, 1.0, c2, 8, xx);
+            result[2] = result[1] - x * (result[0]);
+            result[3] = result[1] + x * (result[0]);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Evaluation of a Chebyshev polynomial
+        /// </summary>
+        private static double ChebyshevEvaluation(double a, double b, double[] c, int m, double x) {
+            double d = 0.0;
+            double dd = 0.0;
+            double y = (2.0 * x - a - b) / (b - a);
+            double y2 = 2.0 * y;
+            for(int j = m - 1; j >= 1; j--) {
+                double sv = d;
+                d = y2 * d - dd + c[j];
+                dd = sv;
+            }
+            return y * d - dd + 0.5 * c[0];
+        }
+
         private static double[] gammaLogKoef;
         private const int maxIteration = 1000;
         private const double epsilon = 1E-10;

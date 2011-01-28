@@ -3342,4 +3342,28 @@ Second differing type: {1}</value>
   <data name="PDeformationDescription" xml:space="preserve">
     <value>Deformation</value>
   </data>
+  <data name="HelpBesselJ" xml:space="preserve">
+    <value>Returns the value of the Bessel function J (Bessel function of the first kind)</value>
+  </data>
+  <data name="HelpBesselJd" xml:space="preserve">
+    <value>Returns the derivative of the Bessel function J</value>
+  </data>
+  <data name="HelpBesselY" xml:space="preserve">
+    <value>Returns the value of the Bessel function Y (Bessel function of the second kind)</value>
+  </data>
+  <data name="HelpBesselYd" xml:space="preserve">
+    <value>Returns the derivative of the Bessel function Y</value>
+  </data>
+  <data name="HelpSphericalBesselJ" xml:space="preserve">
+    <value>Returns the value of the Spherical Bessel function j</value>
+  </data>
+  <data name="HelpSphericalBesselJd" xml:space="preserve">
+    <value>Returns the value of the derivative of the Spherical Bessel function j</value>
+  </data>
+  <data name="HelpSphericalBesselY" xml:space="preserve">
+    <value>Returns the value of the Spherical Bessel function y (Spherical Neumann function)</value>
+  </data>
+  <data name="HelpSphericalBesselYd" xml:space="preserve">
+    <value>Returns the value of the derivative of the Spherical Bessel function y</value>
+  </data>
 </root>

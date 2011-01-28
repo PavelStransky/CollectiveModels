@@ -2734,6 +2734,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the value of the Bessel function J (Bessel function of the first kind).
+        /// </summary>
+        internal static string HelpBesselJ {
+            get {
+                return ResourceManager.GetString("HelpBesselJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the derivative of the Bessel function J.
+        /// </summary>
+        internal static string HelpBesselJd {
+            get {
+                return ResourceManager.GetString("HelpBesselJd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the value of the Bessel function Y (Bessel function of the second kind).
+        /// </summary>
+        internal static string HelpBesselY {
+            get {
+                return ResourceManager.GetString("HelpBesselY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the derivative of the Bessel function Y.
+        /// </summary>
+        internal static string HelpBesselYd {
+            get {
+                return ResourceManager.GetString("HelpBesselYd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates mean of a PointVector in each of a defined bin.
         /// </summary>
         internal static string HelpBinMean {
@@ -4863,6 +4899,42 @@ namespace PavelStransky.Expression {
         internal static string HelpSpacing {
             get {
                 return ResourceManager.GetString("HelpSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the value of the Spherical Bessel function j.
+        /// </summary>
+        internal static string HelpSphericalBesselJ {
+            get {
+                return ResourceManager.GetString("HelpSphericalBesselJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the value of the derivative of the Spherical Bessel function j.
+        /// </summary>
+        internal static string HelpSphericalBesselJd {
+            get {
+                return ResourceManager.GetString("HelpSphericalBesselJd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the value of the Spherical Bessel function y (Spherical Neumann function).
+        /// </summary>
+        internal static string HelpSphericalBesselY {
+            get {
+                return ResourceManager.GetString("HelpSphericalBesselY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the value of the derivative of the Spherical Bessel function y.
+        /// </summary>
+        internal static string HelpSphericalBesselYd {
+            get {
+                return ResourceManager.GetString("HelpSphericalBesselYd", resourceCulture);
             }
         }
         

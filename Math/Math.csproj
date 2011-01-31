@@ -111,6 +111,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BesselJZero.cs" />
     <Compile Include="Bisection.cs" />
     <Compile Include="BrodyFit.cs" />
     <Compile Include="ComparisonOperator.cs" />

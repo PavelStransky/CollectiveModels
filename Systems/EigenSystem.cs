@@ -117,6 +117,11 @@ namespace PavelStransky.Systems {
                 SymmetricBandMatrix m = this.parrentQuantumSystem.HamiltonianSBMatrix(this.basisIndex, writer);
                 this.Diagonalize(m, ev, numEV, writer);
             }
+
+            else if(method == ComputeMethod.LAPACK) {
+                Matrix m = this.parrentQuantumSystem.HamiltonianMatrix(this.basisIndex, writer);
+                this.DiagonalizeFull(m, ev, numEV, writer);
+            }
         }
 
         /// <summary>
@@ -249,6 +254,59 @@ namespace PavelStransky.Systems {
 
                 Vector[] eigenSystem = LAPackDLL.dsbevx(matrix, ev, 0, numEV);
                 matrix.Dispose();
+
+                GC.Collect();
+
+                if(writer != null)
+                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
+
+                this.eigenValues = eigenSystem[0];
+                this.eigenValues.Length = numEV;
+
+                if(ev) {
+                    this.eigenVectors = new Vector[numEV];
+                    for(int i = 0; i < numEV; i++)
+                        this.eigenVectors[i] = eigenSystem[i + 1];
+                }
+                else
+                    this.eigenVectors = new Vector[0];
+
+                this.isComputing = false;
+                this.isComputed = true;
+            }
+            finally {
+                this.isComputing = false;
+            }
+        }
+
+        /// <summary>
+        /// Diagonalizace plné matice užitím LAPACK knihovny
+        /// </summary>
+        /// <param name="matrix">Symetrická matice</param>
+        /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
+        /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
+        /// <param name="writer">Writer</param>
+        public void DiagonalizeFull(Matrix matrix, bool ev, int numEV, IOutputWriter writer) {
+            if(this.isComputing)
+                throw new SystemsException(Messages.EMComputing);
+
+            this.isComputing = true;
+
+            try {
+                if(numEV <= 0)
+                    numEV = matrix.Length;
+
+                if(writer != null) {
+                    writer.WriteLine(string.Format(Messages.MSMatrixDimension, matrix.Length));
+                    writer.WriteLine(string.Format(Messages.MTrace, matrix.Trace()));
+                    writer.Write(string.Format(Messages.MDiagonalizationDSYEV, numEV, ev ? Messages.MDiagonalizationEVYes : Messages.MDiagonalizationEVNo));
+                }
+
+                GC.Collect();
+
+                DateTime startTime1 = DateTime.Now;
+
+                Vector[] eigenSystem = LAPackDLL.dsyev(matrix, ev);
 
                 GC.Collect();
 

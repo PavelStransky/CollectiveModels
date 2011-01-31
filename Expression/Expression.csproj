@@ -161,11 +161,13 @@
     <Compile Include="Functions\Math\BesselYd.cs" />
     <Compile Include="Functions\Math\SphericalBesselJ.cs" />
     <Compile Include="Functions\Math\SphericalBesselJd.cs" />
+    <Compile Include="Functions\Math\SphericalBesselJZero.cs" />
     <Compile Include="Functions\Math\SphericalBesselY.cs" />
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
+    <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Types\Function.cs" />
     <Compile Include="Functions\Unsorted\Evaluate.cs" />
     <Compile Include="Functions\Unsorted\FunctionText.cs" />

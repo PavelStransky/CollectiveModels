@@ -141,6 +141,9 @@
   <data name="MDiagonalizationDSBEVX" xml:space="preserve">
     <value>Diagonalization dsbevx ({0} eigenvalues{1})...</value>
   </data>
+  <data name="MDiagonalizationDSYEV" xml:space="preserve">
+    <value>Diagonalization dsyev ({0} eigenvalues{1})...</value>
+  </data>
   <data name="MDiagonalizationEVNo" xml:space="preserve">
     <value>, NO eigenvectors</value>
   </data>

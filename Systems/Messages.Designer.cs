@@ -133,6 +133,15 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diagonalization dsyev ({0} eigenvalues{1})....
+        /// </summary>
+        internal static string MDiagonalizationDSYEV {
+            get {
+                return ResourceManager.GetString("MDiagonalizationDSYEV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to , NO eigenvectors.
         /// </summary>
         internal static string MDiagonalizationEVNo {

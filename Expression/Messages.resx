@@ -3366,4 +3366,16 @@ Second differing type: {1}</value>
   <data name="HelpSphericalBesselYd" xml:space="preserve">
     <value>Returns the value of the derivative of the Spherical Bessel function y</value>
   </data>
+  <data name="HelpSphericalBesselJZero" xml:space="preserve">
+    <value>Returns a given number of zeros of the spherical Bessel function j</value>
+  </data>
+  <data name="PZeroNumber" xml:space="preserve">
+    <value>nz</value>
+  </data>
+  <data name="PZeroNumberDescription" xml:space="preserve">
+    <value>Number of zeros</value>
+  </data>
+  <data name="HelpQuantumSpheroid" xml:space="preserve">
+    <value>Creates Quantum Spheroid class</value>
+  </data>
 </root>

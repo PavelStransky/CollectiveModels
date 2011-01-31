@@ -4498,6 +4498,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates Quantum Spheroid class.
+        /// </summary>
+        internal static string HelpQuantumSpheroid {
+            get {
+                return ResourceManager.GetString("HelpQuantumSpheroid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates a temperature using expression Tr(Ro H) = K.
         /// </summary>
         internal static string HelpQuantumTemperature {
@@ -4917,6 +4926,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSphericalBesselJd {
             get {
                 return ResourceManager.GetString("HelpSphericalBesselJd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns a given number of zeros of the spherical Bessel function j.
+        /// </summary>
+        internal static string HelpSphericalBesselJZero {
+            get {
+                return ResourceManager.GetString("HelpSphericalBesselJZero", resourceCulture);
             }
         }
         
@@ -9534,6 +9552,24 @@ namespace PavelStransky.Expression {
         internal static string PYMinBoundDescription {
             get {
                 return ResourceManager.GetString("PYMinBoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nz.
+        /// </summary>
+        internal static string PZeroNumber {
+            get {
+                return ResourceManager.GetString("PZeroNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of zeros.
+        /// </summary>
+        internal static string PZeroNumberDescription {
+            get {
+                return ResourceManager.GetString("PZeroNumberDescription", resourceCulture);
             }
         }
         

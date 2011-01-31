@@ -79,6 +79,8 @@
     <Compile Include="Import.cs" />
     <Compile Include="IQuantumSystem.cs" />
     <Compile Include="PT\PTBasisIndex.cs" />
+    <Compile Include="Spheroid\Spheroid.cs" />
+    <Compile Include="Spheroid\SpheroidBasisIndex.cs" />
     <Compile Include="SystemsException.cs" />
     <Compile Include="GCM\GCM.cs" />
     <Compile Include="GCM\GCMParameters.cs" />

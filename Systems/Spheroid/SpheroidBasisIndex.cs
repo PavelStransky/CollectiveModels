@@ -16,6 +16,9 @@ namespace PavelStransky.Systems {
 
         private int[] n, l, m;
 
+        // Je zadaná konkrétní vlastní hodnota m?
+        private int setm;
+
         // Energie vlastních stavù
         private Vector e;
 
@@ -39,14 +42,20 @@ namespace PavelStransky.Systems {
             this.maxn = (int)basisParams[0];                     // Maximální index kyvadla 1
             this.maxl = (int)basisParams[1];                     // Maximální energie kyvadla 2
 
-            Vector[] zeros = new Vector[this.maxl];
-            for(int l = 0; l < this.maxl; l++) {
+            if(basisParams.Length > 2) {
+                this.setm = (int)basisParams[2];
+            }
+            else
+                this.setm = -1;
+
+            Vector[] zeros = new Vector[this.maxl + 1];
+            for(int l = 0; l <= this.maxl; l++) {
                 BesselJZero b = new BesselJZero(l, precision);
-                zeros[l] = b.Solve(this.maxn);
+                zeros[l] = b.Solve(this.maxn + 1);
             }
 
             double e0 = 0.0;
-            double emax = zeros[this.maxl - 1][this.maxn - 1];
+            double emax = zeros[this.maxl][this.maxn];
 
             ArrayList ae = new ArrayList();
             ArrayList al = new ArrayList();
@@ -54,11 +63,11 @@ namespace PavelStransky.Systems {
 
             while(e0 < emax) {
                 double ecur = emax;
-                int lcur = this.maxl - 1;
-                int ncur = this.maxn - 1;
+                int lcur = this.maxl;
+                int ncur = this.maxn;
 
-                for(int l = 0; l < this.maxl; l++)
-                    for(int n = 0; n < this.maxn; n++)
+                for(int l = 0; l <= this.maxl; l++)
+                    for(int n = 0; n <= this.maxn; n++)
                         if(zeros[l][n] < ecur && zeros[l][n] > e0) {
                             ecur = zeros[l][n];
                             lcur = l;
@@ -75,8 +84,12 @@ namespace PavelStransky.Systems {
             int count = ae.Count;
             int length = 0;
 
-            for(int i = 0; i < count; i++) 
-                length += 2 * (int)al[i] + 1;
+            for(int i = 0; i < count; i++) {
+                if(this.setm < 0)
+                    length += 2 * (int)al[i] + 1;
+                else if((int)al[i] >= this.setm)
+                    length++;
+            }
 
             this.n = new int[length];
             this.l = new int[length];
@@ -86,12 +99,24 @@ namespace PavelStransky.Systems {
             int j = 0;
             for(int i = 0; i < count; i++) {
                 int l = (int)al[i];
-                for(int m = -l; m <= l; m++) {
-                    this.n[j] = (int)an[i];
-                    this.l[j] = l;
-                    this.m[j] = m;
-                    this.e[j] = (double)ae[i];
-                    j++;
+
+                if(this.setm < 0) {
+                    for(int m = -l; m <= l; m++) {
+                        this.n[j] = (int)an[i];
+                        this.l[j] = l;
+                        this.m[j] = m;
+                        this.e[j] = (double)ae[i];
+                        j++;
+                    }
+                }
+                else {
+                    if(l >= this.setm) {
+                        this.n[j] = (int)an[i];
+                        this.l[j] = l;
+                        this.m[j] = this.setm;
+                        this.e[j] = (double)ae[i];
+                        j++;
+                    }
                 }
             }
         }
@@ -175,7 +200,10 @@ namespace PavelStransky.Systems {
                 case 1:
                     return this.maxl;
                 case 2:
-                    return 2 * this.maxl + 1;
+                    if(this.setm < 0)
+                        return 2 * this.maxl + 1;
+                    else
+                        return 1;
             }
 
             throw new SystemException(string.Format(Messages.EMBadQNIndex, qn));

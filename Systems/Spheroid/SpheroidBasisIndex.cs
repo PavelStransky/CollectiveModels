@@ -18,6 +18,7 @@ namespace PavelStransky.Systems {
 
         // Je zadaná konkrétní vlastní hodnota m?
         private int setm;
+        private bool isSetm;
 
         // Energie vlastních stavù
         private Vector e;
@@ -44,9 +45,10 @@ namespace PavelStransky.Systems {
 
             if(basisParams.Length > 2) {
                 this.setm = (int)basisParams[2];
+                this.isSetm = true;
             }
             else
-                this.setm = -1;
+                this.isSetm = false;
 
             Vector[] zeros = new Vector[this.maxl + 1];
             for(int l = 0; l <= this.maxl; l++) {
@@ -85,9 +87,9 @@ namespace PavelStransky.Systems {
             int length = 0;
 
             for(int i = 0; i < count; i++) {
-                if(this.setm < 0)
+                if(!this.isSetm)
                     length += 2 * (int)al[i] + 1;
-                else if((int)al[i] >= this.setm)
+                else if((int)al[i] >= System.Math.Abs(this.setm))
                     length++;
             }
 
@@ -100,7 +102,7 @@ namespace PavelStransky.Systems {
             for(int i = 0; i < count; i++) {
                 int l = (int)al[i];
 
-                if(this.setm < 0) {
+                if(!this.isSetm) {
                     for(int m = -l; m <= l; m++) {
                         this.n[j] = (int)an[i];
                         this.l[j] = l;
@@ -110,7 +112,7 @@ namespace PavelStransky.Systems {
                     }
                 }
                 else {
-                    if(l >= this.setm) {
+                    if(l >= System.Math.Abs(this.setm)) {
                         this.n[j] = (int)an[i];
                         this.l[j] = l;
                         this.m[j] = this.setm;
@@ -200,7 +202,7 @@ namespace PavelStransky.Systems {
                 case 1:
                     return this.maxl;
                 case 2:
-                    if(this.setm < 0)
+                    if(!this.isSetm)
                         return 2 * this.maxl + 1;
                     else
                         return 1;

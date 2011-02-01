@@ -93,7 +93,7 @@ namespace PavelStransky.Systems {
                             : 0.0;
                     else if(l2 == l1 + 2)
                         T2 = (m1 == m2)
-                            ? e1 * e2 / (e2 * e2 - e1 * e1) * 3.0 * System.Math.Sqrt((l1 + 1.0 + m1) * (l1 + 2.0 + m1) * (l1 + 1.0 - m1) * (m1 + 2.0 - m1) / ((2.0 * l1 + 1) * (2.0 * l1 + 5)))
+                            ? e1 * e2 / (e2 * e2 - e1 * e1) * 3.0 * System.Math.Sqrt((l1 + 1.0 + m1) * (l1 + 2.0 + m1) * (l1 + 1.0 - m1) * (l1 + 2.0 - m1) / ((2.0 * l1 + 1) * (2.0 * l1 + 5)))
                             : 0;
 
                     matrix[i1, i2] = koef1 * p2 + koef2 * T2;

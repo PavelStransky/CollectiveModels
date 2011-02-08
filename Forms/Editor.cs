@@ -406,7 +406,7 @@ namespace PavelStransky.Forms {
             Export export = null;
 
             try {
-                export = new Export(fileNameSave, true);
+                export = new Export(fileNameSave, IETypes.Compressed, versionNumber, WinMain.RegistryEntryName);
                 export.Write(this);
 
                 Form parentForm = this.MdiParent;
@@ -612,16 +612,6 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="export">Export</param>
         public void Export(Export export) {
-            // Hlavièka
-            if(export.Binary) {
-                export.B.Write(WinMain.RegistryEntryName);
-                export.B.Write(versionNumber);
-            }
-            else {
-                export.T.WriteLine(WinMain.RegistryEntryName);
-                export.T.WriteLine(versionNumber);
-            }
-
             IEParam param = new IEParam();
 
             param.Add(this.Location.X, "X");
@@ -649,12 +639,14 @@ namespace PavelStransky.Forms {
         public Editor(Core.Import import)
             : this() {
             if(import.Binary) {
-                import.VersionName = import.B.ReadString();
-                import.VersionNumber = import.B.ReadInt32();
+                if(import.VersionNumber <= 8) {
+                    import.B.ReadString();
+                    import.SetVersionNumber(import.B.ReadInt32());
+                }
             }
             else {
-                import.VersionName = import.T.ReadLine();
-                import.VersionNumber = int.Parse(import.T.ReadLine());
+                string[] line = import.T.ReadLine().Split('\t');
+                import.SetVersionNumber(int.Parse(line[0]));
             }
 
             if(import.VersionNumber < 3) {
@@ -726,7 +718,7 @@ namespace PavelStransky.Forms {
         #endregion
 
         private const string defaultResultWindowName = "Result{0}";
-        private const int versionNumber = 8;
+        private const int versionNumber = 9;
 
         private const string defaultName = "Utitled";
         private const string titleFormatFile = "{1} {2}";

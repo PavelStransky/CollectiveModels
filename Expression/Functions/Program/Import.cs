@@ -54,7 +54,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 f.Close();
             }
             else {
-                Import import = new Import(fileName, this.Binary(arguments, 1));
+                Import import = new Import(fileName);
                 result = import.Read();
                 import.Close();
             }

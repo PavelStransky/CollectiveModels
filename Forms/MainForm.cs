@@ -219,7 +219,7 @@ namespace PavelStransky.Forms {
                 fileName = string.Format("{0}.{1}", fileName, WinMain.FileExtGcm);
 
             try {
-                import = new Import(fileName, true);
+                import = new Import(fileName);
                 editor = import.Read() as Editor;
 
                 this.SetDialogProperties(editor.SaveFileDialog);

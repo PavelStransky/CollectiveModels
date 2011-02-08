@@ -158,7 +158,7 @@ namespace PavelStransky.Forms {
                     return;
             }
 
-            Export export = new Export(this.sfdText.FileName, false);
+            Export export = new Export(this.sfdText.FileName, IETypes.Text);
 
             // Ukládá jen jednu první køivku (mùže být dost nekonzistentní se vším!)
             if(this.saveWeb) {

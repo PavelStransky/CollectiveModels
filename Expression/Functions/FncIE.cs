@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
@@ -14,21 +15,23 @@ namespace PavelStransky.Expression.Functions {
 		/// </summary>
 		/// <param name="arguments">Argumenty funkce</param>
 		/// <param name="index">Index, na kterém má být hodnota o typu Binary</param>
-		protected bool Binary(ArrayList arguments, int index) {
-			bool binary = defaultBinary;
+		protected IETypes IEType(ArrayList arguments, int index) {
+            IETypes ieType = defaultIEType;
 
 			if(arguments.Count > index) {
-				if(arguments[index] as string == paramBinary)
-					binary = true;
-				else if(arguments[index] as string == paramText)
-					binary = false;
-				else
-					throw new FncException(
+                if(arguments[index] as string == paramBinary)
+                    ieType = IETypes.Binary;
+                else if(arguments[index] as string == paramText)
+                    ieType = IETypes.Text;
+                else if(arguments[index] as string == paramCompress)
+                    ieType = IETypes.Compressed;
+                else
+                    throw new FncException(
                         this,
                         string.Format(errorMessageBadParameter, arguments[index] as string, index, this.Name));
 			}
 
-			return binary;
+			return ieType;
 		}
 
 		public override object Evaluate(Guider guider, ArrayList arguments) {
@@ -51,9 +54,10 @@ namespace PavelStransky.Expression.Functions {
             evaluatedArguments[0] = this.AddPath(context, evaluatedArguments[0] as string);
         }
 
-		private const bool defaultBinary = true;
-		private const string paramBinary = "binary";
+        private const IETypes defaultIEType = IETypes.Binary;
+        private const string paramBinary = "binary";
 		private const string paramText = "text";
+        private const string paramCompress = "compress";
 
 		private const string errorMessageBadParameter = "Neznámá hodnota '{0}' {1}. parametru ve funkci '{2}'.";
 	}

@@ -397,13 +397,13 @@ namespace PavelStransky.Test {
 			}
 
 			pv = pv.SortX();
-            Export export = new Export(root + "spline1.txt", true);
+            Export export = new Export(root + "spline1.txt", IETypes.Binary);
             export.Write(pv);
             export.Close();
 
 			Spline s = new Spline(pv);
 			result = s.GetPointVector(resultLength);
-			export = new Export(root + "spline2.txt", true);
+			export = new Export(root + "spline2.txt", IETypes.Binary);
             export.Write(result);
             export.Close();
 		}
@@ -423,7 +423,7 @@ namespace PavelStransky.Test {
 
 			PointVector pv = FFT.PowerSpectrum(FFT.Compute(v), 0.005);
 
-            Export export = new Export(root + "fft.txt", true);
+            Export export = new Export(root + "fft.txt", IETypes.Binary);
             export.Write(pv);
             export.Close();
 		}
@@ -499,7 +499,7 @@ namespace PavelStransky.Test {
 //				double x = (v == null) ? (double)(exp.Evaluate() as Variable).Item : 0.0;
 				Console.WriteLine(v);
 //				Console.WriteLine(x);
-                Export export = new Export("c:\\eeg\\context.txt", true);
+                Export export = new Export("c:\\eeg\\context.txt", IETypes.Binary);
                 export.Write(context);
                 export.Close();
 				exp = new PavelStransky.Expression.Expression("save(\"c:\\eeg\\prdlacka.txt\")");
@@ -524,11 +524,11 @@ namespace PavelStransky.Test {
 		/// </summary>
 		private static void PokusImportExport() {
 			Context context = new Context();
-            Expression.Import import = new PavelStransky.Expression.Import("c:\\eeg\\context.txt", true);
+            Expression.Import import = new PavelStransky.Expression.Import("c:\\eeg\\context.txt");
             context = import.Read() as Context;
             import.Close();
 
-            Export export = new Export("c:\\eeg\\context1.txt", true);
+            Export export = new Export("c:\\eeg\\context1.txt", IETypes.Binary);
             export.Write(context);
             export.Close();
 		}
@@ -538,7 +538,7 @@ namespace PavelStransky.Test {
 		/// </summary>
 		private static void PokusImportEEG() {
 			Context context = new Context();
-            Expression.Import import = new PavelStransky.Expression.Import("c:\\eeg\\eeg.txt", true);
+            Expression.Import import = new PavelStransky.Expression.Import("c:\\eeg\\eeg.txt");
             context = import.Read() as Context;
             import.Close();
 
@@ -546,7 +546,7 @@ namespace PavelStransky.Test {
 			Expression.Expression exp = new Expression.Expression(text);
 			exp.Evaluate(context);
 
-            Export export = new Export("c:\\eeg\\context1.txt", true);
+            Export export = new Export("c:\\eeg\\context1.txt", IETypes.Binary);
             export.Write(context);
             export.Close();
 		}	

@@ -14,8 +14,7 @@ namespace PavelStransky.Expression {
         /// Konstruktor
         /// </summary>
         /// <param name="fileName">Soubor k otevøení</param>
-        /// <param name="binary">True, pokud bude soubor binární</param>
-        public Import(string fileName, bool binary) : base(fileName, binary) { }
+        public Import(string fileName) : base(fileName) { }
 
         /// <summary>
         /// Nové objekty

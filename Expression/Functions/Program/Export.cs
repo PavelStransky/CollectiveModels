@@ -54,7 +54,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 }
             }
             else {
-                Export export = new Export((string)arguments[0], this.Binary(arguments, 2));
+                Export export = new Export((string)arguments[0], this.IEType(arguments, 2));
                 export.Write(arguments[1]);
                 export.Close();
             }

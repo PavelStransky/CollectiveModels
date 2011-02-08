@@ -159,6 +159,7 @@
     <Compile Include="Functions\Math\BesselJd.cs" />
     <Compile Include="Functions\Math\BesselY.cs" />
     <Compile Include="Functions\Math\BesselYd.cs" />
+    <Compile Include="Functions\Math\GaussianSmooth.cs" />
     <Compile Include="Functions\Math\SphericalBesselJ.cs" />
     <Compile Include="Functions\Math\SphericalBesselJd.cs" />
     <Compile Include="Functions\Math\SphericalBesselJZero.cs" />

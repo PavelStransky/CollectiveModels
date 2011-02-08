@@ -3427,6 +3427,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data of input pointvector interprets as mean values and standard deviations of a set of Gaussian functions.
+        /// </summary>
+        internal static string HelpGaussianSmooth {
+            get {
+                return ResourceManager.GetString("HelpGaussianSmooth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator &gt;= (greater or equal).
         /// </summary>
         internal static string HelpGEquality {
@@ -7360,6 +7369,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to gcoef.
+        /// </summary>
+        internal static string PGaussianCoef {
+            get {
+                return ResourceManager.GetString("PGaussianCoef", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coefficients of Gaussians.
+        /// </summary>
+        internal static string PGaussianCoefDescription {
+            get {
+                return ResourceManager.GetString("PGaussianCoefDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to gcm.
         /// </summary>
         internal static string PGCM {
@@ -9426,6 +9453,24 @@ namespace PavelStransky.Expression {
         internal static string PVectorDescription {
             get {
                 return ResourceManager.GetString("PVectorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to w.
+        /// </summary>
+        internal static string PWeight {
+            get {
+                return ResourceManager.GetString("PWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight.
+        /// </summary>
+        internal static string PWeightDescription {
+            get {
+                return ResourceManager.GetString("PWeightDescription", resourceCulture);
             }
         }
         

@@ -3378,4 +3378,19 @@ Second differing type: {1}</value>
   <data name="HelpQuantumSpheroid" xml:space="preserve">
     <value>Creates Quantum Spheroid class</value>
   </data>
+  <data name="HelpGaussianSmooth" xml:space="preserve">
+    <value>Data of input pointvector interprets as mean values and standard deviations of a set of Gaussian functions</value>
+  </data>
+  <data name="PGaussianCoef" xml:space="preserve">
+    <value>gcoef</value>
+  </data>
+  <data name="PGaussianCoefDescription" xml:space="preserve">
+    <value>Coefficients of Gaussians</value>
+  </data>
+  <data name="PWeight" xml:space="preserve">
+    <value>w</value>
+  </data>
+  <data name="PWeightDescription" xml:space="preserve">
+    <value>Weight</value>
+  </data>
 </root>

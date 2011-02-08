@@ -323,6 +323,16 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Gaussovská funkce
+        /// </summary>
+        /// <param name="mean">Støední hodnota</param>
+        /// <param name="sd">Standardní odchylka</param>
+        public static double Gaussian(double x, double mean, double sd) {
+            x -= mean;
+            return System.Math.Exp(-x * x / (2.0 * sd * sd)) / (System.Math.Sqrt(2.0 * System.Math.PI) * sd);
+        }
+
+        /// <summary>
         /// Laguerrùv polynom poèítaný rekuretním vzorcem
         /// </summary>
         /// <param name="n">Øád polynomu</param>

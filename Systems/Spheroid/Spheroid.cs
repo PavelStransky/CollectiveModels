@@ -69,8 +69,8 @@ namespace PavelStransky.Systems {
             int dim = index.Length;
             SymmetricBandMatrix matrix = new SymmetricBandMatrix(dim, dim-1);
 
-            double koef1 = (2.0 * System.Math.Exp(-this.delta) + System.Math.Exp(2.0 * this.delta)) / 3.0;
-            double koef2 = -2.0 * (System.Math.Exp(-this.delta) - System.Math.Exp(2.0 * this.delta)) / 3.0;
+            double koef1 = (2.0 * System.Math.Exp(2.0 * this.delta) + System.Math.Exp(-4.0 * this.delta)) / 3.0;
+            double koef2 = -2.0 * (System.Math.Exp(2.0 * this.delta) - System.Math.Exp(-4.0 * this.delta)) / 3.0;
 
             for(int i1 = 0; i1 < dim; i1++) {
                 int n1 = index.N[i1];
@@ -94,6 +94,10 @@ namespace PavelStransky.Systems {
                     else if(l2 == l1 + 2)
                         T2 = (m1 == m2)
                             ? e1 * e2 / (e2 * e2 - e1 * e1) * 3.0 * System.Math.Sqrt((l1 + 1.0 + m1) * (l1 + 2.0 + m1) * (l1 + 1.0 - m1) * (l1 + 2.0 - m1) / ((2.0 * l1 + 1) * (2.0 * l1 + 5)))
+                            : 0;
+                    else if(l1 == l2 + 2)
+                        T2 = (m1 == m2)
+                            ? e1 * e2 / (e1 * e1 - e2 * e2) * 3.0 * System.Math.Sqrt((l2 + 1.0 + m2) * (l2 + 2.0 + m2) * (l2 + 1.0 - m2) * (l2 + 2.0 - m2) / ((2.0 * l2 + 1) * (2.0 * l2 + 5)))
                             : 0;
 
                     matrix[i1, i2] = koef1 * p2 + koef2 * T2;

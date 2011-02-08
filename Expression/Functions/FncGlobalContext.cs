@@ -17,7 +17,8 @@ namespace PavelStransky.Expression.Functions {
             Context c;
             if(fileInfo.Exists) {
                 Import import = new Import(fileName);
-                import.SetVersionNumber(import.B.ReadInt32());
+                if(import.VersionNumber <= 5)
+                    import.SetVersionNumber(import.B.ReadInt32());
                 c = import.Read() as Context;
                 import.Close();
             }
@@ -28,7 +29,7 @@ namespace PavelStransky.Expression.Functions {
         }
 
         protected void SetGlobalContext(Context c) {
-            Export export = new Export(Context.GlobalContextFileName, IETypes.Binary, 7);
+            Export export = new Export(Context.GlobalContextFileName, IETypes.Binary, 9);
             export.Write(c);
             export.Close();
         }

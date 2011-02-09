@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="DetailException.cs" />
     <Compile Include="Export.cs" />
+    <Compile Include="ExportEventArgs.cs" />
     <Compile Include="IEException.cs" />
     <Compile Include="IEParam.cs" />
     <Compile Include="IETypes.cs" />

@@ -452,6 +452,7 @@ namespace PavelStransky.Forms {
         private void btRecalculate_Click(object sender, EventArgs e) {
             this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
             this.calcThread.IsBackground = true;
+            this.calcThread.Priority = ThreadPriority.BelowNormal;
             this.Start();
         }
 

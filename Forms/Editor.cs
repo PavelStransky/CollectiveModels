@@ -28,6 +28,13 @@ namespace PavelStransky.Forms {
         // Èíslo výsledkového formuláøe
         private int resultNumber = 0;
 
+        private Thread exportThread;
+        private Export export;
+
+        private bool saving = false;
+        private bool modifiedDuringSaving = false;
+        private bool closeAfterSave = false;
+
         /// <summary>
         /// Kontext
         /// </summary>
@@ -51,7 +58,20 @@ namespace PavelStransky.Forms {
                 return this.modified;
             }
             set {
+                if(value) {
+                    if(this.saving)
+                        this.modifiedDuringSaving = true;
+                    else
+                        this.lblSave.Visible = false;
+                }
+
                 if(this.modified != value) {
+                    if(!this.saving && this.modifiedDuringSaving) {
+                        this.modifiedDuringSaving = false;
+                        if(!value)
+                            value = true;
+                    }
+
                     this.modified = value;
                     this.SetCaption();
                 }
@@ -335,22 +355,26 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Kontroluje, zda došlo ke zmìnám. Pokud ano, vyšle dotaz na uložení
         /// </summary>
-        /// <returns>False, pokud je žádost o zrušení akce</returns>
-        private bool CheckForChanges() {
+        /// <returns>-1, pokud rušíme akci, 0, pokud neukládáme, 1 pokud ukládáme</returns>
+        private int CheckForChanges() {
             if(this.Modified) {
                 DialogResult result = MessageBox.Show(this,
                     this.fileName == string.Empty ? Messages.MChanged : string.Format(Messages.MFileChanged, this.fileName),
                     Messages.MChangedCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
                 if(result == DialogResult.Cancel)
-                    return false;
+                    return -1;
                 else if(result == DialogResult.No)
-                    return true;
-                else if(result == DialogResult.Yes)
-                    return this.Save();
+                    return 0;
+                else if(result == DialogResult.Yes) {
+                    if(this.Save())
+                        return 1;
+                    else
+                        return -1;
+                }
             }
 
-            return true;
+            return 0;
         }
 
         /// <summary>
@@ -401,13 +425,28 @@ namespace PavelStransky.Forms {
                 fileName = string.Format("{0}.{1}", fileName, WinMain.FileExtGcm);
 
             this.FileName = fileName;
+
+            this.saving = true;
+            this.modifiedDuringSaving = false;
+
+            this.exportThread = new Thread(this.ExportThreadStart);
+            this.exportThread.IsBackground = true;
+            this.exportThread.Start(fileName);
+
+            return true;
+        }
+
+        private void ExportThreadStart(object o) {         
+            string fileName = (string)o;
             string fileNameSave = fileName + ".sav";
 
-            Export export = null;
+            bool success = false;
 
             try {
-                export = new Export(fileNameSave, IETypes.Compressed, versionNumber, WinMain.RegistryEntryName);
-                export.Write(this);
+                this.export = new Export(fileNameSave, IETypes.Compressed, versionNumber, WinMain.RegistryEntryName);
+                this.export.ExportCommand += new Export.ExportEventHandler(export_ExportCommand);
+
+                this.export.Write(this);
 
                 Form parentForm = this.MdiParent;
 
@@ -418,22 +457,21 @@ namespace PavelStransky.Forms {
                         num++;
                 }
 
-                export.B.Write(num);
+                this.export.B.Write(num);
                 for(int i = 0; i < parentForm.MdiChildren.Length; i++) {
                     ChildForm childForm = parentForm.MdiChildren[i] as ChildForm;
                     if(childForm as IExportable != null && childForm.ParentEditor == this)
-                        export.Write(childForm);
+                        this.export.Write(childForm);
                 }
 
-                export.Close();
+                this.export.Close();
 
                 // Doèasný soubor, do kterého jsme ukládali, pøejmenujeme na orig. verzi
                 if(File.Exists(fileName))
                     File.Delete(fileName);
                 File.Move(fileNameSave, fileName);
 
-                this.Modified = false;            
-                this.SetCaption();
+                success = true;
             }
             catch(Exception e) {
                 DetailException de = e as DetailException;
@@ -446,11 +484,25 @@ namespace PavelStransky.Forms {
 
                 MessageBox.Show(this, string.Format(Messages.EMSaveFailed, fileName, de != null ? de.GetText("\n\n") : e.Message),
                     Messages.EMSaveFailedCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                return false;
+
+                success = false;
             }
 
-            this.OnFileSaved(new FileNameEventArgs(fileName));
-            return true;
+            this.OnFileSaved(new FileNameEventArgs(fileName, success));
+            return;
+        }
+
+        private delegate void ExportCommandCallback(object sender, ExportEventArgs e);
+
+        void export_ExportCommand(object sender, ExportEventArgs e) {
+            if(this.lblSave.InvokeRequired) {
+                ExportCommandCallback ec = new ExportCommandCallback(this.export_ExportCommand);
+                this.Invoke(ec, new object[] { sender, e });
+            }
+            else {
+                this.lblSave.Visible = true;
+                this.lblSave.Text = e.TypeName;
+            }
         }
 
         public event FileNameEventHandler FileSaved;
@@ -461,6 +513,24 @@ namespace PavelStransky.Forms {
         protected virtual void OnFileSaved(FileNameEventArgs e) {
             if(this.FileSaved != null)
                 this.FileSaved(this, e);
+            this.saving = false;
+
+            if(e.Success)
+                this.ClearModified();
+        }
+
+        private delegate void ClearModifiedCallback();
+        private void ClearModified() {
+            if(this.InvokeRequired) {
+                ClearModifiedCallback e = new ClearModifiedCallback(this.ClearModified);
+                this.Invoke(e);
+            }
+            else {
+                if(this.closeAfterSave)
+                    this.Close();
+                else
+                    this.Modified = false;
+            }
         }
         #endregion
 
@@ -512,7 +582,20 @@ namespace PavelStransky.Forms {
         /// </summary>
         protected override void OnFormClosing(FormClosingEventArgs e) {
             base.OnFormClosing(e);
-            e.Cancel = !(this.CheckForChanges() && this.CloseChildWindow());
+
+            int result = 0;
+            if(!this.closeAfterSave) {
+                this.closeAfterSave = false;
+                result = this.CheckForChanges();
+            }
+            if(result == -1)
+                e.Cancel = true;
+            else if(result == 0)
+                e.Cancel = !this.CloseChildWindow();
+            else if(result == 1) {
+                e.Cancel = true;
+                this.closeAfterSave = true;
+            }
 
             if(e.Cancel)
                 (this.MdiParent as MainForm).OpenedFileNames.Clear();
@@ -607,6 +690,8 @@ namespace PavelStransky.Forms {
         #endregion
 
         #region Implementace IExportable
+        private delegate void ExportCallback(IEParam param);
+
         /// <summary>
         /// Uloží obsah kontextu do souboru
         /// </summary>
@@ -614,6 +699,24 @@ namespace PavelStransky.Forms {
         public void Export(Export export) {
             IEParam param = new IEParam();
 
+            if(this.InvokeRequired) {
+                ExportCallback e = new ExportCallback(this.Export1);
+                this.Invoke(e, new object[] { param });
+            }
+            else this.Export1(param);
+
+            param.Add(this.context, "Context");
+
+            if(this.InvokeRequired) {
+                ExportCallback e = new ExportCallback(this.Export2);
+                this.Invoke(e, new object[] { param });
+            }
+            else this.Export2(param);
+
+            param.Export(export);
+        }
+        
+        private void Export1(IEParam param) {
             param.Add(this.Location.X, "X");
             param.Add(this.Location.Y, "Y");
             param.Add(this.Size.Width, "Width");
@@ -623,13 +726,11 @@ namespace PavelStransky.Forms {
             param.Add(this.txtCommand.SelectionStart, "SelectionStart");
             param.Add(this.txtCommand.SelectionLength, "SelectionLength");
             param.Add(this.resultNumber, "ResultNumber");
+        }
 
-            param.Add(this.context, "Context");
-
+        private void Export2(IEParam param) {
             param.Add(this.WindowState.ToString(), "WindowState");
             param.Add(this.chkHighlightSyntax.Checked, "HighlightSyntax");
-
-            param.Export(export);
         }
 
         /// <summary>

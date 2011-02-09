@@ -35,7 +35,7 @@ namespace PavelStransky.Expression {
         // Pro synchronizaci a pozastavení threadu
         private ManualResetEvent resetEvent;
 
-        private Mutex functionMutex = new Mutex(false, "Mutex");
+        private Mutex functionMutex = new Mutex(false, "GuiderLock");
 
         public string ExecDir { get { return this.execDir; } set { this.execDir = value; } }
         public string TmpDir { get { return this.tmpDir; } set { this.tmpDir = value; } }

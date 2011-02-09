@@ -34,14 +34,15 @@ namespace PavelStransky.Forms {
             this.tHelp = new System.Windows.Forms.Timer(this.components);
             this.mrbResult = new PavelStransky.Forms.MultipleRadioButton();
             this.txtCommand = new PavelStransky.Forms.CommandTextBox();
+            this.lblSave = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btStart
             // 
             this.btStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btStart.Location = new System.Drawing.Point(2, 361);
+            this.btStart.Location = new System.Drawing.Point(2, 344);
             this.btStart.Name = "btStart";
-            this.btStart.Size = new System.Drawing.Size(25, 22);
+            this.btStart.Size = new System.Drawing.Size(25, 40);
             this.btStart.TabIndex = 8;
             this.btStart.Text = ">";
             this.toolTip.SetToolTip(this.btStart, "Spustit výpoèet (F5)");
@@ -58,7 +59,7 @@ namespace PavelStransky.Forms {
             // 
             this.chkHighlightSyntax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkHighlightSyntax.AutoSize = true;
-            this.chkHighlightSyntax.Location = new System.Drawing.Point(36, 365);
+            this.chkHighlightSyntax.Location = new System.Drawing.Point(36, 348);
             this.chkHighlightSyntax.Name = "chkHighlightSyntax";
             this.chkHighlightSyntax.Size = new System.Drawing.Size(15, 14);
             this.chkHighlightSyntax.TabIndex = 10;
@@ -75,9 +76,9 @@ namespace PavelStransky.Forms {
             // 
             this.mrbResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.mrbResult.Location = new System.Drawing.Point(59, 363);
+            this.mrbResult.Location = new System.Drawing.Point(59, 346);
             this.mrbResult.Name = "mrbResult";
-            this.mrbResult.Size = new System.Drawing.Size(501, 18);
+            this.mrbResult.Size = new System.Drawing.Size(502, 18);
             this.mrbResult.TabIndex = 9;
             this.mrbResult.RBClick += new PavelStransky.Forms.MultipleRadioButton.MultipleRadioButtonEventHandler(this.mrbResult_RBClick);
             // 
@@ -94,7 +95,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.Highlighting = true;
             this.txtCommand.Location = new System.Drawing.Point(0, 0);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(561, 360);
+            this.txtCommand.Size = new System.Drawing.Size(561, 340);
             this.txtCommand.TabIndex = 6;
             this.txtCommand.Text = "";
             this.txtCommand.WordWrap = false;
@@ -103,11 +104,23 @@ namespace PavelStransky.Forms {
             this.txtCommand.HighlightItemPointed += new PavelStransky.Forms.CommandTextBox.HighlightItemPointedEventHandler(this.txtCommand_HighlightItemPointed);
             this.txtCommand.TextChanged += new System.EventHandler(this.txtCommand_TextChanged);
             // 
+            // lblSave
+            // 
+            this.lblSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSave.AutoSize = true;
+            this.lblSave.Location = new System.Drawing.Point(33, 367);
+            this.lblSave.Name = "lblSave";
+            this.lblSave.Size = new System.Drawing.Size(49, 13);
+            this.lblSave.TabIndex = 11;
+            this.lblSave.Text = "Saving...";
+            // 
             // Editor
             // 
             this.AllowDrop = true;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(561, 384);
+            this.Controls.Add(this.lblSave);
             this.Controls.Add(this.chkHighlightSyntax);
             this.Controls.Add(this.mrbResult);
             this.Controls.Add(this.btStart);
@@ -129,5 +142,6 @@ namespace PavelStransky.Forms {
         private MultipleRadioButton mrbResult;
         private Timer tHelp;
         private CheckBox chkHighlightSyntax;
+        private Label lblSave;
     }
 }

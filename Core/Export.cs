@@ -19,6 +19,18 @@ namespace PavelStransky.Core {
         private int versionNumber = 0;
         private string versionName = string.Empty;
 
+        private int objectCounter = 0;
+        private DateTime startTime;
+
+        // Událost
+        public delegate void ExportEventHandler(object sender, ExportEventArgs e);
+        public event ExportEventHandler ExportCommand;
+
+        protected void OnExport(ExportEventArgs e) {
+            if(this.ExportCommand != null)
+                this.ExportCommand(this, e);
+        }
+
         /// <summary>
         /// StreamWriter
         /// </summary>
@@ -51,6 +63,7 @@ namespace PavelStransky.Core {
             this.versionName = versionName;
             this.versionNumber = versionNumber;
             this.CreateStream(fileName);
+            this.startTime = DateTime.Now;
         }
 
         /// <summary>
@@ -118,6 +131,10 @@ namespace PavelStransky.Core {
             // Na první øádku zapíšeme typ
             string typeName = (o == null) ? nullString : o.GetType().FullName;
 
+            if(o != null && o.GetType().Namespace.Contains("PavelStransky"))
+                this.OnExport(new ExportEventArgs(string.Format("Saving... {0}:{1}", this.objectCounter, typeName)));
+            this.objectCounter++;
+
             if(this.Binary) {
                 this.b.Write(typeName);
                 this.b.Write(name);
@@ -135,6 +152,10 @@ namespace PavelStransky.Core {
         public void Write(object o) {
             // Na první øádku zapíšeme typ
             string typeName = (o == null) ? nullString : o.GetType().FullName;
+
+            if(o != null && o.GetType().Namespace.Contains("PavelStransky"))
+                this.OnExport(new ExportEventArgs(string.Format("Saving... {0}:{1}", this.objectCounter, typeName)));
+            this.objectCounter++;
 
             if(this.Binary) this.b.Write(typeName); else this.t.WriteLine(typeName);
             this.Write(typeName, o);
@@ -184,6 +205,9 @@ namespace PavelStransky.Core {
                 this.t.Close();
 
             this.f.Close();
+
+            this.OnExport(new ExportEventArgs(string.Format("{0} objects saved in {1}.",
+                this.objectCounter, SpecialFormat.FormatInt(DateTime.Now - this.startTime))));
         }
 
         /// <summary>

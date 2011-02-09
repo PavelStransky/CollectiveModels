@@ -3,6 +3,8 @@ using System.IO;
 using System.Collections;
 using System.Text;
 
+using System.Threading;
+
 using PavelStransky.Core;
 using PavelStransky.Math;
 
@@ -13,7 +15,9 @@ namespace PavelStransky.Expression {
 	public class Context: IExportable {
         private Hashtable objects = new Hashtable();
         private string directory = string.Empty;
-        
+
+        private Mutex contextMutex = new Mutex(false, "Context");
+
         private static string fncDirectory = string.Empty;
         private static string globalContextDirectory = string.Empty;
 
@@ -132,13 +136,17 @@ namespace PavelStransky.Expression {
             else if(this.objects.ContainsKey(name)) {
                 // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
                 retValue = this[name];
+                this.contextMutex.WaitOne();
                 retValue.Item = item;
+                this.contextMutex.ReleaseMutex();
                 this.OnEvent(new ContextEventArgs(ContextEventType.Change));
             }
 
             else {
                 // Jinak ji musíme vytvoøit
+                this.contextMutex.WaitOne();
                 this.objects.Add(name, retValue = new Variable(name, item));
+                this.contextMutex.ReleaseMutex();
                 this.OnEvent(new ContextEventArgs(ContextEventType.Change));
             }
 
@@ -149,7 +157,9 @@ namespace PavelStransky.Expression {
 		/// Vymaže vše, co je v kontextu uloženo
 		/// </summary>
 		public void Clear() {
+            this.contextMutex.WaitOne();
 			this.objects.Clear();
+            this.contextMutex.ReleaseMutex();
             this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
 
@@ -158,10 +168,13 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="name">Název promìnné</param>
 		public void Clear(string name) {
-			if(this.objects.ContainsKey(name))
-				this.objects.Remove(name);
-			else
-				throw new ContextException(string.Format( Messages.EMNoVariable, name));
+            if(this.objects.ContainsKey(name)) {
+                this.contextMutex.WaitOne();
+                this.objects.Remove(name);
+                this.contextMutex.ReleaseMutex();
+            }
+            else
+                throw new ContextException(string.Format(Messages.EMNoVariable, name));
 
             this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
@@ -257,10 +270,12 @@ namespace PavelStransky.Expression {
         public void Export(Export export) {
             IEParam param = new IEParam();
 
+            this.contextMutex.WaitOne();
             foreach(Variable v in this.objects.Values)
                 if(v != null && v.Name[0] != '$') {
                     param.Add(v.Item, v.Name, null);
                 }
+            this.contextMutex.ReleaseMutex();
 
             param.Add(directory, directoryVariable, null);
             param.Export(export);
@@ -273,6 +288,7 @@ namespace PavelStransky.Expression {
         public Context(Core.Import import) {
             IEParam param = new IEParam(import);
 
+            this.contextMutex.WaitOne();
             int count = param.Count;
             for(int i = 0; i < count; i++) {
                 string name, expression;
@@ -282,6 +298,7 @@ namespace PavelStransky.Expression {
                 else
                     this.SetVariable(name, o);
             }
+            this.contextMutex.ReleaseMutex();
         }
 		#endregion
 

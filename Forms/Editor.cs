@@ -526,8 +526,12 @@ namespace PavelStransky.Forms {
                 this.Invoke(e);
             }
             else {
-                if(this.closeAfterSave)
-                    this.Close();
+                if(this.closeAfterSave) {
+                    if((this.MdiParent as MainForm).CloseAfterSave)
+                        this.MdiParent.Close();
+                    else
+                        this.Close();
+                }
                 else
                     this.Modified = false;
             }
@@ -586,6 +590,7 @@ namespace PavelStransky.Forms {
             int result = 0;
             if(!this.closeAfterSave) {
                 this.closeAfterSave = false;
+                (this.MdiParent as MainForm).CloseAfterSave = false;
                 result = this.CheckForChanges();
             }
             if(result == -1)

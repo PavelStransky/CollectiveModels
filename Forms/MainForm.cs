@@ -22,6 +22,9 @@ namespace PavelStransky.Forms {
         /// </summary>
         public ArrayList OpenedFileNames { get { return this.openedFileNames; } }
 
+        private bool closeAfterSave = false;
+        public bool CloseAfterSave { get { return this.closeAfterSave; } set { this.closeAfterSave = value; } }
+
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -372,23 +375,27 @@ namespace PavelStransky.Forms {
         protected override void OnFormClosing(FormClosingEventArgs e) {
             base.OnFormClosing(e);
 
-            WinMain.SetRegistryValue(registryKeyPositionX, this.Location.X);
-            WinMain.SetRegistryValue(registryKeyPositionY, this.Location.Y);
-            WinMain.SetRegistryValue(registryKeyWidth, this.Width);
-            WinMain.SetRegistryValue(registryKeyHeight, this.Height);
-            WinMain.SetRegistryValue(registryKeyWindowState, this.WindowState.ToString());
+            if(!e.Cancel) {
+                WinMain.SetRegistryValue(registryKeyPositionX, this.Location.X);
+                WinMain.SetRegistryValue(registryKeyPositionY, this.Location.Y);
+                WinMain.SetRegistryValue(registryKeyWidth, this.Width);
+                WinMain.SetRegistryValue(registryKeyHeight, this.Height);
+                WinMain.SetRegistryValue(registryKeyWindowState, this.WindowState.ToString());
 
-            WinMain.SetRegistryValue(registryKeyActualInformation, this.cmTrayActualInformation.Checked);
-            WinMain.SetRegistryValue(registryKeyClearWriterInformation, this.cmTrayClearWriter.Checked);
-            WinMain.SetRegistryValue(registryKeyFinishedInformation, this.cmTrayFinishInformation.Checked);
+                WinMain.SetRegistryValue(registryKeyActualInformation, this.cmTrayActualInformation.Checked);
+                WinMain.SetRegistryValue(registryKeyClearWriterInformation, this.cmTrayClearWriter.Checked);
+                WinMain.SetRegistryValue(registryKeyFinishedInformation, this.cmTrayFinishInformation.Checked);
 
-            int i = 0;
-            foreach(string fileName in this.openedFileNames)
-                WinMain.SetRegistryValue(string.Format(registryKeyOpenedFile, i++), fileName);
+                int i = 0;
+                foreach(string fileName in this.openedFileNames)
+                    WinMain.SetRegistryValue(string.Format(registryKeyOpenedFile, i++), fileName);
 
-            this.lastOpenedFiles.Save();
+                this.lastOpenedFiles.Save();
 
-            WinMain.SaveSettings();
+                WinMain.SaveSettings();
+            }
+            else
+                this.closeAfterSave = true;
         }
         #endregion
 

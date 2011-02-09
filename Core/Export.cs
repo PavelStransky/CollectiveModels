@@ -132,7 +132,7 @@ namespace PavelStransky.Core {
             string typeName = (o == null) ? nullString : o.GetType().FullName;
 
             if(o != null && o.GetType().Namespace.Contains("PavelStransky"))
-                this.OnExport(new ExportEventArgs(string.Format("Saving... {0}:{1}", this.objectCounter, typeName)));
+                this.OnExport(new ExportEventArgs(string.Format("Saving... {0}:{1} {2}", this.objectCounter, typeName, name)));
             this.objectCounter++;
 
             if(this.Binary) {

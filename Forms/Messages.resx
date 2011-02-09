@@ -192,6 +192,9 @@
   <data name="MPaused" xml:space="preserve">
     <value>Paused</value>
   </data>
+  <data name="MWaiting" xml:space="preserve">
+    <value>Waiting for {0}...</value>
+  </data>
   <data name="ProgramDescription" xml:space="preserve">
     <value>Program for analysing nuclear collective models (GCM, IBM)</value>
   </data>

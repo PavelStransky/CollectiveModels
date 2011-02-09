@@ -53,7 +53,10 @@ namespace PavelStransky.Expression
             object result = null;
 
             try {
+                guider.StartFunction(this.function.Name);
+                guider.WaitOne();
                 result = this.function.Evaluate(guider, this.arguments);
+                guider.EndFunction();
             }
             catch(Exception e) {
                 throw e;

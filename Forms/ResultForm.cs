@@ -11,14 +11,19 @@ using System.Windows.Forms;
 
 using PavelStransky.Core;
 using PavelStransky.Expression;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Forms {
     public partial class ResultForm: ChildForm, IOutputWriter, IExportable {
         // Výraz
         private Expression.Expression expression;
 
+        // Guider
+        private Guider guider = null;
+
         // Thread, ve kterém pobìží výpoèet
         private Thread calcThread;
+        private System.Diagnostics.ProcessThread calcProcessThread;
 
         // Pomocná promìnná, která pøenáší stav OnFormClosing na Close
         private bool cancelClosing = false;
@@ -41,14 +46,15 @@ namespace PavelStransky.Forms {
         /// <param name="text">Text</param>
         private delegate void WriteDelegate(string text);
 
+        /// <summary>
+        /// Delegát bez parametru
+        /// </summary>
+        private delegate void EmptyDelegate();
+
         private static SoundPlayer soundSuccess = new SoundPlayer(Path.Combine(Application.StartupPath, soundSuccessFile));
         private static SoundPlayer soundFailure = new SoundPlayer(Path.Combine(Application.StartupPath, soundFailureFile));
-        // Poèátek výpoètu
-        DateTime startTime = DateTime.Now;
 
-        // Probíhající výpoèet a pausa
         private bool calculating = false;
-        private bool paused = false;
 
         /// <summary>
         /// True pro probíhající výpoèet
@@ -58,7 +64,14 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// True, pokud byl výpoèet pozastaven
         /// </summary>
-        public bool Paused { get { return this.paused; } }
+        public bool Paused { 
+            get {
+                if(guider != null)
+                    return this.guider.Paused;
+                else
+                    return false;
+            } 
+        }
 
         /// <summary>
         /// Text pøíkazu, který se poèítá
@@ -74,14 +87,14 @@ namespace PavelStransky.Forms {
         /// Konstruktor
         /// </summary>
         public ResultForm() {
-            this.InitializeComponent();
+            this.InitializeComponent();            
         }
 
         /// <summary>
         /// Nastaví tlaèítka do daného stavu
         /// </summary>
         public void SetButtons() {
-            if(this.calculating) {
+            if(this.Calculating) {
                 this.btRecalculate.Visible = false;
                 this.lblResult.Visible = false;
                 this.chkAsync.Visible = false;
@@ -90,9 +103,11 @@ namespace PavelStransky.Forms {
                 this.lblLblStartTime.Visible = true;
                 this.lblDuration.Visible = true;
                 this.lblLblDuration.Visible = true;
+                this.lblTotalProcessorTime.Visible = true;
+                this.lblLblTotalProcessorTime.Visible = true;
 
                 if(this.chkAsync.Checked) {
-                    if(this.paused) {
+                    if(this.Paused) {
                         this.btContinue.Visible = true;
                         this.btInterrupt.Visible = false;
                         this.btPause.Visible = false;
@@ -124,6 +139,8 @@ namespace PavelStransky.Forms {
                 this.lblLblStartTime.Visible = false;
                 this.lblDuration.Visible = false;
                 this.lblLblDuration.Visible = false;
+                this.lblTotalProcessorTime.Visible = false;
+                this.lblLblTotalProcessorTime.Visible = false;
 
                 this.btContinue.Visible = false;
                 this.btInterrupt.Visible = false;
@@ -140,6 +157,7 @@ namespace PavelStransky.Forms {
                 this.expression = new PavelStransky.Expression.Expression(command);
                 this.txtCommand.Text = command.Replace(Environment.NewLine, "\n").Replace("\n", Environment.NewLine);
                 this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
+                this.calcThread.IsBackground = true;
                 this.calcThread.Priority = ThreadPriority.BelowNormal;
                 this.SetButtons();
             }
@@ -155,11 +173,11 @@ namespace PavelStransky.Forms {
         /// Nastaví vše pro zobrazení èasu spuštìní a doby výpoètu (vèetnì timeru)
         /// </summary>
         public void SetStartTime() {
-            this.startTime = DateTime.Now;
-            this.lblStartTime.Text = this.startTime.ToString("g");
+            this.lblStartTime.Text = this.guider.StartTime.ToString("g");
             this.lblDuration.Text = string.Empty;
+            this.lblTotalProcessorTime.Text = string.Empty;
 
-            this.timerInfo.Interval = 1000;
+            this.timerInfo.Interval = 500;
             this.timerInfo.Start();
         }
 
@@ -167,11 +185,13 @@ namespace PavelStransky.Forms {
         /// Tiknutí pro informaci o dobì trvání výpoètu
         /// </summary>
         private void timerInfo_Tick(object sender, EventArgs e) {
-            TimeSpan duration = DateTime.Now - this.startTime;
-            if(this.timerInfo.Interval != 60000 && duration.Hours != 0)
-                this.timerInfo.Interval = 60000;
-            duration.Subtract(new TimeSpan(0, 0, 0, 0, duration.Milliseconds));
-            this.lblDuration.Text = SpecialFormat.Format(duration);
+            TimeSpan duration = DateTime.Now - this.guider.StartTime;
+            this.lblDuration.Text = SpecialFormat.FormatInt(duration);
+
+            if(this.calcProcessThread != null)
+                this.lblTotalProcessorTime.Text = SpecialFormat.FormatInt(this.calcProcessThread.TotalProcessorTime);
+
+            this.txtFunction.Text = this.guider.GetFunctions(true);
         }
 
         #region Obsluha vlastních událostí
@@ -201,15 +221,20 @@ namespace PavelStransky.Forms {
         /// Zahájí výpoèet
         /// </summary>
         public void Start() {
-            if(!this.calculating && this.calcThread != null) {
+            if(!this.Calculating && this.calcThread != null) {
                 this.calculating = true;
+
+                this.guider = new Guider(this.ParentEditor.Context, this);
+                this.guider.ExecDir = Path.GetDirectoryName(Application.ExecutablePath);
+                this.guider.TmpDir = Application.UserAppDataPath;
+                this.guider.CalcPaused += new EventHandler(guider_CalcPaused);
 
                 // Nastavení ovládacích prvkù
                 this.txtResult.Clear();
                 this.SetCaption(Messages.MCalculating);
                 this.SetButtons();
-
                 this.SetStartTime();
+
                 this.OnCalcStarted(new EventArgs());
 
                 this.indent = 0;
@@ -225,35 +250,39 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="closing">True, pokud se pøerušuje pøi zavírání oken</param>
         public void Abort(bool closing) {
-            if(this.calcThread.ThreadState == ThreadState.Suspended)
-                this.calcThread.Resume();
-
-            while(this.calcThread.ThreadState == ThreadState.Suspended) ;
-
             this.calcThread.Abort();
             this.calculating = !closing;
+        }
+
+        /// <summary>
+        /// Získání ProcessThreadu pro informace o použitém procesorovém èase
+        /// </summary>
+        private System.Diagnostics.ProcessThread GetCurrentProcessThread() {
+            int id = Kernel32Wrapper.GetCurrentWin32ThreadId();
+
+            System.Diagnostics.ProcessThreadCollection ptc = System.Diagnostics.Process.GetCurrentProcess().Threads;
+            foreach(System.Diagnostics.ProcessThread pt in ptc) {
+                if(pt.Id == id)
+                    return pt;
+            }
+
+            return null;
         }
 
         /// <summary>
         /// Spouští thread
         /// </summary>
         private void ThreadStart() {
-            Context context = this.ParentEditor.Context;
+            this.calcProcessThread = this.GetCurrentProcessThread();
 
             try {
-                Guider guider = new Guider(context, this);
-                guider.ExecDir = Path.GetDirectoryName(Application.ExecutablePath);
-                guider.TmpDir = Application.UserAppDataPath;
-
-                object result = this.expression.Evaluate(guider);
-                this.timerInfo.Stop();
+                object result = this.expression.Evaluate(this.guider);
                 // Po skonèení výpoètu
                 this.Invoke(new FinishedCalculationDelegate(this.FinishedCalculation), result);
             }
             catch(Exception exc) {
-                this.timerInfo.Stop();
                 try {
-                    if(exc.InnerException is ThreadAbortException && !this.calculating)
+                    if(exc.InnerException is ThreadAbortException && !this.Calculating)
                         return;
                     this.Invoke(new ExceptionDelegate(this.CatchException), exc);
                 }
@@ -268,6 +297,9 @@ namespace PavelStransky.Forms {
         private void CatchException(Exception exc) {
             DetailException dexc = exc as DetailException;
             PositionTextException pexc = exc as PositionTextException;
+
+            this.calculating = false;
+            this.timerInfo.Stop();
 
             if(WinMain.PlaySounds)
                 soundFailure.Play();
@@ -293,9 +325,6 @@ namespace PavelStransky.Forms {
             else
                 MessageBox.Show(this, exc.Message);
 
-            this.calculating = false;
-            this.paused = false;
-
             this.SetCaption(Messages.MInterrupted);
             this.SetButtons();
 
@@ -307,10 +336,10 @@ namespace PavelStransky.Forms {
         /// </summary>
         /// <param name="result">Výsledky výpoètu</param>
         private void FinishedCalculation(object result) {
-            TimeSpan duration = DateTime.Now - this.startTime;
+            this.timerInfo.Stop();
 
             this.calculating = false;
-            this.paused = false;
+            TimeSpan duration = DateTime.Now - this.guider.StartTime;
 
             this.SetCaption(Messages.MFinished);
             this.SetButtons();
@@ -360,7 +389,7 @@ namespace PavelStransky.Forms {
         private bool InterruptCalculation() {
             bool result = false;
 
-            if(this.calculating) {
+            if(this.Calculating) {
                 DialogResult dialogResult = MessageBox.Show(this, string.Format(Messages.MClose, this.Name), Messages.MCloseCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if(dialogResult == DialogResult.Yes)
@@ -383,25 +412,35 @@ namespace PavelStransky.Forms {
         /// Stisknutí tlaèítka Pozastavit
         /// </summary>
         private void btPause_Click(object sender, EventArgs e) {
-            this.calcThread.Suspend();
-
-            // Nastavení ovládacích prvkù
-            this.SetCaption(Messages.MPaused);
-            this.paused = true;
+            this.SetCaption(string.Format(Messages.MWaiting, this.guider.GetCurrentFunction()));
+            this.guider.Pause();
             this.SetButtons();
+        }
 
+        /// <summary>
+        /// Pøi skuteèném pozastavení výpoètu
+        /// </summary>
+        private void guider_CalcPaused(object sender, EventArgs e) {
+            this.Invoke(new EmptyDelegate(this.Pause));
+        }
+
+        /// <summary>
+        /// Pozastavení výpoètu
+        /// </summary>
+        private void Pause() {
+            // Nastavení ovládacích prvkù
             this.OnCalcPaused(new EventArgs());
+            this.SetCaption(Messages.MPaused);
         }
 
         /// <summary>
         /// Stisknutí tlaèítka Pokraèovat
         /// </summary>
         private void btContinue_Click(object sender, EventArgs e) {
-            this.calcThread.Resume();
+            this.guider.Resume();
 
             // Nastavení ovládacích prvkù
             this.SetCaption(Messages.MCalculating);
-            this.paused = false;
             this.SetButtons();
 
             this.OnCalcStarted(new EventArgs());
@@ -412,6 +451,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void btRecalculate_Click(object sender, EventArgs e) {
             this.calcThread = new Thread(new ThreadStart(this.ThreadStart));
+            this.calcThread.IsBackground = true;
             this.Start();
         }
 
@@ -484,7 +524,7 @@ namespace PavelStransky.Forms {
 
         #region Drag and Drop obsluha
         private void ResultForm_DragEnter(object sender, DragEventArgs e) {
-            if(!this.calculating && e.Data.GetDataPresent(DataFormats.Text)) {
+            if(!this.Calculating && e.Data.GetDataPresent(DataFormats.Text)) {
                 e.Effect = DragDropEffects.Copy;
             }
         }

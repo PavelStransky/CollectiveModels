@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using System.Collections;
+using System.Text;
 
 using PavelStransky.Core;
 
@@ -13,6 +16,26 @@ namespace PavelStransky.Expression {
         private string tmpDir;
         private bool arrayEvaluation = false;
         private bool mute = false;
+
+        private bool paused = false;
+        private DateTime startTime;
+
+        // Pøi pozastavení výpoètu
+        public event EventHandler CalcPaused;
+
+        // Pøi pozastavení výpoètu
+        protected virtual void OnCalcPaused(EventArgs e) {
+            if(this.CalcPaused != null)
+                this.CalcPaused(this, e);
+        }
+
+        // Jména funkcí, která se provádìjí
+        private ArrayList functions;
+
+        // Pro synchronizaci a pozastavení threadu
+        private ManualResetEvent resetEvent;
+
+        private Mutex functionMutex = new Mutex(false, "Mutex");
 
         public string ExecDir { get { return this.execDir; } set { this.execDir = value; } }
         public string TmpDir { get { return this.tmpDir; } set { this.tmpDir = value; } }
@@ -33,11 +56,29 @@ namespace PavelStransky.Expression {
         public bool Mute { get { return this.mute; } set { this.mute = value; } }
 
         /// <summary>
+        /// Pro synchronizaci a pozastavení výpoètu
+        /// </summary>
+        public ManualResetEvent ResetEvent { get { return this.resetEvent; } }
+
+        /// <summary>
+        /// Pøi pozastavení výpoètu
+        /// </summary>
+        public bool Paused { get { return this.paused; } }
+
+        /// <summary>
+        /// Poèátek výpoètu
+        /// </summary>
+        public DateTime StartTime { get { return this.startTime; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="context">Kontext, na kterém se bude provádìt výpoèet</param>
         public Guider(Context context) {
             this.context = context;
+            this.resetEvent = new ManualResetEvent(true);
+            this.functions = new ArrayList();
+            this.startTime = DateTime.Now;
         }
 
         /// <summary>
@@ -62,8 +103,67 @@ namespace PavelStransky.Expression {
             result.execDir = this.execDir;
             result.tmpDir = this.tmpDir;
             result.mute = this.mute;
+            result.resetEvent = this.resetEvent;
+            result.functions = this.functions;
+            result.CalcPaused = this.CalcPaused;
 
             return result;
+        }
+
+        /// <summary>
+        /// Zaèíná se zpracovávat funkce - uložíme její název
+        /// </summary>
+        /// <param name="fnName">Název funkce</param>
+        public void StartFunction(string fnName) {
+            this.functionMutex.WaitOne();
+            this.functions.Insert(0, fnName);
+            this.functionMutex.ReleaseMutex();
+        }
+
+        /// <summary>
+        /// Funkce skonèila
+        /// </summary>
+        public void EndFunction() {
+            this.functionMutex.WaitOne();
+            this.functions.RemoveAt(0);
+            this.functionMutex.ReleaseMutex();
+        }
+
+        /// <summary>
+        /// Vrátí aktuálnì zpracovávanou funkcí
+        /// </summary>
+        public string GetCurrentFunction() {
+            this.functionMutex.WaitOne();
+            lock(this.functions) {
+                if(this.functions.Count > 0) {
+                    this.functionMutex.ReleaseMutex();
+                    return (string)this.functions[0];
+                }
+            }
+            this.functionMutex.ReleaseMutex();
+            return string.Empty;
+        }
+
+        public void WaitOne() {
+            if(this.paused)
+                this.OnCalcPaused(new EventArgs());
+            this.ResetEvent.WaitOne();
+        }
+
+        /// <summary>
+        /// Pozastavení výpoètu
+        /// </summary>
+        public void Pause() {
+            this.paused = true;
+            this.resetEvent.Reset();
+        }
+
+        /// <summary>
+        /// Znovurozbìhnutí výpoètu
+        /// </summary>
+        public void Resume() {
+            this.paused = false;
+            this.resetEvent.Set();
         }
 
         #region Implementace IOutputWriter
@@ -118,5 +218,22 @@ namespace PavelStransky.Expression {
                 return i;
         }
         #endregion
+
+        /// <summary>
+        /// Vrátí seznam všech funkcí
+        /// </summary>
+        /// <param name="numbers"></param>
+        /// <returns></returns>
+        public string GetFunctions(bool numbers) {
+            StringBuilder result = new StringBuilder();
+            this.functionMutex.WaitOne();
+            lock(this.functions) {
+                int i = this.functions.Count;
+                foreach(string s in this.functions)
+                    result.AppendFormat("{0}:{1}{2}", i--, s, Environment.NewLine);
+            }
+            this.functionMutex.ReleaseMutex();
+            return result.ToString();
+        }
     }
 }

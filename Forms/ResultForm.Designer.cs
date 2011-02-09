@@ -26,6 +26,10 @@ namespace PavelStransky.Forms {
             this.lblLblDuration = new System.Windows.Forms.Label();
             this.lblDuration = new System.Windows.Forms.Label();
             this.timerInfo = new System.Windows.Forms.Timer(this.components);
+            this.lblLblTotalProcessorTime = new System.Windows.Forms.Label();
+            this.lblTotalProcessorTime = new System.Windows.Forms.Label();
+            this.txtFunction = new System.Windows.Forms.TextBox();
+            this.lblFunction = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblCommand
@@ -48,7 +52,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.ReadOnly = true;
             this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCommand.Size = new System.Drawing.Size(354, 130);
+            this.txtCommand.Size = new System.Drawing.Size(273, 130);
             this.txtCommand.TabIndex = 1;
             this.txtCommand.WordWrap = false;
             // 
@@ -73,17 +77,17 @@ namespace PavelStransky.Forms {
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(354, 155);
+            this.txtResult.Size = new System.Drawing.Size(429, 138);
             this.txtResult.TabIndex = 3;
             this.txtResult.WordWrap = false;
             // 
             // btInterrupt
             // 
             this.btInterrupt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btInterrupt.Location = new System.Drawing.Point(89, 324);
+            this.btInterrupt.Location = new System.Drawing.Point(89, 309);
             this.btInterrupt.Margin = new System.Windows.Forms.Padding(0);
             this.btInterrupt.Name = "btInterrupt";
-            this.btInterrupt.Size = new System.Drawing.Size(86, 22);
+            this.btInterrupt.Size = new System.Drawing.Size(86, 20);
             this.btInterrupt.TabIndex = 4;
             this.btInterrupt.Text = "Interrupt";
             this.btInterrupt.UseVisualStyleBackColor = true;
@@ -103,9 +107,9 @@ namespace PavelStransky.Forms {
             // btPause
             // 
             this.btPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btPause.Location = new System.Drawing.Point(7, 324);
+            this.btPause.Location = new System.Drawing.Point(7, 309);
             this.btPause.Name = "btPause";
-            this.btPause.Size = new System.Drawing.Size(82, 22);
+            this.btPause.Size = new System.Drawing.Size(82, 20);
             this.btPause.TabIndex = 6;
             this.btPause.Text = "Pause";
             this.btPause.UseVisualStyleBackColor = true;
@@ -115,10 +119,10 @@ namespace PavelStransky.Forms {
             // btContinue
             // 
             this.btContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btContinue.Location = new System.Drawing.Point(7, 324);
+            this.btContinue.Location = new System.Drawing.Point(7, 309);
             this.btContinue.Margin = new System.Windows.Forms.Padding(0);
             this.btContinue.Name = "btContinue";
-            this.btContinue.Size = new System.Drawing.Size(82, 22);
+            this.btContinue.Size = new System.Drawing.Size(82, 20);
             this.btContinue.TabIndex = 7;
             this.btContinue.Text = "Continue";
             this.btContinue.UseVisualStyleBackColor = true;
@@ -128,9 +132,9 @@ namespace PavelStransky.Forms {
             // btRecalculate
             // 
             this.btRecalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btRecalculate.Location = new System.Drawing.Point(7, 341);
+            this.btRecalculate.Location = new System.Drawing.Point(7, 326);
             this.btRecalculate.Name = "btRecalculate";
-            this.btRecalculate.Size = new System.Drawing.Size(126, 22);
+            this.btRecalculate.Size = new System.Drawing.Size(126, 20);
             this.btRecalculate.TabIndex = 8;
             this.btRecalculate.Text = "Calculate again";
             this.btRecalculate.UseVisualStyleBackColor = true;
@@ -143,7 +147,7 @@ namespace PavelStransky.Forms {
             this.chkAsync.AutoSize = true;
             this.chkAsync.Checked = true;
             this.chkAsync.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAsync.Location = new System.Drawing.Point(8, 323);
+            this.chkAsync.Location = new System.Drawing.Point(8, 306);
             this.chkAsync.Name = "chkAsync";
             this.chkAsync.Size = new System.Drawing.Size(147, 17);
             this.chkAsync.TabIndex = 9;
@@ -154,7 +158,7 @@ namespace PavelStransky.Forms {
             // 
             this.chkWrap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkWrap.AutoSize = true;
-            this.chkWrap.Location = new System.Drawing.Point(309, 323);
+            this.chkWrap.Location = new System.Drawing.Point(384, 306);
             this.chkWrap.Name = "chkWrap";
             this.chkWrap.Size = new System.Drawing.Size(52, 17);
             this.chkWrap.TabIndex = 10;
@@ -167,7 +171,7 @@ namespace PavelStransky.Forms {
             this.lblLblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLblStartTime.AutoSize = true;
             this.lblLblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLblStartTime.Location = new System.Drawing.Point(5, 350);
+            this.lblLblStartTime.Location = new System.Drawing.Point(5, 333);
             this.lblLblStartTime.Name = "lblLblStartTime";
             this.lblLblStartTime.Size = new System.Drawing.Size(130, 13);
             this.lblLblStartTime.TabIndex = 11;
@@ -177,7 +181,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStartTime.AutoSize = true;
-            this.lblStartTime.Location = new System.Drawing.Point(139, 350);
+            this.lblStartTime.Location = new System.Drawing.Point(139, 333);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(52, 13);
             this.lblStartTime.TabIndex = 12;
@@ -188,7 +192,7 @@ namespace PavelStransky.Forms {
             this.lblLblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLblDuration.AutoSize = true;
             this.lblLblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLblDuration.Location = new System.Drawing.Point(220, 350);
+            this.lblLblDuration.Location = new System.Drawing.Point(220, 333);
             this.lblLblDuration.Name = "lblLblDuration";
             this.lblLblDuration.Size = new System.Drawing.Size(59, 13);
             this.lblLblDuration.TabIndex = 13;
@@ -198,7 +202,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(285, 350);
+            this.lblDuration.Location = new System.Drawing.Point(285, 333);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(47, 13);
             this.lblDuration.TabIndex = 14;
@@ -208,12 +212,61 @@ namespace PavelStransky.Forms {
             // 
             this.timerInfo.Tick += new System.EventHandler(this.timerInfo_Tick);
             // 
+            // lblLblTotalProcessorTime
+            // 
+            this.lblLblTotalProcessorTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblLblTotalProcessorTime.AutoSize = true;
+            this.lblLblTotalProcessorTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblLblTotalProcessorTime.Location = new System.Drawing.Point(5, 349);
+            this.lblLblTotalProcessorTime.Name = "lblLblTotalProcessorTime";
+            this.lblLblTotalProcessorTime.Size = new System.Drawing.Size(126, 13);
+            this.lblLblTotalProcessorTime.TabIndex = 15;
+            this.lblLblTotalProcessorTime.Text = "Total processor time:";
+            // 
+            // lblTotalProcessorTime
+            // 
+            this.lblTotalProcessorTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalProcessorTime.AutoSize = true;
+            this.lblTotalProcessorTime.Location = new System.Drawing.Point(139, 349);
+            this.lblTotalProcessorTime.Name = "lblTotalProcessorTime";
+            this.lblTotalProcessorTime.Size = new System.Drawing.Size(77, 13);
+            this.lblTotalProcessorTime.TabIndex = 16;
+            this.lblTotalProcessorTime.Text = "ProcessorTime";
+            // 
+            // txtFunction
+            // 
+            this.txtFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFunction.Font = new System.Drawing.Font("Courier New", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtFunction.Location = new System.Drawing.Point(286, 16);
+            this.txtFunction.Multiline = true;
+            this.txtFunction.Name = "txtFunction";
+            this.txtFunction.ReadOnly = true;
+            this.txtFunction.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtFunction.Size = new System.Drawing.Size(150, 130);
+            this.txtFunction.TabIndex = 19;
+            this.txtFunction.WordWrap = false;
+            // 
+            // lblFunction
+            // 
+            this.lblFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFunction.AutoSize = true;
+            this.lblFunction.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblFunction.Location = new System.Drawing.Point(285, 0);
+            this.lblFunction.Name = "lblFunction";
+            this.lblFunction.Size = new System.Drawing.Size(65, 13);
+            this.lblFunction.TabIndex = 20;
+            this.lblFunction.Text = "Command:";
+            // 
             // ResultForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 368);
+            this.ClientSize = new System.Drawing.Size(440, 369);
+            this.Controls.Add(this.lblFunction);
+            this.Controls.Add(this.txtFunction);
+            this.Controls.Add(this.lblTotalProcessorTime);
+            this.Controls.Add(this.lblLblTotalProcessorTime);
             this.Controls.Add(this.lblDuration);
             this.Controls.Add(this.lblLblDuration);
             this.Controls.Add(this.lblStartTime);
@@ -239,7 +292,6 @@ namespace PavelStransky.Forms {
             this.PerformLayout();
 
         }
-
         #endregion
 
         private System.Windows.Forms.Label lblCommand;
@@ -259,5 +311,9 @@ namespace PavelStransky.Forms {
         private System.Windows.Forms.Label lblDuration;
         private System.Windows.Forms.Timer timerInfo;
         private System.ComponentModel.IContainer components;
+        private System.Windows.Forms.Label lblLblTotalProcessorTime;
+        private System.Windows.Forms.Label lblTotalProcessorTime;
+        private System.Windows.Forms.TextBox txtFunction;
+        private System.Windows.Forms.Label lblFunction;
     }
 }

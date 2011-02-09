@@ -30,6 +30,25 @@ namespace PavelStransky.Core {
         }
 
         /// <summary>
+        /// Formátování èasového intervalu (celoèíselnì)
+        /// </summary>
+        public static string FormatInt(TimeSpan timeSpan) {
+            if(timeSpan.Days == 0) {
+                if(timeSpan.Hours == 0) {
+                    if(timeSpan.Minutes == 0) {
+                        return string.Format("{0}s", timeSpan.Seconds);
+                    }
+                    else
+                        return string.Format("{0}m{1}s", timeSpan.Minutes, timeSpan.Seconds);
+                }
+                else
+                    return string.Format("{0}h{1}m", timeSpan.Hours, timeSpan.Minutes);
+            }
+            else
+                return string.Format("{0}d{1}h{2}m", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes);
+        }
+
+        /// <summary>
         /// Formátování èasového intervalu
         /// </summary>
         /// <param name="isText">True, pokud chceme i text Doba výpoètu</param>

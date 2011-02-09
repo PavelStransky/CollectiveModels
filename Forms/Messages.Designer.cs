@@ -286,6 +286,15 @@ namespace PavelStransky.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Waiting for {0}....
+        /// </summary>
+        internal static string MWaiting {
+            get {
+                return ResourceManager.GetString("MWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Program for analysing nuclear collective models (GCM, IBM).
         /// </summary>
         internal static string ProgramDescription {

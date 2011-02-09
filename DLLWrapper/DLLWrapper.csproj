@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Kernel32Wrapper.cs" />
     <Compile Include="LAPackDLLWrapper.cs" />
     <Compile Include="Process.cs" />
     <Compile Include="SymmetricBandMatrix.cs" />

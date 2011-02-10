@@ -47,8 +47,8 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="matrix">Vstupní ètvercová matice</param>
         public static Vector[] dsyev(Matrix matrix, bool ev) {
-            char jobz = ev ? 'V' : 'N';
-            char uplo = 'U';
+            byte jobz = ev ? (byte)'V' : (byte)'N';
+            byte uplo = (byte)'U';
 
             int n = matrix.Length;
 
@@ -115,9 +115,9 @@ namespace PavelStransky.DLLWrapper {
         /// <param name="iMin">Minimální vlastní hodnota</param>
         /// <param name="iMax">Maximální vlastní hodnota</param>
         public static Vector[] dsbevx(SymmetricBandMatrix band, bool ev, int iMin, int iMax) {
-            char jobz = ev ? 'V' : 'N';
-            char range = 'I';
-            char uplo = 'U';
+            byte jobz = ev ? (byte)'V' : (byte)'N';
+            byte range = (byte)'I';
+            byte uplo = (byte)'U';
 
             int n = band.Length;
             int kd = band.NumSD;

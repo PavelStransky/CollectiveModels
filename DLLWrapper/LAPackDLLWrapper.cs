@@ -18,7 +18,7 @@ namespace PavelStransky.DLLWrapper {
             /// real symmetric matrix A.
             /// </summary>
             [DllImport("LAPack32.dll")]
-            public static extern double dsyev_(char* jobz, char* uplo, int* n, double* a, int* lda,
+            public static extern double dsyev_(byte* jobz, byte* uplo, int* n, double* a, int* lda,
                 double* w, double* work, int* lwork, int* info);
 
             /// <summary>        
@@ -173,7 +173,7 @@ namespace PavelStransky.DLLWrapper {
             ///              Their indices are stored in array IFAIL.
             ///</param>
             [DllImport("LAPack32.dll")]
-            public static extern void dsbevx_(char* jobz, char* range, char* uplo,
+            public static extern void dsbevx_(byte* jobz, byte* range, byte* uplo,
                 int* n, int* kd, double* ab, int* ldab,
                 double* q, int* ldq,
                 double* vl, double* vu, int* il, int* iu,
@@ -187,11 +187,11 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         private class LAPack64 {
             [DllImport("LAPack64.dll")]
-            public static extern double dsyev_(char* jobz, char* uplo, int* n, double* a, int* lda,
+            public static extern double dsyev_(byte* jobz, byte* uplo, int* n, double* a, int* lda,
                 double* w, double* work, int* lwork, int* info);
 
             [DllImport("LAPack64.dll")]
-            public static extern void dsbevx_(char* jobz, char* range, char* uplo,
+            public static extern void dsbevx_(byte* jobz, byte* range, byte* uplo,
                 int* n, int* kd, double* ab, int* ldab,
                 double* q, int* ldq,
                 double* vl, double* vu, int* il, int* iu,
@@ -202,7 +202,7 @@ namespace PavelStransky.DLLWrapper {
 
         private static bool is32bit = true;
 
-        public static void dsyev(char* jobz, char* uplo, int* n, double* a, int* lda,
+        public static void dsyev(byte* jobz, byte* uplo, int* n, double* a, int* lda,
                 double* w, double* work, int* lwork, int* info) {
             if(is32bit)
                 LAPack32.dsyev_(jobz, uplo, n, a, lda, w, work, lwork, info);
@@ -210,7 +210,7 @@ namespace PavelStransky.DLLWrapper {
                 LAPack64.dsyev_(jobz, uplo, n, a, lda, w, work, lwork, info);
         }
 
-        public static void dsbevx(char* jobz, char* range, char* uplo,
+        public static void dsbevx(byte* jobz, byte* range, byte* uplo,
             int* n, int* kd, double* ab, int* ldab,
             double* q, int* ldq,
             double* vl, double* vu, int* il, int* iu,
@@ -220,7 +220,7 @@ namespace PavelStransky.DLLWrapper {
             if(is32bit)
                 LAPack32.dsbevx_(jobz, range, uplo, n, kd, ab, ldab, q, ldq, vl, vu, il, iu, abstol, m, w, z, ldz, work, iwork, ifail, info);
             else
-                LAPack64.dsbevx_(jobz, range, uplo, n, kd, ab, ldab, q, ldq, vl, vu, il, iu, abstol, m, w, z, ldz, work, iwork, ifail, info);            
+                LAPack64.dsbevx_(jobz, range, uplo, n, kd, ab, ldab, q, ldq, vl, vu, il, iu, abstol, m, w, z, ldz, work, iwork, ifail, info);
         }
 
         /// <summary>

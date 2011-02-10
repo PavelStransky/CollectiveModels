@@ -587,6 +587,11 @@ namespace PavelStransky.Forms {
         protected override void OnFormClosing(FormClosingEventArgs e) {
             base.OnFormClosing(e);
 
+            if(this.saving) {
+                e.Cancel = true;
+                return;
+            }
+
             int result = 0;
             if(!this.closeAfterSave) {
                 this.closeAfterSave = false;

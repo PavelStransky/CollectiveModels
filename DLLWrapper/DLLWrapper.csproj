@@ -58,9 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ARPackDLL.cs" />
+    <Compile Include="ARPackWrapper.cs" />
     <Compile Include="Kernel32Wrapper.cs" />
     <Compile Include="LAPackDLLWrapper.cs" />
     <Compile Include="Process.cs" />
+    <Compile Include="SparseMatrix.cs" />
     <Compile Include="SymmetricBandMatrix.cs" />
     <Compile Include="LAPackDLL.cs" />
     <Compile Include="Memory.cs" />
@@ -77,7 +80,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ARPack.dll">
+    <Content Include="ARPack32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ARPack64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LAPack32.dll">

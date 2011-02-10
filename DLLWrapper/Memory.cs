@@ -59,6 +59,15 @@ namespace PavelStransky.DLLWrapper {
         }
 
         /// <summary>
+        /// Alokuje pole char o zadané délce
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static byte* NewByte(int length) {
+            return (byte*)Alloc(length * sizeof(byte));
+        }
+
+        /// <summary>
         /// Uvolní alokovanou pamì
         /// </summary>
         /// <param name="block">Ukazatel na pamì</param>

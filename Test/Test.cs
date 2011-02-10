@@ -21,11 +21,27 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusXML();
+            Test.PokusARPack();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 10.2.2011
+        /// </summary>
+        static void PokusARPack() {
+            SparseMatrix sp = new SparseMatrix(10);
+            sp.ReadExample();
+            Matrix m = (Matrix)sp;
+            SparseMatrix spc = (SparseMatrix)m;
+            Vector v = ARPackDLL.dsaupd(sp, 10, false, false)[0];
+            Vector vm = LAPackDLL.dsyev(m, false)[0];
+            Vector vc = ARPackDLL.dsaupd(spc, 10, false, false)[0];
+            Console.WriteLine(v.ToString());
+            Console.WriteLine(vm.ToString());
+            Console.WriteLine(vc.ToString());
+        }
 
         /// <summary>
         /// 5.3.2009

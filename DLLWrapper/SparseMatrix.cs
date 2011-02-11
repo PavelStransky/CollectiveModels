@@ -95,7 +95,6 @@ namespace PavelStransky.DLLWrapper {
                     int ki = sbm.iMatrix[i] + j;
                     int kj = (int)(sbm.jMatrix[ki]);
                     m[i, kj] = (double)(sbm.data[ki]);
-//                    m[kj, i] = m[i, kj];
                 }
             }
 
@@ -124,6 +123,66 @@ namespace PavelStransky.DLLWrapper {
             }
 
             return sm;
+        }
+
+        /// <summary>
+        /// Indexer
+        /// </summary>
+        /// <param name="i">ÿ·dek matice</param>
+        /// <param name="j">Sloupec matice</param>
+        public double this[int i, int j] {
+            get {
+                int numCols = this.iMatrix[i + 1] - this.iMatrix[i];
+                for(int jj = 0; jj < numCols; jj++) {
+                    int ki = this.iMatrix[i] + jj;
+                    int kj = (int)(this.jMatrix[ki]);
+                    if(kj == j)
+                        return (double)(this.data[ki]);
+                    else if(kj < j)
+                        return 0.0;
+                }
+                return 0.0;
+            }
+            set {
+                int numCols = this.iMatrix[i + 1] - this.iMatrix[i];
+                int inserti = -1;
+
+                for(int jj = 0; jj < numCols; jj++) {
+                    int ki = this.iMatrix[i] + jj;
+                    int kj = (int)(this.jMatrix[ki]);
+                    if(kj == j) {                    // ZmÏnÌme hodnotu
+                        if(value == 0.0) {           // MusÌme vymazat hodnotu z matice
+                            this.data.RemoveAt(ki);
+                            this.jMatrix.RemoveAt(ki);
+                            for(int ii = i + 1; ii <= this.length; ii++)
+                                this.iMatrix[ii]--;
+                        }
+                        else
+                            this.data[ki] = value;
+                        return;
+                    }
+                    else if(kj < j) {               // P¯id·v·me
+                        inserti = ki;
+                        break;
+                    }
+                    else if(jj == numCols - 1) {
+                        inserti = ki + 1;
+                        break;
+                    }
+                }
+
+                if(value == 0.0)                    // 0 p¯id·vat nebudeme
+                    return;
+
+                if(inserti == -1)                   // V danÈ ¯adÏ nenÌ ani jeden prvek
+                    inserti = this.iMatrix[i];
+
+                this.jMatrix.Insert(inserti, j);
+                this.data.Insert(inserti, value);
+
+                for(int ii = i + 1; ii <= this.length; ii++)
+                    this.iMatrix[ii]++;
+            }
         }
     }
 }

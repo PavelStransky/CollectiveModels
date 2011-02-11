@@ -34,7 +34,10 @@ namespace PavelStransky.Test {
             SparseMatrix sp = new SparseMatrix(10);
             sp.ReadExample();
             Matrix m = (Matrix)sp;
-            SparseMatrix spc = (SparseMatrix)m;
+            SparseMatrix spc = new SparseMatrix(m.Length);
+            for(int i = 0; i < sp.Length; i++)
+                for(int j = 0; j < sp.Length; j++)
+                    spc[i, j] = m[i, j];
             Vector v = ARPackDLL.dsaupd(sp, 10, false, false)[0];
             Vector vm = LAPackDLL.dsyev(m, false)[0];
             Vector vc = ARPackDLL.dsaupd(spc, 10, false, false)[0];

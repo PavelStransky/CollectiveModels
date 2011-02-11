@@ -5056,6 +5056,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generates randomly a symmetric sparse matrix and diagonalizes it.
+        /// </summary>
+        internal static string HelpTestARPack {
+            get {
+                return ResourceManager.GetString("HelpTestARPack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tries to read text from specified URI.
         /// </summary>
         internal static string HelpTestWWW {
@@ -8193,6 +8202,24 @@ namespace PavelStransky.Expression {
         internal static string PNonDiagonalValueDescription {
             get {
                 return ResourceManager.GetString("PNonDiagonalValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nz.
+        /// </summary>
+        internal static string PNonZeros {
+            get {
+                return ResourceManager.GetString("PNonZeros", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of nonzero elements.
+        /// </summary>
+        internal static string PNonZerosDescription {
+            get {
+                return ResourceManager.GetString("PNonZerosDescription", resourceCulture);
             }
         }
         

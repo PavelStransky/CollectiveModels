@@ -169,6 +169,7 @@
     <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
+    <Compile Include="Functions\Test\TestARPack.cs" />
     <Compile Include="Functions\Types\Function.cs" />
     <Compile Include="Functions\Unsorted\Evaluate.cs" />
     <Compile Include="Functions\Unsorted\FunctionText.cs" />

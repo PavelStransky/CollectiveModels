@@ -55,31 +55,12 @@ namespace PavelStransky.Systems {
         protected PT1() { }
 
         /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        public double HamiltonianMatrixTrace(BasisIndex basisIndex) {
-            return this.HamiltonianSBMatrix(basisIndex, null).Trace();
-        }
-
-        /// <summary>
-        /// Vypoèítá Hamiltonovu matici
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        /// <param name="writer">Writer</param>
-        public Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            return (Matrix)this.HamiltonianSBMatrix(basisIndex, writer);
-        }
-
-        /// <summary>
         /// Vypoèítá Hamiltonovu matici (v tomto pøípadì lze poèítat algebraicky)
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public virtual SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             int maxn = (basisIndex as PTBasisIndex).MaxN;
-
-            SymmetricBandMatrix matrix = new SymmetricBandMatrix(maxn, 4);
 
             double alpha2 = this.omega0 / this.hbar;
             double alpha = System.Math.Sqrt(alpha2);
@@ -112,8 +93,6 @@ namespace PavelStransky.Systems {
                 if(i + 4 < maxn)
                     matrix[i, i + 4] = 0.5 * s * i4;
             }
-
-            return matrix;
         }
 
         /// <summary>

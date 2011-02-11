@@ -11,24 +11,6 @@ namespace PavelStransky.DLLWrapper {
         private LAPackDLL() { }
 
         /// <summary>
-        /// Matici pøevede na pole na nespravované haldì
-        /// </summary>
-        /// <param name="m">Matice</param>
-        private static double* PrepareMatrix(Matrix m) {
-            int lengthX = m.LengthX;
-            int lengthY = m.LengthY;
-
-            double* result = Memory.NewDouble(lengthX * lengthY);
-
-            int index = 0;
-            for(int i = 0; i < lengthX; i++)
-                for(int j = 0; j < lengthY; j++)
-                    result[index++] = m[i, j];
-
-            return result;
-        }
-
-        /// <summary>
         /// Pole na nespravované haldì pøevede na Vector
         /// </summary>
         /// <param name="v">Ukazatel na pole</param>
@@ -47,12 +29,20 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="matrix">Vstupní ètvercová matice</param>
         public static Vector[] dsyev(Matrix matrix, bool ev) {
+            return dsyev((MMatrix)matrix, ev);
+        }
+
+        /// <summary>
+        /// Nalezne vlastní èísla matice
+        /// </summary>
+        /// <param name="matrix">Vstupní ètvercová matice</param>
+        public static Vector[] dsyev(MMatrix matrix, bool ev) {
             byte jobz = ev ? (byte)'V' : (byte)'N';
             byte uplo = (byte)'U';
 
             int n = matrix.Length;
 
-            double* a = PrepareMatrix(matrix);
+            double* a = matrix.GetItem();
             double* w = Memory.NewDouble(n);
 
             int lda = n;
@@ -100,7 +90,6 @@ namespace PavelStransky.DLLWrapper {
                     }
             }
             finally {
-                Memory.Delete(a);
                 Memory.Delete(w);
             }
 

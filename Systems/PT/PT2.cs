@@ -30,10 +30,8 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public override void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             int maxn = (basisIndex as PTBasisIndex).MaxN;
-
-            SymmetricBandMatrix matrix = new SymmetricBandMatrix(maxn, 4);
 
             double alpha2 = this.omega0 / this.hbar;
             double alpha = System.Math.Sqrt(alpha2);
@@ -64,8 +62,6 @@ namespace PavelStransky.Systems {
                 if(i + 4 < maxn)
                     matrix[i, i + 4] = 0.5 * s * i4;
             }
-
-            return matrix;
         }
 
         /// <summary>

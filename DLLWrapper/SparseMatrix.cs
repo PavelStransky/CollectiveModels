@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.DLLWrapper {
-    unsafe public class SparseMatrix {
+    unsafe public class SparseMatrix: IMatrix {
         private ArrayList data;
         private int[] iMatrix;
         private ArrayList jMatrix;
@@ -17,6 +18,11 @@ namespace PavelStransky.DLLWrapper {
         /// Dimension of the matrix
         /// </summary>
         public int Length { get { return this.length; } }
+
+        /// <summary>
+        /// Number of nonzero elements of the matrix
+        /// </summary>
+        public int NonzeroElements { get { return this.data.Count; } }
 
         public SparseMatrix(int length) {
             this.length = length;
@@ -183,6 +189,36 @@ namespace PavelStransky.DLLWrapper {
                 for(int ii = i + 1; ii <= this.length; ii++)
                     this.iMatrix[ii]++;
             }
+        }
+
+        /// <summary>
+        /// Stopa matice
+        /// </summary>
+        public double Trace() {
+            double result = 0.0;
+
+            for(int i = 0; i < this.length; i++) {
+                int numCols = this.iMatrix[i + 1] - this.iMatrix[i];
+                for(int j = 0; j < numCols; j++) {
+                    int ki = this.iMatrix[i] + j;
+                    int kj = (int)(this.jMatrix[ki]);
+                    if(i == kj)
+                        result += (double)(this.data[ki]);
+                    if(kj >= i)
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Systém vlastních hodnot a vektorù
+        /// </summary>
+        /// <param name="ev">Chceme vlastní vektory?</param>
+        /// <param name="numEV">Poèet</param>
+        public Vector[] EigenSystem(bool ev, int numEV, IOutputWriter writer) {
+            return ARPackDLL.dsaupd(this, numEV, ev, false);
         }
     }
 }

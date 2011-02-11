@@ -48,7 +48,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public override Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public override void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             LHOCartesianIndex index = basisIndex as LHOCartesianIndex;
             int maxn = index.MaxN;
             int numSteps = index.NumSteps;
@@ -83,7 +83,6 @@ namespace PavelStransky.Systems {
             }
 
             int max2 = maxn * maxn;
-            Matrix m = new Matrix(max2, max2);
 
             if(writer != null)
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", max2, max2));
@@ -115,8 +114,8 @@ namespace PavelStransky.Systems {
                     if(ix == jx && iy == jy)
                         sum += this.Hbar * this.omega * (1.0 + ix + iy);
 
-                    m[i, j] = sum;
-                    m[j, i] = sum;
+                    matrix[i, j] = sum;
+                    matrix[j, i] = sum;
                 }
 
                 // Výpis teèky na konzoli
@@ -138,8 +137,6 @@ namespace PavelStransky.Systems {
                 writer.Indent(-1);
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
-
-            return m;
         }
 
         /// <summary>

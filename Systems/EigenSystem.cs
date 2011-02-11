@@ -108,20 +108,83 @@ namespace PavelStransky.Systems {
                 writer.WriteLine(Messages.MHMCalculation);
             }
 
-            if(method == ComputeMethod.Jacobi) {
-                Matrix m = this.parrentQuantumSystem.HamiltonianMatrix(this.basisIndex, writer);
-                this.Diagonalize(m, ev, numEV, writer);
+            IMatrix matrix = null;
+            if(method == ComputeMethod.Jacobi) 
+                matrix = new Matrix(this.basisIndex.Length);
+            else if(method == ComputeMethod.LAPACKBand) 
+                matrix = new SymmetricBandMatrix(this.basisIndex.Length, this.basisIndex.BandWidth);            
+            else if(method == ComputeMethod.LAPACK)
+                matrix = new MMatrix(this.basisIndex.Length);
+            else if(method == ComputeMethod.ARPACK)
+                matrix = new SparseMatrix(this.basisIndex.Length);
+
+            this.parrentQuantumSystem.HamiltonianMatrix(matrix, this.basisIndex, writer);
+
+            // Zaèátek výpoètu (matice pøipravena)
+            if(this.isComputing)
+                throw new SystemsException(Messages.EMComputing);
+
+            this.isComputing = true;
+
+            try {
+                if(numEV <= 0)
+                    numEV = matrix.Length;
+
+                if(writer != null) {
+                    if(matrix is Matrix || matrix is MMatrix)
+                        writer.WriteLine(string.Format(Messages.MSMatrixDimension, matrix.Length));
+                    else if(matrix is SymmetricBandMatrix)
+                        writer.WriteLine(string.Format(Messages.MSBMatrixDimension, matrix.Length, (matrix as SymmetricBandMatrix).NumSD));
+                    else if(matrix is SparseMatrix)
+                        writer.WriteLine(string.Format(Messages.MSSMatrixDimension, matrix.Length, (matrix as SparseMatrix).NonzeroElements));
+
+                    writer.WriteLine(string.Format(Messages.MTrace, matrix.Trace()));
+
+                    if(matrix is Matrix) {
+                        writer.WriteLine(string.Format(Messages.MNonzeroElements, (matrix as Matrix).NumNonzeroItems(), (matrix as Matrix).NumItems()));
+                        writer.Write(Messages.MDiagonalizationJacobi);
+                    }
+                    else if(matrix is MMatrix)
+                        writer.Write(Messages.MDiagonalizationDSYEV);
+                    else if(matrix is SymmetricBandMatrix)
+                        writer.Write(Messages.MDiagonalizationDSBEVX);
+                    else if(matrix is SparseMatrix)
+                        writer.Write(Messages.MDiagonalizationARPACK);
+
+                    writer.Write(string.Format(Messages.MNumEV, numEV, ev ? Messages.MDiagonalizationEVYes : Messages.MDiagonalizationEVNo));
+                }
+
+                GC.Collect();
+                DateTime startTime1 = DateTime.Now;
+
+                Vector[] eigenSystem = matrix.EigenSystem(ev, numEV, writer);
+
+                if(matrix is IDisposable)
+                    (matrix as IDisposable).Dispose();
+
+                GC.Collect();
+
+                if(writer != null)
+                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
+
+                this.eigenValues = eigenSystem[0];
+                this.eigenValues.Length = numEV;
+
+                if(ev) {
+                    this.eigenVectors = new Vector[numEV];
+                    for(int i = 0; i < numEV; i++)
+                        this.eigenVectors[i] = eigenSystem[i + 1];
+                }
+                else
+                    this.eigenVectors = new Vector[0];
+
+                this.isComputing = false;
+                this.isComputed = true;
+            }
+            finally {
+                this.isComputing = false;
             }
 
-            else if(method == ComputeMethod.LAPACKBand) {
-                SymmetricBandMatrix m = this.parrentQuantumSystem.HamiltonianSBMatrix(this.basisIndex, writer);
-                this.Diagonalize(m, ev, numEV, writer);
-            }
-
-            else if(method == ComputeMethod.LAPACK) {
-                Matrix m = this.parrentQuantumSystem.HamiltonianMatrix(this.basisIndex, writer);
-                this.DiagonalizeFull(m, ev, numEV, writer);
-            }
         }
 
         /// <summary>
@@ -133,8 +196,10 @@ namespace PavelStransky.Systems {
             if(writer != null) {
                 writer.WriteLine(Messages.MHMCalculation);
             }
-
-            return this.parrentQuantumSystem.HamiltonianMatrix(this.parrentQuantumSystem.CreateBasisIndex(basisParams), writer);
+            BasisIndex b = this.parrentQuantumSystem.CreateBasisIndex(basisParams);
+            Matrix result = new Matrix(b.Length);
+            this.parrentQuantumSystem.HamiltonianMatrix(result, b, writer);
+            return result;
         }
 
         /// <summary>
@@ -142,7 +207,10 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisParams">Parametry báze</param>
         public double HamiltonianMatrixTrace(Vector basisParams) {
-            return this.parrentQuantumSystem.HamiltonianMatrixTrace(this.parrentQuantumSystem.CreateBasisIndex(basisParams));
+            BasisIndex b = this.parrentQuantumSystem.CreateBasisIndex(basisParams);
+            SymmetricBandMatrix m = new SymmetricBandMatrix(b.Length, b.BandWidth);
+            this.parrentQuantumSystem.HamiltonianMatrix(m, b, null);
+            return m.Trace();
         }
 
         /// <summary>
@@ -177,159 +245,6 @@ namespace PavelStransky.Systems {
         /// <param name="writer">Writer</param>
         public void Diagonalize(int maxn, bool ev, int numEV, IOutputWriter writer) {
             this.Diagonalize(maxn, ev, numEV, writer, ComputeMethod.LAPACKBand);
-        }
-
-        /// <summary>
-        /// Diagonalizace užitím Jacobi metody
-        /// </summary>
-        /// <param name="matrix">Symetrická matice</param>
-        /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
-        /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
-        /// <param name="writer">Writer</param>
-        public void Diagonalize(Matrix matrix, bool ev, int numEV, IOutputWriter writer) {
-            if(this.isComputing)
-                throw new SystemsException(Messages.EMComputing);
-
-            this.isComputing = true; 
-            
-            try {
-                if(numEV <= 0)
-                    numEV = matrix.Length;
-
-                if(writer != null) {
-                    writer.WriteLine(string.Format(Messages.MSMatrixDimension, matrix.Length));
-                    writer.WriteLine(string.Format(Messages.MTrace, matrix.Trace()));
-                    writer.WriteLine(string.Format(Messages.MNonzeroElements, matrix.NumNonzeroItems(), matrix.NumItems()));
-                    writer.Write(string.Format(Messages.MDiagonalizationJacobi, numEV, ev ? Messages.MDiagonalizationEVYes : Messages.MDiagonalizationEVNo));
-                }
-
-                Jacobi jacobi = new Jacobi(matrix, writer);
-                jacobi.SortAsc();
-
-                this.eigenValues = new Vector(jacobi.EigenValue);
-                this.eigenValues.Length = numEV;
-
-                if(ev) {
-                    this.eigenVectors = new Vector[numEV];
-                    for(int i = 0; i < numEV; i++)
-                        this.eigenVectors[i] = jacobi.EigenVector[i];
-                }
-                else
-                    this.eigenVectors = new Vector[0];
-
-                this.isComputed = true;
-                this.isComputing = false;
-            }
-            finally {
-                this.isComputing = false;
-            }
-        }
-
-        /// <summary>
-        /// Diagonalizace užitím LAPACK knihovny
-        /// </summary>
-        /// <param name="matrix">Symetrická pásová matice</param>
-        /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
-        /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
-        /// <param name="writer">Writer</param>
-        public void Diagonalize(SymmetricBandMatrix matrix, bool ev, int numEV, IOutputWriter writer) {
-            if(this.isComputing)
-                throw new SystemsException(Messages.EMComputing);
-
-            this.isComputing = true;
-
-            try {
-                if(numEV <= 0)
-                    numEV = matrix.Length;
-
-                if(writer != null) {
-                    writer.WriteLine(string.Format(Messages.MSBMatrixDimension, matrix.Length, matrix.NumSD));
-                    writer.WriteLine(string.Format(Messages.MTrace, matrix.Trace()));
-                    writer.Write(string.Format(Messages.MDiagonalizationDSBEVX, numEV, ev ? Messages.MDiagonalizationEVYes : Messages.MDiagonalizationEVNo));
-                }
-
-                GC.Collect();
-
-                DateTime startTime1 = DateTime.Now;
-
-                Vector[] eigenSystem = LAPackDLL.dsbevx(matrix, ev, 0, numEV);
-                matrix.Dispose();
-
-                GC.Collect();
-
-                if(writer != null)
-                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
-
-                this.eigenValues = eigenSystem[0];
-                this.eigenValues.Length = numEV;
-
-                if(ev) {
-                    this.eigenVectors = new Vector[numEV];
-                    for(int i = 0; i < numEV; i++)
-                        this.eigenVectors[i] = eigenSystem[i + 1];
-                }
-                else
-                    this.eigenVectors = new Vector[0];
-
-                this.isComputing = false;
-                this.isComputed = true;
-            }
-            finally {
-                this.isComputing = false;
-            }
-        }
-
-        /// <summary>
-        /// Diagonalizace plné matice užitím LAPACK knihovny
-        /// </summary>
-        /// <param name="matrix">Symetrická matice</param>
-        /// <param name="ev">True, pokud budeme poèítat i vlastní vektory</param>
-        /// <param name="numev">Poèet vlastních hodnot, menší èi rovné 0 vypoèítá všechny</param>
-        /// <param name="writer">Writer</param>
-        public void DiagonalizeFull(Matrix matrix, bool ev, int numEV, IOutputWriter writer) {
-            if(this.isComputing)
-                throw new SystemsException(Messages.EMComputing);
-
-            this.isComputing = true;
-
-            try {
-                if(numEV <= 0)
-                    numEV = matrix.Length;
-
-                if(writer != null) {
-                    writer.WriteLine(string.Format(Messages.MSMatrixDimension, matrix.Length));
-                    writer.WriteLine(string.Format(Messages.MTrace, matrix.Trace()));
-                    writer.Write(string.Format(Messages.MDiagonalizationDSYEV, numEV, ev ? Messages.MDiagonalizationEVYes : Messages.MDiagonalizationEVNo));
-                }
-
-                GC.Collect();
-
-                DateTime startTime1 = DateTime.Now;
-
-                Vector[] eigenSystem = LAPackDLL.dsyev(matrix, ev);
-
-                GC.Collect();
-
-                if(writer != null)
-                    writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
-
-                this.eigenValues = eigenSystem[0];
-                this.eigenValues.Length = numEV;
-
-                if(ev) {
-                    this.eigenVectors = new Vector[numEV];
-                    for(int i = 0; i < numEV; i++)
-                        this.eigenVectors[i] = eigenSystem[i + 1];
-                }
-                else
-                    this.eigenVectors = new Vector[0];
-
-                this.isComputing = false;
-                this.isComputed = true;
-            }
-            finally {
-                this.isComputing = false;
-            }
         }
 
         /// <summary>

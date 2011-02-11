@@ -29,9 +29,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Celkový poèet prvkù báze
+        /// Celkový poèet prvkù báze (tj. dimenze Hamiltonovy matice)
         /// </summary>
         public abstract int Length { get;}
+
+        /// <summary>
+        /// Šíøka pásu pásové matice
+        /// </summary>
+        public abstract int BandWidth { get;}
 
         /// <summary>
         /// Poèet indexù báze

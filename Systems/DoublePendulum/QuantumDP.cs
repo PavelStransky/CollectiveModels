@@ -46,28 +46,11 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        public double HamiltonianMatrixTrace(BasisIndex basisIndex) {
-            return this.HamiltonianSBMatrix(basisIndex, null).Trace();
-        }
-
-        /// <summary>
-        /// Vypoèítá Hamiltonovu matici
+        /// Naplní Hamiltonovu matici
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            return (Matrix)this.HamiltonianSBMatrix(basisIndex, writer);
-        }
-
-        /// <summary>
-        /// Vypoèítá symetrickou Hamiltonovu matici
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        /// <param name="writer">Writer</param>
-        public SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             DPBasisIndex index = basisIndex as DPBasisIndex;
 
             int maxm1 = index.MaxM1;
@@ -76,7 +59,6 @@ namespace PavelStransky.Systems {
             int minm1 = index.Positive ? 0 : -maxm1;
 
             int dim = index.Length;
-            SymmetricBandMatrix matrix = new SymmetricBandMatrix(dim, 2 * maxm2 + 2);
 
             double sqrtmu = System.Math.Sqrt(1.0 + this.Mu);
             double c1 = (1.0 + this.Mu + this.Mu * this.Lambda * this.Lambda) / (this.Mu * this.Lambda * this.Lambda);
@@ -125,8 +107,6 @@ namespace PavelStransky.Systems {
                         matrix[i, ip] += -0.25 * this.Gamma * this.Mu * this.Lambda;
                 }
             }
-
-            return matrix;
         }
 
         /// <summary>

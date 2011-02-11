@@ -153,6 +153,6 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Velikost pásu pásové matice
         /// </summary>
-        public virtual int BandWidth { get { return this.maxE; } }
+        public override int BandWidth { get { return this.maxE; } }
     }
 }

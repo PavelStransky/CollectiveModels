@@ -136,6 +136,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GramSchmidt.cs" />
+    <Compile Include="IMatrix.cs" />
     <Compile Include="IMinMax.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="Jacobi.cs">

@@ -138,17 +138,20 @@
   <data name="EMNotImplemented" xml:space="preserve">
     <value>This function is not implemented.</value>
   </data>
+  <data name="MDiagonalizationARPACK" xml:space="preserve">
+    <value>Diagonalization ARPACK</value>
+  </data>
   <data name="MDiagonalizationDSBEVX" xml:space="preserve">
-    <value>Diagonalization dsbevx ({0} eigenvalues{1})...</value>
+    <value>Diagonalization LAPACK.dsbevx</value>
   </data>
   <data name="MDiagonalizationDSYEV" xml:space="preserve">
-    <value>Diagonalization dsyev ({0} eigenvalues{1})...</value>
+    <value>Diagonalization LAPACK.dsyev </value>
   </data>
   <data name="MDiagonalizationEVNo" xml:space="preserve">
     <value>, NO eigenvectors</value>
   </data>
   <data name="MDiagonalizationEVYes" xml:space="preserve">
-    <value>AND eigenvectors</value>
+    <value> AND eigenvectors</value>
   </data>
   <data name="MDiagonalizationJacobi" xml:space="preserve">
     <value>Diagonalization Jacobi...</value>
@@ -162,11 +165,17 @@
   <data name="MNonzeroElements" xml:space="preserve">
     <value>Nonzero {0} of {1} elements.</value>
   </data>
+  <data name="MNumEV" xml:space="preserve">
+    <value> ({0} eigenvalues{1})...</value>
+  </data>
   <data name="MSBMatrixDimension" xml:space="preserve">
     <value>Symmetric band matrix ({0} x {1})</value>
   </data>
   <data name="MSMatrixDimension" xml:space="preserve">
     <value>Symmetric matrix ({0} x {0})</value>
+  </data>
+  <data name="MSSMatrixDimension" xml:space="preserve">
+    <value>Symmetric sparse matrix ({0} x {0}), {1} nonzero elements</value>
   </data>
   <data name="MTrace" xml:space="preserve">
     <value>Trace of the matrix: {0}</value>

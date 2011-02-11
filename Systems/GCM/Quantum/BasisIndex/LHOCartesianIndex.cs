@@ -46,6 +46,11 @@ namespace PavelStransky.Systems {
         public override int Length { get { return this.maxn * this.maxn; } }
 
         /// <summary>
+        /// Šíøka pásu matice
+        /// </summary>
+        public override int BandWidth { get { return this.maxn * maxn - 1; } }
+
+        /// <summary>
         /// Maximální hodnota kvantového èísla
         /// </summary>
         public int MaxN { get { return this.maxn; } }

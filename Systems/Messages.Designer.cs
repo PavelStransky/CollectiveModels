@@ -124,7 +124,16 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diagonalization dsbevx ({0} eigenvalues{1})....
+        ///   Looks up a localized string similar to Diagonalization ARPACK.
+        /// </summary>
+        internal static string MDiagonalizationARPACK {
+            get {
+                return ResourceManager.GetString("MDiagonalizationARPACK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diagonalization LAPACK.dsbevx.
         /// </summary>
         internal static string MDiagonalizationDSBEVX {
             get {
@@ -133,7 +142,7 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diagonalization dsyev ({0} eigenvalues{1})....
+        ///   Looks up a localized string similar to Diagonalization LAPACK.dsyev .
         /// </summary>
         internal static string MDiagonalizationDSYEV {
             get {
@@ -151,7 +160,7 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AND eigenvectors.
+        ///   Looks up a localized string similar to  AND eigenvectors.
         /// </summary>
         internal static string MDiagonalizationEVYes {
             get {
@@ -196,6 +205,15 @@ namespace PavelStransky.Systems {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  ({0} eigenvalues{1})....
+        /// </summary>
+        internal static string MNumEV {
+            get {
+                return ResourceManager.GetString("MNumEV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Symmetric band matrix ({0} x {1}).
         /// </summary>
         internal static string MSBMatrixDimension {
@@ -210,6 +228,15 @@ namespace PavelStransky.Systems {
         internal static string MSMatrixDimension {
             get {
                 return ResourceManager.GetString("MSMatrixDimension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Symmetric sparse matrix ({0} x {0}), {1} nonzero elements.
+        /// </summary>
+        internal static string MSSMatrixDimension {
+            get {
+                return ResourceManager.GetString("MSSMatrixDimension", resourceCulture);
             }
         }
         

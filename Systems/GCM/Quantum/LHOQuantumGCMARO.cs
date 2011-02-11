@@ -46,7 +46,7 @@ namespace PavelStransky.Systems {
         /// Vrátí velikost Hamiltonovy matice v dané bázi
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
-        public override double HamiltonianMatrixTrace(BasisIndex basisIndex) {
+        public double HamiltonianMatrixTrace(BasisIndex basisIndex) {
             LHOPolarIndexO index = basisIndex as LHOPolarIndexO;
 
             int maxE = index.MaxE;
@@ -78,7 +78,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public override void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             LHOPolarIndexO index = basisIndex as LHOPolarIndexO;
             int maxE = index.MaxE;
 
@@ -89,7 +89,6 @@ namespace PavelStransky.Systems {
 
             int length = index.Length;
             int bandWidth = index.BandWidth;
-            SymmetricBandMatrix m = new SymmetricBandMatrix(length, bandWidth);
 
             DateTime startTime = DateTime.Now;
 
@@ -145,16 +144,14 @@ namespace PavelStransky.Systems {
                     }
 
                     if(sum != 0.0) {
-                        m[i, j] = sum;
-                        m[j, i] = sum;
+                        matrix[i, j] = sum;
+                        matrix[j, i] = sum;
                     }
                 }
             }
 
             if(writer != null)
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
-
-            return m;
         }
 
         /// <summary>

@@ -83,6 +83,11 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Šíøka pásu pásové matice
+        /// </summary>
+        public override int BandWidth { get { return 2 * this.maxm2 + 2; } }
+
+        /// <summary>
         /// Maximální hodnota kvantového èísla m1
         /// </summary>
         public int MaxM1 { get { return this.maxm1; } }

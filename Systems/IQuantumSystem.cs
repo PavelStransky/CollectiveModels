@@ -34,22 +34,10 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Hamiltonova matice
         /// </summary>
+        /// <param name="matrix">Matice k naplnìní</param>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer);
-
-        /// <summary>
-        /// Hamiltonova matice v pásové formì
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        /// <param name="writer">Writer</param>
-        SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer);
-
-        /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        double HamiltonianMatrixTrace(BasisIndex basisIndex);
+        void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer);
 
         /// <summary>
         /// Peresùv invariant

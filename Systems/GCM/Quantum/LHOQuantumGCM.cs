@@ -78,29 +78,12 @@ namespace PavelStransky.Systems {
         public EigenSystem EigenSystem { get { return this.eigenSystem; } }
 
         /// <summary>
-        /// Vrátí velikost Hamiltonovy matice v dané bázi
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        public virtual double HamiltonianMatrixTrace(BasisIndex basisIndex) {
-            return this.HamiltonianMatrix(basisIndex, null).Trace();
-        }
-        
-        /// <summary>
         /// Napoèítá Hamiltonovu matici v dané bázi
         /// </summary>
         /// <param name="writer">Writer</param>
         /// <param name="basisIndex">Parametry báze</param>
-        public virtual Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            return (Matrix)this.HamiltonianSBMatrix(basisIndex, writer);
-        }
-
-        /// <summary>
-        /// Napoèítá Hamiltonovu matici jako pásovou matici
-        /// </summary>
-        /// <param name="writer">Writer</param>
-        /// <param name="basisIndex">Parametry báze</param>
-        public virtual SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            throw new NotImpException(this, "HamiltonianSBMatrix");
+        public virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
+            throw new NotImpException(this, "HamiltonianMatrix");
         }
 
         /// <summary>

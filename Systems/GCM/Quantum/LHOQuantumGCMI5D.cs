@@ -44,20 +44,12 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        public override double HamiltonianMatrixTrace(BasisIndex basisIndex) {
-            return this.HamiltonianSBMatrix(basisIndex, null, true).Trace();
-        }
-
-        /// <summary>
         /// Vypoèítá Hamiltonovu matici do tvaru pásové matice
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            return this.HamiltonianSBMatrix(basisIndex, writer, false);
+        public override void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
+            this.HamiltonianMatrix(matrix, basisIndex, writer, false);
         }
 
         /// <summary>
@@ -66,7 +58,7 @@ namespace PavelStransky.Systems {
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
         /// <param name="trace">Calculates only trace of the matrix</param>
-        public virtual SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer, bool trace) {
+        public virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer, bool trace) {
             LHO5DIndexI index = basisIndex as LHO5DIndexI;
 
             int maxE = index.MaxE;
@@ -100,7 +92,6 @@ namespace PavelStransky.Systems {
 
             int length = index.Length;
             int bandWidth = trace ? 0 : index.BandWidth;
-            SymmetricBandMatrix m = new SymmetricBandMatrix(length, bandWidth);
 
             int blockSize = bandWidth + 1;
             int blockNum = length / blockSize + 1;
@@ -162,7 +153,7 @@ namespace PavelStransky.Systems {
                             sum += this.Hbar * omega * (2.5 + li + li + 3 * mui);
 
                         // Již je symetrické
-                        m[i, j] = sum;
+                        matrix[i, j] = sum;
                     }
                 }
 
@@ -206,7 +197,7 @@ namespace PavelStransky.Systems {
                             }
 
                             // Již je symetrické
-                            m[i, j] = sum;
+                            matrix[i, j] = sum;
                         }
                     }
 
@@ -223,8 +214,6 @@ namespace PavelStransky.Systems {
                 writer.Indent(-1);
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
-
-            return m;
         }
 
         /// <summary>

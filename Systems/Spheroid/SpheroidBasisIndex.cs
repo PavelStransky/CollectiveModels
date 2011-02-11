@@ -151,11 +151,12 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Poèet prvkù
         /// </summary>
-        public override int Length {
-            get {
-                return this.l.Length;
-            }
-        }
+        public override int Length { get { return this.l.Length; } }
+
+        /// <summary>
+        /// Šíøka pásu matice
+        /// </summary>
+        public override int BandWidth { get { return this.Length - 1; } }
 
         /// <summary>
         /// Maximální hodnota kvantového èísla l

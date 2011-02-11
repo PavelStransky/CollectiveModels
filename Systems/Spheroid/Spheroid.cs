@@ -42,32 +42,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        public double HamiltonianMatrixTrace(BasisIndex basisIndex) {
-            return this.HamiltonianSBMatrix(basisIndex, null).Trace();
-        }
-
-        /// <summary>
-        /// Vypoèítá Hamiltonovu matici
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        /// <param name="writer">Writer</param>
-        public Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            return (Matrix)this.HamiltonianSBMatrix(basisIndex, writer);
-        }
-
-        /// <summary>
         /// Vypoèítá symetrickou Hamiltonovu matici
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             SpheroidBasisIndex index = basisIndex as SpheroidBasisIndex;
 
             int dim = index.Length;
-            SymmetricBandMatrix matrix = new SymmetricBandMatrix(dim, dim-1);
 
             double koef1 = (2.0 * System.Math.Exp(2.0 * this.delta) + System.Math.Exp(-4.0 * this.delta)) / 3.0;
             double koef2 = -2.0 * (System.Math.Exp(2.0 * this.delta) - System.Math.Exp(-4.0 * this.delta)) / 3.0;
@@ -101,10 +83,9 @@ namespace PavelStransky.Systems {
                             : 0;
 
                     matrix[i1, i2] = koef1 * p2 + koef2 * T2;
+                    matrix[i2, i1] = matrix[i1, i2];
                 }
             }
-
-            return matrix;
         }
 
         /// <summary>

@@ -2,18 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.DLLWrapper {
     /// <summary>
     /// Implementace symetrické pásové matice
     /// </summary>
-    unsafe public class SymmetricBandMatrix : IDisposable {
+    unsafe public class SymmetricBandMatrix : IDisposable, IMatrix {
         // Uchováváme horní trojúhelník
-        double* item;
+        private double* item;
 
-        int n;
-        int numSD;
+        private int n;
+        private int numSD;
 
         /// <summary>
         /// Kontruktor
@@ -111,6 +112,13 @@ namespace PavelStransky.DLLWrapper {
                 result += this.item[this.numSD * (i + 1) + i];
 
             return result;
+        }
+
+        /// <summary>
+        /// Systém vlastních èísel a vektorù
+        /// </summary>        
+        public Vector[] EigenSystem(bool ev, int numEV, IOutputWriter writer) {
+            return LAPackDLL.dsbevx(this, ev, 0, numEV);
         }
 
         #region Destrukce

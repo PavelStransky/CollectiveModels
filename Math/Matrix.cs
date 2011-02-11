@@ -9,7 +9,7 @@ namespace PavelStransky.Math {
 	/// <summary>
 	/// Implementace operací s maticemi
 	/// </summary>
-	public class Matrix: IExportable, ICloneable {
+	public class Matrix: IExportable, ICloneable, IMatrix {
 		private double [,] item;
 
 		// +--------> Y
@@ -1373,6 +1373,30 @@ namespace PavelStransky.Math {
             Vector result = new Vector(a.Count);
             for(int i = 0; i < a.Count; i++)
                 result[i] = (double)a[i];
+
+            return result;
+        }
+        #endregion
+
+        #region Výpoèet vlastních hodnot Jacobiho metodou
+        /// <summary>
+        /// Výpoèet vlastních hodnot a vektorù (matice bude symetrizována)
+        /// </summary>
+        public Vector[] EigenSystem(bool ev, int numEV, IOutputWriter writer) {
+            Jacobi jacobi = new Jacobi(this, writer);
+            jacobi.SortAsc();
+
+            Vector[] result = null;
+            if(ev) {
+                result = new Vector[numEV + 1];
+                result[0] = new Vector(jacobi.EigenValue);
+                for(int i = 0; i < numEV; i++)
+                    result[i + 1] = jacobi.EigenVector[i];
+            }
+            else {
+                result = new Vector[1];
+                result[0] = new Vector(jacobi.EigenValue);
+            }
 
             return result;
         }

@@ -53,7 +53,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public override Matrix HamiltonianMatrix(BasisIndex basisIndex, IOutputWriter writer) {
+        public void HamiltonianMatrixOld(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             LHOPolarIndexI index = basisIndex as LHOPolarIndexI;
 
             int maxE = index.MaxE;
@@ -87,7 +87,6 @@ namespace PavelStransky.Systems {
             }
 
             int length = index.Length;
-            Matrix m = new Matrix(length);
 
             if(writer != null)
                 writer.WriteLine(string.Format("Pøíprava H ({0} x {1})", length, length));
@@ -118,8 +117,8 @@ namespace PavelStransky.Systems {
                     if(mi == mj && ni == nj)
                         sum += this.Hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
 
-                    m[i, j] = sum;
-                    m[j, i] = sum;
+                    matrix[i, j] = sum;
+                    matrix[j, i] = sum;
                 }
 
                 // Výpis teèky na konzoli
@@ -128,8 +127,6 @@ namespace PavelStransky.Systems {
                         writer.Write(".");
                 }
             }
-
-            return m;
         }
 
         /// <summary>
@@ -171,30 +168,21 @@ namespace PavelStransky.Systems {
             return result;
         }
 
-        /// <summary>
-        /// Stopa Hamiltonovy matice
-        /// </summary>
-        /// <param name="basisIndex">Parametry báze</param>
-        public override double HamiltonianMatrixTrace(BasisIndex basisIndex) {
-            return this.HamiltonianSBMatrix(basisIndex, null, true).Trace();
-        }
-
-        /// <summary>
-        /// Vypoèítá Hamiltonovu matici do tvaru pásové matice
+        /// Vypoèítá Hamiltonovu matici 
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public override SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer) {
-            return this.HamiltonianSBMatrix(basisIndex, writer, false);
+        public override void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
+            this.HamiltonianMatrix(matrix, basisIndex, writer, false);
         }
 
         /// <summary>
-        /// Vypoèítá Hamiltonovu matici do tvaru pásové matice
+        /// Vypoèítá Hamiltonovu matici 
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
         /// <param name="trace">Calculates only trace of the matrix</param>
-        protected virtual SymmetricBandMatrix HamiltonianSBMatrix(BasisIndex basisIndex, IOutputWriter writer, bool trace) {
+        protected virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer, bool trace) {
             LHOPolarIndexI index = basisIndex as LHOPolarIndexI;
 
             int maxE = index.MaxE; ;
@@ -228,7 +216,6 @@ namespace PavelStransky.Systems {
 
             int length = index.Length;
             int bandWidth = index.BandWidth;
-            SymmetricBandMatrix m = new SymmetricBandMatrix(length, bandWidth);
 
             int blockSize = bandWidth + 1;
             int blockNum = length / blockSize + 1;
@@ -285,7 +272,7 @@ namespace PavelStransky.Systems {
                             sum += this.Hbar * omega * (1.0 + ni + ni + System.Math.Abs(mi));
 
                         // Již je symetrické
-                        m[i, j] = sum;
+                        matrix[i, j] = sum;
                     }
                 }
 
@@ -323,7 +310,7 @@ namespace PavelStransky.Systems {
                             sum *= step;
 
                             // Již je symetrické
-                            m[i, j] = sum;
+                            matrix[i, j] = sum;
                         }
                     }
                 }
@@ -340,8 +327,6 @@ namespace PavelStransky.Systems {
                 writer.Indent(-1);
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
             }
-
-            return m;
         }
 
         /// <summary>

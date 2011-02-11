@@ -27,7 +27,7 @@ namespace PavelStransky.DLLWrapper {
             bmat[0] = (byte)'I';
 
             // for the maximum dimensions of the problem
-            int maxn = 256;   // enlarge this if it is not big enougth
+            int maxn = 10000;   // enlarge this if it is not big enougth
             int maxnev = maxn;
             int maxncv = maxn;
 

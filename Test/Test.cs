@@ -31,8 +31,7 @@ namespace PavelStransky.Test {
         /// 10.2.2011
         /// </summary>
         static void PokusARPack() {
-            SparseMatrix sp = new SparseMatrix(10);
-            sp.ReadExample();
+            SparseMatrix sp = SparseMatrix.ReadExample("c:\\matrix.txt");
             Matrix m = (Matrix)sp;
             SparseMatrix spc = new SparseMatrix(m.Length);
             for(int i = 0; i < sp.Length; i++)

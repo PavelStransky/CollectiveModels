@@ -34,17 +34,19 @@ namespace PavelStransky.Expression.Functions.Def {
 
             DateTime startTime = DateTime.Now;
 
-            SparseMatrix sm = new SparseMatrix(length);
-            for(int i = 0; i < nz; i++) {
-                int x = this.random.Next(length);
-                int y = this.random.Next(length);
-                double v = 10.0 * this.random.NextDouble() - 5.0;
-                sm[x, y] = v;
-                sm[y, x] = v;
-            }
+            //SparseMatrix sm = new SparseMatrix(length);
+            //for(int i = 0; i < nz; i++) {
+            //    int x = this.random.Next(length);
+            //    int y = this.random.Next(length);
+            //    double v = 10.0 * this.random.NextDouble() - 5.0;
+            //    sm[x, y] = v;
+            //    sm[y, x] = v;
+            //}
+            SparseMatrix sm = SparseMatrix.RandomMatrix(length, nz);
 
             if(guider != null) {
                 guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+                guider.WriteLine(string.Format("Matrix with {0} nonzero elements generated.", sm.NonzeroElements));
                 guider.Write(string.Format("Diagonalizing matrix ({0} eigenvalues)...", numev));
             }
 

@@ -9,10 +9,16 @@ using PavelStransky.Math;
 
 namespace PavelStransky.DLLWrapper {
     unsafe public class SparseMatrix: IMatrix {
-        private ArrayList data;
+        private double[] data;
         private int[] iMatrix;
-        private ArrayList jMatrix;
+        private int[] jMatrix;
         private int length;
+
+        // Size of the index fields
+        private int size;
+
+        // Number of nonzero elements
+        private int nonZeros = 0;
 
         /// <summary>
         /// Dimension of the matrix
@@ -22,55 +28,101 @@ namespace PavelStransky.DLLWrapper {
         /// <summary>
         /// Number of nonzero elements of the matrix
         /// </summary>
-        public int NonzeroElements { get { return this.data.Count; } }
+        public int NonzeroElements { get { return this.nonZeros; } }
 
-        public SparseMatrix(int length) {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="length">Size of the matrix</param>
+        public SparseMatrix(int length) : this(length, length) { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="length">Size of the matrix</param>
+        /// <param name="size">Initial size of the auxiliary fields (expected number of the nonzero elements)</param>
+        public SparseMatrix(int length, int size) {
             this.length = length;
-            this.data = new ArrayList();
-            this.jMatrix = new ArrayList();
+            this.size = size;
+
+            this.data = new double[this.size];
+            this.jMatrix = new int[this.size];
             this.iMatrix = new int[this.length + 1];
         }
 
-        public void ReadExample() {
-            FileStream f = new FileStream("c:\\matrix.txt", FileMode.Open);
+        #region Testing section
+        /// <summary>
+        /// Read data from a given file
+        /// </summary>
+        public static SparseMatrix ReadExample(string fName) {
+            FileStream f = new FileStream(fName, FileMode.Open);
             StreamReader s = new StreamReader(f);
 
-            int nonzeros = int.Parse(s.ReadLine());
-            this.length = int.Parse(s.ReadLine());
+            int nonZeros = int.Parse(s.ReadLine());
+            int length = int.Parse(s.ReadLine());
             s.ReadLine();
 
-            this.data = new ArrayList();
-            this.jMatrix = new ArrayList();
-            this.iMatrix = new int[this.length + 1];
+            SparseMatrix sm = new SparseMatrix(length, nonZeros);
 
             int ind = 0;
             do {
                 string[] data = s.ReadLine().Trim().Split(' ');
                 for(int i = 0; i < data.Length; i++)
-                    this.iMatrix[ind++] = int.Parse(data[i]);
-            } while(ind < this.length);
+                    sm.iMatrix[ind++] = int.Parse(data[i]);
+            } while(ind < length);
 
             ind = 0;
             do {
                 string[] data = s.ReadLine().Trim().Split(' ');
-                for(int i = 0; i < data.Length; i++) {
-                    this.jMatrix.Add(int.Parse(data[i]));
-                    ind++;
-                }
-            } while(ind < nonzeros);
+                for(int i = 0; i < data.Length; i++)
+                    sm.jMatrix[ind++] = int.Parse(data[i]);
+            } while(ind < nonZeros);
 
             ind = 0;
             do {
                 string[] data = s.ReadLine().Trim().Split(' ');
-                for(int i = 0; i < data.Length; i++) {
-                    this.data.Add(double.Parse(data[i]));
-                    ind++;
-                }
-            } while(ind < nonzeros);
+                for(int i = 0; i < data.Length; i++)
+                    sm.data[ind++] = double.Parse(data[i]);
+            } while(ind < nonZeros);
 
             s.Close();
             f.Close();
+
+            return sm;
         }
+
+        public static SparseMatrix RandomMatrix(int length, int nonZeros) {
+            SparseMatrix sm = new SparseMatrix(length, 6 * nonZeros / 5);
+            
+            Random r = new Random();
+            double ratio = 2.0 * (double)nonZeros / ((double)length * (double)length);
+
+            sm.iMatrix[0] = 0;
+
+            int index = 0;
+            for(int i = 0; i < length; i++) {
+                for(int j = 0; j < length; j++) {
+                    double d = 0.0;
+                    if(j < i) 
+                        d = sm[i, j];
+                    else {
+                        if(r.NextDouble() < ratio)
+                            d = 10 * r.NextDouble() - 5;
+                    }
+
+                    if(d != 0.0) {
+                        sm.data[index] = d;
+                        sm.jMatrix[index] = j;
+                        index++;
+                    }
+                }
+                sm.iMatrix[i + 1] = index;
+            }
+
+            sm.nonZeros = index;
+            return sm;
+        }
+        #endregion
 
         /// <summary>
         /// Calculate the Matrix-Vector-Product with the stored Matrix in the
@@ -84,7 +136,7 @@ namespace PavelStransky.DLLWrapper {
 
             for(int i = 0; i < this.length; i++) {
                 for(int j = this.iMatrix[i]; j < this.iMatrix[i + 1]; j++) {
-                    outvec[i] = outvec[i] + (double)(this.data[j]) * invec[(int)(this.jMatrix[j])];
+                    outvec[i] = outvec[i] + this.data[j] * invec[this.jMatrix[j]];
                 }
             }
         }
@@ -99,8 +151,8 @@ namespace PavelStransky.DLLWrapper {
                 int numCols = sbm.iMatrix[i + 1] - sbm.iMatrix[i];
                 for(int j = 0; j < numCols; j++) {
                     int ki = sbm.iMatrix[i] + j;
-                    int kj = (int)(sbm.jMatrix[ki]);
-                    m[i, kj] = (double)(sbm.data[ki]);
+                    int kj = sbm.jMatrix[ki];
+                    m[i, kj] = sbm.data[ki];
                 }
             }
 
@@ -112,22 +164,25 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         public static explicit operator SparseMatrix(Matrix m) {
             int length = m.Length;
-            SparseMatrix sm = new SparseMatrix(length);
+            int nonZeros = m.NumNonzeroItems();
 
-            int nonzero = 0;
+            SparseMatrix sm = new SparseMatrix(length, nonZeros);
+
             sm.iMatrix[0] = 0;
 
+            int index = 0;
             for(int i = 0; i < length; i++) {
                 for(int j = 0; j < length; j++) {
                     if(m[i, j] != 0) {
-                        sm.data.Add(m[i, j]);
-                        sm.jMatrix.Add(j);
-                        nonzero++;
+                        sm.data[index] = m[i, j];
+                        sm.jMatrix[index] = j;
+                        index++;
                     }
                 }
-                sm.iMatrix[i + 1] = nonzero;
+                sm.iMatrix[i + 1] = index;
             }
 
+            sm.nonZeros = index;
             return sm;
         }
 
@@ -141,9 +196,9 @@ namespace PavelStransky.DLLWrapper {
                 int numCols = this.iMatrix[i + 1] - this.iMatrix[i];
                 for(int jj = 0; jj < numCols; jj++) {
                     int ki = this.iMatrix[i] + jj;
-                    int kj = (int)(this.jMatrix[ki]);
+                    int kj = this.jMatrix[ki];
                     if(kj == j)
-                        return (double)(this.data[ki]);
+                        return this.data[ki];
                     else if(kj < j)
                         return 0.0;
                 }
@@ -155,13 +210,16 @@ namespace PavelStransky.DLLWrapper {
 
                 for(int jj = 0; jj < numCols; jj++) {
                     int ki = this.iMatrix[i] + jj;
-                    int kj = (int)(this.jMatrix[ki]);
+                    int kj = this.jMatrix[ki];
                     if(kj == j) {                    // Zmìníme hodnotu
                         if(value == 0.0) {           // Musíme vymazat hodnotu z matice
-                            this.data.RemoveAt(ki);
-                            this.jMatrix.RemoveAt(ki);
+                            for(int ii = ki + 1; ii < this.nonZeros; ii++) {
+                                this.data[ii - 1] = this.data[ii];
+                                this.jMatrix[ii - 1] = this.jMatrix[ii];
+                            }
                             for(int ii = i + 1; ii <= this.length; ii++)
                                 this.iMatrix[ii]--;
+                            this.nonZeros--;
                         }
                         else
                             this.data[ki] = value;
@@ -183,11 +241,39 @@ namespace PavelStransky.DLLWrapper {
                 if(inserti == -1)                   // V dané øadì není ani jeden prvek
                     inserti = this.iMatrix[i];
 
-                this.jMatrix.Insert(inserti, j);
-                this.data.Insert(inserti, value);
+                this.IncreaseSize(1);
+
+                for(int ii = this.nonZeros; ii > inserti; ii--) {
+                    this.jMatrix[ii] = this.jMatrix[ii - 1];
+                    this.data[ii] = this.data[ii - 1];
+                }
+                this.jMatrix[inserti] = j;
+                this.data[inserti] = value;
 
                 for(int ii = i + 1; ii <= this.length; ii++)
                     this.iMatrix[ii]++;
+
+                this.nonZeros++;
+            }
+        }
+
+        /// <summary>
+        /// Increase size of auxiliary fields
+        /// </summary>
+        /// <param name="n">How many new elements we need</param>
+        private void IncreaseSize(int n) {
+            if(this.size < this.nonZeros + n) {
+                this.size *= 2;
+                int[] newjMatrix = new int[this.size];
+                double[] newData = new double[this.size];
+
+                for(int i = 0; i < this.nonZeros; i++) {
+                    newjMatrix[i] = this.jMatrix[i];
+                    newData[i] = this.data[i];
+                }
+
+                this.data = newData;
+                this.jMatrix = newjMatrix;
             }
         }
 
@@ -201,9 +287,9 @@ namespace PavelStransky.DLLWrapper {
                 int numCols = this.iMatrix[i + 1] - this.iMatrix[i];
                 for(int j = 0; j < numCols; j++) {
                     int ki = this.iMatrix[i] + j;
-                    int kj = (int)(this.jMatrix[ki]);
+                    int kj = this.jMatrix[ki];
                     if(i == kj)
-                        result += (double)(this.data[ki]);
+                        result += this.data[ki];
                     if(kj >= i)
                         break;
                 }

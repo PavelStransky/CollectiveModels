@@ -51,7 +51,7 @@ namespace PavelStransky.Expression.Functions.Def {
             }
 
             startTime = DateTime.Now;
-            Vector result = ARPackDLL.dsaupd(sm, numev, false, false)[0];
+            Vector result = ARPackDLL.dsaupd(sm, numev, false, false, guider)[0];
 
             if(guider != null) {
                 guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));

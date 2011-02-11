@@ -37,9 +37,9 @@ namespace PavelStransky.Test {
             for(int i = 0; i < sp.Length; i++)
                 for(int j = 0; j < sp.Length; j++)
                     spc[i, j] = m[i, j];
-            Vector v = ARPackDLL.dsaupd(sp, 10, false, false)[0];
+            Vector v = ARPackDLL.dsaupd(sp, 10, false, false, null)[0];
             Vector vm = LAPackDLL.dsyev(m, false)[0];
-            Vector vc = ARPackDLL.dsaupd(spc, 10, false, false)[0];
+            Vector vc = ARPackDLL.dsaupd(spc, 10, false, false, null)[0];
             Console.WriteLine(v.ToString());
             Console.WriteLine(vm.ToString());
             Console.WriteLine(vc.ToString());

@@ -91,6 +91,11 @@ namespace PavelStransky.DLLWrapper {
             return sm;
         }
 
+        /// <summary>
+        /// Generates a random sparse matrix 
+        /// </summary>
+        /// <param name="length">Dimension of the matrix</param>
+        /// <param name="nonZeros">Number of nonzero elements</param>
         public static SparseMatrix RandomMatrix(int length, int nonZeros) {
             SparseMatrix sm = new SparseMatrix(length, 6 * nonZeros / 5);
             
@@ -304,7 +309,7 @@ namespace PavelStransky.DLLWrapper {
         /// <param name="ev">Chceme vlastní vektory?</param>
         /// <param name="numEV">Poèet</param>
         public Vector[] EigenSystem(bool ev, int numEV, IOutputWriter writer) {
-            return ARPackDLL.dsaupd(this, numEV, ev, false);
+            return ARPackDLL.dsaupd(this, numEV, ev, false, writer);
         }
     }
 }

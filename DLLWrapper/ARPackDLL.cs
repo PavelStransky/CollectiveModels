@@ -17,7 +17,7 @@ namespace PavelStransky.DLLWrapper {
         /// (the argument eigenvecs does not need to point to a valid array).</param>
         /// <param name="highev">For false, lowest eigenvaluenum eigenvalues are calculated,
         /// and for true, the highest ones.</param>
-        public static Vector[] dsaupd(SparseMatrix sm, int numev, bool ev, bool highev) {
+        public static Vector[] dsaupd(SparseMatrix sm, int numev, bool ev, bool highev, IOutputWriter writer) {
             Vector[] result = null;
 
             /* Specifies that the right hand side matrix should be the identity matrix; 
@@ -72,11 +72,6 @@ namespace PavelStransky.DLLWrapper {
             if(ncv > n)
                 ncv = n;                // maximum value for ncv is n
 
-            //  if (n>maxn) {
-            //    printf(" ERROR : n is greater than maxn \n");
-            //    exit(0);
-            //  }
-
             int lworkl = ncv * (ncv + 8); //Length of the workl array 
 
             // Now initialize arrays for input/output and working space for arpack
@@ -107,6 +102,7 @@ namespace PavelStransky.DLLWrapper {
              * and at that point we exit and extract the solutions. */
             int ido = 0;                // Must be zero at initial call
 
+            int iterations = 0;
             do {
                 ARPackDLLWrapper.dsaupd(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &ldv, iparam, ipntr, workd, workl, &lworkl, &info);
                 if(ido == 1 || ido == -1) {
@@ -123,13 +119,12 @@ namespace PavelStransky.DLLWrapper {
                     // Therefore we have to subtract 1 from ipntr[0] and ipntr[1].
                     sm.VectorProduct(&workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
                 }
+                iterations++;
             } while(ido == 1 || ido == -1);
 
-            if(info < 0) { // error
-                //                printf("Error with _saupd, info = %d\n", info);
-                //                printf("Check documentation in _saupd\n");
-                //                printf("Aborting program ..\n");
-                //                exit(0);
+            if(info < 0) { 
+                if(writer != null)
+                    writer.Write(string.Format("Error in dsaupd {0}...", info));
             }
             else {
                 /*  %-------------------------------------------%
@@ -159,10 +154,8 @@ namespace PavelStransky.DLLWrapper {
                     resid, &ncv, v, &ldv, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
                 if(ierr != 0) {
-                    //                    printf("Error with _seupd, info = %d\n", ierr);
-                    //                    printf("Check the documentation of _seupd.\n");
-                    //                    printf("Aborting program ..\n");
-                    //                    exit(0);
+                    if(writer != null)
+                        writer.Write(string.Format("Error in dseupd {0}...", ierr));
                 }
                 else {
                     // sometimes the order of the eigenvalues is reversed, I was not able
@@ -201,6 +194,9 @@ namespace PavelStransky.DLLWrapper {
                 }
             }
 
+            if(writer != null)
+                writer.Write(string.Format("{0} iterations...", iterations));
+
             Memory.Delete(bmat);
             Memory.Delete(which);
             Memory.Delete(all);
@@ -217,6 +213,6 @@ namespace PavelStransky.DLLWrapper {
             Memory.Delete(ipntr);
 
             return result;
-        }
+        }    
     }
 }

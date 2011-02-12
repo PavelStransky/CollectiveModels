@@ -55,11 +55,15 @@ namespace PavelStransky.Expression
             try {
                 guider.StartFunction(this.function.Name);
                 guider.WaitOne();
+
+                if(!this.function.ContextThreadSafe)
+                    guider.Context.LockMutex();
                 result = this.function.Evaluate(guider, this.arguments);
                 guider.EndFunction();
             }
-            catch(Exception e) {
-                throw e;
+            finally {
+                if(!this.function.ContextThreadSafe)
+                    guider.Context.UnlockMutex();
             }
 			return result;
 		}

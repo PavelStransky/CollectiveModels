@@ -136,17 +136,17 @@ namespace PavelStransky.Expression {
             else if(this.objects.ContainsKey(name)) {
                 // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
                 retValue = this[name];
-                this.contextMutex.WaitOne();
+                this.LockMutex();
                 retValue.Item = item;
-                this.contextMutex.ReleaseMutex();
+                this.UnlockMutex();
                 this.OnEvent(new ContextEventArgs(ContextEventType.Change));
             }
 
             else {
                 // Jinak ji musíme vytvoøit
-                this.contextMutex.WaitOne();
+                this.LockMutex();
                 this.objects.Add(name, retValue = new Variable(name, item));
-                this.contextMutex.ReleaseMutex();
+                this.UnlockMutex();
                 this.OnEvent(new ContextEventArgs(ContextEventType.Change));
             }
 
@@ -157,9 +157,9 @@ namespace PavelStransky.Expression {
 		/// Vymaže vše, co je v kontextu uloženo
 		/// </summary>
 		public void Clear() {
-            this.contextMutex.WaitOne();
+            this.LockMutex();
 			this.objects.Clear();
-            this.contextMutex.ReleaseMutex();
+            this.UnlockMutex();
             this.OnEvent(new ContextEventArgs(ContextEventType.Change));
         }
 
@@ -169,9 +169,9 @@ namespace PavelStransky.Expression {
 		/// <param name="name">Název promìnné</param>
 		public void Clear(string name) {
             if(this.objects.ContainsKey(name)) {
-                this.contextMutex.WaitOne();
+                this.LockMutex();
                 this.objects.Remove(name);
-                this.contextMutex.ReleaseMutex();
+                this.UnlockMutex();
             }
             else
                 throw new ContextException(string.Format(Messages.EMNoVariable, name));
@@ -232,6 +232,20 @@ namespace PavelStransky.Expression {
 		}
 
         /// <summary>
+        /// Uzamkne zámek kontextu, aby na nìj nikdo nemohl
+        /// </summary>
+        public void LockMutex() {
+            this.contextMutex.WaitOne();
+        }
+
+        /// <summary>
+        /// Odemkne zámek mutexu
+        /// </summary>
+        public void UnlockMutex() {
+            this.contextMutex.ReleaseMutex();
+        }
+
+        /// <summary>
         /// Vypíše názvy a typy všech promìnných na kontextu
         /// </summary>
         public override string ToString() {
@@ -268,17 +282,20 @@ namespace PavelStransky.Expression {
 		/// </summary>
 		/// <param name="export">Export</param>
         public void Export(Export export) {
-            IEParam param = new IEParam();
+            try {
+                IEParam param = new IEParam();
 
-            this.contextMutex.WaitOne();
-            foreach(Variable v in this.objects.Values)
-                if(v != null && v.Name[0] != '$') {
-                    param.Add(v.Item, v.Name, null);
-                }
-            this.contextMutex.ReleaseMutex();
-
-            param.Add(directory, directoryVariable, null);
-            param.Export(export);
+                this.LockMutex();
+                foreach(Variable v in this.objects.Values)
+                    if(v != null && v.Name[0] != '$') {
+                        param.Add(v.Item, v.Name, null);
+                    }
+                param.Add(directory, directoryVariable, null);
+                param.Export(export);
+            }
+            finally {
+                this.UnlockMutex();
+            }
         }
 
 		/// <summary>
@@ -288,17 +305,21 @@ namespace PavelStransky.Expression {
         public Context(Core.Import import) {
             IEParam param = new IEParam(import);
 
-            this.contextMutex.WaitOne();
-            int count = param.Count;
-            for(int i = 0; i < count; i++) {
-                string name, expression;
-                object o = param.Get(null, out name, out expression);
-                if(name == directoryVariable)
-                    this.directory = o as string;
-                else
-                    this.SetVariable(name, o);
+            try {
+                this.LockMutex();
+                int count = param.Count;
+                for(int i = 0; i < count; i++) {
+                    string name, expression;
+                    object o = param.Get(null, out name, out expression);
+                    if(name == directoryVariable)
+                        this.directory = o as string;
+                    else
+                        this.SetVariable(name, o);
+                }
             }
-            this.contextMutex.ReleaseMutex();
+            finally {
+                this.UnlockMutex();
+            }
         }
 		#endregion
 

@@ -9,6 +9,7 @@ namespace PavelStransky.Expression.Functions.Def {
     /// </summary>
     public class AddBefore: Fnc {
         public override string Help { get { return Messages.HelpAddBefore; } }
+        public override bool ContextThreadSafe { get { return false; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(2, true);

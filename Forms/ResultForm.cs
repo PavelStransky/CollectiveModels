@@ -67,7 +67,7 @@ namespace PavelStransky.Forms {
         public bool Paused { 
             get {
                 if(guider != null)
-                    return this.guider.Paused;
+                    return this.guider.Paused || this.guider.WaitingForPause;
                 else
                     return false;
             } 

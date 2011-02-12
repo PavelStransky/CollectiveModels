@@ -17,6 +17,11 @@ namespace PavelStransky.Expression.Functions {
 		/// </summary>
 		public virtual string Name {get {return this.GetType().Name.ToLower();}}
 
+        /// <summary>
+        /// True, pokud funkce bezprostøednì nemìní nic na contextu
+        /// </summary>
+        public virtual bool ContextThreadSafe { get { return true; } }
+
 		/// <summary>
 		/// Nápovìda k funkci
 		/// </summary>

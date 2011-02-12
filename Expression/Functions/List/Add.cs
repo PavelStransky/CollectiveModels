@@ -10,6 +10,7 @@ namespace PavelStransky.Expression.Functions.Def {
     public class FnAdd: Fnc {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpAdd; } }
+        public override bool ContextThreadSafe { get { return false; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(2, true);

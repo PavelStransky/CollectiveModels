@@ -10,6 +10,10 @@ namespace PavelStransky.Expression {
     /// Prùvodce výpoètem
     /// </summary>
     public class Guider: IOutputWriter {
+        public enum GuiderState {
+            Normal, WaitingForPause, Paused
+        }
+
         private IOutputWriter writer;
         private Context context;
         private string execDir;
@@ -17,7 +21,7 @@ namespace PavelStransky.Expression {
         private bool arrayEvaluation = false;
         private bool mute = false;
 
-        private bool paused = false;
+        private GuiderState state = GuiderState.Normal;
         private DateTime startTime;
 
         // Pøi pozastavení výpoètu
@@ -25,6 +29,8 @@ namespace PavelStransky.Expression {
 
         // Pøi pozastavení výpoètu
         protected virtual void OnCalcPaused(EventArgs e) {
+            this.state = GuiderState.Paused;
+
             if(this.CalcPaused != null)
                 this.CalcPaused(this, e);
         }
@@ -63,7 +69,12 @@ namespace PavelStransky.Expression {
         /// <summary>
         /// Pøi pozastavení výpoètu
         /// </summary>
-        public bool Paused { get { return this.paused; } }
+        public bool Paused { get { return this.state == GuiderState.Paused; } }
+
+        /// <summary>
+        /// Pokud výpoèet èeká na pozastavení
+        /// </summary>
+        public bool WaitingForPause { get { return this.state == GuiderState.WaitingForPause; } }
 
         /// <summary>
         /// Poèátek výpoètu
@@ -103,8 +114,6 @@ namespace PavelStransky.Expression {
             result.execDir = this.execDir;
             result.tmpDir = this.tmpDir;
             result.mute = this.mute;
-            result.resetEvent = this.resetEvent;
-            result.functions = this.functions;
             result.CalcPaused = this.CalcPaused;
 
             return result;
@@ -145,7 +154,7 @@ namespace PavelStransky.Expression {
         }
 
         public void WaitOne() {
-            if(this.paused)
+            if(this.state == GuiderState.WaitingForPause)
                 this.OnCalcPaused(new EventArgs());
             this.ResetEvent.WaitOne();
         }
@@ -154,15 +163,16 @@ namespace PavelStransky.Expression {
         /// Pozastavení výpoètu
         /// </summary>
         public void Pause() {
-            this.paused = true;
-            this.resetEvent.Reset();
+            if(this.state != GuiderState.Paused)
+                this.state = GuiderState.WaitingForPause;
+            this.resetEvent.Reset();            
         }
 
         /// <summary>
         /// Znovurozbìhnutí výpoètu
         /// </summary>
         public void Resume() {
-            this.paused = false;
+            this.state = GuiderState.Normal;
             this.resetEvent.Set();
         }
 

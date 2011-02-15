@@ -27,11 +27,6 @@ namespace PavelStransky.DLLWrapper {
             byte* bmat = Memory.NewByte(2);
             bmat[0] = (byte)'I';
 
-            // for the maximum dimensions of the problem
-            int maxn = 10000;   // enlarge this if it is not big enougth
-            int maxnev = maxn;
-            int maxncv = maxn;
-
             /* This tells arpack which eigenvalues we want. The possible options are
              * LM: largest magnitude
              * SM: smallest magnitude
@@ -144,7 +139,7 @@ namespace PavelStransky.DLLWrapper {
                 %-------------------------------------------% */
 
                 // extract also eigenvectors ?
-                int rvec = ev ? 0 : 1;
+                int rvec = ev ? 1 : 0;
 
                 double sigma = 0.0;
                 int ierr = 0;
@@ -166,8 +161,10 @@ namespace PavelStransky.DLLWrapper {
                     else
                         result = new Vector[1];
 
-                    for(int i = 0; i < result.Length; i++)
-                        result[i] = new Vector(nev);
+                    result[0] = new Vector(nev);
+
+                    for(int i = 1; i < result.Length; i++)
+                        result[i] = new Vector(n);
 
                     if(d[0] > d[nev - 1]) {             // revers order
                         for(int i = 0; i < nev; i++)

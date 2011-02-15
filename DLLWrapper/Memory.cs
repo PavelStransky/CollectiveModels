@@ -15,7 +15,7 @@ namespace PavelStransky.DLLWrapper {
         private static extern int GetProcessHeap();
 
         [DllImport("kernel32")]
-        private static extern void* HeapAlloc(int hHeap, int flags, int size);
+        private static extern void* HeapAlloc(int hHeap, int flags, uint size);
 
         [DllImport("kernel32")]
         private static extern bool HeapFree(int hHeap, int flags, void* block);
@@ -35,7 +35,7 @@ namespace PavelStransky.DLLWrapper {
         /// Alokuje daný poèet bytù pamìti
         /// </summary>
         /// <param name="size">Poèet bytù pamìti</param>
-        private static void* Alloc(int size) {
+        private static void* Alloc(uint size) {
             void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
             if(result == null)
                 throw new OutOfMemoryException();
@@ -47,7 +47,7 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="length">Délka pole</param>
         public static int* NewInt(int length) {
-            return (int*)Alloc(length * sizeof(int));
+            return (int*)Alloc((uint)length * (uint)sizeof(int));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="length">Délka pole</param>
         public static double* NewDouble(int length) {
-            return (double*)Alloc(length * sizeof(double));
+            return (double*)Alloc((uint)length * (uint)sizeof(double));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace PavelStransky.DLLWrapper {
         /// <param name="length"></param>
         /// <returns></returns>
         public static byte* NewByte(int length) {
-            return (byte*)Alloc(length * sizeof(byte));
+            return (byte*)Alloc((uint)length * (uint)sizeof(byte));
         }
 
         /// <summary>

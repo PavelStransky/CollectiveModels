@@ -34,22 +34,22 @@ namespace PavelStransky.DLLWrapper {
             /// dsaupd is usually called iteratively to solve one of the following problems:
             /// 
             /// Mode 1:  A*x = lambda*x, A symmetric 
-            ///          ===> OP = A  and  B = I.
+            ///          === OP = A  and  B = I.
             /// 
             /// Mode 2:  A*x = lambda*M*x, A symmetric, M symmetric positive definite
-            ///          ===> OP = inv[M]*A  and  B = M.
-            ///          ===> (If M can be factored see remark 3 below)
+            ///          === OP = inv[M]*A  and  B = M.
+            ///          === (If M can be factored see remark 3 below)
             /// 
             /// Mode 3:  K*x = lambda*M*x, K symmetric, M symmetric positive semi-definite
-            ///          ===> OP = (inv[K - sigma*M])*M  and  B = M. 
-            ///          ===> Shift-and-Invert mode
+            ///          === OP = (inv[K - sigma*M])*M  and  B = M. 
+            ///          === Shift-and-Invert mode
             /// 
             /// Mode 4:  K*x = lambda*KG*x, K symmetric positive semi-definite, KG symmetric indefinite
-            ///          ===> OP = (inv[K - sigma*KG])*K  and  B = K.
-            ///          ===> Buckling mode
+            ///          === OP = (inv[K - sigma*KG])*K  and  B = K.
+            ///          === Buckling mode
             /// Mode 5:  A*x = lambda*M*x, A symmetric, M symmetric positive semi-definite
-            ///          ===> OP = inv[A - sigma*M]*[A + sigma*M]  and  B = M.
-            ///          ===> Cayley transformed mode
+            ///          === OP = inv[A - sigma*M]*[A + sigma*M]  and  B = M.
+            ///          === Cayley transformed mode
             /// 
             /// NOTE: The action of w = inv[A - sigma*M]*v or w = inv[M]*v 
             /// should be accomplished either by a direct method using a sparse matrix factorization and solving
@@ -90,14 +90,14 @@ namespace PavelStransky.DLLWrapper {
             /// the "shift-and-invert" mode or the Cayley transform mode, 
             /// the vector B * X is already available and does not need to be 
             /// recomputed in forming OP*X. 
-            ///</param>
-            ///<param name="bmat">BMAT Character(1) (INPUT)
+            /// </param>
+            /// <param name="bmat">BMAT Character(1) (INPUT)
             /// BMAT specifies the type of the matrix B that defines 
             /// the semi-inner product for the operator OP.
-            /// B = 'I' -> standard eigenvalue problem A*x = lambda*x
-            /// B = 'G' -> generalized eigenvalue problem A*x = lambda*B*x
+            /// B = 'I' - standard eigenvalue problem A*x = lambda*x
+            /// B = 'G' - generalized eigenvalue problem A*x = lambda*B*x
             /// </param>
-            ///<param name="n">N Integer (INPUT)
+            /// <param name="n">N Integer (INPUT)
             /// Dimension of the eigenproblem.
             /// </param>
             /// <param name="which">WHICH Character(2) (INPUT)
@@ -112,7 +112,7 @@ namespace PavelStransky.DLLWrapper {
             /// (see remark 1 below)
             /// </param>
             /// <param name="nev">NEV Integer. (INPUT)
-            /// Number of eigenvalues of OP to be computed. 0 < NEV < N. >
+            /// Number of eigenvalues of OP to be computed. 0 .L. NEV .L. N.
             /// </param>
             /// <param name="tol">TOL Double precision scalar. (INPUT)
             /// Stopping criterion: the relative accuracy of the Ritz value is considered 
@@ -176,7 +176,7 @@ namespace PavelStransky.DLLWrapper {
             /// 
             /// IPARAM(8) = NP
             /// When ido = 3 and the user provides shifts through reverse communication (IPARAM(1)=0), 
-            /// dsaupd returns NP, the number of shifts the user is to provide. 0 < NP <=NCV-NEV. >
+            /// dsaupd returns NP, the number of shifts the user is to provide. 0 .L. NP .LE. NCV-NEV.
             /// See Remark 6 below.
             /// 
             /// IPARAM(9) = NUMOP, IPARAM(10) = NUMOPB, IPARAM(11) = NUMREO,
@@ -262,7 +262,7 @@ namespace PavelStransky.DLLWrapper {
             /// is recovered by solving L'z = x  where x is a Ritz vector of OP.
             /// 
             /// 4. At present there is no a-priori analysis to guide the selection of NCV relative to NEV.  
-            /// The only formal requirement is that NCV > NEV. However, it is recommended 
+            /// The only formal requirement is that NCV .G. NEV. However, it is recommended 
             /// that NCV .ge. 2*NEV. If many problems of the same type are to be solved, 
             /// one should experiment with increasing NCV while keeping NEV fixed for a given test problem.  
             /// This will usually decrease the required number of OP*x operations but it also increases 
@@ -350,13 +350,13 @@ namespace PavelStransky.DLLWrapper {
             /// <param name="sigma">SIGMA Double precision (INPUT)
             /// If IPARAM(7) = 3,4,5 represents the shift. Not referenced if IPARAM(7) = 1 or 2.
             /// </param>
-            ///<param name="bmat">BMAT Character(1) (INPUT)
+            /// <param name="bmat">BMAT Character(1) (INPUT)
             /// BMAT specifies the type of the matrix B that defines 
             /// the semi-inner product for the operator OP.
-            /// B = 'I' -> standard eigenvalue problem A*x = lambda*x
-            /// B = 'G' -> generalized eigenvalue problem A*x = lambda*B*x
+            /// B = 'I' - standard eigenvalue problem A*x = lambda*x
+            /// B = 'G' - generalized eigenvalue problem A*x = lambda*B*x
             /// </param>
-            ///<param name="n">N Integer (INPUT)
+            /// <param name="n">N Integer (INPUT)
             /// Dimension of the eigenproblem.
             /// </param>
             /// <param name="which">WHICH Character(2) (INPUT)
@@ -371,7 +371,7 @@ namespace PavelStransky.DLLWrapper {
             /// (see remark 1 below)
             /// </param>
             /// <param name="nev">NEV Integer. (INPUT)
-            /// Number of eigenvalues of OP to be computed. 0 < NEV < N. >
+            /// Number of eigenvalues of OP to be computed. 0 .L. NEV .L. N.
             /// </param>
             /// <param name="tol">TOL Double precision scalar. (INPUT)
             /// Stopping criterion: the relative accuracy of the Ritz value is considered 
@@ -435,7 +435,7 @@ namespace PavelStransky.DLLWrapper {
             /// 
             /// IPARAM(8) = NP
             /// When ido = 3 and the user provides shifts through reverse communication (IPARAM(1)=0), 
-            /// dsaupd returns NP, the number of shifts the user is to provide. 0 < NP <=NCV-NEV. >
+            /// dsaupd returns NP, the number of shifts the user is to provide. 0 .L NP .LE. NCV-NEV. 
             /// See Remark 6 below.
             /// 
             /// IPARAM(9) = NUMOP, IPARAM(10) = NUMOPB, IPARAM(11) = NUMREO,

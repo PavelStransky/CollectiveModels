@@ -1,8 +1,10 @@
 using System;
+using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
 using PavelStransky.Expression.Functions;
 using PavelStransky.Expression.Functions.Def;
 
@@ -49,6 +51,71 @@ namespace PavelStransky.Expression {
             }
         }
 
+        public static List[] ReadStatistics() {
+            string fName = Path.Combine(Context.GlobalContextDirectory, fNameStatistics);
+
+            List names = new List();    // Jména funkcí
+            List ticks = new List();    // Celkový poèet strávených tickù
+            List dates = new List();    // Data posledního použití funkcí
+
+            // Naèteme, co máme
+            if(File.Exists(fName)) {
+                Import import = new Import(fName);
+                IEParam pi = new IEParam(import);
+                names = (List)pi.Get(names);
+                ticks = (List)pi.Get(ticks);
+                dates = (List)pi.Get(dates);
+                import.Close();
+            }
+
+            List[] result = new List[3];
+            result[0] = names;
+            result[1] = ticks;
+            result[2] = dates;
+
+            return result;
+        }
+        
+
+        /// <summary>
+        /// Uloží statistiku
+        /// </summary>
+        public static void SaveStatistics() {
+            string fName = Path.Combine(Context.GlobalContextDirectory, fNameStatistics);
+
+            // Naèteme, co máme
+            List[] read = ReadStatistics();
+
+            List names = read[0];
+            List ticks = read[1];
+            List dates = read[2];
+
+            // Upravíme
+            foreach(Fnc fnc in functions.Values) {
+                int i = names.IndexOf(fnc.Name.ToLower());
+                if(i >= 0) {
+                    if(fnc.TotalTicks > 0) {
+                        ticks[i] = (long)ticks[i] + fnc.TotalTicks;
+                        dates[i] = DateTime.Now.Ticks;
+                    }
+                }
+                else {
+                    names.Add(fnc.Name);
+                    ticks.Add(fnc.TotalTicks);
+                    dates.Add((long)0);
+                }
+            }
+
+            // Uložíme
+            Export export = new Export(fName, IETypes.Compressed, 1, "FncStatistics");
+            IEParam pe = new IEParam();
+            pe.Add(names, "Function names");
+            pe.Add(ticks, "Total ticks");
+            pe.Add(dates, "Last use");
+            pe.Export(export);
+            export.Close();
+        }
+
         protected static readonly FncList functions;
 
         // Znaky otevírání a uzavírání
@@ -63,6 +130,8 @@ namespace PavelStransky.Expression {
         private static string commentChars = "%%";
         private static string noMeanChars = " \t\r\n";
         private static string variableChars = "_";          // Znaky, které se smìjí vyskytovat v promìnné
+
+        private static string fNameStatistics = "fnc.sta";
 
         private const string boolTrue = "true";
         private const string boolFalse = "false";

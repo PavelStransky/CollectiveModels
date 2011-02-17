@@ -274,6 +274,7 @@ namespace PavelStransky.Forms {
         /// </summary>
         private void ThreadStart() {
             this.calcProcessThread = this.GetCurrentProcessThread();
+            this.guider.Thread = this.calcProcessThread;
 
             try {
                 object result = this.expression.Evaluate(this.guider);

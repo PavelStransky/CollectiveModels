@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Collections;
 using System.Text;
@@ -26,6 +27,24 @@ namespace PavelStransky.Expression {
 
         // Pøi pozastavení výpoètu
         public event EventHandler CalcPaused;
+
+        // Thread, ve kterém se provádí výpoèet
+        private ProcessThread thread;
+
+        /// <summary>
+        /// Thread, ve kterém se poèítá
+        /// </summary>
+        public ProcessThread Thread { get { return this.thread; } set { this.thread = value; } }
+
+        /// <summary>
+        /// Vrátí poèet tickù
+        /// </summary>
+        public long GetThreadTicks() {
+            if(this.thread != null)
+                return this.thread.TotalProcessorTime.Ticks;
+            else
+                return 0;
+        }
 
         // Pøi pozastavení výpoètu
         protected virtual void OnCalcPaused(EventArgs e) {

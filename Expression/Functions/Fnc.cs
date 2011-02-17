@@ -12,10 +12,17 @@ namespace PavelStransky.Expression.Functions {
 	/// Tøída implementující funkce
 	/// </summary>
 	public abstract class Fnc {
+        private long totalTicks = 0;
+
+        /// <summary>
+        /// Celkový èas strávený ve funkci
+        /// </summary>
+        public long TotalTicks { get { return this.totalTicks; } }
+
 		/// <summary>
 		/// Jméno funkce
 		/// </summary>
-		public virtual string Name {get {return this.GetType().Name.ToLower();}}
+        public virtual string Name { get { return this.GetType().Name.ToLower(); } }
 
         /// <summary>
         /// True, pokud funkce bezprostøednì nemìní nic na contextu
@@ -394,10 +401,15 @@ namespace PavelStransky.Expression.Functions {
 
 			this.CheckArguments(evaluatedArguments, evaluateArray);
 
+            object result = null;
+            long startTicks = guider.GetThreadTicks();
             if(evaluateArray)
-                return this.EvaluateArray(guider, evaluatedArguments);
+                result = this.EvaluateArray(guider, evaluatedArguments);
             else
-                return this.EvaluateFn(guider, evaluatedArguments);
+                result = this.EvaluateFn(guider, evaluatedArguments);
+            this.totalTicks += guider.GetThreadTicks() - startTicks;
+
+            return result;
 		}
 
 		/// <summary>

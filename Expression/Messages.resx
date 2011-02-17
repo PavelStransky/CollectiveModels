@@ -3402,4 +3402,10 @@ Second differing type: {1}</value>
   <data name="PNonZerosDescription" xml:space="preserve">
     <value>Number of nonzero elements</value>
   </data>
+  <data name="PInfo" xml:space="preserve">
+    <value>info</value>
+  </data>
+  <data name="PInfoDescription" xml:space="preserve">
+    <value>Additional informations</value>
+  </data>
 </root>

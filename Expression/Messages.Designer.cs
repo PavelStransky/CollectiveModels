@@ -7567,6 +7567,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to info.
+        /// </summary>
+        internal static string PInfo {
+            get {
+                return ResourceManager.GetString("PInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Additional informations.
+        /// </summary>
+        internal static string PInfoDescription {
+            get {
+                return ResourceManager.GetString("PInfoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ic.
         /// </summary>
         internal static string PInitialCondition {

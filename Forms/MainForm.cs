@@ -393,6 +393,9 @@ namespace PavelStransky.Forms {
                 this.lastOpenedFiles.Save();
 
                 WinMain.SaveSettings();
+
+                // Uloží statistiku funkcí
+                Atom.SaveStatistics();
             }
             else
                 this.closeAfterSave = true;

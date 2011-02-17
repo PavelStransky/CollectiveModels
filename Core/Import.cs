@@ -118,6 +118,8 @@ namespace PavelStransky.Core {
             object result;
             if(typeName == typeof(int).FullName)
                 result = this.Binary ? b.ReadInt32() : Int32.Parse(t.ReadLine());
+            else if(typeName == typeof(long).FullName)
+                result = this.Binary ? b.ReadInt64() : Int64.Parse(t.ReadLine());
             else if(typeName == typeof(double).FullName)
                 result = this.Binary ? b.ReadDouble() : double.Parse(t.ReadLine());
             else if(typeName == typeof(string).FullName)

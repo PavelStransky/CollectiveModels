@@ -170,6 +170,9 @@ namespace PavelStransky.Core {
             if(o is int) {
                 if(this.Binary) this.b.Write((int)o); else this.t.WriteLine(o);
             }
+            else if(o is long) {
+                if(this.Binary) this.b.Write((long)o); else this.t.WriteLine(o);
+            }
             else if(o is double) {
                 if(this.Binary) this.b.Write((double)o); else this.t.WriteLine(o);
             }

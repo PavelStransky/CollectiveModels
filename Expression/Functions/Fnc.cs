@@ -13,11 +13,17 @@ namespace PavelStransky.Expression.Functions {
 	/// </summary>
 	public abstract class Fnc {
         private long totalTicks = 0;
+        private long calls = 0;
 
         /// <summary>
         /// Celkový èas strávený ve funkci
         /// </summary>
         public long TotalTicks { get { return this.totalTicks; } }
+
+        /// <summary>
+        /// Celkový poèet volání funkce
+        /// </summary>
+        public long Calls { get { return this.calls; } }
 
 		/// <summary>
 		/// Jméno funkce
@@ -396,6 +402,8 @@ namespace PavelStransky.Expression.Functions {
         /// <param name="guider">Prùvodce výpoètem</param>
         /// <param name="evaluateArray">True if the array shall be evaluated</param>
 		public virtual object Evaluate(Guider guider, ArrayList arguments) {
+            this.calls++;
+
             ArrayList evaluatedArguments = this.EvaluateArguments(guider, arguments);
             bool evaluateArray = guider.ArrayEvaluation;
 

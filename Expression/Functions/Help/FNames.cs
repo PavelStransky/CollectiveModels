@@ -32,6 +32,7 @@ namespace PavelStransky.Expression.Functions.Def {
             List ticks = new List();
             List times = new List();
             List dates = new List();
+            List calls = new List();
 
             string begining = (arguments[0] as string).ToLower();
             bool info = (bool)arguments[1];
@@ -39,11 +40,13 @@ namespace PavelStransky.Expression.Functions.Def {
             List rnames = null;
             List rticks = null;
             List rdates = null;
+            List rcalls = null;
             if(info){
                 List[] r = Atom.ReadStatistics();
                 rnames = r[0];
                 rticks = r[1];
                 rdates = r[2];
+                rcalls = r[3];
             }
 
             int count = 0;
@@ -56,9 +59,11 @@ namespace PavelStransky.Expression.Functions.Def {
 
                         if(ind >= 0) {
                             long t = (long)rticks[ind] + fnc.TotalTicks;
+                            long c = (long)rcalls[ind] + fnc.Calls;
                             ticks.Add(t);
                             times.Add(TimeSpan.FromTicks(t));
-                            if(fnc.TotalTicks > 0)
+                            calls.Add(c);
+                            if(fnc.Calls > 0)
                                 dates.Add(DateTime.Now);
                             else
                                 dates.Add(new DateTime((long)rdates[ind]));
@@ -67,6 +72,7 @@ namespace PavelStransky.Expression.Functions.Def {
                             ticks.Add((long)0);
                             times.Add(TimeSpan.FromTicks(0));
                             dates.Add(new DateTime(0));
+                            calls.Add((long)0);
                         }
 
                     }
@@ -81,16 +87,17 @@ namespace PavelStransky.Expression.Functions.Def {
                     if(((DateTime)dates[i]).Ticks == 0)
                         fullNames.Add(names[i]);
                     else
-                        fullNames.Add(string.Format("{0} ({1}, {2})",
-                            names[i], (TimeSpan)times[i], (DateTime)dates[i]));
+                        fullNames.Add(string.Format("{0} ({1}, {2}, {3})",
+                            names[i], calls[i], (TimeSpan)times[i], (DateTime)dates[i]));
                 }
 
-                TArray result = new TArray(typeof(TArray), 5);
+                TArray result = new TArray(typeof(TArray), 6);
                 result[0] = fullNames.ToTArray();
                 result[1] = names.ToTArray();
                 result[2] = ticks.ToTArray();
                 result[3] = times.ToTArray();
                 result[4] = dates.ToTArray();
+                result[5] = calls.ToTArray();
                 return result;
             }
             else

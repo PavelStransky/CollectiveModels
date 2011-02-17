@@ -57,6 +57,7 @@ namespace PavelStransky.Expression {
             List names = new List();    // Jména funkcí
             List ticks = new List();    // Celkový poèet strávených tickù
             List dates = new List();    // Data posledního použití funkcí
+            List calls = new List();    // Celkový poèet volání
 
             // Naèteme, co máme
             if(File.Exists(fName)) {
@@ -65,13 +66,27 @@ namespace PavelStransky.Expression {
                 names = (List)pi.Get(names);
                 ticks = (List)pi.Get(ticks);
                 dates = (List)pi.Get(dates);
+                calls = (List)pi.Get(calls);
                 import.Close();
             }
 
-            List[] result = new List[3];
+            int diff = names.Count - ticks.Count;
+            for(int i = 0; i < diff; i++)
+                ticks.Add((long)0);
+
+            diff = names.Count - dates.Count;
+            for(int i = 0; i < diff; i++)
+                dates.Add((long)0);
+
+            diff = names.Count - calls.Count;
+            for(int i = 0; i < diff; i++)
+                calls.Add((long)0);
+
+            List[] result = new List[4];
             result[0] = names;
             result[1] = ticks;
             result[2] = dates;
+            result[3] = calls;
 
             return result;
         }
@@ -89,20 +104,23 @@ namespace PavelStransky.Expression {
             List names = read[0];
             List ticks = read[1];
             List dates = read[2];
+            List calls = read[3];
 
             // Upravíme
             foreach(Fnc fnc in functions.Values) {
                 int i = names.IndexOf(fnc.Name.ToLower());
                 if(i >= 0) {
-                    if(fnc.TotalTicks > 0) {
+                    if(fnc.Calls > 0) {
                         ticks[i] = (long)ticks[i] + fnc.TotalTicks;
                         dates[i] = DateTime.Now.Ticks;
+                        calls[i] = (long)calls[i] + fnc.Calls;
                     }
                 }
                 else {
                     names.Add(fnc.Name);
                     ticks.Add(fnc.TotalTicks);
                     dates.Add((long)0);
+                    calls.Add((long)0);
                 }
             }
 
@@ -112,6 +130,7 @@ namespace PavelStransky.Expression {
             pe.Add(names, "Function names");
             pe.Add(ticks, "Total ticks");
             pe.Add(dates, "Last use");
+            pe.Add(calls, "Number of callings");
             pe.Export(export);
             export.Close();
         }

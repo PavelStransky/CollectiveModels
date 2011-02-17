@@ -260,11 +260,10 @@ namespace PavelStransky.Expression {
             lock(this.functions) {
                 int i = this.functions.Count;
                 foreach(Fnc fnc in this.functions)
-                    result.AppendFormat("{0}:{1} ({2}, {3}){4}", 
+                    result.AppendFormat("{0}:{1} ({2}){3}", 
                         i--, 
                         fnc.Name,
                         fnc.Calls,
-                        SpecialFormat.Format(TimeSpan.FromTicks(fnc.TotalTicks)),
                         Environment.NewLine);
             }
             this.functionMutex.ReleaseMutex();

@@ -91,9 +91,36 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Peresùv invariant
         /// </summary>
-        /// <param name="type">Typ</param>
+        /// <param name="type">Typ (0 - N, 1 - L, 2 - L(L + 1))</param>
         public Vector PeresInvariant(int type) {
-            throw new NotImpException(this, "PeresInvariant");
+            SpheroidBasisIndex index = this.eigenSystem.BasisIndex as SpheroidBasisIndex;
+
+            int count = this.eigenSystem.NumEV;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenSystem.GetEigenVector(i);
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++) {
+                    double koef = 0.0;
+                    switch(type) {
+                        case 0:
+                            koef = index.N[j];
+                            break;
+                        case 1:
+                            koef = index.L[j];
+                            break;
+                        case 2:
+                            koef = index.L[j]; koef *= koef + 1;
+                            break;
+                    }
+
+                    result[i] += ev[j] * ev[j] * koef;
+                }
+            }
+
+            return result;
         }
 
         public object ProbabilityDensity(int[] n, IOutputWriter writer, params Vector[] interval) {

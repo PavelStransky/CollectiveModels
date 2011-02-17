@@ -4,6 +4,7 @@ using System.Threading;
 using System.Collections;
 using System.Text;
 
+using PavelStransky.Expression.Functions;
 using PavelStransky.Core;
 
 namespace PavelStransky.Expression {
@@ -54,7 +55,7 @@ namespace PavelStransky.Expression {
                 this.CalcPaused(this, e);
         }
 
-        // Jména funkcí, která se provádìjí
+        // Funkce, které se provádìjí
         private ArrayList functions;
 
         // Pro synchronizaci a pozastavení threadu
@@ -142,9 +143,9 @@ namespace PavelStransky.Expression {
         /// Zaèíná se zpracovávat funkce - uložíme její název
         /// </summary>
         /// <param name="fnName">Název funkce</param>
-        public void StartFunction(string fnName) {
+        public void StartFunction(Fnc function) {
             this.functionMutex.WaitOne();
-            this.functions.Insert(0, fnName);
+            this.functions.Insert(0, function);
             this.functionMutex.ReleaseMutex();
         }
 
@@ -165,7 +166,7 @@ namespace PavelStransky.Expression {
             lock(this.functions) {
                 if(this.functions.Count > 0) {
                     this.functionMutex.ReleaseMutex();
-                    return (string)this.functions[0];
+                    return (this.functions[0] as Fnc).Name;
                 }
             }
             this.functionMutex.ReleaseMutex();
@@ -258,8 +259,13 @@ namespace PavelStransky.Expression {
             this.functionMutex.WaitOne();
             lock(this.functions) {
                 int i = this.functions.Count;
-                foreach(string s in this.functions)
-                    result.AppendFormat("{0}:{1}{2}", i--, s, Environment.NewLine);
+                foreach(Fnc fnc in this.functions)
+                    result.AppendFormat("{0}:{1} ({2}, {3}){4}", 
+                        i--, 
+                        fnc.Name,
+                        fnc.Calls,
+                        SpecialFormat.Format(TimeSpan.FromTicks(fnc.TotalTicks)),
+                        Environment.NewLine);
             }
             this.functionMutex.ReleaseMutex();
             return result.ToString();

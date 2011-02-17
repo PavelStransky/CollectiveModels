@@ -177,7 +177,7 @@ namespace PavelStransky.Forms {
             this.lblDuration.Text = string.Empty;
             this.lblTotalProcessorTime.Text = string.Empty;
 
-            this.timerInfo.Interval = 500;
+            this.timerInfo.Interval = 1000;
             this.timerInfo.Start();
         }
 

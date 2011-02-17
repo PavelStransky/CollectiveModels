@@ -52,7 +52,7 @@ namespace PavelStransky.Forms {
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.ReadOnly = true;
             this.txtCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtCommand.Size = new System.Drawing.Size(273, 130);
+            this.txtCommand.Size = new System.Drawing.Size(220, 130);
             this.txtCommand.TabIndex = 1;
             this.txtCommand.WordWrap = false;
             // 
@@ -192,7 +192,7 @@ namespace PavelStransky.Forms {
             this.lblLblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLblDuration.AutoSize = true;
             this.lblLblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLblDuration.Location = new System.Drawing.Point(220, 333);
+            this.lblLblDuration.Location = new System.Drawing.Point(236, 333);
             this.lblLblDuration.Name = "lblLblDuration";
             this.lblLblDuration.Size = new System.Drawing.Size(59, 13);
             this.lblLblDuration.TabIndex = 13;
@@ -202,7 +202,7 @@ namespace PavelStransky.Forms {
             // 
             this.lblDuration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDuration.AutoSize = true;
-            this.lblDuration.Location = new System.Drawing.Point(285, 333);
+            this.lblDuration.Location = new System.Drawing.Point(301, 333);
             this.lblDuration.Name = "lblDuration";
             this.lblDuration.Size = new System.Drawing.Size(47, 13);
             this.lblDuration.TabIndex = 14;
@@ -237,12 +237,12 @@ namespace PavelStransky.Forms {
             // 
             this.txtFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFunction.Font = new System.Drawing.Font("Courier New", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtFunction.Location = new System.Drawing.Point(286, 16);
+            this.txtFunction.Location = new System.Drawing.Point(233, 16);
             this.txtFunction.Multiline = true;
             this.txtFunction.Name = "txtFunction";
             this.txtFunction.ReadOnly = true;
             this.txtFunction.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtFunction.Size = new System.Drawing.Size(150, 130);
+            this.txtFunction.Size = new System.Drawing.Size(203, 130);
             this.txtFunction.TabIndex = 19;
             this.txtFunction.WordWrap = false;
             // 
@@ -251,11 +251,11 @@ namespace PavelStransky.Forms {
             this.lblFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFunction.AutoSize = true;
             this.lblFunction.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblFunction.Location = new System.Drawing.Point(285, 0);
+            this.lblFunction.Location = new System.Drawing.Point(230, 0);
             this.lblFunction.Name = "lblFunction";
-            this.lblFunction.Size = new System.Drawing.Size(65, 13);
+            this.lblFunction.Size = new System.Drawing.Size(107, 13);
             this.lblFunction.TabIndex = 20;
-            this.lblFunction.Text = "Command:";
+            this.lblFunction.Text = "Computation tree:";
             // 
             // ResultForm
             // 

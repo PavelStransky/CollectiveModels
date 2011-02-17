@@ -53,7 +53,7 @@ namespace PavelStransky.Expression
             object result = null;
 
             try {
-                guider.StartFunction(this.function.Name);
+                guider.StartFunction(this.function);
                 guider.WaitOne();
 
                 if(!this.function.ContextThreadSafe)

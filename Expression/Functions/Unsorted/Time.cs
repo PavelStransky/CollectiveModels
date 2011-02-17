@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.CheckArgumentsNumber(arguments, 1);
 
             DateTime startTime = DateTime.Now;
-            Atom.EvaluateAtomObject(guider, arguments[0]);
+            this.EvaluateAtomObject(guider, arguments[0]);
             return DateTime.Now - startTime;
         }
 

@@ -13,20 +13,20 @@ namespace PavelStransky.Expression.Functions.Def {
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}
 
-        public override object Evaluate(Guider guider, ArrayList arguments) {
+        protected override object Evaluate(Guider guider, ArrayList arguments) {
             this.CheckArgumentsMinNumber(arguments, 3);
 			this.CheckArgumentsMaxNumber(arguments, 4);
 
-			Atom.EvaluateAtomObject(guider, arguments[0]);
+			this.EvaluateAtomObject(guider, arguments[0]);
 
-			object condition = Atom.EvaluateAtomObject(guider, arguments[1]);
+			object condition = this.EvaluateAtomObject(guider, arguments[1]);
 			if(!(condition is bool))
 				this.BadTypeError(condition, 1);
 
 			while((bool)condition) {
-				Atom.EvaluateAtomObject(guider, arguments[2]);
+				this.EvaluateAtomObject(guider, arguments[2]);
 
-				condition = Atom.EvaluateAtomObject(guider, arguments[1]);
+				condition = this.EvaluateAtomObject(guider, arguments[1]);
 				if(!(condition is bool))
 					this.BadTypeError(condition, 1);	
 			}
@@ -34,7 +34,7 @@ namespace PavelStransky.Expression.Functions.Def {
 			if(arguments.Count < 4)
                 return null;
 			else
-				return Atom.EvaluateAtomObject(guider, arguments[3]);
+				return this.EvaluateAtomObject(guider, arguments[3]);
 		}
 
 		private const string errorMessageNoExpression = "Nelze vyhodnotit funkci {0}. Argument není promìnná nebo promìnná neobsahuje výraz.";

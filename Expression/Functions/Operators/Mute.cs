@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             object item = arguments[0];
             guider.Mute = true;
-            object result = Atom.EvaluateAtomObject(guider, item);
+            object result = this.EvaluateAtomObject(guider, item);
             guider.Mute = false;
 
             return result;

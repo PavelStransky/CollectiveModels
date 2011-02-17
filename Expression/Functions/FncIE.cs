@@ -34,8 +34,8 @@ namespace PavelStransky.Expression.Functions {
 			return ieType;
 		}
 
-		public override object Evaluate(Guider guider, ArrayList arguments) {
-			ArrayList evaluatedArguments = this.EvaluateArguments(guider, arguments);
+		protected override object Evaluate(Guider guider, ArrayList arguments) {
+            ArrayList evaluatedArguments = this.EvaluateArguments(guider, arguments);
 			this.CheckArguments(evaluatedArguments, guider.ArrayEvaluation);
 			this.AddPath(guider.Context, evaluatedArguments);
 

@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions.Def {
             object item = arguments[0];
             bool oldArrayEvaluation = guider.ArrayEvaluation;
             guider.ArrayEvaluation = true;
-            object result = Atom.EvaluateAtomObject(guider, item);
+            object result = this.EvaluateAtomObject(guider, item);
             guider.ArrayEvaluation = oldArrayEvaluation;
 
             return result;

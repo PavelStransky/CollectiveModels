@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             int count = arguments.Count - 1;
 
-            this.result = Atom.EvaluateAtomObject(guider, arguments[count]);
+            this.result = this.EvaluateAtomObject(guider, arguments[count]);
             if(this.result == null)
                 throw new FncException(this, Messages.EMNullValue);
 

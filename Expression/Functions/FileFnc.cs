@@ -28,7 +28,7 @@ namespace PavelStransky.Expression.Functions {
             this.fncName = fncName;
         }
 
-        public override object Evaluate(Guider guider, ArrayList arguments) {
+        protected override object Evaluate(Guider guider, ArrayList arguments) {
             string fileName = Path.Combine(Context.FncDirectory, string.Format("{0}.{1}", fncName, fncExtension));
             string fileText = string.Empty;
             try {

@@ -12,7 +12,7 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpTime; } }
 
-        public override object Evaluate(Guider guider, ArrayList arguments) {
+        protected override object Evaluate(Guider guider, ArrayList arguments) {
             this.CheckArgumentsNumber(arguments, 1);
 
             DateTime startTime = DateTime.Now;

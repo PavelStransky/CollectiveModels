@@ -387,7 +387,7 @@ namespace PavelStransky.Expression.Functions {
                 bool evaluate = i < l ? this.parameters[i].Evaluate : evaluateLast;
 
                 if(evaluate)
-                    result.Add(Atom.EvaluateAtomObject(guider, arguments[i]));
+                    result.Add(this.EvaluateAtomObject(guider, arguments[i]));
                 else
                     result.Add(arguments[i]);
             }
@@ -396,28 +396,51 @@ namespace PavelStransky.Expression.Functions {
         #endregion
 
         /// <summary>
+        /// Výpoèet funkce (s uložením údaje o èase)
+        /// </summary>
+        /// <param name="arryList">Argumenty funkce</param>
+        /// <param name="guider">Prùvodce výpoètem</param>
+        public object EvaluateTime(Guider guider, ArrayList arrayList) {
+            this.calls++;
+            long startTicks = guider.GetThreadTicks();
+            try {
+                return this.Evaluate(guider, arrayList);
+            }
+            finally {
+                this.totalTicks += guider.GetThreadTicks() - startTicks + 1;
+            }
+        }
+
+        /// <summary>
+        /// Vypoèítá podøízený objekt
+        /// </summary>
+        /// <param name="guider">Prùvodce výpoètem</param>
+        /// <param name="operand">Argumenty funkce</param>
+        protected object EvaluateAtomObject(Guider guider, object operand) {
+            long startTicks = guider.GetThreadTicks();
+            try {
+                return Atom.EvaluateAtomObject(guider, operand);
+            }
+            finally {
+                this.totalTicks -= guider.GetThreadTicks() - startTicks;
+            }            
+        }
+
+        /// <summary>
 		/// Výpoèet funkce
 		/// </summary>
 		/// <param name="arguments">Argumenty funkce</param>
         /// <param name="guider">Prùvodce výpoètem</param>
-        /// <param name="evaluateArray">True if the array shall be evaluated</param>
-		public virtual object Evaluate(Guider guider, ArrayList arguments) {
-            this.calls++;
-
+		protected virtual object Evaluate(Guider guider, ArrayList arguments) {
             ArrayList evaluatedArguments = this.EvaluateArguments(guider, arguments);
             bool evaluateArray = guider.ArrayEvaluation;
 
 			this.CheckArguments(evaluatedArguments, evaluateArray);
 
-            object result = null;
-            long startTicks = guider.GetThreadTicks();
             if(evaluateArray)
-                result = this.EvaluateArray(guider, evaluatedArguments);
+                return this.EvaluateArray(guider, evaluatedArguments);
             else
-                result = this.EvaluateFn(guider, evaluatedArguments);
-            this.totalTicks += guider.GetThreadTicks() - startTicks;
-
-            return result;
+                return this.EvaluateFn(guider, evaluatedArguments);
 		}
 
 		/// <summary>
@@ -535,5 +558,5 @@ namespace PavelStransky.Expression.Functions {
 
         private const string useFormat = "{0}({1});";
 		private const string fullHelpFormat = "{0}\r\n\r\n{1}";
-	}
+    }
 }

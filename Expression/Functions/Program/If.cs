@@ -13,18 +13,18 @@ namespace PavelStransky.Expression.Functions.Def {
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}
 
-        public override object Evaluate(Guider guider, ArrayList arguments) {
+        protected override object Evaluate(Guider guider, ArrayList arguments) {
             this.CheckArgumentsMinNumber(arguments, 2);
 			this.CheckArgumentsMaxNumber(arguments, 3);
 
-			object condition = Atom.EvaluateAtomObject(guider, arguments[0]);
+			object condition = this.EvaluateAtomObject(guider, arguments[0]);
 			if(!(condition is bool))
 				this.BadTypeError(condition, 0);
 
 			if((bool)condition)
-				return Atom.EvaluateAtomObject(guider, arguments[1]);
+				return this.EvaluateAtomObject(guider, arguments[1]);
 			else if(arguments.Count > 2)
-				return Atom.EvaluateAtomObject(guider, arguments[2]);
+				return this.EvaluateAtomObject(guider, arguments[2]);
 			else
 				return null;
 		}

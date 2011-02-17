@@ -58,7 +58,7 @@ namespace PavelStransky.Expression
 
                 if(!this.function.ContextThreadSafe)
                     guider.Context.LockMutex();
-                result = this.function.Evaluate(guider, this.arguments);
+                result = this.function.EvaluateTime(guider, this.arguments);
                 guider.EndFunction();
             }
             finally {

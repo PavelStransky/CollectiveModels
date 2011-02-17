@@ -30,8 +30,8 @@ namespace PavelStransky.Expression.Functions.Def {
                 }
             }
 
-            if(count > 1 && arguments[1] != null)
-                Atom.EvaluateAtomObject(new Guider(result), arguments[1]);
+            if(count > 1 && arguments[1] != null) 
+                this.EvaluateAtomObject(new Guider(result), arguments[1]);            
 
             return result;
         }

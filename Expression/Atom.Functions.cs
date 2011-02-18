@@ -124,8 +124,10 @@ namespace PavelStransky.Expression {
                 }
             }
 
+            string fNameSave = fName + ".sav";
+
             // Uložíme
-            Export export = new Export(fName, IETypes.Compressed, 1, "FncStatistics");
+            Export export = new Export(fNameSave, IETypes.Compressed, 1, "FncStatistics");
             IEParam pe = new IEParam();
             pe.Add(names, "Function names");
             pe.Add(ticks, "Total ticks");
@@ -133,6 +135,11 @@ namespace PavelStransky.Expression {
             pe.Add(calls, "Number of callings");
             pe.Export(export);
             export.Close();
+
+            // Doèasný soubor, do kterého jsme ukládali, pøejmenujeme na orig. verzi
+            if(File.Exists(fName))
+                File.Delete(fName);
+            File.Move(fNameSave, fName);
         }
 
         protected static readonly FncList functions;

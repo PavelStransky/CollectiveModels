@@ -60,19 +60,19 @@ namespace PavelStransky.Expression.Functions.Def {
                         if(ind >= 0) {
                             long t = (long)rticks[ind] + fnc.TotalTicks;
                             long c = (long)rcalls[ind] + fnc.Calls;
-                            ticks.Add(t);
+                            ticks.Add((double)t);
                             times.Add(TimeSpan.FromTicks(t));
-                            calls.Add(c);
+                            calls.Add((double)c);
                             if(fnc.Calls > 0)
                                 dates.Add(DateTime.Now);
                             else
                                 dates.Add(new DateTime((long)rdates[ind]));
                         }
                         else {
-                            ticks.Add((long)0);
+                            ticks.Add(0.0);
                             times.Add(TimeSpan.FromTicks(0));
                             dates.Add(new DateTime(0));
-                            calls.Add((long)0);
+                            calls.Add(0.0);
                         }
 
                     }

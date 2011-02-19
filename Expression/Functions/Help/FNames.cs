@@ -60,7 +60,7 @@ namespace PavelStransky.Expression.Functions.Def {
                         if(ind >= 0) {
                             long t = (long)rticks[ind] + fnc.TotalTicks;
                             long c = (long)rcalls[ind] + fnc.Calls;
-                            ticks.Add((double)t);
+                            ticks.Add((double)t / 10000000);
                             times.Add(TimeSpan.FromTicks(t));
                             calls.Add((double)c);
                             if(fnc.Calls > 0)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 
@@ -32,6 +33,8 @@ namespace PavelStransky.Expression.Functions.Def {
                 return ((double)item).ToString(format);
             else if(item is DateTime)
                 return ((DateTime)item).ToString(format);
+            else if(item is TimeSpan)
+                return SpecialFormat.FormatInt((TimeSpan)item);
             else if(item is string)
                 return item as string;
             else

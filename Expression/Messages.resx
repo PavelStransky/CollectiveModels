@@ -3408,4 +3408,13 @@ Second differing type: {1}</value>
   <data name="PInfoDescription" xml:space="preserve">
     <value>Additional informations</value>
   </data>
+  <data name="HelpStrutinsky" xml:space="preserve">
+    <value>Returns a smooth level density for the Strutinsky corrections</value>
+  </data>
+  <data name="PRange" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="PRangeDescription" xml:space="preserve">
+    <value>Range of the interaction</value>
+  </data>
 </root>

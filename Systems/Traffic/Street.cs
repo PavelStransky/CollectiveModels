@@ -107,6 +107,11 @@ namespace PavelStransky.Systems {
         public int First { get { return this.data[0]; } }
 
         /// <summary>
+        /// Støed ulice
+        /// </summary>
+        public int Middle { get { return this.data[this.length / 2]; } }
+
+        /// <summary>
         /// Poslední pozice ulice
         /// </summary>
         public int Last { get { return this.data[this.length - 1]; } }

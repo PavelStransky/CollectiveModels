@@ -352,6 +352,8 @@ namespace PavelStransky.Systems {
 
             Vector velocity = new Vector(time);
             Matrix lights = new Matrix((this.streetsX - 2 * boundary) * (this.streetsY - 2 * boundary), time);
+            Matrix streetVertical = new Matrix((this.streetsX - 2 * boundary) * (this.streetsY - 2 * boundary), time);
+            Matrix streetHorizontal = new Matrix((this.streetsX - 2 * boundary) * (this.streetsY - 2 * boundary), time);
 
             for(int t = 0; t < time; t++) {
                 foreach(TrafficItem item in this.trafficItems)
@@ -363,8 +365,12 @@ namespace PavelStransky.Systems {
 
                 int k = 0;
                 for(int i = boundary; i < this.streetsX - boundary; i++)
-                    for(int j = boundary; j < this.streetsY - boundary; j++)
-                        lights[k++, t] = this.crossing[i, j].State;
+                    for(int j = boundary; j < this.streetsY - boundary; j++) {
+                        streetVertical[k, t] = this.vertical[i, j].Middle;
+                        streetHorizontal[k, t] = this.horizontal[i, j].Middle;
+                        lights[k, t] = this.crossing[i, j].State;
+                        k++;
+                    }
             }
 
             result.Add(velocity);
@@ -372,6 +378,8 @@ namespace PavelStransky.Systems {
             result.Add(this.CarNumber());
             result.Add(this.StreetPlace());
             result.Add(this.CrossingNumber());
+            result.Add(streetHorizontal);
+            result.Add(streetVertical);
             return result;
         }
 

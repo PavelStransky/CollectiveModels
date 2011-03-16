@@ -168,6 +168,7 @@
     <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
+    <Compile Include="Functions\Quantum\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Test\TestARPack.cs" />
     <Compile Include="Functions\Types\Function.cs" />

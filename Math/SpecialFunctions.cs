@@ -342,7 +342,7 @@ namespace PavelStransky.Math {
         /// http://en.wikipedia.org/wiki/Laguerre_polynomials
         /// http://mathworld.wolfram.com/LaguerrePolynomial.html
         /// </remarks>
-        public static double Laguerre(double x, int n, int m) {
+        public static double Laguerre(double x, int n, double m) {
             double lm2 = 1;
             double lm1 = m + 1.0 - x;
             double lm = lm1;

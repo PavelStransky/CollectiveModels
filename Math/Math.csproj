@@ -177,6 +177,7 @@
     <Compile Include="Spline.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Strutinsky.cs" />
     <Compile Include="Vector.cs">
       <SubType>Code</SubType>
     </Compile>

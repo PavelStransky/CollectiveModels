@@ -9,8 +9,9 @@ namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns a smooth level density for the Strutinsky corrections
     /// </summary>
-    public class Strutinsky: FncMathD {
+    public class FnStrutinsky: FncMathD {
         public override string Help { get { return Messages.HelpStrutinsky; } }
+        public override string Name { get { return name; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(4);
@@ -22,7 +23,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override double FnDouble(double x, params object[] p) {
-            Vector energy = (Vector)p[0];
+/*            Vector energy = (Vector)p[0];
             int degree = (int)p[1];
             Vector range = null;
             double ranged = 0.0;
@@ -39,10 +40,28 @@ namespace PavelStransky.Expression.Functions.Def {
                 double r = range == null ? ranged : range[i];
                 double y = (energy[i] - x) / r;
                 y *= y;
-                result += SpecialFunctions.Laguerre(y, degree, 0.5) * System.Math.Exp(y) / (r * System.Math.Sqrt(System.Math.PI));
+                result += SpecialFunctions.Laguerre(y, degree, 0.5) * System.Math.Exp(-y) / (r * System.Math.Sqrt(System.Math.PI));
             }
 
             return result;
+ * */
+            Vector energy = (Vector)p[0];
+            int degree = (int)p[1];
+            Vector range = null;
+
+            if(p[2] is Vector)
+                range = (Vector)p[2];
+            else
+            {
+                range = new Vector(energy.Length);
+                for(int i = 0; i < energy.Length; i++)
+                    range[i]=(double)p[2];
+            }
+
+            Strutinsky s = new Strutinsky(energy, range, degree);
+            return s.ChemicalPotential((int)x);
         }
+
+        private const string name = "strutinsky";
     }
 }

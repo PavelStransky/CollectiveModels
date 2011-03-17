@@ -2887,6 +2887,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the chemical potential of the Strutinsky method for a given mass number.
+        /// </summary>
+        internal static string HelpChemicalPotential {
+            get {
+                return ResourceManager.GetString("HelpChemicalPotential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a Coupled harmonic oscillator class.
         /// </summary>
         internal static string HelpCHO {
@@ -4201,6 +4210,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the occupation numbers of the Strutinsky method for a given mass number.
+        /// </summary>
+        internal static string HelpOccupationNumber {
+            get {
+                return ResourceManager.GetString("HelpOccupationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action of an operator on a given ket.
         /// </summary>
         internal static string HelpOperatorAction {
@@ -4984,7 +5002,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Returns a smooth level density for the Strutinsky corrections.
+        ///   Looks up a localized string similar to Returns an object dealing with Strutinsky corrections.
         /// </summary>
         internal static string HelpStrutinsky {
             get {
@@ -9255,6 +9273,24 @@ namespace PavelStransky.Expression {
         internal static string PStreetLengthYDescription {
             get {
                 return ResourceManager.GetString("PStreetLengthYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        internal static string PStrutinsky {
+            get {
+                return ResourceManager.GetString("PStrutinsky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strutinsky object.
+        /// </summary>
+        internal static string PStrutinskyDescription {
+            get {
+                return ResourceManager.GetString("PStrutinskyDescription", resourceCulture);
             }
         }
         

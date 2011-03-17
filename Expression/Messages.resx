@@ -3409,12 +3409,24 @@ Second differing type: {1}</value>
     <value>Additional informations</value>
   </data>
   <data name="HelpStrutinsky" xml:space="preserve">
-    <value>Returns a smooth level density for the Strutinsky corrections</value>
+    <value>Returns an object dealing with Strutinsky corrections</value>
   </data>
   <data name="PRange" xml:space="preserve">
     <value>r</value>
   </data>
   <data name="PRangeDescription" xml:space="preserve">
     <value>Range of the interaction</value>
+  </data>
+  <data name="HelpChemicalPotential" xml:space="preserve">
+    <value>Returns the chemical potential of the Strutinsky method for a given mass number</value>
+  </data>
+  <data name="HelpOccupationNumber" xml:space="preserve">
+    <value>Returns the occupation numbers of the Strutinsky method for a given mass number</value>
+  </data>
+  <data name="PStrutinsky" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="PStrutinskyDescription" xml:space="preserve">
+    <value>Strutinsky object</value>
   </data>
 </root>

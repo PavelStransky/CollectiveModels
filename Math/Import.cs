@@ -37,6 +37,8 @@ namespace PavelStransky.Math {
                 return new LongNumber(this);
             else if(typeName == typeof(LongFraction).FullName)
                 return new LongFraction(this);
+            else if(typeName == typeof(Strutinsky).FullName)
+                return new Strutinsky(this);
             else
                 return null;
         }

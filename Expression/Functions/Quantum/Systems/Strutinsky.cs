@@ -9,17 +9,16 @@ namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Returns a smooth level density for the Strutinsky corrections
     /// </summary>
-    public class FnStrutinsky: FncMathD {
+    public class FnStrutinsky: Fnc {
         public override string Help { get { return Messages.HelpStrutinsky; } }
         public override string Name { get { return name; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(4);
+            this.SetNumParams(3);
 
-            this.SetXParam();
-            this.SetParam(1, true, true, false, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(Vector));
-            this.SetParam(2, true, true, false, Messages.POrder, Messages.POrderDetail, null, typeof(int));
-            this.SetParam(3, true, true, true, Messages.PRange, Messages.PRangeDescription, null, typeof(double), typeof(Vector));
+            this.SetParam(0, true, true, false, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(Vector));
+            this.SetParam(1, true, true, false, Messages.POrder, Messages.POrderDetail, null, typeof(int));
+            this.SetParam(2, true, true, true, Messages.PRange, Messages.PRangeDescription, null, typeof(double), typeof(Vector));
         }
 
         protected override double FnDouble(double x, params object[] p) {
@@ -58,8 +57,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     range[i]=(double)p[2];
             }
 
-            Strutinsky s = new Strutinsky(energy, range, degree);
-            return s.ChemicalPotential((int)x);
+            return new Strutinsky(energy, range, degree);
         }
 
         private const string name = "strutinsky";

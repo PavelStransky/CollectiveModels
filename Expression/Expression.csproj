@@ -170,6 +170,8 @@
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
     <Compile Include="Functions\Quantum\ChemicalPotential.cs" />
     <Compile Include="Functions\Quantum\OccupationNumber.cs" />
+    <Compile Include="Functions\Quantum\ShellCorrection.cs" />
+    <Compile Include="Functions\Quantum\SmoothLevelDensity.cs" />
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Test\TestARPack.cs" />

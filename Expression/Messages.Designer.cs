@@ -4858,6 +4858,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the shell corrections of the Strutinsky method for a given mass number.
+        /// </summary>
+        internal static string HelpShellCorrection {
+            get {
+                return ResourceManager.GetString("HelpShellCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates a vector with shot noise values.
         /// </summary>
         internal static string HelpShotNoise {
@@ -4908,6 +4917,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSmooth {
             get {
                 return ResourceManager.GetString("HelpSmooth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the smooth level density by the Strutinsky method.
+        /// </summary>
+        internal static string HelpSmoothLevelDensity {
+            get {
+                return ResourceManager.GetString("HelpSmoothLevelDensity", resourceCulture);
             }
         }
         

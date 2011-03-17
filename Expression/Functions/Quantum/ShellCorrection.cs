@@ -6,10 +6,10 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Returns the occupation numbers of the Strutinsky method for a given mass number
+    /// Returns the shell corrections of the Strutinsky method for a given mass number
     /// </summary>
-    public class OccupationNumber: Fnc {
-        public override string Help { get { return Messages.HelpOccupationNumber; } }
+    public class ShellCorrection: Fnc {
+        public override string Help { get { return Messages.HelpShellCorrection; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Strutinsky s = arguments[0] as Strutinsky;
-            return s.OccupationNumbers((int)arguments[1]);
+            return s.ShellCorrection((int)arguments[1]);
         }
     }
 }

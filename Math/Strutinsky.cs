@@ -11,6 +11,7 @@ namespace PavelStransky.Math {
         private int degree;     // Degree of the Laguerre polynomial
 
         private Vector cache;
+        private Vector cachex;
 
         /// <summary>
         /// Constructor
@@ -32,15 +33,25 @@ namespace PavelStransky.Math {
         private void BuildCache() {
             int length = (int)(max / precision) + 1;
             this.cache = new Vector(length);
+            this.cachex = new Vector(length);
 
             double oldy = this.Function(0.0);
+            double oldyx = 0.0;
 
             for(int i = 1; i < length; i++) {
                 double x = precision * i;
                 double y = this.Function(x);
                 this.cache[i] = this.cache[i - 1] + precision * (y + oldy) / 2.0;
                 oldy = y;
+
+                y *= x;
+                this.cachex[i] = this.cachex[i - 1] + precision * (y + oldyx) / 2.0;
+                oldyx = y;
             }
+
+            double maxCache = this.cachex.LastItem;
+            for(int i = 0; i < length; i++)
+                this.cachex[i] -= maxCache;
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace PavelStransky.Math {
             x *= x;
             if(x > 100.0)
                 return 0.0;
-            return SpecialFunctions.Laguerre(x, this.degree, 0.5) * System.Math.Exp(-x);
+            return SpecialFunctions.Laguerre(x, this.degree, 0.5) * System.Math.Exp(-x) / System.Math.Sqrt(System.Math.PI);
         }
 
         /// <summary>
@@ -61,7 +72,7 @@ namespace PavelStransky.Math {
             private Vector energy;
             private Vector gamma;
             private Vector cache;
-            private double max;
+            private double maxCache;
 
             public ChPBisectionFunction(Vector energy, Vector gamma, Vector cache, int A) {
                 this.energy = energy;
@@ -69,7 +80,7 @@ namespace PavelStransky.Math {
                 this.cache = cache;
                 this.A = A;
 
-                this.max = this.energy.LastItem;
+                this.maxCache = this.cache.LastItem;
             }
 
             public double BisectionFunction(double lambda) {
@@ -90,14 +101,14 @@ namespace PavelStransky.Math {
             public double OccupationNumber(double lambda, int i) {
                 double x = (lambda - this.energy[i]) / this.gamma[i];
                 int xi = (int)(x / precision);
-                if(x < -this.max)
+                if(xi <= -this.cache.Length)
                     return 0.0;
-                else if(x < 0.0)
-                    return this.max - this.cache[-xi];
-                else if(x < max)
-                    return this.max + this.cache[xi];
+                else if(xi < 0)
+                    return this.maxCache - this.cache[-xi];
+                else if(xi < this.cache.Length)
+                    return this.maxCache + this.cache[xi];
                 else
-                    return this.max + this.max;
+                    return this.maxCache + this.maxCache;
             }
         }
 
@@ -126,6 +137,99 @@ namespace PavelStransky.Math {
             Vector result = new Vector(length);
             for(int i = 0; i < length; i++)
                 result[i] = bf.OccupationNumber(lambda, i);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Smooth part of the level density
+        /// </summary>
+        /// <param name="x">Point</param>
+        public double SmoothLevelDensity(double x) {
+            int length = this.energy.Length;
+            
+            double result = 0;
+            for(int i = 0; i < length; i++) {                
+                double y = (this.energy[i] - x) / this.gamma[i];
+                result += this.Function(y) / this.gamma[i];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculates the plateau condition for a given mass number
+        /// </summary>
+        /// <param name="A">Mass number</param>
+        public double PlateauCondition(int A) {
+            double lambda = this.ChemicalPotential(A);
+            int length = this.energy.Length;
+
+            double result = 0.0;
+            for(int i = 0; i < length; i++) {
+                double x = (lambda - this.energy[i]) / this.gamma[i];
+                int xi = (int)(x / precision);
+
+                if(xi <= -this.cachex.Length)
+                    continue;
+                else if(xi < 0)
+                    result += this.cachex[-xi];
+                else if(xi < this.cachex.Length)
+                    result += this.cachex[xi];
+                else
+                    continue;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculates shell corrections for a given mass number
+        /// </summary>
+        /// <param name="A">Mass number</param>
+        public double ShellCorrectionA(int A) {
+            double lambda = this.ChemicalPotential(A);
+            int length = this.energy.Length;
+            double maxCache = this.cache.LastItem;
+
+            double result = 0.0;
+            for(int i = 0; i < length; i++) {
+                double x = (lambda - this.energy[i]) / this.gamma[i];
+                double y = this.energy[i] / this.gamma[i];
+
+                int xi = (int)(x / precision);
+
+                if(xi <= -this.cachex.Length)
+                    continue;
+                else if(xi < 0)
+                    result -= this.cachex[-xi] + y * (maxCache - this.cache[-xi]);
+                else if(xi < this.cachex.Length)
+                    result -= this.cachex[xi] + y * (maxCache + this.cache[xi]);
+                else
+                    result -= y * (maxCache + maxCache);
+
+                if(i < A)
+                    result += this.energy[i];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Calculates shell corrections for a given mass number
+        /// </summary>
+        /// <param name="A">Mass number</param>
+        public double ShellCorrection(int A) {
+            Vector on = this.OccupationNumbers(A);
+            int length = this.energy.Length;
+
+            double result = 0.0;
+            for(int i = 0; i < length; i++) {
+                result -= on[i] * this.energy[i];
+
+                if(i < A)
+                    result += this.energy[i];
+            }
 
             return result;
         }

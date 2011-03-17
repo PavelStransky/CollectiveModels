@@ -3423,10 +3423,16 @@ Second differing type: {1}</value>
   <data name="HelpOccupationNumber" xml:space="preserve">
     <value>Returns the occupation numbers of the Strutinsky method for a given mass number</value>
   </data>
+  <data name="HelpSmoothLevelDensity" xml:space="preserve">
+    <value>Returns the smooth level density by the Strutinsky method</value>
+  </data>
   <data name="PStrutinsky" xml:space="preserve">
     <value>s</value>
   </data>
   <data name="PStrutinskyDescription" xml:space="preserve">
     <value>Strutinsky object</value>
+  </data>
+  <data name="HelpShellCorrection" xml:space="preserve">
+    <value>Returns the shell corrections of the Strutinsky method for a given mass number</value>
   </data>
 </root>

@@ -187,38 +187,6 @@ namespace PavelStransky.Math {
         /// Calculates shell corrections for a given mass number
         /// </summary>
         /// <param name="A">Mass number</param>
-        public double ShellCorrectionA(int A) {
-            double lambda = this.ChemicalPotential(A);
-            int length = this.energy.Length;
-            double maxCache = this.cache.LastItem;
-
-            double result = 0.0;
-            for(int i = 0; i < length; i++) {
-                double x = (lambda - this.energy[i]) / this.gamma[i];
-                double y = this.energy[i] / this.gamma[i];
-
-                int xi = (int)(x / precision);
-
-                if(xi <= -this.cachex.Length)
-                    continue;
-                else if(xi < 0)
-                    result -= this.cachex[-xi] + y * (maxCache - this.cache[-xi]);
-                else if(xi < this.cachex.Length)
-                    result -= this.cachex[xi] + y * (maxCache + this.cache[xi]);
-                else
-                    result -= y * (maxCache + maxCache);
-
-                if(i < A)
-                    result += this.energy[i];
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Calculates shell corrections for a given mass number
-        /// </summary>
-        /// <param name="A">Mass number</param>
         public double ShellCorrection(int A) {
             Vector on = this.OccupationNumbers(A);
             int length = this.energy.Length;

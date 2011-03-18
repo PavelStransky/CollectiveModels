@@ -3435,4 +3435,7 @@ Second differing type: {1}</value>
   <data name="HelpShellCorrection" xml:space="preserve">
     <value>Returns the shell corrections of the Strutinsky method for a given mass number</value>
   </data>
+  <data name="HelpPlateau" xml:space="preserve">
+    <value>Returns the plateau condition of the Strutinsky method for a given mass number (must be zero)</value>
+  </data>
 </root>

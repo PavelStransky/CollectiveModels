@@ -4309,6 +4309,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the plateau condition of the Strutinsky method for a given mass number (must be zero).
+        /// </summary>
+        internal static string HelpPlateau {
+            get {
+                return ResourceManager.GetString("HelpPlateau", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator +.
         /// </summary>
         internal static string HelpPlus {

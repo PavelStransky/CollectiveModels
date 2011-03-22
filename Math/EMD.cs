@@ -23,7 +23,7 @@ namespace PavelStransky.Math {
                
         public void Compute(){
             int length = this.data.Length;
-            PointVector resid = this.data.Clone();
+            PointVector resid = this.data.Clone() as PointVector;
 
             PointVector maxima = resid.Maxima();
             PointVector minima = resid.Minima();

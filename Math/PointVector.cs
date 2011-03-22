@@ -791,9 +791,9 @@ namespace PavelStransky.Math {
                 maxima.Add(sorted[lengthm]);
 
             PointVector result = new PointVector(maxima.Count);
-            int i = 0;
+            int j = 0;
             foreach(PointD p in maxima)
-                result[i++] = p;
+                result[j++] = p;
             return result;
         }
 
@@ -820,9 +820,9 @@ namespace PavelStransky.Math {
                 minima.Add(sorted[lengthm]);
 
             PointVector result = new PointVector(minima.Count);
-            int i = 0;
+            int j = 0;
             foreach(PointD p in minima)
-                result[i++] = p;
+                result[j++] = p;
             return result;
         }
 

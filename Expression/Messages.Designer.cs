@@ -3085,6 +3085,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates an exact cumulative histogram as a step function.
+        /// </summary>
+        internal static string HelpCumulHistogramStep {
+            get {
+                return ResourceManager.GetString("HelpCumulHistogramStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the second derivative.
         /// </summary>
         internal static string HelpD2 {
@@ -5317,6 +5326,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unfolds given data.
+        /// </summary>
+        internal static string HelpUnfolding {
+            get {
+                return ResourceManager.GetString("HelpUnfolding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uses the given context for specified calculations.
         /// </summary>
         internal static string HelpUseContext {
@@ -7104,6 +7122,24 @@ namespace PavelStransky.Expression {
         internal static string PEndingPointDetail {
             get {
                 return ResourceManager.GetString("PEndingPointDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.
+        /// </summary>
+        internal static string PEnergies {
+            get {
+                return ResourceManager.GetString("PEnergies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Energy levels of a system.
+        /// </summary>
+        internal static string PEnergiesDescription {
+            get {
+                return ResourceManager.GetString("PEnergiesDescription", resourceCulture);
             }
         }
         
@@ -9462,6 +9498,24 @@ namespace PavelStransky.Expression {
         internal static string PTypeDescription {
             get {
                 return ResourceManager.GetString("PTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to utype.
+        /// </summary>
+        internal static string PUnfoldingType {
+            get {
+                return ResourceManager.GetString("PUnfoldingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of the unfolding procedure (&quot;cpolynom&quot;).
+        /// </summary>
+        internal static string PUnfoldingTypeDescription {
+            get {
+                return ResourceManager.GetString("PUnfoldingTypeDescription", resourceCulture);
             }
         }
         

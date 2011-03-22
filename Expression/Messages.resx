@@ -3438,4 +3438,22 @@ Second differing type: {1}</value>
   <data name="HelpPlateau" xml:space="preserve">
     <value>Returns the plateau condition of the Strutinsky method for a given mass number (must be zero)</value>
   </data>
+  <data name="HelpCumulHistogramStep" xml:space="preserve">
+    <value>Creates an exact cumulative histogram as a step function</value>
+  </data>
+  <data name="HelpUnfolding" xml:space="preserve">
+    <value>Unfolds given data</value>
+  </data>
+  <data name="PEnergies" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="PEnergiesDescription" xml:space="preserve">
+    <value>Energy levels of a system</value>
+  </data>
+  <data name="PUnfoldingType" xml:space="preserve">
+    <value>utype</value>
+  </data>
+  <data name="PUnfoldingTypeDescription" xml:space="preserve">
+    <value>Type of the unfolding procedure ("cpolynom")</value>
+  </data>
 </root>

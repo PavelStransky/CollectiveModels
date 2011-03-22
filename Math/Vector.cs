@@ -1085,6 +1085,31 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Kumulovaný histogram jako skokovou funkci
+        /// </summary>
+        public PointVector CumulativeHistogramStep() {
+            Vector v = this.Sort() as Vector;
+            int length = v.Length;
+
+            ArrayList histogram = new ArrayList();
+            double oldx = v[0];
+            histogram.Add(new PointD(oldx, 0.0));
+            for(int i = 1; i < length; i++)
+                if(oldx != v[i]) {
+                    histogram.Add(new PointD(oldx, i));
+                    histogram.Add(new PointD(v[i], i));
+                    oldx = v[i];
+                }
+            histogram.Add(new PointD(oldx, length));
+
+            PointVector result = new PointVector(histogram.Count);
+            int j = 0;
+            foreach(PointD point in histogram)
+                result[j++] = point;
+            return result;
+        }
+
+        /// <summary>
         /// Vrátí odhad distribuèní funkce náhodného vektoru
         /// </summary>
         /// <param name="intervals">Poèet intervalù</param>

@@ -175,6 +175,7 @@
     <Compile Include="Functions\Quantum\SmoothLevelDensity.cs" />
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
+    <Compile Include="Functions\Quantum\Unfolding.cs" />
     <Compile Include="Functions\Test\TestARPack.cs" />
     <Compile Include="Functions\Types\Function.cs" />
     <Compile Include="Functions\Unsorted\Evaluate.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Functions\Quantum\TimeEvolution.cs" />
     <Compile Include="Functions\Statistics\ShotNoise.cs" />
     <Compile Include="Functions\Vector\Cumul.cs" />
+    <Compile Include="Functions\Vector\CumulHistogramStep.cs" />
     <Compile Include="Functions\Vector\DFA.cs" />
     <Compile Include="Functions\Vector\GetIndex.cs" />
     <Compile Include="Functions\Operators\Negation.cs" />

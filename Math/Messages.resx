@@ -126,6 +126,9 @@
   <data name="EMBesselNotConverge" xml:space="preserve">
     <value>Bessel series failed to converge</value>
   </data>
+  <data name="EMFewPointsSpline" xml:space="preserve">
+    <value>The cubic splines works only for curves of two or more points</value>
+  </data>
   <data name="EMGSLengths" xml:space="preserve">
     <value>The lengths of vectors must be the same as their number.</value>
   </data>

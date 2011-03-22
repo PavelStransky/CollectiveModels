@@ -769,6 +769,64 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Vrátí všechny body, která jsou lokálními maximy
+        /// </summary>
+        public PointVector Maxima() {
+            int lengthm = this.Length - 1;
+            ArrayList maxima = new ArrayList();
+
+            PointVector sorted = this.Sort() as PointVector;
+
+            // First element
+            if(sorted[0].Y > sorted[1].Y)
+                maxima.Add(sorted[0]);
+
+            for(int i = 0; i < lengthm; i++)
+                if(sorted[i - 1].Y <= sorted[i].Y && sorted[i].Y >= sorted[i + 1].Y)
+                    if(sorted[i - 1].Y != sorted[i].Y || sorted[i].Y != sorted[i + 1].Y)
+                        maxima.Add(sorted[i]);
+
+            // Last element
+            if(sorted[lengthm - 1].Y < sorted[lengthm].Y)
+                maxima.Add(sorted[lengthm]);
+
+            PointVector result = new PointVector(maxima.Count);
+            int i = 0;
+            foreach(PointD p in maxima)
+                result[i++] = p;
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí všechny body, která jsou lokálními minimy
+        /// </summary>
+        public PointVector Minima() {
+            int lengthm = this.Length - 1;
+            ArrayList minima = new ArrayList();
+
+            PointVector sorted = this.Sort() as PointVector;
+
+            // First element
+            if(sorted[0].Y < sorted[1].Y)
+                minima.Add(sorted[0]);
+
+            for(int i = 0; i < lengthm; i++)
+                if(sorted[i - 1].Y >= sorted[i].Y && sorted[i].Y <= sorted[i + 1].Y)
+                    if(sorted[i - 1].Y != sorted[i].Y || sorted[i].Y != sorted[i + 1].Y)
+                        minima.Add(sorted[i]);
+
+            // Last element
+            if(sorted[lengthm - 1].Y > sorted[lengthm].Y)
+                minima.Add(sorted[lengthm]);
+
+            PointVector result = new PointVector(minima.Count);
+            int i = 0;
+            foreach(PointD p in minima)
+                result[i++] = p;
+            return result;
+        }
+
+        /// <summary>
         /// Lineárnì navzorkuje daný vektor v daných bodech (použije lineární interpolaci a extrapolaci)
         /// </summary>
         /// <param name="points">Koncové body</param>

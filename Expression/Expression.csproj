@@ -159,6 +159,7 @@
     <Compile Include="Functions\Math\BesselJd.cs" />
     <Compile Include="Functions\Math\BesselY.cs" />
     <Compile Include="Functions\Math\BesselYd.cs" />
+    <Compile Include="Functions\Math\EulerGamma.cs" />
     <Compile Include="Functions\Math\GaussianSmooth.cs" />
     <Compile Include="Functions\Math\SphericalBesselJ.cs" />
     <Compile Include="Functions\Math\SphericalBesselJd.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Vector\Delta3.cs" />
+    <Compile Include="Functions\Vector\NormalizeDensity.cs" />
     <Compile Include="Functions\Vector\NumberVariance.cs" />
     <Compile Include="Functions\Vector\Unfolding.cs" />
     <Compile Include="Functions\Test\TestARPack.cs" />

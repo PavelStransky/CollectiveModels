@@ -3274,6 +3274,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value of the Euler-Mascheroni gamma constant.
+        /// </summary>
+        internal static string HelpEulerGamma {
+            get {
+                return ResourceManager.GetString("HelpEulerGamma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Array evaluation of an expression.
         /// </summary>
         internal static string HelpEvalArray {
@@ -4188,6 +4197,15 @@ namespace PavelStransky.Expression {
         internal static string HelpNorm {
             get {
                 return ResourceManager.GetString("HelpNorm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normalizes the level density of a given vector into the form (0, ..., length - 1).
+        /// </summary>
+        internal static string HelpNormalizeDensity {
+            get {
+                return ResourceManager.GetString("HelpNormalizeDensity", resourceCulture);
             }
         }
         

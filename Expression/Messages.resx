@@ -3462,4 +3462,10 @@ Second differing type: {1}</value>
   <data name="HelpNumberVariance" xml:space="preserve">
     <value>Calculates the number variance</value>
   </data>
+  <data name="HelpEulerGamma" xml:space="preserve">
+    <value>Value of the Euler-Mascheroni gamma constant</value>
+  </data>
+  <data name="HelpNormalizeDensity" xml:space="preserve">
+    <value>Normalizes the level density of a given vector into the form (0, ..., length - 1)</value>
+  </data>
 </root>

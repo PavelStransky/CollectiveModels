@@ -49,11 +49,11 @@ namespace PavelStransky.Expression.Functions.Def {
                 unfolded[i] = Polynom.GetValue(regression, e[i]);
 
             List result = new List();
+            result.Add(unfolded);
             result.Add(histogram);
             result.Add(regression);
             result.Add(approx);
             result.Add(error);
-            result.Add(unfolded);
 
             return result;
         }

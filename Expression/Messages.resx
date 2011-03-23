@@ -3456,4 +3456,10 @@ Second differing type: {1}</value>
   <data name="PUnfoldingTypeDescription" xml:space="preserve">
     <value>Type of the unfolding procedure ("cpolynom")</value>
   </data>
+  <data name="HelpDelta3" xml:space="preserve">
+    <value>Calculates the Delta3 spectral rigidity</value>
+  </data>
+  <data name="HelpNumberVariance" xml:space="preserve">
+    <value>Calculates the number variance</value>
+  </data>
 </root>

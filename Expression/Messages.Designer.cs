@@ -3121,6 +3121,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the Delta3 spectral rigidity.
+        /// </summary>
+        internal static string HelpDelta3 {
+            get {
+                return ResourceManager.GetString("HelpDelta3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Denominator of a fraction.
         /// </summary>
         internal static string HelpDenominator {
@@ -4206,6 +4215,15 @@ namespace PavelStransky.Expression {
         internal static string HelpNuDatReadNucleus {
             get {
                 return ResourceManager.GetString("HelpNuDatReadNucleus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the number variance.
+        /// </summary>
+        internal static string HelpNumberVariance {
+            get {
+                return ResourceManager.GetString("HelpNumberVariance", resourceCulture);
             }
         }
         

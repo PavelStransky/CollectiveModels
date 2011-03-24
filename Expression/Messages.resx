@@ -3468,4 +3468,16 @@ Second differing type: {1}</value>
   <data name="HelpNormalizeDensity" xml:space="preserve">
     <value>Normalizes the level density of a given vector into the form (0, ..., length - 1)</value>
   </data>
+  <data name="HelpSpline" xml:space="preserve">
+    <value>Creates a spline object</value>
+  </data>
+  <data name="HelpSplineValue" xml:space="preserve">
+    <value>Value of the Spline interpolation</value>
+  </data>
+  <data name="PSpline" xml:space="preserve">
+    <value>spline</value>
+  </data>
+  <data name="PSplineDescription" xml:space="preserve">
+    <value>Spline object</value>
+  </data>
 </root>

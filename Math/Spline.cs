@@ -1,10 +1,12 @@
 using System;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Math {
 	/// <summary>
 	/// Zadanými hodnotami proloží kubický spline
 	/// </summary>
-	public class Spline {
+	public class Spline: IExportable {
 		// Vstupní data
 		private PointVector data;
 		// Vektor druhých derivací
@@ -12,7 +14,7 @@ namespace PavelStransky.Math {
 
 		public Spline(PointVector data) {
 			if(data.Length <= 2)
-				throw new Exception(errorMessageBadLength);
+				throw new Exception(Messages.EMFewPointsSpline);
 
 			this.data = data.SortX();
 			this.d2 = this.ComputeDerivation();
@@ -119,6 +121,24 @@ namespace PavelStransky.Math {
 			return this.GetPointVector(number, this.data.MinX(), this.data.MaxX());
 		}
 
-		private const string errorMessageBadLength = "K výpoètu spline musí mít vstupní data alespoò 3 body.";
-	}
+        #region IExportable Members
+        /// <summary>
+        /// Export
+        /// </summary>
+        public void Export(Export export) {
+            IEParam param = new IEParam();
+            param.Add(this.data);
+            param.Export(export);
+        }
+
+        /// <summary>
+        /// Import
+        /// </summary>
+        public Spline(Core.Import import) {
+            IEParam param = new IEParam(import);
+            this.data = param.Get() as PointVector;
+            this.ComputeDerivation();
+        }
+        #endregion
+    }
 }

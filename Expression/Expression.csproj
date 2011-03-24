@@ -166,6 +166,7 @@
     <Compile Include="Functions\Math\SphericalBesselJZero.cs" />
     <Compile Include="Functions\Math\SphericalBesselY.cs" />
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
+    <Compile Include="Functions\Math\SplineValue.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Functions\Vector\Delta3.cs" />
     <Compile Include="Functions\Vector\NormalizeDensity.cs" />
     <Compile Include="Functions\Vector\NumberVariance.cs" />
+    <Compile Include="Functions\Vector\Spline.cs" />
     <Compile Include="Functions\Vector\Unfolding.cs" />
     <Compile Include="Functions\Test\TestARPack.cs" />
     <Compile Include="Functions\Types\Function.cs" />

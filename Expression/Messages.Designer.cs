@@ -5056,6 +5056,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a spline object.
+        /// </summary>
+        internal static string HelpSpline {
+            get {
+                return ResourceManager.GetString("HelpSpline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of the Spline interpolation.
+        /// </summary>
+        internal static string HelpSplineValue {
+            get {
+                return ResourceManager.GetString("HelpSplineValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Square root of the value.
         /// </summary>
         internal static string HelpSqrt {
@@ -9264,6 +9282,24 @@ namespace PavelStransky.Expression {
         internal static string PSpacingDescription {
             get {
                 return ResourceManager.GetString("PSpacingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to spline.
+        /// </summary>
+        internal static string PSpline {
+            get {
+                return ResourceManager.GetString("PSpline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spline object.
+        /// </summary>
+        internal static string PSplineDescription {
+            get {
+                return ResourceManager.GetString("PSplineDescription", resourceCulture);
             }
         }
         

@@ -39,6 +39,8 @@ namespace PavelStransky.Math {
                 return new LongFraction(this);
             else if(typeName == typeof(Strutinsky).FullName)
                 return new Strutinsky(this);
+            else if(typeName == typeof(Spline).FullName)
+                return new Spline(this);
             else
                 return null;
         }

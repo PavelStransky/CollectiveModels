@@ -2980,7 +2980,7 @@ Second differing type: {1}</value>
     <value>filetype</value>
   </data>
   <data name="PFileTypeImportDescription" xml:space="preserve">
-    <value>Type of the file ("binary" | "text" | "matlab" | "digits")</value>
+    <value>Type of the file ("binary" | "text" | "matlab" | "digits" | "mathmat" | "wav")</value>
   </data>
   <data name="PNumberOfDigits" xml:space="preserve">
     <value>dn</value>
@@ -3479,5 +3479,29 @@ Second differing type: {1}</value>
   </data>
   <data name="PSplineDescription" xml:space="preserve">
     <value>Spline object</value>
+  </data>
+  <data name="EMBadWavAudioFormat" xml:space="preserve">
+    <value>Program can read only PCM linear coded WAV files (AudioFormat = 1). Current AudioFormat = {0}.</value>
+  </data>
+  <data name="EMBadWavBitRate" xml:space="preserve">
+    <value>Program can read only PCM with BitRate = (8, 16, 32). Entered BitRate = {0}.</value>
+  </data>
+  <data name="EMBadWavFormat" xml:space="preserve">
+    <value>Incorrect WAV format. Error in the parameter {0}.</value>
+  </data>
+  <data name="PSound" xml:space="preserve">
+    <value>sound</value>
+  </data>
+  <data name="PSoundDescription" xml:space="preserve">
+    <value>Channels of the sound to play</value>
+  </data>
+  <data name="PSoundParams" xml:space="preserve">
+    <value>sp</value>
+  </data>
+  <data name="PSoundParamsDescription" xml:space="preserve">
+    <value>Parameters of the sound (sampleRate = 44100; bitsPerSample = 16)</value>
+  </data>
+  <data name="HelpPlay" xml:space="preserve">
+    <value>Plays a given vector</value>
   </data>
 </root>

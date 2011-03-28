@@ -53,6 +53,14 @@ namespace PavelStransky.Expression.Functions.Def {
                 t.Close();
                 f.Close();
             }
+            else if((string)arguments[1] == paramWave) {
+                // Import dat WAV
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                BinaryReader b = new BinaryReader(f);
+                result = this.ImportWave(b);
+                b.Close();
+                f.Close();
+            }
             else {
                 Import import = new Import(fileName);
                 result = import.Read();
@@ -183,9 +191,78 @@ namespace PavelStransky.Expression.Functions.Def {
             return result;
         }
 
+        /// <summary>
+        /// Naète data formátu WAV
+        /// </summary>
+        /// <remarks>
+        /// https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
+        /// http://www.sonicspot.com/guide/wavefiles.html
+        /// </remarks>
+        /// <returns>Øada se všemi kanály (L, P, ...)</returns>
+        private TArray ImportWave(BinaryReader b) {
+            uint chunkID = b.ReadUInt32();
+            if(chunkID != 0x46464952)       // "RIFF"
+                throw new FncException(this,
+                    string.Format(Messages.EMBadWavFormat, "ChunkID"));
+
+            uint chunkSize = b.ReadUInt32();
+
+            uint format = b.ReadUInt32();
+            if(format != 0x45564157)        // "WAVE"
+                throw new FncException(this,
+                    string.Format(Messages.EMBadWavFormat, "Format"));
+
+            uint subchunk1ID = b.ReadUInt32();
+            if(subchunk1ID != 0x20746d66)        // "fmt "
+                throw new FncException(this,
+                    string.Format(Messages.EMBadWavFormat, "ID1"));
+
+            uint subchunk1Size = b.ReadUInt32();
+
+            uint audioFormat = b.ReadUInt16();
+            if(audioFormat != 1)
+                throw new FncException(this,
+                    string.Format(Messages.EMBadWavAudioFormat, audioFormat));
+
+            uint numChannels = b.ReadUInt16();
+
+            uint sampleRate = b.ReadUInt32();
+            uint byteRate = b.ReadUInt32();
+            uint blockAlign = b.ReadUInt16();
+
+            uint bitsPerSample = b.ReadUInt16();
+            if(bitsPerSample != 8 && bitsPerSample != 16 && bitsPerSample != 32)
+                throw new FncException(this,
+                    string.Format(Messages.EMBadWavBitRate, bitsPerSample));
+
+            uint subchunk2ID = b.ReadUInt32();
+            if(subchunk2ID != 0x61746164)        // "data"
+                throw new FncException(this,
+                    string.Format(Messages.EMBadWavFormat, "ID2"));
+
+            uint subchunk2Size = b.ReadUInt32();
+
+            double sr = 1.0 / (double)sampleRate;
+
+            PointVector[] data = new PointVector[numChannels];
+            uint numSamples = subchunk2Size / numChannels / (bitsPerSample / 8);
+            for(int i = 0; i < numChannels; i++)
+                data[i] = new PointVector((int)numSamples);
+
+            for(int i = 0; i < numSamples; i++) {
+                double x = i * sr;
+                for(int j = 0; j < numChannels; j++)
+                    data[j][i] = new PointD(x, bitsPerSample == 16 ? b.ReadInt16() :
+                        (bitsPerSample == 8 ? b.ReadByte() : b.ReadInt32()));
+            }
+
+            return new TArray(data);
+        }
+
         private const string paramDigits = "digits";
 		private const string paramMatlab = "matlab";
         private const string paramMatica = "mathmat";
+        private const string paramWave = "wav";
 
         private const string name = "import";
 	}

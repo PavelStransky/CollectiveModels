@@ -168,6 +168,7 @@
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
     <Compile Include="Functions\Math\SplineValue.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
+    <Compile Include="Functions\Program\Play.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
     <Compile Include="Functions\Quantum\ChemicalPotential.cs" />

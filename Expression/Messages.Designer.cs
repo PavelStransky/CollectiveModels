@@ -254,6 +254,33 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Program can read only PCM linear coded WAV files (AudioFormat = 1). Current AudioFormat = {0}..
+        /// </summary>
+        internal static string EMBadWavAudioFormat {
+            get {
+                return ResourceManager.GetString("EMBadWavAudioFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program can read only PCM with BitRate = (8, 16, 32). Entered BitRate = {0}..
+        /// </summary>
+        internal static string EMBadWavBitRate {
+            get {
+                return ResourceManager.GetString("EMBadWavBitRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect WAV format. Error in the parameter {0}..
+        /// </summary>
+        internal static string EMBadWavFormat {
+            get {
+                return ResourceManager.GetString("EMBadWavFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Context error:.
         /// </summary>
         internal static string EMContext {
@@ -4363,6 +4390,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plays a given vector.
+        /// </summary>
+        internal static string HelpPlay {
+            get {
+                return ResourceManager.GetString("HelpPlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator +.
         /// </summary>
         internal static string HelpPlus {
@@ -7423,7 +7459,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type of the file (&quot;binary&quot; | &quot;text&quot; | &quot;matlab&quot; | &quot;digits&quot;).
+        ///   Looks up a localized string similar to Type of the file (&quot;binary&quot; | &quot;text&quot; | &quot;matlab&quot; | &quot;digits&quot; | &quot;mathmat&quot; | &quot;wav&quot;).
         /// </summary>
         internal static string PFileTypeImportDescription {
             get {
@@ -9264,6 +9300,42 @@ namespace PavelStransky.Expression {
         internal static string PSort2Description {
             get {
                 return ResourceManager.GetString("PSort2Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sound.
+        /// </summary>
+        internal static string PSound {
+            get {
+                return ResourceManager.GetString("PSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channels of the sound to play.
+        /// </summary>
+        internal static string PSoundDescription {
+            get {
+                return ResourceManager.GetString("PSoundDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sp.
+        /// </summary>
+        internal static string PSoundParams {
+            get {
+                return ResourceManager.GetString("PSoundParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters of the sound (sampleRate = 44100; bitsPerSample = 16).
+        /// </summary>
+        internal static string PSoundParamsDescription {
+            get {
+                return ResourceManager.GetString("PSoundParamsDescription", resourceCulture);
             }
         }
         

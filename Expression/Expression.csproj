@@ -179,6 +179,7 @@
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Vector\Delta3.cs" />
+    <Compile Include="Functions\Vector\EMD.cs" />
     <Compile Include="Functions\Vector\NormalizeDensity.cs" />
     <Compile Include="Functions\Vector\NumberVariance.cs" />
     <Compile Include="Functions\Vector\Spline.cs" />

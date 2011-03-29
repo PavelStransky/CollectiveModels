@@ -9,7 +9,7 @@ namespace PavelStransky.Math {
 	/// <summary>
 	/// Øada bodù (x, y)
 	/// </summary>
-    public class PointVector: ICloneable, IExportable, ISortable {
+    public class PointVector: ICloneable, IExportable, ISortable, IMinMax {
         // složky
         private PointD[] item;
 
@@ -295,7 +295,13 @@ namespace PavelStransky.Math {
         /// Vytvoøí kopii vektoru
         /// </summary>
         public object Clone() {
-            return new PointVector((PointD[])this.item.Clone());
+            int length = this.Length;
+            PointVector result = new PointVector(length);
+            for(int i = 0; i < length; i++) {
+                result[i].X = this[i].X;
+                result[i].Y = this[i].Y;
+            }
+            return result;
         }
 
         /// <summary>
@@ -772,23 +778,30 @@ namespace PavelStransky.Math {
         /// Vrátí všechny body, která jsou lokálními maximy
         /// </summary>
         public PointVector Maxima() {
-            int lengthm = this.Length - 1;
+            int length = this.Length;
             ArrayList maxima = new ArrayList();
 
             PointVector sorted = this.Sort() as PointVector;
 
-            // First element
-            if(sorted[0].Y > sorted[1].Y)
-                maxima.Add(sorted[0]);
+            int lastIndex = 0;
+            bool max = true;
 
-            for(int i = 0; i < lengthm; i++)
-                if(sorted[i - 1].Y <= sorted[i].Y && sorted[i].Y >= sorted[i + 1].Y)
-                    if(sorted[i - 1].Y != sorted[i].Y || sorted[i].Y != sorted[i + 1].Y)
-                        maxima.Add(sorted[i]);
+            for(int i = 1; i < length; i++) {
+                if(sorted[i].Y > sorted[lastIndex].Y) {
+                    lastIndex = i;
+                    max = true;
+                }
+                else if(sorted[i].Y < sorted[lastIndex].Y) {
+                    if(max)
+                        maxima.Add(new PointD(0.5 * (sorted[lastIndex].X + sorted[i - 1].X), sorted[lastIndex].Y));
+                    max = false;
+                    lastIndex = i;
+                }
+            }
 
             // Last element
-            if(sorted[lengthm - 1].Y < sorted[lengthm].Y)
-                maxima.Add(sorted[lengthm]);
+            if(max)
+                maxima.Add(new PointD(0.5 * (sorted[lastIndex].X + sorted.LastItem.X), sorted[lastIndex].Y));
 
             PointVector result = new PointVector(maxima.Count);
             int j = 0;
@@ -798,26 +811,49 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Minima (implementace IMinMax)
+        /// </summary>
+        /// <param name="precision">Irelevantní paramete</param>
+        public PointVector Minima(double precision) {
+            return this.Minima();
+        }
+
+        /// <summary>
+        /// Maxima (implementace IMinMax)
+        /// </summary>
+        /// <param name="precision">Irelevantní parametr</param>
+        public PointVector Maxima(double precision) {
+            return this.Maxima();
+        }
+
+        /// <summary>
         /// Vrátí všechny body, která jsou lokálními minimy
         /// </summary>
         public PointVector Minima() {
-            int lengthm = this.Length - 1;
+            int length = this.Length;
             ArrayList minima = new ArrayList();
 
             PointVector sorted = this.Sort() as PointVector;
 
-            // First element
-            if(sorted[0].Y < sorted[1].Y)
-                minima.Add(sorted[0]);
+            int lastIndex = 0;
+            bool min = true;
 
-            for(int i = 0; i < lengthm; i++)
-                if(sorted[i - 1].Y >= sorted[i].Y && sorted[i].Y <= sorted[i + 1].Y)
-                    if(sorted[i - 1].Y != sorted[i].Y || sorted[i].Y != sorted[i + 1].Y)
-                        minima.Add(sorted[i]);
+            for(int i = 1; i < length; i++) {
+                if(sorted[i].Y < sorted[lastIndex].Y) {
+                    lastIndex = i;
+                    min = true;
+                }
+                else if(sorted[i].Y > sorted[lastIndex].Y) {
+                    if(min)
+                        minima.Add(new PointD(0.5 * (sorted[lastIndex].X + sorted[i - 1].X), sorted[lastIndex].Y));
+                    min = false;
+                    lastIndex = i;
+                }
+            }
 
             // Last element
-            if(sorted[lengthm - 1].Y > sorted[lengthm].Y)
-                minima.Add(sorted[lengthm]);
+            if(min)
+                minima.Add(new PointD(0.5 * (sorted[lastIndex].X + sorted.LastItem.X), sorted[lastIndex].Y));
 
             PointVector result = new PointVector(minima.Count);
             int j = 0;

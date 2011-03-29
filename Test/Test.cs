@@ -21,11 +21,25 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusARPack();
+            Test.PokusMaxima();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 29.3.2011
+        /// </summary>
+        static void PokusMaxima() {
+            int length = 20;
+            PointVector p = new PointVector(length);
+            Random r = new Random();
+
+            for(int i = 0; i < length; i++)
+                p[i] = new PointD(i, r.Next(-1, 1));
+
+            PointVector maxima = p.Maxima();
+        }
 
         /// <summary>
         /// 10.2.2011

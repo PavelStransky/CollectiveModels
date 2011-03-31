@@ -43,7 +43,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     StreamWriter t = new StreamWriter(f);
 
                     for(int i = 0; i < m.LengthX; i++) {
-                        t.Write(m[i,0]);
+                        t.Write(m[i, 0]);
                         for(int j = 1; j < m.LengthY; j++) {
                             t.Write('\t');
                             t.Write(m[i, j]);
@@ -53,6 +53,17 @@ namespace PavelStransky.Expression.Functions.Def {
                     t.Close();
                     f.Close();
                 }
+                else if(arguments[1] is PointVector) {
+                    PointVector pv = arguments[1] as PointVector;
+                    FileStream f = new FileStream(fileName, FileMode.Create);
+                    StreamWriter t = new StreamWriter(f);
+                    for(int i = 0; i < pv.Length; i++)
+                        t.WriteLine(string.Format("{0}\t{1}", pv[i].X, pv[i].Y));
+                    t.Close();
+                    f.Close();
+                }
+                else
+                    this.BadTypeError(arguments[1], 1);
             }
             else if(type == "wav") {
                 if(arguments[1] is Vector) {
@@ -84,6 +95,27 @@ namespace PavelStransky.Expression.Functions.Def {
 		}
 
         /// <summary>
+        /// Pøeškáluje data užitím kubických splajnù na zadanou vzorkovací frekvenci
+        /// </summary>
+        /// <param name="data">Data</param>
+        /// <param name="sampleRate">Vzorkovací frekvence</param>
+        private static Vector Rescale(PointVector data, int sampleRate) {
+            data = data.Sort() as PointVector;
+            Spline spline = new Spline(data);
+
+            double minx = data.FirstItem.X;
+            double maxx = data.LastItem.X;
+
+            int numItem = (int)((maxx - minx) * sampleRate);
+            Vector result = new Vector(numItem);
+
+            for(int i = 0; i < numItem; i++)
+                result[i] = spline.GetValue(minx + (double)i / (double)sampleRate);
+
+            return result;
+        }
+
+        /// <summary>
         /// Zapíše data do formátu WAV
         /// </summary>
         /// <remarks>
@@ -93,10 +125,34 @@ namespace PavelStransky.Expression.Functions.Def {
         /// <param name="data">Jednotlivé kanály</param>
         /// <param name="parameters">Parametry (SampleRate = 44100; BitsPerSample = 16)</param>
         public static void ExportWave(BinaryWriter b, TArray data, Vector parameters) {
-            uint sampleRate = parameters.Length > 0 ? (uint)parameters[0] : 44100;
-            uint bitsPerSample = parameters.Length > 1 ? (uint)parameters[1] : 16;
+            uint bitsPerSample = 16;
+            
+            uint sampleRate = parameters.Length > 0 ? (uint)parameters[0] : 0;
+            if(sampleRate <= 0)
+                sampleRate = 44100;
+
+            double normalize = parameters.Length > 1 ? parameters[1] : 0.0;
+            if(normalize > 1.0)
+                normalize = 1.0;
 
             uint numChannels = (uint)data.Length;
+
+            // Pøeškálování
+            if(data.GetItemType() == typeof(PointVector)) {
+                TArray newData = new TArray(typeof(Vector), (int)numChannels);
+                for(int i = 0; i < numChannels; i++)
+                    newData[i] = Rescale(data[i] as PointVector, (int)sampleRate);
+                data = newData;
+            }
+
+            // Normalizace
+            if(normalize > 0.0) {
+                for(int i = 0; i < numChannels; i++) {
+                    Vector v = data[i] as Vector;
+                    data[i] = v * (Int32.MaxValue * normalize / v.MaxAbs());
+                }
+            }
+
             uint numSamples = (uint)(data[0] as Vector).Length;
             uint subchunk2Size = numChannels * numSamples * (bitsPerSample / 8);
 

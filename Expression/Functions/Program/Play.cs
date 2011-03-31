@@ -17,14 +17,20 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(2);
 
-            this.SetParam(0, true, true, false, Messages.PSound, Messages.PSoundDescription, null, typeof(Vector), typeof(TArray));
+            this.SetParam(0, true, true, false, Messages.PSound, Messages.PSoundDescription, null, typeof(Vector), typeof(TArray), typeof(PointVector));
             this.SetParam(1, false, true, false, Messages.PSoundParams, Messages.PSoundParamsDescription, new Vector(0), typeof(Vector));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            TArray data = new TArray(typeof(Vector), 1);
-            if(arguments[0] is Vector)
+            TArray data = null;
+            if(arguments[0] is Vector) {
+                data = new TArray(typeof(Vector), 1);
                 data[0] = arguments[0] as Vector;
+            }
+            else if(arguments[0] is PointVector) {
+                data = new TArray(typeof(PointVector), 1);
+                data[0] = arguments[0] as PointVector;
+            }
             else
                 data = arguments[0] as TArray;
 

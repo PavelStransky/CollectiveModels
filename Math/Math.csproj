@@ -129,6 +129,7 @@
     <Compile Include="Dynamics\SALIContourGraph.cs" />
     <Compile Include="Dynamics\Trajectory.cs" />
     <Compile Include="EMD.cs" />
+    <Compile Include="EMD.SiftingStep.cs" />
     <Compile Include="FFT.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -16,7 +16,7 @@ namespace PavelStransky.Expression {
         private Hashtable objects = new Hashtable();
         private string directory = string.Empty;
 
-        private Mutex contextMutex = new Mutex(false, "Context");
+        private Mutex contextMutex = new Mutex(false);
 
         private static string fncDirectory = string.Empty;
         private static string globalContextDirectory = string.Empty;

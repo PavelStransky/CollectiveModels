@@ -67,11 +67,11 @@ namespace PavelStransky.Math {
 			get {
 				double t, A, B, C, D, dx;
 	
-				int i;
-				for(i = 1; i < this.data.Length; i++)
-					if((this.data[i - 1].X <= x) && (this.data[i].X > x)) break;
-				if(i == this.data.Length) 
-					return 0.0;
+                if(x < this.data.FirstItem.X || x > this.data.LastItem.X)
+                    return 0;
+
+                int length = this.data.Length;
+                int i = this.FindIndex(x);
 	
 				dx = (this.data[i].X - this.data[i - 1].X);
 				t = (x - this.data[i - 1].X) / dx;
@@ -84,6 +84,30 @@ namespace PavelStransky.Math {
 				return A * this.data[i - 1].Y + B * this.data[i].Y + C * this.d2[i - 1] + D * this.d2[i];
 			}
 		}
+
+        /// <summary>
+        /// Najde index prvku, pro který platí data[i - 1] less x lessequal data[i]
+        /// </summary>
+        /// <param name="x">Bod x</param>
+        private int FindIndex(double x) {
+            //for(int i = 1; i < length; i++)
+            //    if(this.data[i].X >= x)
+            //        return i;
+            int maxi = this.data.Length;
+            int mini = 0;
+
+            while(maxi - 1 != mini) {
+                int i = (maxi + mini) / 2;
+                if(this.data[i].X <= x)
+                    mini = i;
+                else
+                    maxi = i;
+            }
+            if(maxi >= this.data.Length)
+                maxi--;
+
+            return maxi;
+        }
 
 		/// <summary>
 		/// Vrací aproximovanou hodnotu

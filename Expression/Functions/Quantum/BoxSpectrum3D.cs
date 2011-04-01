@@ -34,9 +34,9 @@ namespace PavelStransky.Expression.Functions.Def {
 
             ArrayList result = new ArrayList();
 
-            for(int nx = 0; nx < maxxy; nx++)
-                for(int ny = 0; ny < maxxy; ny++)
-                    for(int nz = 0; nz < maxz; nz++) {
+            for(int nx = 1; nx < maxxy; nx++)
+                for(int ny = 1; ny < maxxy; ny++)
+                    for(int nz = 1; nz < maxz; nz++) {
                         double l = (nx * nx + ny * ny) * System.Math.Exp(2 * deformation) + nz * nz * System.Math.Exp(-4 * deformation);
                         if(l > maxE)
                             break;

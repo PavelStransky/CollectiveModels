@@ -3724,6 +3724,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates one Intrinsic Mode Function.
+        /// </summary>
+        internal static string HelpIMF {
+            get {
+                return ResourceManager.GetString("HelpIMF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read a file to a variable.
         /// </summary>
         internal static string HelpImport {
@@ -5016,6 +5025,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSmoothLevelDensity {
             get {
                 return ResourceManager.GetString("HelpSmoothLevelDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Solves an equation &quot;the user function == zero&quot;.
+        /// </summary>
+        internal static string HelpSolve {
+            get {
+                return ResourceManager.GetString("HelpSolve", resourceCulture);
             }
         }
         

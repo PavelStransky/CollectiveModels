@@ -3504,4 +3504,10 @@ Second differing type: {1}</value>
   <data name="HelpPlay" xml:space="preserve">
     <value>Plays a given vector</value>
   </data>
+  <data name="HelpSolve" xml:space="preserve">
+    <value>Solves an equation "the user function == zero"</value>
+  </data>
+  <data name="HelpIMF" xml:space="preserve">
+    <value>Calculates one Intrinsic Mode Function</value>
+  </data>
 </root>

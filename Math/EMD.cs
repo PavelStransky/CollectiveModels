@@ -21,8 +21,32 @@ namespace PavelStransky.Math {
             int length = data.Length;
             this.data = data;
         }
-               
-        public PointVector[] Compute(IOutputWriter writer, int s) {
+
+        /// <summary>
+        /// Compute
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public PointVector[] ComputeIMF(IOutputWriter writer, int s) {
+            PointVector imf = this.Sifting(this.data, s, writer);
+            if(imf != null) {
+                PointVector[] result = new PointVector[2];
+                result[0] = imf;
+                result[1] = new PointVector(this.data.VectorX, this.data.VectorY - imf.VectorY);
+                return result;
+            }
+            else {
+                PointVector[] result = new PointVector[1];
+                result[0] = this.data.Clone() as PointVector;
+                return result;
+            }
+        }
+      
+        /// <summary>
+        /// Computes all IMF
+        /// </summary>
+        public PointVector[] ComputeAll(IOutputWriter writer, int s) {
             int length = this.data.Length;
 
             PointVector resid = this.data.Clone() as PointVector;

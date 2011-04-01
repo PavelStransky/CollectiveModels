@@ -6,11 +6,10 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Empirical mode decomposition
+    /// Calculates one Intrinsic Mode Function
     /// </summary>
-    public class FnEMD: Fnc {
-        public override string Help { get { return Messages.HelpDFA; } }
-        public override string Name { get { return name; } }
+    public class IMF: Fnc {
+        public override string Help { get { return Messages.HelpIMF; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
@@ -21,10 +20,8 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             EMD emd = new EMD(arguments[0] as PointVector);
             int s = (int)arguments[1];
-            return new TArray(emd.ComputeAll(guider, s));
-        
-        }
+            return new TArray(emd.ComputeIMF(guider, s));
 
-        private const string name = "emd";
+        }
     }
 }

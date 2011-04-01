@@ -3510,4 +3510,7 @@ Second differing type: {1}</value>
   <data name="HelpIMF" xml:space="preserve">
     <value>Calculates one Intrinsic Mode Function</value>
   </data>
+  <data name="HelpHOSpectrum3D" xml:space="preserve">
+    <value>Computes spectrum the 3D harmonic oscillator potential</value>
+  </data>
 </root>

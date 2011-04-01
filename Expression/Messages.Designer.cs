@@ -3724,6 +3724,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Computes spectrum the 3D harmonic oscillator potential.
+        /// </summary>
+        internal static string HelpHOSpectrum3D {
+            get {
+                return ResourceManager.GetString("HelpHOSpectrum3D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates one Intrinsic Mode Function.
         /// </summary>
         internal static string HelpIMF {

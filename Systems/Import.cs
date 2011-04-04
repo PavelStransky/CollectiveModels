@@ -44,6 +44,8 @@ namespace PavelStransky.Systems {
                 return new PTBasisIndex(this);
             else if(typeName == typeof(SpheroidBasisIndex).FullName)
                 return new SpheroidBasisIndex(this);
+            else if(typeName == typeof(SCBasisIndex).FullName)
+                return new SCBasisIndex(this);
 
             else if(typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
@@ -116,6 +118,8 @@ namespace PavelStransky.Systems {
                 return new Crossing(this);
             else if(typeName == typeof(Spheroid).FullName)
                 return new Spheroid(this);
+            else if(typeName == typeof(SturmCoulomb).FullName)
+                return new SturmCoulomb(this);
             else
                 return base.CreateObject(typeName);
         }

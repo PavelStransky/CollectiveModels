@@ -3513,4 +3513,13 @@ Second differing type: {1}</value>
   <data name="HelpHOSpectrum3D" xml:space="preserve">
     <value>Computes spectrum the 3D harmonic oscillator potential</value>
   </data>
+  <data name="HelpQuantumSturmCoulomb" xml:space="preserve">
+    <value>Creates a quantum SturmCoulomb class</value>
+  </data>
+  <data name="PIntensityMagneticField" xml:space="preserve">
+    <value>H</value>
+  </data>
+  <data name="PIntensityMagneticFieldDescription" xml:space="preserve">
+    <value>Intensity of the magnetic field</value>
+  </data>
 </root>

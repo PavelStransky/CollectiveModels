@@ -21,11 +21,17 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusMaxima();
+            Test.PokusSturmCoulomb();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        static void PokusSturmCoulomb() {
+            SturmCoulomb s = new SturmCoulomb(0);
+//            Console.WriteLine(s.B(2, 2, 2, 2, 2));
+//            Console.WriteLine(s.W(1, 0));
+        }
 
         /// <summary>
         /// 29.3.2011

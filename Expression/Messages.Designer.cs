@@ -4642,6 +4642,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a quantum SturmCoulomb class.
+        /// </summary>
+        internal static string HelpQuantumSturmCoulomb {
+            get {
+                return ResourceManager.GetString("HelpQuantumSturmCoulomb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates a temperature using expression Tr(Ro H) = K.
         /// </summary>
         internal static string HelpQuantumTemperature {
@@ -7824,6 +7833,24 @@ namespace PavelStransky.Expression {
         internal static string PIntegerDescription {
             get {
                 return ResourceManager.GetString("PIntegerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to H.
+        /// </summary>
+        internal static string PIntensityMagneticField {
+            get {
+                return ResourceManager.GetString("PIntensityMagneticField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Intensity of the magnetic field.
+        /// </summary>
+        internal static string PIntensityMagneticFieldDescription {
+            get {
+                return ResourceManager.GetString("PIntensityMagneticFieldDescription", resourceCulture);
             }
         }
         

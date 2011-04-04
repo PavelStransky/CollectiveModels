@@ -48,10 +48,10 @@ namespace PavelStransky.Systems {
             this.l = new int[length];
 
             int k = 0;
-            for(int i = 0; i < this.maxn; i++)
-                for(int j = 0; j < this.maxl; j++) {
-                    this.n[k] = i;
-                    this.l[k] = j;
+            for(int i = 0; i < this.maxl; i++)
+                for(int j = 0; j < this.maxn; j++) {
+                    this.n[k] = j;
+                    this.l[k] = i;
                     k++;
                 }
 
@@ -85,7 +85,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Šíøka pásu matice
         /// </summary>
-        public override int BandWidth { get { return this.Length - 1; } }
+        public override int BandWidth { get { return 2 * this.maxn + 1; } }
 
         /// <summary>
         /// Maximální hodnota kvantového èísla l

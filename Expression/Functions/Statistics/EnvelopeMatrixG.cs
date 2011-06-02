@@ -32,7 +32,8 @@ namespace PavelStransky.Expression.Functions.Def {
             for(int i = 0; i < length; i++)
                 for(int j = i; j < length; j++) {
                     int k = i - j;
-                    double d = denominator1 * System.Math.Exp(denominator2 * k * k);
+//                    double d = denominator1 * System.Math.Exp(denominator2 * k * k);
+                    double d = System.Math.Exp(denominator2 * k * k);
                     result[i, j] = d;
                     result[j, i] = d;
                 }

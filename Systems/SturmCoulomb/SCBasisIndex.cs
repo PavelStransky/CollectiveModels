@@ -16,6 +16,9 @@ namespace PavelStransky.Systems {
 
         private int[] n, l;
 
+        // True, pokud uvažujeme trojúhelníkový tvar matice
+        private bool triangular;
+
         // Kvantové èíslo m (projekce úhlového momentu)
         private int m;
 
@@ -39,22 +42,44 @@ namespace PavelStransky.Systems {
         /// <param name="basisParams">Parametry báze</param>
         protected override void Init(Vector basisParams) {
             base.Init(basisParams);
-            this.maxn = (int)basisParams[0];                     
-            this.maxl = (int)basisParams[1];
-            this.m = (int)basisParams[2];
 
-            int length = this.maxn * this.maxl;
-            this.n = new int[length];
-            this.l = new int[length];
+            if(basisParams[0] < 0) {
+                this.triangular = true;
 
-            int k = 0;
-            for(int i = 0; i < this.maxl; i++)
-                for(int j = 0; j < this.maxn; j++) {
-                    this.n[k] = j;
-                    this.l[k] = i;
-                    k++;
-                }
+                this.maxn = System.Math.Abs((int)basisParams[0]);
+                this.maxl = this.maxn;
+                this.m = (int)basisParams[1];
 
+                int length = (this.maxn) * (this.maxn + 1) / 2;
+                this.n = new int[length];
+                this.l = new int[length];
+
+                int k = 0;
+                for(int i = 0; i < this.maxl;i++)
+                    for(int j = 0; j + i < this.maxn; j++) {
+                        this.n[k] = j;
+                        this.l[k] = i;
+                        k++;
+                    }
+            }
+            else {
+                this.triangular = false;
+                this.maxn = (int)basisParams[0];
+                this.maxl = (int)basisParams[1];
+                this.m = (int)basisParams[2];
+
+                int length = this.maxn * this.maxl;
+                this.n = new int[length];
+                this.l = new int[length];
+
+                int k = 0;
+                for(int i = 0; i < this.maxl; i++)
+                    for(int j = 0; j < this.maxn; j++) {
+                        this.n[k] = j;
+                        this.l[k] = i;
+                        k++;
+                    }
+            }
         }
 
         /// <summary>
@@ -98,14 +123,16 @@ namespace PavelStransky.Systems {
         public int MaxN { get { return this.maxn; } }
 
         /// <summary>
-        /// Vrací index prvku s kvantovými èísly n, l, m
-        /// Pokud prvek neexistuje, vrací -1
+        /// Vrací index prvku s kvantovými èísly n, l
         /// </summary>
         /// <param name="n">Hlavní kvantové èíslo</param>
         /// <param name="l">Úhlový moment</param>
         public int this[int n, int l] {
             get {
-                return n * this.maxl + l;
+                if(this.triangular)
+                    return n * this.maxl - n * (n + 1) / 2 + l;
+                else
+                    return n * this.maxl + l;
             }
         }
 

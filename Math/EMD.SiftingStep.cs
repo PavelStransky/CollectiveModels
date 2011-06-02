@@ -87,9 +87,11 @@ namespace PavelStransky.Math {
             /// Constructor
             /// </summary>
             /// <param name="data">Data</param>
-            public SiftingStep(PointVector data) {
-                this.maxima = data.Maxima();
-                this.minima = data.Minima();
+            /// <param name="flat">True if the flat parts of the level density is going to be considered 
+            /// as a source of maxima / minima</param>
+            public SiftingStep(PointVector data, bool flat) {
+                this.maxima = data.Maxima(flat);
+                this.minima = data.Minima(flat);
 
                 if(this.IsResiduum)
                     return;

@@ -11,15 +11,18 @@ namespace PavelStransky.Math {
     /// </summary>
     /// <remarks>Irving y Emmanuel, marzo 2011</remarks>
     public partial class EMD {
-        PointVector data;
+        private PointVector data;
+        private bool flat;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="data">Time series</param>
-        public EMD(PointVector data){
-            int length = data.Length;
+        /// <param name="flat">True if the flat parts of the level density is going to be considered 
+        /// as a source of maxima / minima</param>
+        public EMD(PointVector data, bool flat) {
             this.data = data;
+            this.flat = flat;
         }
 
         /// <summary>
@@ -71,6 +74,8 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="source">Source data</param>
         /// <param name="s">Number of iterations after the condition (MaxNum + MinNum - Cross0) is reached</param>
+        /// <param name="flat">True if the flat parts of the level density is going to be considered 
+        /// as a source of maxima / minima</param>
         private PointVector Sifting(PointVector source, int s, IOutputWriter writer) {
             if(writer != null)
                 writer.Write(string.Format("IMF"));
@@ -83,7 +88,7 @@ namespace PavelStransky.Math {
                 if(writer != null)
                     writer.Write(".");
                 
-                sifting = new SiftingStep(source);
+                sifting = new SiftingStep(source, this.flat);
                 
                 if(sifting.IsResiduum) {
                     if(writer != null)

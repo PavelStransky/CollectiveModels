@@ -3522,4 +3522,10 @@ Second differing type: {1}</value>
   <data name="PIntensityMagneticFieldDescription" xml:space="preserve">
     <value>Intensity of the magnetic field</value>
   </data>
+  <data name="PFlat" xml:space="preserve">
+    <value>flat</value>
+  </data>
+  <data name="PFlatDescription" xml:space="preserve">
+    <value>True if the flat parts of the level density is going to be considered as a source of maxima / minima</value>
+  </data>
 </root>

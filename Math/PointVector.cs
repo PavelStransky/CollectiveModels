@@ -775,28 +775,48 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Vrátí všechny body, která jsou lokálními maximy
+        /// Vrátí všechny body, které jsou lokálními maximy
         /// </summary>
         public PointVector Maxima() {
+            return this.Maxima(false);
+        }
+
+        /// <summary>
+        /// Vrátí všechny body, které jsou lokálními maximy
+        /// </summary>
+        /// <param name="flat">True, pokud se za lokální maxima budou poèítat i body typu 0 1M 1 2M 2 ...</param>
+        public PointVector Maxima(bool flat) {
             int length = this.Length;
             ArrayList maxima = new ArrayList();
 
-            PointVector sorted = this.Sort() as PointVector;
+//            PointVector sorted = this.Sort() as PointVector;  // Ze záhadných dùvodù nefunguje pro skokovou funkci
+            PointVector sorted = this;
 
             int lastIndex = 0;
             bool max = true;
+            bool flatMax = false;
 
             for(int i = 1; i < length; i++) {
                 if(sorted[i].Y > sorted[lastIndex].Y) {
+                    if(flatMax && flat)
+                        maxima.Add(sorted[lastIndex]);
+
                     lastIndex = i;
                     max = true;
+                    flatMax = false;
                 }
                 else if(sorted[i].Y < sorted[lastIndex].Y) {
                     if(max)
                         maxima.Add(new PointD(0.5 * (sorted[lastIndex].X + sorted[i - 1].X), sorted[lastIndex].Y));
+                    else if(flatMax && flat)
+                        maxima.Add(sorted[i - 1]);
+
+                    flatMax = false;
                     max = false;
                     lastIndex = i;
                 }
+                else if(sorted[i].Y == sorted[lastIndex].Y)
+                    flatMax = true;
             }
 
             // Last element
@@ -827,16 +847,26 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Vrátí všechny body, která jsou lokálními minimy
+        /// Vrátí všechny body, které jsou lokálními minimy
         /// </summary>
         public PointVector Minima() {
+            return this.Minima(false);
+        }
+
+        /// <summary>
+        /// Vrátí všechny body, které jsou lokálními minimy
+        /// </summary>
+        /// <param name="flat">True, pokud se za lokální minima budou poèítat i body typu 0 1 1m 2 2m 3 ...</param>
+        public PointVector Minima(bool flat) {
             int length = this.Length;
             ArrayList minima = new ArrayList();
 
-            PointVector sorted = this.Sort() as PointVector;
+//            PointVector sorted = this.Sort() as PointVector;  // Ze záhadných dùvodù nefunguje pro skokovou funkci
+            PointVector sorted = this;
 
             int lastIndex = 0;
             bool min = true;
+            bool flatMin = false;
 
             for(int i = 1; i < length; i++) {
                 if(sorted[i].Y < sorted[lastIndex].Y) {
@@ -846,9 +876,15 @@ namespace PavelStransky.Math {
                 else if(sorted[i].Y > sorted[lastIndex].Y) {
                     if(min)
                         minima.Add(new PointD(0.5 * (sorted[lastIndex].X + sorted[i - 1].X), sorted[lastIndex].Y));
+                    else if(flatMin && flat)
+                        minima.Add(sorted[i-1]);
+
+                    flatMin = false;
                     min = false;
                     lastIndex = i;
                 }
+                else if(sorted[i].Y == sorted[lastIndex].Y) 
+                    flatMin = true;                
             }
 
             // Last element

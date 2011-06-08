@@ -32,9 +32,13 @@ namespace PavelStransky.Expression.Functions.Def {
                 // Import dat z matlabu - matice, nevíme, jaké má rozmìry
                 FileStream f = new FileStream(fileName, FileMode.Open);
                 StreamReader t = new StreamReader(f);
-                result = this.ImportMatlab(t, linesOmit);
-                t.Close();
-                f.Close();
+                try {
+                    result = this.ImportMatlab(t, linesOmit);
+                }
+                finally {
+                    t.Close();
+                    f.Close();
+                }
             }
             else if((string)arguments[1] == paramDigits) {
                 int digits = (int)arguments[2];
@@ -42,24 +46,36 @@ namespace PavelStransky.Expression.Functions.Def {
                 // Import èíslic - èíslice jsou v textové formì za sebou;
                 // nevíme, kolik jich je, sdružujeme je do skupin podle poètu digits
                 FileStream f = new FileStream(fileName, FileMode.Open);
-                result = this.ImportDigits(f, digits);
-                f.Close();
+                try {
+                    result = this.ImportDigits(f, digits);
+                }
+                finally {
+                    f.Close();
+                }
             }
             else if((string)arguments[1] == paramMatica) {
                 // Import dat Mathematica - matice
                 FileStream f = new FileStream(fileName, FileMode.Open);
                 StreamReader t = new StreamReader(f);
-                result = this.ImportMatica(t);
-                t.Close();
-                f.Close();
+                try {
+                    result = this.ImportMatica(t);
+                }
+                finally {
+                    t.Close();
+                    f.Close();
+                }
             }
             else if((string)arguments[1] == paramWave) {
                 // Import dat WAV
                 FileStream f = new FileStream(fileName, FileMode.Open);
                 BinaryReader b = new BinaryReader(f);
-                result = this.ImportWave(b);
-                b.Close();
-                f.Close();
+                try {
+                    result = this.ImportWave(b);
+                }
+                finally {
+                    b.Close();
+                    f.Close();
+                }
             }
             else {
                 Import import = new Import(fileName);

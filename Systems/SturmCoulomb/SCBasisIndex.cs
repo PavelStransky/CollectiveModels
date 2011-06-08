@@ -12,7 +12,7 @@ namespace PavelStransky.Systems {
     /// pro bázi Sturm-Coulombova problému
     /// </summary>
     public class SCBasisIndex: BasisIndex {
-        private int maxn, maxl;
+        private int maxn, minl, maxl;
 
         private int[] n, l;
 
@@ -21,9 +21,6 @@ namespace PavelStransky.Systems {
 
         // Kvantové èíslo m (projekce úhlového momentu)
         private int m;
-
-        // Energie vlastních stavù
-        private Vector e;
 
         /// <summary>
         /// Konstruktor
@@ -46,17 +43,19 @@ namespace PavelStransky.Systems {
             if(basisParams[0] < 0) {
                 this.triangular = true;
 
-                this.maxn = System.Math.Abs((int)basisParams[0]);
-                this.maxl = this.maxn;
                 this.m = (int)basisParams[1];
+                this.minl = System.Math.Abs(m);
+
+                this.maxn = System.Math.Abs((int)basisParams[0]);
+                this.maxl = this.maxn + this.minl;
 
                 int length = (this.maxn) * (this.maxn + 1) / 2;
                 this.n = new int[length];
                 this.l = new int[length];
 
                 int k = 0;
-                for(int i = 0; i < this.maxl;i++)
-                    for(int j = 0; j + i < this.maxn; j++) {
+                for(int i = this.minl; i < this.maxl;i++)
+                    for(int j = 0; j + i - this.minl < this.maxn; j++) {
                         this.n[k] = j;
                         this.l[k] = i;
                         k++;

@@ -112,6 +112,9 @@ namespace PavelStransky.Systems {
                     int n2 = index.N[i2];
                     int l2 = index.L[i2];
 
+                    if(l1 < m || l2 < m)
+                        continue;
+
                     double result = 0.0;
                     if(n1 == n2 && l1 == l2)
                         result += n1 + l1 + 1.0;

@@ -3528,4 +3528,16 @@ Second differing type: {1}</value>
   <data name="PFlatDescription" xml:space="preserve">
     <value>True if the flat parts of the level density is going to be considered as a source of maxima / minima</value>
   </data>
+  <data name="P2EMD" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="P2EMDDescription" xml:space="preserve">
+    <value>Number of iterations after the condition |#max - #min| &lt;= 1 is reached</value>
+  </data>
+  <data name="P3EMD" xml:space="preserve">
+    <value>delta</value>
+  </data>
+  <data name="P3EMDDescription" xml:space="preserve">
+    <value>A special parameter for the symmetry condition |U+L|/|U,L| leq delta</value>
+  </data>
 </root>

@@ -13,6 +13,7 @@ namespace PavelStransky.Math {
             private PointVector minima, minimaBorder;
             private double errorU = 0.0;
             private double errorL = 0.0;
+            private int symmetryBreak = 0;
             private PointVector result;
 
             /// <summary>
@@ -84,12 +85,18 @@ namespace PavelStransky.Math {
             public double ErrorL { get { return this.errorL; } }
 
             /// <summary>
+            /// Number of points that breaks the symmetry condition |U+L|/|U,L| leq delta
+            /// </summary>
+            public int SymmetryBreak { get { return this.symmetryBreak; } }
+
+            /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="data">Data</param>
             /// <param name="flat">True if the flat parts of the level density is going to be considered 
             /// as a source of maxima / minima</param>
-            public SiftingStep(PointVector data, bool flat) {
+            /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
+            public SiftingStep(PointVector data, bool flat, double delta) {
                 this.maxima = data.Maxima(flat);
                 this.minima = data.Minima(flat);
 
@@ -112,8 +119,15 @@ namespace PavelStransky.Math {
                     double m = 0.5 * (u + l);
 
                     this.result[i] = new PointD(data[i].X, data[i].Y - m);
-                    this.errorU += System.Math.Abs(m) / System.Math.Abs(u);
-                    this.errorL += System.Math.Abs(m) / System.Math.Abs(l);
+
+                    double uc = System.Math.Abs(m) / System.Math.Abs(u);
+                    double lc = System.Math.Abs(m) / System.Math.Abs(l);
+
+                    if(delta > 0.0 && (uc > delta || lc > delta))
+                        this.symmetryBreak++;
+
+                    this.errorU += uc;
+                    this.errorL += lc;
                 }
             }
 

@@ -130,9 +130,6 @@ namespace PavelStransky.Systems {
                     else if(l1 == l2 + 2)
                         result -= coef * this.B(n1, l1, n2, l2, 4) * this.U(l2, m);
 
-                    if(double.IsNaN(result))
-                        result = result;
-
                     if(result != 0.0) {
                         matrix[i1, i2] = result;
                         matrix[i2, i1] = result;

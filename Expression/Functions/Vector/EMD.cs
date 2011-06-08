@@ -13,17 +13,19 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Name { get { return name; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(3);
+            this.SetNumParams(4);
             this.SetParam(0, true, true, false, Messages.PPointVector, Messages.PPointVectorDescription, null, typeof(PointVector));
-            this.SetParam(1, false, true, false, Messages.PPointVector, Messages.PPointVectorDescription, 10, typeof(int));
-            this.SetParam(2, false, true, false, Messages.PFlat, Messages.PFlatDescription, false, typeof(bool));
+            this.SetParam(1, false, true, false, Messages.P2EMD, Messages.P2EMDDescription, 10, typeof(int));
+            this.SetParam(2, false, true, true, Messages.P3EMD, Messages.P3EMDDescription, 0.0, typeof(double));
+            this.SetParam(3, false, true, false, Messages.PFlat, Messages.PFlatDescription, false, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            bool flat = (bool)arguments[2];
+            bool flat = (bool)arguments[3];
             EMD emd = new EMD(arguments[0] as PointVector, flat);
             int s = (int)arguments[1];
-            return new TArray(emd.ComputeAll(guider, s));
+            double delta = (double)arguments[2];
+            return new TArray(emd.ComputeAll(guider, s, delta));
         
         }
 

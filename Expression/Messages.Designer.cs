@@ -5983,6 +5983,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        internal static string P2EMD {
+            get {
+                return ResourceManager.GetString("P2EMD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of iterations after the condition |#max - #min| &lt;= 1 is reached.
+        /// </summary>
+        internal static string P2EMDDescription {
+            get {
+                return ResourceManager.GetString("P2EMDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to background.
         /// </summary>
         internal static string P2Graph {
@@ -6123,6 +6141,24 @@ namespace PavelStransky.Expression {
         internal static string P3CorrelatedSignalDescription {
             get {
                 return ResourceManager.GetString("P3CorrelatedSignalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delta.
+        /// </summary>
+        internal static string P3EMD {
+            get {
+                return ResourceManager.GetString("P3EMD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A special parameter for the symmetry condition |U+L|/|U,L| leq delta.
+        /// </summary>
+        internal static string P3EMDDescription {
+            get {
+                return ResourceManager.GetString("P3EMDDescription", resourceCulture);
             }
         }
         

@@ -13,6 +13,7 @@ namespace PavelStransky.Systems {
     /// </summary>
     public class SCBasisIndex: BasisIndex {
         private int maxn, minl, maxl;
+        private bool parity;
 
         private int[] n, l;
 
@@ -40,21 +41,40 @@ namespace PavelStransky.Systems {
         protected override void Init(Vector basisParams) {
             base.Init(basisParams);
 
+            this.parity = true;
+            if(basisParams.Length > 2 && basisParams[2] < 0.0)
+                this.parity = false;
+
+            this.m = (int)basisParams[1];
+            this.minl = System.Math.Abs(m);
+
+            // positive parity
+            if(this.parity) {
+                if(this.minl % 2 != 0)
+                    this.minl++;
+            }
+            // negative parity
+            else {
+                if(this.minl % 2 == 0)
+                    this.minl++;
+            } 
+            
             if(basisParams[0] < 0) {
                 this.triangular = true;
-
-                this.m = (int)basisParams[1];
-                this.minl = System.Math.Abs(m);
 
                 this.maxn = System.Math.Abs((int)basisParams[0]);
                 this.maxl = this.maxn + this.minl;
 
-                int length = (this.maxn) * (this.maxn + 1) / 2;
+                int length = 0;
+                for(int i = this.minl; i < this.maxl; i += 2)
+                    for(int j = 0; j + i - this.minl < this.maxn; j++) 
+                        length++;
+
                 this.n = new int[length];
                 this.l = new int[length];
 
                 int k = 0;
-                for(int i = this.minl; i < this.maxl;i++)
+                for(int i = this.minl; i < this.maxl; i+= 2)
                     for(int j = 0; j + i - this.minl < this.maxn; j++) {
                         this.n[k] = j;
                         this.l[k] = i;
@@ -64,15 +84,14 @@ namespace PavelStransky.Systems {
             else {
                 this.triangular = false;
                 this.maxn = (int)basisParams[0];
-                this.maxl = (int)basisParams[1];
-                this.m = (int)basisParams[2];
+                this.maxl = this.minl + (int)basisParams[1];
 
-                int length = this.maxn * this.maxl;
+                int length = this.maxn * (this.maxl - this.minl) / 2;
                 this.n = new int[length];
                 this.l = new int[length];
 
                 int k = 0;
-                for(int i = 0; i < this.maxl; i++)
+                for(int i = 0; i < this.maxl; i += 2)
                     for(int j = 0; j < this.maxn; j++) {
                         this.n[k] = j;
                         this.l[k] = i;

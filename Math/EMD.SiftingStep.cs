@@ -96,15 +96,16 @@ namespace PavelStransky.Math {
             /// <param name="flat">True if the flat parts of the level density is going to be considered 
             /// as a source of maxima / minima</param>
             /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
-            public SiftingStep(PointVector data, bool flat, double delta) {
+            /// <param name="boundary">Boundary condition</param>
+            public SiftingStep(PointVector data, bool flat, double delta, EMD.Boundary boundary) {
                 this.maxima = data.Maxima(flat);
                 this.minima = data.Minima(flat);
 
                 if(this.IsResiduum)
                     return;
 
-                this.maximaBorder = this.CorrectBorder(this.maxima, data.FirstItem.X, data.LastItem.X);
-                this.minimaBorder = this.CorrectBorder(this.minima, data.FirstItem.X, data.LastItem.X);
+                this.maximaBorder = this.CorrectBorder(this.maxima, data.FirstItem.X, data.LastItem.X, boundary);
+                this.minimaBorder = this.CorrectBorder(this.minima, data.FirstItem.X, data.LastItem.X, boundary);
 
                 Spline maximaSpline = new Spline(this.maximaBorder);
                 Spline minimaSpline = new Spline(this.minimaBorder);
@@ -135,7 +136,10 @@ namespace PavelStransky.Math {
             /// Corrected the initial and final values of the given time series
             /// </summary>
             /// <param name="source">Source time series</param>
-            private PointVector CorrectBorder(PointVector source, double minX, double maxX) {
+            /// <param name="minX">First x value of the source data</param>
+            /// <param name="maxX">Last x value of the source data</param>
+            /// <param name="boundary">Boundary condition</param>
+            private PointVector CorrectBorder(PointVector source, double minX, double maxX, EMD.Boundary boundary) {
                 int addPoints = 0;
                 if(source.FirstItem.X > minX)
                     addPoints++;
@@ -153,16 +157,30 @@ namespace PavelStransky.Math {
                 if(source.FirstItem.X > minX) {
                     for(int i = length; i > 0; i--)
                         result[i] = source[i - 1];
-                    result.FirstItem = new PointD(minX, source.FirstItem.Y);
+                    if(boundary == Boundary.First)
+                        result.FirstItem = new PointD(minX, source.FirstItem.Y);
+                    else {
+                        if(source.Length > 1 && source.FirstItem.X - minX < source[1].X - source.FirstItem.X)
+                            result.FirstItem = new PointD(source.FirstItem.X - source[1].X, source.FirstItem.Y);
+                        else
+                            result.FirstItem = new PointD(minX - source.FirstItem.X, source.FirstItem.Y);
+                    }
                 }
                 else
                     for(int i = 0; i < length; i++)
                         result[i] = source[i];
 
                 // We add one maximum to the end of the time series
-                if(source.LastItem.X < maxX)
-                    result.LastItem = new PointD(maxX, source.LastItem.Y);
-
+                if(source.LastItem.X < maxX) {
+                    if(boundary == Boundary.First)
+                        result.LastItem = new PointD(maxX, source.LastItem.Y);
+                    else {
+                        if(source.Length > 1 && maxX - source.LastItem.X < source.LastItem.X - source[source.Length - 2].X)
+                            result.LastItem = new PointD(source.LastItem.X + source[source.Length - 2].X, source.FirstItem.Y);
+                        else
+                            result.FirstItem = new PointD(maxX + source.FirstItem.X, source.FirstItem.Y);
+                    }
+                }
                 return result;
             }
         }

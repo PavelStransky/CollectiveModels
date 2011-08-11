@@ -77,7 +77,7 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Indexer
         /// </summary>
-        public PointD this[int i] { get { return this.item[i]; } set { this.item[i] = value; } }
+        public PointD this[int i] { get { return this.item[i]; } set { this.item[i] = value; } }        
 
         /// <summary>
         /// První prvek vektoru

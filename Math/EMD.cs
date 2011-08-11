@@ -14,6 +14,12 @@ namespace PavelStransky.Math {
         private PointVector data;
         private bool flat;
 
+        // Boundary conditions for EMD
+        public enum Boundary {
+            Reflect, // Reflects the boundary maxima
+            First    // Takes the first point of the time series as the boundary maximum
+        }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -31,8 +37,9 @@ namespace PavelStransky.Math {
         /// <param name="writer">Writer</param>
         /// <param name="s">Number of interations after the condition |#max-#min| leq 1 is satisfied</param>
         /// <param name="delta">A special parameter for the symmetry condition |U+L|/2|U| leq delta</param>
-        public PointVector[] ComputeIMF(IOutputWriter writer, int s, double delta) {
-            PointVector imf = this.Sifting(this.data, s, delta, writer);
+        /// <param name="boundary">Boundary condition</param>
+        public PointVector[] ComputeIMF(IOutputWriter writer, int s, double delta, Boundary boundary) {
+            PointVector imf = this.Sifting(this.data, s, delta, boundary, writer);
             if(imf != null) {
                 PointVector[] result = new PointVector[2];
                 result[0] = imf;
@@ -51,14 +58,15 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="s">Number of iterations after the condition (MaxNum + MinNum - Cross0) is reached</param>
         /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
-        public PointVector[] ComputeAll(IOutputWriter writer, int s, double delta) {
+        /// <param name="boundary">Boundary condition</param>
+        public PointVector[] ComputeAll(IOutputWriter writer, int s, double delta, Boundary boundary) {
             int length = this.data.Length;
 
             PointVector resid = this.data.Clone() as PointVector;
             ArrayList result = new ArrayList();
 
             PointVector imf = null;
-            while((imf = this.Sifting(resid, s, delta, writer)) != null) {
+            while((imf = this.Sifting(resid, s, delta, boundary, writer)) != null) {
                 result.Add(imf);
                 resid = new PointVector(resid.VectorX, resid.VectorY - imf.VectorY);
             }
@@ -77,7 +85,8 @@ namespace PavelStransky.Math {
         /// <param name="source">Source data</param>
         /// <param name="s">Number of iterations after the condition (MaxNum + MinNum - Cross0) is reached</param>
         /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
-        private PointVector Sifting(PointVector source, int s, double delta, IOutputWriter writer) {
+        /// <param name="boundary">Boundary condition</param>
+        private PointVector Sifting(PointVector source, int s, double delta, Boundary boundary, IOutputWriter writer) {
             if(writer != null)
                 writer.Write(string.Format("IMF"));
 
@@ -89,7 +98,7 @@ namespace PavelStransky.Math {
                 if(writer != null)
                     writer.Write(".");
 
-                sifting = new SiftingStep(source, this.flat, delta);
+                sifting = new SiftingStep(source, this.flat, delta, boundary);
 
                 if(sifting.IsResiduum) {
                     if(writer != null)

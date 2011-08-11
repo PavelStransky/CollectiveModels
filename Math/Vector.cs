@@ -458,7 +458,7 @@ namespace PavelStransky.Math {
 		/// <summary>
 		/// Indexer
 		/// </summary>
-		public double this [int i] {get {return this.item[i];} set {this.item[i] = value;}}
+        public double this[int i] { get { return this.item[i]; } set { this.item[i] = value; } }
 
         /// <summary>
         /// Indexer pro více prvkù
@@ -481,7 +481,7 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Poslední prvek vektoru
         /// </summary>
-        public double LastItem { get { return this[this.Length - 1]; } set { this[this.Length - 1] = value; } }
+        public double LastItem { get { return this[-1]; } set { this[-1] = value; } }
 
 		/// <summary>
 		/// Vektor vynuluje

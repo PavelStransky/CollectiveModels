@@ -21,11 +21,40 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusSturmCoulomb();
+            Test.EmmanuelData();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Data for Emmanuel 10.6.2011
+        /// </summary>
+        static void EmmanuelData() {
+            FileStream f = new FileStream("c:\\data.txt", FileMode.Open);
+            StreamReader s = new StreamReader(f);
+
+            FileStream g = new FileStream("c:\\out.txt", FileMode.Create);
+            StreamWriter t = new StreamWriter(g);
+
+            string line = string.Empty;
+            while((line = s.ReadLine()) != null) {
+                line = line.ToLower().Replace("&#183;", ".");
+                int fonti = -1;
+                while((fonti = line.IndexOf("<font")) >= 0) {
+                    line = line.Substring(0, fonti) + " " 
+                        + line.Substring(line.IndexOf(">", line.IndexOf("</font")) + 1);
+                }
+                if(line != "")
+                    t.WriteLine(line.Trim().Replace("  ", " "));
+            }
+
+            t.Close();
+            g.Close();
+
+            s.Close();
+            f.Close();
+        }
 
         static void PokusSturmCoulomb() {
             SturmCoulomb s = new SturmCoulomb(0);

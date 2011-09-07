@@ -4633,6 +4633,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The quantum extensible pendulum system.
+        /// </summary>
+        internal static string HelpQuantumEP {
+            get {
+                return ResourceManager.GetString("HelpQuantumEP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates Quantum Spheroid class.
         /// </summary>
         internal static string HelpQuantumSpheroid {

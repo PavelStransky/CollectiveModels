@@ -1287,7 +1287,7 @@ namespace PavelStransky.Math {
 			StringBuilder s = new StringBuilder();
 
 			for(int i = 0; i < this.Length; i++) 
-				s.Append(string.Format("{0,10:#####0.000}", this[i]));
+				s.Append(string.Format("{0,10:#####0.000000} ", this[i]));
 
 			return s.ToString();
 		}

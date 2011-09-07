@@ -3546,4 +3546,7 @@ Second differing type: {1}</value>
   <data name="PEMDBoundaryDescription" xml:space="preserve">
     <value>Boundary condition for the EMD calculation ("reflection" | "first")</value>
   </data>
+  <data name="HelpQuantumEP" xml:space="preserve">
+    <value>The quantum extensible pendulum system</value>
+  </data>
 </root>

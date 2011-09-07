@@ -32,9 +32,9 @@ namespace PavelStransky.Test {
         /// </summary>
         static void HOMatrixElements() {
             HOMatrixElement ho = new HOMatrixElement(1);
-            int n1 = 10, n2 = 10;
-            int m1 = 21, m2 = 20;
-            int a = 1, b = 1;
+            int n1 = 1, n2 = 2;
+            int m1 = 0, m2 = 0;
+            int a = 1, b = 0;
 
             Console.WriteLine("(n1, n2, m1, m2, a, b) = ({0}, {1}, {2}, {3}, {4}, {5})", n1, n2, m1, m2, a, b);
             Console.WriteLine(ho.HO2D(n1, n2, m1, m2, a, b));

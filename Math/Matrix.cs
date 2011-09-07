@@ -1066,7 +1066,7 @@ namespace PavelStransky.Math {
 
 			for(int i = 0; i < lengthX; i++) {
 				for(int j = 0; j < lengthY; j++)
-					s.Append(string.Format("{0,10:#####0.000}\t", this[i, j]));
+					s.Append(string.Format("{0,10:#####0.00000} ", this[i, j]));
 				s.Append('\n');
 			}
 

@@ -162,13 +162,19 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="i">Vstupní hodnota</param>
         public static double HalfFactorialILog(int i) {
-            if(i < 0)
-                return double.NaN;
+            if(i < 0) {
+                double result = halfFactorialLog[0];
+
+                for(int j = -1; j >= i; j--)
+                    result -= System.Math.Log(System.Math.Abs(j + 0.5));
+
+                return result;
+            }
             else if(i >= maxHalfFactorialLog) {
                 double result = halfFactorialLog[maxHalfFactorialLog - 1];
 
                 for(int j = maxHalfFactorialLog; j <= i; j++)
-                    result += System.Math.Log(j);
+                    result += System.Math.Log(j - 0.5);
 
                 return result;
             }

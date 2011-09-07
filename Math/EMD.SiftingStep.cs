@@ -166,9 +166,12 @@ namespace PavelStransky.Math {
                             result.FirstItem = new PointD(minX - source.FirstItem.X, source.FirstItem.Y);
                     }
                 }
-                else
+                else {
                     for(int i = 0; i < length; i++)
                         result[i] = source[i];
+
+                    result[0].Y = source[1].Y;
+                }
 
                 // We add one maximum to the end of the time series
                 if(source.LastItem.X < maxX) {
@@ -176,11 +179,14 @@ namespace PavelStransky.Math {
                         result.LastItem = new PointD(maxX, source.LastItem.Y);
                     else {
                         if(source.Length > 1 && maxX - source.LastItem.X < source.LastItem.X - source[source.Length - 2].X)
-                            result.LastItem = new PointD(source.LastItem.X + source[source.Length - 2].X, source.FirstItem.Y);
+                            result.LastItem = new PointD(2.0*source.LastItem.X - source[source.Length - 2].X, source.LastItem.Y);
                         else
-                            result.FirstItem = new PointD(maxX + source.FirstItem.X, source.FirstItem.Y);
+                            result.LastItem = new PointD(2.0*maxX - source.FirstItem.X, source.LastItem.Y);
                     }
                 }
+                else
+                    result.LastItem.Y = source[source.Length - 2].Y;
+
                 return result;
             }
         }

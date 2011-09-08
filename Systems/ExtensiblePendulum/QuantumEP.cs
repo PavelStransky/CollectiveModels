@@ -61,7 +61,6 @@ namespace PavelStransky.Systems {
         public void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             EPBasisIndex index = basisIndex as EPBasisIndex;
 
-            int maxn = index.MaxN;
             int dim = index.Length;
 
             double omega = System.Math.Sqrt(this.a);
@@ -76,10 +75,11 @@ namespace PavelStransky.Systems {
                 int l = System.Math.Abs(m);
 
                 // rho element
-                for(int n2 = n; n2 <= maxn; n2++) {
-                    int j = index[n2, m];
-                    if(j < 0)
+                for(int j = 0; j < dim; j++) {
+                    if(index.M[j] != m)
                         continue;
+
+                    int n2 = index.N[j];
 
                     double norm = c3 * System.Math.Exp(0.5 * (SpecialFunctions.FactorialILog(n) + SpecialFunctions.FactorialILog(n2)
                         - SpecialFunctions.FactorialILog(n + l) - SpecialFunctions.FactorialILog(n2 + l)));

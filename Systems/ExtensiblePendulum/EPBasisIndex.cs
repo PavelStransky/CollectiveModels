@@ -13,6 +13,7 @@ namespace PavelStransky.Systems {
     public class EPBasisIndex: BasisIndex {
         private int maxn, maxm;
         private bool positive;
+        private int bandWidth;
 
         // True, pokud uvažujeme trojúhelníkový tvar matice
         private bool triangular; 
@@ -61,6 +62,40 @@ namespace PavelStransky.Systems {
                         this.n[k] = j;
                         k++;
                     }
+
+                this.bandWidth = this.positive ? this.maxn + 1 : 2 * this.maxn + 1;
+            }
+            else {
+                this.triangular = true;
+
+                int maxE = System.Math.Abs((int)basisParams[0]);
+
+                int maxn = maxE;
+                int maxm = maxE / 2;
+                int minm = this.positive ? 0 : -maxm;
+
+                int length = 0;
+                for(int i = minm; i <= maxm; i++)
+                    for(int j = 0; j <= maxn; j++)
+                        if(2 * j + System.Math.Abs(i) + 1 <= maxE) {
+                            this.maxm = System.Math.Max(this.maxm, i);
+                            this.maxn = System.Math.Max(this.maxn, j);
+                            length++;
+                        }
+
+                this.n = new int[length];
+                this.m = new int[length];
+
+                int k = 0;
+                for(int i = minm; i <= this.maxm; i++)
+                    for(int j = 0; j <= this.maxn; j++)
+                        if(2 * j + System.Math.Abs(i) + 1 <= maxE) {
+                            this.m[k] = i;
+                            this.n[k] = j;
+                            k++;
+                        }
+
+                this.bandWidth = this.positive ? this.maxn + 1 : this.maxn + 2;
             }
         }
 
@@ -91,7 +126,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Šíøka pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return this.positive ? this.maxn + 1 : 2 * this.maxn + 1; } }
+        public override int BandWidth { get { return this.bandWidth; } }
 
         /// <summary>
         /// Maximální hodnota hlavního kvantového èísla n
@@ -119,15 +154,23 @@ namespace PavelStransky.Systems {
                 if(n < 0 || n > this.maxn)
                     return -1;
 
-                if(this.positive) {
-                    if(m < 0 || m > this.maxm)
-                        return -1;
-                    return m * (this.maxn + 1) + n;
+                if(this.triangular) {
+                    for(int i = 0; i < this.Length; i++)
+                        if(this.m[i] == m && this.n[i] == n)
+                            return i;
+                    return -1;
                 }
                 else {
-                    if(System.Math.Abs(m) > this.maxm)
-                        return -1;
-                    return (m + this.maxm) * (maxn + 1) + n;
+                    if(this.positive) {
+                        if(m < 0 || m > this.maxm)
+                            return -1;
+                        return m * (this.maxn + 1) + n;
+                    }
+                    else {
+                        if(System.Math.Abs(m) > this.maxm)
+                            return -1;
+                        return (m + this.maxm) * (maxn + 1) + n;
+                    }
                 }
             }
         }

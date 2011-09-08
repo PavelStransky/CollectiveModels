@@ -115,13 +115,21 @@ namespace PavelStransky.Systems {
                     }
 
                     // different m elements
-                    ip = index[n, System.Math.Abs(m - 1)];
+                    if(index.Positive)
+                        ip = index[n, System.Math.Abs(m - 1)];
+                    else if(m > 0)
+                        ip = index[n, m - 1];
+                    else
+                        ip = index[n, m + 1];
                     if(ip > 0) {
-                        matrix[i, ip] = c2 * System.Math.Sqrt(n + System.Math.Max(l, System.Math.Abs(m - 1)));
+                        matrix[i, ip] = c2 * System.Math.Sqrt(n + System.Math.Max(l, System.Math.Abs(index.M[ip])));
                         matrix[ip, i] = matrix[i, ip];
                     }
-                    ip = index[n + 1, m - 1];
-                    if(ip > 0) {
+                    if(m > 0)
+                        ip = index[n + 1, m - 1];
+                    else
+                        ip = index[n + 1, m + 1];
+                    if(ip > 0 && m != 0) {
                         matrix[i, ip] = -c2 * System.Math.Sqrt(n + 1);
                         matrix[ip, i] = matrix[i, ip];
                     }

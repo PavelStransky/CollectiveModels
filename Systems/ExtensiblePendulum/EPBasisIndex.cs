@@ -14,6 +14,9 @@ namespace PavelStransky.Systems {
         private int maxn, maxm;
         private bool positive;
 
+        // True, pokud uvažujeme trojúhelníkový tvar matice
+        private bool triangular; 
+        
         private int[] n, m;
 
         /// <summary>
@@ -33,26 +36,32 @@ namespace PavelStransky.Systems {
         /// <param name="basisParams">Parametry báze</param>
         protected override void Init(Vector basisParams) {
             base.Init(basisParams);
-            this.maxn = (int)basisParams[0];                     // Maximální hlavní kvantové èíslo
-            this.maxm = (int)basisParams[1];                     // Maximální orbitální kvantové èíslo
-            this.positive = false;
 
             if(basisParams.Length > 2 && basisParams[2] > 0)
                 this.positive = true;
+            else
+                this.positive = false;
 
-            int length = this.Length;
-            this.n = new int[length];
-            this.m = new int[length];
+            if((int)basisParams[0] > 0) {
+                this.triangular = false;
 
-            int minm = this.positive ? 0 : -this.maxm;
+                this.maxn = (int)basisParams[0];                     // Maximální hlavní kvantové èíslo
+                this.maxm = (int)basisParams[1];                     // Maximální orbitální kvantové èíslo
 
-            int k = 0;
-            for(int i = -minm; i <= this.maxm; i++)
-                for(int j = 0; j <= this.maxn; j++) {
-                    this.m[k] = i;
-                    this.n[k] = j;
-                    k++;
-                }
+                int length = this.positive ? (this.maxn + 1) * (this.maxm + 1) : (this.maxn + 1) * (2 * this.maxm + 1);
+                this.n = new int[length];
+                this.m = new int[length];
+
+                int minm = this.positive ? 0 : -this.maxm;
+
+                int k = 0;
+                for(int i = minm; i <= this.maxm; i++)
+                    for(int j = 0; j <= this.maxn; j++) {
+                        this.m[k] = i;
+                        this.n[k] = j;
+                        k++;
+                    }
+            }
         }
 
         /// <summary>
@@ -75,17 +84,14 @@ namespace PavelStransky.Systems {
         /// </summary>
         public override int Length {
             get {
-                if(this.positive)
-                    return (this.maxn + 1) * (this.maxm + 1);
-                else
-                    return (this.maxn + 1) * (2 * this.maxm + 1);
+                return this.n.Length;
             }
         }
 
         /// <summary>
         /// Šíøka pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return this.maxn + 1; } }
+        public override int BandWidth { get { return this.positive ? this.maxn + 1 : 2 * this.maxn + 1; } }
 
         /// <summary>
         /// Maximální hodnota hlavního kvantového èísla n

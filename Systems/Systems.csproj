@@ -61,8 +61,10 @@
     <Compile Include="DoublePendulum\DPBasisIndex.cs" />
     <Compile Include="DoublePendulum\QuantumDP.cs" />
     <Compile Include="EigenSystem.cs" />
+    <Compile Include="ExtensiblePendulum\ClassicalEP.cs" />
     <Compile Include="ExtensiblePendulum\EPBasisIndex.cs" />
     <Compile Include="ExtensiblePendulum\ExtensiblePendulum.cs" />
+    <Compile Include="ExtensiblePendulum\LongFactorialCache.cs" />
     <Compile Include="ExtensiblePendulum\QuantumEP.cs" />
     <Compile Include="GCM\Classical\ClassicalGCM.cs" />
     <Compile Include="GCM\Classical\ClassicalGCMJ.cs" />

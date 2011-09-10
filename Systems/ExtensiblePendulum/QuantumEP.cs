@@ -35,11 +35,11 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="mu">Parametr kyvadla</param>
+        /// <param name="nu">Parametr kyvadla</param>
         /// <param name="a">Parametr báze harmonického oscilátoru</param>
         /// <param name="hbar">Planckova konstanta</param>
-        public QuantumEP(double mu, double a, double hbar)
-            : base(mu) {
+        public QuantumEP(double nu, double a, double hbar)
+            : base(nu) {
             this.a = a;
             this.hbar = hbar;
             this.eigenSystem = new EigenSystem(this);
@@ -66,8 +66,10 @@ namespace PavelStransky.Systems {
             double omega = System.Math.Sqrt(this.a);
             double alpha = System.Math.Sqrt(this.a) / this.hbar;
             double c1 = (1 - this.a) / (2.0 * alpha);
-            double c2 = this.Mu * this.Mu / (2.0 * System.Math.Sqrt(alpha));
+            double c2 = this.Nu / (2.0 * System.Math.Sqrt(alpha));
             double c3 = System.Math.PI / (4.0 * System.Math.Sqrt(alpha));
+
+            LongFactorialCache cache = new LongFactorialCache(index.MaxN, index.MaxN + index.MaxM, index.MaxN + index.MaxM);
 
             for(int i = 0; i < dim; i++) {
                 int n = index.N[i];
@@ -75,7 +77,7 @@ namespace PavelStransky.Systems {
                 int l = System.Math.Abs(m);
 
                 // rho element
-                for(int j = 0; j < dim; j++) {
+                for(int j = i; j < dim; j++) {
                     if(index.M[j] != m)
                         continue;
 
@@ -85,6 +87,7 @@ namespace PavelStransky.Systems {
                         - SpecialFunctions.FactorialILog(n + l) - SpecialFunctions.FactorialILog(n2 + l)));
 
                     double sum = 0.0;
+
                     int minn = System.Math.Min(n, n2);
                     for(int s = 0; s <= minn; s++) {
                         int sign = 1;
@@ -100,6 +103,8 @@ namespace PavelStransky.Systems {
 
                     matrix[i, j] = (n + n2) % 2 == 0 ? (-norm * sum) : (norm * sum);
                     matrix[j, i] = matrix[i, j];
+                    if(double.IsNaN(matrix[i, j]))
+                        break;
                 }
 
                 // Diagonal element

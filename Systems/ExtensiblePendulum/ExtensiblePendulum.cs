@@ -12,13 +12,13 @@ namespace PavelStransky.Systems {
     /// Extensible pendulum system (2D pendulum on a spring)
     /// </summary>
     public abstract class ExtensiblePendulum: IExportable {
-        // Parametr modelu Mu = sqrt(mg/kL) = sqrt(mg/k(L0+mg/k))
-        private double mu;
+        // Parametr modelu nu = sqrt(mg/kL) = sqrt(mg/k(L0+mg/k))
+        private double nu;
 
         /// <summary>
-        /// Parametr modelu Mu = sqrt(mg/kL) = sqrt(mg/k(L0+mg/k))
+        /// Parametr modelu Nu = sqrt(mg/kL) = sqrt(mg/k(L0+mg/k))
         /// </summary>
-        public double Mu { get { return this.mu; } }
+        public double Nu { get { return this.nu; } }
 
         /// <summary>
         /// Prázdný konstruktor
@@ -28,9 +28,9 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="mu">Parametr modelu</param>
-        public ExtensiblePendulum(double mu) {
-            this.mu = mu;
+        /// <param name="nu">Parametr modelu</param>
+        public ExtensiblePendulum(double nu) {
+            this.nu = nu;
         }
 
         #region Implementace IExportable
@@ -40,7 +40,7 @@ namespace PavelStransky.Systems {
         /// <param name="export">Export</param>
         public virtual void Export(Export export) {
             IEParam param = new IEParam();
-            param.Add(this.mu, "Mu");
+            param.Add(this.nu, "Nu");
             param.Export(export);
         }
 
@@ -50,7 +50,7 @@ namespace PavelStransky.Systems {
         /// <param name="import">Import</param>
         public ExtensiblePendulum(Core.Import import) {
             IEParam param = new IEParam(import);
-            this.mu = (double)param.Get(1.0);
+            this.nu = (double)param.Get(1.0);
         }
         #endregion
 
@@ -59,7 +59,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         public override string ToString() {
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("mu = {0,10:#####0.000}\n", this.mu));
+            s.Append(string.Format("nu = {0,10:#####0.000}\n", this.nu));
             return s.ToString();
         }
     }

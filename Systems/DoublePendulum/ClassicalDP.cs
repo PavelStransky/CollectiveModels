@@ -296,8 +296,6 @@ namespace PavelStransky.Systems {
             ic[2] = lambda1;
             ic[3] = lambda2;
 
-            double ee = this.E(ic);
-
             return true;
         }
 

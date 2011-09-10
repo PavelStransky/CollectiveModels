@@ -69,8 +69,6 @@ namespace PavelStransky.Systems {
             double c2 = this.Nu / (2.0 * System.Math.Sqrt(alpha));
             double c3 = System.Math.PI / (4.0 * System.Math.Sqrt(alpha));
 
-            LongFactorialCache cache = new LongFactorialCache(index.MaxN, index.MaxN + index.MaxM, index.MaxN + index.MaxM);
-
             for(int i = 0; i < dim; i++) {
                 int n = index.N[i];
                 int m = index.M[i];
@@ -83,8 +81,8 @@ namespace PavelStransky.Systems {
 
                     int n2 = index.N[j];
 
-                    double norm = c3 * System.Math.Exp(0.5 * (SpecialFunctions.FactorialILog(n) + SpecialFunctions.FactorialILog(n2)
-                        - SpecialFunctions.FactorialILog(n + l) - SpecialFunctions.FactorialILog(n2 + l)));
+                    double norm = 0.5 * (SpecialFunctions.FactorialILog(n) + SpecialFunctions.FactorialILog(n2)
+                        - SpecialFunctions.FactorialILog(n + l) - SpecialFunctions.FactorialILog(n2 + l));
 
                     double sum = 0.0;
 
@@ -96,15 +94,14 @@ namespace PavelStransky.Systems {
                         if(s - n2 + 1 < 0 && (n2 - s) % 2 == 0)
                             sign = -sign;
 
-                        sum += sign * System.Math.Exp(SpecialFunctions.HalfFactorialILog(l + s + 1) - SpecialFunctions.FactorialILog(s)
+                        sum += sign * System.Math.Exp(norm + SpecialFunctions.HalfFactorialILog(l + s + 1) 
+                            - SpecialFunctions.FactorialILog(s)
                             - SpecialFunctions.FactorialILog(n - s) - SpecialFunctions.FactorialILog(n2 - s)
                             - SpecialFunctions.HalfFactorialILog(s - n + 1) - SpecialFunctions.HalfFactorialILog(s - n2 + 1));
                     }
 
-                    matrix[i, j] = (n + n2) % 2 == 0 ? (-norm * sum) : (norm * sum);
+                    matrix[i, j] = (n + n2) % 2 == 0 ? (-c3 * sum) : (c3 * sum);
                     matrix[j, i] = matrix[i, j];
-                    if(double.IsNaN(matrix[i, j]))
-                        break;
                 }
 
                 // Diagonal element
@@ -125,7 +122,7 @@ namespace PavelStransky.Systems {
                 else
                     ip = index[n, m + 1];
                 if(ip > 0) {
-                    matrix[i, ip] = c2 * System.Math.Sqrt(n + System.Math.Max(l, System.Math.Abs(index.M[ip])));
+                    matrix[i, ip] = -c2 * System.Math.Sqrt(n + System.Math.Max(l, System.Math.Abs(index.M[ip])));
                     matrix[ip, i] = matrix[i, ip];
                 }
                 if(m > 0)
@@ -133,7 +130,7 @@ namespace PavelStransky.Systems {
                 else
                     ip = index[n + 1, m + 1];
                 if(ip > 0 && m != 0) {
-                    matrix[i, ip] = -c2 * System.Math.Sqrt(n + 1);
+                    matrix[i, ip] = c2 * System.Math.Sqrt(n + 1);
                     matrix[ip, i] = matrix[i, ip];
                 }
             }

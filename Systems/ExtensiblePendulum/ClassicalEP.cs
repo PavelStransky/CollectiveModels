@@ -4,7 +4,7 @@ using System.Text;
 
 using PavelStransky.Core;
 using PavelStransky.Math;
-/*
+
 namespace PavelStransky.Systems {
     public class ClassicalEP: ExtensiblePendulum, IDynamicalSystem {
         // Generátor náhodných èísel
@@ -29,11 +29,11 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Potenciální energie
         /// </summary>
-        /// <param name="x">Horizontální souøadnice</param>
-        /// <param name="y">Vertikální souøadnice</param>
+        /// <param name="x">Vertikální souøadnice</param>
+        /// <param name="y">Horizontální souøadnice</param>
         public double V(double x, double y) {
             double d = System.Math.Sqrt(x * x + y * y) - 1.0;
-            return this.Nu * y + 0.5 * d * d;
+            return -this.Nu * x + 0.5 * d * d;
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace PavelStransky.Systems {
             double r = System.Math.Sqrt(x * x + y * y);
             double d = 1.0 - 1.0 / r;
 
-            double dVdx = x * d;
-            double dVdy = this.Nu + y * d;
+            double dVdx = -this.Nu + y * d;
+            double dVdy = x * d;
 
             result[0] = v[2];
             result[1] = v[3];
@@ -132,31 +132,42 @@ namespace PavelStransky.Systems {
         public Vector IC(double e) {
             Vector result = new Vector(4);
 
-            // Nejlepší je generovat poèáteèní podmínky v rovinì r, phi (polární souøadnice)
-            double phi = 2.0 * System.Math.PI * this.random.NextDouble();
+            if(e < this.Emin())
+                throw new SystemException();
 
-            // Nalezení nejvìtšího koøenu (v absolutní hodnotì)
-            double rmax = System.Math.Abs(r[0]);
-            for(int i = 1; i < r.Length; i++)
-                if(System.Math.Abs(r[i]) > rmax)
-                    rmax = System.Math.Abs(r[i]);
+            double d = 0.0;
+            double cnu = 0.0;
+            double phi = 0.0;
             do {
-                // Poèáteèní podmínky v poloze hledáme ve èverci (-rmax, rmax) x (-rmax, rmax)
-                result[0] = (this.random.NextDouble() * 2.0 - 1) * rmax;
-                result[1] = (this.random.NextDouble() * 2.0 - 1) * rmax;
+                // Nejlepší je generovat poèáteèní podmínky v rovinì r, phi (polární souøadnice)
+                phi = 2.0 * System.Math.PI * this.random.NextDouble();
+                // Diskriminant            
+                cnu = System.Math.Cos(phi) * this.Nu;
+                d = 2.0 * e + cnu * (cnu + 2);
+            } while(d < 0);
 
-                result[2] = 0.0;
-                result[3] = 0.0;
+            d = System.Math.Sqrt(d);
 
-                if(this.E(result) < e) {
-                    result[2] = double.NaN;
-                    result[3] = double.NaN;
+            // Koøeny
+            double r1 = 1 + cnu - d;
+            double r2 = 1 + cnu + d;
 
-                    if(this.IC(result, e))
-                        break;
-                }
+            double r = 2.0 * this.random.NextDouble() * d + r1;
 
-            } while(true);
+            double x = r * System.Math.Cos(phi);
+            double y = r * System.Math.Sin(phi);
+
+            double t = e - this.V(x, y);
+
+            double px = this.random.NextDouble() * System.Math.Sqrt(2.0 * t);
+            if(this.random.Next(2) == 0) px = -px;
+            double py = System.Math.Sqrt(2.0 * t - px * px);
+            if(this.random.Next(2) == 0) py = -py;
+
+            result[0] = x;
+            result[1] = y;
+            result[2] = px;
+            result[3] = py;
 
             return result;
         }
@@ -168,63 +179,70 @@ namespace PavelStransky.Systems {
         /// <param name="ic">Poèáteèní podmínky</param>
         /// <returns>True, pokud se poèáteèní podmínky podaøilo nagenerovat</returns>
         public bool IC(Vector ic, double e) {
-            double fi1 = ic[0];
-            double fi2 = ic[1];
-            double lambda1 = ic[2];
-            double lambda2 = ic[3];
+            double x = ic[0];
+            double y = ic[1];
+            double px = ic[2];
+            double py = ic[3];
 
-            double t = e - this.V(fi1, fi2);
+            double t = e - this.V(x, y);
             if(t < 0)
                 return false;
 
-            double v0 = this.Gamma * (1.0 + this.Mu);
-            double td = t * 2.0 * (1.0 + this.Mu * System.Math.Sin(fi2) * System.Math.Sin(fi2));
-
-            double A = 1;
-            double B = -2.0 * (this.Lambda + System.Math.Cos(fi2)) / this.Lambda;
-            double C = (1.0 + this.Mu + 2.0 * this.Mu * this.Lambda * System.Math.Cos(fi2) + this.Mu * this.Lambda * this.Lambda) / (this.Mu * this.Lambda * this.Lambda);
-
-            // Generujeme oba impulsmomenty najednou
-            if(double.IsNaN(lambda1) && double.IsNaN(lambda2)) {
-                // Elipsa se støedem v poèátku, prùseèík s náhodnou pøímkou lambda1 cos(alpha) = lambda2 sin(alpha)
-                double alpha = random.NextDouble() * System.Math.PI;
-                double talpha = System.Math.Tan(alpha);
-                lambda2 = System.Math.Sqrt(td / (A * talpha * talpha + B * talpha + C));
-                if(random.Next(2) == 0)
-                    lambda2 = -lambda2;
-                lambda1 = lambda2 * talpha;
+            if(double.IsNaN(py)) {
+                if(double.IsNaN(px)) {
+                    px = this.random.NextDouble() * System.Math.Sqrt(2.0 * t);
+                    if(this.random.Next(2) == 0) px = -px;
+                }
+                py = System.Math.Sqrt(2.0 * t - px * px);
+                if(this.random.Next(2) == 0) py = -py;
             }
-            else if(double.IsNaN(lambda1)) {
-                lambda1 = 4.0 * A * td + lambda2 * lambda2 * (B * B - 4.0 * A * C);
-                if(lambda1 < 0)
-                    return false;
-                lambda1 = System.Math.Sqrt(lambda1);
-                if(random.Next(2) == 0)
-                    lambda1 = -lambda1;
-                lambda1 -= B * lambda2;
-                lambda1 /= 2.0 * A;
-            }
-            else if(double.IsNaN(lambda2)) {
-                lambda2 = 4.0 * C * td + lambda1 * lambda1 * (B * B - 4.0 * A * C);
-                if(lambda2 < 0)
-                    return false;
-                lambda2 = System.Math.Sqrt(lambda2);
-                if(random.Next(2) == 0)
-                    lambda2 = -lambda2;
-                lambda2 -= B * lambda1;
-                lambda2 /= 2.0 * C;
+            else if(double.IsNaN(px)) {
+                px = System.Math.Sqrt(2.0 * t - py * py);
+                if(this.random.Next(2) == 0) px = -px;
             }
 
-            ic[2] = lambda1;
-            ic[3] = lambda2;
-
-            double ee = this.E(ic);
+            ic[2] = px;
+            ic[3] = py;
 
             return true;
         }
 
         public Vector IC(double e, double l) {
             throw new Exception("The method or operation is not implemented.");
+        }
+
+        private class MinimumFunction {
+            private double nu, e;
+            private bool isX;
+
+            /// <summary>
+            /// Konstruktor
+            /// </summary>
+            /// <param name="nu">Parametr modelu</param>
+            /// <param name="e">Energie</param>
+            /// <param name="isX">True, pokud hledáme extrém x, jinak False</param>
+            public MinimumFunction(double nu, double e, bool isX) {
+                this.nu = nu;
+                this.e = e;
+                this.isX = isX;
+            }
+
+            public double Minimum(double phi) {
+                // Diskriminant            
+                double cnu = System.Math.Cos(phi) * this.nu;
+                double d = 2.0 * this.e + cnu * (cnu + 2);
+                if(d < 0)
+                    return this.isX ? 2.0 + this.nu + System.Math.Sqrt(2.0 * this.e + this.nu * (this.nu + 2.0)) : 0.0;
+
+                d = System.Math.Sqrt(d);
+                double r1 = 1 + cnu - d;
+                double r2 = 1 + cnu + d;
+
+                double x1 = this.isX ? r1 * System.Math.Cos(phi) : -r1 * System.Math.Sin(phi);
+                double x2 = this.isX ? r2 * System.Math.Cos(phi) : -r2 * System.Math.Sin(phi);
+
+                return System.Math.Min(x1, x2);
+            }
         }
 
         /// <summary>
@@ -234,44 +252,35 @@ namespace PavelStransky.Systems {
         public Vector Bounds(double e) {
             Vector result = new Vector(8);
 
-            double c1 = this.Gamma * (1.0 + this.Mu);
-            double c2 = this.Gamma * this.Mu * this.Lambda;
+            result[1] = 1.0 + this.Nu + System.Math.Sqrt(2.0 * e + this.Nu * (this.Nu + 2.0));
 
-            // fi1
-            if(e >= 2.0 * c1) {
-                result[0] = -System.Math.PI;
-                result[1] = System.Math.PI;
+            // Zbytek mezí triviálním procházením
+            double maxy = 0, minx = result[1];
+            for(double phi = 0; phi <= System.Math.PI; phi += System.Math.PI / 100000) {
+                double cnu = System.Math.Cos(phi) * this.Nu;
+                double d = 2.0 * e + cnu * (cnu + 2);
+                if(d < 0)
+                    continue;
+
+                d = System.Math.Sqrt(d);
+                double r1 = 1 + cnu - d;
+                double r2 = 1 + cnu + d;
+
+                maxy = System.Math.Max(maxy, System.Math.Max(r1 * System.Math.Sin(phi), r2 * System.Math.Sin(phi)));
+                minx = System.Math.Min(minx, System.Math.Min(r1 * System.Math.Cos(phi), r2 * System.Math.Cos(phi)));
+                double ee = this.V(minx, 0);
+//                if(ee > e)
+//                    break;
             }
-            else {
-                double d = System.Math.Acos(1.0 - e / c1);
-                result[0] = -d;
-                result[1] = d;
-            }
+            result[0] = minx;
+            result[2] = -maxy;
+            result[3] = maxy;
 
-            // fi2
-            if(e >= 2.0 * c2) {
-                result[2] = -System.Math.PI;
-                result[3] = System.Math.PI;
-            }
-            else {
-                double d = System.Math.Acos(1.0 - e / c2);
-                result[2] = -d;
-                result[3] = d;
-            }
+            result[5] = System.Math.Sqrt(2.0 * (e-this.Emin()));
+            result[4] = -result[5];
 
-            double A = 1 / (2.0 * (1.0 + this.Mu));
-            double B = -2.0 * (this.Lambda + 1.0) / this.Lambda / (2.0 * (1.0 + this.Mu));
-            double C = (1.0 + this.Mu + 2.0 * this.Mu * this.Lambda + this.Mu * this.Lambda * this.Lambda) / (this.Mu * this.Lambda * this.Lambda) / (2.0 * (1.0 + this.Mu));
-
-            double sqrt = System.Math.Sqrt(4.0 * A * C - B * B);
-
-            // lambda1
-            result[4] = -2.0 * System.Math.Sqrt(C * e) / sqrt;
-            result[5] = -result[4];
-
-            // lambda2
-            result[6] = -2.0 * System.Math.Sqrt(A * e) / sqrt;
-            result[7] = -result[6];
+            result[6] = result[4];
+            result[7] = result[5];
 
             return result;
         }
@@ -281,12 +290,6 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="bounds">Poèáteèní podmínky</param>
         public Vector CheckBounds(Vector bounds) {
-            // poèáteèní podmínky ve smìru x, y pouze v rozmezí (-pi, pi)
-            bounds[0] = System.Math.Max(bounds[0], -System.Math.PI);
-            bounds[1] = System.Math.Min(bounds[1], System.Math.PI);
-            bounds[2] = System.Math.Max(bounds[2], -System.Math.PI);
-            bounds[3] = System.Math.Min(bounds[3], System.Math.PI);
-
             return bounds;
         }
 
@@ -301,31 +304,9 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="x">Souøadnice a hybnosti</param>
         public bool PostProcess(Vector x) {
-            double pi = System.Math.PI;
-            double pi2 = 2.0 * pi;
-            bool result = false;
-
-            if(x[0] > pi) {
-                x[0] -= pi2;
-                result = true;
-            }
-            if(x[0] < -pi) {
-                x[0] += pi2;
-                result = true;
-            }
-            if(x[1] > pi) {
-                x[1] -= pi2;
-                result = true;
-            }
-            if(x[1] < -pi) {
-                x[1] += pi2;
-                result = true;
-            }
-
-            return result;
+            return false;
         }
 
         #endregion
     }
 }
-*/

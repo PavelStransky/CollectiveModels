@@ -124,6 +124,8 @@ namespace PavelStransky.Systems {
                 return new SturmCoulomb(this);
             else if(typeName == typeof(QuantumEP).FullName)
                 return new QuantumEP(this);
+            else if(typeName == typeof(ClassicalEP).FullName)
+                return new ClassicalEP(this);
             else
                 return base.CreateObject(typeName);
         }

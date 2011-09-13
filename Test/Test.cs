@@ -21,11 +21,36 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.HOMatrixElements();
+            Test.PokusClassicalEP();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// 10.9.2011
+        /// </summary>
+        static void PokusClassicalEP() {
+            ClassicalEP ep = new ClassicalEP(0.333333);
+            Vector ic = ep.IC(2);
+            double e = ep.E(ic);
+            Vector bounds = ep.Bounds(2);
+            Vector v = new Vector(4);
+            v[0] = bounds[0];
+            e = ep.E(v);
+            v[0] = bounds[1];
+            e = ep.E(v);
+            v[0] = 0.0; v[1] = bounds[2];
+            e = ep.E(v);
+        }
+
+        /// <summary>
+        /// 9.9.2011
+        /// </summary>
+        static void PokusLongFactorialCache() {
+            Console.ReadKey();
+            LongFactorialCache cache = new LongFactorialCache(1000, 1000, 1000);
+        }
 
         /// <summary>
         /// Maticové elementy Harmonického oscilátoru

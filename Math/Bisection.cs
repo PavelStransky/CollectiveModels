@@ -180,7 +180,7 @@ namespace PavelStransky.Math {
             else
                 return x2;
         }
-
+        
         private const double defaultPrecision = 1E-12;
 
         private static double gold = (1 + System.Math.Sqrt(5.0)) / 2.0;

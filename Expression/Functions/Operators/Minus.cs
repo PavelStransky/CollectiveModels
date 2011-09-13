@@ -136,19 +136,19 @@ namespace PavelStransky.Expression.Functions.Def {
             }
 
             else if(lengths[14] >= 0) {     // LongFraction
-                LongFraction result = new LongFraction(0);
+                LongFraction result = null;
 
                 if(count == 1)
-                    return result - (LongFraction)arguments[0];
+                    return new LongFraction(0) - (LongFraction)arguments[0];
 
                 foreach(object o in arguments) {
                     if(result == null) {
                         if(o is int)
-                            result += (int)o;
+                            result = new LongFraction((int)o);
                         else if(o is LongNumber)
-                            result += (LongNumber)o;
+                            result = new LongFraction((LongNumber)o);
                         else if(o is LongFraction)
-                            result += (LongFraction)o;
+                            result = (LongFraction)o;
                     }
                     else {
                         if(o is int)
@@ -164,17 +164,17 @@ namespace PavelStransky.Expression.Functions.Def {
             }   
 
             else if(lengths[12] >= 0) {     // LongNumber
-                LongNumber result = new LongNumber(0);
+                LongNumber result = null;
 
                 if(count == 1)
-                    return result - (LongNumber)arguments[0];
+                    return (new LongNumber(0)) - (LongNumber)arguments[0];
 
                 foreach(object o in arguments) {
                     if(result == null) {
                         if(o is int)
-                            result += (int)o;
+                            result = new LongNumber((int)o);
                         else if(o is LongNumber)
-                            result += (LongNumber)o;
+                            result = (LongNumber)o;
                     }
                     else {
                         if(o is int)

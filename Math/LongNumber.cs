@@ -344,7 +344,7 @@ namespace PavelStransky.Math {
         /// <param name="remainder">Zbytek</param>
         public void Divide(LongNumber d, out LongNumber result, out LongNumber remainder) {
             // Dìlitel vìtší než dìlenec
-            if(this < d) {
+            if(!((this.minus && this < d) || (!this.minus && this > d))) {
                 result = 0;
                 remainder = this;
                 return;
@@ -464,8 +464,6 @@ namespace PavelStransky.Math {
             while(!IsEqual(l2, 0)) {
                 LongNumber l, r;
                 l1.Divide(l2, out l, out r);
-
-                LongNumber check = l * l2 + r;
 
                 l1 = l2;
                 l2 = r;

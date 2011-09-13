@@ -7,24 +7,19 @@ using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Creates Quantum Extensible Pendulum class
+    /// Creates classical ExtensiblePendulum class
     /// </summary>
-    public class QEP: Fnc {
-        public override string Help { get { return Messages.HelpQuantumEP; } }
+    public class CEP: Fnc {
+        public override string Help { get { return Messages.HelpClassicalEP; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(3);
+            this.SetNumParams(1);
             this.SetParam(0, false, true, true, Messages.PExtensiblePendulumNu, Messages.PExtensiblePendulumNuDescription, 0.0, typeof(double));
-            this.SetParam(1, false, true, true, Messages.PA0, Messages.PA0Description, 1.0, typeof(double));
-            this.SetParam(2, false, true, true, Messages.PHBar, Messages.PHBarDescription, 0.01, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             double nu = (double)arguments[0];
-            double a = (double)arguments[1];
-            double hbar = (double)arguments[2];
-
-            return new QuantumEP(nu, a, hbar);
+            return new ClassicalEP(nu);
         }
     }
 }

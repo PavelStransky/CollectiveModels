@@ -75,14 +75,14 @@ namespace PavelStransky.Systems {
             double r = System.Math.Sqrt(x * x + y * y);
             double d = 1.0 - 1.0 / r;
 
-            double dVdx = -this.Nu + y * d;
-            double dVdy = x * d;
+            double dVdx = -this.Nu + x * d;
+            double dVdy = y * d;
 
             result[0] = v[2];
             result[1] = v[3];
 
-            result[2] = dVdx;
-            result[3] = dVdy;
+            result[2] = -dVdx;
+            result[3] = -dVdy;
 
             return result;
         }

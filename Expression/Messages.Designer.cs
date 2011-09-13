@@ -2950,6 +2950,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The classical extensible pendulum system.
+        /// </summary>
+        internal static string HelpClassicalEP {
+            get {
+                return ResourceManager.GetString("HelpClassicalEP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erase variable from the context.
         /// </summary>
         internal static string HelpClear {
@@ -7509,6 +7518,24 @@ namespace PavelStransky.Expression {
         internal static string PExtendedGCMDescription {
             get {
                 return ResourceManager.GetString("PExtendedGCMDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nu.
+        /// </summary>
+        internal static string PExtensiblePendulumNu {
+            get {
+                return ResourceManager.GetString("PExtensiblePendulumNu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nu parameter.
+        /// </summary>
+        internal static string PExtensiblePendulumNuDescription {
+            get {
+                return ResourceManager.GetString("PExtensiblePendulumNuDescription", resourceCulture);
             }
         }
         

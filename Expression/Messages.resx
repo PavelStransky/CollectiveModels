@@ -3549,4 +3549,13 @@ Second differing type: {1}</value>
   <data name="HelpQuantumEP" xml:space="preserve">
     <value>The quantum extensible pendulum system</value>
   </data>
+  <data name="HelpClassicalEP" xml:space="preserve">
+    <value>The classical extensible pendulum system</value>
+  </data>
+  <data name="PExtensiblePendulumNu" xml:space="preserve">
+    <value>nu</value>
+  </data>
+  <data name="PExtensiblePendulumNuDescription" xml:space="preserve">
+    <value>nu parameter</value>
+  </data>
 </root>

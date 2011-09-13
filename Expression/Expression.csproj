@@ -136,6 +136,7 @@
     <Compile Include="Functions\Dynamics\DPXY.cs" />
     <Compile Include="Functions\Dynamics\Lyapunov.cs" />
     <Compile Include="Functions\Dynamics\PSTimes.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CEP.cs" />
     <Compile Include="Functions\Dynamics\Systems\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
     <Compile Include="Functions\Dynamics\EnergyMin.cs" />

@@ -303,6 +303,21 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Rozhodnutí, zda je daná trajektorie regulární nebo chaotická
+        /// </summary>
+        /// <param name="meanSALI">Hodnota SALI</param>
+        /// <param name="t">Èas</param>
+        /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
+        public int SALIDecision(double meanSALI, double t) {
+            if(meanSALI > 5.0 + t / 200.0)
+                return 0;
+            if(meanSALI < (t - 500.0) / 50.0)
+                return 1;
+
+            return -1;
+        }
+
+        /// <summary>
         /// Vypíše parametry IBM modelu
         /// </summary>
         public override string ToString() {

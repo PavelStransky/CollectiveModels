@@ -4930,6 +4930,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saves current document into a file (in current thread).
+        /// </summary>
+        internal static string HelpSaveNow {
+            get {
+                return ResourceManager.GetString("HelpSaveNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator ; (separator).
         /// </summary>
         internal static string HelpSeparator {

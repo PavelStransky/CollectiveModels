@@ -3558,4 +3558,7 @@ Second differing type: {1}</value>
   <data name="PExtensiblePendulumNuDescription" xml:space="preserve">
     <value>nu parameter</value>
   </data>
+  <data name="HelpSaveNow" xml:space="preserve">
+    <value>Saves current document into a file (in current thread)</value>
+  </data>
 </root>

@@ -137,6 +137,16 @@ namespace PavelStransky.Forms {
 
                     break;
 
+                case ContextEventType.SaveNow:
+                    fileName = e.GetParam() as string;
+
+                    if(fileName != null && fileName != string.Empty)
+                        this.Save(fileName, true);
+                    else
+                        this.Save(true);
+
+                    break;
+
                 case ContextEventType.SetContext:
                     this.context = e.GetParam() as Context;
                     break;
@@ -380,8 +390,15 @@ namespace PavelStransky.Forms {
         /// <summary>
         /// Uloží pøíkazy; pokud zatím neznáme jméno souboru, ukáže dialog
         /// </summary>
-        /// <returns></returns>
         public bool Save() {
+            return this.Save(false);
+        }
+
+        /// <summary>
+        /// Uloží pøíkazy; pokud zatím neznáme jméno souboru, ukáže dialog
+        /// </summary>
+        /// <param name="thisThread">Ukládá se v aktuálním threadu</param>
+        public bool Save(bool thisThread) {
             if(this.fileName == null || this.fileName == string.Empty) {
                 this.saveFileDialog.InitialDirectory = WinMain.Directory;
 
@@ -393,7 +410,7 @@ namespace PavelStransky.Forms {
                     return false;
             }
             else
-                return this.Save(this.fileName);
+                return this.Save(this.fileName, thisThread);
         }
 
         /// <summary>
@@ -417,6 +434,16 @@ namespace PavelStransky.Forms {
         /// <param name="fileName">Jméno souboru</param>
         /// <returns>False, pokud se uložení nezdaøilo</returns>
         public bool Save(string fileName) {
+            return this.Save(fileName, false);
+        }
+
+        /// <summary>
+        /// Uloží pøíkazy do souboru
+        /// </summary>
+        /// <param name="fileName">Jméno souboru</param>
+        /// <param name="thisThread">Ukládá se v aktuálním threadu</param>
+        /// <returns>False, pokud se uložení nezdaøilo</returns>
+        public bool Save(string fileName, bool thisThread) {
             // Upravení jména souboru
             if(!Path.IsPathRooted(fileName))
                 fileName = Path.Combine(WinMain.Directory, fileName);
@@ -429,10 +456,13 @@ namespace PavelStransky.Forms {
             this.saving = true;
             this.modifiedDuringSaving = false;
 
-            this.exportThread = new Thread(this.ExportThreadStart);
-            this.exportThread.IsBackground = true;
-            this.exportThread.Start(fileName);
-
+            if(thisThread)
+                this.ExportThreadStart(fileName);
+            else {
+                this.exportThread = new Thread(this.ExportThreadStart);
+                this.exportThread.IsBackground = true;
+                this.exportThread.Start(fileName);
+            }
             return true;
         }
 

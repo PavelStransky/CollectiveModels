@@ -13,6 +13,7 @@ namespace PavelStransky.Expression {
         NewContext,
         SetContext,
         Save,
+        SaveNow,
         Exit
     }
 

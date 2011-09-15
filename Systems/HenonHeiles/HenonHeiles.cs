@@ -70,21 +70,21 @@ namespace PavelStransky.Systems {
         /// NEFUNGUJE !!!
         /// </summary>
         public Vector IC(double e, double j) {
-            return this.IC(e);
+            throw new Exception("The method or operation is not implemented.");
         }
 
         /// <summary>
         /// NEFUNGUJE !!!
         /// </summary>
         public bool IC(Vector ic, double e) {
-            return false;
+            throw new Exception("The method or operation is not implemented.");
         }
 
         /// <summary>
         /// NEFUNGUJE !!!
         /// </summary>
         public Vector Bounds(double e) {
-            return new Vector(0);
+            throw new Exception("The method or operation is not implemented.");
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace PavelStransky.Systems {
         /// NEFUNGUJE !!!
         /// </summary>
         public double PeresInvariant(Vector x) {
-            return 0;
+            throw new Exception("The method or operation is not implemented.");
         }
 
         /// <summary>
@@ -114,6 +114,16 @@ namespace PavelStransky.Systems {
         /// <param name="x">Souøadnice a hybnosti</param>
         public bool PostProcess(Vector x) {
             return false;
+        }
+
+        /// <summary>
+        /// Rozhodnutí, zda je daná trajektorie regulární nebo chaotická
+        /// </summary>
+        /// <param name="meanSALI">Hodnota SALI</param>
+        /// <param name="t">Èas</param>
+        /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
+        public int SALIDecision(double meanSALI, double t) {
+            throw new Exception("The method or operation is not implemented.");
         }
 
         private const double poincareTime = 100;

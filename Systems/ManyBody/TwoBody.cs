@@ -183,6 +183,16 @@ namespace PavelStransky.Systems {
             return false;
         }
 
+        /// <summary>
+        /// Rozhodnutí, zda je daná trajektorie regulární nebo chaotická
+        /// </summary>
+        /// <param name="meanSALI">Hodnota SALI</param>
+        /// <param name="t">Èas</param>
+        /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
+        public int SALIDecision(double meanSALI, double t) {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
         public double PeresInvariant(Vector x) {
             throw new Exception("The method or operation is not implemented.");
         }

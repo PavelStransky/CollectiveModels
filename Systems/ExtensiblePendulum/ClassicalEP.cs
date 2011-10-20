@@ -317,7 +317,7 @@ namespace PavelStransky.Systems {
         /// <param name="t">Èas</param>
         /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
         public int SALIDecision(double meanSALI, double t) {
-            if(meanSALI > 3.0 * (1.0 + t / 5000.0))
+            if(meanSALI > 4.0 + t / 2500.0)
                 return 0;
             if(meanSALI < 6.0 * (t - 1000.0) / 4000.0)
                 return 1;

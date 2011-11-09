@@ -13,12 +13,11 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Name { get { return name; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(5);
+            this.SetNumParams(4);
             this.SetParam(0, true, true, false, Messages.PPointVector, Messages.PPointVectorDescription, null, typeof(PointVector));
             this.SetParam(1, false, true, false, Messages.P2EMD, Messages.P2EMDDescription, 10, typeof(int));
             this.SetParam(2, false, true, true, Messages.P3EMD, Messages.P3EMDDescription, 0.0, typeof(double));
             this.SetParam(3, false, true, false, Messages.PFlat, Messages.PFlatDescription, false, typeof(bool));
-            this.SetParam(4, false, true, false, Messages.PEMDBoundary, Messages.PEMDBoundaryDescription, "first", typeof(string));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -26,9 +25,8 @@ namespace PavelStransky.Expression.Functions.Def {
             EMD emd = new EMD(arguments[0] as PointVector, flat);
             int s = (int)arguments[1];
             double delta = (double)arguments[2];
-            EMD.Boundary boundary = (EMD.Boundary)Enum.Parse(typeof(EMD.Boundary), (string)arguments[4], true);
 
-            return new TArray(emd.ComputeAll(guider, s, delta, boundary));
+            return new TArray(emd.ComputeAll(guider, s, delta));
         }
 
         private const string name = "emd";

@@ -90,22 +90,55 @@ namespace PavelStransky.Math {
             public int SymmetryBreak { get { return this.symmetryBreak; } }
 
             /// <summary>
+            /// Excludes all border points from the time series of the extremes
+            /// </summary>
+            /// <param name="source">Source time series</param>
+            /// <param name="minX">First x value of the source data</param>
+            /// <param name="maxX">Last x value of the source data</param>
+            private PointVector ExcludeBorder(PointVector source, double minX, double maxX) {
+                if(source.FirstItem.X == minX) {
+                    if(source.LastItem.X == maxX) {
+                        int length = source.Length - 2;
+                        PointVector result = new PointVector(length);
+                        for(int i = 0; i < length; i++)
+                            result[i] = source[i + 1];
+                        return result;
+                    }
+                    else {
+                        int length = source.Length - 1;
+                        PointVector result = new PointVector(length);
+                        for(int i = 0; i < length; i++)
+                            result[i] = source[i + 1];
+                        return result;
+                    }
+                }
+                else if(source.LastItem.X == maxX) {
+                    int length = source.Length - 1;
+                    PointVector result = new PointVector(length);
+                    for(int i = 0; i < length; i++)
+                        result[i] = source[i];
+                    return result;
+                }
+                else
+                    return source;
+            }
+
+            /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="data">Data</param>
             /// <param name="flat">True if the flat parts of the level density is going to be considered 
             /// as a source of maxima / minima</param>
             /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
-            /// <param name="boundary">Boundary condition</param>
-            public SiftingStep(PointVector data, bool flat, double delta, EMD.Boundary boundary) {
-                this.maxima = data.Maxima(flat);
-                this.minima = data.Minima(flat);
+            public SiftingStep(PointVector data, bool flat, double delta) {
+                this.maxima = this.ExcludeBorder(data.Maxima(flat), data.FirstItem.X, data.LastItem.X);
+                this.minima = this.ExcludeBorder(data.Minima(flat), data.FirstItem.X, data.LastItem.X);
 
                 if(this.IsResiduum)
                     return;
 
-                this.maximaBorder = this.CorrectBorder(this.maxima, data.FirstItem.X, data.LastItem.X, boundary);
-                this.minimaBorder = this.CorrectBorder(this.minima, data.FirstItem.X, data.LastItem.X, boundary);
+                this.maximaBorder = this.CorrectBorder(this.maxima, data.FirstItem.X, data.LastItem.X);
+                this.minimaBorder = this.CorrectBorder(this.minima, data.FirstItem.X, data.LastItem.X);
 
                 Spline maximaSpline = new Spline(this.maximaBorder);
                 Spline minimaSpline = new Spline(this.minimaBorder);
@@ -138,54 +171,41 @@ namespace PavelStransky.Math {
             /// <param name="source">Source time series</param>
             /// <param name="minX">First x value of the source data</param>
             /// <param name="maxX">Last x value of the source data</param>
-            /// <param name="boundary">Boundary condition</param>
-            private PointVector CorrectBorder(PointVector source, double minX, double maxX, EMD.Boundary boundary) {
-                int addPoints = 0;
-                if(source.FirstItem.X > minX)
-                    addPoints++;
-                if(source.LastItem.X < maxX)
-                    addPoints++;
-
-                if(addPoints == 0)
-                    return source;
-
+            private PointVector CorrectBorder(PointVector source, double minX, double maxX) {
                 int length = source.Length;
-                int newLength = length + addPoints;
+                int newLength = length + 2;
+
                 PointVector result = new PointVector(newLength);
-
-                // We add one maximum to the beginning of the time series
-                if(source.FirstItem.X > minX) {
-                    for(int i = length; i > 0; i--)
-                        result[i] = source[i - 1];
-                    if(boundary == Boundary.First)
-                        result.FirstItem = new PointD(minX, source.FirstItem.Y);
-                    else {
-                        if(source.Length > 1 && source.FirstItem.X - minX < source[1].X - source.FirstItem.X)
-                            result.FirstItem = new PointD(source.FirstItem.X - source[1].X, source.FirstItem.Y);
-                        else
-                            result.FirstItem = new PointD(minX - source.FirstItem.X, source.FirstItem.Y);
-                    }
-                }
-                else {
-                    for(int i = 0; i < length; i++)
-                        result[i] = source[i];
-
+                
+                // First point
+                double x1 = source[0].X;
+                double x2 = source[1].X;
+                if(x1 - minX <= x2 - x1) {  // We extend the line between x1, x2
+                    result[0].X = 2 * x1 - x2;
+//                    result[0].Y = 2 * source[0].Y - source[1].Y;
                     result[0].Y = source[1].Y;
                 }
-
-                // We add one maximum to the end of the time series
-                if(source.LastItem.X < maxX) {
-                    if(boundary == Boundary.First)
-                        result.LastItem = new PointD(maxX, source.LastItem.Y);
-                    else {
-                        if(source.Length > 1 && maxX - source.LastItem.X < source.LastItem.X - source[source.Length - 2].X)
-                            result.LastItem = new PointD(2.0*source.LastItem.X - source[source.Length - 2].X, source.LastItem.Y);
-                        else
-                            result.LastItem = new PointD(2.0*maxX - source.FirstItem.X, source.LastItem.Y);
-                    }
+                else {                      // We reflect the first extreme
+                    result[0].X = 2 * minX - x1;
+                    result[0].Y = source[0].Y;
                 }
-                else
-                    result.LastItem.Y = source[source.Length - 2].Y;
+
+                // Copy of the middle
+                for(int i = 0; i < length; i++)
+                    result[i + 1] = source[i];
+
+                // Last point
+                x1 = source[length - 1].X;
+                x2 = source[length - 2].X;
+                if(maxX - x1 <= x1 - x2) {
+                    result.LastItem.X = 2 * x1 - x2;
+//                    result.LastItem.Y = 2 * source[length - 1].Y - source[length - 2].Y;
+                    result.LastItem.Y = source[length - 2].Y;
+                }
+                else {
+                    result.LastItem.X = 2 * maxX - x1;
+                    result.LastItem.Y = source[length - 1].Y;
+                }
 
                 return result;
             }

@@ -9,8 +9,8 @@ namespace PavelStransky.Math {
     /// <remarks>Irving y Emmanuel, marzo 2011</remarks>
     public partial class EMD {
         private class SiftingStep {
-            private PointVector maxima, maximaBorder;
-            private PointVector minima, minimaBorder;
+            private PointVector maxima;
+            private PointVector minima;
             private double errorU = 0.0;
             private double errorL = 0.0;
             private int symmetryBreak = 0;
@@ -31,10 +31,10 @@ namespace PavelStransky.Math {
             /// </summary>
             public int MaxNumBelow0 {
                 get {
-                    int length = this.maximaBorder.Length - 1;
+                    int length = this.maxima.Length - 1;
                     int result = 0;
                     for(int i = 1; i < length; i++)
-                        if(this.maximaBorder[i].Y <= 0.0)
+                        if(this.maxima[i].Y <= 0.0)
                             result++;
                     return result;
                 }
@@ -45,10 +45,10 @@ namespace PavelStransky.Math {
             /// </summary>
             public int MinNumAbove0 {
                 get {
-                    int length = this.minimaBorder.Length - 1;
+                    int length = this.minima.Length - 1;
                     int result = 0;
                     for(int i = 1; i < length; i++)
-                        if(this.minimaBorder[i].Y >= 0.0)
+                        if(this.minima[i].Y >= 0.0)
                             result++;
                     return result;
                 }
@@ -67,7 +67,7 @@ namespace PavelStransky.Math {
             /// <summary>
             /// We found the residuum
             /// </summary>
-            public bool IsResiduum { get { return this.MaxNum <= 1 || this.MinNum <= 1; } }
+            public bool IsResiduum { get { return this.MaxNum <= 2 || this.MinNum <= 2; } }
 
             /// <summary>
             /// Result - a candidate for an IMF
@@ -90,40 +90,6 @@ namespace PavelStransky.Math {
             public int SymmetryBreak { get { return this.symmetryBreak; } }
 
             /// <summary>
-            /// Excludes all border points from the time series of the extremes
-            /// </summary>
-            /// <param name="source">Source time series</param>
-            /// <param name="minX">First x value of the source data</param>
-            /// <param name="maxX">Last x value of the source data</param>
-            private PointVector ExcludeBorder(PointVector source, double minX, double maxX) {
-                if(source.FirstItem.X == minX) {
-                    if(source.LastItem.X == maxX) {
-                        int length = source.Length - 2;
-                        PointVector result = new PointVector(length);
-                        for(int i = 0; i < length; i++)
-                            result[i] = source[i + 1];
-                        return result;
-                    }
-                    else {
-                        int length = source.Length - 1;
-                        PointVector result = new PointVector(length);
-                        for(int i = 0; i < length; i++)
-                            result[i] = source[i + 1];
-                        return result;
-                    }
-                }
-                else if(source.LastItem.X == maxX) {
-                    int length = source.Length - 1;
-                    PointVector result = new PointVector(length);
-                    for(int i = 0; i < length; i++)
-                        result[i] = source[i];
-                    return result;
-                }
-                else
-                    return source;
-            }
-
-            /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="data">Data</param>
@@ -131,17 +97,14 @@ namespace PavelStransky.Math {
             /// as a source of maxima / minima</param>
             /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
             public SiftingStep(PointVector data, bool flat, double delta) {
-                this.maxima = this.ExcludeBorder(data.Maxima(flat), data.FirstItem.X, data.LastItem.X);
-                this.minima = this.ExcludeBorder(data.Minima(flat), data.FirstItem.X, data.LastItem.X);
+                this.maxima = this.CorrectBorder(data.Maxima(flat), data.FirstItem.X, data.LastItem.X);
+                this.minima = this.CorrectBorder(data.Minima(flat), data.FirstItem.X, data.LastItem.X);
 
                 if(this.IsResiduum)
                     return;
 
-                this.maximaBorder = this.CorrectBorder(this.maxima, data.FirstItem.X, data.LastItem.X);
-                this.minimaBorder = this.CorrectBorder(this.minima, data.FirstItem.X, data.LastItem.X);
-
-                Spline maximaSpline = new Spline(this.maximaBorder);
-                Spline minimaSpline = new Spline(this.minimaBorder);
+                Spline maximaSpline = new Spline(this.maxima);
+                Spline minimaSpline = new Spline(this.minima);
 
                 int length = data.Length;
                 this.result = new PointVector(length);
@@ -173,38 +136,32 @@ namespace PavelStransky.Math {
             /// <param name="maxX">Last x value of the source data</param>
             private PointVector CorrectBorder(PointVector source, double minX, double maxX) {
                 int length = source.Length;
-                int newLength = length + 2;
+                int newLength = length;
 
-                PointVector result = new PointVector(newLength);
+                if(source.FirstItem.X != minX)
+                    newLength++;
+                if(source.LastItem.X != maxX)
+                    newLength++;
+
+                if(length == newLength)
+                    return source;
                 
-                // First point
-                double x1 = source[0].X;
-                double x2 = source[1].X;
-                if(x1 - minX <= x2 - x1) {  // We extend the line between x1, x2
-                    result[0].X = 2 * x1 - x2;
-//                    result[0].Y = 2 * source[0].Y - source[1].Y;
-                    result[0].Y = source[1].Y;
-                }
-                else {                      // We reflect the first extreme
-                    result[0].X = 2 * minX - x1;
-                    result[0].Y = source[0].Y;
-                }
+                PointVector result = new PointVector(newLength);
 
-                // Copy of the middle
-                for(int i = 0; i < length; i++)
-                    result[i + 1] = source[i];
+                if(source.FirstItem.X != minX) {    // Reflection
+                    result.FirstItem.X = 2 * minX - source.FirstItem.X;
+                    result.FirstItem.Y = source.FirstItem.Y;
 
-                // Last point
-                x1 = source[length - 1].X;
-                x2 = source[length - 2].X;
-                if(maxX - x1 <= x1 - x2) {
-                    result.LastItem.X = 2 * x1 - x2;
-//                    result.LastItem.Y = 2 * source[length - 1].Y - source[length - 2].Y;
-                    result.LastItem.Y = source[length - 2].Y;
+                    for(int i = 0; i < length; i++)
+                        result[i + 1] = source[i];
                 }
-                else {
-                    result.LastItem.X = 2 * maxX - x1;
-                    result.LastItem.Y = source[length - 1].Y;
+                else
+                    for(int i = 0; i < length; i++)
+                        result[i] = source[i];
+
+                if(source.LastItem.X != maxX) {
+                    result.LastItem.X = 2 * maxX - source.LastItem.X;
+                    result.LastItem.Y = source.LastItem.Y;
                 }
 
                 return result;

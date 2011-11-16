@@ -296,7 +296,7 @@ namespace PavelStransky.Math {
                         for(int k = 0; k < section.Length; k++) {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
-                            if(n1x < n1 && n2x < n2 && !actPassed[n1x, n2x]) {
+                            if(n1x >= 0 && n2x >= 0 && n1x < n1 && n2x < n2 && !actPassed[n1x, n2x]) {
                                 m[n1x, n2x] += sali;
                                 trPassed[n1x, n2x]++;
                                 actPassed[n1x, n2x] = true;

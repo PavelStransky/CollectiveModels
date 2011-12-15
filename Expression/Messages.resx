@@ -3561,4 +3561,25 @@ Second differing type: {1}</value>
   <data name="HelpSaveNow" xml:space="preserve">
     <value>Saves current document into a file (in current thread)</value>
   </data>
+  <data name="HelpStandardMapping" xml:space="preserve">
+    <value>Creates a time series of the standard mapping with given initial conditions</value>
+  </data>
+  <data name="P1StandardMapping" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="P1StandardMappingDescription" xml:space="preserve">
+    <value>Stochasticity parameter</value>
+  </data>
+  <data name="P3StandardMapping" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="P3StandardMappingDescription" xml:space="preserve">
+    <value>Initial value of the variable r</value>
+  </data>
+  <data name="P4StandardMapping" xml:space="preserve">
+    <value>theta</value>
+  </data>
+  <data name="P4StandardMappingDescription" xml:space="preserve">
+    <value>Initial value of the variable theta</value>
+  </data>
 </root>

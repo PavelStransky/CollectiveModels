@@ -150,6 +150,7 @@
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
     <Compile Include="Functions\Dynamics\Systems\CDP.cs" />
     <Compile Include="Functions\Dynamics\InitialConditionX.cs" />
+    <Compile Include="Functions\Dynamics\Systems\StandardMapping.cs" />
     <Compile Include="Functions\Dynamics\Systems\Traffic.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficIC.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficMatrix.cs" />

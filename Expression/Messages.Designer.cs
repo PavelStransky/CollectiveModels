@@ -3436,6 +3436,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fills a matrix with points that correspond to a given PointVector.
+        /// </summary>
+        internal static string HelpFillMatrix {
+            get {
+                return ResourceManager.GetString("HelpFillMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns names of all registered functions which begin with specified string.
         /// </summary>
         internal static string HelpFNames {
@@ -6487,6 +6496,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to type.
+        /// </summary>
+        internal static string P5FillMatrix {
+            get {
+                return ResourceManager.GetString("P5FillMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How to deal with already filled values (&quot;keep&quot; | &quot;overwrite&quot; | &quot;average&quot;).
+        /// </summary>
+        internal static string P5FillMatrixDescription {
+            get {
+                return ResourceManager.GetString("P5FillMatrixDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pgroups.
         /// </summary>
         internal static string P5Graph {
@@ -6843,6 +6870,24 @@ namespace PavelStransky.Expression {
         internal static string PBoundaryCutDescription {
             get {
                 return ResourceManager.GetString("PBoundaryCutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bounds.
+        /// </summary>
+        internal static string PBounds {
+            get {
+                return ResourceManager.GetString("PBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bounds of the accessible region.
+        /// </summary>
+        internal static string PBoundsDescription {
+            get {
+                return ResourceManager.GetString("PBoundsDescription", resourceCulture);
             }
         }
         

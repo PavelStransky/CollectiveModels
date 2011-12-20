@@ -169,6 +169,7 @@
     <Compile Include="Functions\Math\SphericalBesselY.cs" />
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
     <Compile Include="Functions\Math\SplineValue.cs" />
+    <Compile Include="Functions\Matrix\FillMatrix.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Program\Play.cs" />
     <Compile Include="Functions\Program\SaveNow.cs" />

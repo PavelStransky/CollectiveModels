@@ -7,7 +7,7 @@ using PavelStransky.Math;
 namespace PavelStransky.Systems {
     /// <summary>
     /// Standard mapping system
-    /// r = r - k * sin(theta)
+    /// r = r + k * sin(theta)
     /// theta = r + theta
     /// </summary>
     /// <remarks>83Karney_PD8_360 Long-time correlations in the stochastic regime</remarks>
@@ -31,11 +31,13 @@ namespace PavelStransky.Systems {
         public PointVector Compute(double r, double theta, int t) {
             PointVector result = new PointVector(t);
             for(int i = 0; i < t; i++) {
-                theta = this.Modulo(theta, System.Math.PI);
+                theta = this.Modulo(theta, System.Math.PI) + System.Math.PI;
+                r = this.Modulo(r, System.Math.PI) + System.Math.PI;
+
                 result[i].X = r;
                 result[i].Y = theta;
 
-                r -= k * System.Math.Sin(theta);
+                r += this.k * System.Math.Sin(theta);
                 theta += r;
             }
             return result;
@@ -48,9 +50,9 @@ namespace PavelStransky.Systems {
         /// <param name="mod">Mantisa</param>
         public double Modulo(double x, double mod) {
             while(x > mod)
-                x -= mod;
+                x -= 2.0 * mod;
             while(x < -mod)
-                x += mod;
+                x += 2.0 * mod;
             return x;
         }
     }

@@ -3561,6 +3561,9 @@ Second differing type: {1}</value>
   <data name="HelpSaveNow" xml:space="preserve">
     <value>Saves current document into a file (in current thread)</value>
   </data>
+  <data name="HelpFillMatrix" xml:space="preserve">
+    <value>Fills a matrix with points that correspond to a given PointVector</value>
+  </data>
   <data name="HelpStandardMapping" xml:space="preserve">
     <value>Creates a time series of the standard mapping with given initial conditions</value>
   </data>
@@ -3581,5 +3584,17 @@ Second differing type: {1}</value>
   </data>
   <data name="P4StandardMappingDescription" xml:space="preserve">
     <value>Initial value of the variable theta</value>
+  </data>
+  <data name="P5FillMatrix" xml:space="preserve">
+    <value>type</value>
+  </data>
+  <data name="P5FillMatrixDescription" xml:space="preserve">
+    <value>How to deal with already filled values ("keep" | "overwrite" | "average")</value>
+  </data>
+  <data name="PBounds" xml:space="preserve">
+    <value>bounds</value>
+  </data>
+  <data name="PBoundsDescription" xml:space="preserve">
+    <value>Bounds of the accessible region</value>
   </data>
 </root>

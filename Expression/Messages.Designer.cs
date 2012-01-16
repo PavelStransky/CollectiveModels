@@ -3733,6 +3733,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hilbert Transform of a time series.
+        /// </summary>
+        internal static string HelpHilbertTransform {
+            get {
+                return ResourceManager.GetString("HelpHilbertTransform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the histogram of a vector (on a given interval).
         /// </summary>
         internal static string HelpHistogram {
@@ -3792,6 +3801,15 @@ namespace PavelStransky.Expression {
         internal static string HelpInitialConditionX {
             get {
                 return ResourceManager.GetString("HelpInitialConditionX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instantaneous frequency between two vectors.
+        /// </summary>
+        internal static string HelpInstantaneousFrequency {
+            get {
+                return ResourceManager.GetString("HelpInstantaneousFrequency", resourceCulture);
             }
         }
         
@@ -4404,6 +4422,15 @@ namespace PavelStransky.Expression {
         internal static string HelpPeresInvariantT {
             get {
                 return ResourceManager.GetString("HelpPeresInvariantT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phase between two numbers or vectors.
+        /// </summary>
+        internal static string HelpPhase {
+            get {
+                return ResourceManager.GetString("HelpPhase", resourceCulture);
             }
         }
         
@@ -7972,6 +7999,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to im.
+        /// </summary>
+        internal static string PImmaginary {
+            get {
+                return ResourceManager.GetString("PImmaginary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Immaginary part of a number.
+        /// </summary>
+        internal static string PImmaginaryDescription {
+            get {
+                return ResourceManager.GetString("PImmaginaryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ic.
         /// </summary>
         internal static string PIndexColumn {
@@ -9309,6 +9354,24 @@ namespace PavelStransky.Expression {
         internal static string PRangeDescription {
             get {
                 return ResourceManager.GetString("PRangeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to re.
+        /// </summary>
+        internal static string PReal {
+            get {
+                return ResourceManager.GetString("PReal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real part of a number.
+        /// </summary>
+        internal static string PRealDescription {
+            get {
+                return ResourceManager.GetString("PRealDescription", resourceCulture);
             }
         }
         

@@ -3597,4 +3597,25 @@ Second differing type: {1}</value>
   <data name="PBoundsDescription" xml:space="preserve">
     <value>Bounds of the accessible region</value>
   </data>
+  <data name="HelpHilbertTransform" xml:space="preserve">
+    <value>Hilbert Transform of a time series</value>
+  </data>
+  <data name="HelpPhase" xml:space="preserve">
+    <value>Phase between two numbers or vectors</value>
+  </data>
+  <data name="PImmaginary" xml:space="preserve">
+    <value>im</value>
+  </data>
+  <data name="PImmaginaryDescription" xml:space="preserve">
+    <value>Immaginary part of a number</value>
+  </data>
+  <data name="PReal" xml:space="preserve">
+    <value>re</value>
+  </data>
+  <data name="PRealDescription" xml:space="preserve">
+    <value>Real part of a number</value>
+  </data>
+  <data name="HelpInstantaneousFrequency" xml:space="preserve">
+    <value>Instantaneous frequency between two vectors</value>
+  </data>
 </root>

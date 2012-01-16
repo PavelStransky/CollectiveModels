@@ -31,7 +31,49 @@ namespace PavelStransky.Math {
 			this.item = item;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Vektor reálných hodnot
+        /// </summary>
+        public Vector VectorRe {
+            get {
+                Vector result = new Vector(this.Length);
+
+                for(int i = 0; i < result.Length; i++)
+                    result[i] = this[i].Re;
+
+                return result;
+            }
+            set {
+                if(this.Length != value.Length)
+                    throw new ComplexVectorException(errorMessageDifferentLength);
+
+                for(int i = 0; i < this.Length; i++)
+                    this[i].Re = value[i];
+            }
+        }
+
+        /// <summary>
+        /// Vektor imaginárních hodnot
+        /// </summary>
+        public Vector VectorIm {
+            get {
+                Vector result = new Vector(this.Length);
+
+                for(int i = 0; i < result.Length; i++)
+                    result[i] = this[i].Im;
+
+                return result;
+            }
+            set {
+                if(this.Length != value.Length)
+                    throw new ComplexVectorException(errorMessageDifferentLength);
+
+                for(int i = 0; i < this.Length; i++)
+                    this[i].Im = value[i];
+            }
+        }
+        
+        /// <summary>
 		/// Poèet prvkù vektoru
 		/// </summary>
 		public int Length {get {return this.item.Length;}}

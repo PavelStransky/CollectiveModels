@@ -9,7 +9,7 @@ namespace PavelStransky.Expression.Functions.Def {
     /// Histogram according to Benford's law
     /// </summary>
     public class Benford: Fnc {
-        public override string Help { get { return Messages.HelpFFTSpectrum; } }
+        public override string Help { get { return Messages.HelpBenford; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(3);

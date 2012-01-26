@@ -189,6 +189,7 @@
     <Compile Include="Functions\Unsorted\InstantaneousFrequency.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />
+    <Compile Include="Functions\Vector\Autocorrelation.cs" />
     <Compile Include="Functions\Vector\Delta3.cs" />
     <Compile Include="Functions\Vector\EMD.cs" />
     <Compile Include="Functions\Vector\IMF.cs" />

@@ -3618,4 +3618,7 @@ Second differing type: {1}</value>
   <data name="HelpInstantaneousFrequency" xml:space="preserve">
     <value>Instantaneous frequency between two vectors</value>
   </data>
+  <data name="HelpAutocorrelation" xml:space="preserve">
+    <value>Returns the autocorrelation function of a vector up to a given lag t</value>
+  </data>
 </root>

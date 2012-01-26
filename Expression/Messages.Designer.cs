@@ -2680,6 +2680,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the autocorrelation function of a vector up to a given lag t.
+        /// </summary>
+        internal static string HelpAutocorrelation {
+            get {
+                return ResourceManager.GetString("HelpAutocorrelation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finds precise position of the avoided crossing of two levels (minimum of their distance).
         /// </summary>
         internal static string HelpAvoidedCrossing {

@@ -139,8 +139,33 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Peresùv invariant
         /// </summary>
+        /// <param name="type">Typ (0 - H0, 1 - L1, 3 - L1^2)</param>
         public Vector PeresInvariant(int type) {
-            throw new NotImpException(this, "PeresInvariant");
+            EPBasisIndex index = this.eigenSystem.BasisIndex as EPBasisIndex;
+
+            int count = this.eigenSystem.NumEV;
+            Vector result = new Vector(count);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev = this.eigenSystem.GetEigenVector(i);
+                int length = ev.Length;
+
+                for(int j = 0; j < length; j++) {
+                    double koef = 0.0;
+                    switch(type) {
+                        case 1:
+                            koef = index.M[j];
+                            break;
+                        case 3:
+                            koef = index.M[j]; koef *= koef;
+                            break;
+                    }
+
+                    result[i] += ev[j] * ev[j] * koef;
+                }
+            }
+
+            return result;
         }
 
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {

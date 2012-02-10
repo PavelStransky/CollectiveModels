@@ -11,7 +11,7 @@ namespace PavelStransky.Systems {
     /// Tøída, která implementuje funkci pro pùlení intervalù pøi výpoètu nul V matice
     /// </summary>
     public class VMatrixBisectionFunction {
-        private GCM gcm;
+        private ClassicalGCM gcm;
         private double gamma, e;
         private int ei;
 
@@ -22,7 +22,7 @@ namespace PavelStransky.Systems {
         /// <param name="gamma">Gamma, pro který se bude poèítat</param>
         /// <param name="e">Energie</param>
         /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
-        public VMatrixBisectionFunction(GCM gcm, double gamma, double e, int ei) {
+        public VMatrixBisectionFunction(ClassicalGCM gcm, double gamma, double e, int ei) {
             this.gcm = gcm;
             this.gamma = gamma;
             this.e = e;

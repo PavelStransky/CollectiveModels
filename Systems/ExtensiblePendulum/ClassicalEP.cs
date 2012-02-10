@@ -339,54 +339,50 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Vytvoøí tøídu ekvipotenciální køivky
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
+        private Contour CreateContour(double e, int div) {
+            Contour contour = new Contour();
+
+            if(div <= 0)
+                div = defaultDivision;
+
+            contour.Begin();
+            for(int i = 1; i < div; i++) {
+                double phi = 2.0 * i * System.Math.PI / div;
+                double b = 1.0 + this.Nu * System.Math.Cos(phi);
+                double d = b * b - 1.0 + 2.0 * e;
+
+                if(d >= 0.0) {
+                    d = System.Math.Sqrt(d);
+                    double r1 = b + d;
+                    double r2 = b - d;
+
+                    if(r1 > 0)
+                        contour.Add(0, r1, phi);
+                    if(r2 > 0)
+                        contour.Add(1, r2, phi);
+                }
+            }
+            contour.End();
+
+            contour.RemoveShort();
+            contour.Join();
+
+            return contour;
+        }
+
+        /// <summary>
         /// Vypoèítá ekvipotenciální køivky
         /// </summary>
         /// <param name="e">Enegie</param>
         /// <param name="n">Maximální poèet bodù v jedné køivce</param>
-        public PointVector EquipotentialContours(double e, int n) {
-            // Discriminant
-            double d1 = 2.0 * e - 2.0 * this.Nu + this.Nu * this.Nu;
-            double d2 = 2.0 * e + 2.0 * this.Nu + this.Nu * this.Nu;
-
-            // Negative discriminant of the positive coefficient -> no solution
-            if(d2 < 0)
-                return null;
-
-            d2 = System.Math.Sqrt(d2);
-
-            Vector xm;
-            if(d1 < 0) {
-                xm = new Vector(2);
-
-                xm[0] = 1 + this.Nu + d2;
-                xm[1] = 1 + this.Nu - d2;
-            }
-            else {
-                xm = new Vector(4);
-                d1 = System.Math.Sqrt(d1);
-
-                xm[0] = 1 + this.Nu + d2;
-                xm[1] = -1 + this.Nu + d1;
-                xm[2] = 1 + this.Nu - d2;
-                xm[3] = -1 + this.Nu - d1;
-            }
-            xm = xm.Sort() as Vector;
-
-            ArrayList a = new ArrayList();
-            
-            for(int i = 1; i < n; i++) {
-                double x = i * (xm.LastItem - xm.FirstItem) / n + xm.FirstItem;
-                double y1 = System.Math.Sqrt(1.0 + 2.0 * e + 2.0 * this.Nu * x - x * x + 2.0 * System.Math.Sqrt(2.0 * (e + this.Nu * x)));
-                double y2 = System.Math.Sqrt(1.0 + 2.0 * e + 2.0 * this.Nu * x - x * x - 2.0 * System.Math.Sqrt(2.0 * (e + this.Nu * x)));
-                a.Add(new PointD(x, y1));
-            }
-
-            int count = a.Count;
-            PointVector result = new PointVector(count);
-            for(int i = 0; i < count; i++)
-                result[i] = (PointD)a[i];
-
-            return result;
+        /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
+        public PointVector[] EquipotentialContours(double e, int n, int div) {
+            Contour contour = this.CreateContour(e, div);
+            return contour.GetPointVector(n);
         }
 
         public PointVector[] VMatrixContours(double e, int n, int div, int ei) {
@@ -408,5 +404,7 @@ namespace PavelStransky.Systems {
             return -1;
         }
         #endregion
+
+        protected const int defaultDivision = 4001;
     }
 }

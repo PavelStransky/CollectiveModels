@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 
 using PavelStransky.Math;
@@ -8,7 +9,7 @@ using PavelStransky.Core;
 using PavelStransky.Systems;
 
 namespace PavelStransky.Systems {
-    public class ClassicalGCM: GCM, IExportable, IDynamicalSystem {
+    public class ClassicalGCM: GCM, IExportable, IDynamicalSystem, IGeometricalMethod {
         // Generátor náhodných èísel
         private Random random = new Random();
 
@@ -261,6 +262,111 @@ namespace PavelStransky.Systems {
                 return 1;
 
             return -1;
+        }
+
+        /// <summary>
+        /// Napoèítá matici V v promìnných beta, gamma
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="beta">Souøadnice beta</param>
+        /// <param name="gamma">Souøadnice gamma</param>
+        public Matrix VMatrixBG(double e, double beta, double gamma) {
+            return this.VMatrix(e, beta * System.Math.Cos(gamma), beta * System.Math.Sin(gamma));
+        }
+
+        /// <summary>
+        /// Napoèítá matici V
+        /// (podle PRL 98, 234301 (2007))
+        /// </summary>
+        /// <param name="e">Energie</param>
+        public Matrix VMatrix(double e, double x, double y) {
+            double b = x * x + y * y;
+
+            double vx = 2.0 * this.A * x + 3.0 * this.B * (x * x - y * y) + 4.0 * this.C * x * b;
+            double vy = 2.0 * y * (this.A - 3.0 * this.B * x + 2.0 * this.C * b);
+
+            double vxx = 2.0 * this.A + 6.0 * this.B * x + 4.0 * this.C * (3.0 * x * x + y * y);
+            double vxy = 8.0 * this.C * x * y - 6.0 * this.B * y;
+            double vyy = 2.0 * this.A - 6.0 * this.B * x + 4.0 * this.C * (x * x + 3.0 * y * y);
+
+            double a = 3.0 / System.Math.Abs((2.0 * (e - this.V(x, y))));
+
+            Matrix result = new Matrix(2);
+            result[0, 0] = (a * vx * vx + vxx) / this.K;
+            result[0, 1] = (a * vx * vy + vxy) / this.K;
+            result[1, 0] = result[0, 1];
+            result[1, 1] = (a * vy * vy + vyy) / this.K;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Najde bod, kde se mìní znaménko nejnižší vlastní hodnoty z kladné na zápornou
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="gamma">Úhel gamma</param>
+        /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
+        private Vector VMatrixPMChange(double e, double gamma, int ei) {
+            Vector roots = this.Roots(e, gamma);
+
+            double betamax = 2.0;
+
+            int rlength = roots.Length;
+            if(rlength > 0)
+                betamax = 2.0 * System.Math.Max(System.Math.Abs(roots.FirstItem), System.Math.Abs(roots.LastItem));
+
+            VMatrixBisectionFunction vf = new VMatrixBisectionFunction(this, gamma, e, ei);
+            Bisection bisection = new Bisection(vf.Function);
+
+            ArrayList a = new ArrayList();
+
+            int l = defaultDivision / 20;
+            double last = vf.Function(-betamax);
+
+            for(int i = 1; i < l; i++) {
+                double x = betamax * ((double)(2 * i - l + 1) / l);
+                double d = vf.Function(x);
+                if((d <= 0 && last >= 0) || (d >= 0 && last <= 0))
+                    a.Add(bisection.Solve(betamax * ((double)(2 * i - l - 1) / l), x));
+                last = d;
+            }
+
+            int count = a.Count;
+            Vector result = new Vector(count);
+            int index = 0;
+
+            foreach(double d in a)
+                result[index++] = d;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vypoèítá oblast se zápornými vlastními èísly V matice 
+        /// (podle PRL 98, 234301 (2007))
+        /// </summary>
+        /// <param name="e">Energie</param>
+        /// <param name="n">Poèet bodù v jedné køivce</param>
+        /// <param name="div">Dìlení intervalu 2pi (celkový poèet bodù výpoètu)</param>
+        /// <param name="ei">Index vlastní hodnoty (øazený odspodu, tj. 0 je nejnižší)</param>
+        public PointVector[] VMatrixContours(double e, int n, int div, int ei) {
+            Contour contour = new Contour(6);
+
+            if(div <= 0)
+                div = defaultDivision;
+
+            contour.Begin();
+            for(int i = 1; i < div; i++) {
+                double gamma = i * System.Math.PI / div;
+                Vector roots = this.VMatrixPMChange(e, gamma, ei);
+                contour.Add(roots, gamma);
+            }
+            contour.End();
+
+            contour.RemoveShort();
+            contour.Join();
+
+            return contour.GetPointVector(n);
         }
 
         /// <summary>

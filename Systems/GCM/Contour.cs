@@ -54,6 +54,15 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Pøidá jeden koøen do øetìzce
+        /// </summary>
+        /// <param name="beta">Beta</param>
+        /// <param name="gamma">Gamma</param>
+        public void Add(double beta, double gamma) {
+            this.Add(0, beta, gamma);
+        }
+
+        /// <summary>
         /// Pøidá koøen do øetìzce
         /// </summary>
         /// <param name="i">Index koøene</param>

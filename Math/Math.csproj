@@ -124,6 +124,7 @@
     <Compile Include="DiscreteInterval.cs" />
     <Compile Include="Dynamics\AverageInvariant.cs" />
     <Compile Include="Dynamics\ExactBounds.cs" />
+    <Compile Include="Dynamics\IGeometricalMethod.cs" />
     <Compile Include="Dynamics\Lyapunov.cs" />
     <Compile Include="Dynamics\PeriodicOrbit.cs" />
     <Compile Include="Dynamics\SALIContourGraph.cs" />

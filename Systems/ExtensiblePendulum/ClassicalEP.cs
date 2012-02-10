@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,7 @@ using PavelStransky.Core;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class ClassicalEP: ExtensiblePendulum, IDynamicalSystem {
+    public class ClassicalEP: ExtensiblePendulum, IDynamicalSystem, IGeometricalMethod {
         // Generátor náhodných èísel
         private Random random = new Random();
 
@@ -308,6 +309,88 @@ namespace PavelStransky.Systems {
         /// <param name="x">Souøadnice a hybnosti</param>
         public bool PostProcess(Vector x) {
             return false;
+        }
+
+        /// <summary>
+        /// Napoèítá matici V
+        /// (podle PRL 98, 234301 (2007))
+        /// </summary>
+        /// <param name="e">Energie</param>
+        public Matrix VMatrix(double e, double x, double y) {
+            double b = 1.0 / System.Math.Sqrt(x * x + y * y);
+            double b3 = b * b * b;
+
+            double vx = x * (1.0 - b) - this.Nu;
+            double vy = y * (1.0 - b);
+
+            double vxx = 1 - y * y * b3;
+            double vxy = x * y * b3;
+            double vyy = 1 - x * x * b3;
+
+            double a = 3.0 / System.Math.Abs((2.0 * (e - this.V(x, y))));
+
+            Matrix result = new Matrix(2);
+            result[0, 0] = a * vx * vx + vxx;
+            result[0, 1] = a * vx * vy + vxy;
+            result[1, 0] = result[0, 1];
+            result[1, 1] = a * vy * vy + vyy;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vypoèítá ekvipotenciální køivky
+        /// </summary>
+        /// <param name="e">Enegie</param>
+        /// <param name="n">Maximální poèet bodù v jedné køivce</param>
+        public PointVector EquipotentialContours(double e, int n) {
+            // Discriminant
+            double d1 = 2.0 * e - 2.0 * this.Nu + this.Nu * this.Nu;
+            double d2 = 2.0 * e + 2.0 * this.Nu + this.Nu * this.Nu;
+
+            // Negative discriminant of the positive coefficient -> no solution
+            if(d2 < 0)
+                return null;
+
+            d2 = System.Math.Sqrt(d2);
+
+            Vector xm;
+            if(d1 < 0) {
+                xm = new Vector(2);
+
+                xm[0] = 1 + this.Nu + d2;
+                xm[1] = 1 + this.Nu - d2;
+            }
+            else {
+                xm = new Vector(4);
+                d1 = System.Math.Sqrt(d1);
+
+                xm[0] = 1 + this.Nu + d2;
+                xm[1] = -1 + this.Nu + d1;
+                xm[2] = 1 + this.Nu - d2;
+                xm[3] = -1 + this.Nu - d1;
+            }
+            xm = xm.Sort() as Vector;
+
+            ArrayList a = new ArrayList();
+            
+            for(int i = 1; i < n; i++) {
+                double x = i * (xm.LastItem - xm.FirstItem) / n + xm.FirstItem;
+                double y1 = System.Math.Sqrt(1.0 + 2.0 * e + 2.0 * this.Nu * x - x * x + 2.0 * System.Math.Sqrt(2.0 * (e + this.Nu * x)));
+                double y2 = System.Math.Sqrt(1.0 + 2.0 * e + 2.0 * this.Nu * x - x * x - 2.0 * System.Math.Sqrt(2.0 * (e + this.Nu * x)));
+                a.Add(new PointD(x, y1));
+            }
+
+            int count = a.Count;
+            PointVector result = new PointVector(count);
+            for(int i = 0; i < count; i++)
+                result[i] = (PointD)a[i];
+
+            return result;
+        }
+
+        public PointVector[] VMatrixContours(double e, int n, int div, int ei) {
+            throw new Exception("The method or operation is not implemented.");
         }
 
         /// <summary>

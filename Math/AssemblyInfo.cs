@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Math")]
+[assembly: AssemblyDescription("Basic mathematic functions")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Pavel Stránský")]
+[assembly: AssemblyProduct("Program Collective Models")]
+[assembly: AssemblyCopyright("Copyright © Pavel Stránský 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("0.9.9.1")]
+[assembly: AssemblyVersion("0.9.9.2")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -56,4 +56,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersionAttribute("0.9.9.1")]
+[assembly: AssemblyFileVersionAttribute("0.9.9.2")]

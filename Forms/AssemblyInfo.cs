@@ -11,9 +11,9 @@ using System.Resources;
 [assembly: AssemblyTitle("Collective Models")]
 [assembly: AssemblyDescription("Program for analysing nuclear collective models (GCM, IBM)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Pavel Stransky")]
-[assembly: AssemblyProduct("Collective Models")]
-[assembly: AssemblyCopyright("Pavel Stransky")]
+[assembly: AssemblyCompany("Pavel Stránský")]
+[assembly: AssemblyProduct("Program Collective Models")]
+[assembly: AssemblyCopyright("Copyright © Pavel Stránský 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -28,7 +28,7 @@ using System.Resources;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("0.9.9.1")]
+[assembly: AssemblyVersion("0.9.9.2")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -58,6 +58,6 @@ using System.Resources;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: ComVisibleAttribute(false)]
+[assembly: ComVisibleAttribute(true)]
 [assembly: NeutralResourcesLanguageAttribute("")]
-[assembly: AssemblyFileVersionAttribute("0.9.9.1")]
+[assembly: AssemblyFileVersionAttribute("0.9.9.2")]

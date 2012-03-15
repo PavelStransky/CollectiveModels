@@ -3481,6 +3481,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full help for all functions (including names and types of the parameters) in the HTML format.
+        /// </summary>
+        internal static string HelpFullHelpHTML {
+            get {
+                return ResourceManager.GetString("HelpFullHelpHTML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smooths a vector in such a manner that all components before computed position are used for averaging.
         /// </summary>
         internal static string HelpFullSmooth {

@@ -62,6 +62,14 @@ namespace PavelStransky.Expression.Functions.Def {
                     t.Close();
                     f.Close();
                 }
+                else if(arguments[1] is string) {
+                    string s = arguments[1] as string;
+                    FileStream f = new FileStream(fileName, FileMode.Create);
+                    StreamWriter t = new StreamWriter(f);
+                    t.Write(s);
+                    t.Close();
+                    f.Close();
+                }
                 else
                     this.BadTypeError(arguments[1], 1);
             }

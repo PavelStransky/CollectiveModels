@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(3, false, true, false, Messages.P3TrafficParams, Messages.P3TrafficParamsDescription, -1, typeof(int));
             this.SetParam(4, false, true, false, Messages.P4TrafficParams, Messages.P4TrafficParamsDescription, -1, typeof(int));
             this.SetParam(5, false, true, false, Messages.P5TrafficParams, Messages.P5TrafficParamsDescription, -1, typeof(int));
-            this.SetParam(5, false, true, false, Messages.P6TrafficParams, Messages.P6TrafficParamsDescription, -1, typeof(int));
+            this.SetParam(6, false, true, false, Messages.P6TrafficParams, Messages.P6TrafficParamsDescription, -1, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

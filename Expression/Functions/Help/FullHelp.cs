@@ -30,8 +30,5 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
 			return functions[arguments[0] as string].FullHelp;
 		}
-
-		private const string help = "Vrátí nápovìdu k zadané funkci (vèetnì užití)";
-		private const string parameters = "název funkce";
 	}
 }

@@ -3562,6 +3562,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the context from a file.
+        /// </summary>
+        internal static string HelpGetFileContext {
+            get {
+                return ResourceManager.GetString("HelpGetFileContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns global context.
         /// </summary>
         internal static string HelpGetGlobalContext {

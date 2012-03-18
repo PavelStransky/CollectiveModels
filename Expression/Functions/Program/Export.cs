@@ -73,6 +73,24 @@ namespace PavelStransky.Expression.Functions.Def {
                 else
                     this.BadTypeError(arguments[1], 1);
             }
+            else if(type == "kml") {
+                List a = arguments[1] as List;
+                FileStream f = new FileStream(fileName, FileMode.Create);
+                StreamWriter t = new StreamWriter(f);
+                TArray data = a[0] as TArray;
+                Vector v1 = data[0] as Vector;
+                Vector v2 = data[1] as Vector;
+                Vector v3 = data[2] as Vector;
+                int length = v1.Length;
+
+                t.Write(a[1] as string);
+                for(int i = 0; i < length; i++)
+                    t.Write(string.Format("{0},{1},{2} ", v1[i], v2[i], v3[i]));
+                t.Write(a[2] as string);
+
+                t.Close();
+                f.Close();
+            }
             else if(type == "wav") {
                 if(arguments[1] is Vector) {
                     FileStream f = new FileStream(fileName, FileMode.Create);

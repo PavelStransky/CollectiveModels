@@ -159,6 +159,7 @@
     <Compile Include="Functions\Dynamics\Traffic\TrafficRun.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficStep.cs" />
     <Compile Include="Functions\Help\FullHelpHTML.cs" />
+    <Compile Include="Functions\Math\ArcCos.cs" />
     <Compile Include="Functions\Math\BesselJ.cs" />
     <Compile Include="Functions\Math\BesselJd.cs" />
     <Compile Include="Functions\Math\BesselY.cs" />

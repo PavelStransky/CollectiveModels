@@ -65,6 +65,18 @@ namespace PavelStransky.Expression.Functions.Def {
                     f.Close();
                 }
             }
+            else if((string)arguments[1] == paramKML) {
+                // Import dat KML - formát a,b,c a,b,c a,b,c...
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                StreamReader t = new StreamReader(f);
+                try {
+                    result = this.ImportKML(t);
+                }
+                finally {
+                    t.Close();
+                    f.Close();
+                }
+            }
             else if((string)arguments[1] == paramWave) {
                 // Import dat WAV
                 FileStream f = new FileStream(fileName, FileMode.Open);
@@ -86,6 +98,42 @@ namespace PavelStransky.Expression.Functions.Def {
 			return result;
 		}
 
+        /// <summary>
+        /// Provede import geografických KML dat
+        /// </summary>
+        /// <param name="t">StreamReader</param>
+        private object ImportKML(StreamReader t) {
+            string s = t.ReadToEnd().Trim(' ', '\n', '\r', '\t');
+            int i1 = s.IndexOf("<coordinates>") + "<coordinates>".Length;
+            int i2 = s.IndexOf("</coordinates>");
+
+            string begin = s.Substring(0, i1);
+            string end = s.Substring(i2);
+            s = s.Substring(i1, i2 - i1).Trim(' ', '\n', '\r', '\t');
+
+            string[] items = s.Split(' ');
+
+            int length = items.Length;
+
+            Vector[] data = new Vector[3];
+            data[0] = new Vector(length);
+            data[1] = new Vector(length);
+            data[2] = new Vector(length);
+
+            for(int i = 0; i < length; i++) {
+                string[] its = items[i].Split(',');
+
+                for(int j = 0; j < its.Length; j++)
+                    data[j][i] = double.Parse(its[j]);
+            }
+
+            List result = new List();
+            result.Add(new TArray(data));
+            result.Add(begin);
+            result.Add(end);
+            return result;
+        }
+        
         /// <summary>
         /// Provede import dat z matiky
         /// </summary>
@@ -279,6 +327,7 @@ namespace PavelStransky.Expression.Functions.Def {
 		private const string paramMatlab = "matlab";
         private const string paramMatica = "mathmat";
         private const string paramWave = "wav";
+        private const string paramKML = "kml";
 
         private const string name = "import";
 	}

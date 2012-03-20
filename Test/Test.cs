@@ -21,11 +21,24 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusClassicalEP();
+            Test.PokusLipkinFactorized();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        static void PokusLipkinFactorized() {
+            Vector v = new Vector(1);
+            v[0] = 10;
+            LipkinFactorizedBasisIndex l = new LipkinFactorizedBasisIndex(v);
+
+            v = new Vector(6);
+            v[0] = 1;
+            v[3] = 1;
+
+            Console.WriteLine(l[v]);
+            Console.WriteLine(l[9]);
+        }
 
         /// <summary>
         /// 10.9.2011

@@ -7,18 +7,7 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class LipkinFull: IQuantumSystem, IExportable {
-        // Systém s vlastními hodnotami
-        private EigenSystem eigenSystem;
-
-        // parametry alpha, omega
-        private double alpha, omega;
-
-        /// <summary>
-        /// Systém vlastních hodnot
-        /// </summary>
-        public EigenSystem EigenSystem { get { return this.eigenSystem; } }
-
+    public class LipkinFull: Lipkin, IQuantumSystem {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -27,9 +16,8 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public LipkinFull(double alpha, double omega) {
-            this.alpha = alpha;
-            this.omega = omega;
+        public LipkinFull(double alpha, double omega)
+            : base(alpha, omega) {
             this.eigenSystem = new EigenSystem(this);
         }
 
@@ -58,7 +46,7 @@ namespace PavelStransky.Systems {
                 int m = index.M[i];
 
                 double c1 = (n + m) / 2.0;
-                matrix[i, i] = this.alpha * c1 + k * this.omega * c1 * c1;
+                matrix[i, i] = this.alpha * c1 + k * this.omega *this.omega * c1 * c1;
 
                 // -1
                 if(i - 1 >= 0 && l == index.L[i - 1]) {
@@ -80,9 +68,13 @@ namespace PavelStransky.Systems {
         }
 
         private double ShiftPlus(int l, int m) {
+            if(m > l || m < -l)
+                return 0;
             return System.Math.Sqrt((l - m) * (l + m + 2)) / 2.0;
         }
         private double ShiftMinus(int l, int m) {
+            if(m > l || m < -l)
+                return 0;
             return System.Math.Sqrt((l + m) * (l - m + 2)) / 2.0;
         }
 
@@ -104,29 +96,12 @@ namespace PavelStransky.Systems {
 
         #region Implementace IExportable
         /// <summary>
-        /// Uloží výsledky do souboru
-        /// </summary>
-        /// <param name="export">Export</param>
-        public void Export(Export export) {
-            IEParam param = new IEParam();
-            param.Add(this.eigenSystem, "EigenSystem");
-            param.Add(this.alpha, "Alpha");
-            param.Add(this.omega, "Omega");
-            param.Export(export);
-        }
-
-        /// <summary>
         /// Naète výsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public LipkinFull(Core.Import import) {
-            IEParam param = new IEParam(import);
-            this.eigenSystem = (EigenSystem)param.Get();
-            this.alpha = (double)param.Get(0.0);
-            this.omega = (double)param.Get(0.0);
+        public LipkinFull(Core.Import import) : base(import) {
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
-
         #endregion
     }
 }

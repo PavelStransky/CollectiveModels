@@ -48,6 +48,10 @@ namespace PavelStransky.Systems {
                 return new SCBasisIndex(this);
             else if(typeName == typeof(EPBasisIndex).FullName)
                 return new EPBasisIndex(this);
+            else if(typeName == typeof(LipkinFullBasisIndex).FullName)
+                return new LipkinFullBasisIndex(this);
+            else if(typeName == typeof(LipkinFactorizedBasisIndex).FullName)
+                return new LipkinFactorizedBasisIndex(this);
 
             else if(typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
@@ -126,6 +130,10 @@ namespace PavelStransky.Systems {
                 return new QuantumEP(this);
             else if(typeName == typeof(ClassicalEP).FullName)
                 return new ClassicalEP(this);
+            else if(typeName == typeof(LipkinFull).FullName)
+                return new LipkinFull(this);
+            else if(typeName == typeof(LipkinFactorized).FullName)
+                return new LipkinFactorized(this);
             else
                 return base.CreateObject(typeName);
         }

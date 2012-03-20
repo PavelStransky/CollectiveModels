@@ -3627,4 +3627,19 @@ Second differing type: {1}</value>
   <data name="HelpFullHelpHTML" xml:space="preserve">
     <value>Full help for all functions (including names and types of the parameters) in the HTML format</value>
   </data>
+  <data name="HelpLipkinF" xml:space="preserve">
+    <value>Creates a Lipkin model class diagonalized in the full SU(2) basis</value>
+  </data>
+  <data name="PAlpha" xml:space="preserve">
+    <value>alpha</value>
+  </data>
+  <data name="PAlphaDescription" xml:space="preserve">
+    <value>Parameter alpha</value>
+  </data>
+  <data name="POmega" xml:space="preserve">
+    <value>omega</value>
+  </data>
+  <data name="POmegaDescription" xml:space="preserve">
+    <value>Parameter omega</value>
+  </data>
 </root>

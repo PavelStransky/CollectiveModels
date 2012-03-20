@@ -4138,6 +4138,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a Lipkin model class diagonalized in the full SU(2) basis.
+        /// </summary>
+        internal static string HelpLipkinF {
+            get {
+                return ResourceManager.GetString("HelpLipkinF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a list of all parameters.
         /// </summary>
         internal static string HelpList {
@@ -6784,6 +6793,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to alpha.
+        /// </summary>
+        internal static string PAlpha {
+            get {
+                return ResourceManager.GetString("PAlpha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter alpha.
+        /// </summary>
+        internal static string PAlphaDescription {
+            get {
+                return ResourceManager.GetString("PAlphaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to a.
         /// </summary>
         internal static string PAmplitudes {
@@ -9003,6 +9030,24 @@ namespace PavelStransky.Expression {
         internal static string POldValueMinDescription {
             get {
                 return ResourceManager.GetString("POldValueMinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to omega.
+        /// </summary>
+        internal static string POmega {
+            get {
+                return ResourceManager.GetString("POmega", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter omega.
+        /// </summary>
+        internal static string POmegaDescription {
+            get {
+                return ResourceManager.GetString("POmegaDescription", resourceCulture);
             }
         }
         

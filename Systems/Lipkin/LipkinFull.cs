@@ -46,24 +46,24 @@ namespace PavelStransky.Systems {
                 int m = index.M[i];
 
                 double c1 = (n + m) / 2.0;
-                matrix[i, i] = this.alpha * c1 + k * this.omega *this.omega * c1 * c1;
+                matrix[i, i] = this.alpha * c1 + k * this.omega * this.omega * c1 * c1; // 1
 
                 // -1
                 if(i - 1 >= 0 && l == index.L[i - 1]) {
-                    matrix[i, i] += k * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 1);
-                    matrix[i - 1, i] = k * this.omega * this.ShiftMinus(l, m) * (n + m - 1);
+                    matrix[i, i] += k * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
+                    matrix[i - 1, i] = k * this.omega * this.ShiftMinus(l, m) * (n + m - 2);
                 }
                 // +1
                 if(i + 1 < dim && l == index.L[i + 1]) {
-                    matrix[i, i] += k * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 1);
-                    matrix[i + 1, i] = k * this.omega * this.ShiftPlus(l, m) * (n + m + 1);
+                    matrix[i, i] += k * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
+                    matrix[i + 1, i] = k * this.omega * this.ShiftPlus(l, m) * (n + m + 2);
                 }
                 // -2
                 if(i - 2 >= 0 && l == index.L[i - 2])
-                    matrix[i - 2, i] = k * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 1);
+                    matrix[i - 2, i] = k * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 2);
                 // +2
                 if(i + 2 < dim && l == index.L[i + 2])
-                    matrix[i + 2, i] = k * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 1);
+                    matrix[i + 2, i] = k * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 2);
             }
         }
 

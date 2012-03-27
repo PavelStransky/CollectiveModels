@@ -4417,6 +4417,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates a partial trace for an eigenstate (returns it as a density matrix).
+        /// </summary>
+        internal static string HelpPartialTrace {
+            get {
+                return ResourceManager.GetString("HelpPartialTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the probability amplitude of the wave function in the required point (only 1D systems).
         /// </summary>
         internal static string HelpPAX {
@@ -7059,6 +7068,24 @@ namespace PavelStransky.Expression {
         internal static string PCoefficientDetail {
             get {
                 return ResourceManager.GetString("PCoefficientDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cs.
+        /// </summary>
+        internal static string PCombinedSystem {
+            get {
+                return ResourceManager.GetString("PCombinedSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Combined system.
+        /// </summary>
+        internal static string PCombinedSystemDescription {
+            get {
+                return ResourceManager.GetString("PCombinedSystemDescription", resourceCulture);
             }
         }
         

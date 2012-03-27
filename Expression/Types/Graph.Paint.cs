@@ -669,7 +669,7 @@ namespace PavelStransky.Expression {
             x = System.Math.Ceiling(x);
             x *= interval;
         
-            int length = (int)(max / interval) - (int)(min / interval) + 1;
+            int length = (int)System.Math.Floor(max / interval) - (int)System.Math.Ceiling(min / interval) + 1;
 
             Vector result = new Vector(length);
 

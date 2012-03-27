@@ -7,24 +7,24 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
     /// <summary>
-    /// Tøída, která v sobì zapouzdøuje indexy pro Lipkinùv model diagonalizovanı v bázi SU(2)
+    /// Tøída, která v sobì zapouzdøuje indexy pro Lipkinùv model diagonalizovanı v bázi SU(2) s jedním spinem zvláš
     /// </summary>
-    public class LipkinFullBasisIndex: BasisIndex {
-        private int n;
+    public class LipkinOneBasisIndex: BasisIndex {
+        private int n;  // Poèet sdruenıch spinù (extra spin se poèítá zvláš)
 
-        private int[] l, m;
+        private int[] l, m, s;
         private bool fixL;
 
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public LipkinFullBasisIndex(Vector basisParams) : base(basisParams) { }
+        public LipkinOneBasisIndex(Vector basisParams) : base(basisParams) { }
 
         /// <summary>
         /// Konstruktor pro naètení dat
         /// </summary>
         /// <param name="import">Import</param>
-        public LipkinFullBasisIndex(Import import) : base(import) { }
+        public LipkinOneBasisIndex(Import import) : base(import) { }
 
         /// <summary>
         /// Nastaví parametry báze
@@ -39,17 +39,23 @@ namespace PavelStransky.Systems {
             if(basisParams.Length > 1) {
                 this.fixL = true;
 
-                int mmax = (int)basisParams[1];
+                int maxm = (int)basisParams[1];
 
-                this.l = new int[mmax + 1];
-                this.m = new int[mmax + 1];
+                this.l = new int[2 * (maxm + 1)];
+                this.m = new int[2 * (maxm + 1)];
+                this.s = new int[2 * (maxm + 1)];
 
-                this.l[0] = mmax;
+                this.l[0] = maxm;
 
                 int num = 0;
-                for(int j = -mmax; j <= mmax; j += 2) {
-                    this.l[num] = mmax;
+                for(int j = -maxm; j <= maxm; j += 2) {
+                    this.l[num] = maxm;
                     this.m[num] = j;
+                    this.s[num] = 0;
+                    num++;
+                    this.l[num] = maxm;
+                    this.m[num] = j;
+                    this.s[num] = 1;
                     num++;
                 }
             }
@@ -60,16 +66,22 @@ namespace PavelStransky.Systems {
                 int num = 0;
                 for(int i = this.n; i >= 0; i -= 2)
                     for(int j = -i; j <= i; j += 2)
-                        num++;
+                        num += 2;
 
                 this.l = new int[num];
                 this.m = new int[num];
+                this.s = new int[num];
 
                 num = 0;
                 for(int i = this.n; i >= 0; i -= 2)
                     for(int j = -i; j <= i; j += 2) {
                         this.l[num] = i;
                         this.m[num] = j;
+                        this.s[num] = 0;
+                        num++;
+                        this.l[num] = i;
+                        this.m[num] = j;
+                        this.s[num] = 1;
                         num++;
                     }
             }
@@ -86,14 +98,19 @@ namespace PavelStransky.Systems {
         public int[] M { get { return this.m; } }
 
         /// <summary>
-        /// Poèet bosonù
+        /// Kvantové èíslo dodateèného spinu
+        /// </summary>
+        public int[] S { get { return this.s; } }
+
+        /// <summary>
+        /// Poèet sdruenıch bosonù
         /// </summary>
         public int N { get { return this.n; } }
 
         /// <summary>
         /// Poèet indexù báze
         /// </summary>
-        public override int Rank { get { return this.fixL ? 1 : 2; } }
+        public override int Rank { get { return this.fixL ? 2 : 3; } }
 
         /// <summary>
         /// Poèet prvkù
@@ -107,7 +124,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Šíøka pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return 3; } }
+        public override int BandWidth { get { return 4; } }
 
         /// <summary>
         /// Maximální hodnota hlavního kvantového èísla l
@@ -125,10 +142,10 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="l">Hlavní kvantové èíslo</param>
         /// <param name="m">Orbitální kvantové èíslo</param>
-        public int this[int m, int l] {
+        public int this[int s, int m, int l] {
             get {
                 for(int i = 0; i < this.Length; i++)
-                    if(this.m[i] == m && this.l[i] == l)
+                    if(this.s[i] == s && this.m[i] == m && this.l[i] == l)
                         return i;
                 return -1;
             }
@@ -141,15 +158,17 @@ namespace PavelStransky.Systems {
         /// <param name="basisIndex">Vektor s indexy</param>
         public override int this[Vector basisIndex] {
             get {
-                return this[(int)basisIndex[0], (int)basisIndex[1]];
+                return this[(int)basisIndex[0], (int)basisIndex[1], (int)basisIndex[2]];
             }
         }
 
         public override int BasisQuantumNumberLength(int qn) {
             switch(qn) {
                 case 0:
-                    return this.n + 1;
+                    return 2;
                 case 1:
+                    return this.n + 1;
+                case 2:
                     return this.fixL ? 1 : this.n / 2 + 1;
             }
 
@@ -159,8 +178,10 @@ namespace PavelStransky.Systems {
         public override int GetBasisQuantumNumber(int qn, int i) {
             switch(qn) {
                 case 0:
-                    return this.m[i];
+                    return this.s[i];
                 case 1:
+                    return this.m[i];
+                case 2:
                     return this.l[i];
             }
 

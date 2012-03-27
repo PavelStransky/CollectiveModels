@@ -25,7 +25,7 @@ namespace PavelStransky.Systems {
         /// Vytvoøí instanci tøídy s parametry báze
         /// </summary>
         /// <param name="basisParams">Parametry báze</param>
-        public BasisIndex CreateBasisIndex(Vector basisParams) {
+        public virtual BasisIndex CreateBasisIndex(Vector basisParams) {
             return new LipkinFullBasisIndex(basisParams);
         }
 
@@ -34,7 +34,7 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisIndex">Parametry báze</param>
         /// <param name="writer">Writer</param>
-        public void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
+        public virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             LipkinFullBasisIndex index = basisIndex as LipkinFullBasisIndex;
 
             int dim = index.Length;
@@ -51,12 +51,12 @@ namespace PavelStransky.Systems {
                 // -1
                 if(i - 1 >= 0 && l == index.L[i - 1]) {
                     matrix[i, i] += k * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
-                    matrix[i - 1, i] = k * this.omega * this.ShiftMinus(l, m) * (n + m - 2);
+                    matrix[i - 1, i] = k * this.omega * this.ShiftMinus(l, m) * (n + m - 1);
                 }
                 // +1
                 if(i + 1 < dim && l == index.L[i + 1]) {
                     matrix[i, i] += k * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
-                    matrix[i + 1, i] = k * this.omega * this.ShiftPlus(l, m) * (n + m + 2);
+                    matrix[i + 1, i] = k * this.omega * this.ShiftPlus(l, m) * (n + m + 1);
                 }
                 // -2
                 if(i - 2 >= 0 && l == index.L[i - 2])
@@ -67,12 +67,12 @@ namespace PavelStransky.Systems {
             }
         }
 
-        private double ShiftPlus(int l, int m) {
+        protected double ShiftPlus(int l, int m) {
             if(m > l || m < -l)
                 return 0;
             return System.Math.Sqrt((l - m) * (l + m + 2)) / 2.0;
         }
-        private double ShiftMinus(int l, int m) {
+        protected double ShiftMinus(int l, int m) {
             if(m > l || m < -l)
                 return 0;
             return System.Math.Sqrt((l + m) * (l - m + 2)) / 2.0;

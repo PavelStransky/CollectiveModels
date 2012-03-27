@@ -3642,4 +3642,13 @@ Second differing type: {1}</value>
   <data name="POmegaDescription" xml:space="preserve">
     <value>Parameter omega</value>
   </data>
+  <data name="HelpPartialTrace" xml:space="preserve">
+    <value>Calculates a partial trace for an eigenstate (returns it as a density matrix)</value>
+  </data>
+  <data name="PCombinedSystem" xml:space="preserve">
+    <value>cs</value>
+  </data>
+  <data name="PCombinedSystemDescription" xml:space="preserve">
+    <value>Combined system</value>
+  </data>
 </root>

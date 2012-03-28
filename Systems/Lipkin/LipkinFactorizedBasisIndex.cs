@@ -75,6 +75,18 @@ namespace PavelStransky.Systems {
             }
         }
 
+        public string Ket(int i) {
+            StringBuilder result = new StringBuilder();
+            result.Append('|');
+            for(int j = 0; j < this.n; j++)
+                if((i & (1 << j)) == 0)
+                    result.Append('b');
+                else
+                    result.Append('t');
+            result.Append('>');
+            return result.ToString();
+        }
+
         public override int BasisQuantumNumberLength(int qn) {
             if(qn < this.n)
                 return 1;

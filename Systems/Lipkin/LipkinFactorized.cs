@@ -123,6 +123,54 @@ namespace PavelStransky.Systems {
             }
         }
 
+        /// <summary>
+        /// Vyjádøí vlastní stavy jako lineární kombinaci báze
+        /// </summary>
+        /// <param name="i">Index vlastního stavu</param>
+        /// <param name="limit">Hodnota, která omezí prvky v rozvoji</param>
+        public string ExpandBasis(int i, double limit) {
+            LipkinFactorizedBasisIndex index = eigenSystem.BasisIndex as LipkinFactorizedBasisIndex;
+
+            Vector ev = eigenSystem.GetEigenVector(i);
+            int length = ev.Length;
+
+            string[] ket = new string[length];
+            double[] data = new double[length];
+            int[] ind = new int[length];
+
+            int limitd = limit > 0 ? (int)System.Math.Round(-System.Math.Log10(limit)) : 0;
+
+            for(int j = 0; j < ev.Length; j++) {
+                ket[j] = index.Ket(j);
+                data[j] = System.Math.Abs(ev[j]);
+                ind[j] = j;
+            }
+
+            Array.Sort((double[])data.Clone(), ind); Array.Reverse(ind);
+            Array.Sort((double[])data.Clone(), ket); Array.Reverse(ket);
+            Array.Sort(data); Array.Reverse(data);
+
+            StringBuilder result = new StringBuilder();
+            for(int j = 0; j < ev.Length; j++) {
+                int k = ind[j];
+                double d = data[j];
+                if(d > limit) {
+                    if(ev[k] >= 0)
+                        result.Append("+");
+                    else
+                        result.Append("-");
+
+                    if(limit > 0)
+                        d = System.Math.Round(d, limitd);
+
+                    result.Append(d);
+                    result.Append(ket[j]);
+                    result.Append(Environment.NewLine);
+                }
+            }
+
+            return result.ToString();
+        }
 
         /// <summary>
         /// Peresùv invariant

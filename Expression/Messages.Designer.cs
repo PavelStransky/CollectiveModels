@@ -3382,6 +3382,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expand a specified eigenvector in basis components.
+        /// </summary>
+        internal static string HelpExpandBasis {
+            get {
+                return ResourceManager.GetString("HelpExpandBasis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saves a variable to a file.
         /// </summary>
         internal static string HelpExport {
@@ -8445,6 +8454,24 @@ namespace PavelStransky.Expression {
         internal static string PLinesOmitDescription {
             get {
                 return ResourceManager.GetString("PLinesOmitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lipkin.
+        /// </summary>
+        internal static string PLipkin {
+            get {
+                return ResourceManager.GetString("PLipkin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lipkin model class.
+        /// </summary>
+        internal static string PLipkinDescription {
+            get {
+                return ResourceManager.GetString("PLipkinDescription", resourceCulture);
             }
         }
         

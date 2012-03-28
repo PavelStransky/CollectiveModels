@@ -3657,4 +3657,13 @@ Second differing type: {1}</value>
   <data name="HelpLipkinTwo" xml:space="preserve">
     <value>Creates a Lipkin model class diagonalized in the full SU(2) basis, divided into two interacting subsystems</value>
   </data>
+  <data name="HelpExpandBasis" xml:space="preserve">
+    <value>Expand a specified eigenvector in basis components</value>
+  </data>
+  <data name="PLipkin" xml:space="preserve">
+    <value>lipkin</value>
+  </data>
+  <data name="PLipkinDescription" xml:space="preserve">
+    <value>Lipkin model class</value>
+  </data>
 </root>

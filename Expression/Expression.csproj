@@ -188,6 +188,7 @@
     <Compile Include="Functions\Quantum\Systems\LipkinFac.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFull.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinOne.cs" />
+    <Compile Include="Functions\Quantum\Systems\LipkinTwo.cs" />
     <Compile Include="Functions\Quantum\Systems\QEP.cs" />
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />

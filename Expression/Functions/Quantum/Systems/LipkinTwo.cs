@@ -7,10 +7,10 @@ using PavelStransky.Systems;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Creates a Lipkin model class diagonalized in the full SU(2) basis + one single spin
+    /// Creates a Lipkin model class diagonalized in the full SU(2) basis, divided into two interacting subsystems
     /// </summary>
-    public class LipkinOneFnc: Fnc {
-        public override string Help { get { return Messages.HelpLipkinOne; } }
+    public class LipkinTwoFnc: Fnc {
+        public override string Help { get { return Messages.HelpLipkinTwo; } }
         public override string Name { get { return name; } }
 
         protected override void CreateParameters() {
@@ -23,9 +23,9 @@ namespace PavelStransky.Expression.Functions.Def {
             double alpha = (double)arguments[0];
             double omega = (double)arguments[1];
 
-            return new LipkinOne(alpha, omega);
+            return new LipkinTwo(alpha, omega);
         }
 
-        const string name = "lipkinone";
+        const string name = "lipkintwo";
     }
 }

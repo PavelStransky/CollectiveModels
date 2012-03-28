@@ -15,16 +15,20 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(3);
 
-            this.SetParam(0, true, true, false, Messages.PCombinedSystem, Messages.PCombinedSystemDescription, null, typeof(LipkinOne));
+            this.SetParam(0, true, true, false, Messages.PCombinedSystem, Messages.PCombinedSystemDescription, null, typeof(LipkinOne), typeof(LipkinTwo));
             this.SetParam(1, true, true, false, Messages.PEigenValueIndex, Messages.PEigenValueIndexDescription, null, typeof(int));
             this.SetParam(2, false, true, false, Messages.PType, Messages.PTypeDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            LipkinOne system = (LipkinOne)arguments[0];
             int n = (int)arguments[1];
             int type = (int)arguments[2];
-            return system.PartialTrace(n, type);
+
+            if(arguments[0] is LipkinOne)
+                return ((LipkinOne)arguments[0]).PartialTrace(n, type);
+            else
+                return ((LipkinTwo)arguments[0]).PartialTrace(n, type);
+
         }
     }
 }

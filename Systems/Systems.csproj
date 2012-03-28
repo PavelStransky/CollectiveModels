@@ -90,6 +90,8 @@
     <Compile Include="Lipkin\LipkinFullBasisIndex.cs" />
     <Compile Include="Lipkin\LipkinOne.cs" />
     <Compile Include="Lipkin\LipkinOneBasisIndex.cs" />
+    <Compile Include="Lipkin\LipkinTwo.cs" />
+    <Compile Include="Lipkin\LipkinTwoBasisIndex.cs" />
     <Compile Include="PT\PTBasisIndex.cs" />
     <Compile Include="Spheroid\Spheroid.cs" />
     <Compile Include="Spheroid\SpheroidBasisIndex.cs" />

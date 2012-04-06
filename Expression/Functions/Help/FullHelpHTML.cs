@@ -10,17 +10,6 @@ namespace PavelStransky.Expression.Functions.Def {
     /// Full help for all functions (including names and types of the parameters) in the HTML format
     /// </summary>
     public class FullHelpHTML: Fnc {
-        private FncList functions;
-
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="functions">Slovník zaregistrovaných funkcí</param>
-        public FullHelpHTML(FncList functions)
-            : base() {
-            this.functions = functions;
-        }
-
         public override string Help { get { return Messages.HelpFullHelpHTML; } }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

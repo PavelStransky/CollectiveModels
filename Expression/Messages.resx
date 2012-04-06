@@ -1171,7 +1171,7 @@ Length of the second vector: {1}</value>
     <value>Merges lists into one list</value>
   </data>
   <data name="HelpMinus" xml:space="preserve">
-    <value>Operator -</value>
+    <value>Operator minus (subtraction)</value>
   </data>
   <data name="HelpMute" xml:space="preserve">
     <value>Mutes the output of a function</value>
@@ -1183,7 +1183,7 @@ Length of the second vector: {1}</value>
     <value>Norm of the vector</value>
   </data>
   <data name="HelpNotEvalArray" xml:space="preserve">
-    <value>Disable array evaluation of an expression</value>
+    <value>Disable the array evaluation of the following expression</value>
   </data>
   <data name="HelpNuDatReadKnownIsotopes" xml:space="preserve">
     <value>Reads all known isotopes from http://www-nds.iaea.org</value>

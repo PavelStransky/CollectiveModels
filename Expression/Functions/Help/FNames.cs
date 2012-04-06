@@ -8,17 +8,7 @@ namespace PavelStransky.Expression.Functions.Def {
 	/// <summary>
     /// Returns names of all registered functions which begin with specified string
 	/// </summary>
-	public class FNames: Fnc {
-		private FncList functions;
-		
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public FNames(FncList functions) : base() {
-			this.functions = functions;
-		}
-
+	public class FNames: Fnc {	
 		public override string Help {get {return Messages.HelpFNames;}}
 
         protected override void CreateParameters() {

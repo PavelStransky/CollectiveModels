@@ -10,16 +10,6 @@ namespace PavelStransky.Expression.Functions.Def {
 	/// Vrátí nápovìdu k zadané funkci (vèetnì užití)
 	/// </summary>
 	public class FullHelp: Fnc {
-		private FncList functions;
-		
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public FullHelp(FncList functions) : base() {
-			this.functions = functions;
-		}
-
 		public override string Help {get {return Messages.HelpFullHelp;}}
 
         protected override void CreateParameters() {

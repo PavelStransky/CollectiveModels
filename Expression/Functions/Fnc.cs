@@ -12,6 +12,12 @@ namespace PavelStransky.Expression.Functions {
 	/// Tøída implementující funkce
 	/// </summary>
 	public abstract class Fnc {
+        // Seznam funkcí
+        protected FncList functions;
+
+        // Pøíklady
+        protected ArrayList examples;
+
         private long totalTicks = 0;
         private long calls = 0;
 
@@ -56,10 +62,25 @@ namespace PavelStransky.Expression.Functions {
         public virtual FncTypes FncType { get { return FncTypes.Unassigned; } }
 
         /// <summary>
+        /// Vytvoøí pøíklady
+        /// </summary>
+        protected virtual void CreateExamples() { }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Fnc() {
+            this.examples = new ArrayList();
             this.CreateParameters();
+            this.CreateExamples();
+        }
+
+        /// <summary>
+        /// Nastaví seznam funkcí
+        /// </summary>
+        /// <param name="functions">Seznam funkcí</param>
+        public void SetFncList(FncList functions) {
+            this.functions = functions;
         }
 
         #region Parameters

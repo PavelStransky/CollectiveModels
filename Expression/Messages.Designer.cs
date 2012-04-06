@@ -4291,7 +4291,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operator -.
+        ///   Looks up a localized string similar to Operator minus (subtraction).
         /// </summary>
         internal static string HelpMinus {
             get {
@@ -4354,7 +4354,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable array evaluation of an expression.
+        ///   Looks up a localized string similar to Disable the array evaluation of the following expression.
         /// </summary>
         internal static string HelpNotEvalArray {
             get {

@@ -9,16 +9,6 @@ namespace PavelStransky.Expression.Functions.Def {
 	/// Vytvoøí øadu s použitím všech zaregistrovaných funkcí
 	/// </summary>
 	public class Use: Fnc {
-		private FncList functions;
-		
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public Use(FncList functions) : base() {
-			this.functions = functions;
-		}
-
 		public override string Help {get {return help;}}
 		public override string ParametersHelp {get {return parameters;}}
 

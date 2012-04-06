@@ -13,16 +13,6 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpHelp; } }
         public override OperatorPriority Priority { get { return OperatorPriority.MaxPriority; } }
 
-		private FncList functions;
-		
-		/// <summary>
-		/// Konstruktor
-		/// </summary>
-		/// <param name="functions">Slovník zaregistrovaných funkcí</param>
-		public OpHelp(FncList functions) : base() {
-			this.functions = functions;
-		}
-
         protected override void CreateParameters() {
             this.SetNumParams(1);
             this.SetParam(0, true, false, false, Messages.PFnName, Messages.PFnNameDescription, null);

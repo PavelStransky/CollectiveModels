@@ -40,12 +40,13 @@ namespace PavelStransky.Expression {
                         function = Activator.CreateInstance(types[i]) as Fnc;
 
                     // Parametr vyžadující zpìtnou referenci na functions
-                    else if(p[0].ParameterType == functions.GetType())
-                        function = Activator.CreateInstance(types[i], functions) as Fnc;
+//                    else if(p[0].ParameterType == functions.GetType())
+//                        function = Activator.CreateInstance(types[i], functions) as Fnc;
 
                     else
                         continue;
 
+                    function.SetFncList(functions);
                     functions.Add(function);
                 }
             }

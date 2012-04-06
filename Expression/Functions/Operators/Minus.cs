@@ -1,5 +1,6 @@
-using System.Collections;
 using System;
+using System.Text;
+using System.Collections;
 
 using PavelStransky.Math;
 using PavelStransky.Expression;
@@ -11,6 +12,7 @@ namespace PavelStransky.Expression.Functions.Def {
     public class Minus: Operator {
         public override string Name { get { return name; } }
         public override string Help { get { return Messages.HelpMinus; } }
+        public override FncTypes FncType { get { return FncTypes.Operator; } }
         public override OperatorPriority Priority { get { return OperatorPriority.SumPriority; } }
 
         protected override void CreateParameters() {
@@ -27,6 +29,15 @@ namespace PavelStransky.Expression.Functions.Def {
             this.AddCompatibility(typeof(double), typeof(Vector));
             this.AddCompatibility(typeof(double), typeof(Matrix));
             this.AddCompatibility(typeof(LongNumber), typeof(LongFraction));
+        }
+
+        protected override void CreateExamples() {
+            this.examples.Add("-5 - (-4 - 2);");
+
+            StringBuilder s = new StringBuilder();
+            s.AppendLine("v = vector(1; 2; 3);");
+            s.AppendLine("v = v - 1;");
+            this.examples.Add(s.ToString());
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

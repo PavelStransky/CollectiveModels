@@ -83,6 +83,7 @@
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexO.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="IQuantumSystem.cs" />
+    <Compile Include="JaynesCummings\JCBasisIndex.cs" />
     <Compile Include="Lipkin\Lipkin.cs" />
     <Compile Include="Lipkin\LipkinFactorized.cs" />
     <Compile Include="Lipkin\LipkinFactorizedBasisIndex.cs" />

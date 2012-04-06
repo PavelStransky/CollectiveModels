@@ -51,6 +51,11 @@ namespace PavelStransky.Expression.Functions {
 		public virtual string Use {get {return string.Format(useFormat, this.Name, this.ParametersHelp);}}
 
         /// <summary>
+        /// Typ funkce
+        /// </summary>
+        public virtual FncTypes FncType { get { return FncTypes.Unassigned; } }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public Fnc() {

@@ -28,6 +28,10 @@ namespace PavelStransky.Systems {
         /// Konstruktor
         /// </summary>
         public JaynesCummings(double omega, double omega0, double lambda) {
+            this.omega = omega;
+            this.omega0 = omega0;
+            this.lambda = lambda;
+
             this.eigenSystem = new EigenSystem(this);
         }
 
@@ -117,6 +121,7 @@ namespace PavelStransky.Systems {
             this.omega = (double)param.Get(0.0);
             this.omega0 = (double)param.Get(0.0);
             this.lambda = (double)param.Get(0.0);
+            this.eigenSystem.SetParrentQuantumSystem(this);
         }
         #endregion
     }

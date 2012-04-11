@@ -96,7 +96,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Maximální hodnota poètu bosonù
         /// </summary>
-        public int MaxL { get { return this.nb[this.Length - 1]; } }
+        public int MaxNb { get { return this.nb[this.Length - 1]; } }
 
         /// <summary>
         /// Vrací index prvku s kvantovými èísly nb, m

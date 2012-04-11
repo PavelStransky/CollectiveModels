@@ -3666,4 +3666,22 @@ Second differing type: {1}</value>
   <data name="PLipkinDescription" xml:space="preserve">
     <value>Lipkin model class</value>
   </data>
+  <data name="HelpJC" xml:space="preserve">
+    <value>Jaynes-Cummings model class</value>
+  </data>
+  <data name="PLambda" xml:space="preserve">
+    <value>lambda</value>
+  </data>
+  <data name="PLambdaDescription" xml:space="preserve">
+    <value>Parameter Lambda</value>
+  </data>
+  <data name="POmega0" xml:space="preserve">
+    <value>omega0</value>
+  </data>
+  <data name="POmega0Description" xml:space="preserve">
+    <value>Parameter Omega0</value>
+  </data>
+  <data name="HelpLipkinOneOne" xml:space="preserve">
+    <value>Creates a Lipkin model class diagonalized in the full SU(2) basis + two single spins</value>
+  </data>
 </root>

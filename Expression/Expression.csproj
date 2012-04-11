@@ -187,9 +187,11 @@
     <Compile Include="Functions\Quantum\Plateau.cs" />
     <Compile Include="Functions\Quantum\ShellCorrection.cs" />
     <Compile Include="Functions\Quantum\SmoothLevelDensity.cs" />
+    <Compile Include="Functions\Quantum\Systems\JC.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFac.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFull.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinOne.cs" />
+    <Compile Include="Functions\Quantum\Systems\LipkinOneOne.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinTwo.cs" />
     <Compile Include="Functions\Quantum\Systems\QEP.cs" />
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />

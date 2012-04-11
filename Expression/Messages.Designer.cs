@@ -3985,6 +3985,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jaynes-Cummings model class.
+        /// </summary>
+        internal static string HelpJC {
+            get {
+                return ResourceManager.GetString("HelpJC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Joins 1D Arrays into one array.
         /// </summary>
         internal static string HelpJoinArray {
@@ -4161,6 +4170,15 @@ namespace PavelStransky.Expression {
         internal static string HelpLipkinOne {
             get {
                 return ResourceManager.GetString("HelpLipkinOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a Lipkin model class diagonalized in the full SU(2) basis + two single spins.
+        /// </summary>
+        internal static string HelpLipkinOneOne {
+            get {
+                return ResourceManager.GetString("HelpLipkinOneOne", resourceCulture);
             }
         }
         
@@ -8368,6 +8386,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lambda.
+        /// </summary>
+        internal static string PLambda {
+            get {
+                return ResourceManager.GetString("PLambda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter Lambda.
+        /// </summary>
+        internal static string PLambdaDescription {
+            get {
+                return ResourceManager.GetString("PLambdaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to l.
         /// </summary>
         internal static string PLength {
@@ -9111,6 +9147,24 @@ namespace PavelStransky.Expression {
         internal static string POmega {
             get {
                 return ResourceManager.GetString("POmega", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to omega0.
+        /// </summary>
+        internal static string POmega0 {
+            get {
+                return ResourceManager.GetString("POmega0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter Omega0.
+        /// </summary>
+        internal static string POmega0Description {
+            get {
+                return ResourceManager.GetString("POmega0Description", resourceCulture);
             }
         }
         

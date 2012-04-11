@@ -5,6 +5,7 @@ using System.Text;
 namespace PavelStransky.Expression.Functions {
     public enum FncTypes {
         Unassigned = 0,
-        Operator = 1
+        Operator = 1,
+        QuantumSystem = 2
     }
 }

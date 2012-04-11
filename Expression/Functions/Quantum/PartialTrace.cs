@@ -15,7 +15,8 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(3);
 
-            this.SetParam(0, true, true, false, Messages.PCombinedSystem, Messages.PCombinedSystemDescription, null, typeof(LipkinOne), typeof(LipkinTwo));
+            this.SetParam(0, true, true, false, Messages.PCombinedSystem, Messages.PCombinedSystemDescription, null, 
+                typeof(LipkinOne), typeof(LipkinTwo), typeof(LipkinOneOne));
             this.SetParam(1, true, true, false, Messages.PEigenValueIndex, Messages.PEigenValueIndexDescription, null, typeof(int));
             this.SetParam(2, false, true, false, Messages.PType, Messages.PTypeDescription, 0, typeof(int));
         }
@@ -26,9 +27,12 @@ namespace PavelStransky.Expression.Functions.Def {
 
             if(arguments[0] is LipkinOne)
                 return ((LipkinOne)arguments[0]).PartialTrace(n, type);
-            else
+            else if(arguments[0] is LipkinTwo)
                 return ((LipkinTwo)arguments[0]).PartialTrace(n, type);
-
+            else if(arguments[0] is LipkinOneOne)
+                return ((LipkinOneOne)arguments[0]).PartialTrace(n, type);
+            else
+                return null;
         }
     }
 }

@@ -13,6 +13,9 @@ namespace PavelStransky.DLLWrapper {
         /// 32-bitová verze
         /// </summary>
         private class LAPack32 {
+//            [DllImport("LaPack32.dll")]
+//            public static extern double dgeev_(byte);
+            
             /// <summary>
             /// DSYEV computes all eigenvalues and, optionally, eigenvectors of a
             /// real symmetric matrix A.

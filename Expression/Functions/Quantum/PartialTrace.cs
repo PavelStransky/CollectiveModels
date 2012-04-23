@@ -16,7 +16,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetNumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PCombinedSystem, Messages.PCombinedSystemDescription, null, 
-                typeof(LipkinOne), typeof(LipkinTwo), typeof(LipkinOneOne));
+                typeof(LipkinOne), typeof(LipkinTwo), typeof(LipkinOneOne), typeof(JaynesCummings));
             this.SetParam(1, true, true, false, Messages.PEigenValueIndex, Messages.PEigenValueIndexDescription, null, typeof(int));
             this.SetParam(2, false, true, false, Messages.PType, Messages.PTypeDescription, 0, typeof(int));
         }
@@ -31,6 +31,8 @@ namespace PavelStransky.Expression.Functions.Def {
                 return ((LipkinTwo)arguments[0]).PartialTrace(n, type);
             else if(arguments[0] is LipkinOneOne)
                 return ((LipkinOneOne)arguments[0]).PartialTrace(n, type);
+            else if(arguments[0] is JaynesCummings)
+                return ((JaynesCummings)arguments[0]).PartialTrace(n, type);
             else
                 return null;
         }

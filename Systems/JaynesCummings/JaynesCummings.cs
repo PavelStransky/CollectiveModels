@@ -82,6 +82,28 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Parciální stopa
+        /// </summary>
+        /// <param name="n">Index vlastní hodnoty</param>
+        /// <param name="type">Typ parciální stopy</param>
+        /// <returns>Matice hustoty s odtraceovanými spiny</returns>
+        public Matrix PartialTrace(int n, int type) {
+            JaynesCummingsBasisIndex index = this.eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
+
+            Matrix result = null;
+            int dim = index.Length;
+            Vector ev = this.eigenSystem.GetEigenVector(n);
+
+            result = new Matrix(dim);
+
+            for(int i = 0; i < dim; i++)
+                for(int j = 0; j < dim; j++)
+                    result[i, j] = ev[i] * ev[j];
+
+            return result;
+        }
+
+        /// <summary>
         /// Peresùv invariant
         /// </summary>
         /// <param name="type">Typ (0 - H0, 1 - L1, 3 - L1^2)</param>

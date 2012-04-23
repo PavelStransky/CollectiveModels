@@ -4,13 +4,14 @@ using System.Collections;
 using PavelStransky.Expression;
 using PavelStransky.Math;
 using PavelStransky.Systems;
+using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Calculates a partial trace for an eigenstate (returns it as a density matrix)
+    /// Calculates the entanglement entropy of a combined system
     /// </summary>
-    public class PartialTrace: Fnc {
-        public override string Help { get { return Messages.HelpPartialTrace; } }
+    public class EntanglementEntropy: Fnc {
+        public override string Help { get { return Messages.HelpEntanglementEntropy; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
@@ -22,7 +23,16 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IEntanglement system = arguments[0] as IEntanglement;
             int n = (int)arguments[1];
-            return system.PartialTrace(n);
+            Vector ev = LAPackDLL.dsyev(system.PartialTrace(n), false)[0];
+
+            double result = 0.0;
+            int length = ev.Length;
+            for(int i = 0; i < length; i++)
+                if(ev[i] > 0)
+                    result -= ev[i] * System.Math.Log(ev[i]);
+            result /= System.Math.Log(length);
+
+            return result;
         }
     }
 }

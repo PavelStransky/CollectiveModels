@@ -7,7 +7,7 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class LipkinTwo: LipkinFull, IQuantumSystem {
+    public class LipkinTwo: LipkinFull, IQuantumSystem, IEntanglement {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -97,22 +97,20 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Parciální stopa pøes velký prostor
+        /// Parciální stopa pøes první prostor
         /// </summary>
         /// <param name="n">Index vlastní hodnoty</param>
-        /// <param name="type">Typ parciální stopy</param>
-        /// <returns>Matice hustoty jednotlivého spinu</returns>
-        public Matrix PartialTrace(int n, int type) {
+        /// <returns>Matice hustoty podsystému</returns>
+        public Matrix PartialTrace(int n) {
             LipkinTwoBasisIndex index = this.eigenSystem.BasisIndex as LipkinTwoBasisIndex;
             
             int dim = index.Length;
             int l1 = index.L1;
             int l2 = index.L2;
-
-            Matrix result = new Matrix(l2 + 1);
-
+ 
             Vector ev = this.eigenSystem.GetEigenVector(n);
 
+            Matrix result = new Matrix(l2 + 1);
             for(int i = -l2; i <= l2; i += 2)
                 for(int j = -l2; j <= l2; j += 2)
                     for(int m1 = -l1; m1 <= l1; m1 += 2)

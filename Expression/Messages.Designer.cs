@@ -3022,6 +3022,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns true if the given vector contains the given value within given error.
+        /// </summary>
+        internal static string HelpContain {
+            get {
+                return ResourceManager.GetString("HelpContain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a new context.
         /// </summary>
         internal static string HelpContext {
@@ -3265,6 +3274,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eigensystem of a matrix calculated using LAPACK library; before the calculation the matrix is symmetrized.
+        /// </summary>
+        internal static string HelpEigenSystemSymmetric {
+            get {
+                return ResourceManager.GetString("HelpEigenSystemSymmetric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For given dynamical system and position in the phase space calculates the energy.
         /// </summary>
         internal static string HelpEnergy {
@@ -3279,6 +3297,15 @@ namespace PavelStransky.Expression {
         internal static string HelpEnergyMin {
             get {
                 return ResourceManager.GetString("HelpEnergyMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the entanglement entropy of a combined system.
+        /// </summary>
+        internal static string HelpEntanglementEntropy {
+            get {
+                return ResourceManager.GetString("HelpEntanglementEntropy", resourceCulture);
             }
         }
         

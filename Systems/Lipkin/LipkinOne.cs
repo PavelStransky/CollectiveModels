@@ -7,7 +7,7 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class LipkinOne: LipkinFull, IQuantumSystem {
+    public class LipkinOne: LipkinFull, IQuantumSystem, IEntanglement {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -94,39 +94,25 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Parciální stopa pøes velký prostor
+        /// Parciální stopa pøes lázeò
         /// </summary>
         /// <param name="n">Index vlastní hodnoty</param>
-        /// <param name="type">Typ parciální stopy</param>
         /// <returns>Matice hustoty jednotlivého spinu</returns>
-        public Matrix PartialTrace(int n, int type) {
+        public Matrix PartialTrace(int n) {
             LipkinOneBasisIndex index = this.eigenSystem.BasisIndex as LipkinOneBasisIndex;
 
-            Matrix result = null;
             int dim = index.Length;
             Vector ev = this.eigenSystem.GetEigenVector(n);
 
-            if(type == 0) {
-                result = new Matrix(2);
-
-                for(int i = 0; i < dim; i += 2) {
-                    result[0, 0] += ev[i] * ev[i];
-                    result[1, 0] += ev[i] * ev[i + 1];
-                    result[0, 1] += ev[i + 1] * ev[i];
-                    result[1, 1] += ev[i + 1] * ev[i + 1];
-                }
+            Matrix result = new Matrix(2);
+            for(int i = 0; i < dim; i += 2) {
+                result[0, 0] += ev[i] * ev[i];
+                result[1, 0] += ev[i] * ev[i + 1];
+                result[0, 1] += ev[i + 1] * ev[i];
+                result[1, 1] += ev[i + 1] * ev[i + 1];
             }
-            else if(type == 1) {
-                result = new Matrix(dim / 2);
-
-                for(int i = 0; i < dim / 2; i++)
-                    for(int j = 0; j < dim / 2; j++)
-                        result[i, j] += ev[2 * i] * ev[2 * j] + ev[2 * i + 1] * ev[2 * j + 1];
-            }
-
             return result;
         }
-
 
         #region Implementace IExportable
         /// <summary>

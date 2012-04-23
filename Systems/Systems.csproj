@@ -81,6 +81,7 @@
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexIFull.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexIO.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexO.cs" />
+    <Compile Include="IEntanglement.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="IQuantumSystem.cs" />
     <Compile Include="JaynesCummings\JaynesCummings.cs" />

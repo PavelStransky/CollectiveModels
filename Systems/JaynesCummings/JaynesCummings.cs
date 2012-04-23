@@ -7,7 +7,7 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class JaynesCummings: IQuantumSystem, IExportable {
+    public class JaynesCummings: IQuantumSystem, IExportable, IEntanglement {
         // Systém s vlastními hodnotami
         protected EigenSystem eigenSystem;
 
@@ -85,9 +85,8 @@ namespace PavelStransky.Systems {
         /// Parciální stopa
         /// </summary>
         /// <param name="n">Index vlastní hodnoty</param>
-        /// <param name="type">Typ parciální stopy</param>
         /// <returns>Matice hustoty s odtraceovanými spiny</returns>
-        public Matrix PartialTrace(int n, int type) {
+        public Matrix PartialTrace(int n) {
             JaynesCummingsBasisIndex index = this.eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
 
             Matrix result = null;

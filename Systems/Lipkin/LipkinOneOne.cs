@@ -7,7 +7,7 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class LipkinOneOne: LipkinFull, IQuantumSystem {
+    public class LipkinOneOne: LipkinFull, IQuantumSystem, IEntanglement {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
@@ -131,17 +131,14 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Parciální stopa pøes velký prostor
+        /// Parciální stopa pøes lázeò
         /// </summary>
         /// <param name="n">Index vlastní hodnoty</param>
-        /// <param name="type">Typ parciální stopy</param>
-        /// <returns>Matice hustoty jednotlivého spinu</returns>
-        public Matrix PartialTrace(int n, int type) {
+        public Matrix PartialTrace(int n) {
             LipkinOneOneBasisIndex index = this.eigenSystem.BasisIndex as LipkinOneOneBasisIndex;
 
             int dim = index.Length;
             Vector ev = this.eigenSystem.GetEigenVector(n);
-
             
             Matrix result = new Matrix(4);
             for(int i = 0; i < dim; i += 4)
@@ -149,16 +146,14 @@ namespace PavelStransky.Systems {
                     for(int k = 0; k < 4; k++)
                         result[j, k] += ev[i + j] * ev[i + k];
 
-            if(type == 1) {
-                Matrix m = new Matrix(4);
-                m[0, 3] = -1; m[3, 0] = -1;
-                m[1, 2] = 1; m[2, 1] = 1;
-                result = m * result * m;
-            }
-
+            // Concurrence
+            Matrix m = new Matrix(4);
+            m[0, 3] = -1; m[3, 0] = -1;
+            m[1, 2] = 1; m[2, 1] = 1;
+            result = m * result * m;
+ 
             return result;
         }
-
 
         #region Implementace IExportable
         /// <summary>

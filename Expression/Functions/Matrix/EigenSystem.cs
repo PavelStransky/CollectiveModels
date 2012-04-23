@@ -7,8 +7,7 @@ using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Eigensystem of a matrix calculated using LAPACK library; 
-    /// before calculation it makes symmetrization of a matrix
+    /// Eigensystem of a general square matrix calculated using LAPACK library; 
     /// </summary>
     public class EigenSystem: Fnc {
         public override string Help { get { return Messages.HelpEigenSystem; } }
@@ -22,14 +21,9 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Matrix m = (Matrix)arguments[0];
-            m = m.Symmetrize();
-
             bool ev = (bool)arguments[1];
 
-            if(ev)
-                return (TArray)LAPackDLL.dsyev(m, ev);
-            else
-                return LAPackDLL.dsyev(m, ev)[0];
+            return (TArray)LAPackDLL.dgeev(m, ev);
         }
     }
 }

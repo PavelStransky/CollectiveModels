@@ -3256,7 +3256,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eigensystem of a matrix calculated using LAPACK library (function dsyev); before calculation it makes symmetrization of a matrix.
+        ///   Looks up a localized string similar to Eigensystem of a general square matrix calculated using LAPACK library;.
         /// </summary>
         internal static string HelpEigenSystem {
             get {

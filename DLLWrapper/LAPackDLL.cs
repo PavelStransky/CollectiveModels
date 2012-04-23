@@ -25,17 +25,17 @@ namespace PavelStransky.DLLWrapper {
         }
 
         /// <summary>
-        /// Nalezne vlastní èísla matice
+        /// Nalezne vlastní èísla symetrické matice
         /// </summary>
-        /// <param name="matrix">Vstupní ètvercová matice</param>
+        /// <param name="matrix">Vstupní symetrická ètvercová matice</param>
         public static Vector[] dsyev(Matrix matrix, bool ev) {
             return dsyev((MMatrix)matrix, ev);
         }
 
         /// <summary>
-        /// Nalezne vlastní èísla matice
+        /// Nalezne vlastní èísla symetrické matice
         /// </summary>
-        /// <param name="matrix">Vstupní ètvercová matice</param>
+        /// <param name="matrix">Vstupní symetrická ètvercová matice</param>
         public static Vector[] dsyev(MMatrix matrix, bool ev) {
             byte jobz = ev ? (byte)'V' : (byte)'N';
             byte uplo = (byte)'U';
@@ -91,6 +91,100 @@ namespace PavelStransky.DLLWrapper {
             }
             finally {
                 Memory.Delete(w);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Nalezne vlastní èísla obecné matice
+        /// </summary>
+        /// <param name="matrix">Vstupní ètvercová matice</param>
+        public static Vector[] dgeev(Matrix matrix, bool ev) {
+            return dgeev((MMatrix)matrix, ev, ev);
+        }
+
+        /// <summary>
+        /// Nalezne vlastní èísla matice
+        /// </summary>
+        /// <param name="matrix">Vstupní ètvercová matice</param>
+        public static Vector[] dgeev(MMatrix matrix, bool evl, bool evr) {
+            byte jobvl = evl ? (byte)'V' : (byte)'N';
+            byte jobvr = evr ? (byte)'V' : (byte)'N';
+
+            int n = matrix.Length;
+
+            double* a = matrix.GetItem();
+            int lda = n;
+
+            double* wr = Memory.NewDouble(n);
+            double* wi = Memory.NewDouble(n);
+            
+            double* vl = evl ? Memory.NewDouble(n * n) : null;
+            int ldvl = n;
+            double* vr = evr ? Memory.NewDouble(n * n) : null;
+            int ldvr = n;
+
+            int lwork = -1;
+            double* work = null;
+
+            int info = 0;
+
+            Vector[] result = null;
+            int length = 0;
+            bool success = false;
+
+            try {
+                double lwork1 = 0;
+
+                // Nejprve zjistíme optimální velikost pomocného pole
+                LAPackDLLWrapper.dgeev(&jobvl, &jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &lwork1, &lwork, &info);
+
+                lwork = (int)lwork1;
+                work = Memory.NewDouble(lwork);
+
+                // Vlastní výpoèet
+                LAPackDLLWrapper.dgeev(&jobvl, &jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, work, &lwork, &info);
+                success = true;
+            }
+            finally {
+                Memory.Delete(work);
+            }
+
+            // Zpracování výsledkù
+            try {
+                if(success) {
+                    length = 2;
+                    if(evl) length += n;
+                    if(evr) length += n;
+                    result = new Vector[length];
+                }
+
+                result[0] = ProcessVector(wr, n);
+                result[1] = ProcessVector(wi, n);
+
+                length = 2;
+
+                if(evl)
+                    for(int i = 0; i < n; i++) {
+                        result[length] = new Vector(n);
+                        for(int j = 0; j < n; j++)
+                            result[length][j] = vl[i * n + j];
+                        length++;
+                    }
+                if(evr)
+                    for(int i = 0; i < n; i++) {
+                        result[length] = new Vector(n);
+                        for(int j = 0; j < n; j++)
+                            result[length][j] = vr[i * n + j];
+                        length++;
+                    }
+            }
+            finally {
+                Memory.Delete(wr);
+                Memory.Delete(wi);
+                Memory.Delete(vl);
+                Memory.Delete(vr);
             }
 
             return result;

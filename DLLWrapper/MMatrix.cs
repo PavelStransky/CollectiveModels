@@ -91,12 +91,12 @@ namespace PavelStransky.DLLWrapper {
 
             return result;
         }
-
+        
         /// <summary>
         /// Systém vlastních èísel a vektorù
         /// </summary>        
         public Vector[] EigenSystem(bool ev, int numEV, IOutputWriter writer) {
-            return LAPackDLL.dsyev(this, ev);
+            return LAPackDLL.dgeev(this, ev, ev);
         }
 
         #region Destrukce

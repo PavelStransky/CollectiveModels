@@ -952,7 +952,7 @@ Length of the second vector: {1}</value>
     <value>Returns a matrix of components of eigenvectors arranged in matrix by indexes</value>
   </data>
   <data name="HelpEigenSystem" xml:space="preserve">
-    <value>Eigensystem of a matrix calculated using LAPACK library (function dsyev); before calculation it makes symmetrization of a matrix</value>
+    <value>Eigensystem of a general square matrix calculated using LAPACK library;</value>
   </data>
   <data name="HelpEnergy" xml:space="preserve">
     <value>For given dynamical system and position in the phase space calculates the energy</value>

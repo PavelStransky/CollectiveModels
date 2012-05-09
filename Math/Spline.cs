@@ -24,7 +24,7 @@ namespace PavelStransky.Math {
 			Matrix m = new Matrix(4, this.data.Length);
 			Vector result;
 		
-			double xn = this.data[1].X - this.data[0].Y;
+			double xn = this.data[1].X - this.data[0].X;
 			double yn = this.data[1].Y - this.data[0].Y;
 
 			for(int i = 1; i < this.data.Length - 1; i++) {
@@ -92,9 +92,6 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="x">Bod x</param>
         private int FindIndex(double x) {
-            //for(int i = 1; i < length; i++)
-            //    if(this.data[i].X >= x)
-            //        return i;
             int maxi = this.data.Length;
             int mini = 0;
 
@@ -119,13 +116,48 @@ namespace PavelStransky.Math {
 			return this[x];
 		}
 
-		/// <summary>
-		/// Vrátí vektor apoximovaných dat v zadaném rozmezí startX - EndX
-		/// </summary>
-		/// <param name="number">Poèet bodù ve výstupním vektoru</param>
-		/// <param name="startX">Poèáteèní hodnota nezávisle promìnné</param>
-		/// <param name="endX">Koncová hodnota nezávisle promìnné</param>
-		public PointVector GetPointVector(int number, double startX, double endX) {
+        public Vector GetValue(Vector x) {
+            int length = x.Length;
+            int count = data.Length;
+            Vector result = new Vector(length);
+
+            int i = 0;
+
+            double d = this.data.FirstItem.X;
+            while(x[i] < d)
+                result[i++] = 0.0;
+
+            int j = 0;
+            for(; i < length; i++) {
+                d = x[i];
+
+                while(j < count && d > this.data[j].X)
+                    j++;
+
+                if(j >= count)
+                    break;
+
+                double dx = (this.data[j].X - this.data[j - 1].X);
+                double t = (d - this.data[j - 1].X) / dx;
+
+                double A = 1 - t;
+                double B = t;
+                double C = (A * A * A - A) * dx * dx / 6.0;
+                double D = (B * B * B - B) * dx * dx / 6.0;
+
+                result[i] = A * this.data[j - 1].Y + B * this.data[j].Y + C * this.d2[j - 1] + D * this.d2[j];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí vektor apoximovaných dat v zadaném rozmezí startX - EndX
+        /// </summary>
+        /// <param name="number">Poèet bodù ve výstupním vektoru</param>
+        /// <param name="startX">Poèáteèní hodnota nezávisle promìnné</param>
+        /// <param name="endX">Koncová hodnota nezávisle promìnné</param>
+        public PointVector GetPointVector(int number, double startX, double endX) {
 			PointVector result = new PointVector(number);
 
 			double koef = (endX - startX) / number;

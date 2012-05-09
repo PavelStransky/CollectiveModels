@@ -85,9 +85,19 @@ namespace PavelStransky.Math {
         public PointD FirstItem { get { return this.item[0]; } set { this.item[0] = value; } }
 
         /// <summary>
+        /// Druhý prvek vektoru
+        /// </summary>
+        public PointD SecondItem { get { return this.item[1]; } set { this.item[1] = value; } }
+
+        /// <summary>
         /// Poslední prvek vektoru
         /// </summary>
         public PointD LastItem { get { return this.item[this.Length - 1]; } set { this.item[this.Length - 1] = value; } }
+
+        /// <summary>
+        /// Pøedposlední prvek vektoru
+        /// </summary>
+        public PointD LastLastItem { get { return this.item[this.Length - 2]; } set { this.item[this.Length - 2] = value; } }
 
         /// <summary>
         /// Délka vektoru bodù

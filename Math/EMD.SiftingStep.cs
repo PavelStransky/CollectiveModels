@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -67,7 +68,7 @@ namespace PavelStransky.Math {
             /// <summary>
             /// We found the residuum
             /// </summary>
-            public bool IsResiduum { get { return this.MaxNum <= 2 || this.MinNum <= 2; } }
+            public bool IsResiduum { get { return this.MaxNum < 2 || this.MinNum < 2; } }
 
             /// <summary>
             /// Result - a candidate for an IMF
@@ -97,8 +98,8 @@ namespace PavelStransky.Math {
             /// as a source of maxima / minima</param>
             /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
             public SiftingStep(PointVector data, bool flat, double delta) {
-                this.maxima = this.CorrectBorder(data.Maxima(flat), data.FirstItem.X, data.LastItem.X);
-                this.minima = this.CorrectBorder(data.Minima(flat), data.FirstItem.X, data.LastItem.X);
+                this.maxima = this.Maxima(data, flat);
+                this.minima = this.Minima(data, flat);
 
                 if(this.IsResiduum)
                     return;
@@ -109,16 +110,17 @@ namespace PavelStransky.Math {
                 int length = data.Length;
                 this.result = new PointVector(length);
 
+                Vector x = data.VectorX;
+                Vector u = maximaSpline.GetValue(x);
+                Vector l = minimaSpline.GetValue(x);
+
                 for(int i = 0; i < length; i++) {
-                    double x = data[i].X;
-                    double u = maximaSpline.GetValue(x);
-                    double l = minimaSpline.GetValue(x);
-                    double m = 0.5 * (u + l);
+                    double m = 0.5 * (u[i] + l[i]);
 
                     this.result[i] = new PointD(data[i].X, data[i].Y - m);
 
-                    double uc = System.Math.Abs(m) / System.Math.Abs(u);
-                    double lc = System.Math.Abs(m) / System.Math.Abs(l);
+                    double uc = System.Math.Abs(m) / System.Math.Abs(u[i]);
+                    double lc = System.Math.Abs(m) / System.Math.Abs(l[i]);
 
                     if(delta > 0.0 && (uc > delta || lc > delta))
                         this.symmetryBreak++;
@@ -129,43 +131,188 @@ namespace PavelStransky.Math {
             }
 
             /// <summary>
-            /// Corrected the initial and final values of the given time series
+            /// Calculates maxima (with all corrections)
             /// </summary>
-            /// <param name="source">Source time series</param>
-            /// <param name="minX">First x value of the source data</param>
-            /// <param name="maxX">Last x value of the source data</param>
-            private PointVector CorrectBorder(PointVector source, double minX, double maxX) {
-                int length = source.Length;
-                int newLength = length;
+            private PointVector Maxima(PointVector data, bool flat) {
+                int length = data.Length;
+                ArrayList maxima = new ArrayList();
 
-                if(source.FirstItem.X != minX)
-                    newLength++;
-                if(source.LastItem.X != maxX)
-                    newLength++;
+                int lastIndex = 0;
+                bool max = true;
+                bool flatMax = false;
 
-                if(length == newLength)
-                    return source;
-                
-                PointVector result = new PointVector(newLength);
+                bool firstMax = false;
 
-                if(source.FirstItem.X != minX) {    // Reflection
-                    result.FirstItem.X = 2 * minX - source.FirstItem.X;
-                    result.FirstItem.Y = source.FirstItem.Y;
+                for(int i = 1; i < length; i++) {
+                    if(data[i].Y > data[lastIndex].Y) {
+                        if(flatMax && flat) {
+                            if(lastIndex == 0)
+                                firstMax = true;
+                            else if(firstMax) {
+                                if(data[lastIndex].Y > ((PointD)maxima[0]).Y)
+                                    maxima.RemoveAt(0);
+                                firstMax = false;
+                            }
+                            maxima.Add(data[lastIndex]);
+                        }
 
-                    for(int i = 0; i < length; i++)
-                        result[i + 1] = source[i];
+                        lastIndex = i;
+                        max = true;
+                        flatMax = false;
+                    }
+                    else if(data[i].Y < data[lastIndex].Y) {
+                        if(max) {
+                            if(lastIndex == 0)
+                                firstMax = true;
+                            else if(firstMax) {
+                                if(data[lastIndex].Y > ((PointD)maxima[0]).Y)
+                                    maxima.RemoveAt(0);
+                                firstMax = false;
+                            }
+                            maxima.Add(new PointD(0.5 * (data[lastIndex].X + data[i - 1].X), data[lastIndex].Y));
+                        }
+                        else if(flatMax && flat) {
+                            if(firstMax) {
+                                if(data[i - 1].Y > ((PointD)maxima[0]).Y)
+                                    maxima.RemoveAt(0);
+                                firstMax = false;
+                            }
+                            maxima.Add(data[i - 1]);
+                        }
+
+                        flatMax = false;
+                        max = false;
+                        lastIndex = i;
+                    }
+                    else if(data[i].Y == data[lastIndex].Y)
+                        flatMax = true;
                 }
-                else
-                    for(int i = 0; i < length; i++)
-                        result[i] = source[i];
 
-                if(source.LastItem.X != maxX) {
-                    result.LastItem.X = 2 * maxX - source.LastItem.X;
-                    result.LastItem.Y = source.LastItem.Y;
+                // Last element
+                if(max && data[lastIndex].Y > ((PointD)maxima[maxima.Count - 1]).Y)
+                    maxima.Add(new PointD(0.5 * (data[lastIndex].X + data.LastItem.X), data[lastIndex].Y));
+
+                length = maxima.Count;
+
+                if(length > 1)
+                    length += 2;
+                PointVector result = new PointVector(length);
+
+                int j = (length > 1) ? 1 : 0;
+                foreach(PointD p in maxima)
+                    result[j++] = p;
+
+                // Add a maximum to the beginning and the end
+                if(length > 1) {
+                    double df = result[2].X - result[1].X;
+                    double lf = result[1].X - data.FirstItem.X;
+                    if(df > lf)
+                        result.FirstItem = new PointD(result[1].X - df, result[1].Y);
+                    else
+                        result.FirstItem = new PointD(data.FirstItem.X - lf, result[1].Y);
+
+                    df = result[length - 2].X - result[length - 3].X;
+                    lf = data.LastItem.X - result[length - 2].X;
+                    if(df > lf)
+                        result.LastItem = new PointD(result[length - 2].X + df, result[length - 2].Y);
+                    else
+                        result.LastItem = new PointD(data.LastItem.X + lf, result[length - 2].Y);
                 }
 
                 return result;
             }
+
+            /// <summary>
+            /// Calculates minima (with all corrections)
+            /// </summary>
+            private PointVector Minima(PointVector data, bool flat) {
+                int length = data.Length;
+                ArrayList minima = new ArrayList();
+
+                int lastIndex = 0;
+                bool min = true;
+                bool flatMin = false;
+
+                bool firstMin = false;
+
+                for(int i = 1; i < length; i++) {
+                    if(data[i].Y < data[lastIndex].Y) {
+                        if(flatMin && flat) {
+                            if(lastIndex == 0)
+                                firstMin = true;
+                            else if(firstMin) {
+                                if(data[lastIndex].Y < ((PointD)minima[0]).Y)
+                                    minima.RemoveAt(0);
+                                firstMin = false;
+                            }
+                            minima.Add(data[lastIndex]);
+                        }
+
+                        lastIndex = i;
+                        min = true;
+                        flatMin = false;
+                    }
+                    else if(data[i].Y > data[lastIndex].Y) {
+                        if(min) {
+                            if(lastIndex == 0)
+                                firstMin = true;
+                            else if(firstMin) {
+                                if(data[lastIndex].Y < ((PointD)minima[0]).Y)
+                                    minima.RemoveAt(0);
+                                firstMin = false;
+                            }
+                            minima.Add(new PointD(0.5 * (data[lastIndex].X + data[i - 1].X), data[lastIndex].Y));
+                        }
+                        else if(flatMin && flat) {
+                            if(firstMin) {
+                                if(data[i - 1].Y < ((PointD)minima[0]).Y)
+                                    minima.RemoveAt(0);
+                                firstMin = false;
+                            }
+                            minima.Add(data[i - 1]);
+                        }
+
+                        flatMin = false;
+                        min = false;
+                        lastIndex = i;
+                    }
+                    else if(data[i].Y == data[lastIndex].Y)
+                        flatMin = true;
+                }
+
+                // Last element
+                if(min && data[lastIndex].Y < ((PointD)minima[minima.Count - 1]).Y)
+                    minima.Add(new PointD(0.5 * (data[lastIndex].X + data.LastItem.X), data[lastIndex].Y));
+
+                length = minima.Count;
+
+                if(length > 1)
+                    length += 2;
+                PointVector result = new PointVector(length);
+
+                int j = (length > 1) ? 1 : 0;
+                foreach(PointD p in minima)
+                    result[j++] = p;
+
+                // Add a minimum to the beginning and the end
+                if(length > 1) {
+                    double df = result[2].X - result[1].X;
+                    double lf = result[1].X - data.FirstItem.X;
+                    if(df > lf)
+                        result.FirstItem = new PointD(result[1].X - df, result[1].Y);
+                    else
+                        result.FirstItem = new PointD(data.FirstItem.X - lf, result[1].Y);
+
+                    df = result[length - 2].X - result[length - 3].X;
+                    lf = data.LastItem.X - result[length - 2].X;
+                    if(df > lf)
+                        result.LastItem = new PointD(result[length - 2].X + df, result[length - 2].Y);
+                    else
+                        result.LastItem = new PointD(data.LastItem.X + lf, result[length - 2].Y);
+                }
+
+                return result;
+            }        
         }
     }
 }

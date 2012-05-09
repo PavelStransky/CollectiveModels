@@ -48,9 +48,13 @@ namespace PavelStransky.Math {
             ArrayList result = new ArrayList();
 
             PointVector[] imf = null;
+            if(writer != null)
+                writer.Write(1);
             while((imf = this.Sifting(resid, s, delta, false, writer)).Length > 0) {
                 result.Add(imf[0]);
                 resid = new PointVector(resid.VectorX, resid.VectorY - imf[0].VectorY);
+                if(writer != null)
+                    writer.Write(result.Count + 1);
             }
             result.Add(resid);
 
@@ -77,9 +81,6 @@ namespace PavelStransky.Math {
             ArrayList steps = new ArrayList();
 
             do {
-                if(writer != null)
-                    writer.Write(".");
-
                 if(allIterations)
                     steps.Add(source.Clone());
 
@@ -102,8 +103,10 @@ namespace PavelStransky.Math {
                     }
                 }
 
-                if(iterations % 20 == 0 && writer != null)
-                    writer.Write(string.Format("({0},{1})", sifting.NumAssymetryExtreemes, sifting.SymmetryBreak));
+//                if(writer != null && iterations % 50 == 0)
+//                    writer.Write(string.Format(" {0},{1},{2}", iterations, sifting.NumAssymetryExtreemes, sifting.SymmetryBreak));
+                if(writer != null)
+                    writer.Write(string.Format(".{0}", sifting.NumAssymetryExtreemes));
 
                 if(sifting.NumAssymetryExtreemes == 0)
                     i++;

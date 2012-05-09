@@ -31,7 +31,6 @@ namespace PavelStransky.Expression.Functions.Def {
                 if(ev[i] > 0)
                     result -= ev[i] * System.Math.Log(ev[i]);
             result /= System.Math.Log(length);
-
             return result;
         }
     }

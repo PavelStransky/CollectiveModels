@@ -26,7 +26,18 @@ namespace PavelStransky.Expression.Functions.Def {
 
 			string fileName = arguments[0] as string;
 
-            if((string)arguments[1] == paramMatlab) {
+            if((string)arguments[1] == paramData) {
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                StreamReader t = new StreamReader(f);
+                try {
+                    result = this.ImportData(t);
+                }
+                finally {
+                    t.Close();
+                    f.Close();
+                }
+            }
+            else if((string)arguments[1] == paramMatlab) {
                 int linesOmit = (int)arguments[2];
 
                 // Import dat z matlabu - matice, nevíme, jaké má rozmìry
@@ -133,7 +144,29 @@ namespace PavelStransky.Expression.Functions.Def {
             result.Add(end);
             return result;
         }
-        
+
+        /// <summary>
+        /// Obecný import dat: data ve sloupcích a øádkách, øádky oddìleny \n, sloupce mezerami, tabulátorem nebo èárkou
+        /// </summary>
+        private object ImportData(StreamReader t) {
+            string s = t.ReadToEnd().Trim(' ', '\n', '\r', '\t', ',').Replace("\r", "");
+            string[] lines = s.Split('\n');
+
+            Matrix result = null;
+
+            for(int i = 0; i < lines.Length; i++) {
+                string[] its = lines[i].Trim(' ', '\n', '\r', '\t', ',').Replace("  ", " ").Replace(' ', ',').Replace('\t', ',').Split(',');
+
+                if(result == null)
+                    result = new Matrix(lines.Length, its.Length);
+
+                for(int j = 0; j < its.Length; j++)
+                    result[i, j] = double.Parse(its[j]);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Provede import dat z matiky
         /// </summary>
@@ -323,6 +356,7 @@ namespace PavelStransky.Expression.Functions.Def {
             return new TArray(data);
         }
 
+        private const string paramData = "data";
         private const string paramDigits = "digits";
 		private const string paramMatlab = "matlab";
         private const string paramMatica = "mathmat";

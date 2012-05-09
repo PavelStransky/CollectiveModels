@@ -3022,6 +3022,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the concurrence of the LipkinOneOne system.
+        /// </summary>
+        internal static string HelpConcurrence {
+            get {
+                return ResourceManager.GetString("HelpConcurrence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns true if the given vector contains the given value within given error.
         /// </summary>
         internal static string HelpContain {
@@ -3252,6 +3261,15 @@ namespace PavelStransky.Expression {
         internal static string HelpDPXY {
             get {
                 return ResourceManager.GetString("HelpDPXY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Analysis of the ECG signal.
+        /// </summary>
+        internal static string HelpECG {
+            get {
+                return ResourceManager.GetString("HelpECG", resourceCulture);
             }
         }
         
@@ -4377,6 +4395,15 @@ namespace PavelStransky.Expression {
         internal static string HelpNew {
             get {
                 return ResourceManager.GetString("HelpNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with a 1/f^beta noise.
+        /// </summary>
+        internal static string HelpNoiseGenerator {
+            get {
+                return ResourceManager.GetString("HelpNoiseGenerator", resourceCulture);
             }
         }
         
@@ -6856,6 +6883,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to alli.
+        /// </summary>
+        internal static string PAllIterations {
+            get {
+                return ResourceManager.GetString("PAllIterations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if all iterations will be stored.
+        /// </summary>
+        internal static string PAllIterationsDescription {
+            get {
+                return ResourceManager.GetString("PAllIterationsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to allp.
         /// </summary>
         internal static string PAllPoints {
@@ -6928,6 +6973,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to interval.
+        /// </summary>
+        internal static string PAverageInterval {
+            get {
+                return ResourceManager.GetString("PAverageInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval of averaging.
+        /// </summary>
+        internal static string PAverageIntervalDescription {
+            get {
+                return ResourceManager.GetString("PAverageIntervalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to b.
         /// </summary>
         internal static string PB {
@@ -6996,6 +7059,24 @@ namespace PavelStransky.Expression {
         internal static string PBenfordNumDigits {
             get {
                 return ResourceManager.GetString("PBenfordNumDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to beta.
+        /// </summary>
+        internal static string PBeta {
+            get {
+                return ResourceManager.GetString("PBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beta parameter.
+        /// </summary>
+        internal static string PBetaDescription {
+            get {
+                return ResourceManager.GetString("PBetaDescription", resourceCulture);
             }
         }
         
@@ -9327,6 +9408,24 @@ namespace PavelStransky.Expression {
         internal static string PPeresOperatorTypeDescription {
             get {
                 return ResourceManager.GetString("PPeresOperatorTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to phi.
+        /// </summary>
+        internal static string PPhase {
+            get {
+                return ResourceManager.GetString("PPhase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phases.
+        /// </summary>
+        internal static string PPhaseDescription {
+            get {
+                return ResourceManager.GetString("PPhaseDescription", resourceCulture);
             }
         }
         

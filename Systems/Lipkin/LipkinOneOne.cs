@@ -145,12 +145,6 @@ namespace PavelStransky.Systems {
                 for(int j = 0; j < 4; j++)
                     for(int k = 0; k < 4; k++)
                         result[j, k] += ev[i + j] * ev[i + k];
-
-            // Concurrence
-            Matrix m = new Matrix(4);
-            m[0, 3] = -1; m[3, 0] = -1;
-            m[1, 2] = 1; m[2, 1] = 1;
-            result = m * result * m;
  
             return result;
         }

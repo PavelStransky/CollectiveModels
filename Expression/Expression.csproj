@@ -181,6 +181,7 @@
     <Compile Include="Functions\Quantum\BoxSpectrum.cs" />
     <Compile Include="Functions\Quantum\BoxSpectrum3D.cs" />
     <Compile Include="Functions\Quantum\ChemicalPotential.cs" />
+    <Compile Include="Functions\Quantum\Concurrence.cs" />
     <Compile Include="Functions\Quantum\EntanglementEntropy.cs" />
     <Compile Include="Functions\Quantum\ExpandBasis.cs" />
     <Compile Include="Functions\Quantum\HOSpectrum3D.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Quantum\Systems\SturmCoulomb.cs" />
+    <Compile Include="Functions\Statistics\NoiseGenerator.cs" />
     <Compile Include="Functions\Unsorted\HilbertTransform.cs" />
     <Compile Include="Functions\Unsorted\InstantaneousFrequency.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Functions\Vector\Autocorrelation.cs" />
     <Compile Include="Functions\Vector\Contain.cs" />
     <Compile Include="Functions\Vector\Delta3.cs" />
+    <Compile Include="Functions\Vector\ECG.cs" />
     <Compile Include="Functions\Vector\EMD.cs" />
     <Compile Include="Functions\Vector\IMF.cs" />
     <Compile Include="Functions\Vector\NormalizeDensity.cs" />

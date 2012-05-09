@@ -31,8 +31,8 @@ namespace PavelStransky.Math {
         /// <param name="writer">Writer</param>
         /// <param name="s">Number of interations after the condition |#max-#min| leq 1 is satisfied</param>
         /// <param name="delta">A special parameter for the symmetry condition |U+L|/2|U| leq delta</param>
-        public PointVector[] ComputeIMF(IOutputWriter writer, int s, double delta) {
-            return this.Sifting(this.data, s, delta, writer);
+        public PointVector[] ComputeIMF(IOutputWriter writer, int s, double delta, bool allIterations) {
+            return this.Sifting(this.data, s, delta, allIterations, writer);
         }
       
         /// <summary>
@@ -48,9 +48,9 @@ namespace PavelStransky.Math {
             ArrayList result = new ArrayList();
 
             PointVector[] imf = null;
-            while((imf = this.Sifting(resid, s, delta, writer)).Length > 1) {
-                result.Add(imf[imf.Length - 1]);
-                resid = new PointVector(resid.VectorX, resid.VectorY - imf[imf.Length - 1].VectorY);
+            while((imf = this.Sifting(resid, s, delta, false, writer)).Length > 0) {
+                result.Add(imf[0]);
+                resid = new PointVector(resid.VectorX, resid.VectorY - imf[0].VectorY);
             }
             result.Add(resid);
 
@@ -67,7 +67,7 @@ namespace PavelStransky.Math {
         /// <param name="source">Source data</param>
         /// <param name="s">Number of iterations after the condition (MaxNum + MinNum - Cross0) is reached</param>
         /// <param name="delta">A special parameter for the symmetry condition |U+L|/|U,L| leq delta</param>
-        private PointVector[] Sifting(PointVector source, int s, double delta, IOutputWriter writer) {
+        private PointVector[] Sifting(PointVector source, int s, double delta, bool allIterations, IOutputWriter writer) {
             if(writer != null)
                 writer.Write(string.Format("IMF"));
 
@@ -80,7 +80,9 @@ namespace PavelStransky.Math {
                 if(writer != null)
                     writer.Write(".");
 
-                steps.Add(source.Clone());
+                if(allIterations)
+                    steps.Add(source.Clone());
+
                 sifting = new SiftingStep(source, this.flat, delta);
 
                 if(sifting.IsResiduum) {
@@ -89,13 +91,19 @@ namespace PavelStransky.Math {
                             sifting.MaxNum, sifting.MinNum,
                             sifting.ErrorU / source.Length, sifting.ErrorL / source.Length));
 
-                    PointVector[] resultR = new PointVector[1];
-                    resultR[0] = steps[0] as PointVector;
-                    return resultR;
+                    if(allIterations) {
+                        PointVector[] resultR = new PointVector[1];
+                        resultR[0] = steps[0] as PointVector;
+                        return resultR;
+                    }
+                    else {
+                        PointVector[] resultR = new PointVector[0];
+                        return resultR;
+                    }
                 }
 
-                if(writer != null)
-                    writer.Write(sifting.NumAssymetryExtreemes);
+                if(iterations % 20 == 0 && writer != null)
+                    writer.Write(string.Format("({0},{1})", sifting.NumAssymetryExtreemes, sifting.SymmetryBreak));
 
                 if(sifting.NumAssymetryExtreemes == 0)
                     i++;

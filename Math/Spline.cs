@@ -55,7 +55,9 @@ namespace PavelStransky.Math {
 				m[0, i] = (m[0, i] - m[3, i] * m[0, i + 1]) / m[2, i];
 			 
 			result = m.GetRowVector(0);
-			result[0] = result[result.Length - 1] = 0;
+
+            result[0] = 0;
+            result[result.Length - 1] = 0;
 
 			return result;
 		}

@@ -3687,10 +3687,43 @@ Second differing type: {1}</value>
   <data name="HelpEigenSystemSymmetric" xml:space="preserve">
     <value>Eigensystem of a matrix calculated using LAPACK library; before the calculation the matrix is symmetrized</value>
   </data>
+  <data name="HelpConcurrence" xml:space="preserve">
+    <value>Calculates the concurrence of the LipkinOneOne system</value>
+  </data>
   <data name="HelpContain" xml:space="preserve">
     <value>Returns true if the given vector contains the given value within given error</value>
   </data>
   <data name="HelpEntanglementEntropy" xml:space="preserve">
     <value>Calculates the entanglement entropy of a combined system</value>
+  </data>
+  <data name="HelpECG" xml:space="preserve">
+    <value>Analysis of the ECG signal</value>
+  </data>
+  <data name="PAverageInterval" xml:space="preserve">
+    <value>interval</value>
+  </data>
+  <data name="PAverageIntervalDescription" xml:space="preserve">
+    <value>Interval of averaging</value>
+  </data>
+  <data name="HelpNoiseGenerator" xml:space="preserve">
+    <value>Generates a vector with a 1/f^beta noise</value>
+  </data>
+  <data name="PBeta" xml:space="preserve">
+    <value>beta</value>
+  </data>
+  <data name="PBetaDescription" xml:space="preserve">
+    <value>Beta parameter</value>
+  </data>
+  <data name="PPhase" xml:space="preserve">
+    <value>phi</value>
+  </data>
+  <data name="PPhaseDescription" xml:space="preserve">
+    <value>Phases</value>
+  </data>
+  <data name="PAllIterations" xml:space="preserve">
+    <value>alli</value>
+  </data>
+  <data name="PAllIterationsDescription" xml:space="preserve">
+    <value>True if all iterations will be stored</value>
   </data>
 </root>

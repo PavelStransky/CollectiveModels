@@ -229,6 +229,11 @@ namespace PavelStransky.Forms {
                 this.guider.TmpDir = Application.UserAppDataPath;
                 this.guider.CalcPaused += new EventHandler(guider_CalcPaused);
 
+                if(!this.guider.Context.Contains(timerVariable)) 
+                    this.guider.Context.SetVariable(timerVariable, new List());
+
+                this.clickRecord = this.guider.Context[timerVariable].Item as List;
+
                 // Nastavení ovládacích prvkù
                 this.txtResult.Clear();
                 this.SetCaption(Messages.MCalculating);
@@ -363,6 +368,20 @@ namespace PavelStransky.Forms {
             }
 
             this.OnCalcFinished(new FinishedEventArgs(true));
+        }
+
+        private List clickRecord;
+        /// <summary>
+        /// Stisk tlaèítka myši (pro zaznamenávání klikání)
+        /// </summary>
+        protected override void OnMouseDown(MouseEventArgs e) {
+            TimeSpan ts = DateTime.Now - this.guider.Timer;
+            this.clickRecord.Add(ts.TotalMilliseconds);
+            base.OnMouseDown(e);
+        }
+        private void txtResult_KeyDown(object sender, KeyEventArgs e) {
+            TimeSpan ts = DateTime.Now - this.guider.Timer;
+            this.clickRecord.Add(ts.TotalMilliseconds);
         }
 
         /// <summary>
@@ -586,5 +605,6 @@ namespace PavelStransky.Forms {
 
         private const string soundSuccessFile = "success.wav";
         private const string soundFailureFile = "failure.wav";
+        private const string timerVariable = "_timer";
     }
 }

@@ -205,11 +205,14 @@
     <Compile Include="Functions\Unsorted\InstantaneousFrequency.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />
+    <Compile Include="Functions\Vector\CreateByCopy.cs" />
     <Compile Include="Functions\Vector\Autocorrelation.cs" />
     <Compile Include="Functions\Vector\Contain.cs" />
+    <Compile Include="Functions\Vector\Cumul0.cs" />
     <Compile Include="Functions\Vector\Delta3.cs" />
     <Compile Include="Functions\Vector\ECG.cs" />
     <Compile Include="Functions\Vector\EMD.cs" />
+    <Compile Include="Functions\Vector\GPSDistance.cs" />
     <Compile Include="Functions\Vector\IMF.cs" />
     <Compile Include="Functions\Vector\NormalizeDensity.cs" />
     <Compile Include="Functions\Vector\NumberVariance.cs" />

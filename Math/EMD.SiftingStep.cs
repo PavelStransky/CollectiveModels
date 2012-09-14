@@ -189,7 +189,7 @@ namespace PavelStransky.Math {
                 }
 
                 // Last element
-                if(max && data[lastIndex].Y > ((PointD)maxima[maxima.Count - 1]).Y)
+                if(max && maxima.Count > 0 && data[lastIndex].Y > ((PointD)maxima[maxima.Count - 1]).Y)
                     maxima.Add(new PointD(0.5 * (data[lastIndex].X + data.LastItem.X), data[lastIndex].Y));
 
                 length = maxima.Count;
@@ -281,7 +281,7 @@ namespace PavelStransky.Math {
                 }
 
                 // Last element
-                if(min && data[lastIndex].Y < ((PointD)minima[minima.Count - 1]).Y)
+                if(min && minima.Count > 0 && data[lastIndex].Y < ((PointD)minima[minima.Count - 1]).Y)
                     minima.Add(new PointD(0.5 * (data[lastIndex].X + data.LastItem.X), data[lastIndex].Y));
 
                 length = minima.Count;

@@ -26,6 +26,8 @@ namespace PavelStransky.Expression {
         private GuiderState state = GuiderState.Normal;
         private DateTime startTime;
 
+        private DateTime timer;
+
         // Pøi pozastavení výpoètu
         public event EventHandler CalcPaused;
 
@@ -102,6 +104,11 @@ namespace PavelStransky.Expression {
         public DateTime StartTime { get { return this.startTime; } }
 
         /// <summary>
+        /// Timer
+        /// </summary>
+        public DateTime Timer { get { return this.timer; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="context">Kontext, na kterém se bude provádìt výpoèet</param>
@@ -110,6 +117,7 @@ namespace PavelStransky.Expression {
             this.resetEvent = new ManualResetEvent(true);
             this.functions = new ArrayList();
             this.startTime = DateTime.Now;
+            this.timer = DateTime.Now;
         }
 
         /// <summary>
@@ -194,6 +202,13 @@ namespace PavelStransky.Expression {
         public void Resume() {
             this.state = GuiderState.Normal;
             this.resetEvent.Set();
+        }
+
+        /// <summary>
+        /// Zresetuje èasovaè
+        /// </summary>
+        internal void ResetTimer() {
+            this.timer = DateTime.Now;
         }
 
         #region Implementace IOutputWriter

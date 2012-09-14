@@ -118,30 +118,76 @@ namespace PavelStransky.Expression.Functions.Def {
             int i1 = s.IndexOf("<coordinates>") + "<coordinates>".Length;
             int i2 = s.IndexOf("</coordinates>");
 
-            string begin = s.Substring(0, i1);
-            string end = s.Substring(i2);
-            s = s.Substring(i1, i2 - i1).Trim(' ', '\n', '\r', '\t');
+            string date = string.Empty;
+            TimeSpan ts = new TimeSpan();
+            Vector[] data;
 
-            string[] items = s.Split(' ');
+            // Verze standard
+            if(i1 > 0 && i2 > 0) {
+                string begin = s.Substring(0, i1);
+                string end = s.Substring(i2);
+                s = s.Substring(i1, i2 - i1).Trim(' ', '\n', '\r', '\t');
 
-            int length = items.Length;
+                string[] items = s.Split(' ');
 
-            Vector[] data = new Vector[3];
-            data[0] = new Vector(length);
-            data[1] = new Vector(length);
-            data[2] = new Vector(length);
+                int length = items.Length;
 
-            for(int i = 0; i < length; i++) {
-                string[] its = items[i].Split(',');
+                data = new Vector[3];
+                data[0] = new Vector(length);
+                data[1] = new Vector(length);
+                data[2] = new Vector(length);
 
-                for(int j = 0; j < its.Length; j++)
-                    data[j][i] = double.Parse(its[j]);
+                for(int i = 0; i < length; i++) {
+                    string[] its = items[i].Split(',');
+
+                    for(int j = 0; j < its.Length; j++)
+                        data[j][i] = double.Parse(its[j]);
+                }
+            }
+            else {
+                i1 = s.IndexOf("<when>") + "<when>".Length;
+                i2 = s.IndexOf("</when>");
+
+                DateTime start = DateTime.Parse(s.Substring(i1, i2 - i1));
+
+                i1 = s.LastIndexOf("<when>") + "<when>".Length;
+                i2 = s.LastIndexOf("</when>");
+
+                DateTime end = DateTime.Parse(s.Substring(i1, i2 - i1));
+
+                ts = end - start;
+                date = start.ToString("yyyy-MM-dd");
+
+                int length = 0;
+                i1 = 0;
+                while((i1 = s.IndexOf("<gx:coord>", i1)) >= 0) {
+                    i1 += "<gx:coord>".Length;
+                    length++;
+                }
+
+                data = new Vector[3];
+                data[0] = new Vector(length);
+                data[1] = new Vector(length);
+                data[2] = new Vector(length);
+
+                i1 = 0;
+                int i = 0;
+                while((i1 = s.IndexOf("<gx:coord>", i1)) >= 0) {
+                    i1 += "<gx:coord>".Length;
+                    i2 = s.IndexOf("</gx:coord>", i1);
+
+                    string[] its = s.Substring(i1, i2 - i1).Split(' ');
+                    for(int j = 0; j < its.Length; j++)
+                        data[j][i] = double.Parse(its[j]);
+
+                    i++;
+                }
             }
 
             List result = new List();
             result.Add(new TArray(data));
-            result.Add(begin);
-            result.Add(end);
+            result.Add(date);
+            result.Add(ts.TotalMinutes);
             return result;
         }
 

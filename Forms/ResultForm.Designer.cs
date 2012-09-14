@@ -80,6 +80,7 @@ namespace PavelStransky.Forms {
             this.txtResult.Size = new System.Drawing.Size(429, 138);
             this.txtResult.TabIndex = 3;
             this.txtResult.WordWrap = false;
+            this.txtResult.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtResult_KeyDown);
             // 
             // btInterrupt
             // 

@@ -133,6 +133,9 @@ namespace PavelStransky.Expression {
             else if(name == piVariable)
                 throw new ContextException(string.Format(Messages.EMVarCannotBeSet, piVariable));
 
+            else if(name == slashVariable)
+                throw new ContextException(string.Format(Messages.EMVarCannotBeSet, slashVariable));
+
             else if(this.objects.ContainsKey(name)) {
                 // Pokud už promìnná na kontextu existuje, zmìníme pouze její hodnotu
                 retValue = this[name];
@@ -214,6 +217,9 @@ namespace PavelStransky.Expression {
 
                 else if(name == piVariable)
                     return new Variable(name, System.Math.PI);
+
+                else if(name == slashVariable)
+                    return new Variable(name, "\\");
 
 				Variable variable = this.objects[name] as Variable;
 				if(variable == null)
@@ -331,6 +337,7 @@ namespace PavelStransky.Expression {
         private const string execDirectoryVariable = "_execdir";
         private const string workingDirectoryVariable = "_workingdir";
         private const string piVariable = "_pi";
+        private const string slashVariable = "_slash";
         private const string globalContextFileName = "global.ctx";
     }
 }

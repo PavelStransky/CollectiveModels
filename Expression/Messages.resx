@@ -3726,4 +3726,25 @@ Second differing type: {1}</value>
   <data name="PAllIterationsDescription" xml:space="preserve">
     <value>True if all iterations will be stored</value>
   </data>
+  <data name="HelpCreateByCopy" xml:space="preserve">
+    <value>Put a given vector at each of the given times</value>
+  </data>
+  <data name="PIndex" xml:space="preserve">
+    <value>i</value>
+  </data>
+  <data name="PIndexDescription" xml:space="preserve">
+    <value>Indexes</value>
+  </data>
+  <data name="HelpCumul0" xml:space="preserve">
+    <value>Returns a vector of cumulations sum_{i=0}^{k} s_{k}, where the first element is 0;</value>
+  </data>
+  <data name="HelpGPS" xml:space="preserve">
+    <value>Calculates distances from GPS coordinates</value>
+  </data>
+  <data name="PZ" xml:space="preserve">
+    <value>z</value>
+  </data>
+  <data name="PZDescription" xml:space="preserve">
+    <value>Variable z</value>
+  </data>
 </root>

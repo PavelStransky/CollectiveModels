@@ -42,6 +42,9 @@ namespace PavelStransky.Expression.Functions.Def {
 
             m.Seek(0, SeekOrigin.Begin);
             SoundPlayer player = new SoundPlayer(m);
+            
+            player.Load();
+            guider.ResetTimer();
             player.PlaySync();
             
             return null;

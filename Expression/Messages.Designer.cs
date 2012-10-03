@@ -3742,6 +3742,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finds the Points of Interest that are near the given path.
+        /// </summary>
+        internal static string HelpGPSPOI {
+            get {
+                return ResourceManager.GetString("HelpGPSPOI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create graph.
         /// </summary>
         internal static string HelpGraph {
@@ -4260,6 +4269,15 @@ namespace PavelStransky.Expression {
         internal static string HelpLipkinTwo {
             get {
                 return ResourceManager.GetString("HelpLipkinTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a Lipkin model class diagonalized in the full SU(2) basis, divided into two interacting subsystems consisting of the environment + spectator.
+        /// </summary>
+        internal static string HelpLipkinTwoSpectator {
+            get {
+                return ResourceManager.GetString("HelpLipkinTwoSpectator", resourceCulture);
             }
         }
         
@@ -6964,6 +6982,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to alphaS.
+        /// </summary>
+        internal static string PAlphaS {
+            get {
+                return ResourceManager.GetString("PAlphaS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter alpha of the Spectator.
+        /// </summary>
+        internal static string PAlphaSDescription {
+            get {
+                return ResourceManager.GetString("PAlphaSDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to a.
         /// </summary>
         internal static string PAmplitudes {
@@ -7509,6 +7545,24 @@ namespace PavelStransky.Expression {
         internal static string PDiagonalValueDescription {
             get {
                 return ResourceManager.GetString("PDiagonalValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to d.
+        /// </summary>
+        internal static string PDistanceOnePoint {
+            get {
+                return ResourceManager.GetString("PDistanceOnePoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance that must be passed in order to visit the same point (in meters).
+        /// </summary>
+        internal static string PDistanceOnePointDescription {
+            get {
+                return ResourceManager.GetString("PDistanceOnePointDescription", resourceCulture);
             }
         }
         
@@ -8089,6 +8143,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to g.
+        /// </summary>
+        internal static string PG {
+            get {
+                return ResourceManager.GetString("PG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to gamma.
         /// </summary>
         internal static string PGamma {
@@ -8139,6 +8202,15 @@ namespace PavelStransky.Expression {
         internal static string PGCMDescription {
             get {
                 return ResourceManager.GetString("PGCMDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter g of the interaction.
+        /// </summary>
+        internal static string PGDescription {
+            get {
+                return ResourceManager.GetString("PGDescription", resourceCulture);
             }
         }
         
@@ -8809,6 +8881,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to maxd.
+        /// </summary>
+        internal static string PMaxDistance {
+            get {
+                return ResourceManager.GetString("PMaxDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum distance between the points and the track (in meters).
+        /// </summary>
+        internal static string PMaxDistanceDescription {
+            get {
+                return ResourceManager.GetString("PMaxDistanceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to emax.
         /// </summary>
         internal static string PMaxEnergy {
@@ -9331,6 +9421,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to omegaS.
+        /// </summary>
+        internal static string POmegaS {
+            get {
+                return ResourceManager.GetString("POmegaS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter omega of the Spectator.
+        /// </summary>
+        internal static string POmegaSDescription {
+            get {
+                return ResourceManager.GetString("POmegaSDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to oneorientation.
         /// </summary>
         internal static string POneOrientation {
@@ -9489,6 +9597,24 @@ namespace PavelStransky.Expression {
         internal static string PPhaseSpacePositionDescription {
             get {
                 return ResourceManager.GetString("PPhaseSpacePositionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to poi.
+        /// </summary>
+        internal static string PPOI {
+            get {
+                return ResourceManager.GetString("PPOI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Points of interest.
+        /// </summary>
+        internal static string PPOIDescription {
+            get {
+                return ResourceManager.GetString("PPOIDescription", resourceCulture);
             }
         }
         
@@ -10299,6 +10425,24 @@ namespace PavelStransky.Expression {
         internal static string PToArray1Description {
             get {
                 return ResourceManager.GetString("PToArray1Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to track.
+        /// </summary>
+        internal static string PTrack {
+            get {
+                return ResourceManager.GetString("PTrack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track.
+        /// </summary>
+        internal static string PTrackDescription {
+            get {
+                return ResourceManager.GetString("PTrackDescription", resourceCulture);
             }
         }
         

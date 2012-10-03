@@ -62,7 +62,7 @@ namespace PavelStransky.Expression {
         /// <param name="d">Hodnoty double</param>
         public TArray(params double[] i) {
             this.type = typeof(double);
-            this.data = (int[])i.Clone();
+            this.data = (double[])i.Clone();
         }
 
         /// <summary>

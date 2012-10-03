@@ -25,16 +25,32 @@ namespace PavelStransky.Expression.Functions.Def {
             int end = (int)arguments[1];
             int step = (int)arguments[2];
 
-            int num = System.Math.Max(0, (end - start)) / step + 1;
-            TArray result = new TArray(typeof(int), num);
+            if(step > 0) {
+                int num = System.Math.Max(0, (end - start)) / step + 1;
+                TArray result = new TArray(typeof(int), num);
 
-            int i = 0;
-            while(start <= end) {
-                result[i++] = start;
-                start += step;
+                int i = 0;
+                while(start <= end) {
+                    result[i++] = start;
+                    start += step;
+                }
+
+                return result;
+            }
+            else if(step < 0) {
+                int num = System.Math.Max(0, (start - end)) / (-step) + 1;
+                TArray result = new TArray(typeof(int), num);
+
+                int i = 0;
+                while(start >= end) {
+                    result[i++] = start;
+                    start += step;
+                }
+
+                return result;
             }
 
-            return result;
+            return null;
         }
 
         private const string name = ":";

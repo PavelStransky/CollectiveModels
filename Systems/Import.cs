@@ -148,6 +148,8 @@ namespace PavelStransky.Systems {
                 return new LipkinOneOne(this);
             else if(typeName == typeof(LipkinTwo).FullName)
                 return new LipkinTwo(this);
+            else if(typeName == typeof(LipkinTwoSpectator).FullName)
+                return new LipkinTwoSpectator(this);
             else if(typeName == typeof(JaynesCummings).FullName)
                 return new JaynesCummings(this);
             else

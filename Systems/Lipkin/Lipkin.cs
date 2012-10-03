@@ -34,6 +34,12 @@ namespace PavelStransky.Systems {
 
         #region Implementace IExportable
         /// <summary>
+        /// Uložení dodateèných parametrù
+        /// </summary>
+        protected virtual void Export(IEParam param) { }
+        protected virtual void Import(IEParam param) { }
+
+        /// <summary>
         /// Uloží výsledky do souboru
         /// </summary>
         /// <param name="export">Export</param>
@@ -42,6 +48,8 @@ namespace PavelStransky.Systems {
             param.Add(this.eigenSystem, "EigenSystem");
             param.Add(this.alpha, "Alpha");
             param.Add(this.omega, "Omega");
+            this.Export(param);
+
             param.Export(export);
         }
 
@@ -54,6 +62,8 @@ namespace PavelStransky.Systems {
             this.eigenSystem = (EigenSystem)param.Get();
             this.alpha = (double)param.Get(0.0);
             this.omega = (double)param.Get(0.0);
+
+            this.Import(param);
         }
 
         #endregion

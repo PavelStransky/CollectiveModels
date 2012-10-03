@@ -3747,4 +3747,52 @@ Second differing type: {1}</value>
   <data name="PZDescription" xml:space="preserve">
     <value>Variable z</value>
   </data>
+  <data name="HelpGPSPOI" xml:space="preserve">
+    <value>Finds the Points of Interest that are near the given path</value>
+  </data>
+  <data name="PDistanceOnePoint" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="PDistanceOnePointDescription" xml:space="preserve">
+    <value>Distance that must be passed in order to visit the same point (in meters)</value>
+  </data>
+  <data name="PMaxDistance" xml:space="preserve">
+    <value>maxd</value>
+  </data>
+  <data name="PMaxDistanceDescription" xml:space="preserve">
+    <value>Maximum distance between the points and the track (in meters)</value>
+  </data>
+  <data name="PPOI" xml:space="preserve">
+    <value>poi</value>
+  </data>
+  <data name="PPOIDescription" xml:space="preserve">
+    <value>Points of interest</value>
+  </data>
+  <data name="PTrack" xml:space="preserve">
+    <value>track</value>
+  </data>
+  <data name="PTrackDescription" xml:space="preserve">
+    <value>Track</value>
+  </data>
+  <data name="HelpLipkinTwoSpectator" xml:space="preserve">
+    <value>Creates a Lipkin model class diagonalized in the full SU(2) basis, divided into two interacting subsystems consisting of the environment + spectator</value>
+  </data>
+  <data name="PAlphaS" xml:space="preserve">
+    <value>alphaS</value>
+  </data>
+  <data name="PAlphaSDescription" xml:space="preserve">
+    <value>Parameter alpha of the Spectator</value>
+  </data>
+  <data name="PG" xml:space="preserve">
+    <value>g</value>
+  </data>
+  <data name="PGDescription" xml:space="preserve">
+    <value>Parameter g of the interaction</value>
+  </data>
+  <data name="POmegaS" xml:space="preserve">
+    <value>omegaS</value>
+  </data>
+  <data name="POmegaSDescription" xml:space="preserve">
+    <value>Parameter omega of the Spectator</value>
+  </data>
 </root>

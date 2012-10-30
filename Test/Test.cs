@@ -21,11 +21,35 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLipkinFactorized();
+            Test.PokusLaguerreME();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        /// <summary>
+        /// Maticový element, Laguerrovy polynomy 26.10.2012
+        /// </summary>
+        static void PokusLaguerreME() {
+            for(int i = 0; i < 10; i++) {
+                for(int j = 0; j < 10; j++) {
+                    Console.Write(SpecialFunctions.HO2DMatrixElement(i, j, 6, 6, 3));
+                    Console.Write("\t");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void PokusInsert() {
+            FileStream f = new FileStream("c:\\tmp.sql", FileMode.Create);
+            StreamWriter s = new StreamWriter(f);
+
+            for(int i = 1; i <= 30000; i++)
+                s.WriteLine("INSERT INTO Sequence (_id) VALUES ({0});", i);
+
+            s.Close();
+            f.Close();
+        }
 
         static void PokusLipkinFactorized() {
             Vector v = new Vector(1);

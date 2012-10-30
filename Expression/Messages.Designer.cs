@@ -4282,6 +4282,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a Lipkin model consisting of the environment diagonalized in the full SU(2) basis + one simply interacting spin.
+        /// </summary>
+        internal static string HelpLipkinTwoSpectatorSimple {
+            get {
+                return ResourceManager.GetString("HelpLipkinTwoSpectatorSimple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a list of all parameters.
         /// </summary>
         internal static string HelpList {
@@ -7851,6 +7860,24 @@ namespace PavelStransky.Expression {
         internal static string PEnergyMinDescription {
             get {
                 return ResourceManager.GetString("PEnergyMinDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to epsilon.
+        /// </summary>
+        internal static string PEpsilon {
+            get {
+                return ResourceManager.GetString("PEpsilon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter epsilon.
+        /// </summary>
+        internal static string PEpsilonDescription {
+            get {
+                return ResourceManager.GetString("PEpsilonDescription", resourceCulture);
             }
         }
         

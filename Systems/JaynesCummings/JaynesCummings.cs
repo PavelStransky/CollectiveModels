@@ -96,8 +96,7 @@ namespace PavelStransky.Systems {
             result = new Matrix(dim);
 
             for(int i = 0; i < dim; i++)
-                for(int j = 0; j < dim; j++)
-                    result[i, j] = ev[i] * ev[j];
+                result[i, i] = ev[i] * ev[i];
 
             return result;
         }

@@ -160,7 +160,7 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Vrátí logaritmus faktoriálu poloèíselné hodnoty z pøedvypoèítaných hodnot z bufferu
         /// </summary>
-        /// <param name="i">Vstupní hodnota</param>
+        /// <param name="i">Vstupní hodnota (poèítáno pro x = i - 0.5)</param>
         public static double HalfFactorialILog(int i) {
             if(i < 0) {
                 double result = halfFactorialLog[0];
@@ -813,6 +813,65 @@ namespace PavelStransky.Math {
                 dd = sv;
             }
             return y * d - dd + 0.5 * c[0];
+        }
+
+        public static double HO2DMatrixElement(int n1, int n2, int m1, int m2, int a) {
+            int l1 = System.Math.Abs(m1);
+            int l2 = System.Math.Abs(m2);
+            int dl = l2 - l1;    // Tohle zkusit zmìnit na System.Math.Abs(m1 - m2);
+
+            double norm = 0.5 * (SpecialFunctions.FactorialILog(n1) + SpecialFunctions.FactorialILog(n2)
+                - SpecialFunctions.FactorialILog(n1 + l1) - SpecialFunctions.FactorialILog(n2 + l2));
+
+            double result = 0.0;
+
+            int minn = System.Math.Max(0, System.Math.Max(2 * n2 - a + dl, 2 * n1 - a - dl));
+            int maxn = 2 * System.Math.Min(n1, n2);
+
+            if(minn % 2 == 1)
+                minn = 0;
+
+            for(int s = minn; s <= maxn; s += 2) {
+                double d = norm
+                    + Factorial2Log(a + l1 + l2 + s) + Factorial2Log(a - dl) + Factorial2Log(a + dl)
+                    - Factorial2Log(s) - Factorial2Log(2 * n1 - s) - Factorial2Log(2 * n2 - s)
+                    - Factorial2Log(a - dl - 2 * n2 + s) - Factorial2Log(a + dl - 2 * n1 + s);
+
+                    d = (Factorial2LogSign(a + l1 + l2 + s) * Factorial2LogSign(a - dl) * Factorial2LogSign(a + dl)
+                    * Factorial2LogSign(s) * Factorial2LogSign(2 * n1 - s) * Factorial2LogSign(2 * n2 - s)
+                    * Factorial2LogSign(a - dl - 2 * n2 + s) * Factorial2LogSign(a + dl - 2 * n1 + s)) 
+                    * System.Math.Exp(d);
+                result += d;
+            }
+
+            if((n1 + n2) % 2 == 1)
+                result = -result;
+
+            return result;
+        }
+
+        private static double Factorial2Log(int i) {
+            double result = 0.0;
+            if(i % 2 == 0)
+                result = SpecialFunctions.FactorialILog(i / 2);
+            else if(i >= 0)
+                result = SpecialFunctions.HalfFactorialILog(i / 2 + 1);
+            else
+                result = SpecialFunctions.HalfFactorialILog(i / 2);
+            return result;
+        }
+
+        private static int Factorial2LogSign(int i) {
+            int result = 1;
+            if(i % 2 == 0)
+                result = 1;
+            else if(i >= 0)
+                result = 1;
+            else if((-i) % 4 == 3)
+                result = -1;
+            else
+                result = 1;
+            return result;
         }
 
         private static double[] gammaLogKoef;

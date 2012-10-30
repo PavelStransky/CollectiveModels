@@ -3795,4 +3795,13 @@ Second differing type: {1}</value>
   <data name="POmegaSDescription" xml:space="preserve">
     <value>Parameter omega of the Spectator</value>
   </data>
+  <data name="HelpLipkinTwoSpectatorSimple" xml:space="preserve">
+    <value>Creates a Lipkin model consisting of the environment diagonalized in the full SU(2) basis + one simply interacting spin</value>
+  </data>
+  <data name="PEpsilon" xml:space="preserve">
+    <value>epsilon</value>
+  </data>
+  <data name="PEpsilonDescription" xml:space="preserve">
+    <value>Parameter epsilon</value>
+  </data>
 </root>

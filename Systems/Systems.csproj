@@ -76,11 +76,13 @@
     <Compile Include="GCM\Contour.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHO5DIndexI.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOCartesianIndex.cs" />
+    <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndex1.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexE.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexI.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexIFull.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexIO.cs" />
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexO.cs" />
+    <Compile Include="GCM\Quantum\LHOQuantumGCM1.cs" />
     <Compile Include="IEntanglement.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="IQuantumSystem.cs" />

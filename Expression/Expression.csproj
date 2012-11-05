@@ -192,6 +192,7 @@
     <Compile Include="Functions\Quantum\ShellCorrection.cs" />
     <Compile Include="Functions\Quantum\SmoothLevelDensity.cs" />
     <Compile Include="Functions\Quantum\Systems\JC.cs" />
+    <Compile Include="Functions\Quantum\Systems\LHOQGCM1.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFac.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFull.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinOne.cs" />

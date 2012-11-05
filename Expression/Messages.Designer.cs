@@ -4156,6 +4156,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LHOQuantumGCM1 function (Hamiltonian with 1 minimum in Gamma and with a potential given by an expansion of Cos(bx)).
+        /// </summary>
+        internal static string HelpLHOQGCM1 {
+            get {
+                return ResourceManager.GetString("HelpLHOQGCM1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates an object that calculates eigenenergies of QuantumGCM in 5D basis preparing the Hamiltonian matrix by using algebraic relations.
         /// </summary>
         internal static string HelpLHOQGCMA5D {

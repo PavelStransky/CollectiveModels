@@ -3804,4 +3804,7 @@ Second differing type: {1}</value>
   <data name="PEpsilonDescription" xml:space="preserve">
     <value>Parameter epsilon</value>
   </data>
+  <data name="HelpLHOQGCM1" xml:space="preserve">
+    <value>LHOQuantumGCM1 function (Hamiltonian with 1 minimum in Gamma and with a potential given by an expansion of Cos(bx))</value>
+  </data>
 </root>

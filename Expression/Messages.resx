@@ -3807,4 +3807,19 @@ Second differing type: {1}</value>
   <data name="HelpLHOQGCM1" xml:space="preserve">
     <value>LHOQuantumGCM1 function (Hamiltonian with 1 minimum in Gamma and with a potential given by an expansion of Cos(bx))</value>
   </data>
+  <data name="HelpShiftX" xml:space="preserve">
+    <value>Shifts the X values of a PointVector so that the first auxiliary PointVector fits the second auxiliary PointVector</value>
+  </data>
+  <data name="PSource" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="PSourceDescription" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="PTarget" xml:space="preserve">
+    <value>target</value>
+  </data>
+  <data name="PTargetDescription" xml:space="preserve">
+    <value>Target</value>
+  </data>
 </root>

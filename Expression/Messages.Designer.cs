@@ -5254,6 +5254,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shifts the X values of a PointVector so that the first auxiliary PointVector fits the second auxiliary PointVector.
+        /// </summary>
+        internal static string HelpShiftX {
+            get {
+                return ResourceManager.GetString("HelpShiftX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates a vector with shot noise values.
         /// </summary>
         internal static string HelpShotNoise {
@@ -10213,6 +10222,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to source.
+        /// </summary>
+        internal static string PSource {
+            get {
+                return ResourceManager.GetString("PSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        internal static string PSourceDescription {
+            get {
+                return ResourceManager.GetString("PSourceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to spacing.
         /// </summary>
         internal static string PSpacing {
@@ -10389,6 +10416,24 @@ namespace PavelStransky.Expression {
         internal static string PSymmetricMatrixDescription {
             get {
                 return ResourceManager.GetString("PSymmetricMatrixDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to target.
+        /// </summary>
+        internal static string PTarget {
+            get {
+                return ResourceManager.GetString("PTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target.
+        /// </summary>
+        internal static string PTargetDescription {
+            get {
+                return ResourceManager.GetString("PTargetDescription", resourceCulture);
             }
         }
         

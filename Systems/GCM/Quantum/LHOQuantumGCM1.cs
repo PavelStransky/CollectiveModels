@@ -144,6 +144,9 @@ namespace PavelStransky.Systems {
             int n = index.N[i];
             int m = index.M[i];
 
+            if(this.cosCoef.LastItem < 0)
+                x = -x;
+
             double beta = System.Math.Sqrt(x * x + y * y);
             double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));
 

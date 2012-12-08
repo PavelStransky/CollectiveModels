@@ -25,7 +25,7 @@ namespace PavelStransky.Expression {
                 result = new Point[length];
 
                 for(int i = 0; i < length; i++)
-                    result[i] = new Point((int)(data[i].X * amplify.X + offset.X), (int)(-data[i].Y * amplify.Y + offset.Y));
+                    result[i] = new Point((int)System.Math.Round(data[i].X * amplify.X + offset.X), (int)System.Math.Round(-data[i].Y * amplify.Y + offset.Y));
             }
 
             return result;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Text;
 
 using System.Xml;
 
@@ -21,11 +22,160 @@ namespace PavelStransky.Test {
 
 		[STAThread]
 		static void Main(string[] args) {
-            Test.PokusLaguerreME();
+            Test.NormalOrdering();
 
             Console.Write("Hotovo.");
 			Console.ReadLine();
 		}
+
+        public class NOItem {
+            private int[] x;
+            private int c;
+
+            public int C { get { return this.c; } }
+
+            public NOItem(params int[] x) {
+                this.x = (int[])x.Clone();
+                this.c = 1;
+            }
+
+            public bool Compare(NOItem no) {
+                if(this.x.Length != no.x.Length)
+                    return false;
+
+                for(int i = 0; i < this.x.Length; i++)
+                    if(this.x[i] != no.x[i])
+                        return false;
+
+                return true;
+            }
+
+            public void Add(NOItem no) {
+                if(this.Compare(no)) {
+                    this.c += no.c;
+                    no.c = 0;
+                }
+            }
+
+            public static NOItem Join(NOItem no1, NOItem no2) {
+                NOItem result = new NOItem();
+
+                result.x = new int[no1.x.Length + no2.x.Length];
+
+                int k = 0;
+                for(int i = 0; i < no1.x.Length; i++)
+                    result.x[k++] = no1.x[i];
+
+                for(int i = 0; i < no2.x.Length; i++)
+                    result.x[k++] = no2.x[i];
+
+                result.c = no1.c * no2.c;
+
+                return result;
+            }
+
+            public ArrayList NormalOrdering() {
+                ArrayList result = new ArrayList();
+
+                for(int i = 1; i < this.x.Length; i++)
+                    if(this.x[i - 1] < 0 && this.x[i] > 0) {
+                        NOItem no1 = new NOItem(this.x);
+                        no1.x[i - 1] = this.x[i];
+                        no1.x[i] = this.x[i - 1];
+                        no1.c = this.c;
+
+                        NOItem no2 = new NOItem();
+                        no2.x = new int[this.x.Length - 2];
+                        for(int j = 0; j < i - 1; j++)
+                            no2.x[j] = this.x[j];
+                        for(int j = i + 1; j < this.x.Length; j++)
+                            no2.x[j - 2] = this.x[j];
+                        no2.c = this.c;
+
+                        result.Add(no1);
+                        result.Add(no2);
+
+                        return result;
+                    }
+
+                result.Add(this);
+                return result;
+            }
+
+            public static ArrayList Multiply(ArrayList a1, ArrayList a2) {
+                ArrayList result = new ArrayList();
+
+                foreach(NOItem no1 in a1)
+                    foreach(NOItem no2 in a2)
+                        result.Add(NOItem.Join(no1, no2));
+
+                return result;
+            }
+
+            public static ArrayList NormalOrdering(ArrayList a) {
+                ArrayList result = null;
+                bool change = false;
+
+                do {
+                    result = new ArrayList(); 
+                    change = false;                   
+
+                    foreach(NOItem no in a) {
+                        ArrayList r = no.NormalOrdering();
+                        if(r.Count > 1)
+                            change = true;
+
+                        foreach(NOItem noi in r)
+                            result.Add(noi);
+                    }
+
+                    a = result;
+                } while(change);
+
+                return result;
+            }
+
+            public override string ToString() {
+                StringBuilder list = new StringBuilder();
+                for(int i = 0; i < this.x.Length; i++)
+                    list.Append(this.x[i] > 0 ? "+" : "-");
+
+                return string.Format("{0}: {1}", this.c, list);
+            }
+        }
+
+        static ArrayList ProcessNormalOrdering(ArrayList a) {
+            ArrayList result = new ArrayList();
+
+            a = NOItem.NormalOrdering(a);
+
+            // Seètení
+            for(int i = 0; i < a.Count; i++)
+                for(int j = i + 1; j < a.Count; j++)
+                    ((NOItem)(a[i])).Add((NOItem)(a[j]));
+
+            foreach(NOItem no in a)
+                if(no.C > 0)
+                    result.Add(no);
+
+            return result;
+        }
+
+        static void NormalOrdering() {
+            ArrayList no1 = new ArrayList();
+            no1.Add(new NOItem(1));
+            no1.Add(new NOItem(-1));
+
+            ArrayList no2 = ProcessNormalOrdering(NOItem.Multiply(no1, no1));
+            ArrayList no4 = ProcessNormalOrdering(NOItem.Multiply(no2, no2));
+            ArrayList no6 = ProcessNormalOrdering(NOItem.Multiply(no2, no4));
+
+            ArrayList no8a = ProcessNormalOrdering(NOItem.Multiply(no4, no4));
+            ArrayList no8b = ProcessNormalOrdering(NOItem.Multiply(no6, no2));
+
+            foreach(NOItem n in no8a)
+                Console.WriteLine(n.ToString());
+        }
 
         /// <summary>
         /// Maticový element, Laguerrovy polynomy 26.10.2012

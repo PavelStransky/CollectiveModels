@@ -3822,4 +3822,22 @@ Second differing type: {1}</value>
   <data name="PTargetDescription" xml:space="preserve">
     <value>Target</value>
   </data>
+  <data name="HelpClassicalCW" xml:space="preserve">
+    <value>Creates classical Creagh-Whelan class</value>
+  </data>
+  <data name="PMu" xml:space="preserve">
+    <value>mu</value>
+  </data>
+  <data name="PMuDescription" xml:space="preserve">
+    <value>Parameter mu</value>
+  </data>
+  <data name="PPower" xml:space="preserve">
+    <value>power</value>
+  </data>
+  <data name="PPowerDescription" xml:space="preserve">
+    <value>Power of the calculation</value>
+  </data>
+  <data name="HelpQuantumCW" xml:space="preserve">
+    <value>Quantum Creagh-Whelan potential</value>
+  </data>
 </root>

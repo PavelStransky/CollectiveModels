@@ -17,7 +17,7 @@ namespace PavelStransky.Expression.Functions.Def {
             if(item is Vector)
                 return (item as Vector).MinIndex();
             else
-                return (item as Matrix).MinIndex();
+                return new TArray((item as Matrix).MinIndex());
         }
 
 		private const string help = "Vrací index prvku s nejnižší èíselnou hodnotou";

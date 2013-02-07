@@ -173,7 +173,7 @@ namespace PavelStransky.Test {
             ArrayList no8a = ProcessNormalOrdering(NOItem.Multiply(no4, no4));
             ArrayList no8b = ProcessNormalOrdering(NOItem.Multiply(no6, no2));
 
-            foreach(NOItem n in no8a)
+            foreach(NOItem n in no8b)
                 Console.WriteLine(n.ToString());
         }
 

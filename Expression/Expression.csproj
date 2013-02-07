@@ -137,6 +137,7 @@
     <Compile Include="Functions\Dynamics\DPXY.cs" />
     <Compile Include="Functions\Dynamics\Lyapunov.cs" />
     <Compile Include="Functions\Dynamics\PSTimes.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CCW.cs" />
     <Compile Include="Functions\Dynamics\Systems\CEP.cs" />
     <Compile Include="Functions\Dynamics\Systems\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Functions\Quantum\Systems\LipkinOneOne.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinTwo.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinTwoSpectator.cs" />
+    <Compile Include="Functions\Quantum\Systems\QCW.cs" />
     <Compile Include="Functions\Quantum\Systems\QEP.cs" />
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />

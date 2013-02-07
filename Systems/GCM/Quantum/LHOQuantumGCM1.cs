@@ -125,7 +125,10 @@ namespace PavelStransky.Systems {
         private double PsiXYRe(double x, double y, int i) {
             LHOPolarIndex1 index = this.eigenSystem.BasisIndex as LHOPolarIndex1;
             int n = index.N[i];
-            int m = index.M[i]; 
+            int m = index.M[i];
+
+            if (this.cosCoef.LastItem < 0)
+                x = -x; 
             
             double beta = System.Math.Sqrt(x * x + y * y);
             double gamma = (x > 0 ? System.Math.Atan(y / x) : System.Math.PI - System.Math.Atan(y / x));

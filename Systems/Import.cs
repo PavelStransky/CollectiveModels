@@ -62,6 +62,8 @@ namespace PavelStransky.Systems {
                 return new JaynesCummingsBasisIndex(this);
             else if(typeName == typeof(LHOPolarIndex1).FullName)
                 return new LHOPolarIndex1(this);
+            else if(typeName == typeof(CWBasisIndex).FullName)
+                return new CWBasisIndex(this);
 
             else if(typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
@@ -158,6 +160,10 @@ namespace PavelStransky.Systems {
                 return new JaynesCummings(this);
             else if(typeName == typeof(LHOQuantumGCM1).FullName)
                 return new LHOQuantumGCM1(this);
+            else if(typeName == typeof(QuantumCW).FullName)
+                return new QuantumCW(this);
+            else if(typeName == typeof(ClassicalCW).FullName)
+                return new ClassicalCW(this);
             else
                 return base.CreateObject(typeName);
         }

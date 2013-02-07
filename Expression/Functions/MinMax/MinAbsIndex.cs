@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions.Def {
             if(item is Vector)
                 return (item as Vector).MinAbsIndex();
             else
-                return (item as Matrix).MinAbsIndex();
+                return new TArray((item as Matrix).MinAbsIndex());
         }
 
 		private const string help = "Vrací index prvku s nejnižší èíselnou hodnotou v absolutní hodnotì";

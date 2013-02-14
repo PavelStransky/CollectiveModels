@@ -253,14 +253,16 @@ namespace PavelStransky.Systems {
                     int diffn = System.Math.Abs(ni - nj);
                     double n = System.Math.Min(ni, nj);         // Musíme poèítat jako double (jinak dojde k pøeteèení)
 
-                    int diffl = System.Math.Abs(mi - mj);
+                    int diffm = System.Math.Abs(mi - mj);
                     double l = System.Math.Min(li, lj);
-                    int diffal = System.Math.Abs(li - lj);
+                    int diffl = System.Math.Abs(li - lj);
+
+                    int sign = li == lj ? 0 : ((li > lj && ni <= nj) || (li < lj && ni >= nj) ? -1 : 1);
 
                     double sum = 0.0;
 
                     // Výbìrové pravidlo
-                    if(diffl == 0) {
+                    if(diffm == 0) {
                         if(diffn == 0) {
                             // <nm|1|nm>
                             sum += 1;
@@ -284,110 +286,105 @@ namespace PavelStransky.Systems {
                             sum += k4 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));
                     }
 
-                    if(diffl == 1 && ((li > lj && ni <= nj) || (li < lj && ni >= nj))) {
-                        if(diffn == 0)
+                    if(diffm == 1) {
+                        if(diffn == 0 && sign < 0) {
                             // A<n,m+1|r cos(fi)|nm>
                             sum += 0.5 * k1 * System.Math.Sqrt(n + l + 1.0);
-                        else if(diffn == 1)
-                            // A<n-1,m+1|r cos(fi)|nm>
-                            sum -= 0.5 * k1 * System.Math.Sqrt(n + 1.0);
-                    }
-
-                    if(diffl == 2 && diffal == 2 && ((li > lj && ni <= nj) || (li < lj && ni >= nj))) {
-                        if(diffn == 0)
-                            // -(mu/2+1)<n,m+2|r^2 cos(2fi)|nm>
-                            sum += 0.5 * k2c * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
-                        else if(diffn == 1)
-                            // -(mu/2+1)<n-1,m+2|r^2 cos(2fi)|nm>
-                            sum -= k2c * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
-                        else if(diffn == 2)
-                            // -(mu/2+1)<n-2,m+2|r^2 cos(2fi)|nm>
-                            sum += 0.5 * k2c * System.Math.Sqrt((n + 2.0) * (n + 1.0));
-                    }
-                    if(diffl == 2 && diffal == 0) {
-                        if(diffn == 0) {
-                            // -(mu/2+1)<n,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<nm|r^2|nm>
-                            sum += 0.5 * k2c * (2.0 * n + l + 1.0);
-                        }
-                        else if(diffn == 1) {
-                            // -(mu/2+1)<n+1,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<n+1,m|r^2|nm>
-                            sum -= 0.5 * k2c * System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
-                        }
-                    }
-
-                    if(diffl == 1 && ((li > lj && ni <= nj) || (li < lj && ni >= nj))) {
-                        if(diffn == 0)
                             // B/4<n,m+1|r^3 cos(fi)|nm>
                             sum += 0.5 * k3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
-                        else if(diffn == 1)
+                        }
+                        else if(diffn == 1 && sign < 0) {
+                            // A<n-1,m+1|r cos(fi)|nm>
+                            sum -= 0.5 * k1 * System.Math.Sqrt(n + 1.0);
                             // B/4<n-1,m+1|r^3 cos(fi)|nm>
                             sum -= 0.5 * k3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
-                        else if(diffn == 2)
+                        }
+                        else if(diffn == 2 && sign < 0)
                             // B/4<n-2,m+1|r^3 cos(fi)|nm>
                             sum += 0.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
-                    }
-                    if(diffl == 1 && diffn == 1 && ((li > lj && ni > nj) || (li < lj && ni < nj)))
-                        // B/4<n+1,m+1|r^3 cos(fi)|nm>
-                        sum -= 0.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
-
-                    if(diffl == 3 && diffal == 3 && ((li > lj && ni <= nj) || (li < lj && ni >= nj))) {
-                        if(diffn == 0)
-                            // -B/4<n,m+3|r^3 cos(3fi)|nm>
-                            sum -= 0.5 * k3 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
-                        else if(diffn == 1)
-                            // -B/4<n-1,m+3|r^3 cos(3fi)|nm>
-                            sum += 1.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0));
-                        else if(diffn == 2)
-                            // -B/4<n-2,m+3|r^3 cos(3fi)|nm>
-                            sum -= 1.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0));
-                        else if(diffn == 3)
-                            // -B/4<n-3,m+3|r^3 cos(3fi)|nm>
-                            sum += 0.5 * k3 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0));
-                    }
-                    if(diffl == 3 && diffal == 1 && ((li > lj && ni <= nj) || (li < lj && ni >= nj))) {
-                        if(diffn == 0)
-                            // -B/4<n,m+3|r^3 cos(3fi)|nm> = -B/4<n,m+1|r^3 cos(fi)|nm>
-                            sum -= 0.5 * k3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
-                        else if(diffn == 1)
-                            // -B/4<n-1,m+3|r^3 cos(3fi)|nm> = -B/4<n-1,m+1|r^3 cos(fi)|nm>
-                            sum += 0.5 * k3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
-                        else if(diffn == 2)
-                            // -B/4<n-2,m+3|r^3 cos(3fi)|nm> = -B/4<n-2,m+1|r^3 cos(fi)|nm>
-                            sum -= 0.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
-                    }
-                    if(diffl == 3 && diffal == 1 && ((li > lj && ni > nj) || (li < lj && ni < nj))) {
-                        if(diffn == 1)
-                        // -B/4<n+1,m+3|r^3 cos(3 fi)|nm> = -B/4<n+1,m+1|r^3 cos(fi)|nm>
-                        sum += 0.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                        else if(diffn == 1 && sign > 0)
+                            // B/4<n+1,m+1|r^3 cos(fi)|nm>
+                            sum -= 0.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
                     }
 
-                    if(diffl == 2 && diffal == 2 && ((li > lj && ni <= nj) || (li < lj && ni >= nj))) {
-                        if(diffn == 0)
-                            // 1/4<n,m+2|r^4 cos(2fi)|nm>
-                            sum += 0.5 * k4 * (4.0 * n + l + 3.0) * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
-                        else if(diffn == 1)
-                            // 1/4<n-1,m+2|r^4 cos(2fi)|nm>
-                            sum -= 1.5 * k4 * (2.0 * n + l + 3.0) * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
-                        else if(diffn == 2)
-                            // 1/4<n-2,m+2|r^4 cos(2fi)|nm>
-                            sum += 0.5 * k4 * (4.0 * n + 3.0 * l + 9.0) * System.Math.Sqrt((n + 2.0) * (n + 1.0));
-                        else if(diffn == 3)
-                            // 1/4<n-3,m+2|r^4 cos(2fi)|nm>
-                            sum -= 0.5 * k4 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
-                    }
-                    if(diffl == 2 && diffal == 2 && diffn == 1 && ((li > lj && ni > nj) || (li < lj && ni < nj)))
-                        // 1/4<n+1,m+2|r^4 cos(2fi)|nm>
-                        sum -= 0.5 * k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
-                    if(diffl == 2 && diffal == 0) {
-                        if(diffn == 0)
-                            // 1/4<n,m+2|r^4 cos(2fi)|nm> = 1/8<nm|r^4|nm>
-                            sum += 0.5 * k4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
-                        else if(diffn == 1) 
-                            // 1/4<n+1,m+2|r^4 cos(2fi)|nm> = 1/8<n+1,m|r^4|nm>
-                            sum -= k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0);
-                        else if(diffn == 2)
-                            // 1/4<n+2,m+2|r^4 cos(2fi)|nm> = 1/8<n+2,m|r^4|nm>
-                            sum += 0.5 * k4 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));                        
+                    if(diffm == 2) {
+                        if(diffl == 2) {
+                            if(diffn == 0 && sign < 0) {
+                                // -(mu/2+1)<n,m+2|r^2 cos(2fi)|nm>
+                                sum += 0.5 * k2c * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                // 1/4<n,m+2|r^4 cos(2fi)|nm>
+                                sum += 0.5 * k4 * (4.0 * n + l + 3.0) * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                            }
+                            else if(diffn == 1 && sign < 0) {
+                                // -(mu/2+1)<n-1,m+2|r^2 cos(2fi)|nm>
+                                sum -= k2c * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                // 1/4<n-1,m+2|r^4 cos(2fi)|nm>
+                                sum -= 1.5 * k4 * (2.0 * n + l + 3.0) * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                            }
+                            else if(diffn == 2 && sign < 0) {
+                                // -(mu/2+1)<n-2,m+2|r^2 cos(2fi)|nm>
+                                sum += 0.5 * k2c * System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                // 1/4<n-2,m+2|r^4 cos(2fi)|nm>
+                                sum += 0.5 * k4 * (4.0 * n + 3.0 * l + 9.0) * System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                            }
+                            else if(diffn == 3 && sign < 0) {
+                                // 1/4<n-3,m+2|r^4 cos(2fi)|nm>
+                                sum -= 0.5 * k4 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                            }
+                            else if(diffn == 1 && sign > 0) {
+                                // 1/4<n+1,m+2|r^4 cos(2fi)|nm>
+                                sum -= 0.5 * k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                            }
+                        }
+                        else if(diffl == 0) {
+                            if(diffn == 0) {
+                                // -(mu/2+1)<n,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<nm|r^2|nm>
+                                sum += 0.5 * k2c * (2.0 * n + l + 1.0);
+                                // 1/4<n,m+2|r^4 cos(2fi)|nm> = 1/8<nm|r^4|nm>
+                                sum += 0.5 * k4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                            }
+                            else if(diffn == 1) {
+                                // -(mu/2+1)<n+1,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<n+1,m|r^2|nm>
+                                sum -= 0.5 * k2c * System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                // 1/4<n+1,m+2|r^4 cos(2fi)|nm> = 1/8<n+1,m|r^4|nm>
+                                sum -= k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0);
+                            }
+                            else if(diffn == 2) {
+                                // 1/4<n+2,m+2|r^4 cos(2fi)|nm> = 1/8<n+2,m|r^4|nm>
+                                sum += 0.5 * k4 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));
+                            }
+                        }
+                    }                    
+
+                    if(diffm == 3) {
+                        if(diffl == 3) {
+                            if(diffn == 0 && sign < 0)
+                                // -B/4<n,m+3|r^3 cos(3fi)|nm>
+                                sum -= 0.5 * k3 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                            else if(diffn == 1 && sign < 0)
+                                // -B/4<n-1,m+3|r^3 cos(3fi)|nm>
+                                sum += 1.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                            else if(diffn == 2 && sign < 0)
+                                // -B/4<n-2,m+3|r^3 cos(3fi)|nm>
+                                sum -= 1.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                            else if(diffn == 3 && sign < 0)
+                                // -B/4<n-3,m+3|r^3 cos(3fi)|nm>
+                                sum += 0.5 * k3 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0));
+                        }
+                        else if(diffl == 1) {
+                            if(diffn == 0 && sign < 0)
+                                // -B/4<n,m+3|r^3 cos(3fi)|nm> = -B/4<n,m+1|r^3 cos(fi)|nm>
+                                sum -= 0.5 * k3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
+                            else if(diffn == 1 && sign < 0)
+                                // -B/4<n-1,m+3|r^3 cos(3fi)|nm> = -B/4<n-1,m+1|r^3 cos(fi)|nm>
+                                sum += 0.5 * k3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
+                            else if(diffn == 2 && sign < 0)
+                                // -B/4<n-2,m+3|r^3 cos(3fi)|nm> = -B/4<n-2,m+1|r^3 cos(fi)|nm>
+                                sum -= 0.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
+                            else if(diffn == 1 && sign > 0)
+                                // -B/4<n+1,m+3|r^3 cos(3 fi)|nm> = -B/4<n+1,m+1|r^3 cos(fi)|nm>
+                                sum += 0.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                        }
                     }
 
                     if(sum != 0.0) {

@@ -59,7 +59,9 @@
     <Compile Include="CreaghWhelan\CW.cs" />
     <Compile Include="CreaghWhelan\CWBasisIndex.cs" />
     <Compile Include="CreaghWhelan\ClassicalCW.cs" />
+    <Compile Include="CreaghWhelan\CWPolarBasisIndex.cs" />
     <Compile Include="CreaghWhelan\QuantumCW.cs" />
+    <Compile Include="CreaghWhelan\QuantumCWPolar.cs" />
     <Compile Include="DoublePendulum\ClassicalDP.cs" />
     <Compile Include="DoublePendulum\DoublePendulum.cs" />
     <Compile Include="DoublePendulum\DPBasisIndex.cs" />

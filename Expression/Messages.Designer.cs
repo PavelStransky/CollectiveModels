@@ -4885,6 +4885,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates quantum Creagh-Whelan class, diagonalized in the polar coordinates.
+        /// </summary>
+        internal static string HelpQCWPolar {
+            get {
+                return ResourceManager.GetString("HelpQCWPolar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantum Creagh-Whelan potential.
         /// </summary>
         internal static string HelpQuantumCW {

@@ -3840,4 +3840,7 @@ Second differing type: {1}</value>
   <data name="HelpQuantumCW" xml:space="preserve">
     <value>Quantum Creagh-Whelan potential</value>
   </data>
+  <data name="HelpQCWPolar" xml:space="preserve">
+    <value>Creates quantum Creagh-Whelan class, diagonalized in the polar coordinates</value>
+  </data>
 </root>

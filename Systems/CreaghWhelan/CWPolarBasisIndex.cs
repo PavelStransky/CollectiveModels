@@ -8,31 +8,39 @@ using PavelStransky.Math;
 namespace PavelStransky.Systems {
     /// <summary>
     /// Tøída, která v sobì zapouzdøuje dvojice indexù - kvantových èísel n, m
-    /// pro bázi lineárního harmonického oscilátoru v kartézských souøadnicích
+    /// pro bázi lineárního harmonického oscilátoru v polárních souøadnicích
     /// </summary>
-    public class CWBasisIndex : BasisIndex {
+    public class CWPolarBasisIndex : BasisIndex {
         private int[] indexn, indexm;
         private int[] lengthm;              // Poèet n pro jednotlivé m
-        
-        // Tuhosti oscilátorù ve smìru x, y
-        private double a0x, a0y;
+        private int maxE;
 
-        // Frekvence oscilátorù ve smìru x, y
-        private double omegax, omegay;
+        private double a0, omega;
 
         // Maximální indexy
         private int maxM, maxN;
 
         /// <summary>
+        /// Úhlová frekvence
+        /// </summary>
+        public double Omega { get { return this.omega; } }
+
+        public double A0 { get { return this.a0; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
-        public CWBasisIndex(Vector basisParams) : base(basisParams) { }
+        public CWPolarBasisIndex(Vector basisParams)
+            : base(basisParams) {
+            this.a0 = basisParams[0];
+            this.omega = System.Math.Sqrt(2.0 * this.a0);
+        }
 
         /// <summary>
         /// Konstruktor pro naètení dat
         /// </summary>
         /// <param name="import">Import</param>
-        public CWBasisIndex(Import import) : base(import) { }
+        public CWPolarBasisIndex(Import import) : base(import) { }
 
         /// <summary>
         /// Nastaví parametry báze
@@ -41,46 +49,61 @@ namespace PavelStransky.Systems {
         protected override void Init(Vector basisParams) {
             base.Init(basisParams);
 
-            this.a0x = basisParams[0];
-            this.a0y = basisParams[1];
-            int num = (int)basisParams[2];
+            if(basisParams.Length == 2) {
+                this.maxE = (int)basisParams[1];                     // Maximální energie v násobcích hbar * Omega
 
-            this.omegax = System.Math.Sqrt(2.0 * this.a0x);
-            this.omegay = System.Math.Sqrt(2.0 * this.a0y);
+                int mBoundMax = this.maxE - 1;
+                int mBoundMin = -mBoundMax;
 
-            double coef = System.Math.Sqrt(2.0 * this.omegax * this.omegay * num);
-
-            // Zjistíme poèet
-            int length = 0;
-            int rows = 0;
-            for (int m = 0; m < num; m++) {
-                for (int n = 0; n < num; n++)
-                    if(this.omegax * n + this.omegay * m < coef)
+                // Zjistíme poèet
+                int length = 0;
+                int rows = 0;
+                for(int m = mBoundMin; m <= mBoundMax; m++) {
+                    for(int n = 0; n <= (this.maxE - 1 - System.Math.Abs(m)) / 2; n++)
                         length++;
-                rows++;
-            }
+                    rows++;
+                }
 
-            // Generujeme
-            this.indexn = new int[length];
-            this.indexm = new int[length];
-            this.lengthm = new int[rows];
+                // Generujeme
+                this.indexn = new int[length];
+                this.indexm = new int[length];
+                this.lengthm = new int[rows];
 
-            int i = 0;
-            int j = 0;
-
-            this.maxM = 0;
-            this.maxN = 0;
-
-            for (int m = 0; m < num; m++) {
-                this.lengthm[j++] = i;
-                for (int n = 0; n < num; n++) {
-                    if(this.omegax * n + this.omegay * m < coef) {
+                int i = 0;
+                int j = 0;
+                for(int m = mBoundMin; m <= mBoundMax; m++) {
+                    this.lengthm[j++] = i;
+                    for(int n = 0; n <= (this.maxE - 1 - System.Math.Abs(m)) / 2; n++) {
                         this.indexm[i] = m;
                         this.indexn[i] = n;
+                        i++;
+                    }
+                }
 
-                        this.maxM = System.Math.Max(this.maxM, m);
-                        this.maxN = System.Math.Max(this.maxN, n);
+                this.maxM = System.Math.Max(mBoundMax, System.Math.Abs(mBoundMin));
+                this.maxN = (this.maxE - 1) / 2;
+            }
+            else {
+                this.maxN = (int)basisParams[1];
+                this.maxM = (int)basisParams[2];
 
+                this.maxE = 2 * this.maxN + this.maxM + 1;
+                int length = (this.maxN + 1) * (2 * this.maxM + 1);
+
+                // Generujeme
+                this.indexn = new int[length];
+                this.indexm = new int[length];
+
+                int rows = 2 * this.maxM + 1;
+                this.lengthm = new int[rows];
+
+                int i = 0;
+                int j = 0;
+                for(int m = -this.maxM; m <= this.maxM; m++) {
+                    this.lengthm[j++] = i;
+                    for(int n = 0; n <= this.maxN; n++) {
+                        this.indexm[i] = m;
+                        this.indexn[i] = n;
                         i++;
                     }
                 }
@@ -98,11 +121,11 @@ namespace PavelStransky.Systems {
                 int length = this.Length;
                 int llength = this.lengthm.Length;
 
-                for (int i = 0; i < llength; i++) {
+                for(int i = 0; i < llength; i++) {
                     int j = this.lengthm[i];
-                    if (this.indexm[j] == m) {
+                    if(this.indexm[j] == m) {
                         int result = j + n;
-                        if (result < length && this.indexm[result] == m)
+                        if(result < length && this.indexm[result] == m)
                             return result;
                         else
                             return -1;
@@ -130,6 +153,11 @@ namespace PavelStransky.Systems {
         public override int Rank { get { return 2; } }
 
         /// <summary>
+        /// Maximální energie (vyjádøená v násobcích hbar * Omega)
+        /// </summary>
+        public int MaxE { get { return this.maxE; } }
+
+        /// <summary>
         /// Poèet prvkù
         /// </summary>
         public override int Length { get { return this.indexn.Length; } }
@@ -155,33 +183,19 @@ namespace PavelStransky.Systems {
         public int MaxM { get { return this.maxM; } }
 
         /// <summary>
-        /// Úhlová frekvence ve smìru X
-        /// </summary>
-        public double OmegaX { get { return this.omegax; } }
-
-        /// <summary>
-        /// Úhlová frekvence ve smìru Y
-        /// </summary>
-        public double OmegaY { get { return this.omegay; } }
-
-        public double A0x { get { return this.a0x; } }
-
-        public double A0y { get { return this.a0y; } }
-
-        /// <summary>
         /// Velikost pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return 2 * this.maxN + 4; } }
+        public override int BandWidth { get { return 3 * (this.maxE + 1) / 2; } }
 
         public override int BasisQuantumNumberLength(int qn) {
-            if (qn == 0)
+            if(qn == 0)
                 return this.MaxN + 1;
             else
-                return this.MaxM + 1;
+                return 2 * this.MaxM + 1;
         }
 
         public override int GetBasisQuantumNumber(int qn, int i) {
-            if (qn == 0)
+            if(qn == 0)
                 return this.N[i];
             else
                 return this.M[i];

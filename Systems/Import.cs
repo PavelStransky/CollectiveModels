@@ -64,6 +64,8 @@ namespace PavelStransky.Systems {
                 return new LHOPolarIndex1(this);
             else if(typeName == typeof(CWBasisIndex).FullName)
                 return new CWBasisIndex(this);
+            else if(typeName == typeof(CWPolarBasisIndex).FullName)
+                return new CWPolarBasisIndex(this);
 
             else if(typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
@@ -164,6 +166,8 @@ namespace PavelStransky.Systems {
                 return new QuantumCW(this);
             else if(typeName == typeof(ClassicalCW).FullName)
                 return new ClassicalCW(this);
+            else if(typeName == typeof(QuantumCWPolar).FullName)
+                return new QuantumCWPolar(this);
             else
                 return base.CreateObject(typeName);
         }

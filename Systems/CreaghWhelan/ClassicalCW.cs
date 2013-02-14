@@ -45,8 +45,6 @@ namespace PavelStransky.Systems {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        static int t = 0;
-
         public Vector Equation(Vector x) {
             Vector result = new Vector(4);
 

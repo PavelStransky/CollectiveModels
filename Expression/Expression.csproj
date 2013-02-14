@@ -201,6 +201,7 @@
     <Compile Include="Functions\Quantum\Systems\LipkinTwo.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinTwoSpectator.cs" />
     <Compile Include="Functions\Quantum\Systems\QCW.cs" />
+    <Compile Include="Functions\Quantum\Systems\QCWPolar.cs" />
     <Compile Include="Functions\Quantum\Systems\QEP.cs" />
     <Compile Include="Functions\Quantum\Systems\Strutinsky.cs" />
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />

@@ -20,6 +20,8 @@ namespace PavelStransky.Systems {
         // Maximální indexy
         private int maxM, maxN;
 
+        private int bandWidth;
+
         /// <summary>
         /// Úhlová frekvence
         /// </summary>
@@ -49,7 +51,7 @@ namespace PavelStransky.Systems {
         protected override void Init(Vector basisParams) {
             base.Init(basisParams);
 
-            if(basisParams.Length == 2) {
+            if(basisParams.Length == 3) {
                 this.maxE = (int)basisParams[1];                     // Maximální energie v násobcích hbar * Omega
 
                 int mBoundMax = this.maxE - 1;
@@ -82,6 +84,11 @@ namespace PavelStransky.Systems {
 
                 this.maxM = System.Math.Max(mBoundMax, System.Math.Abs(mBoundMin));
                 this.maxN = (this.maxE - 1) / 2;
+
+                if(basisParams[2] == 2)
+                    this.bandWidth = 3 * (this.maxE + 1) / 2;
+                else
+                    this.bandWidth = 4 * (this.maxE);
             }
             else {
                 this.maxN = (int)basisParams[1];
@@ -107,6 +114,8 @@ namespace PavelStransky.Systems {
                         i++;
                     }
                 }
+
+                this.bandWidth = length;
             }
         }
 
@@ -185,7 +194,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Velikost pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return 3 * (this.maxE + 1) / 2; } }
+        public override int BandWidth { get { return this.bandWidth; } }
 
         public override int BasisQuantumNumberLength(int qn) {
             if(qn == 0)

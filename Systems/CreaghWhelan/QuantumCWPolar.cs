@@ -208,6 +208,8 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="basisParams">Parametry báze</param>
         public BasisIndex CreateBasisIndex(Vector basisParams) {
+            basisParams.Length++;
+            basisParams.LastItem = this.Power;
             return new CWPolarBasisIndex(basisParams);
         }
 
@@ -223,12 +225,26 @@ namespace PavelStransky.Systems {
             double omega = index.Omega;
             double s = System.Math.Sqrt(this.hbar / omega);
 
-            double k4 = 0.5 * System.Math.Pow(s, 4);
-            double k3 = 0.25 * this.B * System.Math.Pow(s, 3);
-            double k2 = s * s * (0.5 * this.Mu - 1.0 - index.A0);
-//            double k2 = s * s * (0.5 * this.Mu - 1.0);
-            double k2c = -s * s * (0.5 * this.Mu + 1.0);
-            double k1 = s * this.A;
+            double k1 = 0.5 * s * this.A;
+            double k2 = s * s * (0.5 * this.Mu - (this.Power == 2 ? 1.0 : 2.0) - index.A0);
+            double k2c2 = -0.5 * s * s * (0.5 * this.Mu + (this.Power == 2 ? 1.0 : 2.0));
+            double k3c1 = 1.0 / 8.0 * this.B * System.Math.Pow(s, 3);
+            double k3c3 = -k3c1;
+
+            double k4 = System.Math.Pow(s, 4) * (this.Power == 2 ? 0.5 : 19.0 / 8.0);
+            double k4c2 = 0.5 * System.Math.Pow(s, 4) * (this.Power == 2 ? 0.5 : 3.0);
+            double k4c4 = 0.5 * 5.0 / 8.0 * System.Math.Pow(s, 4);
+
+            double k6 = -5.0 / 4.0 * System.Math.Pow(s, 6);
+            double k6c2 = -0.5 * 15.0 / 8.0 * System.Math.Pow(s, 6);
+            double k6c4 = -0.5 * 3.0 / 4.0 * System.Math.Pow(s, 6);
+            double k6c6 = -0.5 * System.Math.Pow(s, 6) / 8.0;
+
+            double k8 = 35.0 / 128.0 * System.Math.Pow(s, 8);
+            double k8c2 = 0.5 * 56.0 / 128.0 * System.Math.Pow(s, 8);
+            double k8c4 = 0.5 * 28.0 / 128.0 * System.Math.Pow(s, 8);
+            double k8c6 = 0.5 * 8.0 / 128.0 * System.Math.Pow(s, 8);
+            double k8c8 = 0.5 / 128.0 * System.Math.Pow(s, 8);
 
             int length = index.Length;
             int bandWidth = index.BandWidth;
@@ -261,129 +277,1280 @@ namespace PavelStransky.Systems {
 
                     double sum = 0.0;
 
-                    // Výbìrové pravidlo
-                    if(diffm == 0) {
-                        if(diffn == 0) {
-                            // <nm|1|nm>
-                            sum += 1;
-                            // <nm|H0|nm>
-                            sum += this.hbar * omega * (2.0 * n + l + 1.0);
-                            // (mu/2-1-a0)<nm|r^2|nm>
-                            sum += k2 * (2.0 * n + l + 1.0);
-                            // 1/2<nm|r^4|nm>
-                            sum += k4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                    if(this.Power == 2) {
+                        if(diffm == 0) {
+                            if(diffn == 0) {
+                                // <nm|1|nm>
+                                sum += 1;
+                                // <nm|H0|nm>
+                                sum += this.hbar * omega * (2.0 * n + l + 1.0);
+                                // (mu/2-1-a0)<nm|r^2|nm>
+                                sum += k2 * (2.0 * n + l + 1.0);
+                                // 1/2<nm|r^4|nm>
+                                sum += k4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                            }
+
+                            else if(diffn == 1) {
+                                // (mu/2-1-a0)<n+1,m|r^2|nm>
+                                sum -= k2 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                // 1/2<n+1,m|r^4|nm>
+                                sum -= 2.0 * k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0);
+                            }
+
+                            else if(diffn == 2)
+                                // 1/2<n+2,m|r^4|nm>
+                                sum += k4 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));
                         }
 
-                        else if(diffn == 1) {
-                            // (mu/2-1-a0)<n+1,m|r^2|nm>
-                            sum -= k2 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
-                            // 1/2<n+1,m|r^4|nm>
-                            sum -= 2.0 * k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0);
-                        }
-
-                        else if(diffn == 2)
-                            // 1/2<n+2,m|r^4|nm>
-                            sum += k4 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));
-                    }
-
-                    if(diffm == 1) {
-                        if(diffn == 0 && sign < 0) {
-                            // A<n,m+1|r cos(fi)|nm>
-                            sum += 0.5 * k1 * System.Math.Sqrt(n + l + 1.0);
-                            // B/4<n,m+1|r^3 cos(fi)|nm>
-                            sum += 0.5 * k3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
-                        }
-                        else if(diffn == 1 && sign < 0) {
-                            // A<n-1,m+1|r cos(fi)|nm>
-                            sum -= 0.5 * k1 * System.Math.Sqrt(n + 1.0);
-                            // B/4<n-1,m+1|r^3 cos(fi)|nm>
-                            sum -= 0.5 * k3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
-                        }
-                        else if(diffn == 2 && sign < 0)
-                            // B/4<n-2,m+1|r^3 cos(fi)|nm>
-                            sum += 0.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
-                        else if(diffn == 1 && sign > 0)
-                            // B/4<n+1,m+1|r^3 cos(fi)|nm>
-                            sum -= 0.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
-                    }
-
-                    if(diffm == 2) {
-                        if(diffl == 2) {
+                        if(diffm == 1) {
                             if(diffn == 0 && sign < 0) {
-                                // -(mu/2+1)<n,m+2|r^2 cos(2fi)|nm>
-                                sum += 0.5 * k2c * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
-                                // 1/4<n,m+2|r^4 cos(2fi)|nm>
-                                sum += 0.5 * k4 * (4.0 * n + l + 3.0) * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                // A<n,m+1|r cos(fi)|nm>
+                                sum += k1 * System.Math.Sqrt(n + l + 1.0);
+                                // B/4<n,m+1|r^3 cos(fi)|nm>
+                                sum += k3c1 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
                             }
                             else if(diffn == 1 && sign < 0) {
-                                // -(mu/2+1)<n-1,m+2|r^2 cos(2fi)|nm>
-                                sum -= k2c * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
-                                // 1/4<n-1,m+2|r^4 cos(2fi)|nm>
-                                sum -= 1.5 * k4 * (2.0 * n + l + 3.0) * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                // A<n-1,m+1|r cos(fi)|nm>
+                                sum -= k1 * System.Math.Sqrt(n + 1.0);
+                                // B/4<n-1,m+1|r^3 cos(fi)|nm>
+                                sum -= k3c1 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
                             }
-                            else if(diffn == 2 && sign < 0) {
-                                // -(mu/2+1)<n-2,m+2|r^2 cos(2fi)|nm>
-                                sum += 0.5 * k2c * System.Math.Sqrt((n + 2.0) * (n + 1.0));
-                                // 1/4<n-2,m+2|r^4 cos(2fi)|nm>
-                                sum += 0.5 * k4 * (4.0 * n + 3.0 * l + 9.0) * System.Math.Sqrt((n + 2.0) * (n + 1.0));
-                            }
-                            else if(diffn == 3 && sign < 0) {
-                                // 1/4<n-3,m+2|r^4 cos(2fi)|nm>
-                                sum -= 0.5 * k4 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
-                            }
-                            else if(diffn == 1 && sign > 0) {
-                                // 1/4<n+1,m+2|r^4 cos(2fi)|nm>
-                                sum -= 0.5 * k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
-                            }
-                        }
-                        else if(diffl == 0) {
-                            if(diffn == 0) {
-                                // -(mu/2+1)<n,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<nm|r^2|nm>
-                                sum += 0.5 * k2c * (2.0 * n + l + 1.0);
-                                // 1/4<n,m+2|r^4 cos(2fi)|nm> = 1/8<nm|r^4|nm>
-                                sum += 0.5 * k4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
-                            }
-                            else if(diffn == 1) {
-                                // -(mu/2+1)<n+1,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<n+1,m|r^2|nm>
-                                sum -= 0.5 * k2c * System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
-                                // 1/4<n+1,m+2|r^4 cos(2fi)|nm> = 1/8<n+1,m|r^4|nm>
-                                sum -= k4 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0);
-                            }
-                            else if(diffn == 2) {
-                                // 1/4<n+2,m+2|r^4 cos(2fi)|nm> = 1/8<n+2,m|r^4|nm>
-                                sum += 0.5 * k4 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));
-                            }
-                        }
-                    }                    
-
-                    if(diffm == 3) {
-                        if(diffl == 3) {
-                            if(diffn == 0 && sign < 0)
-                                // -B/4<n,m+3|r^3 cos(3fi)|nm>
-                                sum -= 0.5 * k3 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
-                            else if(diffn == 1 && sign < 0)
-                                // -B/4<n-1,m+3|r^3 cos(3fi)|nm>
-                                sum += 1.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0));
                             else if(diffn == 2 && sign < 0)
-                                // -B/4<n-2,m+3|r^3 cos(3fi)|nm>
-                                sum -= 1.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0));
-                            else if(diffn == 3 && sign < 0)
-                                // -B/4<n-3,m+3|r^3 cos(3fi)|nm>
-                                sum += 0.5 * k3 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0));
-                        }
-                        else if(diffl == 1) {
-                            if(diffn == 0 && sign < 0)
-                                // -B/4<n,m+3|r^3 cos(3fi)|nm> = -B/4<n,m+1|r^3 cos(fi)|nm>
-                                sum -= 0.5 * k3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
-                            else if(diffn == 1 && sign < 0)
-                                // -B/4<n-1,m+3|r^3 cos(3fi)|nm> = -B/4<n-1,m+1|r^3 cos(fi)|nm>
-                                sum += 0.5 * k3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
-                            else if(diffn == 2 && sign < 0)
-                                // -B/4<n-2,m+3|r^3 cos(3fi)|nm> = -B/4<n-2,m+1|r^3 cos(fi)|nm>
-                                sum -= 0.5 * k3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
+                                // B/4<n-2,m+1|r^3 cos(fi)|nm>
+                                sum += k3c1 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
                             else if(diffn == 1 && sign > 0)
-                                // -B/4<n+1,m+3|r^3 cos(3 fi)|nm> = -B/4<n+1,m+1|r^3 cos(fi)|nm>
-                                sum += 0.5 * k3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                                // B/4<n+1,m+1|r^3 cos(fi)|nm>
+                                sum -= k3c1 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                        }
+
+                        if(diffm == 2) {
+                            if(diffl == 2) {
+                                if(diffn == 0 && sign < 0) {
+                                    // -(mu/2+1)<n,m+2|r^2 cos(2fi)|nm>
+                                    sum += k2c2 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                    // 1/4<n,m+2|r^4 cos(2fi)|nm>
+                                    sum += k4c2 * (4.0 * n + l + 3.0) * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    // -(mu/2+1)<n-1,m+2|r^2 cos(2fi)|nm>
+                                    sum -= 2.0 * k2c2 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                    // 1/4<n-1,m+2|r^4 cos(2fi)|nm>
+                                    sum -= 3.0 * k4c2 * (2.0 * n + l + 3.0) * System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    // -(mu/2+1)<n-2,m+2|r^2 cos(2fi)|nm>
+                                    sum += k2c2 * System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                    // 1/4<n-2,m+2|r^4 cos(2fi)|nm>
+                                    sum += k4c2 * (4.0 * n + 3.0 * l + 9.0) * System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    // 1/4<n-3,m+2|r^4 cos(2fi)|nm>
+                                    sum -= k4c2 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    // 1/4<n+1,m+2|r^4 cos(2fi)|nm>
+                                    sum -= k4c2 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                }
+                            }
+                            else if(diffl == 0) {
+                                if(diffn == 0) {
+                                    // -(mu/2+1)<n,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<nm|r^2|nm>
+                                    sum += k2c2 * (2.0 * n + l + 1.0);
+                                    // 1/4<n,m+2|r^4 cos(2fi)|nm> = 1/8<nm|r^4|nm>
+                                    sum += k4c2 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                                }
+                                else if(diffn == 1) {
+                                    // -(mu/2+1)<n+1,1|r^2 cos(2fi)|n,-1>=-1/2(mu/2+1)<n+1,m|r^2|nm>
+                                    sum -= k2c2 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                    // 1/4<n+1,m+2|r^4 cos(2fi)|nm> = 1/8<n+1,m|r^4|nm>
+                                    sum -= 2.0 * k4c2 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0)) * (2.0 * n + l + 2.0);
+                                }
+                                else if(diffn == 2) {
+                                    // 1/4<n+2,m+2|r^4 cos(2fi)|nm> = 1/8<n+2,m|r^4|nm>
+                                    sum += k4c2 * System.Math.Sqrt((n + l + 2.0) * (n + l + 1.0) * (n + 2.0) * (n + 1.0));
+                                }
+                            }
+                        }
+
+                        if(diffm == 3) {
+                            if(diffl == 3) {
+                                if(diffn == 0 && sign < 0)
+                                    // -B/4<n,m+3|r^3 cos(3fi)|nm>
+                                    sum += k3c3 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                else if(diffn == 1 && sign < 0)
+                                    // -B/4<n-1,m+3|r^3 cos(3fi)|nm>
+                                    sum -= 3.0 * k3c3 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                else if(diffn == 2 && sign < 0)
+                                    // -B/4<n-2,m+3|r^3 cos(3fi)|nm>
+                                    sum += 3.0 * k3c3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                else if(diffn == 3 && sign < 0)
+                                    // -B/4<n-3,m+3|r^3 cos(3fi)|nm>
+                                    sum -= k3c3 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0));
+                            }
+                            else if(diffl == 1) {
+                                if(diffn == 0 && sign < 0)
+                                    // -B/4<n,m+3|r^3 cos(3fi)|nm> = -B/4<n,m+1|r^3 cos(fi)|nm>
+                                    sum += k3c3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
+                                else if(diffn == 1 && sign < 0)
+                                    // -B/4<n-1,m+3|r^3 cos(3fi)|nm> = -B/4<n-1,m+1|r^3 cos(fi)|nm>
+                                    sum -= k3c3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
+                                else if(diffn == 2 && sign < 0)
+                                    // -B/4<n-2,m+3|r^3 cos(3fi)|nm> = -B/4<n-2,m+1|r^3 cos(fi)|nm>
+                                    sum += k3c3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
+                                else if(diffn == 1 && sign > 0)
+                                    // -B/4<n+1,m+3|r^3 cos(3 fi)|nm> = -B/4<n+1,m+1|r^3 cos(fi)|nm>
+                                    sum -= k3c3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                            }
+                        }
+                    }
+                    else {
+                        if(diffm == 0) {
+                            if(diffn == 0) {
+                                // <nm|1|nm>
+                                sum += 1;
+                                // <nm|H0|nm>
+                                sum += this.hbar * omega * (2.0 * n + l + 1.0);
+                                // <nm|r^2|nm>
+                                sum += k2 * (2.0 * n + l + 1.0);
+                                // <nm|r^4|nm>
+                                sum += k4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                                // <nm|r^6|nm>
+                                sum += k6 * (n * (n - 1.0) * (n - 2.0) 
+                                    + 9.0 * n * (n - 1.0) * (n + l + 1.0) 
+                                    + 9.0 * n * (n + l + 1.0) * (n + l + 2.0) 
+                                    + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                // <nm|r^8|nm>
+                                sum += k8 * (n * (n - 1.0) * (n - 2.0) * (n - 3.0)
+                                    + 16.0 * n * (n - 1.0) * (n - 2.0) * (n + l + 1.0)
+                                    + 36 * n * (n - 1.0) * (n + l + 1.0) * (n + l + 2.0)
+                                    + 16 * n * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0)
+                                    + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                            }
+
+                            else if(diffn == 1) {
+                                double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                // <n+1,m|r^2|nm>
+                                sum -= sqrt * k2;
+                                // <n+1,m|r^4|nm>
+                                sum -= sqrt * 2.0 * k4 
+                                    * (2.0 * n + l + 2.0);
+                                // <n+1,m|r^6|nm>
+                                sum -= sqrt * 3.0 * k6 
+                                    * (n * (n - 1.0)
+                                    + 3.0 * n * (n + l + 2.0)
+                                    + (n + l + 2.0) * (n + l + 3.0));
+                                // <n+1,m|r^6|nm>
+                                sum -= sqrt * 4.0 * k8 
+                                    * (n * (n - 1.0) * (n - 2.0)
+                                    + 6.0 * n * (n - 1.0) * (n + l + 2.0)
+                                    + 6.0 * n * (n + l + 2.0) * (n + l + 3.0)
+                                    + (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                            }
+
+                            else if(diffn == 2) {
+                                double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0));
+                                // <n+2,m|r^4|nm>
+                                sum += sqrt * k4;
+                                // <n+2,m|r^6|nm>
+                                sum += sqrt * 3.0 * k6 
+                                    * (2.0 * n + l + 3.0); 
+                                // <n+2,m|r^8|nm>
+                                sum += sqrt * 2.0 * k8
+                                    * (3.0 * n * (n - 1.0)
+                                    + 8.0 * n * (n + l + 3.0)
+                                    + 3.0 * (n + l + 3.0) * (n + l + 4));
+                            }
+
+                            else if(diffn == 3) {
+                                double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                // <n+3,m|r^6|nm>
+                                sum -= sqrt * k6;
+                                // <n+3,m|r^8|nm>
+                                sum -= sqrt * 4.0 * k8
+                                    * (2.0 * n + l + 4.0);
+                            }
+
+                            else if(diffn == 4) {
+                                double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0)
+                                    * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                // <n+4,m|r^8|nm>
+                                sum += sqrt * k8;
+                            }
+                        }
+
+                        if(diffm == 1) {
+                            if(diffn == 0 && sign < 0) {
+                                // <n,m+1|r cos(fi)|nm>
+                                sum += k1 * System.Math.Sqrt(n + l + 1.0);
+                                // <n,m+1|r^3 cos(fi)|nm>
+                                sum += k3c1 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
+                            }
+                            else if(diffn == 1 && sign < 0) {
+                                // <n-1,m+1|r cos(fi)|nm>
+                                sum -= k1 * System.Math.Sqrt(n + 1.0);
+                                // <n-1,m+1|r^3 cos(fi)|nm>
+                                sum -= k3c1 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
+                            }
+                            else if(diffn == 2 && sign < 0)
+                                // <n-2,m+1|r^3 cos(fi)|nm>
+                                sum += k3c1 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2.0));
+                            else if(diffn == 1 && sign > 0)
+                                // <n+1,m+1|r^3 cos(fi)|nm>
+                                sum -= k3c1 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                        }
+
+                        if(diffm == 2) {
+                            if(diffl == 2) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                    // <n,m+2|r^2 cos(2fi)|nm>
+                                    sum += sqrt * k2c2;
+                                    // <n,m+2|r^4 cos(2fi)|nm>
+                                    sum += sqrt * k4c2
+                                        * (4.0 * n + l + 3.0);
+                                    // <n,m+2|r^6 cos(2fi)|nm>
+                                    sum += sqrt * k6c2
+                                        * (6.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + (n + l + 3.0) * (n + l + 4.0));
+                                    // <n,m+2|r^8 cos(2fi)|nm>
+                                    sum += sqrt * k8c2
+                                        * (10.0 * n * (n - 1.0) * (n - 2.0)
+                                        + 30.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 15.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                    // <n-1,m+2|r^2 cos(2fi)|nm>
+                                    sum -= sqrt * 2.0 * k2c2;
+                                    // <n-1,m+2|r^4 cos(2fi)|nm>
+                                    sum -= sqrt * 3.0 * k4c2
+                                        * (2.0 * n + l + 3.0);
+                                    // <n-1,m+2|r^6 cos(2fi)|nm>
+                                    sum -= sqrt * 4.0 * k6c2
+                                        * (n * (n - 1.0)
+                                        + 3.0 * n * (n + l + 3.0)
+                                        + (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-1,m+2|r^8 cos(2fi)|nm>
+                                    sum -= sqrt * 5.0 * k8c2
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 6.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                    // <n-2,m+2|r^2 cos(2fi)|nm>
+                                    sum += sqrt * k2c2;
+                                    // <n-2,m+2|r^4 cos(2fi)|nm>
+                                    sum += sqrt * k4c2
+                                        * (4.0 * n + 3.0 * l + 9.0);
+                                    // <n-2,m+2|r^6 cos(2fi)|nm>
+                                    sum += sqrt * k6c2
+                                        * (n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 6.0 * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-2,m+2|r^8 cos(2fi)|nm>
+                                    sum += sqrt * k8c2
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 15.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 30.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + 10.0 * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                    // <n-3,m+2|r^4 cos(2fi)|nm>
+                                    sum -= sqrt * k4c2;
+                                    // <n-3,m+2|r^6 cos(2fi)|nm>
+                                    sum -= sqrt * 2.0 * k6c2
+                                        * (3.0 * n + 2.0 * l + 8.0);
+                                    // <n-3,m+2|r^8 cos(2fi)|nm>
+                                    sum -= sqrt * k8c2
+                                        * (3 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 10.0 * (n + l + 4.0) * (n + l + 5.0));
+
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-4,m+2|r^6 cos(2fi)|nm>
+                                    sum += sqrt * k6c2;
+                                    // <n-4,m+2|r^8 cos(2fi)|nm>
+                                    sum += sqrt * k8c2
+                                        * (8.0 * n + 5.0 * l + 25.0);
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n-4,m+2|r^8 cos(2fi)|nm>
+                                    sum -= sqrt * k8c2;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m+2|r^4 cos(2fi)|nm>
+                                    sum -= sqrt * k4c2;
+                                    // <n+1,m+2|r^6 cos(2fi)|nm>
+                                    sum -= sqrt * 2.0 * k6c2
+                                        * (3.0 * n + l + 4.0);
+                                    // <n+1,m+2|r^8 cos(2fi)|nm>
+                                    sum -= sqrt * k8c2
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 3.0 * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+2,m+2|r^6 cos(2fi)|nm>
+                                    sum += sqrt * k6c2;
+                                    // <n+2,m+2|r^8 cos(2fi)|nm>
+                                    sum += sqrt * k8c2
+                                        * (8.0 * n + 3.0 * l + 15.0);
+                                }
+                                else if(diffn == 3 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+2,m+2|r^8 cos(2fi)|nm>
+                                    sum -= sqrt * k8c2;
+                                }
+                            }
+                            else if(diffl == 0) {
+                                if(diffn == 0) {
+                                    // <nm|r^2 cos(2fi)|nm>
+                                    sum += k2c2 * (2.0 * n + l + 1.0);
+                                    // <nm|r^4 cos(2fi)|nm>
+                                    sum += k4c2 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                                    // <nm|r^6 cos(2fi)|nm>
+                                    sum += k6c2 * (n * (n - 1.0) * (n - 2.0)
+                                        + 9.0 * n * (n - 1.0) * (n + l + 1.0)
+                                        + 9.0 * n * (n + l + 1.0) * (n + l + 2.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <nm|r^8 cos(2fi)|nm>
+                                    sum += k8c2 * (n * (n - 1.0) * (n - 2.0) * (n - 3.0)
+                                        + 16.0 * n * (n - 1.0) * (n - 2.0) * (n + l + 1.0)
+                                        + 36 * n * (n - 1.0) * (n + l + 1.0) * (n + l + 2.0)
+                                        + 16 * n * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+ 
+                                }
+                                else if(diffn == 1) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                    // <n+1,m|r^2 cos(2fi)|nm>
+                                    sum -= sqrt * k2c2;
+                                    // <n+1,m|r^4 cos(2fi)|nm>
+                                    sum -= sqrt * 2.0 * k4c2
+                                        * (2.0 * n + l + 2.0);
+                                    // <n+1,m|r^6 cos(2fi)|nm>
+                                    sum -= sqrt * 3.0 * k6c2
+                                        * (n * (n - 1.0)
+                                        + 3.0 * n * (n + l + 2.0)
+                                        + (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m|r^6 cos(2fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c2
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 2.0)
+                                        + 6.0 * n * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                }
+                                else if(diffn == 2) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0));
+                                    // <n+2,m|r^4 cos(2fi)|nm>
+                                    sum += sqrt * k4c2;
+                                    // <n+2,m|r^6 cos(2fi)|nm>
+                                    sum += sqrt * 3.0 * k6c2
+                                        * (2.0 * n + l + 3.0);
+                                    // <n+2,m|r^8 cos(2fi)|nm>
+                                    sum += sqrt * 2.0 * k8c2
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 3.0 * (n + l + 3.0) * (n + l + 4));
+                                }
+
+                                else if(diffn == 3) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+3,m|r^6  cos(2fi)|nm>
+                                    sum -= sqrt * k6c2;
+                                    // <n+3,m|r^8  cos(2fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c2
+                                        * (2.0 * n + l + 4.0);
+                                }
+
+                                else if(diffn == 4) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0)
+                                        * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+4,m|r^8  cos(2fi)|nm>
+                                    sum += sqrt * k8c2;
+                                }
+                            }
+                        }
+
+                        if(diffm == 3) {
+                            if(diffl == 3) {
+                                if(diffn == 0 && sign < 0)
+                                    // <n,m+3|r^3 cos(3fi)|nm>
+                                    sum += k3c3 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                else if(diffn == 1 && sign < 0)
+                                    // <n-1,m+3|r^3 cos(3fi)|nm>
+                                    sum -= 3.0 * k3c3 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                else if(diffn == 2 && sign < 0)
+                                    // <n-2,m+3|r^3 cos(3fi)|nm>
+                                    sum += 3.0 * k3c3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                else if(diffn == 3 && sign < 0)
+                                    // <n-3,m+3|r^3 cos(3fi)|nm>
+                                    sum -= k3c3 * System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0));
+                            }
+                            else if(diffl == 1) {
+                                if(diffn == 0 && sign < 0)
+                                    // <n,m+1|r^3 cos(3fi)|nm>
+                                    sum += k3c3 * (3.0 * n + l + 2.0) * System.Math.Sqrt(n + l + 1.0);
+                                else if(diffn == 1 && sign < 0)
+                                    // <n-1,m+1|r^3 cos(3fi)|nm>
+                                    sum -= k3c3 * (3.0 * n + 2.0 * l + 4.0) * System.Math.Sqrt(n + 1.0);
+                                else if(diffn == 2 && sign < 0)
+                                    // <n-2,m+1|r^3 cos(3fi)|nm>
+                                    sum += k3c3 * System.Math.Sqrt((n + 2.0) * (n + 1.0) * (n + l + 2));
+                                else if(diffn == 1 && sign > 0)
+                                    // <n+1,m+3|r^3 cos(3fi)|nm>
+                                    sum -= k3c3 * System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0));
+                            }
+                        }
+
+                        if(diffm == 4) {
+                            if(diffl == 4) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n,m+4|r^4 cos(4fi)|nm>
+                                    sum += sqrt * k4c4;
+                                    // <n,m+4|r^6 cos(4fi)|nm>
+                                    sum += sqrt * k6c4
+                                        * (6.0 * n + l + 5.0);
+                                    // <n,m+4|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4
+                                        * (15.0 * n * (n - 1.0)
+                                        + 12.0 * n * (n + l + 5.0)
+                                        + (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-1,m+4|r^4 cos(4fi)|nm>
+                                    sum -= sqrt * 4.0 * k4c4;
+                                    // <n-1,m+4|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 5.0 * k6c4
+                                        * (3.0 * n + l + 5.0);
+                                    // <n-1,m+4|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c4
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 5.0)
+                                        + 3.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-2,m+4|r^4 cos(4fi)|nm>
+                                    sum += sqrt * 6.0 * k4c4;
+                                    // <n-2,m+4|r^6 cos(4fi)|nm>
+                                    sum += sqrt * 10.0 * k6c4
+                                        * (2.0 * n + l + 5.0);
+                                    // <n-2,m+4|r^8 cos(4fi)|nm>
+                                    sum += sqrt * 5.0 * k8c4
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 5.0)
+                                        + 3.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 4.0));
+                                    // <n-3,m+4|r^4 cos(4fi)|nm>
+                                    sum -= sqrt * 4.0 * k4c4;
+                                    // <n-3,m+4|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 5.0 * k6c4 
+                                        * (3.0 * n + 2.0 * l + 10.0);
+                                    // <n-3,m+4|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c4
+                                        * (3.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 5.0)
+                                        + 10.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0));
+                                    // <n-4,m+4|r^4 cos(4fi)|nm>
+                                    sum += sqrt * k4c4;
+                                    // <n-4,m+4|r^6 cos(4fi)|nm>
+                                    sum += sqrt * k6c4
+                                        * (6.0 * n + 5.0 * l + 25.0);
+                                    // <n-4,m+4|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4
+                                        * (n * (n - 1.0)
+                                        + 12.0 * n * (n + l + 5.0)
+                                        + 15.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 5.0));
+                                    // <n-5,m+4|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * k6c4;
+                                    // <n-5,m+4|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c4
+                                        * (4.0 * n + 3.0 * l + 18.0);
+                                }
+                                else if(diffn == 6 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-6,m+4|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+1,m+4|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * k6c4;
+                                    // <n+1,m+4|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c4
+                                        * (4.0 * n + l + 6.0);
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n+2,m+4|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4;
+                                }
+                            }
+                            else if(diffl == 2) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                    // <n,m+2|r^4 cos(4fi)|nm>
+                                    sum += sqrt * k4c4
+                                        * (4.0 * n + l + 3.0);
+                                    // <n,m+2|r^6 cos(4fi)|nm>
+                                    sum += sqrt * k6c4
+                                        * (6.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + (n + l + 3.0) * (n + l + 4.0));
+                                    // <n,m+2|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4
+                                        * (10.0 * n * (n - 1.0) * (n - 2.0)
+                                        + 30.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 15.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                    // <n-1,m+2|r^4 cos(4fi)|nm>
+                                    sum -= sqrt * 3.0 * k4c4
+                                        * (2.0 * n + l + 3.0);
+                                    // <n-1,m+2|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 4.0 * k6c4
+                                        * (n * (n - 1.0)
+                                        + 3.0 * n * (n + l + 3.0)
+                                        + (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-1,m+2|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * 5.0 * k8c4
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 6.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                    // <n-2,m+2|r^4 cos(4fi)|nm>
+                                    sum += sqrt * k4c4
+                                        * (4.0 * n + 3.0 * l + 9.0);
+                                    // <n-2,m+2|r^6 cos(4fi)|nm>
+                                    sum += sqrt * k6c4
+                                        * (n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 6.0 * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-2,m+2|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 15.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 30.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + 10.0 * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                    // <n-3,m+2|r^4 cos(4fi)|nm>
+                                    sum -= sqrt * k4c4;
+                                    // <n-3,m+2|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k6c4
+                                        * (3.0 * n + 2.0 * l + 8.0);
+                                    // <n-3,m+2|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * k8c4
+                                        * (3 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 10.0 * (n + l + 4.0) * (n + l + 5.0));
+
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-4,m+2|r^6 cos(4fi)|nm>
+                                    sum += sqrt * k6c4;
+                                    // <n-4,m+2|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4
+                                        * (8.0 * n + 5.0 * l + 25.0);
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n-4,m+2|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * k8c4;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m+2|r^4 cos(4fi)|nm>
+                                    sum -= sqrt * k4c4;
+                                    // <n+1,m+2|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k6c4
+                                        * (3.0 * n + l + 4.0);
+                                    // <n+1,m+2|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * k8c4
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 3.0 * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+2,m+2|r^6 cos(4fi)|nm>
+                                    sum += sqrt * k6c4;
+                                    // <n+2,m+2|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4
+                                        * (8.0 * n + 3.0 * l + 15.0);
+                                }
+                                else if(diffn == 3 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+2,m+2|r^8 cos(4fi)|nm>
+                                    sum -= sqrt * k8c4;
+                                }
+                            }
+                            else if(diffl == 0) {
+                                if(diffn == 0) {
+                                    // <nm|r^4 cos(4fi)|nm>
+                                    sum += k4c4 * (n * (n - 1.0) + (n + l + 1.0) * (5.0 * n + l + 2.0));
+                                    // <nm|r^6 cos(4fi)|nm>
+                                    sum += k6c4 * (n * (n - 1.0) * (n - 2.0)
+                                        + 9.0 * n * (n - 1.0) * (n + l + 1.0)
+                                        + 9.0 * n * (n + l + 1.0) * (n + l + 2.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <nm|r^8 cos(4fi)|nm>
+                                    sum += k8c4 * (n * (n - 1.0) * (n - 2.0) * (n - 3.0)
+                                        + 16.0 * n * (n - 1.0) * (n - 2.0) * (n + l + 1.0)
+                                        + 36 * n * (n - 1.0) * (n + l + 1.0) * (n + l + 2.0)
+                                        + 16 * n * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+
+                                }
+                                else if(diffn == 1) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                    // <n+1,m|r^4 cos(4fi)|nm>
+                                    sum -= sqrt * 2.0 * k4c4
+                                        * (2.0 * n + l + 2.0);
+                                    // <n+1,m|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 3.0 * k6c4
+                                        * (n * (n - 1.0)
+                                        + 3.0 * n * (n + l + 2.0)
+                                        + (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m|r^6 cos(4fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c4
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 2.0)
+                                        + 6.0 * n * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                }
+                                else if(diffn == 2) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0));
+                                    // <n+2,m|r^4 cos(4fi)|nm>
+                                    sum += sqrt * k4c4;
+                                    // <n+2,m|r^6 cos(4fi)|nm>
+                                    sum += sqrt * 3.0 * k6c4
+                                        * (2.0 * n + l + 3.0);
+                                    // <n+2,m|r^8 cos(4fi)|nm>
+                                    sum += sqrt * 2.0 * k8c4
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 3.0 * (n + l + 3.0) * (n + l + 4));
+                                }
+
+                                else if(diffn == 3) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+3,m|r^6  cos(4fi)|nm>
+                                    sum -= sqrt * k6c4;
+                                    // <n+3,m|r^8  cos(4fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c4
+                                        * (2.0 * n + l + 4.0);
+                                }
+
+                                else if(diffn == 4) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0)
+                                        * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+4,m|r^8 cos(4fi)|nm>
+                                    sum += sqrt * k8c4;
+                                }
+                            }
+                        }
+
+                        if(diffm == 6) {
+                            if(diffl == 6) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n,m+6|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6;
+                                    // <n,m+6|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (8.0 * n + l + 7.0);
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-1,m+6|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 6.0 * k6c6;
+                                    // <n-1,m+6|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 7.0 * k8c6
+                                        * (4.0 * n + l + 7.0);
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-2,m+6|r^6 cos(6fi)|nm>
+                                    sum += sqrt * 15.0 * k6c6;
+                                    // <n-2,m+6|r^8 cos(6fi)|nm>
+                                    sum += sqrt * 7.0 * k8c6
+                                        * (8.0 * n + 3.0 * l + 21.0);
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-3,m+6|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 20.0 * k6c6;
+                                    // <n-3,m+6|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 35.0 * k8c6
+                                        * (2.0 * n + l + 7.0);
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-4,m+6|r^6 cos(6fi)|nm>
+                                    sum += sqrt * 15.0 * k6c6;
+                                    // <n-4,m+6|r^8 cos(6fi)|nm>
+                                    sum += sqrt * 7.0 * k8c6
+                                        * (8.0 * n + 5.0 * l + 35.0);
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 6.0));
+                                    // <n-5,m+6|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 6.0 * k6c6;
+                                    // <n-5,m+6|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 7.0 * k8c6
+                                        * (4.0 * n + 3.0 * l + 21.0);
+                                }
+                                else if(diffn == 6 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0));
+                                    // <n-6,m+6|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6;
+                                    // <n-6,m+6|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (8.0 * n + 7.0 * l + 49.0);
+                                }
+                                else if(diffn == 7 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + 7.0) * (n + l + 7.0));
+                                    // <n-7,m+6|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * k8c6;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0));
+                                    // <n+1,m+6|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * k8c6;
+                                }
+                            }
+                            if(diffl == 4) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n,m+4|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6
+                                        * (6.0 * n + l + 5.0);
+                                    // <n,m+4|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (15.0 * n * (n - 1.0)
+                                        + 12.0 * n * (n + l + 5.0)
+                                        + (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-1,m+4|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 5.0 * k6c6
+                                        * (3.0 * n + l + 5.0);
+                                    // <n-1,m+4|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c6
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 5.0)
+                                        + 3.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-2,m+4|r^6 cos(6fi)|nm>
+                                    sum += sqrt * 10.0 * k6c6
+                                        * (2.0 * n + l + 5.0);
+                                    // <n-2,m+4|r^8 cos(6fi)|nm>
+                                    sum += sqrt * 5.0 * k8c6
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 5.0)
+                                        + 3.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 4.0));
+                                    // <n-3,m+4|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 5.0 * k6c6
+                                        * (3.0 * n + 2.0 * l + 10.0);
+                                    // <n-3,m+4|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c6
+                                        * (3.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 5.0)
+                                        + 10.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0));
+                                    // <n-4,m+4|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6
+                                        * (6.0 * n + 5.0 * l + 25.0);
+                                    // <n-4,m+4|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (n * (n - 1.0)
+                                        + 12.0 * n * (n + l + 5.0)
+                                        + 15.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 5.0));
+                                    // <n-5,m+4|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * k6c6;
+                                    // <n-5,m+4|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c6
+                                        * (4.0 * n + 3.0 * l + 18.0);
+                                }
+                                else if(diffn == 6 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-6,m+4|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+1,m+4|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * k6c6;
+                                    // <n+1,m+4|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c6
+                                        * (4.0 * n + l + 6.0);
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n+2,m+4|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6;
+                                }
+                            }
+                            else if(diffl == 2) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                    // <n,m+2|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6
+                                        * (6.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + (n + l + 3.0) * (n + l + 4.0));
+                                    // <n,m+2|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (10.0 * n * (n - 1.0) * (n - 2.0)
+                                        + 30.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 15.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                    // <n-1,m+2|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 4.0 * k6c6
+                                        * (n * (n - 1.0)
+                                        + 3.0 * n * (n + l + 3.0)
+                                        + (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-1,m+2|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * 5.0 * k8c6
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 6.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                    // <n-2,m+2|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6
+                                        * (n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 6.0 * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-2,m+2|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 15.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 30.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + 10.0 * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                    // <n-3,m+2|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 2.0 * k6c6
+                                        * (3.0 * n + 2.0 * l + 8.0);
+                                    // <n-3,m+2|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * k8c6
+                                        * (3 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 10.0 * (n + l + 4.0) * (n + l + 5.0));
+
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-4,m+2|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6;
+                                    // <n-4,m+2|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6
+                                        * (8.0 * n + 5.0 * l + 25.0);
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n-4,m+2|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * k8c6;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m+2|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 2.0 * k6c6
+                                        * (3.0 * n + l + 4.0);
+                                    // <n+1,m+2|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * k8c6
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 3.0 * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+2,m+2|r^6 cos(6fi)|nm>
+                                    sum += sqrt * k6c6;
+                                    // <n+2,m+2|r^8 cos(6fi)|nm>
+                                    sum += sqrt  * k8c6
+                                        * (8.0 * n + 3.0 * l + 15.0);
+                                }
+                                else if(diffn == 3 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+2,m+2|r^8 cos(6fi)|nm>
+                                    sum -= sqrt * k8c6;
+                                }
+                            }
+                            else if(diffl == 0) {
+                                if(diffn == 0) {
+                                    // <nm|r^6 cos(6fi)|nm>
+                                    sum += k6c6 * (n * (n - 1.0) * (n - 2.0)
+                                        + 9.0 * n * (n - 1.0) * (n + l + 1.0)
+                                        + 9.0 * n * (n + l + 1.0) * (n + l + 2.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <nm|r^8 cos(6fi)|nm>
+                                    sum += k8c6 * (n * (n - 1.0) * (n - 2.0) * (n - 3.0)
+                                        + 16.0 * n * (n - 1.0) * (n - 2.0) * (n + l + 1.0)
+                                        + 36 * n * (n - 1.0) * (n + l + 1.0) * (n + l + 2.0)
+                                        + 16 * n * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+
+                                }
+                                else if(diffn == 1) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                    // <n+1,m|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 3.0 * k6c6
+                                        * (n * (n - 1.0)
+                                        + 3.0 * n * (n + l + 2.0)
+                                        + (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m|r^6 cos(6fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c6
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 2.0)
+                                        + 6.0 * n * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                }
+                                else if(diffn == 2) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0));
+                                    // <n+2,m|r^6 cos(6fi)|nm>
+                                    sum += sqrt * 3.0 * k6c6
+                                        * (2.0 * n + l + 3.0);
+                                    // <n+2,m|r^8 cos(6fi)|nm>
+                                    sum += sqrt * 2.0 * k8c6
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 3.0 * (n + l + 3.0) * (n + l + 4));
+                                }
+
+                                else if(diffn == 3) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+3,m|r^6  cos(6fi)|nm>
+                                    sum -= sqrt * k6c6;
+                                    // <n+3,m|r^8  cos(6fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c6
+                                        * (2.0 * n + l + 4.0);
+                                }
+
+                                else if(diffn == 4) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0)
+                                        * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+4,m|r^8 cos(6fi)|nm>
+                                    sum += sqrt * k8c6;
+                                }
+                            }
+                        }
+
+                        if(diffm == 8) {
+                            if(diffl == 8) {
+                                if(diffn == 0 && sign < 0) {
+                                    // <n,m+8|r^8 cos(8fi)|nm>
+                                    sum += k8c8 * System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    // <n-1,m+8|r^8 cos(8fi)|nm>
+                                    sum -= 8.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    // <n-2,m+8|r^8 cos(8fi)|nm>
+                                    sum += 28.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    // <n-3,m+8|r^8 cos(8fi)|nm>
+                                    sum -= 56.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    // <n-4,m+8|r^8 cos(8fi)|nm>
+                                    sum += 70.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    // <n-5,m+8|r^8 cos(8fi)|nm>
+                                    sum -= 56.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 6 && sign < 0) {
+                                    // <n-6,m+8|r^8 cos(8fi)|nm>
+                                    sum += 28.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + l + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 7 && sign < 0) {
+                                    // <n-7,m+8|r^8 cos(8fi)|nm>
+                                    sum -= 8.0 * k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + 7.0) * (n + l + 8.0));
+                                }
+                                else if(diffn == 8 && sign < 0) {
+                                    // <n-8,m+8|r^8 cos(8fi)|nm>
+                                    sum += k8c8 * System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + 7.0) * (n + 8.0));
+                                }
+                            }
+
+                            else if(diffl == 6) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n,m+6|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (8.0 * n + l + 7.0);
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-1,m+6|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 7.0 * k8c8
+                                        * (4.0 * n + l + 7.0);
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-2,m+6|r^8 cos(8fi)|nm>
+                                    sum += sqrt * 7.0 * k8c8
+                                        * (8.0 * n + 3.0 * l + 21.0);
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-3,m+6|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 35.0 * k8c8
+                                        * (2.0 * n + l + 7.0);
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-4,m+6|r^8 cos(8fi)|nm>
+                                    sum += sqrt * 7.0 * k8c8
+                                        * (8.0 * n + 5.0 * l + 35.0);
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 6.0));
+                                    // <n-5,m+6|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 7.0 * k8c8
+                                        * (4.0 * n + 3.0 * l + 21.0);
+                                }
+                                else if(diffn == 6 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0));
+                                    // <n-6,m+6|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (8.0 * n + 7.0 * l + 49.0);
+                                }
+                                else if(diffn == 7 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + 7.0) * (n + l + 7.0));
+                                    // <n-7,m+6|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * k8c8;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0) * (n + l + 7.0));
+                                    // <n+1,m+6|r^6 cos(8fi)|nm>
+                                    sum -= sqrt * k8c8;
+                                }
+                            }
+                            if(diffl == 4) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n,m+4|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (15.0 * n * (n - 1.0)
+                                        + 12.0 * n * (n + l + 5.0)
+                                        + (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-1,m+4|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c8
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 5.0)
+                                        + 3.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-2,m+4|r^8 cos(8fi)|nm>
+                                    sum += sqrt * 5.0 * k8c8
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 5.0)
+                                        + 3.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 4.0));
+                                    // <n-3,m+4|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c8
+                                        * (3.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 5.0)
+                                        + 10.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0));
+                                    // <n-4,m+4|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (n * (n - 1.0)
+                                        + 12.0 * n * (n + l + 5.0)
+                                        + 15.0 * (n + l + 5.0) * (n + l + 6.0));
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 5.0));
+                                    // <n-5,m+4|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c8
+                                        * (4.0 * n + 3.0 * l + 18.0);
+                                }
+                                else if(diffn == 6 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + 6.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n-6,m+4|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+1,m+4|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 2.0 * k8c8
+                                        * (4.0 * n + l + 6.0);
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0) * (n + l + 6.0));
+                                    // <n+2,m+4|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8;
+                                }
+                            }
+                            else if(diffl == 2) {
+                                if(diffn == 0 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + l + 1.0) * (n + l + 2.0));
+                                    // <n,m+2|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (10.0 * n * (n - 1.0) * (n - 2.0)
+                                        + 30.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 15.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 1 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 2.0));
+                                    // <n-1,m+2|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 5.0 * k8c8
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 6.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 2.0) * (n + 1.0));
+                                    // <n-2,m+2|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 15.0 * n * (n - 1.0) * (n + l + 3.0)
+                                        + 30.0 * n * (n + l + 3.0) * (n + l + 4.0)
+                                        + 10.0 * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 3 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 3.0) * (n + 2.0) * (n + 1.0) * (n + l + 3.0));
+                                    // <n-3,m+2|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * k8c8
+                                        * (3 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 10.0 * (n + l + 4.0) * (n + l + 5.0));
+
+                                }
+                                else if(diffn == 4 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n-4,m+2|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (8.0 * n + 5.0 * l + 25.0);
+                                }
+                                else if(diffn == 5 && sign < 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0) * (n + 5.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n-4,m+2|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * k8c8;
+                                }
+                                else if(diffn == 1 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+1,m+2|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * k8c8
+                                        * (10.0 * n * (n - 1.0)
+                                        + 15.0 * n * (n + l + 4.0)
+                                        + 3.0 * (n + l + 4.0) * (n + l + 5.0));
+                                }
+                                else if(diffn == 2 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+2,m+2|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8
+                                        * (8.0 * n + 3.0 * l + 15.0);
+                                }
+                                else if(diffn == 3 && sign > 0) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0) * (n + l + 5.0));
+                                    // <n+2,m+2|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * k8c8;
+                                }
+                            }
+                            else if(diffl == 0) {
+                                if(diffn == 0) {
+                                    // <nm|r^8 cos(8fi)|nm>
+                                    sum += k8c8 * (n * (n - 1.0) * (n - 2.0) * (n - 3.0)
+                                        + 16.0 * n * (n - 1.0) * (n - 2.0) * (n + l + 1.0)
+                                        + 36 * n * (n - 1.0) * (n + l + 1.0) * (n + l + 2.0)
+                                        + 16 * n * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+
+                                }
+                                else if(diffn == 1) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + l + 1.0));
+                                    // <n+1,m|r^6 cos(8fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c8
+                                        * (n * (n - 1.0) * (n - 2.0)
+                                        + 6.0 * n * (n - 1.0) * (n + l + 2.0)
+                                        + 6.0 * n * (n + l + 2.0) * (n + l + 3.0)
+                                        + (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                }
+                                else if(diffn == 2) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + l + 1.0) * (n + l + 2.0));
+                                    // <n+2,m|r^8 cos(8fi)|nm>
+                                    sum += sqrt * 2.0 * k8c8
+                                        * (3.0 * n * (n - 1.0)
+                                        + 8.0 * n * (n + l + 3.0)
+                                        + 3.0 * (n + l + 3.0) * (n + l + 4));
+                                }
+
+                                else if(diffn == 3) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0));
+                                    // <n+3,m|r^8 cos(8fi)|nm>
+                                    sum -= sqrt * 4.0 * k8c8
+                                        * (2.0 * n + l + 4.0);
+                                }
+
+                                else if(diffn == 4) {
+                                    double sqrt = System.Math.Sqrt((n + 1.0) * (n + 2.0) * (n + 3.0) * (n + 4.0)
+                                        * (n + l + 1.0) * (n + l + 2.0) * (n + l + 3.0) * (n + l + 4.0));
+                                    // <n+4,m|r^8 cos(8fi)|nm>
+                                    sum += sqrt * k8c8;
+                                }
+                            }
                         }
                     }
 

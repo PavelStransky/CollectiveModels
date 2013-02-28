@@ -3843,4 +3843,13 @@ Second differing type: {1}</value>
   <data name="HelpQCWPolar" xml:space="preserve">
     <value>Creates quantum Creagh-Whelan class, diagonalized in the polar coordinates</value>
   </data>
+  <data name="HelpGaussianSample" xml:space="preserve">
+    <value>Calculates the convolution of the input vector with the Gaussian function of a given standard deviation and sample it at the values of a given vector</value>
+  </data>
+  <data name="EMBadDerivativeOrder" xml:space="preserve">
+    <value>Wrong order {0} of the derivative.</value>
+  </data>
+  <data name="HelpD1" xml:space="preserve">
+    <value>Returns the first derivative</value>
+  </data>
 </root>

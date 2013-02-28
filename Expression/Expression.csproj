@@ -167,6 +167,7 @@
     <Compile Include="Functions\Math\BesselY.cs" />
     <Compile Include="Functions\Math\BesselYd.cs" />
     <Compile Include="Functions\Math\EulerGamma.cs" />
+    <Compile Include="Functions\Math\GaussianSample.cs" />
     <Compile Include="Functions\Math\GaussianSmooth.cs" />
     <Compile Include="Functions\Math\SphericalBesselJ.cs" />
     <Compile Include="Functions\Math\SphericalBesselJd.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Functions\Vector\Autocorrelation.cs" />
     <Compile Include="Functions\Vector\Contain.cs" />
     <Compile Include="Functions\Vector\Cumul0.cs" />
+    <Compile Include="Functions\Vector\D1.cs" />
     <Compile Include="Functions\Vector\Delta3.cs" />
     <Compile Include="Functions\Vector\ECG.cs" />
     <Compile Include="Functions\Vector\EMD.cs" />
@@ -287,7 +289,7 @@
     <Compile Include="Functions\Program\ExportVector3D.cs" />
     <Compile Include="Functions\Quantum\AvoidedCrossing.cs" />
     <Compile Include="Functions\Quantum\AvoidedCrossings.cs" />
-    <Compile Include="Functions\Quantum\D2.cs" />
+    <Compile Include="Functions\Vector\D2.cs" />
     <Compile Include="Functions\Vector\Entropy.cs" />
     <Compile Include="Functions\Quantum\LastEVElements.cs" />
     <Compile Include="Functions\Quantum\LastEVElementsSumAbs.cs" />

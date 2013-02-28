@@ -321,7 +321,7 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Poèítá error funkci 2/Sqrt(pi) int_0^pi (Exp(-t^2) dt)
+        /// Poèítá error funkci 2/Sqrt(pi) int_0^x (Exp(-t^2) dt)
         /// </summary>
         /// <remarks>Numerical Recipies in C, Chapter 6.2</remarks>
         public static double Erf(double x) {

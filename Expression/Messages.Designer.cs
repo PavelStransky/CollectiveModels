@@ -144,6 +144,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrong order {0} of the derivative..
+        /// </summary>
+        internal static string EMBadDerivativeOrder {
+            get {
+                return ResourceManager.GetString("EMBadDerivativeOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown function &apos;{0}&apos;..
         /// </summary>
         internal static string EMBadFunctionName {
@@ -3184,6 +3193,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the first derivative.
+        /// </summary>
+        internal static string HelpD1 {
+            get {
+                return ResourceManager.GetString("HelpD1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns the second derivative.
         /// </summary>
         internal static string HelpD2 {
@@ -3603,6 +3621,15 @@ namespace PavelStransky.Expression {
         internal static string HelpGamma {
             get {
                 return ResourceManager.GetString("HelpGamma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the convolution of the input vector with the Gaussian function of a given standard deviation and sample it at the values of a given vector.
+        /// </summary>
+        internal static string HelpGaussianSample {
+            get {
+                return ResourceManager.GetString("HelpGaussianSample", resourceCulture);
             }
         }
         

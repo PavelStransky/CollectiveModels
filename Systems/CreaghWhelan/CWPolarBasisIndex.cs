@@ -86,7 +86,7 @@ namespace PavelStransky.Systems {
                 this.maxN = (this.maxE - 1) / 2;
 
                 if(basisParams[2] == 2)
-                    this.bandWidth = 3 * (this.maxE + 1) / 2;
+                    this.bandWidth = 2 * (this.maxE + 1);
                 else
                     this.bandWidth = 4 * (this.maxE);
             }

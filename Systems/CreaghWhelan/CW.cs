@@ -12,7 +12,7 @@ namespace PavelStransky.Systems {
     /// </summary>
     public class CW : IExportable {
         // Linear parameter x, parameter of the rigidity b
-        private double a, b;
+        private double a, b, c;
         
         // Power of the principal term (x^2 - 1)
         private int power;
@@ -22,6 +22,7 @@ namespace PavelStransky.Systems {
 
         public double A { get { return this.a; } }
         public double B { get { return this.b; } }
+        public double C { get { return this.c; } }
         public double Mu { get { return this.mu; } }
         public int Power { get { return this.power; } }
 
@@ -30,11 +31,13 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="a">Parametr A</param>
         /// <param name="b">Parametr B</param>
+        /// <param name="c">Parametr C</param>
         /// <param name="mu">Parametr MU</param>
         /// <param name="power">Parametr power</param>
-        public CW(double a, double b, double mu, int power) {
+        public CW(double a, double b, double c, double mu, int power) {
             this.a = a;
             this.b = b;
+            this.c = c;
 
             if(power != 2 && power != 4)
                 throw new SystemsException(string.Format(Messages.EMBadPower, power));
@@ -60,6 +63,7 @@ namespace PavelStransky.Systems {
             param.Add(this.b, "B");
             param.Add(this.mu, "Mu");
             param.Add(this.power, "Power");
+            param.Add(this.c, "C");
 
             param.Export(export);
         }
@@ -75,6 +79,7 @@ namespace PavelStransky.Systems {
             this.b = (double)param.Get(0.0);
             this.mu = (double)param.Get(1.0);
             this.power = (int)param.Get(2);
+            this.c = (double)param.Get(1.0);
         }
         #endregion
     }

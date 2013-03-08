@@ -5506,6 +5506,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converts the argument into string.
+        /// </summary>
+        internal static string HelpStr {
+            get {
+                return ResourceManager.GetString("HelpStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns an object dealing with Strutinsky corrections.
         /// </summary>
         internal static string HelpStrutinsky {

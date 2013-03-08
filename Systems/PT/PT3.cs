@@ -229,7 +229,7 @@ namespace PavelStransky.Systems {
                 result[0] = this.VPoint(0.0);
             }
             else {
-                if(System.Math.Abs(this.b) < 4.0 / (3.0 * System.Math.Sqrt(6.0))) {
+                if(this.a < 0 && System.Math.Abs(this.b) < System.Math.Sqrt(-8.0 / 27.0 * this.a * this.a * this.a)) {
                     result = new PointVector(2);
                     if(b < 0) {
                         result[0] = this.VPoint(bis.Solve(0.0, 1.0 - this.b, precision));
@@ -257,7 +257,7 @@ namespace PavelStransky.Systems {
         public PointVector Maxima(double precision) {
             PointVector result;
 
-            if(this.a < 0 && System.Math.Abs(this.b) < 4.0 / (3.0 * System.Math.Sqrt(6.0))) {
+            if(this.a < 0 && System.Math.Abs(this.b) < System.Math.Sqrt(-8.0 / 27.0 * this.a * this.a * this.a)) {
                 result = new PointVector(1);
                 Bisection bis = new Bisection(this.BisectionMinMax);
                 if(b < 0)

@@ -14,9 +14,10 @@ namespace PavelStransky.Systems {
         /// </summary>
         /// <param name="a">Parameter a (governs the PT)</param>
         /// <param name="b">Parameter b (rigidity)</param>
+        /// <param name="c">Parameter c</param>
         /// <param name="mu">Parameter mu</param>
         /// <param name="power">Power of the principal term</param>
-        public ClassicalCW(double a, double b, double mu, int power) : base(a, b, mu, power) { }
+        public ClassicalCW(double a, double b, double c, double mu, int power) : base(a, b, c, mu, power) { }
 
         #region IDynamicalSystem Members
         public double T(double px, double py) {
@@ -34,7 +35,7 @@ namespace PavelStransky.Systems {
             else if(this.Power == -4)
                 bracket = bracket + bracket * bracket;
 
-            return bracket + this.Mu * y2 + x2 * y2 + this.A * x + this.B * x * y2;
+            return bracket + this.Mu * y2 + this.C * x2 * y2 + this.A * x + this.B * x * y2;
         }
 
         public double E(Vector x) {
@@ -54,19 +55,14 @@ namespace PavelStransky.Systems {
             double bracket = x[0] * x[0] - 1.0;
 
             if(this.Power == 2)
-                result[2] = -this.A - 4.0 * x[0] * bracket - (this.B + 2.0 * x[0]) * x[1] * x[1];
+                result[2] = -this.A - 4.0 * x[0] * bracket - (this.B + 2.0 * this.C * x[0]) * x[1] * x[1];
             else if(this.Power == 4)
-                result[2] = -this.A - 8.0 * x[0] * bracket * bracket * bracket - (this.B + 2.0 * x[0]) * x[1] * x[1];
+                result[2] = -this.A - 8.0 * x[0] * bracket * bracket * bracket - (this.B + 2.0 * this.C * x[0]) * x[1] * x[1];
             else if(this.Power == -4)
-                result[2] = -this.A - 4.0 * x[0] * bracket - 8.0 * x[0] * bracket * bracket * bracket - (this.B + 2.0 * x[0]) * x[1] * x[1];
+                result[2] = -this.A - 4.0 * x[0] * bracket - 8.0 * x[0] * bracket * bracket * bracket - (this.B + 2.0 * this.C * x[0]) * x[1] * x[1];
 
-            result[3] = -2.0 * x[1] * (this.Mu + this.B * x[0] + x[0] * x[0]);
+            result[3] = -2.0 * x[1] * (this.Mu + this.B * x[0] + this.C * x[0] * x[0]);
 
- /*           if(++t % 1 == 0) {
-                double e = this.E(x);
-                e = e + 0.0;
-            }
-            */
             return result;
         }
 
@@ -199,8 +195,6 @@ namespace PavelStransky.Systems {
                 result[3] = -result[3];
 
             return result;
-
-        
         }
 
         public Vector CheckBounds(Vector bounds) {

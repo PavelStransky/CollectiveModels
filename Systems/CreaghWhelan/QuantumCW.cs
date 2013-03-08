@@ -22,9 +22,10 @@ namespace PavelStransky.Systems {
         /// <param name="a0">Parametr LHO</param>
         /// <param name="a">Parametr A</param>
         /// <param name="b">Parametr B</param>
+        /// <param name="c">Parametr C</param>
         /// <param name="mu">Parametr MU</param>
         /// <param name="hbar">Planckova konstanta</param>
-        public QuantumCW(double a, double b, double mu, double hbar, int power) : base(a, b, mu, power) {
+        public QuantumCW(double a, double b, double c, double mu, double hbar, int power) : base(a, b, c, mu, power) {
             this.hbar = hbar;
             this.eigenSystem = new EigenSystem(this);
         }
@@ -184,8 +185,8 @@ namespace PavelStransky.Systems {
 
                             // (mu - Ay) <m|y^2|m>
                             sum += (this.Mu - index.A0y) * py;
-                            // <n|<m|x^2 y^2|m>|n>
-                            sum += px * py;
+                            // C<n|<m|x^2 y^2|m>|n>
+                            sum += this.C * px * py;
 
                             sum += 1.0;
                         }
@@ -195,8 +196,8 @@ namespace PavelStransky.Systems {
 
                             // (mu - Ay) <m|y^2|m+2>
                             sum += (this.Mu - index.A0y) * psy;
-                            // <n|<m|x^2 y^2|m+2>|n>
-                            sum += px * psy;
+                            // C<n|<m|x^2 y^2|m+2>|n>
+                            sum += this.C * px * psy;
                         }
                     }
                     else if(nj == ni + 1) {
@@ -235,12 +236,12 @@ namespace PavelStransky.Systems {
                                 // (-2 - Ax) <n|x^2|n+2>
                                 sum -= (2.0 + index.A0x) * psx;
                             }
-                            // <n|<m|x^2 y^2|m>|n+2>
-                            sum += psx * py;
+                            // C<n|<m|x^2 y^2|m>|n+2>
+                            sum += this.C * psx * py;
                         }
                         else if(mj == mi + 2)
-                            // <n|<m|x^2 y^2|m+2>|n+2>
-                            sum += System.Math.Pow(sx, 2) * System.Math.Pow(sy, 2) * System.Math.Sqrt((ni + 1.0) * (ni + 2.0) * (mi + 1.0) * (mi + 2.0));
+                            // C<n|<m|x^2 y^2|m+2>|n+2>
+                            sum += this.C * System.Math.Pow(sx, 2) * System.Math.Pow(sy, 2) * System.Math.Sqrt((ni + 1.0) * (ni + 2.0) * (mi + 1.0) * (mi + 2.0));
                     }
 
                     else if(nj == ni + 4 && mj == mi) {

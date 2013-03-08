@@ -3852,4 +3852,7 @@ Second differing type: {1}</value>
   <data name="HelpD1" xml:space="preserve">
     <value>Returns the first derivative</value>
   </data>
+  <data name="HelpStr" xml:space="preserve">
+    <value>Converts the argument into string</value>
+  </data>
 </root>

@@ -169,6 +169,7 @@
     <Compile Include="Functions\Math\EulerGamma.cs" />
     <Compile Include="Functions\Math\GaussianSample.cs" />
     <Compile Include="Functions\Math\GaussianSmooth.cs" />
+    <Compile Include="Functions\Math\LinearSample.cs" />
     <Compile Include="Functions\Math\SphericalBesselJ.cs" />
     <Compile Include="Functions\Math\SphericalBesselJd.cs" />
     <Compile Include="Functions\Math\SphericalBesselJZero.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Functions\Quantum\ShellCorrection.cs" />
     <Compile Include="Functions\Quantum\SmoothLevelDensity.cs" />
     <Compile Include="Functions\Quantum\Systems\JC.cs" />
+    <Compile Include="Functions\Quantum\Systems\LevelDensity.cs" />
     <Compile Include="Functions\Quantum\Systems\LHOQGCM1.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFac.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFull.cs" />

@@ -418,6 +418,24 @@ namespace PavelStransky.Math {
 		}
 
         /// <summary>
+        /// Provede jednoduché vyhlazení matice
+        /// </summary>
+        public Matrix Smooth() {
+            Matrix result = new Matrix(this.LengthX, this.LengthY);
+
+            for(int i = 0; i < this.LengthX; i++)
+                for(int j = 0; j < this.LengthY; j++) {
+                    result[i, j] += (this[i, j]
+                        + (i > 0 ? this[i - 1, j] + (j > 0 ? this[i - 1, j - 1] : 0.0) + (j < this.LengthY - 1 ? this[i - 1, j + 1] : 0.0) : 0.0)
+                        + (j > 0 ? this[i, j - 1] : 0.0)
+                        + (j < this.LengthY - 1 ? this[i, j + 1] : 0.0)
+                        + (i < this.LengthX - 1 ? this[i + 1, j] + (j > 0 ? this[i + 1, j - 1] : 0.0) + (j < this.LengthY - 1 ? this[i + 1, j + 1] : 0.0) : 0.0)) / 9.0;
+                }
+
+            return result;
+        }
+
+        /// <summary>
         /// Vyplní matici
         /// </summary>
         /// <param name="value">Hodnota k vyplnìní</param>

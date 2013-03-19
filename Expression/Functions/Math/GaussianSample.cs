@@ -14,16 +14,28 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(3);
 
-            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector));
+            this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null, typeof(Vector), typeof(PointVector));
             this.SetParam(1, true, true, false, Messages.PSamplingPoints, Messages.PSamplingPointsDescription, null, typeof(Vector));
-            this.SetParam(2, false, true, true, Messages.PVariable, Messages.PVariableDescription, 1.0, typeof(double));
+            this.SetParam(2, false, true, true, Messages.PVariance, Messages.PVarianceDescription, 1.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            Vector input = (Vector)arguments[0];
+            Vector input = null;
+            Vector val = null;
+            if(arguments[0] is Vector) {
+                input = (Vector)arguments[0];
+                val = new Vector(input.Length);
+                for(int i = 0; i < input.Length; i++)
+                    val[i] = 1.0;
+            }
+            else {
+                input = (arguments[0] as PointVector).VectorX;
+                val = (arguments[0] as PointVector).VectorY;
+            }
+
             Vector x = (Vector)arguments[1];
             double var = (double)arguments[2];
-            
+ 
             int length = x.Length;
             PointVector result = new PointVector(length);
 
@@ -35,7 +47,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
                 double y = 0;
                 for(int j = 0; j < input.Length; j++)
-                    y += 0.5 * (SpecialFunctions.Erf((x2 - input[j]) / sqrt2s) - SpecialFunctions.Erf((x1 - input[j]) / sqrt2s));
+                    y += val[j] * 0.5 * (SpecialFunctions.Erf((x2 - input[j]) / sqrt2s) - SpecialFunctions.Erf((x1 - input[j]) / sqrt2s));
 
                 result[i] = new PointD(x[i], y);
 

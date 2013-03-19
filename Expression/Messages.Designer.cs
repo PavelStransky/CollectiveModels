@@ -4183,6 +4183,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Semiclassical level density.
+        /// </summary>
+        internal static string HelpLevelDensity {
+            get {
+                return ResourceManager.GetString("HelpLevelDensity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transforms the string value of the level angular momentum 1/2- and parity into the numerical form -0.5 and vice versa.
         /// </summary>
         internal static string HelpLevelToNumber {
@@ -4278,6 +4287,15 @@ namespace PavelStransky.Expression {
         internal static string HelpLinearRegression {
             get {
                 return ResourceManager.GetString("HelpLinearRegression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the mean value of a given pointvector on an interval.
+        /// </summary>
+        internal static string HelpLinearSample {
+            get {
+                return ResourceManager.GetString("HelpLinearSample", resourceCulture);
             }
         }
         

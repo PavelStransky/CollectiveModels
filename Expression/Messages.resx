@@ -3855,4 +3855,10 @@ Second differing type: {1}</value>
   <data name="HelpStr" xml:space="preserve">
     <value>Converts the argument into string</value>
   </data>
+  <data name="HelpLinearSample" xml:space="preserve">
+    <value>Calculates the mean value of a given pointvector on an interval</value>
+  </data>
+  <data name="HelpLevelDensity" xml:space="preserve">
+    <value>Semiclassical level density</value>
+  </data>
 </root>

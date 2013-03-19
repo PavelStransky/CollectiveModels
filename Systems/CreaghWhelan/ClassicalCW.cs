@@ -24,20 +24,6 @@ namespace PavelStransky.Systems {
             return 0.5 * (px * px + py * py);
         }
 
-        public double V(double x, double y) {
-            double x2 = x * x;
-            double y2 = y * y;
-            double p = x2 - 1.0;
-
-            double bracket = p * p;
-            if(this.Power == 4)
-                bracket *= bracket;
-            else if(this.Power == -4)
-                bracket = bracket + bracket * bracket;
-
-            return bracket + this.Mu * y2 + this.C * x2 * y2 + this.A * x + this.B * x * y2;
-        }
-
         public double E(Vector x) {
             return this.T(x[2], x[3]) + this.V(x[0], x[1]);
         }
@@ -64,26 +50,6 @@ namespace PavelStransky.Systems {
             result[3] = -2.0 * x[1] * (this.Mu + this.B * x[0] + this.C * x[0] * x[0]);
 
             return result;
-        }
-
-        private class BisectionPotential {
-            private ClassicalCW cg;
-            private double x, y, e;
-
-            public BisectionPotential(ClassicalCW cg, double x, double y, double e) {
-                this.cg = cg;
-                this.x = x;
-                this.y = y;
-                this.e = e;
-            }
-
-            public double BisectionX(double x) {
-                return cg.V(x, this.y) - e;
-            }
-
-            public double BisectionY(double y) {
-                return cg.V(this.x, y) - e;
-            }
         }
 
         public Vector IC(double e) {

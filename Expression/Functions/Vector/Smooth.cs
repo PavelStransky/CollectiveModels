@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(1);
             this.SetParam(0, true, true, false, Messages.PVector, Messages.PVectorDescription, null,
-                typeof(Vector), typeof(PointVector));
+                typeof(Vector), typeof(PointVector), typeof(Matrix));
         } 
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -24,6 +24,8 @@ namespace PavelStransky.Expression.Functions.Def {
                 return (item as Vector).Smooth();
             else if(item is PointVector) 
                 return new PointVector((item as PointVector).VectorX, (item as PointVector).VectorY.Smooth());
+            else if(item is Matrix)
+                return (item as Matrix).Smooth();
 
             return null;
         }

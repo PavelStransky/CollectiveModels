@@ -82,5 +82,51 @@ namespace PavelStransky.Systems {
             this.c = (double)param.Get(1.0);
         }
         #endregion
+
+        public double V(double x, double y) {
+            double x2 = x * x;
+            double y2 = y * y;
+            double p = x2 - 1.0;
+
+            double bracket = p * p;
+            if(this.Power == 4)
+                bracket *= bracket;
+            else if(this.Power == -4)
+                bracket = bracket + bracket * bracket;
+
+            return bracket + this.Mu * y2 + this.C * x2 * y2 + this.A * x + this.B * x * y2;
+        }
+
+        protected class BisectionPotential {
+            private CW cg;
+            private double x, y, e;
+
+            public BisectionPotential(CW cg, double x, double y, double e) {
+                this.cg = cg;
+                this.x = x;
+                this.y = y;
+                this.e = e;
+            }
+
+            public double BisectionX(double x) {
+                return cg.V(x, this.y) - e;
+            }
+
+            public double BisectionY(double y) {
+                return cg.V(this.x, y) - e;
+            }
+        }
+
+        protected class BisectionDxPotential {
+            private CW cg;
+
+            public BisectionDxPotential(CW cg) {
+                this.cg = cg;
+            }
+
+            public double Bisection(double x) {
+                return 4.0 * x * (x * x - 1.0) + cg.A;
+            }
+        }
     }
 }

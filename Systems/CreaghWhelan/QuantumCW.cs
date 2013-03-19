@@ -290,6 +290,82 @@ namespace PavelStransky.Systems {
         }
         #endregion
 
+        public double LevelDensity(double e, double step) {
+            BisectionPotential bp = new BisectionPotential(this, 0.0, 0.0, e);
+            Bisection b = new Bisection(bp.BisectionX);
+
+            Vector roots = new Vector(4);
+            double x = 0;
+            int length = 0;
+
+            BisectionDxPotential bdxp = new BisectionDxPotential(this);
+            Bisection bdx = new Bisection(bdxp.Bisection);
+
+            Vector r = new Vector(3);
+            x = bdx.Solve(-10 - System.Math.Abs(this.A), -System.Math.Sqrt(1.0 / 3.0));
+            if(!double.IsNaN(x))
+                r[length++] = x;
+
+            x = bdx.Solve(-System.Math.Sqrt(1.0 / 3.0), System.Math.Sqrt(1.0 / 3.0));
+            if(!double.IsNaN(x))
+                r[length++] = x;
+
+            x = bdx.Solve(System.Math.Sqrt(1.0 / 3.0), 10 + System.Math.Abs(this.A));
+            if(!double.IsNaN(x))
+                r[length++] = x;
+
+            r.Length = length;
+            length = 0;
+
+            x = b.Solve(-10 - System.Math.Abs(this.A), r.FirstItem);
+            if(!double.IsNaN(x))
+                roots[length++] = x;
+
+            for(int i = 1; i < r.Length; i++) {
+                x = b.Solve(r[i - 1], r[i]);
+                if(!double.IsNaN(x))
+                    roots[length++] = x;
+            }
+
+            x = b.Solve(r.LastItem, 10 + System.Math.Abs(this.A));
+            if(!double.IsNaN(x))
+                roots[length++] = x;
+
+            roots.Length = length;
+
+            double result = 0.0;
+
+            if(length > 1) 
+                result += this.LevelDensityInterval(roots[0] + step / 100.0, roots[1] - step / 100.0, step, e);
+           
+            if(length > 2)
+                result += this.LevelDensityInterval(roots[roots.Length - 2] + step / 100.0, roots[roots.Length - 1] - step / 100.0, step, e);
+
+            return 2.0 / (3.0 * System.Math.PI * this.Hbar * this.Hbar) * result;
+        }
+
+        private double LevelDensityIntegrand(double x, double e) {
+            double x2 = x * x;
+            return System.Math.Pow(e - 1.0 - this.A * x + 2.0 * x2 - x2 * x2, 1.5) / System.Math.Sqrt(this.B * x + this.C * x2 + this.Mu);
+        }
+
+        private double LevelDensityInterval(double minx, double maxx, double step, double e) {
+            double result = 0.0;
+
+            double x = minx;
+            double y1 = this.LevelDensityIntegrand(x, e);
+
+            for(x += step; x < maxx; x += step) {
+                double y2 = this.LevelDensityIntegrand(x, e);
+                result += 0.5 * step * (y2 + y1);
+                y1 = y2;
+            }
+
+            result += 0.5 * (maxx - x + step) * (this.LevelDensityIntegrand(maxx, e) + y1);
+
+            return result;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží výsledky do souboru

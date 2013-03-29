@@ -329,6 +329,20 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Poèítá error funkci podle Wikipedia
+        /// http://en.wikipedia.org/wiki/Error_function#Approximation_with_elementary_functions
+        /// </summary>
+        public static double Erf1(double x) {
+            int sign = System.Math.Sign(x);
+            x = System.Math.Abs(x);
+
+            double t = 1.0 / (1.0 + 0.3275911 * x);
+            double b = 0.254829592 * t - 0.284496736 * t * t + 1.421413741 * t * t * t - 1.453152027 * t * t * t * t + 1.061405429 * t * t * t * t * t;
+
+            return sign * (1 - b * System.Math.Exp(-x * x));
+        }
+
+        /// <summary>
         /// Gaussovská funkce
         /// </summary>
         /// <param name="mean">Støední hodnota</param>

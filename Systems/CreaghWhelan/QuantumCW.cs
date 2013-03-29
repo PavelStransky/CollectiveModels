@@ -352,6 +352,9 @@ namespace PavelStransky.Systems {
         private double LevelDensityInterval(double minx, double maxx, double step, double e) {
             double result = 0.0;
 
+            if(maxx <= minx)
+                return result;
+
             double x = minx;
             double y1 = this.LevelDensityIntegrand(x, e);
 

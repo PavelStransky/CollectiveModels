@@ -47,7 +47,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
                 double y = 0;
                 for(int j = 0; j < input.Length; j++)
-                    y += val[j] * 0.5 * (SpecialFunctions.Erf((x2 - input[j]) / sqrt2s) - SpecialFunctions.Erf((x1 - input[j]) / sqrt2s));
+                    y += val[j] * 0.5 * (SpecialFunctions.Erf1((x2 - input[j]) / sqrt2s) - SpecialFunctions.Erf1((x1 - input[j]) / sqrt2s));
 
                 result[i] = new PointD(x[i], y);
 

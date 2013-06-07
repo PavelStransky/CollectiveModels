@@ -3861,4 +3861,13 @@ Second differing type: {1}</value>
   <data name="HelpLevelDensity" xml:space="preserve">
     <value>Semiclassical level density</value>
   </data>
+  <data name="HelpSVD" xml:space="preserve">
+    <value>Singular Value Decomposition</value>
+  </data>
+  <data name="HelpOuterProduct" xml:space="preserve">
+    <value>Outer product of two vectors</value>
+  </data>
+  <data name="HelpShiftMatrix" xml:space="preserve">
+    <value>Create a matrix of shifted vector (with a circle boundary conditions)</value>
+  </data>
 </root>

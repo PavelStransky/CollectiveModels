@@ -178,6 +178,7 @@
     <Compile Include="Functions\Math\SplineValue.cs" />
     <Compile Include="Functions\Matrix\EigenSystemSymmetric.cs" />
     <Compile Include="Functions\Matrix\FillMatrix.cs" />
+    <Compile Include="Functions\Matrix\SVD.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />
     <Compile Include="Functions\Program\Play.cs" />
     <Compile Include="Functions\Program\SaveNow.cs" />
@@ -227,6 +228,8 @@
     <Compile Include="Functions\Vector\IMF.cs" />
     <Compile Include="Functions\Vector\NormalizeDensity.cs" />
     <Compile Include="Functions\Vector\NumberVariance.cs" />
+    <Compile Include="Functions\Vector\OuterProduct.cs" />
+    <Compile Include="Functions\Vector\ShiftMatrix.cs" />
     <Compile Include="Functions\Vector\ShiftX.cs" />
     <Compile Include="Functions\Vector\Spline.cs" />
     <Compile Include="Functions\Vector\Unfolding.cs" />

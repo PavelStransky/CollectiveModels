@@ -191,25 +191,35 @@ namespace PavelStransky.Expression.Functions.Def {
             return result;
         }
 
+        private string[] DivideLine(string s) {
+            return s.Trim(' ', '\n', '\r', '\t', ',').Replace("  ", " ").Replace(' ', ',').Replace('\t', ',').Split(',');
+        }
+
         /// <summary>
         /// Obecný import dat: data ve sloupcích a øádkách, øádky oddìleny \n, sloupce mezerami, tabulátorem nebo èárkou
         /// </summary>
         private object ImportData(StreamReader t) {
-            string s = t.ReadToEnd().Trim(' ', '\n', '\r', '\t', ',').Replace("\r", "");
-            string[] lines = s.Split('\n');
+            t.BaseStream.Position = 0;
+            
+            int numLines = 0;
+            int lineLength = 0;
 
-            Matrix result = null;
-
-            for(int i = 0; i < lines.Length; i++) {
-                string[] its = lines[i].Trim(' ', '\n', '\r', '\t', ',').Replace("  ", " ").Replace(' ', ',').Replace('\t', ',').Split(',');
-
-                if(result == null)
-                    result = new Matrix(lines.Length, its.Length);
-
-                for(int j = 0; j < its.Length; j++)
-                    result[i, j] = double.Parse(its[j]);
+            string s = null;
+            while((s = t.ReadLine()) != null) {
+                lineLength = System.Math.Max(lineLength, this.DivideLine(s).Length);
+                numLines++;
             }
 
+            Matrix result = new Matrix(numLines, lineLength);
+            t.BaseStream.Position = 0;
+
+            for(int i = 0; i < numLines; i++) {
+                string[] line = this.DivideLine(t.ReadLine());
+
+                for(int j = 0; j < line.Length; j++)
+                    result[i, j] = double.Parse(line[j]);
+            }
+            
             return result;
         }
 

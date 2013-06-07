@@ -283,5 +283,90 @@ namespace PavelStransky.DLLWrapper {
 
             return result;
         }
+
+        /// <summary>
+        /// Singular Value Decomposition
+        /// </summary>
+        /// <param name="matrix">Vstupní obdélníková matice</param>
+        public static void dgesvd(Matrix matrix, Matrix resultU, Vector resultS, Matrix resultVT) {
+            byte jobu = (byte)'S';
+            byte jobvt = (byte)'S';
+
+            int m = matrix.LengthX;
+            int n = matrix.LengthY;
+
+            int mindim = System.Math.Min(m, n);
+
+            double* a = Memory.NewDouble(m * n);
+            int k = 0;
+
+            for(int j = 0; j < n; j++)
+                for(int i = 0; i < m; i++) 
+                    a[k++] = matrix[i, j];
+
+            int lda = m;
+
+            double* s = Memory.NewDouble(mindim);
+
+            double* u = Memory.NewDouble(m * mindim);
+            int ldu = m;
+
+            double* vt = Memory.NewDouble(mindim * n);
+            int ldvt = mindim;
+
+            int lwork = -1;
+            double* work = Memory.NewDouble(1);
+
+            int info = 0;
+
+            bool success = false;
+            try {
+                // Nejprve zjistíme optimální velikost pomocného pole
+                LAPackDLLWrapper.dgesvd(&jobu, &jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info);
+
+                lwork = (int)work[0];
+
+                Memory.Delete(work);
+                work = Memory.NewDouble(lwork);
+
+                // Vlastní výpoèet
+                LAPackDLLWrapper.dgesvd(&jobu, &jobvt, &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork, &info);
+                success = true;
+            }
+            finally {
+                Memory.Delete(work);
+            }
+
+            // Zpracování výsledkù
+            try {
+                if(success) {
+                    k = 0;
+                    for(int j = 0; j < mindim; j++)
+                        for(int i = 0; i < m; i++) {
+                            if(i < resultU.LengthX && j < resultU.LengthY)
+                                resultU[i, j] = u[k];
+                            k++;
+                        }
+
+                    k = 0;
+                    for(int j = 0; j < n; j++)
+                        for(int i = 0; i < mindim; i++) {
+                            if(i < resultVT.LengthX && j < resultVT.LengthY)
+                                resultVT[i, j] = vt[k];
+                            k++;
+                        }
+
+                    for(int i = 0; i < mindim; i++)
+                        if(i < resultS.Length)
+                            resultS[i] = s[i];
+                }
+            }
+            finally {
+                Memory.Delete(a);
+                Memory.Delete(s);
+                Memory.Delete(u);
+                Memory.Delete(vt);
+            }
+        }
     }
 }

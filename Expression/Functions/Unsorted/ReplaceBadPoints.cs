@@ -42,11 +42,11 @@ namespace PavelStransky.Expression.Functions.Def {
                 PointVector result = pv.Clone() as PointVector;
 
                 for(int i = 0; i < length; i++) {
-                    PointD p = pv[i];
+                    PointD p = result[i];
                     if(double.IsNaN(p.X) || double.IsInfinity(p.X))
-                        pv[i].X = d;
+                        result[i].X = d;
                     if(double.IsNaN(p.Y) || double.IsInfinity(p.Y))
-                        pv[i].Y = d;
+                        result[i].Y = d;
                 }
 
                 return result;

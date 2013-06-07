@@ -4633,6 +4633,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outer product of two vectors.
+        /// </summary>
+        internal static string HelpOuterProduct {
+            get {
+                return ResourceManager.GetString("HelpOuterProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates a partial trace for an eigenstate (returns it as a density matrix).
         /// </summary>
         internal static string HelpPartialTrace {
@@ -5326,6 +5335,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a matrix of shifted vector (with a circle boundary conditions).
+        /// </summary>
+        internal static string HelpShiftMatrix {
+            get {
+                return ResourceManager.GetString("HelpShiftMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shifts the X values of a PointVector so that the first auxiliary PointVector fits the second auxiliary PointVector.
         /// </summary>
         internal static string HelpShiftX {
@@ -5565,6 +5583,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSumSquare {
             get {
                 return ResourceManager.GetString("HelpSumSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Singular Value Decomposition.
+        /// </summary>
+        internal static string HelpSVD {
+            get {
+                return ResourceManager.GetString("HelpSVD", resourceCulture);
             }
         }
         

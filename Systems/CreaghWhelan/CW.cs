@@ -128,5 +128,20 @@ namespace PavelStransky.Systems {
                 return 4.0 * x * (x * x - 1.0) + cg.A;
             }
         }
+
+        protected class BisectionY {
+            private CW cg;
+            private double e;
+
+            public BisectionY(CW cg, double e) {
+                this.cg = cg;
+                this.e = e;
+            }
+
+            public double Bisection(double x) {
+                double d = x * x - 1;
+                return -System.Math.Sqrt((this.e - d * d - cg.A * x) / (cg.B * x + cg.C * x * x + cg.mu));
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -29,7 +30,22 @@ namespace PavelStransky.Systems {
         }
 
         public Matrix Jacobian(Vector x) {
-            throw new Exception("The method or operation is not implemented.");
+            Matrix result = new Matrix(4);
+
+            double dV2dxdx = 12.0 * x[0] * x[0] + 2.0 * this.C * x[1] * x[1] - 4;
+            double dV2dxdy = 2.0 * x[1] * (this.B + 2.0 * this.C * x[0]);
+            double dV2dydy = 2.0 * (x[0] * (this.B + this.C * x[0]) + this.Mu);
+
+            result[0, 2] = 1;
+            result[1, 3] = result[0, 2];
+
+            result[2, 0] = -dV2dxdx;
+            result[2, 1] = -dV2dxdy;
+
+            result[3, 0] = result[2, 1];
+            result[3, 1] = -dV2dydy;
+
+            return result;
         }
 
         public Vector Equation(Vector x) {
@@ -100,7 +116,29 @@ namespace PavelStransky.Systems {
         }
 
         public bool IC(Vector ic, double e) {
-            throw new Exception("The method or operation is not implemented.");
+            double tbracket = 2.0 * (e - this.V(ic[0], ic[1]));
+
+            if(double.IsNaN(ic[2]) && double.IsNaN(ic[3])) {
+                ic[2] = this.random.NextDouble() * System.Math.Sqrt(tbracket);
+
+                if(this.random.Next(2) == 0)
+                    ic[2] = -ic[2];
+            }
+
+            if(double.IsNaN(ic[2]))
+                tbracket -= ic[3] * ic[3];
+            else
+                tbracket -= ic[2] * ic[2];
+
+            if(tbracket < 0.0)
+                return false;
+
+            if(double.IsNaN(ic[2]))
+                ic[2] = System.Math.Sqrt(tbracket) * (this.random.Next(2) == 0 ? -1.0 : 1.0);
+            else
+                ic[3] = System.Math.Sqrt(tbracket) * (this.random.Next(2) == 0 ? -1.0 : 1.0);
+
+            return true;
         }
 
         private double VX(double x) {
@@ -110,61 +148,83 @@ namespace PavelStransky.Systems {
         public Vector Bounds(double e) {
             Vector result = new Vector(8);
 
-            result[0] = -2;
-            result[1] = 2;
-            result[2] = -2;
-            result[3] = 2;
-            result[4] = -2;
-            result[5] = 2;
-            result[6] = -2;
-            result[7] = 2;
+            // Extreemes
+            BisectionDxPotential bdxp = new BisectionDxPotential(this);
+            Bisection b = new Bisection(bdxp.Bisection);
 
-            return result;
+            ArrayList ext = new ArrayList();
+            double coef = 1.0 / System.Math.Sqrt(3.0);
 
+            double x = b.Solve(-10 - System.Math.Abs(this.A), -coef);
+            if(!double.IsNaN(x))
+                ext.Add(x);
+            x = b.Solve(-coef, coef);
+            if(!double.IsNaN(x))
+                ext.Add(x);
+            x = b.Solve(coef, 10 + System.Math.Abs(this.A));
+            if(!double.IsNaN(x))
+                ext.Add(x);
+
+            // Minima
+            Vector vext = new Vector(ext.Count);
+            for(int i = 0; i < ext.Count; i++)
+                vext[i] = this.V((double)ext[i], 0.0);
+            double min = (double)ext[vext.MinIndex()];
+            double vmin = vext.Min();
+
+            // Solutions
             BisectionPotential bp = new BisectionPotential(this, 0.0, 0.0, e);
-            Bisection b = new Bisection(bp.BisectionX);
+            b = new Bisection(bp.BisectionX);
 
-            // x
-            if(e <= 1) {
-                double x1 = b.Solve(-10 - System.Math.Abs(this.A), -1);
-                double x2 = b.Solve(-1, 0);
-                double x3 = b.Solve(0, 1);
-                double x4 = b.Solve(1, 10 + System.Math.Abs(this.A));
+            ArrayList sol = new ArrayList();
 
-                if(!double.IsNaN(x1))
-                    result[0] = x1;
-                else if(!double.IsNaN(x2))
-                    result[0] = x2;
-                else result[0] = x3;
-
-                if(!double.IsNaN(x4))
-                    result[1] = x4;
-                else if(!double.IsNaN(x3))
-                    result[1] = x3;
-                else result[1] = x2;
+            x = b.Solve(-10 - System.Math.Abs(this.A), (double)ext[0]);
+            if(!double.IsNaN(x))
+                sol.Add(x);
+            for(int i = 0; i < ext.Count - 1; i++) {
+                x = b.Solve((double)ext[i], (double)ext[i + 1]);
+                if(!double.IsNaN(x))
+                    sol.Add(x);
             }
-            else {
-                result[0] = b.Solve(-10 - e, 0);
-                result[1] = b.Solve(0, e + 10);                
-            }
+            x = b.Solve((double)ext[ext.Count - 1], 10 + System.Math.Abs(this.A));
+            if(!double.IsNaN(x))
+                sol.Add(x);
+
+            result[0] = (double)sol[0];
+            result[1] = (double)sol[sol.Count - 1];
+
+            double pisvejc = 1E-6;
 
             // y
-            bp = new BisectionPotential(this, result[0], 0.0, e);
-            b = new Bisection(bp.BisectionY);
+            double minxy = min;
+            double maxxy = minxy < 0 ? System.Math.Min((double)sol[1] - pisvejc, 0.0) : System.Math.Max((double)sol[sol.Count - 2] + pisvejc, 0.0);
 
-            double y = b.Solve(0, 10 + e + System.Math.Abs(this.B));
-            result[1] = (2.0 * random.NextDouble() - 1.0) * y;
+            BisectionY by = new BisectionY(this, e);
+            b = new Bisection(by.Bisection);
+            double y1 = b.Minimum(System.Math.Min(minxy, maxxy), System.Math.Max(minxy, maxxy));
 
-            result[2] = (2.0 * random.NextDouble() - 1.0) * System.Math.Sqrt(2.0 * (e - this.V(result[0], result[1])));
-            result[3] = System.Math.Sqrt(2.0 * (e - this.V(result[0], result[1]) - this.T(result[2], 0.0)));
-            if(random.Next(2) == 0)
-                result[3] = -result[3];
+            double y2 = 0.0;
+            if(minxy < 0.0 && result[1] > 0.0)
+                y2 = b.Minimum(System.Math.Max(0.0, (double)sol[sol.Count - 2] + pisvejc), result[1]);
+            if(minxy > 0.0 && result[0] < 0.0)
+                y2 = b.Minimum((double)result[0], System.Math.Min(0.0, (double)sol[1] - pisvejc));
+            if(double.IsNaN(y2) || double.IsInfinity(y2))
+                y2 = 0.0;           
+
+            result[2] = System.Math.Min(by.Bisection(y1), by.Bisection(y2));
+            result[3] = -result[2];
+
+            result[5] = System.Math.Sqrt(2.0 * (e - vmin));
+            result[4] = -result[5];
+
+            result[6] = result[4];
+            result[7] = result[5];
 
             return result;
         }
 
         public Vector CheckBounds(Vector bounds) {
-            throw new Exception("The method or operation is not implemented.");
+            return bounds;
         }
 
         public int DegreesOfFreedom {
@@ -180,9 +240,13 @@ namespace PavelStransky.Systems {
         }
 
         public int SALIDecision(double meanSALI, double t) {
-            throw new Exception("The method or operation is not implemented.");
-        }
+            if(meanSALI > 6.0 + t / 200.0)
+                return 0;
+            if(meanSALI < (t - 500.0) / 50.0)
+                return 1;
 
+            return -1;
+        }
         #endregion
 
         public ClassicalCW(Core.Import import) : base(import) { }

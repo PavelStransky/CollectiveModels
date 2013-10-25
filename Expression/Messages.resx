@@ -3870,4 +3870,13 @@ Second differing type: {1}</value>
   <data name="HelpShiftMatrix" xml:space="preserve">
     <value>Create a matrix of shifted vector (with a circle boundary conditions)</value>
   </data>
+  <data name="HelpRotate" xml:space="preserve">
+    <value>Rotates the elements of the vector</value>
+  </data>
+  <data name="PRotationOffset" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="PRotationOffsetDescription" xml:space="preserve">
+    <value>Offset for rotation</value>
+  </data>
 </root>

@@ -1306,6 +1306,23 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Rotates the elements of the vector
+        /// </summary>
+        /// <returns></returns>
+        public Vector Rotate(int index) {
+            int length = this.Length;
+            Vector result = new Vector(length);
+
+            if(index < 0)
+                index += ((-index % length) + 1) * length;
+
+            for(int i = 0; i < length; i++)
+                result[i] = this[(i + index + length) % length];
+
+            return result;
+        }
+
+        /// <summary>
         /// Detrended fluctuation analysis
         /// </summary>
         /// <param name="allPoints">All points for calculation</param>

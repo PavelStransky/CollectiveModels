@@ -212,6 +212,118 @@ namespace PavelStransky.Systems {
             return result;
         }
 
+        protected class BisectionPotential {
+            private PT3 pt3;
+            private double e;
+
+            public BisectionPotential(PT3 pt3, double e) {
+                this.pt3 = pt3;
+                this.e = e;
+            }
+
+            public double Bisection(double x) {
+                return pt3.V(x) - e;
+            }
+        }
+
+        protected class BisectionDxPotential {
+            private PT3 pt3;
+
+            public BisectionDxPotential(PT3 pt3) {
+                this.pt3 = pt3;
+            }
+
+            public double Bisection(double x) {
+                return 4.0 * x * x * x + 2.0 * pt3.a * x + pt3.b;
+            }
+        }
+
+
+        public double LevelDensity(double e, double step) {
+            BisectionPotential bp = new BisectionPotential(this, e);
+            Bisection b = new Bisection(bp.Bisection);
+
+            Vector roots = new Vector(4);
+            double x = 0;
+            int length = 0;
+
+            BisectionDxPotential bdxp = new BisectionDxPotential(this);
+            Bisection bdx = new Bisection(bdxp.Bisection);
+
+            Vector r = new Vector(3);
+
+            if(this.a < 0) {
+                double c = System.Math.Sqrt(-this.a / 6.0);
+                x = bdx.Solve(-10 + this.a, -c);
+                if(!double.IsNaN(x))
+                    r[length++] = x;
+
+                x = bdx.Solve(-c, c);
+                if(!double.IsNaN(x))
+                    r[length++] = x;
+
+                x = bdx.Solve(c, 10 - this.a);
+                if(!double.IsNaN(x))
+                    r[length++] = x;
+            }
+            else {
+                x = bdx.Solve(-10 - this.a, 10 + this.a);
+            }
+
+            r.Length = length;
+            length = 0;
+
+            x = b.Solve(-10 - System.Math.Abs(this.a), r.FirstItem);
+            if(!double.IsNaN(x))
+                roots[length++] = x;
+
+            for(int i = 1; i < r.Length; i++) {
+                x = b.Solve(r[i - 1], r[i]);
+                if(!double.IsNaN(x))
+                    roots[length++] = x;
+            }
+
+            x = b.Solve(r.LastItem, 10 + System.Math.Abs(this.a));
+            if(!double.IsNaN(x))
+                roots[length++] = x;
+
+            roots.Length = length;
+
+            double result = 0.0;
+
+            if(length > 1)
+                result += this.LevelDensityInterval(roots[0] + step / 100.0, roots[1] - step / 100.0, step, e);
+
+            if(length > 2)
+                result += this.LevelDensityInterval(roots[roots.Length - 2] + step / 100.0, roots[roots.Length - 1] - step / 100.0, step, e);
+
+            return 1.0 / (System.Math.PI * this.hbar) * result;
+        }
+
+        private double LevelDensityIntegrand(double x, double e) {
+            return System.Math.Sqrt(2.0 * (e - this.V(x)));
+        }
+
+        private double LevelDensityInterval(double minx, double maxx, double step, double e) {
+            double result = 0.0;
+
+            if(maxx <= minx)
+                return result;
+
+            double x = minx;
+            double y1 = this.LevelDensityIntegrand(x, e);
+
+            for(x += step; x < maxx; x += step) {
+                double y2 = this.LevelDensityIntegrand(x, e);
+                result += 0.5 * step * (y2 + y1);
+                y1 = y2;
+            }
+
+            result += 0.5 * (maxx - x + step) * (this.LevelDensityIntegrand(maxx, e) + y1);
+
+            return result;
+        }
+
         #region Implementace IMinMax
         public PointD VPoint(double x) {
             return new PointD(x, this.V(x));

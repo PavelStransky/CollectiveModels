@@ -140,6 +140,8 @@ namespace PavelStransky.Expression {
             LWidth = 1002,
             LName = 1003,
             LDash = 1004,
+            LColorFnc = 1005,
+            LWidthFnc = 1006,
 
             PColor = 1020,
             PStyle = 1021,
@@ -179,7 +181,9 @@ namespace PavelStransky.Expression {
             PixelH = 10023,
 
             PColorFncBuffer = 10100,
-            BColorFncBuffer = 10101
+            BColorFncBuffer = 10101,
+            LColorFncBuffer = 10102,
+            LWidthFncBuffer = 10103
         }
 
         private static GraphParameterDefinitions globalParams;
@@ -312,6 +316,8 @@ namespace PavelStransky.Expression {
             curveParams.Add(ParametersIndications.LWidth, Messages.GPLWidth, Messages.GPLWidthDescription, 1);
             curveParams.Add(ParametersIndications.LName, Messages.GPLName, Messages.GPLNameDescription, string.Empty);
             curveParams.Add(ParametersIndications.LDash, Messages.GPLDash, Messages.GPLDashDescription, System.Drawing.Drawing2D.DashStyle.Solid);
+            curveParams.Add(ParametersIndications.LColorFnc, Messages.GPLColorFnc, Messages.GPLColorFncDescription, new UserFunction());
+            curveParams.Add(ParametersIndications.LWidthFnc, Messages.GPLWidthFnc, Messages.GPLWidthFncDescription, new UserFunction());
             curveParams.Add(ParametersIndications.PColor, Messages.GPPColor, Messages.GPPColorDescription, Color.Brown);
             curveParams.Add(ParametersIndications.PStyle, Messages.GPPStyle, Messages.GPPStyleDescription, PointStyles.FCircle);
             curveParams.Add(ParametersIndications.PSize, Messages.GPPSize, Messages.GPPSizeDescription, 2);

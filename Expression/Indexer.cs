@@ -156,8 +156,10 @@ namespace PavelStransky.Expression {
                             object result = this.assignFn(m[i[k], j[l]]);
                             if(result is int)
                                 m[i[k], j[l]] = (double)(int)result;
-                            else
+                            else if(result is double)
                                 m[i[k], j[l]] = (double)result;
+                            else if(result is Matrix)
+                                m[i[k], j[l]] = (result as Matrix)[k, l];
                         }
                 }
             }

@@ -296,9 +296,9 @@ namespace PavelStransky.Expression {
         /// </summary>
         /// <param name="cv">Parametry køivky</param>
         private void SetColorFncBuffer(GraphParameterValues cv) {
-            UserFunction colorFnc = (UserFunction)cv[ParametersIndications.PColorFnc];
+            UserFunction pColorFnc = (UserFunction)cv[ParametersIndications.PColorFnc];
 
-            if(colorFnc.Text != string.Empty) {
+            if(pColorFnc.Text != string.Empty) {
                 PointVector data = (PointVector)cv[ParametersIndications.DataCurves];
 
                 int num = data.Length;
@@ -308,7 +308,7 @@ namespace PavelStransky.Expression {
                 try {
                     for(i = 0; i < num; i++) {
                         PointD p = data[i];
-                        object v = colorFnc.EvaluateP(p.X, p.Y);
+                        object v = pColorFnc.EvaluateP(p.X, p.Y);
                         if(v is string)
                             buffer[i] = Color.FromName(v as string);
                         else if(v is int)
@@ -318,7 +318,6 @@ namespace PavelStransky.Expression {
                         } 
                     }
                 }
-
                 catch(Exception) {
                     Color dc = (Color)cv[ParametersIndications.PColor];
 
@@ -327,6 +326,65 @@ namespace PavelStransky.Expression {
                 }
 
                 cv[ParametersIndications.PColorFncBuffer] = buffer;
+            }
+
+            UserFunction lColorFnc = (UserFunction)cv[ParametersIndications.LColorFnc];
+
+            if(lColorFnc.Text != string.Empty) {
+                PointVector data = (PointVector)cv[ParametersIndications.DataCurves];
+
+                int num = data.Length;
+                TArray buffer = new TArray(typeof(Color), num);
+                int i = 0;
+
+                try {
+                    for(i = 1; i < num; i++) {
+                        PointD p = data[i];
+                        object v = lColorFnc.EvaluateP(data[i - 1].X, data[i - 1].Y, data[i].X, data[i].Y);
+                        if(v is string)
+                            buffer[i] = Color.FromName(v as string);
+                        else if(v is int)
+                            buffer[i] = ColorArray.GetColor((int)v);
+                        else if(v is Vector && (v as Vector).Length == 3) {
+                            buffer[i] = Color.FromArgb((int)(255.0 * ((Vector)v)[0]), (int)(255.0 * ((Vector)v)[1]), (int)(255.0 * ((Vector)v)[2]));
+                        }
+                    }
+                }
+                catch(Exception) {
+                    Color dc = (Color)cv[ParametersIndications.PColor];
+
+                    for(; i < num; i++)
+                        buffer[i] = dc;
+                }
+
+                cv[ParametersIndications.LColorFncBuffer] = buffer;
+            }
+
+            UserFunction lWidthFnc = (UserFunction)cv[ParametersIndications.LWidthFnc];
+
+            if(lWidthFnc.Text != string.Empty) {
+                PointVector data = (PointVector)cv[ParametersIndications.DataCurves];
+
+                int num = data.Length;
+                TArray buffer = new TArray(typeof(int), num);
+                int i = 0;
+
+                try {
+                    for(i = 1; i < num; i++) {
+                        PointD p = data[i];
+                        object v = lWidthFnc.EvaluateP(data[i - 1].X, data[i - 1].Y, data[i].X, data[i].Y);
+                        if(v is int)
+                            buffer[i] = (int)v;                        
+                    }
+                }
+                catch(Exception) {
+                    int width = (int)cv[ParametersIndications.LWidth];
+
+                    for(; i < num; i++)
+                        buffer[i] = width;
+                }
+
+                cv[ParametersIndications.LWidthFncBuffer] = buffer;
             }
         }
 

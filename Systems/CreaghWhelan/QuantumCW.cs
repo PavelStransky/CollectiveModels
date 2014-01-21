@@ -291,6 +291,9 @@ namespace PavelStransky.Systems {
         #endregion
 
         public double LevelDensity(double e, double step) {
+            if(this.Power != 2)
+                throw new SystemsException("This function is implemented only for power = 2");
+
             BisectionPotential bp = new BisectionPotential(this, 0.0, 0.0, e);
             Bisection b = new Bisection(bp.BisectionX);
 

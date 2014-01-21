@@ -3879,4 +3879,52 @@ Second differing type: {1}</value>
   <data name="PRotationOffsetDescription" xml:space="preserve">
     <value>Offset for rotation</value>
   </data>
+  <data name="GPLColorFnc" xml:space="preserve">
+    <value>lcolorfnc</value>
+  </data>
+  <data name="GPLColorFncDescription" xml:space="preserve">
+    <value>Name of the line color function</value>
+  </data>
+  <data name="GPLWidthFnc" xml:space="preserve">
+    <value>lwidthfnc</value>
+  </data>
+  <data name="GPLWidthFncDescription" xml:space="preserve">
+    <value>Name of the line width function</value>
+  </data>
+  <data name="HelpIsConvex" xml:space="preserve">
+    <value>For the Creagh-Whelan system returns true if the equipotential surface at the given energy is convex</value>
+  </data>
+  <data name="PCW" xml:space="preserve">
+    <value>cw</value>
+  </data>
+  <data name="PCWDescription" xml:space="preserve">
+    <value>Creagh-Whelan system</value>
+  </data>
+  <data name="EMInvalidRank" xml:space="preserve">
+    <value>Invalid rank of the input array.</value>
+  </data>
+  <data name="EMInvalidRankDetail" xml:space="preserve">
+    <value>The rank must be {0} instead of {1}.</value>
+  </data>
+  <data name="HelpCopy" xml:space="preserve">
+    <value>Copies a given object i-times and returns as TArray</value>
+  </data>
+  <data name="HelpInvertArray" xml:space="preserve">
+    <value>From an array f[i][j] makes array f[j][i]</value>
+  </data>
+  <data name="PArray" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="PArrayDescription" xml:space="preserve">
+    <value>array</value>
+  </data>
+  <data name="PObject" xml:space="preserve">
+    <value>o</value>
+  </data>
+  <data name="PObjectDescription" xml:space="preserve">
+    <value>Object</value>
+  </data>
+  <data name="HelpPotentialMeanCW" xml:space="preserve">
+    <value>For the Creagh-Whelan system returns the mean of the potential well at given energies</value>
+  </data>
 </root>

@@ -426,6 +426,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid rank of the input array..
+        /// </summary>
+        internal static string EMInvalidRank {
+            get {
+                return ResourceManager.GetString("EMInvalidRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rank must be {0} instead of {1}..
+        /// </summary>
+        internal static string EMInvalidRankDetail {
+            get {
+                return ResourceManager.GetString("EMInvalidRankDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List cannot be converted into an array. There are items of Incompatible types in the list..
         /// </summary>
         internal static string EMListToArrayConvert {
@@ -2059,6 +2077,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to lcolorfnc.
+        /// </summary>
+        internal static string GPLColorFnc {
+            get {
+                return ResourceManager.GetString("GPLColorFnc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the line color function.
+        /// </summary>
+        internal static string GPLColorFncDescription {
+            get {
+                return ResourceManager.GetString("GPLColorFncDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ldash.
         /// </summary>
         internal static string GPLDash {
@@ -2181,6 +2217,24 @@ namespace PavelStransky.Expression {
         internal static string GPLWidthDescription {
             get {
                 return ResourceManager.GetString("GPLWidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lwidthfnc.
+        /// </summary>
+        internal static string GPLWidthFnc {
+            get {
+                return ResourceManager.GetString("GPLWidthFnc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the line width function.
+        /// </summary>
+        internal static string GPLWidthFncDescription {
+            get {
+                return ResourceManager.GetString("GPLWidthFncDescription", resourceCulture);
             }
         }
         
@@ -3072,6 +3126,15 @@ namespace PavelStransky.Expression {
         internal static string HelpConvexConcave {
             get {
                 return ResourceManager.GetString("HelpConvexConcave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copies a given object i-times and returns as TArray.
+        /// </summary>
+        internal static string HelpCopy {
+            get {
+                return ResourceManager.GetString("HelpCopy", resourceCulture);
             }
         }
         
@@ -4039,6 +4102,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From an array f[i][j] makes array f[j][i].
+        /// </summary>
+        internal static string HelpInvertArray {
+            get {
+                return ResourceManager.GetString("HelpInvertArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For the Creagh-Whelan system returns true if the equipotential surface at the given energy is convex.
+        /// </summary>
+        internal static string HelpIsConvex {
+            get {
+                return ResourceManager.GetString("HelpIsConvex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Returns true if the values are equal within given difference.
         /// </summary>
         internal static string HelpIsEqual {
@@ -4791,6 +4872,15 @@ namespace PavelStransky.Expression {
         internal static string HelpPolynomIntegrate {
             get {
                 return ResourceManager.GetString("HelpPolynomIntegrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For the Creagh-Whelan system returns the mean of the potential well at given energies.
+        /// </summary>
+        internal static string HelpPotentialMeanCW {
+            get {
+                return ResourceManager.GetString("HelpPotentialMeanCW", resourceCulture);
             }
         }
         
@@ -7162,6 +7252,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to a.
+        /// </summary>
+        internal static string PArray {
+            get {
+                return ResourceManager.GetString("PArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to array.
+        /// </summary>
+        internal static string PArrayDescription {
+            get {
+                return ResourceManager.GetString("PArrayDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
         internal static string PAssociatedOrder {
@@ -7599,6 +7707,24 @@ namespace PavelStransky.Expression {
         internal static string PCriticalValueDescription {
             get {
                 return ResourceManager.GetString("PCriticalValueDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cw.
+        /// </summary>
+        internal static string PCW {
+            get {
+                return ResourceManager.GetString("PCW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creagh-Whelan system.
+        /// </summary>
+        internal static string PCWDescription {
+            get {
+                return ResourceManager.GetString("PCWDescription", resourceCulture);
             }
         }
         
@@ -9489,6 +9615,24 @@ namespace PavelStransky.Expression {
         internal static string PNumStepsDescription {
             get {
                 return ResourceManager.GetString("PNumStepsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to o.
+        /// </summary>
+        internal static string PObject {
+            get {
+                return ResourceManager.GetString("PObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Object.
+        /// </summary>
+        internal static string PObjectDescription {
+            get {
+                return ResourceManager.GetString("PObjectDescription", resourceCulture);
             }
         }
         

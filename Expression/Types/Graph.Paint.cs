@@ -337,8 +337,29 @@ namespace PavelStransky.Expression {
 
                     this.SetDashStyle(linePen, iv[ParametersIndications.LDash]);
 
-                    if(p.Length >= 2)
-                        this.DrawLine(g, p, linePen, lineStyle);
+                    UserFunction colorFnc = null;
+                    TArray colorBuffer = null;
+
+                    if(p.Length >= 2) {
+                        colorFnc = (UserFunction)iv[ParametersIndications.LColorFnc];
+                        colorBuffer = (TArray)iv[ParametersIndications.LColorFncBuffer];
+
+                        UserFunction widthFnc = (UserFunction)iv[ParametersIndications.LWidthFnc];
+                        TArray widthBuffer = (TArray)iv[ParametersIndications.LWidthFncBuffer];
+
+                        if(colorFnc.Text == string.Empty || colorBuffer == null) {
+                            if(widthFnc.Text == string.Empty || widthBuffer == null)
+                                this.DrawLine(g, p, linePen, lineStyle);
+                            else
+                                this.DrawLineW(g, p, linePen, widthBuffer);
+                        }
+                        else {
+                            if(widthFnc.Text == string.Empty || widthBuffer == null)
+                                this.DrawLine(g, p, linePen, colorBuffer);
+                            else
+                                this.DrawLineW(g, p, linePen, colorBuffer, widthBuffer);
+                        }
+                    }
 
                     // ChybovÈ ˙seËky
                     if(errors.Length > 0) {
@@ -356,11 +377,11 @@ namespace PavelStransky.Expression {
                     }
 
                     // Barva bod˘ podle funkce
-                    UserFunction colorFnc = (UserFunction)iv[ParametersIndications.PColorFnc];
-                    TArray colorBuffer = (TArray)iv[ParametersIndications.PColorFncBuffer];
+                    colorFnc = (UserFunction)iv[ParametersIndications.PColorFnc];
+                    colorBuffer = (TArray)iv[ParametersIndications.PColorFncBuffer];
 
                     if(colorFnc.Text == string.Empty || colorBuffer == null)
-                        this.DrawPoints(g, p, pointPen, pointStyle, (int)pointSize);
+                        this.DrawPoints(g, p, pointPen, pointStyle, pointSize);
                     else
                         this.DrawPoints(g, p, colorBuffer, pointStyle, pointSize);
 
@@ -612,8 +633,8 @@ namespace PavelStransky.Expression {
 
                 SizeF size = g.MeasureString(subTitle, font);
 
-                int x = rectangleM.Right - (int)size.Width + 10;
-                int y = rectangle.Top + 10;
+                int x = rectangleM.Right - (int)size.Width;
+                int y = rectangle.Top + ((int)size.Height - 1) / 2;
 
                 g.DrawString(subTitle, font, subTitlePen.Brush, x, y);
             }
@@ -695,6 +716,49 @@ namespace PavelStransky.Expression {
                 case Graph.LineStyles.Line:
                     g.DrawLines(pen, points);
                     break;
+            }
+        }
+
+        /// <summary>
+        /// NakreslÌ Ë·ru
+        /// </summary>
+        /// <param name="g">Object Graphics</param>
+        /// <param name="points">Body pro vykreslenÌ Ë·ry</param>
+        /// <param name="widthBuffer">Buffer s tlouöùkami Ëar</param>
+        private void DrawLineW(Graphics g, Point[] points, Pen pen, TArray widthBuffer) {
+            int num = points.Length;
+            for(int i = 1; i < num; i++) {
+                pen.Width = (int)widthBuffer[i];
+                g.DrawLine(pen, points[i - 1], points[i]);
+            }
+        }
+
+        /// <summary>
+        /// NakreslÌ Ë·ru
+        /// </summary>
+        /// <param name="g">Object Graphics</param>
+        /// <param name="points">Body pro vykreslenÌ Ë·ry</param>
+        /// <param name="colorBuffer">Buffer s barvami Ëar</param>
+        private void DrawLine(Graphics g, Point[] points, Pen pen, TArray colorBuffer) {
+            int num = points.Length;
+            for(int i = 1; i < num; i++) {
+                pen.Color = (Color)colorBuffer[i];
+                g.DrawLine(pen, points[i - 1], points[i]);
+            }
+        }
+
+        /// <summary>
+        /// NakreslÌ Ë·ru
+        /// </summary>
+        /// <param name="g">Object Graphics</param>
+        /// <param name="points">Body pro vykreslenÌ Ë·ry</param>
+        /// <param name="colorBuffer">Buffer s barvami Ëar</param>
+        private void DrawLineW(Graphics g, Point[] points, Pen pen, TArray colorBuffer, TArray widthBuffer) {
+            int num = points.Length;
+            for(int i = 1; i < num; i++) {
+                pen.Color = (Color)colorBuffer[i];
+                pen.Width = (int)widthBuffer[i];
+                g.DrawLine(pen, points[i - 1], points[i]);
             }
         }
 

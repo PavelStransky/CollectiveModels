@@ -37,12 +37,15 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Provede chi^2 fit a vrátí hodnotu Brodyho parametru
+        /// Provede chi^2 fit a vrátí hodnotu Brodyho parametru a standardní odchylku
         /// </summary>
         /// <param name="precision">Pøesnost výpoètu</param>
-        public double Fit(double precision) {
+        public Vector Fit(double precision) {
             Bisection b = new Bisection(this.MinimizeFunction);
-            return b.Minimum(0.0, 1.0, precision);
+            Vector result = new Vector(2);
+            result[0] = b.Minimum(0.0, 1.0, precision);
+            result[1] = System.Math.Sqrt(this.MinimizeFunction(result[0])/this.data.Length);
+            return result;
         }
     }
 }

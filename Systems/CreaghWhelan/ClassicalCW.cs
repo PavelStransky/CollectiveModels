@@ -74,26 +74,16 @@ namespace PavelStransky.Systems {
 
             Vector result = new Vector(4);
 
-            // x
-            if (e <= 1) {
-                double x1 = b.Solve(-10 - System.Math.Abs(this.A), -1);
-                double x2 = b.Solve(-1, 0);
-                double x3 = b.Solve(0, 1);
-                double x4 = b.Solve(1, 10 + System.Math.Abs(this.A));
-
-                if (!double.IsNaN(x1) && !double.IsNaN(x2)) {
-                    if (!double.IsNaN(x3) && !double.IsNaN(x4) && random.Next(2) == 0)
-                        result[0] = random.NextDouble() * (x4 - x3) + x3;
-                    else
-                        result[0] = random.NextDouble() * (x2 - x1) + x1;
-                }
+            Vector roots = this.RootsX(e);
+            if(roots.Length == 2)
+                result[0] = random.NextDouble() * (roots[1] - roots[0]) +roots[0];
+            else if(roots.Length == 3)
+                result[0] = random.NextDouble() *(roots[2]-roots[0])+roots[0];
+            else if(roots.Length == 4) {
+                if(random.Next(2) == 0)
+                    result[0] = random.NextDouble() * (roots[1] - roots[0]) + roots[0];
                 else
-                    result[0] = random.NextDouble() * (x4 - x3) + x3;
-            }
-            else {
-                double x1 = b.Solve(-10 - e, 0);
-                double x2 = b.Solve(0, e + 10);
-                result[0] = random.NextDouble() * (x2 - x1) + x1;
+                    result[0] = random.NextDouble() * (roots[3] - roots[2]) + roots[2];
             }
 
             // y
@@ -145,9 +135,20 @@ namespace PavelStransky.Systems {
             return this.A + 4.0 * x * (x * x - 1);
         }
 
-        public Vector Bounds(double e) {
-            Vector result = new Vector(8);
+        /// <summary>
+        /// Minimum energy
+        /// </summary>
+        public double MinE() {
+            // Minima
+            Vector ext = this.ExtreemesX();
+            Vector vext = new Vector(ext.Length);
+            for(int i = 0; i < ext.Length; i++)
+                vext[i] = this.V((double)ext[i], 0.0);
+            double min = (double)ext[vext.MinIndex()];
+            return vext.Min();
+        }
 
+        private Vector ExtreemesX() {
             // Extreemes
             BisectionDxPotential bdxp = new BisectionDxPotential(this);
             Bisection b = new Bisection(bdxp.Bisection);
@@ -165,47 +166,69 @@ namespace PavelStransky.Systems {
             if(!double.IsNaN(x))
                 ext.Add(x);
 
-            // Minima
-            Vector vext = new Vector(ext.Count);
+            Vector result = new Vector(ext.Count);
             for(int i = 0; i < ext.Count; i++)
-                vext[i] = this.V((double)ext[i], 0.0);
-            double min = (double)ext[vext.MinIndex()];
-            double vmin = vext.Min();
+                result[i] = (double)ext[i];
+            return result;
+        }
+
+        private Vector RootsX(double e) {
+            Vector ext = this.ExtreemesX();
 
             // Solutions
             BisectionPotential bp = new BisectionPotential(this, 0.0, 0.0, e);
-            b = new Bisection(bp.BisectionX);
+            Bisection b = new Bisection(bp.BisectionX);
 
             ArrayList sol = new ArrayList();
 
-            x = b.Solve(-10 - System.Math.Abs(this.A), (double)ext[0]);
+            double x = b.Solve(-10 - System.Math.Abs(this.A), (double)ext[0]);
             if(!double.IsNaN(x))
                 sol.Add(x);
-            for(int i = 0; i < ext.Count - 1; i++) {
+            for(int i = 0; i < ext.Length - 1; i++) {
                 x = b.Solve((double)ext[i], (double)ext[i + 1]);
                 if(!double.IsNaN(x))
                     sol.Add(x);
             }
-            x = b.Solve((double)ext[ext.Count - 1], 10 + System.Math.Abs(this.A));
+            x = b.Solve((double)ext[ext.Length - 1], 10 + System.Math.Abs(this.A));
             if(!double.IsNaN(x))
                 sol.Add(x);
 
-            result[0] = (double)sol[0];
-            result[1] = (double)sol[sol.Count - 1];
+            Vector result = new Vector(sol.Count);
+            for(int i = 0; i < sol.Count; i++)
+                result[i] = (double)sol[i];
+
+            return result;
+        }
+
+        public Vector Bounds(double e) {
+            Vector result = new Vector(8);
+
+            Vector sol = this.RootsX(e);
+
+            result[0] = sol.FirstItem;
+            result[1] = sol.LastItem;
 
             double pisvejc = 1E-6;
 
+            // Minima
+            Vector ext = this.ExtreemesX();
+            Vector vext = new Vector(ext.Length);
+            for(int i = 0; i < ext.Length; i++)
+                vext[i] = this.V((double)ext[i], 0.0);
+            double min = (double)ext[vext.MinIndex()];
+            double vmin = vext.Min();
+
             // y
             double minxy = min;
-            double maxxy = minxy < 0 ? System.Math.Min((double)sol[1] - pisvejc, 0.0) : System.Math.Max((double)sol[sol.Count - 2] + pisvejc, 0.0);
+            double maxxy = minxy < 0 ? System.Math.Min((double)sol[1] - pisvejc, 0.0) : System.Math.Max((double)sol[sol.Length - 2] + pisvejc, 0.0);
 
             BisectionY by = new BisectionY(this, e);
-            b = new Bisection(by.Bisection);
+            Bisection b = new Bisection(by.Bisection);
             double y1 = b.Minimum(System.Math.Min(minxy, maxxy), System.Math.Max(minxy, maxxy));
 
             double y2 = 0.0;
             if(minxy < 0.0 && result[1] > 0.0)
-                y2 = b.Minimum(System.Math.Max(0.0, (double)sol[sol.Count - 2] + pisvejc), result[1]);
+                y2 = b.Minimum(System.Math.Max(0.0, (double)sol[sol.Length - 2] + pisvejc), result[1]);
             if(minxy > 0.0 && result[0] < 0.0)
                 y2 = b.Minimum((double)result[0], System.Math.Min(0.0, (double)sol[1] - pisvejc));
             if(double.IsNaN(y2) || double.IsInfinity(y2))
@@ -219,6 +242,46 @@ namespace PavelStransky.Systems {
 
             result[6] = result[4];
             result[7] = result[5];
+
+            return result;
+        }
+
+        private double BisectionCC(double e) {
+            if(this.IsConvex(e, 1000))
+                return 1.0;
+            else
+                return -1.0;
+        }
+
+        /// <summary>
+        /// Convex-concave transition between the minimum and the given maximum energy
+        /// </summary>
+        /// <param name="precision">Precision of the step</param>
+        public Vector ConvexConcave(double maxE, double precision) {
+            double minE = this.MinE();
+
+            double step = precision * (maxE - minE);
+
+            double e = minE + step;
+            double c = this.BisectionCC(e);
+
+            Bisection b = new Bisection(this.BisectionCC);
+
+            ArrayList r = new ArrayList();
+            while(e < maxE) {
+                double en = e + step;
+                double cn = this.BisectionCC(en);
+
+                if(c * cn < 0)
+                    r.Add(b.Solve(e, en));
+
+                e = en; c = cn;
+            }
+
+            Vector result = new Vector(r.Count);
+            for(int i = 0; i < r.Count; i++) {
+                result[i] = (double)r[i];
+            }
 
             return result;
         }
@@ -250,5 +313,102 @@ namespace PavelStransky.Systems {
         #endregion
 
         public ClassicalCW(Core.Import import) : base(import) { }
+
+        /// <summary>
+        /// Equipotential contours
+        /// </summary>
+        /// <param name="e">Energy of the system</param>
+        /// <param name="n">Number of points in each contour</param>
+        public PointVector[] EquipotentialContours(double e, int n) {
+            Vector sol = this.RootsX(e);
+
+            PointVector[] result = new PointVector[0];
+
+            if(sol.Length == 2 || sol.Length == 3) {
+                result = new PointVector[1];
+                result[0] = this.EquipotentialContour(e, n, sol.FirstItem, sol.LastItem);
+            }
+            else if(sol.Length == 4) {
+                result = new PointVector[2];
+                result[0] = this.EquipotentialContour(e, n, sol[0], sol[1]);
+                result[1] = this.EquipotentialContour(e, n, sol[2], sol[3]);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// One equipotential contour
+        /// </summary>
+        /// <param name="e">Energy of the system</param>
+        /// <param name="n">Number of points in the contour</param>
+        /// <param name="x1">Lower bound of the contour</param>
+        /// <param name="x2">Upper bound of the contour</param>
+        private PointVector EquipotentialContour(double e, int n, double x1, double x2) {
+            PointVector contour = new PointVector(2 * n + 1);
+            contour[0] = new PointD(x1, 0.0);
+            for(int i = 1; i < n; i++) {
+                double x = i * (x2 - x1) / n + x1;
+                contour[i] = new PointD(x, System.Math.Sqrt((e - this.A * x - System.Math.Pow(x * x - 1.0, this.Power)) / (this.B * x + this.C * x * x + this.Mu)));
+                contour[2 * n - i] = new PointD(x, -contour[i].Y);                
+            }
+            contour[n] = new PointD(x2, 0.0);
+            contour[2 * n] = new PointD(x1, 0.0);
+            return contour;
+        }
+
+        /// <summary>
+        /// Napoèítá matici V
+        /// (podle PRL 98, 234301 (2007))
+        /// </summary>
+        /// <param name="e">Energie</param>
+        public Matrix VMatrix(double e, double x, double y) {
+            double vx = 4.0 * x * (x * x - 1.0) + this.A + (this.B + 2.0 * this.C * x) * y * y;
+            double vy = 2.0 * y * (this.B * x + this.C * x * x + this.Mu);
+
+            double vxx = 12.0 * x * x - 4.0 + 2.0 * this.C * y * y;
+            double vxy = 2.0 * y * (this.B + 2.0 * this.C * x);
+            double vyy = 2.0 * (this.B * x + this.C * x * x + this.Mu);
+
+            double a = 3.0 / System.Math.Abs((2.0 * (e - this.V(x, y))));
+
+            Matrix result = new Matrix(2);
+            result[0, 0] = (a * vx * vx + vxx);
+            result[0, 1] = (a * vx * vy + vxy);
+            result[1, 0] = result[0, 1];
+            result[1, 1] = (a * vy * vy + vyy);
+
+            return result;
+        }
+
+        /// <summary>
+        /// One equipotential contour
+        /// </summary>
+        /// <param name="e">Energy of the system</param>
+        /// <param name="n">Number of points in the contour</param>
+        /// <param name="x1">Lower bound of the contour</param>
+        /// <param name="x2">Upper bound of the contour</param>
+        public bool IsConvex(double e, int n) {
+            PointVector[] contours = this.EquipotentialContours(e, n);
+
+            for(int i = 0; i < contours.Length; i++) {
+                Vector contour = contours[i].VectorY;
+
+                // Second derivative
+                bool positive = false;
+                bool negative = false;
+                for(int j = 2; j < n; j++) {
+                    double dd = (contour[j - 2] - 2.0 * contour[j - 1] + contour[j]);
+                    if(dd > 0.0)
+                        positive = true;
+                    if(dd < 0.0)
+                        negative = true;
+                    if(positive & negative)
+                        return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

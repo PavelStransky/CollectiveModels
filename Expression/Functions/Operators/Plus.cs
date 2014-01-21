@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetNumParams(1, true);
             this.SetParam(0, true, true, false, Messages.PAddend, Messages.PAddendDescription, null,
                 typeof(int), typeof(double), typeof(Vector), typeof(Matrix), typeof(PointD), typeof(string), 
-                typeof(LongNumber), typeof(LongFraction));
+                typeof(LongNumber), typeof(LongFraction), typeof(PointVector));
 
             this.AddCompatibility(typeof(int), typeof(double));
             this.AddCompatibility(typeof(int), typeof(Vector));
@@ -27,14 +27,36 @@ namespace PavelStransky.Expression.Functions.Def {
             this.AddCompatibility(typeof(int), typeof(LongFraction));
             this.AddCompatibility(typeof(double), typeof(Vector));
             this.AddCompatibility(typeof(double), typeof(Matrix));
+            this.AddCompatibility(typeof(PointD), typeof(PointVector));
+            this.AddCompatibility(typeof(Vector), typeof(PointVector));
             this.AddCompatibility(typeof(LongNumber), typeof(LongFraction));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             int[] lengths = this.GetTypesLength(arguments, true);
-            
+
             // Výpoèet 
-            if(lengths[4] >= 0) {       // Vektor
+            if(lengths[16] >= 0) {          // Pointvector
+                int lengthpv = lengths[16];
+                PointVector resultpv = new PointVector(lengthpv);
+
+                for(int i = 0; i < lengthpv; i++)
+                    foreach(object o in arguments)
+                        if(o is Vector)
+                            resultpv[i].Y += (o as Vector)[i];
+                        else if(o is double)
+                            resultpv[i].Y += (double)o;
+                        else if(o is int)
+                            resultpv[i].Y += (int)o;
+                        else if(o is PointD)
+                            resultpv[i] += (PointD)o;
+                        else if(o is PointVector)
+                            resultpv[i] += (o as PointVector)[i];
+
+                return resultpv;
+            }
+
+            else if(lengths[4] >= 0) {       // Vektor
                 int lengthv = lengths[4];
                 Vector resultv = new Vector(lengthv);
 

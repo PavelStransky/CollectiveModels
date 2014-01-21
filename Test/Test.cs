@@ -359,7 +359,7 @@ namespace PavelStransky.Test {
                     cb[i].Y /= length;
 
                 BrodyFit brf = new BrodyFit(cb);
-                double br = brf.Fit(0.0001);
+                double br = brf.Fit(0.0001)[0];
                 Console.WriteLine("Brody = {0}", br);
                 result += br;
             }

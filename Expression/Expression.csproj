@@ -134,7 +134,9 @@
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\Context\GetFileContext.cs" />
+    <Compile Include="Functions\Dynamics\ConvexConcaveCW.cs" />
     <Compile Include="Functions\Dynamics\DPXY.cs" />
+    <Compile Include="Functions\Dynamics\IsConvex.cs" />
     <Compile Include="Functions\Dynamics\Lyapunov.cs" />
     <Compile Include="Functions\Dynamics\PSTimes.cs" />
     <Compile Include="Functions\Dynamics\Systems\CCW.cs" />
@@ -211,9 +213,11 @@
     <Compile Include="Functions\Quantum\Systems\QSpheroid.cs" />
     <Compile Include="Functions\Quantum\Systems\SturmCoulomb.cs" />
     <Compile Include="Functions\Statistics\NoiseGenerator.cs" />
+    <Compile Include="Functions\Unsorted\Copy.cs" />
     <Compile Include="Functions\Unsorted\GPSPOI.cs" />
     <Compile Include="Functions\Unsorted\HilbertTransform.cs" />
     <Compile Include="Functions\Unsorted\InstantaneousFrequency.cs" />
+    <Compile Include="Functions\Unsorted\InvertArray.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />
     <Compile Include="Functions\Vector\CreateByCopy.cs" />

@@ -15,47 +15,51 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(3);
-            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(GCM));
-            this.SetParam(1, false, true, false, Messages.P2ConvexConcave, Messages.P2ConvexConcaveDescription, true, typeof(bool));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(GCM), typeof(ClassicalCW));
+            this.SetParam(1, false, true, true, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, 100.0, typeof(double));
             this.SetParam(2, false, true, true, Messages.PPrecisionEnergy, Messages.PPrecisionEnergyDescription, defaultPrecision, typeof(double));
         }
 
-        /// <summary>
-        /// NEHOTOVE - chybi zavislost na druhem parametru !!!!!!!!!!!
-        /// </summary>
-        /// <param name="guider"></param>
-        /// <param name="arguments"></param>
-        /// <returns></returns>
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            GCM gcm = arguments[0] as GCM;
-            bool island = (bool)arguments[1];
             double precision = (double)arguments[2];
-
-            Vector extrem = gcm.ExtremalBeta(0);
-            int el = extrem.Length;
             
-            Vector extremV = new Vector(el);
-            for(int i = 0; i < el; i++)
-                extremV[i] = gcm.V(extrem[i], 0);
+            if(arguments[0] is GCM) {
+                GCM gcm = arguments[0] as GCM;
 
-            extremV = (Vector)extremV.Sort();
+                Vector extrem = gcm.ExtremalBeta(0);
+                int el = extrem.Length;
 
-            double minE = extremV[0] + precision;
-            double saddleE = extremV[1] - precision;
+                Vector extremV = new Vector(el);
+                for(int i = 0; i < el; i++)
+                    extremV[i] = gcm.V(extrem[i], 0);
 
-            if(this.IsConvex(gcm.EquipotentialContours(saddleE, 0, 0)[0]))
-                return 0;
+                extremV = (Vector)extremV.Sort();
 
-            // Hledani minima metodou puleni intervalu
-            while(System.Math.Abs(saddleE - minE) > precision) {
-                double e = (saddleE + minE) * 0.5;
-                if(this.IsConvex(gcm.EquipotentialContours(e, 0, 0)[0]))
-                    minE = e;
-                else
-                    saddleE = e;
+                double minE = extremV[0] + precision;
+                double saddleE = extremV[1] - precision;
+
+                if(this.IsConvex(gcm.EquipotentialContours(saddleE, 0, 0)[0]))
+                    return 0;
+
+                // Hledani minima metodou puleni intervalu
+                while(System.Math.Abs(saddleE - minE) > precision) {
+                    double e = (saddleE + minE) * 0.5;
+                    if(this.IsConvex(gcm.EquipotentialContours(e, 0, 0)[0]))
+                        minE = e;
+                    else
+                        saddleE = e;
+                }
+
+                return (minE + saddleE) * 0.5;
+            }
+            else if(arguments[0] is ClassicalCW) {
+                ClassicalCW cw = arguments[0] as ClassicalCW;
+                double maxE = (double)arguments[1];
+
+                return cw.ConvexConcave(maxE, precision);
             }
 
-            return (minE + saddleE) * 0.5; 
+            return null;
         }
 
         /// <summary>

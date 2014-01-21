@@ -192,7 +192,12 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         private string[] DivideLine(string s) {
-            return s.Trim(' ', '\n', '\r', '\t', ',').Replace("  ", " ").Replace(' ', ',').Replace('\t', ',').Split(',');
+            s = s.Trim(' ', '\n', '\r', '\t', ',');
+            for(int i = 0; i < 10; i++)
+                s = s.Replace("  ", " ");
+            s = s.Replace(' ', ',');
+            s = s.Replace('\t', ',');
+            return s.Split(',');
         }
 
         /// <summary>

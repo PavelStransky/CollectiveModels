@@ -16,7 +16,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(IGeometricalMethod));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(IGeometricalMethod), typeof(ClassicalCW));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
             this.SetParam(2, true, true, false, Messages.PIntervalX, Messages.PIntervalXDescription, null, typeof(Vector));
             this.SetParam(3, true, true, false, Messages.PIntervalY, Messages.PIntervalYDescription, null, typeof(Vector));
@@ -24,8 +24,6 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            IGeometricalMethod gcm = arguments[0] as IGeometricalMethod;
-
             double e = (double)arguments[1];
             Vector vx = (Vector)arguments[2];
             Vector vy = (Vector)arguments[3];
@@ -43,7 +41,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 double x = i * koefx + minx;
                 for(int j = 0; j < lengthY; j++) {
                     double y = j * koefy + miny;
-                    Matrix m = gcm.VMatrix(e, x, y);
+                    Matrix m = (arguments[0] is IGeometricalMethod) ? (arguments[0] as IGeometricalMethod).VMatrix(e, x, y) : (arguments[0] as ClassicalCW).VMatrix(e, x, y);
                     Vector ev = LAPackDLL.dsyev(m, false)[0];
                     result[i, j] = ev[ei];
                 }

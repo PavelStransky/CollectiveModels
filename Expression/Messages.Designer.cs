@@ -3589,6 +3589,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For given dynamical system returns all local extreemes and energy at them.
+        /// </summary>
+        internal static string HelpExtreemes {
+            get {
+                return ResourceManager.GetString("HelpExtreemes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Factorial of the value.
         /// </summary>
         internal static string HelpFactorial {

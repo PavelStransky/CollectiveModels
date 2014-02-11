@@ -148,6 +148,19 @@ namespace PavelStransky.Systems {
             return vext.Min();
         }
 
+        /// <summary>
+        /// Extreemes in the form (x, y)
+        /// </summary>
+        public PointVector Extreemes() {
+            Vector v = this.ExtreemesX();
+            PointVector result = new PointVector(v.Length);
+
+            for(int i = 0; i < v.Length; i++)
+                result[i] = new PointD(v[i], this.V(v[i], 0.0));
+
+            return result;
+        }
+
         private Vector ExtreemesX() {
             // Extreemes
             BisectionDxPotential bdxp = new BisectionDxPotential(this);

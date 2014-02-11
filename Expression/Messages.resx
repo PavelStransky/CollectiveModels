@@ -3927,4 +3927,7 @@ Second differing type: {1}</value>
   <data name="HelpPotentialMeanCW" xml:space="preserve">
     <value>For the Creagh-Whelan system returns the mean of the potential well at given energies</value>
   </data>
+  <data name="HelpExtreemes" xml:space="preserve">
+    <value>For given dynamical system returns all local extreemes and energy at them</value>
+  </data>
 </root>

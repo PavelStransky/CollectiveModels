@@ -136,6 +136,7 @@
     <Compile Include="Functions\Context\GetFileContext.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcaveCW.cs" />
     <Compile Include="Functions\Dynamics\DPXY.cs" />
+    <Compile Include="Functions\Dynamics\Extreemes.cs" />
     <Compile Include="Functions\Dynamics\IsConvex.cs" />
     <Compile Include="Functions\Dynamics\Lyapunov.cs" />
     <Compile Include="Functions\Dynamics\PSTimes.cs" />

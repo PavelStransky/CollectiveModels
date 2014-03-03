@@ -39,7 +39,7 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="size">Poèet bytù pamìti</param>
         private static void* Alloc(uint size) {
-            void* result = HeapAlloc(processHeap, 0, size);
+            void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
             if(result == null)
                 throw new OutOfMemoryException();
             return result;

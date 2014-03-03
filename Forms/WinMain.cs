@@ -8,8 +8,6 @@ using Microsoft.Win32;
 
 using PavelStransky.Expression;
 
-[assembly: RegistryPermissionAttribute(SecurityAction.RequestMinimum,
-    ViewAndModify = "HKEY_CURRENT_USER")]
 namespace PavelStransky.Forms
 {
     /// <summary>

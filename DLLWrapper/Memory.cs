@@ -8,26 +8,26 @@ namespace PavelStransky.DLLWrapper {
     /// <remarks>http://www.codeproject.com/dotnet/pointers.asp</remarks>
     public unsafe class Memory {
         //Handle pro haldu
-        private static int processHeap = GetProcessHeap();
-
+        private static IntPtr processHeap = GetProcessHeap();
+        
         // Heap API functions
         [DllImport("kernel32")]
-        private static extern int GetProcessHeap();
+        private static extern IntPtr GetProcessHeap();
 
         [DllImport("kernel32")]
-        private static extern int HeapCreate(int flOptions, int initialSize, int maximumSize);
+        private static extern IntPtr HeapCreate(uint flOptions, uint initialSize, uint maximumSize);
 
         [DllImport("kernel32")]
-        private static extern void* HeapAlloc(int hHeap, int flags, uint size);
+        private static extern void* HeapAlloc(IntPtr hHeap, uint flags, uint size);
 
         [DllImport("kernel32")]
-        private static extern bool HeapFree(int hHeap, int flags, void* block);
+        private static extern bool HeapFree(IntPtr hHeap, int flags, void* block);
 
         [DllImport("kernel32")]
-        private static extern void* HeapReAlloc(int hHeap, int flags, void* block, int size);
+        private static extern void* HeapReAlloc(IntPtr hHeap, int flags, void* block, int size);
 
         [DllImport("kernel32")]
-        private static extern int HeapSize(int hHeap, int flags, void* block);
+        private static extern int HeapSize(IntPtr hHeap, int flags, void* block);
 
         /// <summary>
         /// Soukromý konstruktor (abychom nemohli vytvoøit instanci tøídy)

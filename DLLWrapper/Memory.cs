@@ -15,6 +15,9 @@ namespace PavelStransky.DLLWrapper {
         private static extern int GetProcessHeap();
 
         [DllImport("kernel32")]
+        private static extern int HeapCreate(int flOptions, int initialSize, int maximumSize);
+
+        [DllImport("kernel32")]
         private static extern void* HeapAlloc(int hHeap, int flags, uint size);
 
         [DllImport("kernel32")]
@@ -36,7 +39,7 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="size">Poèet bytù pamìti</param>
         private static void* Alloc(uint size) {
-            void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
+            void* result = HeapAlloc(processHeap, 0, size);
             if(result == null)
                 throw new OutOfMemoryException();
             return result;

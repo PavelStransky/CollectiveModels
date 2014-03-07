@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EMBadArrayDimensions" xml:space="preserve">
     <value>The Arrays for function '{0}' do not have the same sizes (dimensions).</value>
@@ -3929,5 +3929,8 @@ Second differing type: {1}</value>
   </data>
   <data name="HelpExtreemes" xml:space="preserve">
     <value>For given dynamical system returns all local extreemes and energy at them</value>
+  </data>
+  <data name="HelpGetNonDiagonal" xml:space="preserve">
+    <value>Get the nondiagonal elements of a square matrix and returns it as a vector</value>
   </data>
 </root>

@@ -6,7 +6,7 @@ using PavelStransky.Expression;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// Get the nondiagonal elements of a square matrix and returns it as a vector
+    /// Get the upper nondiagonal elements of a square matrix and returns it as a vector
     /// </summary>
     public class GetNonDiagonal : Fnc {
         public override string Help { get { return Messages.HelpGetNonDiagonal; } }

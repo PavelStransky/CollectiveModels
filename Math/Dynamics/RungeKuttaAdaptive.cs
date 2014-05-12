@@ -267,6 +267,6 @@ namespace PavelStransky.Math {
         private const double maxStepChange = 0.1;
         private double errorCon = System.Math.Pow((5.0 / safety), 1.0 / powerGrow);
 
-        private const double defaultPrecision = 1E-13;
+        private const double defaultPrecision = 1E-14;
     }
 }

@@ -115,6 +115,18 @@ namespace PavelStransky.Math {
 
             Vector addX = this.rungeKuttaT.Step(this.X, ref step, out newStep);
 
+            // Code that prevents divergences in the Dicke model
+/*            if(double.IsNaN(addX.Sum())) {
+                Vector x = this.X;
+                double s = 0.1 * step;
+                double ns = 0.0;
+                for(int i = 0; i < 10; i++) {
+                    x += this.rungeKuttaT.Step(x, ref s, out newStep);
+                    ns += newStep;
+                }
+                addX = this.X - x;
+            }
+*/
             double oldStepW1 = step;
             Vector addW1 = this.rungeKuttaW.Step(this.w1, ref step, out tStep1);
 
@@ -153,9 +165,13 @@ namespace PavelStransky.Math {
             do {
                 while(t < tNext){
                     double newStep = this.Step(ref step);
+
                     t += step;
                     step = newStep;
                 }
+
+                if(this.x.IsNaN())
+                    break;
 
                 sali.Add(new PointD(t, this.AlignmentIndex()));
                 tNext += timeStep;
@@ -192,6 +208,9 @@ namespace PavelStransky.Math {
                     step = newStep;
                 }
 
+                if(this.x.IsNaN())
+                    break;
+
                 result = this.SALIDecision(t, queue);
                 if(result >= 0)
                     break;
@@ -221,7 +240,7 @@ namespace PavelStransky.Math {
             return this.dynamicalSystem.SALIDecision(meanSALI, t);
         }
 
-        protected const int window = 20;
+        protected const int window = 200;
     }
 
     /// <summary>
@@ -230,6 +249,8 @@ namespace PavelStransky.Math {
     public class MeanQueue {
         private Vector queue;
         private int index;
+        private double sum;
+        private bool filled;
 
         /// <summary>
         /// Délka fronty
@@ -239,7 +260,7 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Støední hodnota
         /// </summary>
-        public double Mean { get { return this.queue.Mean(); } }
+        public double Mean { get { return this.filled ? this.sum / this.Length : this.sum / this.index; } }
 
         /// <summary>
         /// Konstruktor
@@ -248,6 +269,7 @@ namespace PavelStransky.Math {
         public MeanQueue(int length) {
             this.queue = new Vector(length);
             this.index = 0;
+            this.filled = false;
         }
 
         /// <summary>
@@ -256,8 +278,13 @@ namespace PavelStransky.Math {
         /// <param name="value">Hodnota</param>
         /// <returns>Hodnota z aktuální pozice</returns>
         public void Set(double value) {
-            this.queue[this.index++] = value;
+            sum += value - this.queue[this.index];
+            this.queue[this.index] = value;
+            this.index++;
             this.index %= this.Length;
+
+            if(this.index == 0)
+                this.filled = true;
         }
     }
 }

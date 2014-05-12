@@ -74,6 +74,8 @@
     <Compile Include="CreaghWhelan\CWPolarBasisIndex.cs" />
     <Compile Include="CreaghWhelan\QuantumCW.cs" />
     <Compile Include="CreaghWhelan\QuantumCWPolar.cs" />
+    <Compile Include="Dicke\ClassicalDicke.cs" />
+    <Compile Include="Dicke\Dicke.cs" />
     <Compile Include="DoublePendulum\ClassicalDP.cs" />
     <Compile Include="DoublePendulum\DoublePendulum.cs" />
     <Compile Include="DoublePendulum\DPBasisIndex.cs" />

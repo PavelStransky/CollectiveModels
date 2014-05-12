@@ -850,6 +850,13 @@ namespace PavelStransky.Math {
 
             return result;
         }
+        public bool IsNaN() {
+            int length = this.Length;
+            for(int i = 0; i < length; i++)
+                if(double.IsNaN(this[i]))
+                    return true;
+            return false;
+        }
 
         /// <summary>
         /// Støední hodnota
@@ -898,7 +905,7 @@ namespace PavelStransky.Math {
 			if(this.Length == 0)
 				throw new VectorException(errorMessageNoData);
 
-            int lengthR = this.HistogramLength(intervals, type);
+            int lengthR = HistogramLength(intervals, type);
 
 			PointVector result = new PointVector(lengthR);
 			Vector sorted = this.Sort() as Vector;
@@ -915,7 +922,7 @@ namespace PavelStransky.Math {
 					j++;
 				}
 
-                this.FillHistogramResult(result, i, minx, maxx, y, type);
+                FillHistogramResult(result, i, minx, maxx, y, type);
                 minx = maxx;
 			}
 
@@ -940,7 +947,7 @@ namespace PavelStransky.Math {
                 throw new VectorException(errorMessageNoData); 
             
             int length = this.Length;
-            int lengthR = this.HistogramLength(interval.Length - 1, type);
+            int lengthR = HistogramLength(interval.Length - 1, type);
 
             PointVector result = new PointVector(lengthR);
 
@@ -956,7 +963,7 @@ namespace PavelStransky.Math {
                         y++;
                 }
 
-                this.FillHistogramResult(result, i, minx, maxx, y, type);
+                FillHistogramResult(result, i, minx, maxx, y, type);
             }
 
             return result;
@@ -967,7 +974,7 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="length">Poèet intervalù histogramu</param>
         /// <param name="type">Typ histogramu</param>
-        private int HistogramLength(int length, HistogramTypes type) {
+        public static int HistogramLength(int length, HistogramTypes type) {
             if(type == HistogramTypes.Point)
                 return length;
             else if(type == HistogramTypes.Line)
@@ -981,7 +988,7 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Vyplní jeden bod do histogramu
         /// </summary>
-        private void FillHistogramResult(PointVector result, int i, double minx, double maxx, double y, HistogramTypes type) {
+        public static void FillHistogramResult(PointVector result, int i, double minx, double maxx, double y, HistogramTypes type) {
             if(type == HistogramTypes.Point) {
                 result[i].X = 0.5 * (minx + maxx);
                 result[i].Y = y;

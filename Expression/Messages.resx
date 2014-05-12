@@ -3933,4 +3933,22 @@ Second differing type: {1}</value>
   <data name="HelpGetNonDiagonal" xml:space="preserve">
     <value>Get the nondiagonal elements of a square matrix and returns it as a vector</value>
   </data>
+  <data name="HelpCorrelationShift" xml:space="preserve">
+    <value>Calculates the position of the maximum correlation</value>
+  </data>
+  <data name="HelpClassicalDicke" xml:space="preserve">
+    <value>Creates a classical Dicke class</value>
+  </data>
+  <data name="PDelta" xml:space="preserve">
+    <value>delta</value>
+  </data>
+  <data name="PDeltaDescription" xml:space="preserve">
+    <value>0 for the Tavis-Cummings model, 1 for the Dicke model</value>
+  </data>
+  <data name="PJ" xml:space="preserve">
+    <value>j</value>
+  </data>
+  <data name="PJDescription" xml:space="preserve">
+    <value>Parameter j</value>
+  </data>
 </root>

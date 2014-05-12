@@ -940,6 +940,92 @@ namespace PavelStransky.Math {
             return result;
         }
 
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="intervals">Poèet intervalù</param>
+        /// <param name="min">Poèáteèní hodnota, od které se histogram poèítá</param>
+        /// <param name="max">Maximální hodnota, do které se histogram poèítá</param>
+        public PointVector Histogram(int intervals, double min, double max) {
+            return this.Histogram(intervals, min, max, Vector.HistogramTypes.Point);
+        }
+
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="intervals">Poèet intervalù</param>
+        /// <param name="min">Poèáteèní hodnota, od které se histogram poèítá</param>
+        /// <param name="max">Maximální hodnota, do které se histogram poèítá</param>
+        /// <param name="type">Typ histogramu</param>
+        public PointVector Histogram(int intervals, double min, double max, Vector.HistogramTypes type) {
+            if(this.Length == 0)
+                throw new VectorException(errorMessageNoData);
+
+            int lengthR = Vector.HistogramLength(intervals, type);
+
+            PointVector result = new PointVector(lengthR);
+            Vector weight = (Vector)this.VectorY.Sort(this.VectorX);
+            Vector sorted = (Vector)this.VectorX.Sort();
+
+            double step = (max - min) / intervals;
+            double minx = min;
+
+            int j = 0;
+            for(int i = 0; i < intervals; i++) {
+                double maxx = min + step * (i + 1);
+                double y = 0;
+                while((j < sorted.Length) && (sorted[j] <= maxx)) {
+                    y += weight[j];
+                    j++;
+                }
+
+                Vector.FillHistogramResult(result, i, minx, maxx, y, type);
+                minx = maxx;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="interval">Points of the interval</param>
+        public PointVector Histogram(Vector interval) {
+            return this.Histogram(interval, Vector.HistogramTypes.Point);
+        }
+
+        /// <summary>
+        /// Vrátí histogram vektoru
+        /// </summary>
+        /// <param name="interval">Points of the interval</param>
+        /// <param name="type">Typ histogramu</param>
+        public PointVector Histogram(Vector interval, Vector.HistogramTypes type) {
+            if(this.Length == 0)
+                throw new VectorException(errorMessageNoData);
+
+            int length = this.Length;
+            int lengthR = Vector.HistogramLength(interval.Length - 1, type);
+
+            PointVector result = new PointVector(lengthR);
+
+            for(int i = 0; i < interval.Length - 1; i++) {
+                double minx = interval[i];
+                double maxx = interval[i + 1];
+                double y = 0;
+
+                for(int j = 0; j < length; j++) {
+                    double x = this[j].X;
+
+                    if(x >= minx && x < maxx)
+                        y += this[j].Y;
+                }
+
+                Vector.FillHistogramResult(result, i, minx, maxx, y, type);
+            }
+
+            return result;
+        }
+
         private const string errorMessageNoData = "K provedení operace je nutné, aby délka vektoru nebyla nulová.";
         private const string errorMessageDifferentLength = "K provedení operace musí mít vektory stejnou délku.";
     }

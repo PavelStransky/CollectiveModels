@@ -149,6 +149,7 @@
     <Compile Include="Functions\Dynamics\Lyapunov.cs" />
     <Compile Include="Functions\Dynamics\PSTimes.cs" />
     <Compile Include="Functions\Dynamics\Systems\CCW.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CDicke.cs" />
     <Compile Include="Functions\Dynamics\Systems\CEP.cs" />
     <Compile Include="Functions\Dynamics\Systems\CHO.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcave.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Functions\Math\SphericalBesselY.cs" />
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
     <Compile Include="Functions\Math\SplineValue.cs" />
+    <Compile Include="Functions\Matrix\CorrelationShift.cs" />
     <Compile Include="Functions\Matrix\EigenSystemSymmetric.cs" />
     <Compile Include="Functions\Matrix\FillMatrix.cs" />
     <Compile Include="Functions\Matrix\GetNonDiagonal.cs" />

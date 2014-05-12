@@ -592,14 +592,19 @@ namespace PavelStransky.Expression {
                 endIndex[r]--;
             int[] index = new int[rank];
 
-            object o = import.Read(typeName);
-            this.type = o.GetType();
-            this.data = Array.CreateInstance(this.type, lengths);
-            this[index] = o;
+            if(lengths.Length <= 0 || lengths[0] <= 0) {
+                this.type = Type.GetType(typeName);
+                this.data = Array.CreateInstance(this.type, lengths);
+            }
+            else {
+                object o = import.Read(typeName);
+                this.type = o.GetType();
+                this.data = Array.CreateInstance(this.type, lengths);
+                this[index] = o;
 
-            while(TArray.MoveNext(rank, index, startIndex, endIndex)) 
-                this[index] = import.Read(typeName);
-
+                while(TArray.MoveNext(rank, index, startIndex, endIndex))
+                    this[index] = import.Read(typeName);
+            }
             this.ResetEnumerator();
         }
         #endregion

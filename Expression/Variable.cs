@@ -39,7 +39,7 @@ namespace PavelStransky.Expression {
 
                 if(!((c >= 'a' && c <= 'z')
                     || (c >= 'A' && c <= 'Z') 
-                    || c == '_' 
+                    || c == '_' || c == '§'
                     || (i > 0 && ((c >= '1' && c <= '9')
                         || c == '0' || c == '-'))))
                     throw new VariableException(string.Format(Messages.EMBadVariableName, name),

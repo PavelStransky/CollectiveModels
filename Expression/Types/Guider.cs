@@ -18,6 +18,7 @@ namespace PavelStransky.Expression {
 
         private IOutputWriter writer;
         private Context context;
+        private Context localContext = null;
         private string execDir;
         private string tmpDir;
         private bool arrayEvaluation = false;
@@ -74,6 +75,11 @@ namespace PavelStransky.Expression {
         public Context Context { get { return this.context; } }
 
         /// <summary>
+        /// Lokální kontext
+        /// </summary>
+        public Context LocalContext { get { return this.localContext; } }
+
+        /// <summary>
         /// Bude provádìn výpoèet øadou?
         /// </summary>
         public bool ArrayEvaluation { get { return this.arrayEvaluation; } set { this.arrayEvaluation = value; } }
@@ -124,19 +130,22 @@ namespace PavelStransky.Expression {
         /// Konstruktor
         /// </summary>
         /// <param name="context">Kontext, na kterém se bude provádìt výpoèet</param>
+        /// <param name="localContext">Lokální kontext</param>
         /// <param name="writer">Vypisovaè na obrazovku</param>
-        public Guider(Context context, IOutputWriter writer)
+        public Guider(Context context, Context localContext, IOutputWriter writer)
             : this(context) {
             this.writer = writer;
+            this.localContext = localContext;
         }
 
-        /// <summary>
+          /// <summary>
         /// Vytvoøí nový Guider, do kterého pøekopíruje data ze
         /// stávajícího Guideru a vymìní kontext
         /// </summary>
         /// <param name="context">Nový kontext</param>
         public Guider ChangeContext(Context context) {
             Guider result = new Guider(context);
+            result.localContext = this.localContext;
             result.writer = this.writer;
             result.arrayEvaluation = this.arrayEvaluation;
             result.execDir = this.execDir;

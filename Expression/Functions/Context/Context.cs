@@ -34,7 +34,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             if(count > 0 && arguments[0] != null) {
                 Expression e = new Expression(arguments[0] as string);
-                e.Evaluate(new Guider(result, guider));
+                e.Evaluate(new Guider(result, guider.LocalContext, guider));
             }
 
             return result;

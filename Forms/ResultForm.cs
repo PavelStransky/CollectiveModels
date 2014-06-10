@@ -18,6 +18,9 @@ namespace PavelStransky.Forms {
         // Výraz
         private Expression.Expression expression;
 
+        // Lokální kontext
+        private Context context;
+
         // Guider
         private Guider guider = null;
 
@@ -87,7 +90,9 @@ namespace PavelStransky.Forms {
         /// Konstruktor
         /// </summary>
         public ResultForm() {
-            this.InitializeComponent();            
+            this.InitializeComponent();
+
+            this.context = new Context();
         }
 
         /// <summary>
@@ -224,7 +229,7 @@ namespace PavelStransky.Forms {
             if(!this.Calculating && this.calcThread != null) {
                 this.calculating = true;
 
-                this.guider = new Guider(this.ParentEditor.Context, this);
+                this.guider = new Guider(this.ParentEditor.Context, this.context, this);
                 this.guider.ExecDir = Path.GetDirectoryName(Application.ExecutablePath);
                 this.guider.TmpDir = Application.UserAppDataPath;
                 this.guider.CalcPaused += new EventHandler(guider_CalcPaused);

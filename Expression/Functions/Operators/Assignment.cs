@@ -33,10 +33,14 @@ namespace PavelStransky.Expression.Functions.Def {
                 object leftSide = arguments[i];
                 if(leftSide is Indexer) 
                     (leftSide as Indexer).Evaluate(guider, this.AssignFn);
-                
-                else if(leftSide is string) 
-                    guider.Context.SetVariable(leftSide as string, this.result);
-                
+
+                else if(leftSide is string) {
+                    if((leftSide as string)[0] == '§')
+                        guider.LocalContext.SetVariable(leftSide as string, this.result);
+                    else
+                        guider.Context.SetVariable(leftSide as string, this.result);
+                }
+
                 else
                     throw new FncException(this, Messages.EMBadAssignment, leftSide.GetType().FullName);
             }

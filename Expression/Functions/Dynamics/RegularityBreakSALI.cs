@@ -48,8 +48,16 @@ namespace PavelStransky.Expression.Functions.Def {
                 (double)arguments[9] <= 0.0
                 ? precisionT
                 : (double)arguments[9];
-            
-            bool isX = (bool)arguments[10];
+
+            int section = 0;
+
+            if(arguments[10] is int)
+                section = (int)arguments[10];
+            else if(arguments[10] is bool)
+                if((bool)arguments[10])
+                    section = 0;
+                else
+                    section = 1;
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
 
@@ -60,7 +68,7 @@ namespace PavelStransky.Expression.Functions.Def {
             while(System.Math.Abs(emax - emin) > precisione) {
                 double e = (emax + emin) * 0.5;
                 guider.Write(string.Format("E = {0} ", e));
-                bool r = sali.IsRegularGraph(e, sizex, sizey, isX, guider);
+                bool r = sali.IsRegularGraph(e, sizex, sizey, section, guider);
 
                 if(r)
                     emin = e;

@@ -852,10 +852,14 @@ namespace PavelStransky.Expression {
 			}
 			else if(operand is string) {
 				string s = ParseString(operand as String);
-				if(s == null)
-					retValue = guider.Context[operand as string];
-				else
-					retValue = s;
+                if(s == null) {
+                    if((operand as string)[0] == '§')
+                        retValue = guider.LocalContext[operand as string];
+                    else
+                        retValue = guider.Context[operand as string];
+                }
+                else
+                    retValue = s;
 			}
 			else {
 				retValue = operand;

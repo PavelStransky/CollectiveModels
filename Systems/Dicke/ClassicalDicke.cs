@@ -168,7 +168,6 @@ namespace PavelStransky.Systems {
             double jz = ic[3];
 
             if(double.IsNaN(q)) {
-                jz = 2.0 * this.J * this.random.NextDouble() - this.J;
                 double x = this.Gamma * System.Math.Sqrt(this.J - jz * jz / this.J);
 
                 double a = 0.5 * this.Omega;
@@ -183,7 +182,8 @@ namespace PavelStransky.Systems {
 
                 ic[0] = q;
 
-                return true;
+                if(!double.IsNaN(q))
+                    return true;
             }
 
             return false;
@@ -198,8 +198,8 @@ namespace PavelStransky.Systems {
 
             result[0] = -10;
             result[1] = 10;
-            result[2] = 0;
-            result[3] = 2.0 * System.Math.PI;
+            result[2] = -System.Math.PI;
+            result[3] = System.Math.PI;
 
             result[4] = -10;
             result[5] = 10;
@@ -211,8 +211,8 @@ namespace PavelStransky.Systems {
 
 
         public Vector CheckBounds(Vector bounds) {
-            bounds[2] = System.Math.Max(bounds[0], 0);
-            bounds[3] = System.Math.Min(bounds[1], 2.0 * System.Math.PI);
+            bounds[2] = System.Math.Max(bounds[0], -System.Math.PI);
+            bounds[3] = System.Math.Min(bounds[1], System.Math.PI);
             bounds[6] = System.Math.Max(bounds[2], -this.J);
             bounds[7] = System.Math.Min(bounds[3], this.J);
             return bounds;
@@ -244,9 +244,9 @@ namespace PavelStransky.Systems {
         }
 
         public int SALIDecision(double meanSALI, double t) {
-            if(meanSALI > 6.0 + t / 2500.0)
+            if(meanSALI > 8.0 + t / 2000.0)
                 return 0;
-            if(meanSALI < (t - 5000.0) / 500.0)
+            if(meanSALI < 13.0 * (t - 5000.0) / 5000)
                 return 1;
 
             return -1;

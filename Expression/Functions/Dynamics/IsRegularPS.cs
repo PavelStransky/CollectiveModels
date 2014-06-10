@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
             this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
             this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
-            this.SetParam(8, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
+            this.SetParam(8, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool), typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -43,10 +43,18 @@ namespace PavelStransky.Expression.Functions.Def {
                 ? precisionT
                 : (double)arguments[7];
 
-            bool isX = (bool)arguments[8];
+            int section = 0;
+
+            if(arguments[8] is int)
+                section = (int)arguments[8];
+            else if(arguments[8] is bool)
+                if((bool)arguments[8])
+                    section = 0;
+                else
+                    section = 1;
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
-            return sali.IsRegularGraph(e, sizex, sizey, isX, guider);
+            return sali.IsRegularGraph(e, sizex, sizey, section, guider);
         }
     }
 }

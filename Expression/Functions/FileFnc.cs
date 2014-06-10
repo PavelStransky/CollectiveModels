@@ -63,7 +63,7 @@ namespace PavelStransky.Expression.Functions {
                 result.SetVariable(string.Format(variableName, i + 1), evaluatedArguments[i]);
             }
 
-            e.Evaluate(new Guider(result, guider));
+            e.Evaluate(new Guider(result, guider.LocalContext, guider));
 
             // Vymažeme parametry funkce
             for(int i = 0; i < count; i++) {

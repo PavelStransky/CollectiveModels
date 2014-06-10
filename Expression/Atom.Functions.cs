@@ -156,7 +156,7 @@ namespace PavelStransky.Expression {
 
         private static string commentChars = "%%";
         private static string noMeanChars = " \t\r\n";
-        private static string variableChars = "_";          // Znaky, které se smìjí vyskytovat v promìnné
+        private static string variableChars = "_§";          // Znaky, které se smìjí vyskytovat v promìnné
 
         private static string fNameStatistics = "fnc.sta";
 

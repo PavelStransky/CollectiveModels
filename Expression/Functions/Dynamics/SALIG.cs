@@ -22,7 +22,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(5, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
             this.SetParam(6, false, true, false, Messages.PRungeKuttaMethod, Messages.PRungeKuttaDescription, string.Empty, typeof(string));
             this.SetParam(7, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 0.0, typeof(double));
-            this.SetParam(8, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool));
+            this.SetParam(8, false, true, false, Messages.PXSection, Messages.PXSectionDescription, false, typeof(bool), typeof(int));
             this.SetParam(9, false, true, false, Messages.POneOrientation, Messages.POneOrientationDescription, false, typeof(bool));
         }
 
@@ -44,14 +44,37 @@ namespace PavelStransky.Expression.Functions.Def {
                 ? precisionT
                 : (double)arguments[7];
 
-            bool isX = (bool)arguments[8];
+            int section = 0;
+
+            if(arguments[8] is int)
+                section = (int)arguments[8];
+            else if(arguments[8] is bool)
+                if((bool)arguments[8])
+                    section = 0;
+                else
+                    section = 1;
+            
             bool oneOrientation = (bool)arguments[9];
 
             SALIContourGraph sali = new SALIContourGraph(dynamicalSystem, precisionT, rkMethodT, precisionW, rkMethodW);
-            ArrayList a = sali.Compute(e, sizex, sizey, isX, oneOrientation, guider);
+            ArrayList a = sali.Compute(e, sizex, sizey, section, oneOrientation, guider);
 
             List result = new List();
             result.AddRange(a);
+
+            int count = result.Count;
+
+            List sections = new List();
+            List ics = new List();
+            List salis = new List();
+
+            ics.AddRange(result[count - 3] as ArrayList);
+            sections.AddRange(result[count - 2] as ArrayList);
+            salis.AddRange(result[count - 1] as ArrayList);
+
+            result[count - 3] = ics;
+            result[count - 2] = sections;
+            result[count - 1] = salis;
 
             return result;
         }

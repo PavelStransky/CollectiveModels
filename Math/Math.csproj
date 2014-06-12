@@ -116,7 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AMFMDecomposition.cs" />
+    <Compile Include="EMD\AMFMDecomposition.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -138,8 +138,9 @@
     <Compile Include="Dynamics\PeriodicOrbit.cs" />
     <Compile Include="Dynamics\SALIContourGraph.cs" />
     <Compile Include="Dynamics\Trajectory.cs" />
-    <Compile Include="EMD.cs" />
-    <Compile Include="EMD.SiftingStep.cs" />
+    <Compile Include="EMD\EMD.cs" />
+    <Compile Include="EMD\ExtremesEnvelope.cs" />
+    <Compile Include="EMD\SiftingStep.cs" />
     <Compile Include="FFT.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -208,9 +209,7 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EMD\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

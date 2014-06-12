@@ -2698,6 +2698,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the AM-FM decomposition of a IMF.
+        /// </summary>
+        internal static string HelpAMFM {
+            get {
+                return ResourceManager.GetString("HelpAMFM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arcus tangens of the value.
         /// </summary>
         internal static string HelpArcTan {

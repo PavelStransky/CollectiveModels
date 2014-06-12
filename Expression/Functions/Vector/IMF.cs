@@ -28,8 +28,13 @@ namespace PavelStransky.Expression.Functions.Def {
             bool alli = (bool)arguments[4];
             if(alli)
                 return new TArray(emd.ComputeIMF(guider, s, delta, alli));
-            else
-                return emd.ComputeIMF(guider, s, delta, alli)[0];
+            else {
+                PointVector[] result = emd.ComputeIMF(guider, s, delta, alli);
+                if(result.Length > 0)
+                    return result[0];
+                else
+                    return new PointVector(0);
+            }
         }
     }
 }

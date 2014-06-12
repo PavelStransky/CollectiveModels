@@ -232,6 +232,7 @@
     <Compile Include="Functions\Unsorted\InvertArray.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />
+    <Compile Include="Functions\Vector\AMFM.cs" />
     <Compile Include="Functions\Vector\CreateByCopy.cs" />
     <Compile Include="Functions\Vector\Autocorrelation.cs" />
     <Compile Include="Functions\Vector\Contain.cs" />

@@ -125,7 +125,21 @@ namespace PavelStransky.Math {
 			return result;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Negace hodnot
+        /// </summary>
+        /// <param name="pv">Vektor x</param>
+        /// <returns>Vektor -x</returns>
+        public static Vector operator -(Vector v) {
+            Vector result = new Vector(v.Length);
+
+            for(int i = 0; i < result.Length; i++) 
+                result[i] = -v[i];
+
+            return result;
+        }
+        
+        /// <summary>
 		/// Odeète od každé složky vektoru èíslo
 		/// </summary>
 		public static Vector operator -(Vector v, double d) {
@@ -137,7 +151,6 @@ namespace PavelStransky.Math {
 
 			return result;
 		}
-
 
 		/// <summary>
 		/// Odeète od èísla každou složku vektoru
@@ -207,7 +220,7 @@ namespace PavelStransky.Math {
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static object ItemMul(Vector v1, Vector v2) {
+        public static Vector ItemMul(Vector v1, Vector v2) {
             if(v1.Length != v2.Length)
                 throw new VectorException(errorMessageDifferentLength);
 

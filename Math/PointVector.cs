@@ -186,6 +186,36 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Absolutní hodnota y hodnot
+        /// </summary>
+        public PointVector AbsY() {
+            PointVector result = new PointVector(this.Length);
+
+            for(int i = 0; i < result.Length; i++) {
+                result[i].X = this[i].X;
+                result[i].Y = System.Math.Abs(this[i].Y);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Negace y hodnot
+        /// </summary>
+        /// <param name="pv">Vektor (x, y)</param>
+        /// <returns>Vektor (x, -y)</returns>
+        public static PointVector operator -(PointVector pv) {
+            PointVector result = new PointVector(pv.Length);
+
+            for(int i = 0; i < result.Length; i++) {
+                result[i].X = pv[i].X;
+                result[i].Y = -pv[i].Y;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Násobení vektoru bodem (x - ová složka se násobí hodnotou x, y - ová hodnotou y)
         /// </summary>
         /// <param name="pv">Vektor</param>
@@ -216,6 +246,24 @@ namespace PavelStransky.Math {
 
             return result;
         }
+
+        /// <summary>
+        /// Vydìlí y - ové hodnoty vektorem
+        /// </summary>
+        /// <param name="pv">Vektor (x, y)</param>
+        /// <param name="v">Vektor z</param>
+        /// <returns>Vektor (x, y / z)</returns>
+        public static PointVector operator /(PointVector pv, Vector v) {
+            PointVector result = new PointVector(pv.Length);
+
+            for(int i = 0; i < result.Length; i++) {
+                result[i].X = pv[i].X;
+                result[i].Y = pv[i].Y / v[i];
+            }
+
+            return result;
+        }
+
 
         #region Implementace IExportable
         /// <summary>

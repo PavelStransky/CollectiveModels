@@ -3139,6 +3139,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates a contour of a given value.
+        /// </summary>
+        internal static string HelpContour {
+            get {
+                return ResourceManager.GetString("HelpContour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For GCM system returns the negative energy for which the border changes from convex to concave shape.
         /// </summary>
         internal static string HelpConvexConcave {
@@ -3742,6 +3751,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a system to check the Geometrical curvature method.
+        /// </summary>
+        internal static string HelpGCE {
+            get {
+                return ResourceManager.GetString("HelpGCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator &gt;= (greater or equal).
         /// </summary>
         internal static string HelpGEquality {
@@ -4089,6 +4107,15 @@ namespace PavelStransky.Expression {
         internal static string HelpIntegrate {
             get {
                 return ResourceManager.GetString("HelpIntegrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interpolates a 3D function on a given set of points.
+        /// </summary>
+        internal static string HelpInterpolate3D {
+            get {
+                return ResourceManager.GetString("HelpInterpolate3D", resourceCulture);
             }
         }
         
@@ -10254,6 +10281,24 @@ namespace PavelStransky.Expression {
         internal static string PQuantumSystemDescription {
             get {
                 return ResourceManager.GetString("PQuantumSystemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to r.
+        /// </summary>
+        internal static string PRadius {
+            get {
+                return ResourceManager.GetString("PRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to radius.
+        /// </summary>
+        internal static string PRadiusDescription {
+            get {
+                return ResourceManager.GetString("PRadiusDescription", resourceCulture);
             }
         }
         

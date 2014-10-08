@@ -315,7 +315,7 @@ namespace PavelStransky.Systems {
             return false;
         }
 
-        public int SALIDecision(double meanSALI, double t) {
+        public double SALIDecision(double meanSALI, double t) {
             if(meanSALI > 6.0 + t / 200.0)
                 return 0;
             if(meanSALI < (t - 500.0) / 50.0)

@@ -255,7 +255,7 @@ namespace PavelStransky.Systems {
         /// <param name="meanSALI">Hodnota SALI</param>
         /// <param name="t">Èas</param>
         /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
-        public int SALIDecision(double meanSALI, double t) {
+        public double SALIDecision(double meanSALI, double t) {
             if(meanSALI > 5.0 + t / 200.0)
                 return 0;
             if(meanSALI < (t - 500.0) / 50.0)
@@ -296,6 +296,29 @@ namespace PavelStransky.Systems {
             result[0, 1] = (a * vx * vy + vxy) / this.K;
             result[1, 0] = result[0, 1];
             result[1, 1] = (a * vy * vy + vyy) / this.K;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Napoèítá Hamiltonovu matici stability H
+        /// </summary>
+        /// <param name="e">Energie</param>
+        public Matrix MMatrix(double e, double x, double y) {
+            double b = x * x + y * y;
+
+            double vx = 2.0 * this.A * x + 3.0 * this.B * (x * x - y * y) + 4.0 * this.C * x * b;
+            double vy = 2.0 * y * (this.A - 3.0 * this.B * x + 2.0 * this.C * b);
+
+            double vxx = 2.0 * this.A + 6.0 * this.B * x + 4.0 * this.C * (3.0 * x * x + y * y);
+            double vxy = 8.0 * this.C * x * y - 6.0 * this.B * y;
+            double vyy = 2.0 * this.A - 6.0 * this.B * x + 4.0 * this.C * (x * x + 3.0 * y * y);
+
+            Matrix result = new Matrix(2);
+            result[0, 0] = vxx / this.K;
+            result[0, 1] = vxy / this.K;
+            result[1, 0] = result[0, 1];
+            result[1, 1] = vyy / this.K;
 
             return result;
         }

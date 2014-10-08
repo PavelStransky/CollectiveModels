@@ -105,5 +105,24 @@ namespace PavelStransky.Math {
 
             return result;
         }
+
+        /// <summary>
+        /// Instantaneous frequency - derivative of the phase
+        /// </summary>
+        public PointVector Frequency() {
+            int order = 2;
+
+            PointVector phase = this.Phase();
+            int length = phase.Length - order;
+
+            PointVector result = new PointVector(length);
+
+            for(int i = 0; i < length; i++) {
+                result[i].X = 0.5 * (phase[i].X + phase[i + 2].X);
+                result[i].Y = (phase[i + 2].Y - phase[i].Y) / (phase[i + 2].X - phase[i].X);
+            }
+
+            return result;
+        }
     }
 }

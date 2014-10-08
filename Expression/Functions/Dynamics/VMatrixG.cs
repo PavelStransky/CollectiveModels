@@ -16,7 +16,7 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(IGeometricalMethod), typeof(ClassicalCW));
+            this.SetParam(0, true, true, false, Messages.PGCM, Messages.PGCMDescription, null, typeof(IGeometricalMethod), typeof(ClassicalCW), typeof(GeometricCounterExample));
             this.SetParam(1, true, true, true, Messages.PEnergy, Messages.PEnergyDescription, null, typeof(double));
             this.SetParam(2, true, true, false, Messages.PIntervalX, Messages.PIntervalXDescription, null, typeof(Vector));
             this.SetParam(3, true, true, false, Messages.PIntervalY, Messages.PIntervalYDescription, null, typeof(Vector));
@@ -32,8 +32,8 @@ namespace PavelStransky.Expression.Functions.Def {
             int lengthX = (int)vx[2];
             int lengthY = (int)vy[2];
 
-            double minx = vx[0]; double maxx = vx[1]; double koefx = (maxx - minx) / (lengthX - 1);
-            double miny = vy[0]; double maxy = vy[1]; double koefy = (maxy - miny) / (lengthY - 1);
+            double minx = vx[0]; double maxx = vx[1]; double koefx = lengthX == 1 ? 0 : (maxx - minx) / (lengthX - 1);
+            double miny = vy[0]; double maxy = vy[1]; double koefy = lengthY == 1 ? 0 : (maxy - miny) / (lengthY - 1);
 
             Matrix result = new Matrix(lengthX, lengthY);
 
@@ -41,9 +41,37 @@ namespace PavelStransky.Expression.Functions.Def {
                 double x = i * koefx + minx;
                 for(int j = 0; j < lengthY; j++) {
                     double y = j * koefy + miny;
-                    Matrix m = (arguments[0] is IGeometricalMethod) ? (arguments[0] as IGeometricalMethod).VMatrix(e, x, y) : (arguments[0] as ClassicalCW).VMatrix(e, x, y);
-                    Vector ev = LAPackDLL.dsyev(m, false)[0];
-                    result[i, j] = ev[ei];
+
+                    // Potential
+                    if(ei >= 0) {
+                        Matrix m = null;
+                        if(arguments[0] is ClassicalGCM) {
+                            if(ei < 2)
+                                m = (arguments[0] as ClassicalGCM).VMatrix(e, x, y);
+                            else 
+                                m = (arguments[0] as ClassicalGCM).MMatrix(e, x, y);                            
+                        }
+                        else if(arguments[0] is ClassicalCW)
+                            m = (arguments[0] as ClassicalCW).VMatrix(e, x, y);
+                        else if(arguments[0] is GeometricCounterExample)
+                            m = (arguments[0] as GeometricCounterExample).VMatrix(e, x, y);
+
+                        Vector ev = LAPackDLL.dsyev(m, false)[0];
+
+                        if(arguments[0] is ClassicalGCM)
+                            result[i, j] = ev[ei % 2];
+                        else
+                            result[i, j] = ev[ei];
+                    }
+
+                    else {
+                        if(arguments[0] is ClassicalCW)
+                            result[i, j] = e - (arguments[0] as ClassicalCW).V(x, y);
+                        else if(arguments[0] is GeometricCounterExample)
+                            result[i, j] = e - (arguments[0] as GeometricCounterExample).V(x, y);
+                        else if(arguments[0] is ClassicalGCM)
+                            result[i, j] = e - (arguments[0] as ClassicalGCM).V(x, y);
+                    }
                 }
             }
 

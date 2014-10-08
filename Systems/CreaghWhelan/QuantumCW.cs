@@ -291,9 +291,6 @@ namespace PavelStransky.Systems {
         #endregion
 
         public double LevelDensity(double e, double step) {
-            if(this.Power != 2)
-                throw new SystemsException("This function is implemented only for power = 2");
-
             BisectionPotential bp = new BisectionPotential(this, 0.0, 0.0, e);
             Bisection b = new Bisection(bp.BisectionX);
 
@@ -304,16 +301,18 @@ namespace PavelStransky.Systems {
             BisectionDxPotential bdxp = new BisectionDxPotential(this);
             Bisection bdx = new Bisection(bdxp.Bisection);
 
+            double dxe = System.Math.Sqrt(1.0 / (2.0 * this.Power - 1));
+
             Vector r = new Vector(3);
-            x = bdx.Solve(-10 - System.Math.Abs(this.A), -System.Math.Sqrt(1.0 / 3.0));
+            x = bdx.Solve(-10 - System.Math.Abs(this.A), -dxe);
             if(!double.IsNaN(x))
                 r[length++] = x;
 
-            x = bdx.Solve(-System.Math.Sqrt(1.0 / 3.0), System.Math.Sqrt(1.0 / 3.0));
+            x = bdx.Solve(-dxe, dxe);
             if(!double.IsNaN(x))
                 r[length++] = x;
 
-            x = bdx.Solve(System.Math.Sqrt(1.0 / 3.0), 10 + System.Math.Abs(this.A));
+            x = bdx.Solve(dxe, 10 + System.Math.Abs(this.A));
             if(!double.IsNaN(x))
                 r[length++] = x;
 
@@ -344,12 +343,15 @@ namespace PavelStransky.Systems {
             if(length > 2)
                 result += this.LevelDensityInterval(roots[roots.Length - 2] + step / 100.0, roots[roots.Length - 1] - step / 100.0, step, e);
 
+            if(double.IsNaN(result))
+                return 0;
+
             return 2.0 / (3.0 * System.Math.PI * this.Hbar * this.Hbar) * result;
         }
 
         private double LevelDensityIntegrand(double x, double e) {
             double x2 = x * x;
-            return System.Math.Pow(e - 1.0 - this.A * x + 2.0 * x2 - x2 * x2, 1.5) / System.Math.Sqrt(this.B * x + this.C * x2 + this.Mu);
+            return System.Math.Pow(e - this.A * x - System.Math.Pow(x2 - 1.0, this.Power), 1.5) / System.Math.Sqrt(this.B * x + this.C * x2 + this.Mu);
         }
 
         private double LevelDensityInterval(double minx, double maxx, double step, double e) {

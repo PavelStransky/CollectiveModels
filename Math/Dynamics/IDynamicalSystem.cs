@@ -82,6 +82,6 @@ namespace PavelStransky.Math {
         /// <param name="meanSALI">Hodnota SALI</param>
         /// <param name="t">Èas</param>
         /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
-        int SALIDecision(double meanSALI, double t);
+        double SALIDecision(double meanSALI, double t);
     }
 }

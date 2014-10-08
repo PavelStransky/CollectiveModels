@@ -25,7 +25,7 @@ namespace PavelStransky.Expression.Functions.Def {
             result.Add(amfm.GetAM());
             result.Add(amfm.GetFM());
             result.Add(amfm.Phase());
-            result.Add(amfm.PhaseT());
+            result.Add(amfm.Frequency());
             return result;
         }
     }

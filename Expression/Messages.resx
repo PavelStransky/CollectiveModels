@@ -3954,4 +3954,19 @@ Second differing type: {1}</value>
   <data name="HelpAMFM" xml:space="preserve">
     <value>Calculates the AM-FM decomposition of a IMF</value>
   </data>
+  <data name="HelpInterpolate3D" xml:space="preserve">
+    <value>Interpolates a 3D function on a given set of points</value>
+  </data>
+  <data name="PRadius" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="PRadiusDescription" xml:space="preserve">
+    <value>radius</value>
+  </data>
+  <data name="HelpContour" xml:space="preserve">
+    <value>Calculates a contour of a given value</value>
+  </data>
+  <data name="HelpGCE" xml:space="preserve">
+    <value>Creates a system to check the Geometrical curvature method</value>
+  </data>
 </root>

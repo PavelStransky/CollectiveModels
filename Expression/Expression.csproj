@@ -164,6 +164,7 @@
     <Compile Include="Functions\Dynamics\RegularityBreakSALI.cs" />
     <Compile Include="Functions\Dynamics\Systems\CDP.cs" />
     <Compile Include="Functions\Dynamics\InitialConditionX.cs" />
+    <Compile Include="Functions\Dynamics\Systems\GCE.cs" />
     <Compile Include="Functions\Dynamics\Systems\StandardMapping.cs" />
     <Compile Include="Functions\Dynamics\Systems\Traffic.cs" />
     <Compile Include="Functions\Dynamics\Traffic\TrafficIC.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Functions\Math\SphericalBesselY.cs" />
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
     <Compile Include="Functions\Math\SplineValue.cs" />
+    <Compile Include="Functions\Matrix\Contour.cs" />
     <Compile Include="Functions\Matrix\CorrelationShift.cs" />
     <Compile Include="Functions\Matrix\EigenSystemSymmetric.cs" />
     <Compile Include="Functions\Matrix\FillMatrix.cs" />
@@ -229,6 +231,7 @@
     <Compile Include="Functions\Unsorted\GPSPOI.cs" />
     <Compile Include="Functions\Unsorted\HilbertTransform.cs" />
     <Compile Include="Functions\Unsorted\InstantaneousFrequency.cs" />
+    <Compile Include="Functions\Unsorted\Interpolate3D.cs" />
     <Compile Include="Functions\Unsorted\InvertArray.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />

@@ -109,7 +109,7 @@ namespace PavelStransky.Math {
 
             this.Init(initialX);
 
-            int result = 0;
+            double result = 0;
             int numPoints = 0;
             do {
                 while(t < tNext){

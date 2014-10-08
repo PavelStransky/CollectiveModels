@@ -125,7 +125,7 @@ namespace PavelStransky.Systems {
             }
 
             public double Bisection(double x) {
-                return 4.0 * x * (x * x - 1.0) + cg.A;
+                return 2.0 * cg.Power * x * System.Math.Pow(x * x - 1.0, cg.Power - 1) + cg.A;
             }
         }
 

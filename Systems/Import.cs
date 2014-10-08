@@ -170,6 +170,8 @@ namespace PavelStransky.Systems {
                 return new QuantumCWPolar(this);
             else if(typeName == typeof(ClassicalDicke).FullName)
                 return new ClassicalDicke(this);
+            else if(typeName == typeof(GeometricCounterExample).FullName)
+                return new GeometricCounterExample(this);
             else
                 return base.CreateObject(typeName);
         }

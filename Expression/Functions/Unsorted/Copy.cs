@@ -26,7 +26,10 @@ namespace PavelStransky.Expression.Functions.Def {
             for(int i = 0; i < length; i++)
                 result.Add(o);
 
-            return result.ToTArray();
+            if(length == 0)
+                return new TArray(o.GetType(), 0);
+            else
+                return result.ToTArray();
         }
     }
 }

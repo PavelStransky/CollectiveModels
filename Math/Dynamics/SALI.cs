@@ -200,7 +200,7 @@ namespace PavelStransky.Math {
 
             this.Init(initialX);
 
-            int result = 0;
+            double result = 0;
             do {
                 while(t < tNext){
                     double newStep = this.Step(ref step);
@@ -221,7 +221,7 @@ namespace PavelStransky.Math {
             if(writer != null)
                 writer.Write(t);
 
-            return (result == 1) ? true : false;
+            return (result > 0.5) ? true : false;
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace PavelStransky.Math {
         /// <param name="queue">Prùmìrovaná data</param>
         /// <param name="t">Èas</param>
         /// <returns>-1 pro nerozhodnutou trajektorii, 0 pro chaotickou, 1 pro regulární</returns>
-        protected int SALIDecision(double t, MeanQueue queue) {
+        protected double SALIDecision(double t, MeanQueue queue) {
             double ai = this.AlignmentIndex();
             double logAI = (ai <= 0.0 ? 20.0 : -System.Math.Log10(ai));
             queue.Set(logAI);

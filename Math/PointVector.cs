@@ -67,6 +67,17 @@ namespace PavelStransky.Math {
         /// <summary>
         /// Konstruktor
         /// </summary>
+        /// <param name="a">Øada bodù</param>
+        public PointVector(ArrayList a) {
+            this.item = new PointD[a.Count];
+            int i = 0;
+            foreach(PointD p in a)
+                this.item[i++] = p;
+        }
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         /// <param name="length">Délka vektoru</param>
         public PointVector(int length) {
             this.item = new PointD[length];

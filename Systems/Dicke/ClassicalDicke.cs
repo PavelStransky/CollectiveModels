@@ -243,13 +243,14 @@ namespace PavelStransky.Systems {
             return result;
         }
 
-        public int SALIDecision(double meanSALI, double t) {
+        public double SALIDecision(double meanSALI, double t) {
+            // Definite decision point [10000; 13]
             if(meanSALI > 8.0 + t / 2000.0)
-                return 0;
+                return System.Math.Max(0.0, 0.25 * (t - 5000.0));
             if(meanSALI < 13.0 * (t - 5000.0) / 5000)
-                return 1;
+                return System.Math.Min(1.0, 1.0 - 0.5 * (meanSALI - 8.0) / 5.0);
 
-            return -1;
+            return -1.0;
         }
         #endregion
 

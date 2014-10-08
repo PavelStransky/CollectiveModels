@@ -333,13 +333,23 @@ namespace PavelStransky.Expression {
             int[] sourceIndex = new int[rank];
 
             do {
+                bool zeroArray = false;
                 for(int r = 0; r < rank; r++)
-                    sourceIndex[r] = inIndex[r][sourceIndexI[r]];
+                    if(inIndex[r].Length == 0) {
+                        zeroArray = true;
+                        break;
+                    }
+                    else
+                        sourceIndex[r] = inIndex[r][sourceIndexI[r]];
 
-                object o = getFn(this[sourceIndex]);
-                if(result == null)
-                    result = new TArray(o.GetType(), lengths);
-                result[index] = o;
+                if(!zeroArray) {
+                    object o = getFn(this[sourceIndex]);
+                    if(result == null)
+                        result = new TArray(o.GetType(), lengths);
+                    result[index] = o;
+                }
+                else
+                    result = new TArray(this.GetItemType(), lengths);
 
                 for(int r = rank - 1; r >= 0; r--) {
                     sourceIndexI[r]++;

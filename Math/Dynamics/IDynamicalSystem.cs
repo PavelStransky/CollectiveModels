@@ -77,11 +77,9 @@ namespace PavelStransky.Math {
         bool PostProcess(Vector x);
 
         /// <summary>
-        /// Rozhodnutí, zda je daná trajektorie regulární nebo chaotická
+        /// Body pro rozhodnutí, zda je podle SALI daná trajektorie regulární nebo chaotická
         /// </summary>
-        /// <param name="meanSALI">Hodnota SALI</param>
-        /// <param name="t">Èas</param>
-        /// <returns>0 pro chaotickou, 1 pro regulární trajektorii, -1 pro nerozhodnutou</returns>
-        double SALIDecision(double meanSALI, double t);
+        /// <returns>[time chaotická, SALI chaotická, time regulární, SALI regulární, time koncový bod, SALI koncový bod]</returns>
+        double[] SALIDecisionPoints();
     }
 }

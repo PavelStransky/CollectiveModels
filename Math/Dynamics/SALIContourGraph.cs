@@ -38,51 +38,51 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
-        /// Vrátí true, pokud daná trajektorie je podle SALI regulární
+        /// Vrátí èíslo mezi 0 a 1 podle regularity trajektorie
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="sali">Závislost SALI na èase (výstup)</param>
         /// <param name="section">Body øezu (výstup)</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection, PointVector sali) {
-            return this.IsRegularPS(initialX, poincareSection, sali, 1, 0, false);
+        public double SALIPoincareSection(Vector initialX, PointVector poincareSection, PointVector sali) {
+            return this.SALIPoincareSection(initialX, poincareSection, sali, 1, 0, false);
         }
         
         /// <summary>
-        /// Vrátí true, pokud daná trajektorie je podle SALI regulární
+        /// Vrátí èíslo mezi 0 a 1 podle regularity trajektorie
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="sali">Závislost SALI na èase (výstup)</param>
         /// <param name="sectionS">Index promìnné, kterou vede øez</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS) {
-            return this.IsRegularPS(initialX, poincareSection, sali, sectionS, 0, false);
+        public double SALIPoincareSection(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS) {
+            return this.SALIPoincareSection(initialX, poincareSection, sali, sectionS, 0, false);
         }
 
         /// <summary>
-        /// Vrátí true, pokud daná trajektorie je podle SALI regulární
+        /// Vrátí èíslo mezi 0 a 1 podle regularity trajektorie
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="sectionS">Index promìnné, kterou vede øez</param>
         /// <param name="oneOrientation">True, pokud poèítáme jen jednu orientaci prùchodu rovinou</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS, bool oneOrientation) {
-            return this.IsRegularPS(initialX, poincareSection, sali, sectionS, 0, oneOrientation);
+        public double SALIPoincareSection(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS, bool oneOrientation) {
+            return this.SALIPoincareSection(initialX, poincareSection, sali, sectionS, 0, oneOrientation);
         }
         
         /// <summary>
-        /// Vrátí true, pokud daná trajektorie je podle SALI regulární, a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
+        /// Vrátí èíslo mezi 0 a 1 podle regularity trajektorie a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="section">Body øezu (výstup)</param>
         /// <param name="sali">Závislost SALI na èase (výstup)</param>
         /// <param name="numPointsSection">Minimální poèet bodù øezu</param>
         /// <param name="sectionS">Index promìnné, kterou vede øez</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS, int numPointsSection) {
-            return this.IsRegularPS(initialX, poincareSection, sali, sectionS, numPointsSection, false);
+        public double SALIPoincareSection(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS, int numPointsSection) {
+            return this.SALIPoincareSection(initialX, poincareSection, sali, sectionS, numPointsSection, false);
         }
         
         /// <summary>
-        /// Vrátí true, pokud daná trajektorie je podle SALI regulární, a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
+        /// Vrátí èíslo mezi 0 a 1 podle regularity trajektorie a výpoèet skonèí nejdøíve po dosažení numPointsSection prùchodù rovinou
         /// </summary>
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="poincareSection">Body øezu (výstup)</param>
@@ -90,7 +90,7 @@ namespace PavelStransky.Math {
         /// <param name="sectionS">Index promìnné, kterou vede øez</param>
         /// <param name="numPointsSection">Minimální poèet bodù øezu</param>
         /// <param name="oneOrientation">True, pokud poèítáme jen jednu orientaci prùchodu rovinou</param>
-        public bool IsRegularPS(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS, int numPointsSection, bool oneOrientation) {
+        public double SALIPoincareSection(Vector initialX, PointVector poincareSection, PointVector sali, int sectionS, int numPointsSection, bool oneOrientation) {
             int indexG1 = sectionS == 0 || sectionS == 2 ? 1 : 0;   // První index pro graf
             int indexG2 = sectionS == 0 || sectionS == 2 ? 3 : 2;   // Druhý index pro graf
 
@@ -109,8 +109,11 @@ namespace PavelStransky.Math {
 
             this.Init(initialX);
 
-            double result = 0;
+            double result = 0.0;
+            // Zatím k nièemu, mohlo by sloužit k pøenormovávání SALI (pro velmi rychlý, nebo naopak pomalý pohyb)
+            Vector lengths = new Vector(this.X.Length);
             int numPoints = 0;
+
             do {
                 while(t < tNext){
                     Vector oldx = this.X;
@@ -118,6 +121,8 @@ namespace PavelStransky.Math {
                     double newStep = this.Step(ref step);
                     t += step;
                     step = newStep;
+
+                    lengths += (this.X - oldx).Abs();
 
                     double y = this.X[sectionS];
 
@@ -140,17 +145,19 @@ namespace PavelStransky.Math {
             } while(result < 0 || numPoints < numPointsSection);
 
             // Pøevod øady na PointVector
-            poincareSection.Length = crossings.Count;
+            poincareSection.Length = crossings.Count + 1;
             int j = 0;
             foreach(PointD p in crossings)
                 poincareSection[j++] = p;
+
+            poincareSection[j] = new PointD(lengths.MaxIndex(), lengths.Max() / t);
 
             sali.Length = salia.Count;
             j = 0;
             foreach(PointD p in salia)
                 sali[j++] = p;
 
-            return (result == 1) ? true : false;
+            return result;
         }
 
         /// <summary>
@@ -207,14 +214,14 @@ namespace PavelStransky.Math {
                         PointVector sali = new PointVector(0);
 
                         // Nalezli jsme neregulární trajektorii - konec výpoètu
-                        if(!this.IsRegularPS(ic, section, sali, sectionS)) {
+                        if(this.SALIPoincareSection(ic, section, sali, sectionS) < 0.5) {
                             writer.WriteLine(string.Format(" {0} (irregular)", SpecialFormat.Format(DateTime.Now - startTime)));
                             return false;
                         }
 
                         trPassed[i, j]++;
 
-                        for(int k = 0; k < section.Length; k++) {
+                        for(int k = 0; k < section.Length - 1; k++) {
                             int n1x = (int)((section[k].X - x0) / kx);
                             int n2x = (int)((section[k].Y - y0) / ky);
                             if(n1x < n1 && n2x < n2) 
@@ -268,7 +275,7 @@ namespace PavelStransky.Math {
             double ky = (boundX[2 * indexG2 + 1] - boundX[2 * indexG2]) / n2;
             double y0 = boundX[2 * indexG2];
 
-            int regular = 0;        // Poèet regulárních trajektorií
+            double regular = 0;     // Skóre regularity trajektorií
             int total = 0;          // Celkový poèet trajektorií
             Matrix m = new Matrix(n1, n2);
             int[,] trPassed = new int[n1, n2];
@@ -279,6 +286,7 @@ namespace PavelStransky.Math {
             ArrayList salis = new ArrayList();
             ArrayList salits = new ArrayList();
             ArrayList ics = new ArrayList();
+            ArrayList maxLength = new ArrayList();
 
             for(int i = 0; i < n1; i++) {
                 for(int j = 0; j < n2; j++) {
@@ -300,11 +308,16 @@ namespace PavelStransky.Math {
                         PointVector section = new PointVector(0);
                         PointVector salit = new PointVector(0);
 
-                        int sali = this.IsRegularPS(ic, section, salit, sectionS, oneOrientation) ? 1 : 0;
+                        double sali = this.SALIPoincareSection(ic, section, salit, sectionS, oneOrientation);
                         regular += sali;
                         total++;
 
                         bool[,] actPassed = new bool[n1, n2];
+
+                        // Délka trajektorie - uchována neintuitivnì v poli section jako poslední prvek
+                        int mi = (int)section.LastItem.X;
+                        maxLength.Add(section.LastItem.Y * (boundX[2 * mi + 1] - boundX[2 * mi]));
+                        section.Length--;
 
                         sections.Add(section);
                         salis.Add(sali);
@@ -351,22 +364,28 @@ namespace PavelStransky.Math {
                 }
 
             ArrayList result = new ArrayList();
-            result.Add(m);
-            result.Add(boundX);
-            result.Add(total);
-            result.Add(regular);
-            result.Add(ntot);
-            result.Add(nreg);
+            result.Add(m);          // 0
+            result.Add(boundX);     // 1
+            result.Add(total);      // 2
+            result.Add(regular);    // 3
+            result.Add(ntot);       // 4
+            result.Add(nreg);       // 5
 
             Vector saliv = new Vector(salis.Count);
             int l = 0;
-            foreach(int sali in salis)
+            foreach(double sali in salis)
                 saliv[l++] = sali;
-            result.Add(saliv);
+            result.Add(saliv);      // 6
 
-            result.Add(ics);
-            result.Add(sections);
-            result.Add(salits);
+            Vector maxLengthv = new Vector(maxLength.Count);
+            l = 0;
+            foreach(double max in maxLength)
+                maxLengthv[l++] = max;
+            result.Add(maxLengthv); // 7
+
+            result.Add(ics);        // 8
+            result.Add(sections);   // 9
+            result.Add(salits);     // 10
 
             return result;
         }

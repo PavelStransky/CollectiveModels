@@ -229,6 +229,7 @@ namespace PavelStransky.Math {
         /// </summary>
         /// <param name="queue">Prùmìrovaná data</param>
         /// <param name="t">Èas</param>
+        /// <param name="length">Délka køivky</param>
         /// <returns>-1 pro nerozhodnutou trajektorii, 0 pro chaotickou, 1 pro regulární</returns>
         protected double SALIDecision(double t, MeanQueue queue) {
             double ai = this.AlignmentIndex();
@@ -237,7 +238,26 @@ namespace PavelStransky.Math {
 
             double meanSALI = queue.Mean;
 
-            return this.dynamicalSystem.SALIDecision(meanSALI, t);
+            double[] d = this.dynamicalSystem.SALIDecisionPoints();
+            double p1x = d[0], p1y = d[1];
+            double p2x = d[2], p2y = d[3];
+            double p3x = d[4], p3y = d[5];
+
+//            double p4y = (p2x - p1x) / (p3x - p1x) * (p3y - p1y) + p1y;
+//            double p5x = (p1y - p2y) / (p3y - p2y) * (p3x - p2x) + p2x;
+
+            double p4x = 0.5 * (p1x + p3x), p4y = 0.5 * (p1y + p3y);
+            double p5x = 0.5 * (p2x + p3x), p5y = 0.5 * (p2y + p3y);
+
+            double pty1 = (t - p1x) / (p3x - p1x) * (p3y - p1y) + p1y;
+            double pty2 = (t - p2x) / (p3x - p2x) * (p3y - p2y) + p2y;
+
+            if(meanSALI > pty1)
+                return System.Math.Max(0.0, 0.5 * (pty1 - p4y) / (p3y - p4y));
+            if(meanSALI < pty2)
+                return System.Math.Min(1.0, 1.0 - 0.5 * (pty2 - p5y) / (p3y - p5y));
+
+            return -1.0;
         }
 
         protected const int window = 200;

@@ -315,13 +315,12 @@ namespace PavelStransky.Systems {
             return false;
         }
 
-        public double SALIDecision(double meanSALI, double t) {
-            if(meanSALI > 6.0 + t / 200.0)
-                return 0;
-            if(meanSALI < (t - 500.0) / 50.0)
-                return 1;
-
-            return -1;
+        /// <summary>
+        /// Body pro rozhodnutí, zda je podle SALI daná trajektorie regulární nebo chaotická
+        /// </summary>
+        /// <returns>[time chaotická, SALI chaotická, time regulární, SALI regulární, time koncový bod, SALI koncový bod]</returns>
+        public double[] SALIDecisionPoints() {
+            return new double[] { 0, 6, 500, 0, 1000, 10 };
         }
         #endregion
 

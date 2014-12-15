@@ -89,15 +89,25 @@ namespace PavelStransky.Systems {
         public Matrix PartialTrace(int n) {
             JaynesCummingsBasisIndex index = this.eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
 
-            Matrix result = null;
             int dim = index.Length;
+            int m = index.MaxNb;
+            int j = index.J;
+
             Vector ev = this.eigenSystem.GetEigenVector(n);
 
-            result = new Matrix(dim);
+            Matrix result = new Matrix(2 * j + 1);
+            for(int i = -j; i <= j; i++)
+                for(int k = -j; k <= j; k++)
+                    for(int l = 0; l <= m; l++)
+                        result[i + j, k + j] += ev[index[l, i]] * ev[index[l, k]];
 
-            for(int i = 0; i < dim; i++)
-                result[i, i] = ev[i] * ev[i];
-
+            /*
+            Matrix result = new Matrix(m + 1);
+            for(int i = 0; i <= m; i++)
+                for(int k = 0; k <= m; k++)
+                    for(int l = -j; l <= j; l++)
+                        result[i, k] += ev[index[i, l]] * ev[index[k, l]];
+            */
             return result;
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace PavelStransky.DLLWrapper {
     /// <summary>
@@ -9,7 +10,7 @@ namespace PavelStransky.DLLWrapper {
     public unsafe class Memory {
         //Handle pro haldu
         private static IntPtr processHeap = GetProcessHeap();
-        
+
         // Heap API functions
         [DllImport("kernel32")]
         private static extern IntPtr GetProcessHeap();
@@ -38,8 +39,9 @@ namespace PavelStransky.DLLWrapper {
         /// Alokuje dan˝ poËet byt˘ pamÏti
         /// </summary>
         /// <param name="size">PoËet byt˘ pamÏti</param>
-        private static void* Alloc(uint size) {
-            void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
+        private static void* Alloc(IntPtr size) {
+            void* result = (void *)Marshal.AllocHGlobal(size);
+//            void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
             if(result == null)
                 throw new OutOfMemoryException();
             return result;
@@ -49,16 +51,16 @@ namespace PavelStransky.DLLWrapper {
         /// Alokuje pole int o zadanÈ dÈlce
         /// </summary>
         /// <param name="length">DÈlka pole</param>
-        public static int* NewInt(int length) {
-            return (int*)Alloc((uint)length * (uint)sizeof(int));
+        public static int* NewInt(long length) {
+            return (int*)Alloc((IntPtr)(length * sizeof(int)));
         }
 
         /// <summary>
         /// Alokuje pole double o zadanÈ dÈlce
         /// </summary>
         /// <param name="length">DÈlka pole</param>
-        public static double* NewDouble(int length) {
-            return (double*)Alloc((uint)length * (uint)sizeof(double));
+        public static double* NewDouble(long length) {
+            return (double*)Alloc((IntPtr)(length * sizeof(double)));
         }
 
         /// <summary>
@@ -66,8 +68,8 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static byte* NewByte(int length) {
-            return (byte*)Alloc((uint)length * (uint)sizeof(byte));
+        public static byte* NewByte(long length) {
+            return (byte*)Alloc((IntPtr)(length * sizeof(byte)));
         }
 
         /// <summary>
@@ -76,11 +78,13 @@ namespace PavelStransky.DLLWrapper {
         /// <param name="block">Ukazatel na pamÏù</param>
         public static void Delete(void* block) {
             if(block != null)
-                if(!HeapFree(processHeap, 0, block)) 
-                    throw new InvalidOperationException();
+                Marshal.FreeHGlobal((IntPtr)block);
+//                if(!HeapFree(processHeap, 0, block)) 
+//                    throw new InvalidOperationException();
         }
 
         // Indikuje, ûe alokovan· pamÏù bude vynulov·na
         private const int HEAP_ZERO_MEMORY = 0x00000008;
+        private const int HEAP_GENERATE_EXCEPTIONS = 0x4;
     }
 }

@@ -5119,6 +5119,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates the quantum Dicke class.
+        /// </summary>
+        internal static string HelpQuantumDicke {
+            get {
+                return ResourceManager.GetString("HelpQuantumDicke", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The quantum double pendulum system.
         /// </summary>
         internal static string HelpQuantumDP {

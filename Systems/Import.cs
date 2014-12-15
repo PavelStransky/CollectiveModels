@@ -66,6 +66,8 @@ namespace PavelStransky.Systems {
                 return new CWBasisIndex(this);
             else if(typeName == typeof(CWPolarBasisIndex).FullName)
                 return new CWPolarBasisIndex(this);
+            else if(typeName == typeof(DickeBasisIndex).FullName)
+                return new DickeBasisIndex(this);
 
             else if(typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
@@ -172,6 +174,8 @@ namespace PavelStransky.Systems {
                 return new ClassicalDicke(this);
             else if(typeName == typeof(GeometricCounterExample).FullName)
                 return new GeometricCounterExample(this);
+            else if(typeName == typeof(QuantumDicke).FullName)
+                return new QuantumDicke(this);
             else
                 return base.CreateObject(typeName);
         }

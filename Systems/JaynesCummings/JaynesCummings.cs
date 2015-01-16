@@ -52,8 +52,9 @@ namespace PavelStransky.Systems {
             JaynesCummingsBasisIndex index = basisIndex as JaynesCummingsBasisIndex;
 
             int dim = index.Length;
-            double l = this.lambda / System.Math.Sqrt(index.M2);
             int j = index.J;
+//            double l = this.lambda / System.Math.Sqrt(index.M2);
+            double l = this.lambda / System.Math.Sqrt(2 * j);
 
             for(int i = 0; i < dim; i++) {
                 int nb = index.Nb[i];
@@ -90,24 +91,22 @@ namespace PavelStransky.Systems {
             JaynesCummingsBasisIndex index = this.eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
 
             int dim = index.Length;
-            int m = index.MaxNb;
+            int nbmin = index.MinNb;
+            int nbmax = index.MaxNb;
             int j = index.J;
 
             Vector ev = this.eigenSystem.GetEigenVector(n);
 
-            Matrix result = new Matrix(2 * j + 1);
-            for(int i = -j; i <= j; i++)
-                for(int k = -j; k <= j; k++)
-                    for(int l = 0; l <= m; l++)
-                        result[i + j, k + j] += ev[index[l, i]] * ev[index[l, k]];
+            Matrix result = new Matrix(nbmax - nbmin + 1);
+            for(int i = nbmin; i <= nbmax; i++)
+                for(int k = nbmin; k <= nbmax; k++)
+                    for(int l = -j; l <= j; l++) {
+                        int i1 = index[i, l];
+                        int i2 = index[k, l];
+                        if(i1 >= 0 && i2 >= 0)
+                            result[i - nbmin, k - nbmin] += ev[i1] * ev[i2];
+                    }
 
-            /*
-            Matrix result = new Matrix(m + 1);
-            for(int i = 0; i <= m; i++)
-                for(int k = 0; k <= m; k++)
-                    for(int l = -j; l <= j; l++)
-                        result[i, k] += ev[index[i, l]] * ev[index[k, l]];
-            */
             return result;
         }
 

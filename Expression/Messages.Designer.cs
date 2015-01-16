@@ -3103,6 +3103,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns a vector containing all the possible sums of elements of given vectors.
+        /// </summary>
+        internal static string HelpCombineVector {
+            get {
+                return ResourceManager.GetString("HelpCombineVector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns cumulative histogram of the series which contains all the possible sums of elements of given vectors.
+        /// </summary>
+        internal static string HelpCombineVectorCH {
+            get {
+                return ResourceManager.GetString("HelpCombineVectorCH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computes spectrum of a LHOQuantumGCM object.
         /// </summary>
         internal static string HelpComputeSpectrum {
@@ -9106,6 +9124,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to l.
+        /// </summary>
+        internal static string PLimit {
+            get {
+                return ResourceManager.GetString("PLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit.
+        /// </summary>
+        internal static string PLimitDescription {
+            get {
+                return ResourceManager.GetString("PLimitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to omit.
         /// </summary>
         internal static string PLinesOmit {
@@ -9286,6 +9322,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to max.
+        /// </summary>
+        internal static string PMax {
+            get {
+                return ResourceManager.GetString("PMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum value.
+        /// </summary>
+        internal static string PMaxDescription {
+            get {
+                return ResourceManager.GetString("PMaxDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maxd.
         /// </summary>
         internal static string PMaxDistance {
@@ -9390,6 +9444,24 @@ namespace PavelStransky.Expression {
         internal static string PMeanEnergyDescription {
             get {
                 return ResourceManager.GetString("PMeanEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min.
+        /// </summary>
+        internal static string PMin {
+            get {
+                return ResourceManager.GetString("PMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum value.
+        /// </summary>
+        internal static string PMinDescription {
+            get {
+                return ResourceManager.GetString("PMinDescription", resourceCulture);
             }
         }
         
@@ -11190,6 +11262,24 @@ namespace PavelStransky.Expression {
         internal static string PWeightDescription {
             get {
                 return ResourceManager.GetString("PWeightDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to width.
+        /// </summary>
+        internal static string PWidth {
+            get {
+                return ResourceManager.GetString("PWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        internal static string PWidthDescription {
+            get {
+                return ResourceManager.GetString("PWidthDescription", resourceCulture);
             }
         }
         

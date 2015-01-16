@@ -61,6 +61,8 @@ namespace PavelStransky.Systems {
         /// <param name="m">Index m</param>
         public int this[int n, int m] {
             get {
+                if(n > this.maxN || n < 0 || m < -this.j || m > this.j)
+                    return -1;
                 return n * mod + m + this.j;
             }
         }

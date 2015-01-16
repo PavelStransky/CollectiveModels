@@ -30,6 +30,9 @@ namespace PavelStransky.DLLWrapper {
         [DllImport("kernel32")]
         private static extern int HeapSize(IntPtr hHeap, int flags, void* block);
 
+        [DllImport("kernel32")]
+        static extern void FillMemory(IntPtr destination, uint length, byte fill);
+    
         /// <summary>
         /// Soukromý konstruktor (abychom nemohli vytvoøit instanci tøídy)
         /// </summary>
@@ -39,9 +42,9 @@ namespace PavelStransky.DLLWrapper {
         /// Alokuje daný poèet bytù pamìti
         /// </summary>
         /// <param name="size">Poèet bytù pamìti</param>
-        private static void* Alloc(IntPtr size) {
-            void* result = (void *)Marshal.AllocHGlobal(size);
-//            void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
+        private static IntPtr Alloc(IntPtr size) {
+            IntPtr result = Marshal.AllocHGlobal(size);
+            //            void* result = HeapAlloc(processHeap, HEAP_ZERO_MEMORY, size);
             if(result == null)
                 throw new OutOfMemoryException();
             return result;
@@ -52,7 +55,12 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="length">Délka pole</param>
         public static int* NewInt(long length) {
-            return (int*)Alloc((IntPtr)(length * sizeof(int)));
+            int* result = (int*)Alloc((IntPtr)(length * sizeof(int)));
+
+            for(long l = 0; l < length; l++)
+                result[l] = 0;
+
+            return result;
         }
 
         /// <summary>
@@ -60,7 +68,12 @@ namespace PavelStransky.DLLWrapper {
         /// </summary>
         /// <param name="length">Délka pole</param>
         public static double* NewDouble(long length) {
-            return (double*)Alloc((IntPtr)(length * sizeof(double)));
+            double* result = (double*)Alloc((IntPtr)(length * sizeof(double)));
+
+            for(long l = 0; l < length; l++)
+                result[l] = 0.0;
+
+            return result;
         }
 
         /// <summary>
@@ -69,7 +82,11 @@ namespace PavelStransky.DLLWrapper {
         /// <param name="length"></param>
         /// <returns></returns>
         public static byte* NewByte(long length) {
-            return (byte*)Alloc((IntPtr)(length * sizeof(byte)));
+            byte* result = (byte*)Alloc((IntPtr)(length * sizeof(byte)));
+            for(long l = 0; l < length; l++)
+                result[l] = 0;
+
+            return result;
         }
 
         /// <summary>

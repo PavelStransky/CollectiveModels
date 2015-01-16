@@ -30,7 +30,11 @@ namespace PavelStransky.Expression.Functions.Def {
             for(int i = 0; i < length; i++)
                 if(ev[i] > 0)
                     result -= ev[i] * System.Math.Log(ev[i]);
-            result /= System.Math.Log(length);
+            if(length == 1)
+                result = 0.0;
+            else
+                result /= System.Math.Log(length);
+
             return result;
         }
     }

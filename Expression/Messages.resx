@@ -3972,4 +3972,34 @@ Second differing type: {1}</value>
   <data name="HelpQuantumDicke" xml:space="preserve">
     <value>Creates the quantum Dicke class</value>
   </data>
+  <data name="HelpCombineVector" xml:space="preserve">
+    <value>Returns a vector containing all the possible sums of elements of given vectors</value>
+  </data>
+  <data name="PLimit" xml:space="preserve">
+    <value>l</value>
+  </data>
+  <data name="PLimitDescription" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="PMax" xml:space="preserve">
+    <value>max</value>
+  </data>
+  <data name="PMaxDescription" xml:space="preserve">
+    <value>Maximum value</value>
+  </data>
+  <data name="PMin" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="PMinDescription" xml:space="preserve">
+    <value>Minimum value</value>
+  </data>
+  <data name="HelpCombineVectorCH" xml:space="preserve">
+    <value>Returns cumulative histogram of the series which contains all the possible sums of elements of given vectors</value>
+  </data>
+  <data name="PWidth" xml:space="preserve">
+    <value>width</value>
+  </data>
+  <data name="PWidthDescription" xml:space="preserve">
+    <value>Width</value>
+  </data>
 </root>

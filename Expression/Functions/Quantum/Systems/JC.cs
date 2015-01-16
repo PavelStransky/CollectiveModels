@@ -15,9 +15,9 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(3);
-            this.SetParam(0, false, true, true, Messages.POmega, Messages.POmegaDescription, 0.0, typeof(double));
-            this.SetParam(1, false, true, true, Messages.POmega, Messages.POmegaDescription, 0.0, typeof(double));
-            this.SetParam(2, false, true, true, Messages.PLambda, Messages.POmegaDescription, 0.0, typeof(double));
+            this.SetParam(0, false, true, true, Messages.POmega, Messages.POmegaDescription, 1.0, typeof(double));
+            this.SetParam(1, false, true, true, Messages.POmega0, Messages.POmega0Description, 1.0, typeof(double));
+            this.SetParam(2, false, true, true, Messages.PLambda, Messages.PLambdaDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {

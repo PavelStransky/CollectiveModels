@@ -40,7 +40,7 @@ namespace PavelStransky.Systems {
 
             int length = 0;
             for(int i = minnb; i <= maxnb; i++) {
-                int m1 = this.m2 / 2 - i; // -this.j;
+                int m1 = this.m2 / 2 - i - this.j;
                 if(m1 >= -this.j && m1 <= this.j)
                     length++;
             }
@@ -49,7 +49,7 @@ namespace PavelStransky.Systems {
             this.nb = new int[length];
             length = 0;
             for(int i = minnb; i <= maxnb; i++) {
-                int m1 = this.m2 / 2 - i; // -this.j;
+                int m1 = this.m2 / 2 - i -this.j;
                 if(m1 >= -this.j && m1 <= this.j) {
                     this.m[length] = m1;
                     this.nb[length] = i;
@@ -91,12 +91,18 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Šíøka pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return 3; } }
+        public override int BandWidth { get { return System.Math.Min(3, this.Length); } }
 
         /// <summary>
         /// Maximální hodnota poètu bosonù
         /// </summary>
         public int MaxNb { get { return this.nb[this.Length - 1]; } }
+
+        /// <summary>
+        /// Minimální hodnota poètu bosonù
+        /// </summary>
+        public int MinNb { get { return this.nb[0]; } }
+
 
         /// <summary>
         /// Vrací index prvku s kvantovými èísly nb, m

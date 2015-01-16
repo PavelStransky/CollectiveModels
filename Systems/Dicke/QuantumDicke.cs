@@ -106,8 +106,9 @@ namespace PavelStransky.Systems {
 
             int length = index.Length;
             int bandWidth = index.BandWidth;
+            int j = index.J;
 
-            double gamman = this.Gamma / System.Math.Sqrt(2 * index.J);
+            double gamman = this.Gamma / System.Math.Sqrt(2 * j);
 
             DateTime startTime = DateTime.Now;
 
@@ -115,38 +116,50 @@ namespace PavelStransky.Systems {
                 writer.Write(string.Format("Příprava H ({0} x {1})...", length, length));
 
             for(int i = 0; i < length; i++) {
-                int ni = index.N[i];
-                int mi = index.M[i];
+                int n = index.N[i];
+                int m = index.M[i];
 
-                for(int j = i; j < length; j++) {
-                    int nj = index.N[j];
-                    int mj = index.M[j];
+                int i1 = index[n + 1, m - 1];
+                int i2 = index[n - 1, m + 1];
+                int i3 = index[n + 1, m + 1];
+                int i4 = index[n - 1, m - 1];
 
-                    double sum = 0.0;
+                matrix[i, i] = this.Omega * n + this.Omega0 * m;
 
-                    // Výběrové pravidlo
-                    if(nj == ni && mj == mi) {
-                        sum += this.Omega * ni;
-                        sum += this.Omega0 * mi;
-                    }
+                if(i1 >= 0)
+                    matrix[i1, i] = gamman * this.ShiftMinus(j, m) * System.Math.Sqrt(n + 1);
+                if(i2 >= 0)
+                    matrix[i2, i] = gamman * this.ShiftPlus(j, m) * System.Math.Sqrt(n);
+                if(i3 >= 0)
+                    matrix[i3, i] = gamman * this.Delta * this.ShiftPlus(j, m) * System.Math.Sqrt(n + 1);
+                if(i4 >= 0)
+                    matrix[i4, i] = gamman * this.Delta * this.ShiftMinus(j, m) * System.Math.Sqrt(n);
 
-                    if(mi + 1 == mj && ni - 1 == nj)
-                        sum += gamman * this.ShiftPlus(index.J, mj) * System.Math.Sqrt(nj);
+                /*
+        // Výběrové pravidlo
+            if(nj == ni && mj == mi) {
+                sum += this.Omega * ni;
+                sum += this.Omega0 * mi;
+            }
 
-                    if(mi - 1 == mj && ni + 1 == nj)
-                        sum += gamman * this.ShiftMinus(index.J, mj) * System.Math.Sqrt(nj + 1);
+            if(mi + 1 == mj && ni - 1 == nj)
+                sum += gamman * this.ShiftPlus(index.J, mj) * System.Math.Sqrt(nj);
 
-                    if(mi + 1 == mj && ni + 1 == nj)
-                        sum += gamman * this.Delta * this.ShiftPlus(index.J, mj) * System.Math.Sqrt(nj + 1);
+            if(mi - 1 == mj && ni + 1 == nj)
+                sum += gamman * this.ShiftMinus(index.J, mj) * System.Math.Sqrt(nj + 1);
 
-                    if(mi - 1 == mj && ni - 1 == nj)
-                        sum += gamman * this.Delta * this.ShiftMinus(index.J, mj) * System.Math.Sqrt(nj);
+            if(mi + 1 == mj && ni + 1 == nj)
+                sum += gamman * this.Delta * this.ShiftPlus(index.J, mj) * System.Math.Sqrt(nj + 1);
 
-                    if(sum != 0.0) {
-                        matrix[i, j] = sum;
-                        matrix[j, i] = sum;
-                    }
-                }
+            if(mi - 1 == mj && ni - 1 == nj)
+                sum += gamman * this.Delta * this.ShiftMinus(index.J, mj) * System.Math.Sqrt(nj);
+
+            if(sum != 0.0) {
+                matrix[i, j] = sum;
+                matrix[j, i] = sum;
+            }
+        }
+                 **/
             }
 
             if(writer != null)

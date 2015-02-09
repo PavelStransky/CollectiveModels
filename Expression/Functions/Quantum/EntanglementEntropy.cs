@@ -14,15 +14,18 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpEntanglementEntropy; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(2);
+            this.SetNumParams(3);
 
             this.SetParam(0, true, true, false, Messages.PCombinedSystem, Messages.PCombinedSystemDescription, null, typeof(IEntanglement));
             this.SetParam(1, true, true, false, Messages.PEigenValueIndex, Messages.PEigenValueIndexDescription, null, typeof(int));
+            this.SetParam(2, false, true, false, Messages.PNormalize, Messages.PNormalizeDescription, true, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IEntanglement system = arguments[0] as IEntanglement;
             int n = (int)arguments[1];
+            bool normalize = (bool)arguments[2];
+
             Vector ev = LAPackDLL.dsyev(system.PartialTrace(n), false)[0];
 
             double result = 0.0;
@@ -32,7 +35,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     result -= ev[i] * System.Math.Log(ev[i]);
             if(length == 1)
                 result = 0.0;
-            else
+            else if(normalize)
                 result /= System.Math.Log(length);
 
             return result;

@@ -1338,7 +1338,7 @@ namespace PavelStransky.Math {
 
             for(int i = 0; i < length; i++)
                 result[i] = this[(i + index + length) % length];
-
+            
             return result;
         }
 

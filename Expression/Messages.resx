@@ -4002,4 +4002,10 @@ Second differing type: {1}</value>
   <data name="PWidthDescription" xml:space="preserve">
     <value>Width</value>
   </data>
+  <data name="PNormalize" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="PNormalizeDescription" xml:space="preserve">
+    <value>True if the result should be normalized</value>
+  </data>
 </root>

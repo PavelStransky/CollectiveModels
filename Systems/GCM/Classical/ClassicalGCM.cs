@@ -315,7 +315,7 @@ namespace PavelStransky.Systems {
 
             return result;
         }
-
+        
         /// <summary>
         /// Najde bod, kde se mìní znaménko nejnižší vlastní hodnoty z kladné na zápornou
         /// </summary>

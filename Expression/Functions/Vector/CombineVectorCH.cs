@@ -64,7 +64,9 @@ namespace PavelStransky.Expression.Functions.Def {
                 if(start >= end)
                     return;
 
-                this.sum++;                
+                this.sum++;
+
+//                return;
 
                 for(int k = (int)start; k < (int)end; k++) {
                     this.histogram[k] += this.Value(start, k + 1, e);                    
@@ -142,6 +144,7 @@ namespace PavelStransky.Expression.Functions.Def {
             int k = 0;
             this.Recursion(bins, ref k, vs, vs.Length, 0.0, guider);
 
+//            return bins.Num;
             return bins.GetHistogram();
         }
 
@@ -162,7 +165,7 @@ namespace PavelStransky.Expression.Functions.Def {
                     }
                 }
             }
-            else 
+            else
                 bins.Add(sum);
         }
     }

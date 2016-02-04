@@ -48,6 +48,17 @@ namespace PavelStransky.Expression {
         }
 
         /// <summary>
+        /// Konstruktor, který vytvoøí øadu o jednom prvku daného typu
+        /// </summary>
+        /// <param name="o">Objekt</param>
+        public TArray(object obj) {
+            this.type = obj.GetType();
+            this.data = Array.CreateInstance(this.type, 1);
+            this.ResetEnumerator();
+            this[0] = obj;
+        }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
         /// <param name="i">Celoèíselné hodnoty</param>

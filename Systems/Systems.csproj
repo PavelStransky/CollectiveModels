@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasisIndex.cs" />
+    <Compile Include="Chaos\WalkerFord.cs" />
     <Compile Include="CHO\CoupledHarmonicOscillator.cs" />
     <Compile Include="ComputeMethod.cs" />
     <Compile Include="CreaghWhelan\CW.cs" />
@@ -125,9 +126,13 @@
     <Compile Include="Lipkin\LipkinTwoBasisIndex.cs" />
     <Compile Include="Lipkin\LipkinTwoSpectator.cs" />
     <Compile Include="Lipkin\LipkinTwoSpectatorSimple.cs" />
+    <Compile Include="ManyBody\PCR3BP.cs" />
     <Compile Include="PT\PTBasisIndex.cs" />
     <Compile Include="Spheroid\Spheroid.cs" />
     <Compile Include="Spheroid\SpheroidBasisIndex.cs" />
+    <Compile Include="Spin\Ising2D.Binder.cs" />
+    <Compile Include="Spin\Ising2D.cs" />
+    <Compile Include="Spin\Ising2D.Direct.cs" />
     <Compile Include="StandardMapping.cs" />
     <Compile Include="SturmCoulomb\SCBasisIndex.cs" />
     <Compile Include="SturmCoulomb\SturmCoulomb.cs" />
@@ -196,6 +201,9 @@
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Name>Math</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Spin\Ising2D.Polynomial.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

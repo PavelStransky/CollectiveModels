@@ -15,7 +15,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetNumParams(2);
 
             this.SetParam(0, true, true, false, Messages.PMatrix, Messages.PMatrixDescription, null, typeof(Matrix));
-            this.SetParam(1, false, true, true, Messages.PValue, Messages.PValueDescription, true, typeof(double));
+            this.SetParam(1, false, true, true, Messages.PValue, Messages.PValueDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -23,6 +23,9 @@ namespace PavelStransky.Expression.Functions.Def {
             double v = (double)arguments[1];
 
             ArrayList points = new ArrayList();
+
+            if(guider != null)
+                guider.Write("Contours...X");
 
             for(int i = 0; i < m.LengthX; i++) {
                 double x = m[i, 0];
@@ -33,6 +36,9 @@ namespace PavelStransky.Expression.Functions.Def {
                     x = y;
                 }
             }
+
+            if(guider != null)
+                guider.Write("Y");
 
             for(int i = 0; i < m.LengthY; i++) {
                 double x = m[0, i];
@@ -47,6 +53,9 @@ namespace PavelStransky.Expression.Functions.Def {
             // Joining
             ArrayList curves = new ArrayList();
             int numPoints = points.Count;
+
+            if(guider != null)
+                guider.Write("(" + numPoints + ")");
 
             while(points.Count > 0) {
                 int k = 0;
@@ -71,6 +80,9 @@ namespace PavelStransky.Expression.Functions.Def {
                         p = (PointD)points[k];
                     
                 } while(mindist <= 2.0);
+
+                if(guider != null && curves.Count > 0)
+                    guider.Write(",");
 
                 k = -1;
                 p = (PointD)curve[0];
@@ -97,11 +109,17 @@ namespace PavelStransky.Expression.Functions.Def {
                 } while(mindist <= 2.0);
 
                 curves.Add(new PointVector(curve));
+
+                if(guider != null)
+                    guider.Write(curve.Count);
             }
 
             TArray result = new TArray(typeof(PointVector), curves.Count);
             for(int i = 0; i < curves.Count; i++)
                 result[i] = curves[i];
+
+            if(guider != null)
+                guider.Write("(" + curves.Count + ")");
 
             return result;
         }

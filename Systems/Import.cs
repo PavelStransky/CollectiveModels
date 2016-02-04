@@ -176,6 +176,12 @@ namespace PavelStransky.Systems {
                 return new GeometricCounterExample(this);
             else if(typeName == typeof(QuantumDicke).FullName)
                 return new QuantumDicke(this);
+            else if(typeName == typeof(PCR3BP).FullName)
+                return new PCR3BP(this);
+            else if(typeName == typeof(WalkerFord).FullName)
+                return new WalkerFord(this);
+            else if(typeName == typeof(Ising2D).FullName)
+                return new Ising2D(this);
             else
                 return base.CreateObject(typeName);
         }

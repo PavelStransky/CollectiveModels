@@ -3391,6 +3391,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a matrix filled with distances of a given set of points.
+        /// </summary>
+        internal static string HelpDistanceMatrix {
+            get {
+                return ResourceManager.GetString("HelpDistanceMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator /.
         /// </summary>
         internal static string HelpDivide {
@@ -4228,6 +4237,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates an Ising2D class.
+        /// </summary>
+        internal static string HelpIsing2D {
+            get {
+                return ResourceManager.GetString("HelpIsing2D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to True if a given expression is null.
         /// </summary>
         internal static string HelpIsNull {
@@ -4836,6 +4854,15 @@ namespace PavelStransky.Expression {
         internal static string HelpPCN {
             get {
                 return ResourceManager.GetString("HelpPCN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Poincaré circular restricted Three-body problem.
+        /// </summary>
+        internal static string HelpPCR3BP {
+            get {
+                return ResourceManager.GetString("HelpPCR3BP", resourceCulture);
             }
         }
         
@@ -5695,6 +5722,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the Partition Function of a 2D Spin system of length L.
+        /// </summary>
+        internal static string HelpSpinZ {
+            get {
+                return ResourceManager.GetString("HelpSpinZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the zeros of the partition function of a 2D Spin system.
+        /// </summary>
+        internal static string HelpSpinZZero {
+            get {
+                return ResourceManager.GetString("HelpSpinZZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a spline object.
         /// </summary>
         internal static string HelpSpline {
@@ -6105,6 +6150,15 @@ namespace PavelStransky.Expression {
         internal static string HelpVMatrixZero {
             get {
                 return ResourceManager.GetString("HelpVMatrixZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates Walker-Ford class.
+        /// </summary>
+        internal static string HelpWalkerFord {
+            get {
+                return ResourceManager.GetString("HelpWalkerFord", resourceCulture);
             }
         }
         
@@ -6627,6 +6681,24 @@ namespace PavelStransky.Expression {
         internal static string P2GraphDescription {
             get {
                 return ResourceManager.GetString("P2GraphDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to isP.
+        /// </summary>
+        internal static string P2Ising2D {
+            get {
+                return ResourceManager.GetString("P2Ising2D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is polynomial method?.
+        /// </summary>
+        internal static string P2Ising2DDescription {
+            get {
+                return ResourceManager.GetString("P2Ising2DDescription", resourceCulture);
             }
         }
         
@@ -8953,6 +9025,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ising2D.
+        /// </summary>
+        internal static string PIsing2D {
+            get {
+                return ResourceManager.GetString("PIsing2D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ising2D class.
+        /// </summary>
+        internal static string PIsing2DDescription {
+            get {
+                return ResourceManager.GetString("PIsing2DDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to item.
         /// </summary>
         internal static string PItem {
@@ -9372,6 +9462,24 @@ namespace PavelStransky.Expression {
         internal static string PMaxEnergyDescription {
             get {
                 return ResourceManager.GetString("PMaxEnergyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxJ.
+        /// </summary>
+        internal static string PMaxJ {
+            get {
+                return ResourceManager.GetString("PMaxJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum value of the action variable.
+        /// </summary>
+        internal static string PMaxJDescription {
+            get {
+                return ResourceManager.GetString("PMaxJDescription", resourceCulture);
             }
         }
         

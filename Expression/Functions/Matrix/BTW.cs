@@ -32,6 +32,8 @@ namespace PavelStransky.Expression.Functions.Def {
             int lengthX = m.LengthX;
             int lengthY = m.LengthY;
 
+            m = m.Clone() as Matrix;
+
             for(int i = 0; i < step; i++) {
                 m[r.Next(lengthX), r.Next(lengthY)]++;
 

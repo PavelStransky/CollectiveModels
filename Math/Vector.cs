@@ -24,7 +24,7 @@ namespace PavelStransky.Math {
 		/// </summary>
 		/// <param name="length">Délka vektoru</param>
 		public Vector(int length) {
-			this.item = new double[length];
+            this.item = new double[length];
 		}
 
 		/// <summary>

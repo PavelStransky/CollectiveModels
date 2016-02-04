@@ -115,7 +115,7 @@ namespace PavelStransky.Math {
                     // jedna èi obì orientace prùchodu
                     if((newsp <= crossPoint && sp > crossPoint) ||
                         (!oneOrientation && sp <= crossPoint && newsp > crossPoint)) {
-                        double ratio = sp / (newsp - sp);
+                        double ratio = (sp - crossPoint) / (newsp - sp);
                         Vector v = (x - newx) * ratio + x;
                         section[finished].X = v[i1];
                         section[finished].Y = v[i2];

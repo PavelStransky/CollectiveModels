@@ -4008,4 +4008,40 @@ Second differing type: {1}</value>
   <data name="PNormalizeDescription" xml:space="preserve">
     <value>True if the result should be normalized</value>
   </data>
+  <data name="HelpPCR3BP" xml:space="preserve">
+    <value>Poincaré circular restricted Three-body problem</value>
+  </data>
+  <data name="HelpWalkerFord" xml:space="preserve">
+    <value>Creates Walker-Ford class</value>
+  </data>
+  <data name="PMaxJ" xml:space="preserve">
+    <value>maxJ</value>
+  </data>
+  <data name="PMaxJDescription" xml:space="preserve">
+    <value>Maximum value of the action variable</value>
+  </data>
+  <data name="HelpDistanceMatrix" xml:space="preserve">
+    <value>Creates a matrix filled with distances of a given set of points</value>
+  </data>
+  <data name="HelpSpinZ" xml:space="preserve">
+    <value>Calculates the Partition Function of a 2D Spin system of length L</value>
+  </data>
+  <data name="HelpIsing2D" xml:space="preserve">
+    <value>Creates an Ising2D class</value>
+  </data>
+  <data name="P2Ising2D" xml:space="preserve">
+    <value>isP</value>
+  </data>
+  <data name="P2Ising2DDescription" xml:space="preserve">
+    <value>Is polynomial method?</value>
+  </data>
+  <data name="PIsing2D" xml:space="preserve">
+    <value>ising2D</value>
+  </data>
+  <data name="PIsing2DDescription" xml:space="preserve">
+    <value>Ising2D class</value>
+  </data>
+  <data name="HelpSpinZZero" xml:space="preserve">
+    <value>Calculates the zeros of the partition function of a 2D Spin system</value>
+  </data>
 </root>

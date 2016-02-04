@@ -113,9 +113,9 @@ namespace PavelStransky.Math {
                 Vector verror = Vector.ItemDiv(error, this.scale);
                 double maxerror = verror.Abs().Max() / this.precision;
 
-                if(maxerror <= 1.0) {
+                if(maxerror <= 1.0 || step <= this.precision) {
                     if(maxerror > errorCon)
-                        newStep = safety * step * System.Math.Pow(maxerror, powerGrow);
+                        newStep = System.Math.Max(safety * step * System.Math.Pow(maxerror, powerGrow), this.precision);
                     else
                         newStep = step * 5.0;
 
@@ -124,6 +124,7 @@ namespace PavelStransky.Math {
 
                 newStep = safety * step * System.Math.Pow(maxerror, powerShrink);
                 newStep = System.Math.Max(newStep, maxStepChange * step);
+                newStep = System.Math.Max(newStep, this.precision);
 
                 if(double.IsNaN(newStep))
                     return x;
@@ -263,8 +264,8 @@ namespace PavelStransky.Math {
 
         private const double powerShrink = -0.25;
         private const double powerGrow = -0.2;
-        private const double safety = 0.9;
-        private const double maxStepChange = 0.1;
+        private const double safety = 0.85;
+        private const double maxStepChange = 0.01;
         private double errorCon = System.Math.Pow((5.0 / safety), 1.0 / powerGrow);
 
         private const double defaultPrecision = 1E-14;

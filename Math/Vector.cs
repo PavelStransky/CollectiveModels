@@ -1320,7 +1320,7 @@ namespace PavelStransky.Math {
             ComplexVector result = new ComplexVector(length);
 
             for(int i = 0; i < length; i++)
-                result[i].Re = this[i];
+                result[i] = this[i];
 
             return result;
         }

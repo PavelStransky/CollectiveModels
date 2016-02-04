@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Numerics;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
@@ -34,7 +35,7 @@ namespace PavelStransky.Expression.Functions.Def {
             double x0 = intervalX[0];
             double y0 = intervalY[0];
             double cx = (intervalX[1] - x0) / (lengthX - 1);
-            double cy = (intervalY[1] - x0) / (lengthY - 1);
+            double cy = (intervalY[1] - y0) / (lengthY - 1);
 
             if(guider != null) {
                 guider.Write("Matrix(" + lengthX + "," + lengthY + ")");
@@ -55,8 +56,8 @@ namespace PavelStransky.Expression.Functions.Def {
                     double y = y0 + j * cy;
 
                     Complex p = ising.GetValue(new Complex(x, y), false);
-                    resultX[i, j] = p.Re;
-                    resultY[i, j] = p.Im;
+                    resultX[i, j] = p.Real;
+                    resultY[i, j] = p.Imaginary;
                 }
             }
 

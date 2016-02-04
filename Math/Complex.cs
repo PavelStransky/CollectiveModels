@@ -1,6 +1,6 @@
 using System;
 
-namespace PavelStransky.Math {
+namespace PavelStransky.Math.Obsolete {
 	/// <summary>
 	/// Tøída implementující komplexní èísla
 	/// </summary>

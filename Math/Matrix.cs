@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text;
+using System.Numerics;
 
 using PavelStransky.Core;
 
@@ -1227,8 +1228,7 @@ namespace PavelStransky.Math {
 
 					// Našli jsme jeden koøen
 					if(smallIndex == wPos) {
-						result[wPos].Re = x + t;
-						result[wPos].Im = 0;
+                        result[wPos] = new Complex(x + t, 0.0);
 						wPos--;
 					}
 						// Našli jsme dva koøeny
@@ -1246,18 +1246,16 @@ namespace PavelStransky.Math {
 							// Reálná dvojice
 							if(q >= 0.0) {
 								w = p + w * (p >= 0.0 ? 1.0 : -1.0);
-								result[wPos - 1].Re = x + w;
+                                result[wPos - 1] = x + w;
 								if(w != 0)
-									result[wPos].Re = x - z/w;
+									result[wPos] = x - z/w;
 								else
-									result[wPos].Re = x + w;
-								result[wPos].Im = result[wPos - 1].Im = 0;
+									result[wPos] = x + w;
 							}
 								// Komplexní dvojice
 							else {
-								result[wPos].Re = result[wPos - 1].Re = x + p;
-								result[wPos].Im = w;
-								result[wPos - 1].Im = -w;
+                                result[wPos] = new Complex(x + p, w);
+                                result[wPos - 1] = new Complex(x + p, -w);
 							}
 							wPos -= 2;
 						}
@@ -1383,9 +1381,9 @@ namespace PavelStransky.Math {
             ArrayList a = new ArrayList();
 
             for(int i = 0; i < cv.Length; i++)
-                if(cv[i].Re != 0 && System.Math.Abs(cv[i].Im / cv[i].Re) < zero)
-                    a.Add(cv[i].Re);
-                else if(cv[i].Re == 0 && System.Math.Abs(cv[i].Im) < zero)
+                if(cv[i].Real != 0 && System.Math.Abs(cv[i].Imaginary / cv[i].Real) < zero)
+                    a.Add(cv[i].Real);
+                else if(cv[i].Real == 0 && System.Math.Abs(cv[i].Imaginary) < zero)
                     a.Add(0.0);
 
             Vector result = new Vector(a.Count);

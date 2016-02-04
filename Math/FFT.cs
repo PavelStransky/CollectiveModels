@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Numerics;
 
 namespace PavelStransky.Math {
 	/// <summary>
@@ -55,7 +56,7 @@ namespace PavelStransky.Math {
 					k |= ((i >> j) & 1) << (lbase - j - 1);
 		
 				// Do nového uspoøádání (je potøeba kontrolovat, zda ve starém poli nejsme mimo rozsah)
-				fft[i] = k >= source.Length ? new Complex(0) : source[k];
+				fft[i] = k >= source.Length ? 0 : source[k];
 			}
 
 			// Vlastní FFT
@@ -126,11 +127,11 @@ namespace PavelStransky.Math {
 		
 			// Stejnosmìrná složka
 			result[0].X = 0;
-			result[0].Y = data[0].SquaredNorm;
+			result[0].Y = System.Math.Pow(data[0].Magnitude, 2);
 
 			for(int i = 1; i < numFrequency; i++) {
 				result[i].X = i * fdiff;
-				result[i].Y = data[i].SquaredNorm + data[data.Length - i].SquaredNorm;
+                result[i].Y = System.Math.Pow(data[i].Magnitude, 2) + System.Math.Pow(data[data.Length - i].Magnitude, 2);
 			}
 
 			return result;
@@ -150,7 +151,7 @@ namespace PavelStransky.Math {
 
             // Stejnosmìrná složka
             result[0].X = 0;
-            result[0].Y = data[0].SquaredNorm;
+            result[0].Y = System.Math.Pow(data[0].Magnitude, 2);
 
             for(int i = 0; i < numFrequency; i++) {
                 result[i].X = i * fdiff;

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Numerics;
 
 using PavelStransky.Core;
 
@@ -39,7 +40,7 @@ namespace PavelStransky.Math {
                 Vector result = new Vector(this.Length);
 
                 for(int i = 0; i < result.Length; i++)
-                    result[i] = this[i].Re;
+                    result[i] = this[i].Real;
 
                 return result;
             }
@@ -48,7 +49,7 @@ namespace PavelStransky.Math {
                     throw new ComplexVectorException(errorMessageDifferentLength);
 
                 for(int i = 0; i < this.Length; i++)
-                    this[i].Re = value[i];
+                    this[i] = new Complex(value[i], this[i].Imaginary);
             }
         }
 
@@ -60,7 +61,7 @@ namespace PavelStransky.Math {
                 Vector result = new Vector(this.Length);
 
                 for(int i = 0; i < result.Length; i++)
-                    result[i] = this[i].Im;
+                    result[i] = this[i].Imaginary;
 
                 return result;
             }
@@ -69,7 +70,7 @@ namespace PavelStransky.Math {
                     throw new ComplexVectorException(errorMessageDifferentLength);
 
                 for(int i = 0; i < this.Length; i++)
-                    this[i].Im = value[i];
+                    this[i] = new Complex(this[i].Real, value[i]);
             }
         }
         
@@ -115,7 +116,7 @@ namespace PavelStransky.Math {
 			ComplexVector result = new ComplexVector(v1.Length);
 
 			for(int i = 0; i < result.Length; i++)
-				result[i] = v1[i] * !v2[i];
+				result[i] = v1[i] * v2[i];
 
 			return result;
 		}
@@ -125,8 +126,8 @@ namespace PavelStransky.Math {
 		/// </summary>
 		public double Norm() {
 			double result = 0;
-			for(int i = 0; i < this.Length; i++)
-				result += this[i].SquaredNorm;
+            for(int i = 0; i < this.Length; i++)
+                result += System.Math.Pow(this[i].Magnitude, 2);
 
 			return result;
 		}
@@ -147,8 +148,8 @@ namespace PavelStransky.Math {
 		/// Vektor vynuluje
 		/// </summary>
 		public void Clear() {
-			for(int i = 0; i < this.Length; i++)
-				this[i].Clear();
+            for(int i = 0; i < this.Length; i++)
+                this[i] = Complex.Zero;
 		}
 
 		/// <summary>
@@ -157,10 +158,8 @@ namespace PavelStransky.Math {
 		public static implicit operator ComplexVector(Vector v) {
 			ComplexVector result = new ComplexVector(v.Length);
 
-			for(int i = 0; i < result.Length; i++) {
-				result[i].Re = v[i];
-				result[i].Im = 0.0;
-			}
+			for(int i = 0; i < result.Length; i++) 
+                result[i] = v[i];			
 			
 			return result;
 		}
@@ -176,8 +175,8 @@ namespace PavelStransky.Math {
                 BinaryWriter b = export.B;
                 b.Write(this.Length);
                 for(int i = 0; i < this.Length; i++) {
-                    b.Write(this[i].Im);
-                    b.Write(this[i].Re);
+                    b.Write(this[i].Real);
+                    b.Write(this[i].Imaginary);
                 }
             }
             else {
@@ -199,16 +198,8 @@ namespace PavelStransky.Math {
                 BinaryReader b = import.B;
                 this.item = new Complex[b.ReadInt32()];
                 for(int i = 0; i < this.Length; i++) {
-                    this[i].Re = b.ReadDouble();
-                    this[i].Im = b.ReadDouble();
+                    this[i] = new Complex(b.ReadDouble(), b.ReadDouble());
                 }
-            }
-            else {
-                // Textovì
-                StreamReader t = import.T;
-                this.item = new Complex[int.Parse(t.ReadLine())];
-                for(int i = 0; i < this.Length; i++)
-                    this[i] = new Complex(t.ReadLine());
             }
 		}
 		#endregion

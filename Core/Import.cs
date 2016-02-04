@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using System.Numerics;
 
 using Ionic.Zlib;
 
@@ -132,6 +133,8 @@ namespace PavelStransky.Core {
                 result = TimeSpan.FromTicks(this.Binary ? b.ReadInt64() : long.Parse(t.ReadLine()));
             else if(typeName == typeof(Color).FullName)
                 result = Color.FromArgb(this.Binary ? b.ReadInt32() : int.Parse(t.ReadLine()));
+            else if(typeName == typeof(BigInteger).FullName)
+                result = BigInteger.Parse(this.Binary ? b.ReadString() : t.ReadLine());
             else
                 result = this.CreateObject(typeName);
 

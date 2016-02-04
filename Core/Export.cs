@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using System.Numerics;
 
 using Ionic.Zlib;
 
@@ -191,6 +192,8 @@ namespace PavelStransky.Core {
             else if(o is Color) {
                 if(this.Binary) this.b.Write(((Color)o).ToArgb()); else this.t.WriteLine(((Color)o).ToArgb());
             }
+            else if(o is BigInteger)
+                if(this.Binary) this.b.Write(((BigInteger)o).ToString()); else this.t.WriteLine((BigInteger)o);
             else if(o as IExportable != null) {
                 (o as IExportable).Export(this);
             }

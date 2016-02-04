@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 using PavelStransky.Core;
 using PavelStransky.Math;
@@ -10,7 +11,7 @@ using PavelStransky.Math;
 namespace PavelStransky.Systems {
     public partial class Ising2D : IExportable {
         private class Polynomial: Binder {
-            private double[,] power;    // Powers
+            private BigInteger[,] power;    // Powers
             private int[] next;         // Highest power for each configuration
 
             /// <summary>
@@ -19,7 +20,7 @@ namespace PavelStransky.Systems {
             /// <param name="sizeX">Number of spins in a row</param>
             /// <param name="sizeY">Number of spin rows</param>
             public Polynomial(int sizeX, int sizeY) : base(sizeX, sizeY) {
-                this.power = new double[this.num, this.maxk];
+                this.power = new BigInteger[this.num, this.maxk];
                 this.next = new int[this.num];
             }
 
@@ -41,7 +42,7 @@ namespace PavelStransky.Systems {
                 for(int k = 0; k < this.sizeX; k++) {
                     int d = 1 << k;
 
-                    double[,] p = this.power.Clone() as double[,];
+                    BigInteger[,] p = this.power.Clone() as BigInteger[,];
                     int[] n = this.next.Clone() as int[];
 
                     for(int i = 0; i < num; i++) {
@@ -68,8 +69,8 @@ namespace PavelStransky.Systems {
             /// <summary>
             /// Generates the coefficients of the polynomial
             /// </summary>
-            public Vector Finalize() {
-                Vector result = new Vector(this.maxk);
+            public BigInteger[] Finalize() {
+                BigInteger[] result = new BigInteger[this.maxk];
 
                 for(int i = 0; i < num; i++)
                     for(int j = 0; j <= this.next[i]; j++)
@@ -83,7 +84,7 @@ namespace PavelStransky.Systems {
             /// </summary>
             /// <param name="writer">Writer</param>
             /// <returns></returns>
-            public Vector Compute(IOutputWriter writer) {
+            public BigInteger[] Compute(IOutputWriter writer) {
                 if(writer != null)
                     writer.Write("Polynomial(" + this.maxk + ")");
 
@@ -100,10 +101,10 @@ namespace PavelStransky.Systems {
                         writer.Write(".");
                 }
 
-                Vector result = this.Finalize();
+                BigInteger[] result = this.Finalize();
 
                 if(writer != null) {
-                    writer.Write("(" + result.MaxAbs() + ")");
+                    writer.Write("(" + result[this.maxk / 2] + ")");
                     writer.WriteLine(DateTime.Now - t);
                 }
                 return result;

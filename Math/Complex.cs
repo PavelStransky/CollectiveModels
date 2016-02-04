@@ -50,6 +50,13 @@ namespace PavelStransky.Math {
 			return new Complex(c1.re - c2.re, c1.im - c2.im);
 		}
 
+        /// <summary>
+        /// Zmìna znaménka komplexního èísla
+        /// </summary>
+        public static Complex operator -(Complex c) {
+            return new Complex(-c.re, -c.im);
+        }
+
 		/// <summary>
 		/// Násobení komplexních èísel
 		/// </summary>
@@ -88,7 +95,7 @@ namespace PavelStransky.Math {
 			a = c.im / c.re;
 			b = System.Math.Abs(c.re) * System.Math.Sqrt(a*a + 1);
 
-			return new Complex(System.Math.Sqrt((b+c.re)/2), System.Math.Sqrt((b-c.re)/2));
+			return new Complex(System.Math.Sqrt((b+c.re)/2), System.Math.Sign(c.im) * System.Math.Sqrt((b-c.re)/2));
 		}
 		
 		/// <summary>

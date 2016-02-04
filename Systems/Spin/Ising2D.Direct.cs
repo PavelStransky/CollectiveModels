@@ -10,7 +10,7 @@ using PavelStransky.Math;
 namespace PavelStransky.Systems {
     public partial class Ising2D : IExportable {
         private class Direct : Binder {
-            private PointVector z;
+            private ComplexVector z;
 
             /// <summary>
             /// Constructor
@@ -19,28 +19,18 @@ namespace PavelStransky.Systems {
             /// <param name="sizeY">Number of spin rows</param>
             public Direct(int sizeX, int sizeY)
                 : base(sizeX, sizeY) {
-                this.z = new PointVector(this.num);
+                this.z = new ComplexVector(this.num);
             }
-
-            /// <summary>
-            /// Multiplies two complex numbers
-            /// </summary>
-            /// <param name="x">X</param>
-            /// <param name="y">Y</param>
-            private PointD Multiply(PointD x, PointD y) {
-                return new PointD(x.X * y.X - x.Y * y.Y, x.Y * y.X + x.X * y.Y);
-            }
-
 
             /// <summary>
             /// Initiate the first row
             /// </summary>
-            public void FirstRow(PointD x) {
-                PointVector povp = new PointVector(this.maxRow + 1);
+            public void FirstRow(Complex x) {
+                ComplexVector povp = new ComplexVector(this.maxRow + 1);
 
-                povp[0] = new PointD(1.0, 0);
+                povp[0] = 1.0;
                 for(int i = 1; i <= this.maxRow; i++) 
-                    povp[i] = this.Multiply(povp[i - 1], x);
+                    povp[i] = povp[i - 1] * x;
                 
                 for(int i = 0; i < this.num; i++) 
                     this.z[i] = povp[this.row[i]];                
@@ -49,19 +39,19 @@ namespace PavelStransky.Systems {
             /// <summary>
             /// Fills the next row
             /// </summary>
-            public void FillNext(PointD x) {
+            public void FillNext(Complex x) {
                 for(int k = 0; k < this.sizeX; k++) {
                     int d = 1 << k;
 
-                    PointVector zn = new PointVector(this.num);
+                    ComplexVector zn = new ComplexVector(this.num);
                     for(int i = 0; i < num; i++) {
                         int i1 = i ^ d;
 
-                        zn[i] = this.z[i] + this.Multiply(this.z[i1], x);
+                        zn[i] = this.z[i] + this.z[i1] * x;
 
                         if(k > 0) {
                             if(((i & d) >> k) != (i & (d >> 1)) >> (k - 1))
-                                zn[i] = this.Multiply(zn[i], x);
+                                zn[i] *= x;
                         }
 
                     }
@@ -69,23 +59,23 @@ namespace PavelStransky.Systems {
                 }
             }
             
-            public PointD Finalize(PointD xn) {
-                PointD result = new PointD(0.0, 0.0);
+            public Complex Finalize(Complex x) {
+                Complex result = new Complex();
 
                 for(int i = 0; i < this.num; i++)
                     result += this.z[i];
 
                 for(int i = 0; i < this.maxk / 2; i++)
-                    result = this.Multiply(result, xn);
+                    result /= x;
 
                 return result;
             }
 
-            public PointD Compute(PointD xp, PointD xn) {
-                this.FirstRow(xp);
+            public Complex Compute(Complex x) {
+                this.FirstRow(x);
                 for(int i = 1; i < this.sizeY; i++)
-                    this.FillNext(xp);
-                return this.Finalize(xn);
+                    this.FillNext(x);
+                return this.Finalize(x);
             }
         }
     }

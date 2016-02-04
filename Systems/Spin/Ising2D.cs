@@ -31,71 +31,38 @@ namespace PavelStransky.Systems {
                 this.polynomial = null;
         }
 
-        public PointD GetValue(PointD x, bool temperature) {
-            double r = 0.0;
+        public Complex GetValue(Complex x, bool temperature) {
+            if(temperature) 
+                x = Complex.Exp(-x);
 
-            double uRp = 0.0;
-            double uIp = 0.0;
-            double uRm = 0.0;
-            double uIm = 0.0;
+            Complex xn = 1.0 / x;
 
-            if(temperature) {
-                uRp = System.Math.Exp(-x.X) * System.Math.Cos(x.Y);
-                uIp = -System.Math.Exp(-x.X) * System.Math.Sin(x.Y);
-                uRm = System.Math.Exp(x.X) * System.Math.Cos(x.Y);
-                uIm = System.Math.Exp(x.X) * System.Math.Sin(x.Y);
-            }
-            else {
-                uRp = x.X;
-                uIp = x.Y;
-
-                r = uRp * uRp + uIp * uIp;
-
-                uRm = uRp / r;
-                uIm = -uIp / r;
-            }
-
-            double resultRp = 0.0;
-            double resultIp = 0.0;
-            double resultRm = 0.0;
-            double resultIm = 0.0;
+            Complex rp = new Complex();
+            Complex rn = new Complex();
 
             if(this.polynomial == null) {
                 Direct d = new Direct(this.sizeX, this.sizeY);
-                return d.Compute(new PointD(uRp, uIp), new PointD(uRm, uIm));
+                return d.Compute(x);
             }
             else {
                 int maxk = this.polynomial.Length;
 
                 for(int i = 0; i < maxk / 2; i++) {
-                    r = resultRp * uRp - resultIp * uIp + this.polynomial[i];
-                    resultIp = resultRp * uIp + resultIp * uRp;
-                    resultRp = r;
-
-                    r = resultRm * uRm - resultIm * uIm + this.polynomial[i];
-                    resultIm = resultRm * uIm + resultIm * uRm;
-                    resultRm = r;
+                    rp = rp * x + this.polynomial[i];
+                    rn = rn * xn + this.polynomial[i];
                 }
 
-                r = resultRp * uRp - resultIp * uIp;
-                resultIp = resultRp * uIp + resultIp * uRp;
-                resultRp = r;
+                if(maxk % 2 == 0) {
+                    rp *= Complex.Sqrt(x);
+                    rn *= Complex.Sqrt(xn);
+                }
+                else {
+                    rp *= x;
+                    rn *= xn;
+                    rp += this.polynomial[maxk / 2];
+                }
 
-                r = resultRm * uRm - resultIm * uIm;
-                resultIm = resultRm * uIm + resultIm * uRm;
-                resultRm = r;
-
-                if(maxk % 2 == 1)
-
-
-                double resultR = resultRp + resultRm;
-                double resultI = resultIp + resultIm;
-
-                if(maxk % 2 == 1)
-                    resultR += this.polynomial[maxk / 2];
-                else
-
-                return new PointD(resultR, resultI);
+                return rp + rn;
             }
         }
 

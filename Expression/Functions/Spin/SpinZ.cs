@@ -54,9 +54,9 @@ namespace PavelStransky.Expression.Functions.Def {
                     double x = x0 + i * cx;
                     double y = y0 + j * cy;
 
-                    PointD p = ising.GetValue(new PointD(x, y), false);
-                    resultX[i, j] = p.X;
-                    resultY[i, j] = p.Y;
+                    Complex p = ising.GetValue(new Complex(x, y), false);
+                    resultX[i, j] = p.Re;
+                    resultY[i, j] = p.Im;
                 }
             }
 

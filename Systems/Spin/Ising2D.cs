@@ -67,12 +67,17 @@ namespace PavelStransky.Systems {
             }
         }
 
-        public PointVector GetZeros() {
+        public PointVector GetZeros(IOutputWriter writer) {
             if(this.polynomial != null) {
                 // First let's get rid of the roots == 1
                 BigInteger[] r = this.polynomial.Clone() as BigInteger[];
                 BigInteger[] p = null;
                 BigInteger[] pw = null;
+
+                if(writer != null)
+                    writer.Write("ZeroZ");
+
+                DateTime t = DateTime.Now;
 
                 int roots = 0;
                 do {
@@ -88,6 +93,9 @@ namespace PavelStransky.Systems {
                 } while(pw[r.Length] == 0);
                 roots--;
 
+                if(writer != null)
+                    writer.Write(string.Format("({0})", roots));
+
                 // Construct a matrix
                 int l = p.Length - 1;
 
@@ -99,6 +107,9 @@ namespace PavelStransky.Systems {
                 }
 
                 Vector[] v = LAPackDLL.dgeev(m, false);
+
+                if(writer != null)
+                    writer.WriteLine(DateTime.Now - t);
 
                 PointVector result = new PointVector(l);
                 result.VectorX = v[0];
@@ -112,6 +123,20 @@ namespace PavelStransky.Systems {
             }
 
             return null;
+        }
+
+        public override string ToString() {
+            StringBuilder s = new StringBuilder();
+            s.Append(string.Format("Ising 2D ({0} x {1})", this.sizeX, this.sizeY));
+            s.Append(Environment.NewLine);
+
+            if(this.polynomial != null) {
+                for(int i = 0; i < this.polynomial.Length; i++) {
+                    s.Append(this.polynomial[i]);
+                    s.Append(Environment.NewLine);
+                }
+            }
+            return s.ToString();
         }
 
         #region IExportable

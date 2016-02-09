@@ -19,7 +19,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Ising2D ising = arguments[0] as Ising2D;
-            return ising.GetZeros();
+            return ising.GetZeros(guider);
         }
     }
 }

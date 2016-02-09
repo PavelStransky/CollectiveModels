@@ -104,7 +104,7 @@ namespace PavelStransky.Systems {
                 BigInteger[] result = this.Finalize();
 
                 if(writer != null) {
-                    writer.Write("(" + result[this.maxk / 2] + ")");
+                    writer.Write("(" + (int)System.Math.Log10((double)result[this.maxk / 2]) + ")");
                     writer.WriteLine(DateTime.Now - t);
                 }
                 return result;

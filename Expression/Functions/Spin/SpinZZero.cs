@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Numerics;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
@@ -19,7 +20,25 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             Ising2D ising = arguments[0] as Ising2D;
-            return ising.GetZeros(guider);
+            PointVector u = ising.GetZeros(guider);
+            PointVector beta = new PointVector(u.Length);
+            PointVector u4 = new PointVector(u.Length);
+
+            for(int i = 0; i < u.Length; i++){
+                Complex c = new Complex(u[i].X, u[i].Y);
+                Complex d = 1.0 / c;
+                d = d * d;
+                c = Complex.Log(c);
+                c /= 2.0;
+                beta[i] = new PointD(c.Real, c.Imaginary);
+                u4[i] = new PointD(d.Real, d.Imaginary);
+            }
+
+            PointVector[] result = new PointVector[3];
+            result[0] = u;
+            result[1] = beta;
+            result[2] = u4;
+            return (TArray)result;
         }
     }
 }

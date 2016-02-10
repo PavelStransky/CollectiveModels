@@ -4044,4 +4044,10 @@ Second differing type: {1}</value>
   <data name="HelpSpinZZero" xml:space="preserve">
     <value>Calculates the zeros of the partition function of a 2D Spin system</value>
   </data>
+  <data name="PCyclicBoundary" xml:space="preserve">
+    <value>cb</value>
+  </data>
+  <data name="PCyclicBoundaryDescription" xml:space="preserve">
+    <value>Cyclic boundary conditions</value>
+  </data>
 </root>

@@ -26,12 +26,11 @@ namespace PavelStransky.Expression.Functions.Def {
 
             for(int i = 0; i < u.Length; i++){
                 Complex c = new Complex(u[i].X, u[i].Y);
-                Complex d = 1.0 / c;
-                d = d * d;
                 c = Complex.Log(c);
                 c /= 2.0;
                 beta[i] = new PointD(c.Real, c.Imaginary);
-                u4[i] = new PointD(d.Real, d.Imaginary);
+                c = 1.0 / c;
+                u4[i] = new PointD(c.Real, c.Imaginary);
             }
 
             PointVector[] result = new PointVector[3];

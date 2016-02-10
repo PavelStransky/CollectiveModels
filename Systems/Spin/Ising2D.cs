@@ -11,7 +11,8 @@ using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Systems {
     public partial class Ising2D : IExportable {
-        private int sizeX, sizeY;           // Lattice sizes
+        private int sizeX, sizeY;                 // Lattice sizes
+        private bool cb;                          // Cyclic boundary conditions
         private BigInteger[] polynomial;          // Coefficients of the characteristic polynomial
 
         /// <summary>
@@ -20,12 +21,13 @@ namespace PavelStransky.Systems {
         /// <param name="sizeX">Lattice size X</param>
         /// <param name="sizeX">Lattice size Y</param>
         /// <param name="isPolynomial">True for polynomial method</param>
-        public Ising2D(int sizeX, int sizeY, bool isPolynomial, IOutputWriter writer) {
+        public Ising2D(int sizeX, int sizeY, bool cb, bool isPolynomial, IOutputWriter writer) {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
+            this.cb = cb;
 
             if(isPolynomial) {
-                Polynomial p = new Polynomial(this.sizeX, this.sizeY);
+                Polynomial p = new Polynomial(this.sizeX, this.sizeY, this.cb);
                 this.polynomial = p.Compute(writer);
             }
             else
@@ -42,7 +44,7 @@ namespace PavelStransky.Systems {
             Complex rn = new Complex();
 
             if(this.polynomial == null) {
-                Direct d = new Direct(this.sizeX, this.sizeY);
+                Direct d = new Direct(this.sizeX, this.sizeY, this.cb);
                 return d.Compute(x);
             }
             else {

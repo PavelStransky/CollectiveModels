@@ -19,7 +19,8 @@ namespace PavelStransky.Systems {
             /// </summary>
             /// <param name="sizeX">Number of spins in a row</param>
             /// <param name="sizeY">Number of spin rows</param>
-            public Polynomial(int sizeX, int sizeY) : base(sizeX, sizeY) {
+            /// <param name="cb">Cyclic boundary conditions</param>
+            public Polynomial(int sizeX, int sizeY, bool cb) : base(sizeX, sizeY, cb) {
                 this.power = new BigInteger[this.num, this.maxk];
                 this.next = new int[this.num];
             }
@@ -52,17 +53,30 @@ namespace PavelStransky.Systems {
                             p[i, j + 1] += this.power[i1, j];
                         n[i] = System.Math.Max(this.next[i], this.next[i1] + 1);
 
+                        /*
                         if((k > 0) && (((i & d) >> k) != (i & (d >> 1)) >> (k - 1))) {
                             for(int j = n[i]; j >= 0; j--)
                                 p[i, j + 1] = p[i, j];
                             p[i, 0] = 0;
                             n[i]++;
                         }
+                         */
 
                     }
 
                     this.power = p;
                     this.next = n;
+                }
+
+                for(int i = 0; i < num; i++) {
+                    int r = this.row[i];
+                    if(r == 0)
+                        continue;
+                    for(int j = this.next[i]; j >= 0; j--)
+                        this.power[i, j + r] = this.power[i, j];
+                    for(int j = 0; j < r; j++)
+                        this.power[i, j] = 0;
+                    this.next[i] += r;
                 }
             }
 

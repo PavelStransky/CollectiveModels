@@ -15,17 +15,25 @@ namespace PavelStransky.Systems {
             protected int num;            // Number of configurations in each row
             protected int[] row;          // Number of different neighbours in a row
             protected int maxRow;         // Maximum power in the row
+            protected bool cb;            // Cyclic boundary conditions
 
             /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="sizeX">Lattice size</param>
             /// <param name="sizeY">Lattice size</param>
-            public Binder(int sizeX, int sizeY) {
+            /// <param name="cb">Cyclic boundary conditions</param>
+            public Binder(int sizeX, int sizeY, bool cb) {
                 this.sizeX = sizeX;
                 this.sizeY = sizeY;
+                this.cb = cb;
+
                 this.num = 1 << this.sizeX;
                 this.maxk = 2 * this.sizeX * this.sizeY - this.sizeX - this.sizeY + 1;
+
+                if(this.cb)
+                    this.maxk += this.sizeY;
+                
                 this.Initialize();
             }
 
@@ -59,10 +67,9 @@ namespace PavelStransky.Systems {
                     x = x1;
                 }
 
-                /* For periodic boundary conditions
-                if(x != x0)
-                    result++;
-                */
+                // For cyclic boundary conditions
+                if(this.cb && x != x0)
+                    result++;                
 
                 return result;
             }

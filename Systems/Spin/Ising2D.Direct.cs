@@ -18,8 +18,9 @@ namespace PavelStransky.Systems {
             /// </summary>
             /// <param name="sizeX">Number of spins in a row</param>
             /// <param name="sizeY">Number of spin rows</param>
-            public Direct(int sizeX, int sizeY)
-                : base(sizeX, sizeY) {
+            /// <param name="cb">Cyclic boundary conditions</param>
+            public Direct(int sizeX, int sizeY, bool cb)
+                : base(sizeX, sizeY, cb) {
                 this.z = new ComplexVector(this.num);
             }
 

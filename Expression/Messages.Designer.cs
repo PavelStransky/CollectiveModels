@@ -7900,6 +7900,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cb.
+        /// </summary>
+        internal static string PCyclicBoundary {
+            get {
+                return ResourceManager.GetString("PCyclicBoundary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cyclic boundary conditions.
+        /// </summary>
+        internal static string PCyclicBoundaryDescription {
+            get {
+                return ResourceManager.GetString("PCyclicBoundaryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to default.
         /// </summary>
         internal static string PDefaultValue {

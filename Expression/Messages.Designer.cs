@@ -2698,6 +2698,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Two-neutron separation energies.
+        /// </summary>
+        internal static string HelpAME2NSE {
+            get {
+                return ResourceManager.GetString("HelpAME2NSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns a matrix with known isotopes.
+        /// </summary>
+        internal static string HelpAMEIsotope {
+            get {
+                return ResourceManager.GetString("HelpAMEIsotope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates the AM-FM decomposition of a IMF.
         /// </summary>
         internal static string HelpAMFM {
@@ -2973,6 +2991,15 @@ namespace PavelStransky.Expression {
         internal static string HelpCDFEMaxQ {
             get {
                 return ResourceManager.GetString("HelpCDFEMaxQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns borders of all values bigger than given value of a given matrix.
+        /// </summary>
+        internal static string HelpCellContour {
+            get {
+                return ResourceManager.GetString("HelpCellContour", resourceCulture);
             }
         }
         
@@ -5353,6 +5380,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reads Atomic Mass Evaluation from a graph.
+        /// </summary>
+        internal static string HelpReadAME {
+            get {
+                return ResourceManager.GetString("HelpReadAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Polynomial regression of data.
         /// </summary>
         internal static string HelpRegression {
@@ -7401,6 +7437,42 @@ namespace PavelStransky.Expression {
         internal static string PAlphaSDescription {
             get {
                 return ResourceManager.GetString("PAlphaSDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ame.
+        /// </summary>
+        internal static string PAME {
+            get {
+                return ResourceManager.GetString("PAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Atomic Mass Evaluation.
+        /// </summary>
+        internal static string PAMEDescription {
+            get {
+                return ResourceManager.GetString("PAMEDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to exp.
+        /// </summary>
+        internal static string PAMEExperiment {
+            get {
+                return ResourceManager.GetString("PAMEExperiment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data only from experiment.
+        /// </summary>
+        internal static string PAMEExperimentDescription {
+            get {
+                return ResourceManager.GetString("PAMEExperimentDescription", resourceCulture);
             }
         }
         

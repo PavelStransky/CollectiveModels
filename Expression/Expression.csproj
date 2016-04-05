@@ -140,6 +140,8 @@
     <Compile Include="Exceptions\ExpressionException.cs" />
     <Compile Include="Exceptions\FileDataException.cs" />
     <Compile Include="Exceptions\FncListException.cs" />
+    <Compile Include="Functions\AME\AME2NSE.cs" />
+    <Compile Include="Functions\AME\AMEIsotope.cs" />
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\Context\GetFileContext.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Functions\Math\SphericalBesselY.cs" />
     <Compile Include="Functions\Math\SphericalBesselYd.cs" />
     <Compile Include="Functions\Math\SplineValue.cs" />
+    <Compile Include="Functions\Matrix\CellContour.cs" />
     <Compile Include="Functions\Matrix\Contour.cs" />
     <Compile Include="Functions\Matrix\CorrelationShift.cs" />
     <Compile Include="Functions\Matrix\EigenSystemSymmetric.cs" />
@@ -232,6 +235,8 @@
     <Compile Include="Functions\Quantum\Systems\SturmCoulomb.cs" />
     <Compile Include="Functions\Spin\SpinZZero.cs" />
     <Compile Include="Functions\Statistics\NoiseGenerator.cs" />
+    <Compile Include="Functions\AME\AME.cs" />
+    <Compile Include="Functions\AME\ReadAME.cs" />
     <Compile Include="Functions\Unsorted\Copy.cs" />
     <Compile Include="Functions\Unsorted\DistanceMatrix.cs" />
     <Compile Include="Functions\Unsorted\GPSPOI.cs" />

@@ -28,8 +28,9 @@ namespace PavelStransky.Expression.Functions.Def {
             double r = (double)arguments[2];
             double theta = (double)arguments[3];
 
-            StandardMapping sm = new StandardMapping(k);
-            return sm.Compute(r, theta, time);
+            StandardMapping1 sm = new StandardMapping1(k);
+//            return sm.Compute(r, theta, time);
+            return sm.Jacobi(0, 0);
         }
 
         private const string name = "standardmapping";

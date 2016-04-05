@@ -34,7 +34,11 @@ namespace PavelStransky.Expression {
                 return new Graph(this);
             else if(typeName == typeof(UserFunction).FullName)
                 return new UserFunction(this);
-            else
+            else if(typeName == typeof(AME.AMEItem).FullName)
+                return new AME.AMEItem(this);
+            else if(typeName == typeof(AME).FullName)
+                return new AME(this);
+
                 return base.CreateObject(typeName);
         }
     }

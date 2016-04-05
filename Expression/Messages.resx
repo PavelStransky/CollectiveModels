@@ -4050,4 +4050,28 @@ Second differing type: {1}</value>
   <data name="PCyclicBoundaryDescription" xml:space="preserve">
     <value>Cyclic boundary conditions</value>
   </data>
+  <data name="HelpReadAME" xml:space="preserve">
+    <value>Reads Atomic Mass Evaluation from a graph</value>
+  </data>
+  <data name="HelpAME2NSE" xml:space="preserve">
+    <value>Two-neutron separation energies</value>
+  </data>
+  <data name="PAME" xml:space="preserve">
+    <value>ame</value>
+  </data>
+  <data name="PAMEDescription" xml:space="preserve">
+    <value>Atomic Mass Evaluation</value>
+  </data>
+  <data name="PAMEExperiment" xml:space="preserve">
+    <value>exp</value>
+  </data>
+  <data name="PAMEExperimentDescription" xml:space="preserve">
+    <value>Data only from experiment</value>
+  </data>
+  <data name="HelpAMEIsotope" xml:space="preserve">
+    <value>Returns a matrix with known isotopes</value>
+  </data>
+  <data name="HelpCellContour" xml:space="preserve">
+    <value>Returns borders of all values bigger than given value of a given matrix</value>
+  </data>
 </root>

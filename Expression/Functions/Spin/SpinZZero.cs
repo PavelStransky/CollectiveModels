@@ -23,20 +23,26 @@ namespace PavelStransky.Expression.Functions.Def {
             PointVector u = ising.GetZeros(guider);
             PointVector beta = new PointVector(u.Length);
             PointVector u4 = new PointVector(u.Length);
+            PointVector ux = new PointVector(u.Length);
 
             for(int i = 0; i < u.Length; i++){
                 Complex c = new Complex(u[i].X, u[i].Y);
+                Complex d = 1.0 / Complex.Sqrt(c);
+
                 c = Complex.Log(c);
                 c /= 2.0;
                 beta[i] = new PointD(c.Real, c.Imaginary);
                 c = 1.0 / c;
                 u4[i] = new PointD(c.Real, c.Imaginary);
+
+                ux[i] = new PointD(d.Real, d.Imaginary);
             }
 
-            PointVector[] result = new PointVector[3];
+            PointVector[] result = new PointVector[4];
             result[0] = u;
             result[1] = beta;
             result[2] = u4;
+            result[3] = ux;
             return (TArray)result;
         }
     }

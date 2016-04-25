@@ -81,11 +81,14 @@ namespace PavelStransky.Systems {
         /// <param name="x">Initial value of x</param>
         /// <param name="y">Initial value of y</param>
         /// <param name="t">Time lapse of the calculation</param>
-        public PointVector Compute(double x, double y, int t) {
+        /// <param name="modulo">True if we restrict the result in interval (0; 1)</param>
+        public PointVector Compute(double x, double y, int t, bool modulo) {
             PointVector result = new PointVector(t);
             for(int i = 0; i < t; i++) {
-                x = this.Modulo(x, 1);
-                y = this.Modulo(y, 1);
+                if(modulo) {
+                    x = this.Modulo(x, 1);
+                    y = this.Modulo(y, 1);
+                }
 
                 result[i].X = x;
                 result[i].Y = y;
@@ -110,26 +113,6 @@ namespace PavelStransky.Systems {
             result[1, 1] = 1.0;
 
             return result;
-        }
-
-        public object Manifold(double x, double y, int initialPoints, double dx, int t) {
-            PointVector result = new PointVector(t * initialPoints);
-
-            Matrix jacobi = this.Jacobi(x, y);
-            Vector[] v = LAPackDLL.dgeev(jacobi, true);
-
-            /*
-            Vector e = v[0];
-            Vector ev = e[0] > e[1] ? v[2] : v[3];
-            
-            PointVector p0 = new PointVector(initialPoints);
-            for(int i = 0; i < initialPoints; i++) {
-                p[i].X = x + i * dx;
-                p[i].Y = y + p0[i] * ev[1] / ev[0];
-            }
-            */
-            return null;
-
         }
 
         /// <summary>

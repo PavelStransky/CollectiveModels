@@ -4074,4 +4074,13 @@ Second differing type: {1}</value>
   <data name="HelpCellContour" xml:space="preserve">
     <value>Returns borders of all values bigger than given value of a given matrix</value>
   </data>
+  <data name="HelpSMJacobi" xml:space="preserve">
+    <value>Jacobi matrix of the Standard Mapping</value>
+  </data>
+  <data name="PModulo" xml:space="preserve">
+    <value>mod</value>
+  </data>
+  <data name="PModuloDescription" xml:space="preserve">
+    <value>Modulo</value>
+  </data>
 </root>

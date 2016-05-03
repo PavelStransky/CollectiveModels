@@ -53,7 +53,10 @@ namespace PavelStransky.Expression.Functions.Def {
                 this.maxi = this.num * (1.0 - 1E-15);
             }
 
-            public void Add(double d) {
+            public void Add(PointD p) {
+                double d = p.X;
+                double v = p.Y;
+
                 double e = (d - this.min) * coef;
                 double start = e - this.halfwidth;
                 double end = e + this.halfwidth;
@@ -69,12 +72,12 @@ namespace PavelStransky.Expression.Functions.Def {
 //                return;
 
                 for(int k = (int)start; k < (int)end; k++) {
-                    this.histogram[k] += this.Value(start, k + 1, e);                    
+                    this.histogram[k] += v * this.Value(start, k + 1, e);
                     start = k + 1;
                 }
 
                 if(start < end)
-                    this.histogram[(int)end] += this.Value(start, end, e);
+                    this.histogram[(int)end] += v * this.Value(start, end, e);
             }
 
             private double Value(double start, double end, double middle) {
@@ -113,11 +116,26 @@ namespace PavelStransky.Expression.Functions.Def {
             double max = 0.0;
             int num = 0;
 
+            if(vs.GetItemType() == typeof(Vector)) {
+                PointVector[] p = new PointVector[length];
+
+                Vector v = new Vector((vs[0] as Vector).Length);
+
+                for(int i = 1; i < vs.Length; i++)
+                    p[i] = new PointVector(vs[i] as Vector, v);
+
+                for(int i = 0; i < v.Length; i++)
+                    v[i] = 1.0;
+
+                p[0] = new PointVector(vs[0] as Vector, v);
+                vs = new TArray(p);
+            }
+
             for(int i = 0; i < length; i++) {
-                    Vector v = vs[i] as Vector;
-                    v = v.Sort() as Vector;
-                    min += v.FirstItem;
-                    max += v.LastItem;
+                    PointVector v = vs[i] as PointVector;
+                    v = v.Sort() as PointVector;
+                    min += v.VectorX.FirstItem;
+                    max += v.VectorX.LastItem;
                 }
 
             if(arguments[1] is Vector) {
@@ -142,17 +160,15 @@ namespace PavelStransky.Expression.Functions.Def {
             Bins bins = new Bins(min, max, num, width, (int)arguments[3]);
 
             int k = 0;
-            this.Recursion(bins, ref k, vs, vs.Length, 0.0, guider);
-
-//            return bins.Num;
+            this.Recursion(bins, ref k, vs, vs.Length, new PointD(0.0, 0.0), guider);
             return bins.GetHistogram();
         }
 
-        private void Recursion(Bins bins, ref int k, TArray vs, int i, double sum, Guider guider) {
+        private void Recursion(Bins bins, ref int k, TArray vs, int i, PointD sum, Guider guider) {
             if(i > 0) {
                 i--;
 
-                Vector v = vs[i] as Vector;
+                PointVector v = vs[i] as PointVector;
                 int length = v.Length;
                 int coef = length / 100;
 

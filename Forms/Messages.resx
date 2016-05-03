@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EMBadFileName" xml:space="preserve">
     <value>Bad file name: '{0}'</value>
@@ -158,6 +158,9 @@
   </data>
   <data name="FilterTxt" xml:space="preserve">
     <value>Text files (*.txt)|*.txt|All files (*.*)|*.*</value>
+  </data>
+  <data name="HelpCombineVectorCHD" xml:space="preserve">
+    <value>Returns cumulative histogram of the series which contains all the possible sums of elements of given vectors, weighed by the derivatives</value>
   </data>
   <data name="MCalculating" xml:space="preserve">
     <value>Calculation in progress...</value>

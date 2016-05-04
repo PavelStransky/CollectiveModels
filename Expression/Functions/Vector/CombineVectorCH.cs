@@ -3,6 +3,7 @@ using System.Collections;
 
 using PavelStransky.Expression;
 using PavelStransky.Math;
+using PavelStransky.Core;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
@@ -171,13 +172,18 @@ namespace PavelStransky.Expression.Functions.Def {
                 PointVector v = vs[i] as PointVector;
                 int length = v.Length;
                 int coef = length / 100;
+                DateTime t = DateTime.Now;
 
                 for(int j = 0; j < length; j++) {
                     this.Recursion(bins, ref k, vs, i, sum + v[j], null);
+
                     if(guider != null && (j + 1) % coef == 0) {
                         guider.Write('.');
-                        if((j + 1) % (10 * coef) == 0)
-                            guider.WriteLine(bins.Num);
+                        if((j + 1) % (10 * coef) == 0) {
+                            guider.Write(bins.Num);
+                            guider.Write("...");
+                            guider.WriteLine(SpecialFormat.Format(DateTime.Now - t));
+                        }
                     }
                 }
             }

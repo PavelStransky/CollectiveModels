@@ -26,16 +26,16 @@ namespace PavelStransky.Expression.Functions.Def {
             private int num;
             private double halfwidth;
 
-            private double mini, maxi;
-
             private long sum;
-            private double coef, h;
+            private double coef;
+
+            private double h;
 
             private Vector histogram;
 
             public enum Types { Rectangular = 0, Cosine = 1};
 
-            private Types type = Types.Cosine;
+            private Types type = Types.Rectangular;
 
             public Bins(double min, double max, int num, double width, int type) {
                 this.min = min;
@@ -43,64 +43,88 @@ namespace PavelStransky.Expression.Functions.Def {
                 this.num = num;
                 this.halfwidth = 0.5 * width;
 
+                this.h = System.Math.PI / (this.halfwidth + 0.5);
+
                 this.type = (Types)type;
-
-                this.histogram = new Vector(this.num);
-
+                this.histogram = new Vector(this.num + 1);
                 this.coef = this.num / (this.max - this.min);
-                this.h = this.coef / width;
-
-                this.mini = 0.0;
-                this.maxi = this.num * (1.0 - 1E-15);
             }
 
             public void Add(PointD p) {
                 double d = p.X;
                 double v = p.Y;
 
-                double e = (d - this.min) * coef;
+                double e = (d - this.min) * this.coef;
+
                 double start = e - this.halfwidth;
+                int starti = (int)start;
+
                 double end = e + this.halfwidth;
+                int endi = (int)end;
 
-                start = System.Math.Max(start, this.mini);
-                end = System.Math.Min(end, this.maxi);
+                if(starti < 0)
+                    starti = 0;
+                if(endi > this.num)
+                    endi = this.num;
 
-                if(start >= end)
+                if(starti > endi)
                     return;
 
                 this.sum++;
 
-//                return;
-
-                for(int k = (int)start; k < (int)end; k++) {
-                    this.histogram[k] += v * this.Value(start, k + 1, e);
-                    start = k + 1;
+                if(starti == endi && starti > 0 && endi < this.num) {
+                    this.histogram[starti] += v;
+                    return;
                 }
 
-                if(start < end)
-                    this.histogram[(int)end] += v * this.Value(start, end, e);
-            }
-
-            private double Value(double start, double end, double middle) {
                 switch(this.type) {
-                    case Types.Rectangular:
-                        return (end - start) * this.h;
+                    case Types.Rectangular: {
+                            v /= (2.0 * this.halfwidth);
+
+                            if(start > 0)
+                                this.histogram[starti] += v * (1.0 - start + starti);
+                            else
+                                this.histogram[starti] += v;
+
+                            for(int k = starti + 1; k < endi; k++)
+                                this.histogram[k] += v;
+
+                            if(end < this.num)
+                                this.histogram[endi] += v * (end - endi);
+
+                            break;
+                        }
                     case Types.Cosine: {
-                            double x1 = System.Math.PI * (start - middle) / this.halfwidth;
-                            double x2 = System.Math.PI * (end - middle) / this.halfwidth;
-                            return System.Math.Sin(x2) - System.Math.Sin(x1) + x2 - x1;
+                            v /= 2.0 * System.Math.PI;
+
+                            double x1 = 0.0;
+
+                            if(start < 0)
+                                x1 = this.h * (1.0 - start + starti);
+
+                            double l = 2.0 - start;
+
+                            for(int k = starti; k < endi; k++) {
+                                double x2 = this.h * (k + l);
+                                x2 = x2 - System.Math.Sin(x2);
+                                this.histogram[k] += v * (x2 - x1);
+                                x1 = x2;
+                            }
+
+                            if(end < this.num)
+                                this.histogram[endi] += v * (2.0 * System.Math.PI - x1);
+
+                            break;
                         }
                 }
-
-                return -1.0;
             }
 
             public PointVector GetHistogram() {
                 PointVector result = new PointVector(num);
 
                 for(int i = 0; i < this.num; i++) {
-                    result[i].X = (i + 0.5) / coef + this.min;
-                    result[i].Y = this.histogram[i];
+                    result[i].X = (i + 0.5) / this.coef + this.min;
+                    result[i].Y = this.coef * this.histogram[i];
                 }
 
                 return result;
@@ -159,13 +183,12 @@ namespace PavelStransky.Expression.Functions.Def {
             double width = (double)arguments[2];
 
             Bins bins = new Bins(min, max, num, width, (int)arguments[3]);
-
-            int k = 0;
-            this.Recursion(bins, ref k, vs, vs.Length, new PointD(0.0, 0.0), guider);
+           
+            this.Recursion(bins, vs, vs.Length, new PointD(0.0, 0.0), guider);
             return bins.GetHistogram();
         }
 
-        private void Recursion(Bins bins, ref int k, TArray vs, int i, PointD sum, Guider guider) {
+        private void Recursion(Bins bins, TArray vs, int i, PointD sum, Guider guider) {
             if(i > 0) {
                 i--;
 
@@ -175,7 +198,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 DateTime t = DateTime.Now;
 
                 for(int j = 0; j < length; j++) {
-                    this.Recursion(bins, ref k, vs, i, sum + v[j], null);
+                    this.Recursion(bins, vs, i, sum + v[j]);
 
                     if(guider != null && (j + 1) % coef == 0) {
                         guider.Write('.');
@@ -183,9 +206,25 @@ namespace PavelStransky.Expression.Functions.Def {
                             guider.Write(bins.Num);
                             guider.Write("...");
                             guider.WriteLine(SpecialFormat.Format(DateTime.Now - t));
+                            t = DateTime.Now;
                         }
                     }
                 }
+            }
+            else
+                bins.Add(sum);
+        }
+
+        private void Recursion(Bins bins, TArray vs, int i, PointD sum) {
+            if(i > 0) {
+                i--;
+
+                PointVector v = vs[i] as PointVector;
+                int length = v.Length;
+                int coef = length / 100;
+
+                for(int j = 0; j < length; j++) 
+                    this.Recursion(bins, vs, i, sum + v[j]);
             }
             else
                 bins.Add(sum);

@@ -83,7 +83,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
                             if(start > 0)
                                 this.histogram[starti] += v * (1.0 - start + starti);
-                            else
+                            else if(endi > starti)
                                 this.histogram[starti] += v;
 
                             for(int k = starti + 1; k < endi; k++)

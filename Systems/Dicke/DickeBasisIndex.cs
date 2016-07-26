@@ -12,6 +12,7 @@ namespace PavelStransky.Systems {
     /// </summary>
     public class DickeBasisIndex : BasisIndex {
         private int j, maxN;              // Nejvyšší M, N
+        private int type;
         private int mod;
         private int length;
 
@@ -38,18 +39,30 @@ namespace PavelStransky.Systems {
 
             this.maxN = (int)basisParams[0];
             this.j = (int)basisParams[1];
+            this.type = basisParams.Length > 2 ? (int)basisParams[2] : 0;
 
-            this.length = (this.maxN + 1) * (2 * this.j + 1);
+            this.length = 0;
+
             this.mod = (2 * this.j + 1);
+
+            if(this.type == 0)
+                length = (this.maxN + 1) * this.mod;
+            else if(this.type > 0)
+                length = (this.maxN / 2 + 1) * this.mod;
+
+            int dn = this.type == 0 ? 1 : 2;
 
             this.indexm = new int[this.length];
             this.indexn = new int[this.length];
 
             int i = 0;
-            for(int n = 0; n <= this.maxN; n++)
+            for(int n = 0; n <= this.maxN; n += dn)
                 for(int m = -this.j; m <= this.j; m++) {
-                    this.indexn[i] = n;
                     this.indexm[i] = m;
+                    if(this.type == 0)
+                        this.indexn[i] = n;
+                    else 
+                        this.indexn[i] = System.Math.Abs(m + n + this.type) % 2 + n;
                     i++;
                 }
         }
@@ -63,6 +76,11 @@ namespace PavelStransky.Systems {
             get {
                 if(n > this.maxN || n < 0 || m < -this.j || m > this.j)
                     return -1;
+                if(this.type > 0) {
+                    if((n + m + this.type) % 2 != 0)
+                        return -1;
+                    return (n / 2) * mod + m + this.j;
+                }
                 return n * mod + m + this.j;
             }
         }
@@ -114,17 +132,25 @@ namespace PavelStransky.Systems {
         public override int BandWidth { get { return this.mod + 1; } }
 
         public override int BasisQuantumNumberLength(int qn) {
-            if(qn == 0)
-                return this.MaxN + 1;
+            if(qn == 0) {
+                if(this.type == 0)
+                    return this.MaxN + 1;
+                else
+                    return this.MaxN / 2 + 1;
+            }
             else
                 return 2 * this.J + 1;
         }
 
         public override int GetBasisQuantumNumber(int qn, int i) {
-            if(qn == 0)
-                return this.N[i];
+            if(qn == 0) {
+                if(this.type == 0)
+                    return this.N[i];
+                else
+                    return this.N[i] / 2;
+            }
             else
-                return this.M[i];
+                return this.M[i] + this.J;
         }
     }
 }

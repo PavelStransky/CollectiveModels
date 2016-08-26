@@ -82,7 +82,7 @@ namespace PavelStransky.Systems {
             }
 
             int length = this.eigenSystem.BasisIndex.Length;
-            int length100 = length / 100;
+            int length100 = System.Math.Max(length / 100, 1);
 
             DateTime startTime = DateTime.Now;
 

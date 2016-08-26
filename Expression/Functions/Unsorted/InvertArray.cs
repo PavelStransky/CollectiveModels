@@ -28,7 +28,9 @@ namespace PavelStransky.Expression.Functions.Def {
 
             if(a.GetItemType() == typeof(Vector)) {
                 int lengthX = a.Length;
-                int lengthY = (a[0] as Vector).Length;
+                int lengthY = 0;
+                for(int i = 0; i < lengthX; i++)
+                    lengthY = System.Math.Max(lengthX, (a[i] as Vector).Length);
 
                 if(arguments.Count > 1) {
                     Vector x = arguments[1] as Vector;
@@ -38,8 +40,13 @@ namespace PavelStransky.Expression.Functions.Def {
 
                     for(int i = 0; i < lengthY; i++) {
                         PointVector pv = new PointVector(lengthX);
-                        for(int j = 0; j < lengthX; j++) 
-                            pv[j] = new PointD(x[j], (a[j] as Vector)[i]);
+                        int k = 0;
+                        for(int j = 0; j < lengthX; j++) {
+                            Vector v = a[j] as Vector;
+                            if(i < v.Length)
+                                pv[k++] = new PointD(x[j], v[i]);
+                        }
+                        pv.Length = k;
                         result.Add(pv);
                     }                    
                 }

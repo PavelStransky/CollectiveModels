@@ -98,14 +98,11 @@ namespace PavelStransky.Systems {
             Vector ev = this.eigenSystem.GetEigenVector(n);
 
             Matrix result = new Matrix(nbmax - nbmin + 1);
-            for(int i = nbmin; i <= nbmax; i++)
-                for(int k = nbmin; k <= nbmax; k++)
-                    for(int l = -j; l <= j; l++) {
-                        int i1 = index[i, l];
-                        int i2 = index[k, l];
-                        if(i1 >= 0 && i2 >= 0)
-                            result[i - nbmin, k - nbmin] += ev[i1] * ev[i2];
-                    }
+            for (int i = 0; i < index.Length; i++)
+                for (int k = 0; k < index.Length; k++) {
+                    if (index.M[i] == index.M[k])
+                        result[index.Nb[i] - nbmin, index.Nb[k] - nbmin] += ev[i] * ev[k];
+                }
 
             return result;
         }

@@ -153,7 +153,7 @@ namespace PavelStransky.Systems {
         private double PsiR(double x, double phi, int j) {
             DickeBasisIndex index = this.eigenSystem.BasisIndex as DickeBasisIndex;
             int m = index.M[j];
-            return System.Math.Cos(m * phi);
+            return System.Math.Cos(0.5 * m * phi);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace PavelStransky.Systems {
         private double PsiI(double x, double phi, int j) {
             DickeBasisIndex index = this.eigenSystem.BasisIndex as DickeBasisIndex;
             int m = index.M[j];
-            return System.Math.Sin(m * phi);
+            return System.Math.Sin(0.5 * m * phi);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace PavelStransky.Systems {
             int bandWidth = index.BandWidth;
             int j = index.J;
 
-            double gamman = this.Gamma / System.Math.Sqrt(2 * j);
+            double gamman = this.Gamma / System.Math.Sqrt(j);
 
             DateTime startTime = DateTime.Now;
 
@@ -239,12 +239,12 @@ namespace PavelStransky.Systems {
                 int n = index.N[i];
                 int m = index.M[i];
 
-                int i1 = index[n + 1, m - 1];
-                int i2 = index[n - 1, m + 1];
-                int i3 = index[n + 1, m + 1];
-                int i4 = index[n - 1, m - 1];
+                int i1 = index[n + 1, m - 2];
+                int i2 = index[n - 1, m + 2];
+                int i3 = index[n + 1, m + 2];
+                int i4 = index[n - 1, m - 2];
 
-                matrix[i, i] = this.Omega * n + this.Omega0 * m;
+                matrix[i, i] = this.Omega * n + this.Omega0 * m / 2.0;
 
                 if(i1 >= 0)
                     matrix[i1, i] = gamman * this.ShiftMinus(j, m) * System.Math.Sqrt(n + 1);
@@ -286,16 +286,22 @@ namespace PavelStransky.Systems {
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
         }
 
+        /// <remarks>
+        /// Pozor, počítá pro l dvojnásobné (abychom zvládli i poločíselné spiny)
+        /// </remarks>
         protected double ShiftPlus(int l, int m) {
             if(m > l || m < -l)
                 return 0;
-            return System.Math.Sqrt((l - m) * (l + m + 1));
+            return 0.5 * System.Math.Sqrt((l - m) * (l + m + 2));
         }
 
+        /// <remarks>
+        /// Pozor, počítá pro l dvojnásobné (abychom zvládli i poločíselné spiny)
+        /// </remarks>
         protected double ShiftMinus(int l, int m) {
             if(m > l || m < -l)
                 return 0;
-            return System.Math.Sqrt((l + m) * (l - m + 1));
+            return 0.5 * System.Math.Sqrt((l + m) * (l - m + 2));
         }
         #endregion
 
@@ -313,12 +319,12 @@ namespace PavelStransky.Systems {
 
             Vector ev = this.eigenSystem.GetEigenVector(n);
 
-            Matrix result = new Matrix(2 * j + 1);
-            for(int i = -j; i <= j; i++)
-                for(int k = -j; k <= j; k++)
-                    for(int l = 0; l <= m; l++)
-                        if(index[l, i] >= 0 && index[l, k] >= 0) {
-                            result[i + j, k + j] += ev[index[l, i]] * ev[index[l, k]];
+            Matrix result = new Matrix(j + 1);
+            for (int i = -j; i <= j; i += 2)
+                for (int k = -j; k <= j; k += 2)
+                    for (int l = 0; l <= m; l++)
+                        if (index[l, i] >= 0 && index[l, k] >= 0) {
+                            result[(i + j) / 2, (k + j) / 2] += ev[index[l, i]] * ev[index[l, k]];
                         }
 
             /*

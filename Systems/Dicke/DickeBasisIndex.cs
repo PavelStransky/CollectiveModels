@@ -38,12 +38,12 @@ namespace PavelStransky.Systems {
             base.Init(basisParams);
 
             this.maxN = (int)basisParams[0];
-            this.j = (int)basisParams[1];
+            this.j = (int)System.Math.Round(2 * basisParams[1]);
             this.type = basisParams.Length > 2 ? (int)basisParams[2] : 0;
 
             this.length = 0;
 
-            this.mod = (2 * this.j + 1);
+            this.mod = (this.j + 1);
 
             if(this.type == 0)
                 length = (this.maxN + 1) * this.mod;
@@ -57,12 +57,12 @@ namespace PavelStransky.Systems {
 
             int i = 0;
             for(int n = 0; n <= this.maxN; n += dn)
-                for(int m = -this.j; m <= this.j; m++) {
+                for(int m = -this.j; m <= this.j; m += 2) {
                     this.indexm[i] = m;
-                    if(this.type == 0)
+                    if (this.type == 0)
                         this.indexn[i] = n;
-                    else 
-                        this.indexn[i] = System.Math.Abs(m + n + this.type) % 2 + n;
+                    else
+                        this.indexn[i] = System.Math.Abs((m + this.j + this.type) / 2 + n) % 2 + n;
                     i++;
                 }
         }
@@ -76,12 +76,12 @@ namespace PavelStransky.Systems {
             get {
                 if(n > this.maxN || n < 0 || m < -this.j || m > this.j)
                     return -1;
-                if(this.type > 0) {
-                    if((n + m + this.type) % 2 != 0)
+                if (this.type > 0) {
+                    if ((n + (m + this.j + this.type) / 2) % 2 != 0)
                         return -1;
-                    return (n / 2) * mod + m + this.j;
+                    return (n / 2) * mod + (m + this.j) / 2;
                 }
-                return n * mod + m + this.j;
+                return n * mod + (m + this.j) / 2;
             }
         }
 
@@ -139,7 +139,7 @@ namespace PavelStransky.Systems {
                     return this.MaxN / 2 + 1;
             }
             else
-                return 2 * this.J + 1;
+                return this.J + 1;
         }
 
         public override int GetBasisQuantumNumber(int qn, int i) {
@@ -150,7 +150,7 @@ namespace PavelStransky.Systems {
                     return this.N[i] / 2;
             }
             else
-                return this.M[i] + this.J;
+                return (this.M[i] + this.J) / 2;
         }
     }
 }

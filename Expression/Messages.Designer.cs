@@ -3202,6 +3202,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns all possible convolutions of functions defined for x &gt; 0 of depth d.
+        /// </summary>
+        internal static string HelpConvolutionA {
+            get {
+                return ResourceManager.GetString("HelpConvolutionA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns a convolution of functions defined for x &gt; 0.
+        /// </summary>
+        internal static string HelpConvolutionP {
+            get {
+                return ResourceManager.GetString("HelpConvolutionP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copies a given object i-times and returns as TArray.
         /// </summary>
         internal static string HelpCopy {
@@ -3711,6 +3729,15 @@ namespace PavelStransky.Expression {
         internal static string HelpFillMatrix {
             get {
                 return ResourceManager.GetString("HelpFillMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From the Y value finds the best X value (using linear interpolation and multiplicity).
+        /// </summary>
+        internal static string HelpFindX {
+            get {
+                return ResourceManager.GetString("HelpFindX", resourceCulture);
             }
         }
         
@@ -8085,6 +8112,24 @@ namespace PavelStransky.Expression {
         internal static string PDenominatorDescription {
             get {
                 return ResourceManager.GetString("PDenominatorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to depth.
+        /// </summary>
+        internal static string PDepth {
+            get {
+                return ResourceManager.GetString("PDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depth.
+        /// </summary>
+        internal static string PDepthDescription {
+            get {
+                return ResourceManager.GetString("PDepthDescription", resourceCulture);
             }
         }
         

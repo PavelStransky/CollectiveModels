@@ -252,6 +252,8 @@
     <Compile Include="Functions\Vector\AMFM.cs" />
     <Compile Include="Functions\Vector\CombineVector.cs" />
     <Compile Include="Functions\Vector\CombineVectorCH.cs" />
+    <Compile Include="Functions\Vector\ConvolutionA.cs" />
+    <Compile Include="Functions\Vector\ConvolutionP.cs" />
     <Compile Include="Functions\Vector\CreateByCopy.cs" />
     <Compile Include="Functions\Vector\Autocorrelation.cs" />
     <Compile Include="Functions\Vector\Contain.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Functions\Vector\Delta3.cs" />
     <Compile Include="Functions\Vector\ECG.cs" />
     <Compile Include="Functions\Vector\EMD.cs" />
+    <Compile Include="Functions\Vector\FindX.cs" />
     <Compile Include="Functions\Vector\GPSDistance.cs" />
     <Compile Include="Functions\Vector\IMF.cs" />
     <Compile Include="Functions\Vector\NormalizeDensity.cs" />

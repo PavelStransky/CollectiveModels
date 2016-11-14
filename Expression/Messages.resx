@@ -4083,4 +4083,19 @@ Second differing type: {1}</value>
   <data name="PModuloDescription" xml:space="preserve">
     <value>Modulo</value>
   </data>
+  <data name="HelpConvolutionP" xml:space="preserve">
+    <value>Returns a convolution of functions defined for x &gt; 0</value>
+  </data>
+  <data name="HelpConvolutionA" xml:space="preserve">
+    <value>Returns all possible convolutions of functions defined for x &gt; 0 of depth d</value>
+  </data>
+  <data name="PDepth" xml:space="preserve">
+    <value>depth</value>
+  </data>
+  <data name="PDepthDescription" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="HelpFindX" xml:space="preserve">
+    <value>From the Y value finds the best X value (using linear interpolation and multiplicity)</value>
+  </data>
 </root>

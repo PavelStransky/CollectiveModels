@@ -78,6 +78,7 @@
     <Compile Include="CreaghWhelan\QuantumCW.cs" />
     <Compile Include="CreaghWhelan\QuantumCWPolar.cs" />
     <Compile Include="Dicke\ClassicalDicke.cs" />
+    <Compile Include="Dicke\ClassicalDickeC.cs" />
     <Compile Include="Dicke\Dicke.cs" />
     <Compile Include="Dicke\DickeBasisIndex.cs" />
     <Compile Include="Dicke\QuantumDicke.cs" />

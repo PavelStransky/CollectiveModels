@@ -145,6 +145,7 @@
     <Compile Include="Functions\Context\ClearAll.cs" />
     <Compile Include="Functions\Context\ClearExcept.cs" />
     <Compile Include="Functions\Context\GetFileContext.cs" />
+    <Compile Include="Functions\Dynamics\Systems\CDickeC.cs" />
     <Compile Include="Functions\Dynamics\ConvexConcaveCW.cs" />
     <Compile Include="Functions\Dynamics\DPXY.cs" />
     <Compile Include="Functions\Dynamics\Extreemes.cs" />

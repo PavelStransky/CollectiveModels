@@ -70,8 +70,11 @@ namespace PavelStransky.Expression.Functions.Def {
                         double e = (double)arguments[1];
                         ic = dynamicalSystem.IC(e);
                     }
-                    else
-                        throw exc;
+                    else {
+                        //                        throw exc;
+                        result = new PointVector(0);
+                        break;
+                    }
                 }
                 catch(Exception exc) {
                     throw exc;

@@ -9,7 +9,7 @@ namespace PavelStransky.Systems {
     /// <summary>
     /// Nová implementace Import (nové typy)
     /// </summary>
-    public class Import: PavelStransky.Math.Import {
+    public class Import : PavelStransky.Math.Import {
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -172,6 +172,8 @@ namespace PavelStransky.Systems {
                 return new QuantumCWPolar(this);
             else if(typeName == typeof(ClassicalDicke).FullName)
                 return new ClassicalDicke(this);
+            else if(typeName == typeof(ClassicalDickeC).FullName)
+                return new ClassicalDickeC(this);
             else if(typeName == typeof(GeometricCounterExample).FullName)
                 return new GeometricCounterExample(this);
             else if(typeName == typeof(QuantumDicke).FullName)

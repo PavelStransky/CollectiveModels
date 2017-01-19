@@ -193,7 +193,7 @@ namespace PavelStransky.Math {
             return false;
         }
 
-        private const double maxTimeWithoutCross = 500.0;
+        private const double maxTimeWithoutCross = 1000.0;
     }
 
     /// <summary>

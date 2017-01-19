@@ -107,12 +107,8 @@ namespace PavelStransky.Systems {
             return result;
         }
 
-        /// <summary>
-        /// Peresùv invariant
-        /// </summary>
-        /// <param name="type">Typ (0 - H0, 1 - L1, 3 - L1^2)</param>
         public Vector PeresInvariant(int type) {
-            throw new NotImpException(this, "PeresInvariant");
+            return null;
         }
 
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {

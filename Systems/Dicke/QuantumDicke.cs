@@ -35,10 +35,42 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Druhý invariant
         /// </summary>
-        /// <param name="type">Typ Peresova operátoru</param>
+        /// <param name="type">Typ Peresova operátoru:
+        /// 0 ... N
+        /// 1 ... M
+        /// 2 ... N + M
+        /// </param>
         /// <remarks>L. E. Reichl, 5.4 Time Average as an Invariant</remarks>
         public Vector PeresInvariant(int type) {
-            return null;
+            DickeBasisIndex index = this.eigenSystem.BasisIndex as DickeBasisIndex;
+
+            int count = this.eigenSystem.NumEV;
+            Vector result = new Vector(count);
+
+            for (int i = 0; i < count; i++) {
+                Vector ev = this.eigenSystem.GetEigenVector(i);
+                int length = ev.Length;
+
+                for (int j = 0; j < length; j++) {
+                    double koef = 0.0;
+
+                    switch (type) {
+                        case 0:
+                            koef = index.N[j];
+                            break;
+                        case 1:
+                            koef = 0.5 * index.M[j];
+                            break;
+                        case 2:
+                            koef = 0.5 * index.M[j] + index.N[j];
+                            break;
+                    }
+
+                    result[i] += ev[j] * ev[j] * koef;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

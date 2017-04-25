@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PavelStransky.Core;
+
 namespace PavelStransky.Math {
     /// <summary>
     /// Poèítá Poincarého øez danou rovinou (rovina dána vektorem (a, b, c, ...) = ax + by + ... == 0)
@@ -38,7 +40,7 @@ namespace PavelStransky.Math {
             Vector plane = new Vector(4);
             plane[1] = 1.0;
 
-            return this.Compute(plane, 0, 2, initialX, numPoints, false);
+            return this.Compute(plane, 0, 2, initialX, numPoints, false, null);
         }
 
         /// <summary>
@@ -50,8 +52,8 @@ namespace PavelStransky.Math {
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="numPoints">Poèet bodù øezu</param>
         /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
-        public PointVector Compute(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation) {
-            return this.Section(plane, i1, i2, initialX, numPoints, oneOrientation)[0] as PointVector;
+        public PointVector Compute(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation, IOutputWriter writer) {
+            return this.Section(plane, i1, i2, initialX, numPoints, oneOrientation, writer)[0] as PointVector;
         }
 
         /// <summary>
@@ -63,8 +65,8 @@ namespace PavelStransky.Math {
         /// <param name="initialX">Poèáteèní podmínky</param>
         /// <param name="numPoints">Poèet bodù øezu</param>
         /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
-        public Vector SectionTimes(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation) {
-            return this.Section(plane, i1, i2, initialX, numPoints, oneOrientation)[1] as Vector;
+        public Vector SectionTimes(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation, IOutputWriter writer) {
+            return this.Section(plane, i1, i2, initialX, numPoints, oneOrientation, writer)[1] as Vector;
         }
         
         /// <summary>
@@ -77,7 +79,7 @@ namespace PavelStransky.Math {
         /// <param name="numPoints">Poèet bodù øezu</param>
         /// <param name="oneOrientation">True, pokud chceme zobrazovat jen jednu orientaci prùchodu rovinou</param>
         /// <returns>Dva objekty - první s øezem (PointVector), druhý s èasy prùchodu rovinou (Vector)</returns>
-        private object [] Section(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation) {
+        private object [] Section(Vector plane, int i1, int i2, Vector initialX, int numPoints, bool oneOrientation, IOutputWriter writer) {
             // Èíslo, které dourèuje rovinu (plane * x == crossPoint)
             double crossPoint;
 
@@ -100,6 +102,8 @@ namespace PavelStransky.Math {
             double time = 0;
             bool postProcessed = false;
 
+            int write = numPoints / 10;
+
             this.rungeKutta.Init(initialX);
 
             do {
@@ -121,6 +125,9 @@ namespace PavelStransky.Math {
                         section[finished].Y = v[i2];
                         times[finished] = -step * ratio + time;
                         finished++;
+
+                        if(finished % write == 0 && writer != null)
+                            writer.Write(".");
                     }
 
                 sp = newsp;

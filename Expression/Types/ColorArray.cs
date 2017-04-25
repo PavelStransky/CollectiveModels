@@ -29,10 +29,19 @@ namespace PavelStransky.Expression {
                 case 10: result = Color.LightBlue; break;
                 case 11: result = Color.LightPink; break;
                 case 12: result = Color.LightCyan; break;
-                case 13: result = Color.LightYellow; break;
+                case 13: result = Color.LightSalmon; break;
                 case 14: result = Color.LightGray; break;
                 case 15: result = Color.Orange; break;
-                case 16: result = Color.White; break;
+                case 16: result = Color.DarkRed; break;
+                case 17: result = Color.DarkGreen; break;
+                case 18: result = Color.DarkBlue; break;
+                case 19: result = Color.DarkMagenta; break;
+                case 20: result = Color.DarkCyan; break;
+                case 21: result = Color.DarkKhaki; break;
+                case 22: result = Color.Salmon; break;
+                case 23: result = Color.Azure; break;
+                case 24: result = Color.Beige; break;
+                case 25: result = Color.Gray; break;
                 default: result = Color.FromKnownColor((KnownColor)color); break;
             }
 

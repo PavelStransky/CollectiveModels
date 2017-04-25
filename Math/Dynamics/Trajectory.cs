@@ -47,19 +47,39 @@ namespace PavelStransky.Math {
             double step = this.precision;
             this.rungeKutta.Init(initialX);
 
-            do {
-                while(t < tNext) {
-                    double newStep;
-                    x += this.rungeKutta.Step(x, ref step, out newStep);
-                    t += step;
+            if(tNext < 0) {
+                Vector x0 = x;
+                tNext = -tNext;
+                timeStep = -timeStep;
+                do {
+                    while((x - x0).EuklideanNorm() < tNext) {
+                        double newStep;
+                        x += this.rungeKutta.Step(x, ref step, out newStep);
+                        t += step;
 
-                    step = System.Math.Min(newStep, tNext);
-                }
+                        step = System.Math.Min(newStep, timeStep);
+                    }
 
-                trajectory.Add(x);
-                tt.Add(t);
-                tNext += timeStep;
-            } while(t < time);
+                    trajectory.Add(x);
+                    tt.Add(t);
+                    x0 = x;
+                } while(t < time);
+            }
+            else {
+                do {
+                    while(t < tNext) {
+                        double newStep;
+                        x += this.rungeKutta.Step(x, ref step, out newStep);
+                        t += step;
+
+                        step = System.Math.Min(newStep, timeStep);
+                    }
+
+                    trajectory.Add(x);
+                    tt.Add(t);
+                    tNext += timeStep;
+                } while(t < time);
+            }
 
             int count = trajectory.Count;
 

@@ -28,8 +28,8 @@ namespace PavelStransky.Expression.Functions.Def {
         /// <summary>
         /// Provede výpoèet
         /// </summary>
-        protected virtual object Compute(PoincareSection ps, Vector plane, int i1, int i2, Vector ic, int numPoints, bool oneOrientation) {
-            return ps.Compute(plane, i1, i2, ic, numPoints, oneOrientation);
+        protected virtual object Compute(PoincareSection ps, Vector plane, int i1, int i2, Vector ic, int numPoints, bool oneOrientation, Guider guider) {
+            return ps.Compute(plane, i1, i2, ic, numPoints, oneOrientation, guider);
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -62,7 +62,7 @@ namespace PavelStransky.Expression.Functions.Def {
             int numAttemps = 0;
             while(true) {
                 try {
-                    result = this.Compute(ps, plane, i1, i2, ic, numPoints, oneOrientation);
+                    result = this.Compute(ps, plane, i1, i2, ic, numPoints, oneOrientation, guider);
                     break;
                 }
                 catch(PoincareSectionException exc) {

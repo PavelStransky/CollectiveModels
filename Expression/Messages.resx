@@ -4098,4 +4098,7 @@ Second differing type: {1}</value>
   <data name="HelpFindX" xml:space="preserve">
     <value>From the Y value finds the best X value (using linear interpolation and multiplicity)</value>
   </data>
+  <data name="HelpResultant" xml:space="preserve">
+    <value>Resultant of a matrix in the form A + lambda B</value>
+  </data>
 </root>

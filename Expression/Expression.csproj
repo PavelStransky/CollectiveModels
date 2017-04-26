@@ -247,6 +247,7 @@
     <Compile Include="Functions\Unsorted\InvertArray.cs" />
     <Compile Include="Functions\Spin\Ising2D.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
+    <Compile Include="Functions\Unsorted\Resultant.cs" />
     <Compile Include="Functions\Unsorted\SMJacobi.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />
     <Compile Include="Functions\Spin\SpinZ.cs" />

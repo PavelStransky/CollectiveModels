@@ -5479,6 +5479,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resultant of a matrix in the form A + lambda B.
+        /// </summary>
+        internal static string HelpResultant {
+            get {
+                return ResourceManager.GetString("HelpResultant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rotates the elements of the vector.
         /// </summary>
         internal static string HelpRotate {

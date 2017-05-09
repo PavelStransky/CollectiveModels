@@ -9,16 +9,33 @@ namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
     /// Resultant of a matrix in the form A + l B
     /// </summary>
-    public class Resultant : Fnc {
-        public class Polynomial: ICloneable {
-            public Matrix coefs;
+    public class ResultantBF : Fnc {
+        public class Polynomial : ICloneable {
+            private BigFloat[,] coefs;
+            private int maxPowerE, maxPowerLambda;
 
             /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="coefs">Matrix of the coefs in the form ((1, lambda, lambda^2, ...), (E, E lambda, E lambda^2, ...), (E^2, ...))</param>
             public Polynomial(Matrix coefs) {
-                this.coefs = coefs;
+                this.maxPowerE = coefs.LengthX - 1;
+                this.maxPowerLambda = coefs.LengthY - 1;
+
+                this.coefs = new BigFloat[this.maxPowerE + 1, this.maxPowerLambda + 1];
+                for(int i = 0; i <= this.maxPowerE; i++)
+                    for(int j = 0; j <= this.maxPowerLambda; j++)
+                        this.coefs[i, j] = new BigFloat(coefs[i, j]);                                
+            }
+
+            public Polynomial(int maxPowerE, int maxPowerLambda) {
+                this.maxPowerE = maxPowerE;
+                this.maxPowerLambda = maxPowerLambda;
+
+                this.coefs = new BigFloat[this.maxPowerE + 1, this.maxPowerLambda + 1];
+                for(int i = 0; i <= this.maxPowerE; i++)
+                    for(int j = 0; j <= this.maxPowerLambda; j++)
+                        this.coefs[i, j] = new BigFloat();                
             }
 
             /// <summary>
@@ -31,19 +48,27 @@ namespace PavelStransky.Expression.Functions.Def {
             /// <summary>
             /// Maximum power in energy
             /// </summary>
-            public int MaxPowerE { get { return this.coefs.LengthX - 1; } }
+            public int MaxPowerE { get { return this.maxPowerE; } }
 
             /// <summary>
             /// Maximum power in lambda
             /// </summary>
-            public int MaxPowerLambda { get { return this.coefs.LengthY - 1; } }
+            public int MaxPowerLambda { get { return this.maxPowerLambda; } }
 
             public bool IsNull { get { return this.coefs == null; } }
 
             /// <summary>
             /// Coefficients
             /// </summary>
-            public double this[int i, int j] { get { return this.coefs[i, j]; } }
+            public BigFloat this[int i, int j] { get { return this.coefs[i, j]; } }
+
+            public void Factor() {
+                if(this.IsNull)
+                    return;
+                for(int i = 0; i <= this.maxPowerE; i++)
+                    for(int j = 0; j <= this.maxPowerLambda; j++)
+                        this.coefs[i, j].Factor();
+            }
 
             /// <summary>
             /// Multiplying of two polynomials
@@ -57,18 +82,20 @@ namespace PavelStransky.Expression.Functions.Def {
                 int K = p2.MaxPowerE;
                 int L = p2.MaxPowerLambda;
 
-                Matrix m = new Matrix(I + K + 1, J + L + 1);
+                Polynomial result = new Polynomial(I + K, J + L);
 
+                int c = 0;
                 for(int i = 0; i <= I; i++)
                     for(int j = 0; j <= J; j++) {
                         if(p1[i, j] == 0)
                             continue;
                         for(int k = 0; k <= K; k++)
                             for(int l = 0; l <= L; l++) {
-                                m[i + k, j + l] += p1[i, j] * p2[k, l];
+                                result.coefs[i + k, j + l] += p1[i, j] * p2[k, l];
+                                c++;
                             }
                     }
-                return new Polynomial(m);
+                return result;
             }
 
             public static Polynomial operator *(double d, Polynomial p) {
@@ -78,11 +105,11 @@ namespace PavelStransky.Expression.Functions.Def {
                 int I = p.MaxPowerE;
                 int J = p.MaxPowerLambda;
 
-                Matrix m = new Matrix(I + 1, J + 1);
+                Polynomial result = new Polynomial(I, J);
                 for(int i = 0; i <= I; i++)
                     for(int j = 0; j <= J; j++)
-                        m[i, j] = d * p[i, j];
-                return new Polynomial(m);
+                        result.coefs[i, j] = d * p[i, j];
+                return result;
             }
 
             public static Polynomial operator +(Polynomial p1, Polynomial p2) {
@@ -91,21 +118,22 @@ namespace PavelStransky.Expression.Functions.Def {
                 if(p2.IsNull)
                     return p1.Clone() as Polynomial;
 
-                Matrix m = new Matrix(System.Math.Max(p1.MaxPowerE, p2.MaxPowerE) + 1, System.Math.Max(p1.MaxPowerLambda, p2.MaxPowerLambda) + 1);
-                for(int i = 0; i < m.LengthX; i++)
-                    for(int j = 0; j < m.LengthY; j++)
-                        m[i, j] = (i <= p1.MaxPowerE && j <= p1.MaxPowerLambda ? p1[i, j] : 0.0) + (i <= p2.MaxPowerE && j <= p2.MaxPowerLambda ? p2[i, j] : 0.0);
-                return new Polynomial(m);
+                Polynomial result = new Polynomial(System.Math.Max(p1.MaxPowerE, p2.MaxPowerE), System.Math.Max(p1.MaxPowerLambda, p2.MaxPowerLambda));
+
+                for(int i = 0; i <= result.maxPowerE; i++)
+                    for(int j = 0; j <= result.maxPowerLambda; j++)
+                        result.coefs[i, j] = (i <= p1.MaxPowerE && j <= p1.MaxPowerLambda ? p1[i, j] : BigFloat.Zero) + (i <= p2.MaxPowerE && j <= p2.MaxPowerLambda ? p2[i, j] : BigFloat.Zero);
+                return result;
             }
 
             public Polynomial DE() {
-                Matrix m = new Matrix(this.MaxPowerE, this.MaxPowerLambda);
+                Polynomial result = new Polynomial(this.maxPowerE - 1, this.maxPowerLambda);
 
                 for(int i = 1; i <= this.MaxPowerE; i++)
-                    for(int j = 1; j <= this.MaxPowerLambda; j++ )
-                        m[i - 1, j - 1] = i * this[i, j - 1];
+                    for(int j = 1; j <= this.MaxPowerLambda; j++)
+                        result.coefs[i - 1, j - 1] = i * this[i, j - 1];
 
-                return new Polynomial(m);
+                return result;
             }
 
             public Polynomial GetPowerE(int i) {
@@ -118,10 +146,11 @@ namespace PavelStransky.Expression.Functions.Def {
                     return new Polynomial();
 
                 Matrix m = new Matrix(1, j + 1);
+                Polynomial result = new Polynomial(1, j + 1);
                 for(; j >= 0; j--)
-                    m[0, j] = this[i, j];
+                    result.coefs[0, j] = this[i, j];
 
-                return new Polynomial(m);
+                return result;
             }
 
             public PolynomialMatrix Resultant() {
@@ -144,21 +173,18 @@ namespace PavelStransky.Expression.Functions.Def {
 
             }
 
-            public double MaxAbsCoef() {
-                if(this.IsNull)
-                    return 0.0;
-
-                return this.coefs.MaxAbs();
-            }
-
             public object Clone() {
                 if(this.IsNull)
                     return new Polynomial();
-                else
-                    return new Polynomial(this.coefs.Clone() as Matrix);
+                Polynomial result = new Polynomial(this.maxPowerE, this.maxPowerLambda);
+
+                for(int i = 0; i <= this.maxPowerE; i++)
+                    for(int j = 0; j <= this.maxPowerLambda; j++)
+                        result.coefs[i, j] = new BigFloat(this[i, j]);
+
+                return result;
             }
         }
-
 
         /// <summary>
         /// Square matrix with elements made of polynomials
@@ -248,6 +274,12 @@ namespace PavelStransky.Expression.Functions.Def {
                 return result;
             }
 
+            public void Factor() {
+                for(int i = 0; i < this.length; i++)
+                    for(int j = 0; j < this.length; j++)
+                        this.matrix[i, j].Factor();
+            }
+
             private PolynomialMatrix Mu() {
                 PolynomialMatrix result = new PolynomialMatrix(this.length);
                 for(int i = 0; i < this.length; i++)
@@ -271,28 +303,14 @@ namespace PavelStransky.Expression.Functions.Def {
                 return result;
             }
 
-            public double Normalize() {
-                double result = 0.0;
-                for(int i = 0; i < this.length; i++)
-                    for(int j = 0; j < this.length; j++)
-                        result = System.Math.Max(result, System.Math.Abs(this[i, j].MaxAbsCoef()));
-
-                double d = System.Math.Sqrt(1.0 / result);
-                for(int i = 0; i < this.length; i++)
-                    for(int j = 0; j < this.length; j++)
-                        this[i, j] = d * this[i, j];
-
-                return result;
-            }
-
             public static PolynomialMatrix operator *(PolynomialMatrix a, PolynomialMatrix b) {
                 int length = a.Length;
                 PolynomialMatrix result = new PolynomialMatrix(length);
 
                 for(int i = 0; i < length; i++)
-                    for(int j = 0; j < length; j++) 
+                    for(int j = 0; j < length; j++)
                         for(int k = 0; k < length; k++)
-                            result.matrix[i, j] += a.matrix[i, k] * b.matrix[k, j];                    
+                            result.matrix[i, j] += a.matrix[i, k] * b.matrix[k, j];
 
                 return result;
             }
@@ -336,10 +354,10 @@ namespace PavelStransky.Expression.Functions.Def {
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            int size = (arguments[0] as Matrix).Length;
-
             Polynomial p1 = new Polynomial(arguments[0] as Matrix);
             Polynomial p2 = new Polynomial(arguments[1] as Matrix);
+
+            int size = (arguments[0] as Matrix).Length;
 
             PolynomialMatrix pm = new PolynomialMatrix(arguments[0] as Matrix, arguments[1] as Matrix);
             if(guider != null)
@@ -347,12 +365,15 @@ namespace PavelStransky.Expression.Functions.Def {
             Polynomial p = pm.Determinant();
             if(guider != null)
                 guider.Write("D");
+            p.Factor();
+            if(guider != null)
+                guider.Write("f");
             PolynomialMatrix rm = p.Resultant();
             if(guider != null)
                 guider.Write("R");
-
-            double d = rm.Normalize();
-
+            rm.Factor();
+            if(guider != null)
+                guider.Write("f");
             Polynomial r = rm.Determinant().GetPowerE(0);
             if(guider != null)
                 guider.Write("D");
@@ -365,20 +386,10 @@ namespace PavelStransky.Expression.Functions.Def {
 
             Matrix m = new Matrix(l);
             for(int i = 1; i <= l; i++) {
-                m[0, i - 1] = -(double)r[0, l-i] / (double)r[0, l];
+                m[0, i - 1] = -(double)(r[0, l - i]) / (double)(r[0, l]);
                 if(i < l)
                     m[i, i - 1] = 1;
             }
-
-/*
-            if(guider != null) {
-                guider.WriteLine();
-                guider.Write(string.Format("l^{0}", l));
-                for(int i = 0; i < l; i++)
-                    guider.Write(string.Format("+({0:0}*l^{1})", m[0, i], l - i - 1));
-                guider.WriteLine();
-            }
-*/
 
             Vector[] v = LAPackDLL.dgeev(m, false);
 

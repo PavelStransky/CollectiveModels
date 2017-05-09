@@ -4101,4 +4101,7 @@ Second differing type: {1}</value>
   <data name="HelpResultant" xml:space="preserve">
     <value>Resultant of a matrix in the form A + lambda B</value>
   </data>
+  <data name="HelpParameterMatrix" xml:space="preserve">
+    <value>Returns matrices for the calculation of exceptional points</value>
+  </data>
 </root>

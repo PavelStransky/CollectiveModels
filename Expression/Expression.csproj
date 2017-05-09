@@ -129,6 +129,10 @@
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\MPIR\mpir.net\build.vc12\mpir.net\mpir.net.vcxproj">
+      <Project>{1e6e20ca-9f97-45a0-b797-c43a9716b95b}</Project>
+      <Name>mpir.net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Systems\Systems.csproj">
       <Project>{A516A842-63B3-4D31-885B-454E858A7368}</Project>
       <Name>Systems</Name>
@@ -214,6 +218,7 @@
     <Compile Include="Functions\Quantum\HOSpectrum3D.cs" />
     <Compile Include="Functions\Quantum\LipkinTwoSpectatorSimple.cs" />
     <Compile Include="Functions\Quantum\OccupationNumber.cs" />
+    <Compile Include="Functions\Quantum\ParameterMatrix.cs" />
     <Compile Include="Functions\Quantum\PartialTrace.cs" />
     <Compile Include="Functions\Quantum\Plateau.cs" />
     <Compile Include="Functions\Quantum\ShellCorrection.cs" />
@@ -248,6 +253,8 @@
     <Compile Include="Functions\Spin\Ising2D.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\Resultant.cs" />
+    <Compile Include="Functions\Unsorted\ResultantBF.cs" />
+    <Compile Include="Functions\Unsorted\ResultantMPIR.cs" />
     <Compile Include="Functions\Unsorted\SMJacobi.cs" />
     <Compile Include="Functions\Unsorted\Solve.cs" />
     <Compile Include="Functions\Spin\SpinZ.cs" />

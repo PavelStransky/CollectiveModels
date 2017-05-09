@@ -4885,6 +4885,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns matrices for the calculation of exceptional points.
+        /// </summary>
+        internal static string HelpParameterMatrix {
+            get {
+                return ResourceManager.GetString("HelpParameterMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates a partial trace for an eigenstate (returns it as a density matrix).
         /// </summary>
         internal static string HelpPartialTrace {

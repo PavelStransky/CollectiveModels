@@ -67,6 +67,82 @@ namespace PavelStransky.Systems {
             }
         }
 
+        public Matrix[] ParameterMatrix(Vector basisParams) {
+            LipkinFullBasisIndex index = this.CreateBasisIndex(basisParams) as LipkinFullBasisIndex;
+
+            Matrix[] result = new Matrix[5];
+
+            int dim = index.Length;
+            int n = index.N;
+                  
+            result[0] = new Matrix(dim);        // H0
+            result[1] = new Matrix(dim);        // + omega H1
+            result[2] = new Matrix(dim);        // + omega^2 H2
+
+            double k = -(1.0 - this.alpha) / n;
+            for(int i = 0; i < dim; i++) {
+                int l = index.L[i];
+                int m = index.M[i];
+
+                double c1 = (n + m) / 2.0;
+                result[0][i, i] = this.alpha * c1;
+                result[2][i, i] = k * c1 * c1;
+
+                // -1
+                if(i - 1 >= 0 && l == index.L[i - 1]) {
+                    result[0][i, i] += k * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
+                    result[1][i - 1, i] = k * this.ShiftMinus(l, m) * (n + m - 1);
+                }
+                // +1
+                if(i + 1 < dim && l == index.L[i + 1]) {
+                    result[0][i, i] += k * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
+                    result[1][i + 1, i] = k * this.ShiftPlus(l, m) * (n + m + 1);
+                }
+                // -2
+                if(i - 2 >= 0 && l == index.L[i - 2])
+                    result[0][i - 2, i] = k * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 2);
+                // +2
+                if(i + 2 < dim && l == index.L[i + 2])
+                    result[0][i + 2, i] = k * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 2);
+            }
+
+            // Part for omega = 0;
+            result[3] = new Matrix(dim);        // H0'
+            result[4] = new Matrix(dim);        // + alpha H1
+
+            double k3 = -1.0 / n;
+            for(int i = 0; i < dim; i++) {
+                int l = index.L[i];
+                int m = index.M[i];
+
+                double c1 = (n + m) / 2.0;
+                result[4][i, i] = c1;
+
+                // -1
+                if(i - 1 >= 0 && l == index.L[i - 1]) {
+                    result[3][i, i] += k3 * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
+                    result[4][i, i] -= k3 * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
+                }
+                // +1
+                if(i + 1 < dim && l == index.L[i + 1]) {
+                    result[3][i, i] += k3 * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
+                    result[4][i, i] -= k3 * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
+                }
+                // -2
+                if(i - 2 >= 0 && l == index.L[i - 2]) {
+                    result[3][i - 2, i] = k3 * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 2);
+                    result[4][i - 2, i] = -k3 * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 2);
+                }
+                // +2
+                if(i + 2 < dim && l == index.L[i + 2]) {
+                    result[3][i + 2, i] = k3 * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 2);
+                    result[4][i + 2, i] = -k3 * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 2);
+                }
+            }
+
+            return result;                                                       
+        }
+
         protected double ShiftPlus(int l, int m) {
             if(m > l || m < -l)
                 return 0;

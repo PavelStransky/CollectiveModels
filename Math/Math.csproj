@@ -117,6 +117,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigFloat.cs" />
     <Compile Include="EMD\AMFMDecomposition.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>

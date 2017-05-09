@@ -38,102 +38,173 @@ namespace PavelStransky.Expression.Functions.Def {
             double minx = intervalx[0];
             double maxx = intervalx[1];
             int numx = (int)intervalx[2];
-            double coefx = (maxx - minx) / numx;
+            double stepx = (maxx - minx) / numx;
 
             double miny = intervaly[0];
             double maxy = intervaly[1];
             int numy = (int)intervaly[2];
-            double coefy = (maxy - miny) / numy;
+            double stepy = (maxy - miny) / numy;
 
-            PointVector[] result = new PointVector[length];
+            ArrayList[] result = new ArrayList[length];
             for(int i = 0; i < length; i++)
-                result[i] = new PointVector(2 * (numx + numy));
-            int ir = 0;
+                result[i] = new ArrayList();
 
-            for(int i = 0; i < numx; i++) {
-                double kappaRe = minx + i * coefx;
-                double kappaIm = miny;
+            double x = minx;
+            double y = miny;
+
+            double xold = x;
+            while(x < maxx) {
                 CMatrix c = new CMatrix(length);
                 for(int j = 0; j < length; j++)
                     for(int k = 0; k < length; k++) {
-                        c[j, 2 * k] = m1[j, k] + kappaRe * m2[j, k];
-                        c[j, 2 * k + 1] = kappaIm * m2[j, k];
+                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
+                        c[j, 2 * k + 1] = y * m2[j, k];
                     }
                 Vector[] v = c.EigenSystem(false, length, null);
-                this.Connect(result, ir++, v);
+
+                if(this.Connect(result, v)) {
+                    stepx *= 1.1;
+                    xold = x;
+                    x += stepx;
+                }
+                else {
+                    stepx /= 2.0;
+                    x = xold + stepx;
+                }
             }
 
-            for(int i = 0; i < numy; i++) {
-                double kappaRe = maxx;
-                double kappaIm = miny + i * coefy;
+            x = maxx;
+            double yold = y;
+            while(y < maxy) {
                 CMatrix c = new CMatrix(length);
                 for(int j = 0; j < length; j++)
                     for(int k = 0; k < length; k++) {
-                        c[j, 2 * k] = m1[j, k] + kappaRe * m2[j, k];
-                        c[j, 2 * k + 1] = kappaIm * m2[j, k];
+                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
+                        c[j, 2 * k + 1] = y * m2[j, k];
                     }
                 Vector[] v = c.EigenSystem(false, length, null);
-                this.Connect(result, ir++, v);
+
+                if(this.Connect(result, v)) {
+                    stepy *= 1.1;
+                    yold = y;
+                    y += stepy;
+                }
+                else {
+                    stepy /= 2.0;
+                    y = yold + stepy;
+                }
             }
 
-            for(int i = 0; i < numx; i++) {
-                double kappaRe = maxx - i * coefx;
-                double kappaIm = maxy;
+            y = maxy;
+            xold = x;
+            while(x > minx) {
                 CMatrix c = new CMatrix(length);
                 for(int j = 0; j < length; j++)
                     for(int k = 0; k < length; k++) {
-                        c[j, 2 * k] = m1[j, k] + kappaRe * m2[j, k];
-                        c[j, 2 * k + 1] = kappaIm * m2[j, k];
+                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
+                        c[j, 2 * k + 1] = y * m2[j, k];
                     }
                 Vector[] v = c.EigenSystem(false, length, null);
-                this.Connect(result, ir++, v);
+
+                if(this.Connect(result, v)) {
+                    stepx *= 1.1;
+                    xold = x;
+                    x -= stepx;
+                }
+                else {
+                    stepx /= 2.0;
+                    x = xold - stepx;
+                }
             }
 
-            for(int i = 0; i < numy; i++) {
-                double kappaRe = minx;
-                double kappaIm = maxy - i * coefy;
+            x = minx;
+            yold = y;
+            while(y > miny) {
                 CMatrix c = new CMatrix(length);
                 for(int j = 0; j < length; j++)
                     for(int k = 0; k < length; k++) {
-                        c[j, 2 * k] = m1[j, k] + kappaRe * m2[j, k];
-                        c[j, 2 * k + 1] = kappaIm * m2[j, k];
+                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
+                        c[j, 2 * k + 1] = y * m2[j, k];
                     }
                 Vector[] v = c.EigenSystem(false, length, null);
-                this.Connect(result, ir++, v);
+
+                if(this.Connect(result, v)) {
+                    stepy *= 1.1;
+                    yold = y;
+                    y -= stepy;
+                }
+                else {
+                    stepy /= 2.0;
+                    y = yold - stepy;
+                }
             }
 
-            return new TArray(result);
+            return new TArray(this.ToPointVectors(result));
         }
 
+        private PointVector[] ToPointVectors(ArrayList[] a) {
+            int length = a.Length;
+            PointVector[] result = new PointVector[length];
 
-        private void Connect(PointVector[] result, int i, Vector[] v) {
-            int length = v.Length;
-            if(i >= 0) {
-                for(int j = 0; j < length; j++)
-                    result[j][i] = new PointD(v[0][j], v[1][j]);
-                return;
+            for(int i = 0; i < length; i++) {
+                int c = a[i].Count;
+                result[i] = new PointVector(c);
+                int j = 0;
+                foreach(PointD p in a[i])
+                    result[i][j++] = p;
+            }
+            return result;
+        }
+
+        private double MinSpacing(Vector[] v) {
+            int length = v[0].Length;
+
+            double distance = double.MaxValue;
+            for(int i = 0; i < length; i++) {
+                PointD p = new PointD(v[0][i], v[1][i]);
+                for(int j = i + 1; j < length; j++)
+                    distance = System.Math.Min(distance, PointD.Distance(p, new PointD(v[0][j], v[1][j])));
             }
 
-            bool []ks = new bool[length];
+            return distance;
+        }
+
+        private bool Connect(ArrayList[] result, Vector[] v) {
+            int length = result.Length;
+            double spacing = this.MinSpacing(v);
+
+            bool[] ks = new bool[length];
 
             for(int j = 0; j < length; j++) {
-                double distance = double.MaxValue;
-                PointD point = new PointD();
-                int k0 = -1;
 
-                for(int k = 0; k < length; k++) {                
-                    PointD p = new PointD(v[0][k], v[1][k]);
-                    double d = PointD.Distance(result[j][i - 1], p);
-                    if(d < distance && !ks[k]) {
-                        point = p;
-                        distance = d;
-                        k0 = k;
+                if(result[j].Count == 0)
+                    result[j].Add(new PointD(v[0][j], v[1][j]));
+                else {
+                    double distance = double.MaxValue;
+                    PointD point = new PointD();
+                    PointD lastPoint = (PointD)result[j][result[j].Count - 1];
+
+                    int k0 = -1;
+
+                    for(int k = 0; k < length; k++) {
+                        PointD p = new PointD(v[0][k], v[1][k]);
+                        double d = PointD.Distance(lastPoint, p);
+                        if(d < distance && !ks[k]) {
+                            point = p;
+                            distance = d;
+                            k0 = k;
+                        }
                     }
-                }
 
-                result[j][i] = point;
-                ks[k0] = true;
+                    if(distance > spacing) {
+                        return false;
+                    }
+                    result[j].Add(point);
+                    ks[k0] = true;
+                }
             }
+
+            return true;
         }
     }
 }

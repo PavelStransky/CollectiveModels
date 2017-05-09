@@ -196,7 +196,7 @@ namespace PavelStransky.Expression.Functions.Def {
                         }
                     }
 
-                    if(distance > spacing) {
+                    if(distance > 0.5 * spacing) {
                         return false;
                     }
                     result[j].Add(point);

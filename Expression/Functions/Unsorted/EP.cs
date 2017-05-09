@@ -33,49 +33,75 @@ namespace PavelStransky.Expression.Functions.Def {
             Vector intervalx = arguments[2] as Vector;
             Vector intervaly = arguments[3] as Vector;
 
-            int length = m1.Length;
-
             double minx = intervalx[0];
             double maxx = intervalx[1];
-            int numx = (int)intervalx[2];
-            double stepx = (maxx - minx) / numx;
-
             double miny = intervaly[0];
             double maxy = intervaly[1];
-            int numy = (int)intervaly[2];
-            double stepy = (maxy - miny) / numy;
 
-            ArrayList[] result = new ArrayList[length];
-            for(int i = 0; i < length; i++)
-                result[i] = new ArrayList();
+            ArrayList ep = new ArrayList();
+            this.Recursion(0, ep, m1, m2, minx, maxx, miny, maxy, guider);
+
+            PointVector result = new PointVector(ep.Count);
+            int i = 0;
+            foreach(PointD p in ep)
+                result[i++] = p;
+
+            return result;
+        }
+
+        private void Recursion(int level, ArrayList ep, Matrix m1, Matrix m2, double minx, double maxx, double miny, double maxy, Guider guider) {
+            PointVector ls = this.LevelSwap(m1, m2, minx, maxx, miny, maxy);
+
+            if(guider != null)
+                guider.Write("(" + level + "," + ls.Length + ")");
+
+            if(ls.Length > 0) {
+                if(level >= 5) {
+                    PointD p = new PointD(0.5 * (minx + maxx), 0.5 * (miny + maxy));
+                    ep.Add(p);
+                    guider.Write(string.Format("[{0:0.000},{1:0.000}]", p.X, p.Y));
+                }
+                else {
+                    level++;
+                    this.Recursion(level, ep, m1, m2, minx, minx + (maxx - minx) / 2, miny, miny + (maxy - miny) / 2, guider);
+                    this.Recursion(level, ep, m1, m2, minx, minx + (maxx - minx) / 2, miny + (maxy - miny) / 2, maxy, guider);
+                    this.Recursion(level, ep, m1, m2, minx + (maxx - minx) / 2, maxx, miny, miny + (maxy - miny) / 2, guider);
+                    this.Recursion(level, ep, m1, m2, minx + (maxx - minx) / 2, maxx, miny + (maxy - miny) / 2, maxy, guider);
+                }
+            }
+        }
+
+        private PointVector LevelSwap(Matrix m1, Matrix m2, double minx, double maxx, double miny, double maxy) {
+
+            int length = m1.Length;
+
+            double stepx = (maxx - minx) / 100;
+            double stepy = (maxy - miny) / 100;
+
+            // Init
+            PointVector last = new PointVector(length);     // Last set of eigenvalues
+            PointVector first = new PointVector(length);     // First set of eigenvalues
+            CMatrix c0 = new CMatrix(length);
+            for(int j = 0; j < length; j++)
+                for(int k = 0; k < length; k++) {
+                    c0[j, 2 * k] = m1[j, k] + minx * m2[j, k];
+                    c0[j, 2 * k + 1] = miny * m2[j, k];
+                }
+            Vector[] v0 = c0.EigenSystem(false, length, null);
+            for(int i = 0; i < length; i++) {
+                last[i] = new PointD(v0[0][i], v0[1][i]);
+                first[i] = new PointD(v0[0][i], v0[1][i]);
+            }
 
             double x = minx;
             double y = miny;
 
             double xold = x;
-            while(x < maxx) {
-                CMatrix c = new CMatrix(length);
-                for(int j = 0; j < length; j++)
-                    for(int k = 0; k < length; k++) {
-                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
-                        c[j, 2 * k + 1] = y * m2[j, k];
-                    }
-                Vector[] v = c.EigenSystem(false, length, null);
-
-                if(this.Connect(result, v)) {
-                    stepx *= 1.1;
-                    xold = x;
-                    x += stepx;
-                }
-                else {
-                    stepx /= 2.0;
-                    x = xold + stepx;
-                }
-            }
-
-            x = maxx;
             double yold = y;
-            while(y < maxy) {
+
+            while(xold < maxx) {
+                x = System.Math.Min(xold + stepx, maxx);
+
                 CMatrix c = new CMatrix(length);
                 for(int j = 0; j < length; j++)
                     for(int k = 0; k < length; k++) {
@@ -84,42 +110,20 @@ namespace PavelStransky.Expression.Functions.Def {
                     }
                 Vector[] v = c.EigenSystem(false, length, null);
 
-                if(this.Connect(result, v)) {
-                    stepy *= 1.1;
-                    yold = y;
-                    y += stepy;
-                }
-                else {
-                    stepy /= 2.0;
-                    y = yold + stepy;
-                }
-            }
-
-            y = maxy;
-            xold = x;
-            while(x > minx) {
-                CMatrix c = new CMatrix(length);
-                for(int j = 0; j < length; j++)
-                    for(int k = 0; k < length; k++) {
-                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
-                        c[j, 2 * k + 1] = y * m2[j, k];
-                    }
-                Vector[] v = c.EigenSystem(false, length, null);
-
-                if(this.Connect(result, v)) {
+                if(this.Connect(last, v)) {
                     stepx *= 1.1;
                     xold = x;
-                    x -= stepx;
                 }
-                else {
+                else 
                     stepx /= 2.0;
-                    x = xold - stepx;
-                }
+
+                if(stepx == 0)
+                    continue;
             }
 
-            x = minx;
-            yold = y;
-            while(y > miny) {
+            while(yold < maxy) {
+                y = System.Math.Min(yold + stepy, maxy);
+
                 CMatrix c = new CMatrix(length);
                 for(int j = 0; j < length; j++)
                     for(int k = 0; k < length; k++) {
@@ -128,33 +132,76 @@ namespace PavelStransky.Expression.Functions.Def {
                     }
                 Vector[] v = c.EigenSystem(false, length, null);
 
-                if(this.Connect(result, v)) {
+                if(this.Connect(last, v)) {
                     stepy *= 1.1;
                     yold = y;
-                    y -= stepy;
                 }
-                else {
+                else 
                     stepy /= 2.0;
-                    y = yold - stepy;
+
+                if(stepy == 0)
+                    continue;
+            }
+        
+            while(xold > minx) {
+                x = System.Math.Max(xold - stepx, minx);
+
+                CMatrix c = new CMatrix(length);
+                for(int j = 0; j < length; j++)
+                    for(int k = 0; k < length; k++) {
+                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
+                        c[j, 2 * k + 1] = y * m2[j, k];
+                    }
+                Vector[] v = c.EigenSystem(false, length, null);
+
+                if(this.Connect(last, v)) {
+                    stepx *= 1.1;
+                    xold = x;
                 }
+                else 
+                    stepx /= 2.0;
+
+                if(stepx == 0)
+                    continue;
             }
 
-            return new TArray(this.ToPointVectors(result));
-        }
+            while(yold > miny) {
+                y = System.Math.Max(yold - stepy, miny);
 
-        private PointVector[] ToPointVectors(ArrayList[] a) {
-            int length = a.Length;
-            PointVector[] result = new PointVector[length];
+                CMatrix c = new CMatrix(length);
+                for(int j = 0; j < length; j++)
+                    for(int k = 0; k < length; k++) {
+                        c[j, 2 * k] = m1[j, k] + x * m2[j, k];
+                        c[j, 2 * k + 1] = y * m2[j, k];
+                    }
+                Vector[] v = c.EigenSystem(false, length, null);
 
-            for(int i = 0; i < length; i++) {
-                int c = a[i].Count;
-                result[i] = new PointVector(c);
-                int j = 0;
-                foreach(PointD p in a[i])
-                    result[i][j++] = p;
+                if(this.Connect(last, v)) {
+                    stepy *= 1.1;
+                    yold = y;
+                }
+                else 
+                    stepy /= 2.0;
+
+                if(stepy == 0)
+                    continue;
             }
+
+            ArrayList a = new ArrayList();
+            for(int i = 0; i < length; i++)
+                for(int j = 0; j < length; j++)
+                    if(first[i].X == last[j].X && first[i].Y == last[j].Y) {
+                        if(i != j)
+                            a.Add(new PointD(i, j));
+                    }
+
+            PointVector result = new PointVector(a.Count);
+            for(int i = 0; i < a.Count; i++)
+                result[i] = (PointD)a[i];
+
             return result;
         }
+
 
         private double MinSpacing(Vector[] v) {
             int length = v[0].Length;
@@ -169,40 +216,36 @@ namespace PavelStransky.Expression.Functions.Def {
             return distance;
         }
 
-        private bool Connect(ArrayList[] result, Vector[] v) {
-            int length = result.Length;
+        private bool Connect(PointVector last, Vector[] v) {
+            int length = last.Length;
             double spacing = this.MinSpacing(v);
 
             bool[] ks = new bool[length];
 
             for(int j = 0; j < length; j++) {
+                double distance = double.MaxValue;
+                PointD point = new PointD();
+                PointD lastPoint = last[j];
 
-                if(result[j].Count == 0)
-                    result[j].Add(new PointD(v[0][j], v[1][j]));
-                else {
-                    double distance = double.MaxValue;
-                    PointD point = new PointD();
-                    PointD lastPoint = (PointD)result[j][result[j].Count - 1];
+                int k0 = -1;
 
-                    int k0 = -1;
-
-                    for(int k = 0; k < length; k++) {
-                        PointD p = new PointD(v[0][k], v[1][k]);
-                        double d = PointD.Distance(lastPoint, p);
-                        if(d < distance && !ks[k]) {
-                            point = p;
-                            distance = d;
-                            k0 = k;
-                        }
+                for(int k = 0; k < length; k++) {
+                    PointD p = new PointD(v[0][k], v[1][k]);
+                    double d = PointD.Distance(lastPoint, p);
+                    if(d < distance && !ks[k]) {
+                        point = p;
+                        distance = d;
+                        k0 = k;
                     }
-
-                    if(distance > 0.5 * spacing) {
-                        return false;
-                    }
-                    result[j].Add(point);
-                    ks[k0] = true;
                 }
-            }
+
+                if(distance > 0.5 * spacing) {
+                    return false;
+                }
+
+                last[j] = point;
+                ks[k0] = true;
+            }            
 
             return true;
         }

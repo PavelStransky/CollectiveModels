@@ -14,6 +14,7 @@ namespace PavelStransky.Systems {
         private IQuantumSystem parrentQuantumSystem;
 
         private Vector eigenValues;
+        private Vector eigenValuesIm;
         private Vector[] eigenVectors = new Vector[0];
 
         // True if it has been calculated
@@ -54,9 +55,12 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Vlastní hodnoty
         /// </summary>
-        public Vector GetEigenValues() {
+        public object GetEigenValues() {
             this.CheckComputed();
-            return this.eigenValues;
+            if(this.eigenValuesIm != null)
+                return new PointVector(this.eigenValues, this.eigenValuesIm);
+            else
+                return this.eigenValues;
         }
 
         /// <summary>
@@ -109,12 +113,14 @@ namespace PavelStransky.Systems {
             }
 
             IMatrix matrix = null;
-            if(method == ComputeMethod.Jacobi) 
+            if(method == ComputeMethod.Jacobi)
                 matrix = new Matrix(this.basisIndex.Length);
-            else if(method == ComputeMethod.LAPACKBand) 
-                matrix = new SymmetricBandMatrix(this.basisIndex.Length, this.basisIndex.BandWidth);            
+            else if(method == ComputeMethod.LAPACKBand)
+                matrix = new SymmetricBandMatrix(this.basisIndex.Length, this.basisIndex.BandWidth);
             else if(method == ComputeMethod.LAPACK)
                 matrix = new MMatrix(this.basisIndex.Length);
+            else if(method == ComputeMethod.LAPACKComplex)
+                matrix = new CMatrix(this.basisIndex.Length);
             else if(method == ComputeMethod.ARPACK)
                 matrix = new SparseMatrix(this.basisIndex.Length);
 
@@ -131,7 +137,7 @@ namespace PavelStransky.Systems {
                     numEV = matrix.Length;
 
                 if(writer != null) {
-                    if(matrix is Matrix || matrix is MMatrix)
+                    if(matrix is Matrix || matrix is MMatrix || matrix is CMatrix)
                         writer.WriteLine(string.Format(Messages.MSMatrixDimension, matrix.Length));
                     else if(matrix is SymmetricBandMatrix)
                         writer.WriteLine(string.Format(Messages.MSBMatrixDimension, matrix.Length, (matrix as SymmetricBandMatrix).NumSD));
@@ -146,6 +152,8 @@ namespace PavelStransky.Systems {
                     }
                     else if(matrix is MMatrix)
                         writer.Write(Messages.MDiagonalizationDSYEV);
+                    else if(matrix is CMatrix)
+                        writer.Write(Messages.MDiagonalizationZGEEV);
                     else if(matrix is SymmetricBandMatrix)
                         writer.Write(Messages.MDiagonalizationDSBEVX);
                     else if(matrix is SparseMatrix)
@@ -168,6 +176,8 @@ namespace PavelStransky.Systems {
                     writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime1));
 
                 this.eigenValues = eigenSystem[0];
+                if(matrix is CMatrix)
+                    this.eigenValuesIm = eigenSystem[1];
                 this.eigenValues.Length = numEV;
 
                 if(ev) {

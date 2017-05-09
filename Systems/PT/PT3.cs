@@ -120,7 +120,7 @@ namespace PavelStransky.Systems {
 
             PT3 pt3 = new PT3(this.a, -bmax, this.omega0, this.hbar);
             pt3.EigenSystem.Diagonalize(maxn, false, 0, null);
-            Vector ev = pt3.EigenSystem.GetEigenValues();
+            Vector ev = (Vector)pt3.eigenSystem.GetEigenValues();
             int numev = ev.Length;
 
             // Nalezení poètu hladin, které budeme poèítat
@@ -150,18 +150,18 @@ namespace PavelStransky.Systems {
             // Dvì pøedhodnoty
             pt3 = new PT3(this.a, -bmax - 2.0 * step, this.omega0, this.hbar);
             pt3.EigenSystem.Diagonalize(maxn, false, numev, null);
-            Vector ev0 = pt3.EigenSystem.GetEigenValues();
+            Vector ev0 = (Vector)pt3.eigenSystem.GetEigenValues();
 
             pt3 = new PT3(this.a, -bmax - step, this.omega0, this.hbar);
             pt3.EigenSystem.Diagonalize(maxn, false, numev, null);
-            Vector ev1 = pt3.EigenSystem.GetEigenValues();
+            Vector ev1 = (Vector)pt3.eigenSystem.GetEigenValues();
 
             // Vlastní cyklus
             int j = 0;
             for(double b = -bmax; b <= bmax; b += step) {
                 pt3 = new PT3(this.a, b, this.omega0, this.hbar);
                 pt3.EigenSystem.Diagonalize(maxn, false, numev, null);
-                ev = pt3.EigenSystem.GetEigenValues();
+                ev = (Vector)pt3.eigenSystem.GetEigenValues();
 
                 for(int i = 0; i < numev; i++) {
                     if(i > 0) {

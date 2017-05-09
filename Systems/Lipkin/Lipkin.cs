@@ -13,6 +13,7 @@ namespace PavelStransky.Systems {
 
         // parametry alpha, omega
         protected double alpha, omega;
+        protected double alphaIm, omegaIm;
 
         /// <summary>
         /// Systém vlastních hodnot
@@ -32,6 +33,13 @@ namespace PavelStransky.Systems {
             this.omega = omega;
         }
 
+        public Lipkin(double alpha, double omega, double alphaIm, double omegaIm)
+            : this(alpha, omega) {
+            this.alphaIm = alphaIm;
+            this.omegaIm = omegaIm;
+        }
+
+
         #region Implementace IExportable
         /// <summary>
         /// Uložení dodateèných parametrù
@@ -48,6 +56,8 @@ namespace PavelStransky.Systems {
             param.Add(this.eigenSystem, "EigenSystem");
             param.Add(this.alpha, "Alpha");
             param.Add(this.omega, "Omega");
+            param.Add(this.alphaIm, "AlphaIm");
+            param.Add(this.omegaIm, "OmegaIm");
             this.Export(param);
 
             param.Export(export);
@@ -62,6 +72,8 @@ namespace PavelStransky.Systems {
             this.eigenSystem = (EigenSystem)param.Get();
             this.alpha = (double)param.Get(0.0);
             this.omega = (double)param.Get(0.0);
+            this.alphaIm = (double)param.Get(0.0);
+            this.omegaIm = (double)param.Get(0.0);
 
             this.Import(param);
         }

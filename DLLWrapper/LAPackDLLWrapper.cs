@@ -422,6 +422,107 @@ namespace PavelStransky.DLLWrapper {
                 int* lda, double* s, double* u,
                 int* ldu, double* vt,
                 int* ldvt, double* work, int* lwork, int* info);        
+
+            /// <summary>        
+            /// ZGEEV computes for an N-by-N complex nonsymmetric matrix A, the
+            /// eigenvalues and, optionally, the left and/or right eigenvectors
+            /// The right eigenvector v(j) of A satisfies
+            ///        A * v(j) = lambda(j) * v(j)
+            /// where lambda(j) is its eigenvalue.
+            /// The left eigenvector u(j) of A satisfies
+            ///        u(j)**H * A = lambda(j) * u(j)**H
+            /// where u(j)**H denotes the conjugate transpose of u(j).
+            /// The computed eigenvectors are normalized to have Euclidean norm
+            /// equal to 1 and largest component real.
+            /// </summary>
+            /// <param name="jobvl">
+            ///JOBVL    (input) CHARACTER*1
+            ///        = 'N': left eigenvectors of A are not computed;
+            ///        = 'V': left eigenvectors of are computed.
+            /// </param>
+            /// <param name="jobvr">
+            ///JOBVR   (input) CHARACTER*1
+            ///        = 'N': right eigenvectors of A are not computed;
+            ///        = 'V': right eigenvectors of are computed.
+            /// </param>
+            /// <param name="m">
+            ///M       (input) INTEGER
+            ///        The number of rows of the input matrix A. M >= 0.
+            /// </param>
+            /// <param name="n">
+            ///N       (input) INTEGER
+            ///        The order of the matrix A. N >= 0.
+            /// </param>
+            /// <param name="a">
+            ///A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+            ///        On entry, the M-by-N matrix A.
+            ///        On exit, A has been overwritten.
+            /// </param>
+            /// <param name="lda">
+            ///LDA     (input) INTEGER
+            ///        The leading dimension of the array A. LDA >= max(1,M).
+            /// </param>
+            /// <param name="w">
+            ///W       (output) COMPLEX*16 array, dimension (N)
+            ///        W contains the computed eigenvalues.
+            /// </param>
+            /// <param name="vl">
+            ///VL      (output) COMPLEX*16 array, dimension (LDVL,N)
+            ///        If JOBVL = 'V', the left eigenvectors u(j) are stored one
+            ///        after another in the columns of VL, in the same order
+            ///        as their eigenvalues.
+            ///        If JOBVL = 'N', VL is not referenced.
+            ///        u(j) = VL(:,j), the j-th column of VL.            
+            /// </param>
+            /// <param name="ldvl">
+            ///LDVL    (input) INTEGER
+            ///        The leading dimension of the array VL. LDVL >= 1; if
+            ///        JOBVL = 'V', LDVL >= N.
+            /// </param>
+            /// <param name="vr">
+            ///VR      (output) COMPLEX*16 array, dimension (LDVL,N)
+            ///        If JOBVR = 'V', the right eigenvectors v(j) are stored one
+            ///        after another in the columns of VR, in the same order
+            ///        as their eigenvalues.
+            ///        If JOBVR = 'N', VR is not referenced.
+            ///        v(j) = VR(:,j), the j-th column of VR.
+            /// </param>
+            /// <param name="ldvr">
+            ///LDVR    (input) INTEGER
+            ///        The leading dimension of the array VR. LDVR >= 1; if
+            ///        JOBVR = 'V', LDVR >= N.
+            /// </param>
+            /// <param name="work">
+            ///WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+            ///        On exit, if INFO = 0, WORK(1) returns the optimal LWORK;
+            /// </param>
+            /// <param name="lwork">
+            ///LWORK   (input) INTEGER
+            ///        The dimension of the array WORK.  LWORK >= max(1,2*N).
+            ///        For good performance, LWORK must generally be larger.
+            ///        If LWORK = -1, then a workspace query is assumed; the routine
+            ///        only calculates the optimal size of the WORK array, returns
+            ///        this value as the first entry of the WORK array, and no error
+            ///        message related to LWORK is issued by XERBLA.
+            /// </param>
+            /// <param name="rwork">
+            ///RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
+            /// </param>
+            /// <param name="info">
+            ///INFO    (output) INTEGER
+            ///        = 0:  successful exit.
+            ///        < 0:  if INFO = -i, the i-th argument had an illegal value.
+            ///        > 0:  if INFO = i, the QR algorithm failed to compute all the
+            ///        eigenvalues, and no eigenvectors have been computed;
+            ///        elements and i+1:N of W contain eigenvalues which have
+            ///        converged
+            /// </param>
+            [DllImport("LAPack32.dll")]
+            public static extern void zgeev_(byte* jobvl, byte* jobvr, 
+                int* n, double* a, 
+                int* lda, double* w, 
+                double* vl, int* ldvl, double* vr, int* ldvr, 
+                double* work, int* lwork, double* rwork, int* info);        
         }
 
         /// <summary>
@@ -451,6 +552,13 @@ namespace PavelStransky.DLLWrapper {
                 int* lda, double* s, double* u,
                 int* ldu, double* vt,
                 int* ldvt, double* work, int* lwork, int* info);
+
+            [DllImport("LAPack64.dll")]
+            public static extern void zgeev_(byte* jobvl, byte* jobvr,
+                int* n, double* a,
+                int* lda, double* w,
+                double* vl, int* ldvl, double* vr, int* ldvr,
+                double* work, int* lwork, double* rwork, int* info);
         }
 
         private static bool is32bit = true;
@@ -461,6 +569,16 @@ namespace PavelStransky.DLLWrapper {
                 LAPack32.dgeev_(jobvl, jobvr, n, a, lda, wr, wi, vl, ldvl, vr, ldvr, work, lwork, info);
             else
                 LAPack64.dgeev_(jobvl, jobvr, n, a, lda, wr, wi, vl, ldvl, vr, ldvr, work, lwork, info);
+        }
+
+        public static void zgeev(byte* jobvl, byte* jobvr,
+                int* n, double* a, int* lda, double* w,
+                double* vl, int* ldvl, double* vr, int* ldvr,
+                double* work, int* lwork, double* rwork, int* info) {
+            if(is32bit)
+                LAPack32.zgeev_(jobvl, jobvr, n, a, lda, w, vl, ldvl, vr, ldvr, work, lwork, rwork, info);
+            else
+                LAPack64.zgeev_(jobvl, jobvr, n, a, lda, w, vl, ldvl, vr, ldvr, work, lwork, rwork, info);
         }
 
         public static void dsyev(byte* jobz, byte* uplo, int* n, double* a, int* lda,

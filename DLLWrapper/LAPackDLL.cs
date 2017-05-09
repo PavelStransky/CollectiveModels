@@ -25,6 +25,34 @@ namespace PavelStransky.DLLWrapper {
         }
 
         /// <summary>
+        /// Reálnou èást komplexního pole na nespravované haldì pøevede na Vector
+        /// </summary>
+        /// <param name="v">Ukazatel na pole</param>
+        /// <param name="n">Délka pole</param>
+        private static Vector ProcessVectorReal(double* v, int n) {
+            Vector result = new Vector(n);
+
+            for(int i = 0; i < n; i++)
+                result[i] = v[2 * i];
+
+            return result;
+        }
+
+        /// <summary>
+        /// Imaginární èást komplexního pole na nespravované haldì pøevede na Vector
+        /// </summary>
+        /// <param name="v">Ukazatel na pole</param>
+        /// <param name="n">Délka pole</param>
+        private static Vector ProcessVectorImaginary(double* v, int n) {
+            Vector result = new Vector(n);
+
+            for(int i = 0; i < n; i++)
+                result[i] = v[2 * i + 1];
+
+            return result;
+        }
+
+        /// <summary>
         /// Nalezne vlastní èísla symetrické matice
         /// </summary>
         /// <param name="matrix">Vstupní symetrická ètvercová matice</param>
@@ -185,6 +213,96 @@ namespace PavelStransky.DLLWrapper {
                 Memory.Delete(wi);
                 Memory.Delete(vl);
                 Memory.Delete(vr);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Nalezne vlastní èísla obecné komplexní matice
+        /// </summary>
+        /// <param name="matrix">Vstupní ètvercová matice</param>
+        public static Vector[] zgeev(CMatrix matrix, bool evl, bool evr) {
+            byte jobvl = evl ? (byte)'V' : (byte)'N';
+            byte jobvr = evr ? (byte)'V' : (byte)'N';
+
+            int n = matrix.Length;
+
+            double* a = matrix.GetItem();
+            int lda = n;
+
+            double* w = Memory.NewDouble(2*n);
+
+            double* vl = evl ? Memory.NewDouble(2*n * n) : null;
+            int ldvl = n;
+            double* vr = evr ? Memory.NewDouble(2*n * n) : null;
+            int ldvr = n;
+
+            int lwork = -1;
+            double* work = null;
+            double* rwork = Memory.NewDouble(2 * n);
+
+            int info = 0;
+
+            Vector[] result = null;
+            int length = 0;
+            bool success = false;
+
+            try {
+                double lwork1 = 0;
+
+                // Nejprve zjistíme optimální velikost pomocného pole
+                LAPackDLLWrapper.zgeev(&jobvl, &jobvr, &n, a, &lda, w, vl, &ldvl, vr, &ldvr, &lwork1, &lwork, rwork, &info);
+
+                lwork = (int)lwork1;
+                work = Memory.NewDouble(2 * lwork);
+
+                // Vlastní výpoèet
+                LAPackDLLWrapper.zgeev(&jobvl, &jobvr, &n, a, &lda, w, vl, &ldvl, vr, &ldvr, work, &lwork, rwork, &info);
+                success = true;
+            }
+            finally {
+                Memory.Delete(work);
+            }
+
+            // Zpracování výsledkù
+            try {
+                if(success) {
+                    length = 2;
+                    if(evl) length += 2 * n;
+                    if(evr) length += 2 * n;
+                    result = new Vector[length];
+                }
+
+                result[0] = ProcessVectorReal(w, n);
+                result[1] = ProcessVectorImaginary(w, n);
+
+                length = 2;
+
+                if(evl)
+                    for(int i = 0; i < n; i++) {
+                        result[length] = new Vector(n);
+                        for(int j = 0; j < n; j++) {
+                            result[length][j] = vl[2 * (i * n + j)];
+                            result[length + 1][j] = vl[2 * (i * n + j) + 1];
+                        }
+                        length += 2;
+                    }
+                if(evr)
+                    for(int i = 0; i < n; i++) {
+                        result[length] = new Vector(n);
+                        for(int j = 0; j < n; j++) {
+                            result[length][j] = vr[2 * (i * n + j)];
+                            result[length + 1][j] = vr[2 * (i * n + j)];
+                        }
+                        length += 2;
+                    }
+            }
+            finally {
+                Memory.Delete(w);
+                Memory.Delete(vl);
+                Memory.Delete(vr);
+                Memory.Delete(rwork);
             }
 
             return result;

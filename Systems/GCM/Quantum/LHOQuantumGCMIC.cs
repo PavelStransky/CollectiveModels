@@ -210,7 +210,7 @@ namespace PavelStransky.Systems {
                     //    4 * (M[i + 1, j] + M[i - 1, j] + M[i, j + 1] + M[i, j - 1]) / 3 - 5 * M[i, j]
                     //    ); //O(dx^4)
 
-                    result[sx, sy] = -this.Hbar * this.Hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * this.eigenSystem.GetEigenValues()[n];
+                    result[sx, sy] = -this.Hbar * this.Hbar / (2 * this.K) * laplace + em[sx, sy] * this.V(x, y) - em[sx, sy] * ((Vector)this.eigenSystem.GetEigenValues())[n];
                     result[sx, sy] *= result[sx, sy];
                 }
             }

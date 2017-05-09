@@ -36,7 +36,7 @@ namespace PavelStransky.Systems {
             private Vector EigenValues(double b) {
                 PT3 pt3 = new PT3(this.a, b, this.omega0, this.hbar);
                 pt3.EigenSystem.Diagonalize(this.maxn, false, this.numev, null);
-                return pt3.EigenSystem.GetEigenValues();
+                return (Vector)pt3.eigenSystem.GetEigenValues();
             }
 
             /// <summary>

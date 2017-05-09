@@ -202,12 +202,12 @@ namespace PavelStransky.Systems {
         /// <returns></returns>
         public double SumLn(int i) {
             int numEV = this.eigenSystem.NumEV;
-            double e = this.eigenSystem.GetEigenValues()[i];
+            double e = ((Vector)this.eigenSystem.GetEigenValues())[i];
 
             double result = 0.0;
             for(int j = 0; j < numEV; j++)
                 if(j != i)
-                    result += System.Math.Log(System.Math.Abs(this.eigenSystem.GetEigenValues()[j] - e));
+                    result += System.Math.Log(System.Math.Abs(((Vector)this.eigenSystem.GetEigenValues())[i] - e));
 
             return result;
         }

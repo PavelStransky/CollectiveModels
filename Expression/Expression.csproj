@@ -245,6 +245,7 @@
     <Compile Include="Functions\AME\ReadAME.cs" />
     <Compile Include="Functions\Unsorted\Copy.cs" />
     <Compile Include="Functions\Unsorted\DistanceMatrix.cs" />
+    <Compile Include="Functions\Unsorted\EP.cs" />
     <Compile Include="Functions\Unsorted\GPSPOI.cs" />
     <Compile Include="Functions\Unsorted\HilbertTransform.cs" />
     <Compile Include="Functions\Unsorted\InstantaneousFrequency.cs" />

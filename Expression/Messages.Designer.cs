@@ -3562,6 +3562,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exceptional points of a matrix in the form A + l B (+ l^2 C).
+        /// </summary>
+        internal static string HelpEP {
+            get {
+                return ResourceManager.GetString("HelpEP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator == (equality).
         /// </summary>
         internal static string HelpEquality {

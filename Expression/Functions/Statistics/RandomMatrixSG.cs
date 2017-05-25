@@ -23,7 +23,7 @@ namespace PavelStransky.Expression.Functions.Def {
             int length = (int)arguments[0];
             int ndLength = length * (length - 1) / 2;
 
-            Vector diag = this.nd.GetVector(length, 2.0, 0.0);
+            Vector diag = this.nd.GetVector(length, System.Math.Sqrt(2.0), 0.0);
             Vector ndiag = this.nd.GetVector(ndLength, 1.0, 0.0);
 
             Matrix result = new Matrix(length);

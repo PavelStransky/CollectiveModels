@@ -24,6 +24,21 @@ namespace PavelStransky.DLLWrapper {
         }
 
         /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="re">Matice s reálnými hodnotami</param>
+        /// <param name="im">Matice s komplexními hodnotami</param>
+        public CMatrix(Matrix re, Matrix im) {
+            this.length = re.Length;
+            this.item = Memory.NewDouble(2 * this.length * this.length);
+            for(int i = 0; i < this.length; i++)
+                for(int j = 0; j < this.length; j++) {
+                    this[i, 2 * j] = re[i, j];
+                    this[i, 2 * j + 1] = im[i, j];
+                }
+        }
+
+        /// <summary>
         /// Indexer
         /// </summary>
         /// <param name="i">Řádek matice</param>

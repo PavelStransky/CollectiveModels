@@ -4104,4 +4104,7 @@ Second differing type: {1}</value>
   <data name="HelpParameterMatrix" xml:space="preserve">
     <value>Returns matrices for the calculation of exceptional points</value>
   </data>
+  <data name="HelpEP" xml:space="preserve">
+    <value>Exceptional points of a matrix in the form A + l B (+ l^2 C)</value>
+  </data>
 </root>

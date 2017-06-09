@@ -91,7 +91,13 @@ namespace PavelStransky.DLLWrapper {
 
             return result;
         }
-        
+
+        public void Fill(double* result) {
+            int num = this.length * this.length;
+            for(int i = 0; i < num; i++)
+                result[i] = this.item[i];
+        }
+
         /// <summary>
         /// Systém vlastních èísel a vektorù
         /// </summary>        

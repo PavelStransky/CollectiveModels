@@ -529,7 +529,7 @@ namespace PavelStransky.DLLWrapper {
         /// 64-bitová verze
         /// </summary>
         private class LAPack64 {
-            [DllImport("LaPack64.dll")]
+            [DllImport("LAPack64.dll")]
             public static extern double dgeev_(byte* jobvl, byte* jobvr, int* n, double* a, int* lda,
                 double* wr, double* wi, double* vl, int* ldvl, double* vr, int* ldvr, double* work, int* lwork, int* info);
 

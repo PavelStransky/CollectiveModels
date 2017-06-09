@@ -65,6 +65,12 @@ namespace PavelStransky.DLLWrapper {
             return this.item;
         }
 
+        public void Fill(double* result) {
+            int num = 2 * this.length * this.length;
+            for(int i = 0; i < num; i++)
+                result[i] = this.item[i];
+        }
+
         /// <summary>
         /// Stopa matice (vrací jen reálnou část !!!)
         /// </summary>

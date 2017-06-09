@@ -142,7 +142,7 @@ namespace PavelStransky.DLLWrapper {
 
             int n = matrix.Length;
 
-            double* a = matrix.GetItem();
+            double* a = Memory.NewDouble(n * n);
             int lda = n;
 
             double* wr = Memory.NewDouble(n);
@@ -166,14 +166,19 @@ namespace PavelStransky.DLLWrapper {
                 double lwork1 = 0;
 
                 // Nejprve zjistíme optimální velikost pomocného pole
+                matrix.Fill(a);
                 LAPackDLLWrapper.dgeev(&jobvl, &jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, &lwork1, &lwork, &info);
 
                 lwork = (int)lwork1;
                 work = Memory.NewDouble(lwork);
 
+                if(lwork < 3 * n)
+                    throw new Exception("Diagonalization failed. LWORK = " + lwork);
+
                 // Vlastní výpoèet
+                matrix.Fill(a);
                 LAPackDLLWrapper.dgeev(&jobvl, &jobvr, &n, a, &lda, wr, wi, vl, &ldvl, vr, &ldvr, work, &lwork, &info);
-                success = true;
+                success = (info == 0);
             }
             finally {
                 Memory.Delete(work);
@@ -187,6 +192,8 @@ namespace PavelStransky.DLLWrapper {
                     if(evr) length += n;
                     result = new Vector[length];
                 }
+                else
+                    throw new Exception("Diagonalization failed. Info = " + info);
 
                 result[0] = ProcessVector(wr, n);
                 result[1] = ProcessVector(wi, n);
@@ -213,6 +220,7 @@ namespace PavelStransky.DLLWrapper {
                 Memory.Delete(wi);
                 Memory.Delete(vl);
                 Memory.Delete(vr);
+                Memory.Delete(a);
             }
 
             return result;
@@ -227,15 +235,14 @@ namespace PavelStransky.DLLWrapper {
             byte jobvr = evr ? (byte)'V' : (byte)'N';
 
             int n = matrix.Length;
-
-            double* a = matrix.GetItem();
+            double* a = Memory.NewDouble(2 * n * n);
             int lda = n;
 
-            double* w = Memory.NewDouble(2*n);
+            double* w = Memory.NewDouble(2 * n);
 
-            double* vl = evl ? Memory.NewDouble(2*n * n) : null;
+            double* vl = evl ? Memory.NewDouble(2 * n * n) : null;
             int ldvl = n;
-            double* vr = evr ? Memory.NewDouble(2*n * n) : null;
+            double* vr = evr ? Memory.NewDouble(2 * n * n) : null;
             int ldvr = n;
 
             int lwork = -1;
@@ -252,27 +259,34 @@ namespace PavelStransky.DLLWrapper {
                 double lwork1 = 0;
 
                 // Nejprve zjistíme optimální velikost pomocného pole
+                matrix.Fill(a);
                 LAPackDLLWrapper.zgeev(&jobvl, &jobvr, &n, a, &lda, w, vl, &ldvl, vr, &ldvr, &lwork1, &lwork, rwork, &info);
 
                 lwork = (int)lwork1;
-                work = Memory.NewDouble(2 * lwork);
+                work = Memory.NewDouble(2 * (lwork + 1));
+
+                if(lwork < 2 * n)
+                    throw new Exception("Diagonalization failed. LWORK = " + lwork);
 
                 // Vlastní výpoèet
+                matrix.Fill(a);
                 LAPackDLLWrapper.zgeev(&jobvl, &jobvr, &n, a, &lda, w, vl, &ldvl, vr, &ldvr, work, &lwork, rwork, &info);
-                success = true;
+                success = (info == 0);
             }
             finally {
                 Memory.Delete(work);
             }
 
-            // Zpracování výsledkù
             try {
+                // Zpracování výsledkù
                 if(success) {
                     length = 2;
                     if(evl) length += 2 * n;
                     if(evr) length += 2 * n;
                     result = new Vector[length];
                 }
+                else
+                    throw new Exception("Diagonalization failed. Info = " + info);
 
                 result[0] = ProcessVectorReal(w, n);
                 result[1] = ProcessVectorImaginary(w, n);
@@ -303,6 +317,7 @@ namespace PavelStransky.DLLWrapper {
                 Memory.Delete(vl);
                 Memory.Delete(vr);
                 Memory.Delete(rwork);
+                Memory.Delete(a);
             }
 
             return result;

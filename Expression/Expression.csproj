@@ -216,6 +216,7 @@
     <Compile Include="Functions\Quantum\EntanglementEntropy.cs" />
     <Compile Include="Functions\Quantum\ExpandBasis.cs" />
     <Compile Include="Functions\Quantum\HOSpectrum3D.cs" />
+    <Compile Include="Functions\Quantum\Systems\LipkinFullL.cs" />
     <Compile Include="Functions\Quantum\LipkinTwoSpectatorSimple.cs" />
     <Compile Include="Functions\Quantum\OccupationNumber.cs" />
     <Compile Include="Functions\Quantum\ParameterMatrix.cs" />

@@ -4561,6 +4561,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a class of the Lipkin model linear in both control parameters diagonalized in the full SU(2) basis.
+        /// </summary>
+        internal static string HelpLipkinFullL {
+            get {
+                return ResourceManager.GetString("HelpLipkinFullL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a Lipkin model class diagonalized in the full SU(2) basis + one single spin.
         /// </summary>
         internal static string HelpLipkinOne {

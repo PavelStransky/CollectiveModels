@@ -148,6 +148,8 @@ namespace PavelStransky.Systems {
                 return new ClassicalEP(this);
             else if(typeName == typeof(LipkinFull).FullName)
                 return new LipkinFull(this);
+            else if(typeName == typeof(LipkinFullLinear).FullName)
+                return new LipkinFullLinear(this);
             else if(typeName == typeof(LipkinFactorized).FullName)
                 return new LipkinFactorized(this);
             else if(typeName == typeof(LipkinOne).FullName)

@@ -4107,4 +4107,7 @@ Second differing type: {1}</value>
   <data name="HelpEP" xml:space="preserve">
     <value>Exceptional points of a matrix in the form A + l B (+ l^2 C)</value>
   </data>
+  <data name="HelpLipkinFullL" xml:space="preserve">
+    <value>Creates a class of the Lipkin model linear in both control parameters diagonalized in the full SU(2) basis</value>
+  </data>
 </root>

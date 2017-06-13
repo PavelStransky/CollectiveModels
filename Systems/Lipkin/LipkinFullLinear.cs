@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics;
@@ -8,37 +8,37 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
-    public class LipkinFull: Lipkin, IQuantumSystem {
+    public class LipkinFullLinear : Lipkin, IQuantumSystem {
         /// <summary>
-        /// Pr·zdn˝ konstruktor
+        /// Pr√°zdn√Ω konstruktor
         /// </summary>
-        protected LipkinFull() { }
+        protected LipkinFullLinear() { }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public LipkinFull(double alpha, double omega)
+        public LipkinFullLinear(double alpha, double omega)
             : base(alpha, omega) {
             this.eigenSystem = new EigenSystem(this);
         }
 
-        public LipkinFull(double alpha, double omega, double alphaIm, double omegaIm)
+        public LipkinFullLinear(double alpha, double omega, double alphaIm, double omegaIm)
             : base(alpha, omega, alphaIm, omegaIm) {
             this.eigenSystem = new EigenSystem(this);
         }
 
         /// <summary>
-        /// Vytvo¯Ì instanci t¯Ìdy s parametry b·ze
+        /// Vytvo≈ô√≠ instanci t≈ô√≠dy s parametry b√°ze
         /// </summary>
-        /// <param name="basisParams">Parametry b·ze</param>
+        /// <param name="basisParams">Parametry b√°ze</param>
         public virtual BasisIndex CreateBasisIndex(Vector basisParams) {
             return new LipkinFullBasisIndex(basisParams);
         }
 
         /// <summary>
-        /// NaplnÌ Hamiltonovu matici
+        /// Napln√≠ Hamiltonovu matici
         /// </summary>
-        /// <param name="basisIndex">Parametry b·ze</param>
+        /// <param name="basisIndex">Parametry b√°ze</param>
         /// <param name="writer">Writer</param>
         public virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             LipkinFullBasisIndex index = basisIndex as LipkinFullBasisIndex;
@@ -47,17 +47,16 @@ namespace PavelStransky.Systems {
             int n = index.N;
 
             if(matrix is CMatrix) {
-                Complex k = -(1.0 - new Complex(this.alpha, this.alphaIm)) / n;
+                Complex k = new Complex(this.alpha, this.alphaIm) / n;
                 Complex o = new Complex(this.omega, this.omegaIm);
-                Complex h = k * o * o;
                 Complex g = k * o;
                 for(int i = 0; i < dim; i++) {
                     int l = index.L[i];
                     int m = index.M[i];
 
                     double c1 = (n + m) / 2.0;
-                    matrix[i, 2 * i] = this.alpha * c1 + h.Real * c1 * c1; // 1
-                    matrix[i, 2 * i + 1] = this.alphaIm * c1 + h.Imaginary * c1 * c1; // 1
+                    matrix[i, 2 * i] = c1;
+                    matrix[i, 2 * i + 1] = 0;
 
                     // -1
                     if(i - 1 >= 0 && l == index.L[i - 1]) {
@@ -86,13 +85,13 @@ namespace PavelStransky.Systems {
                 }
             }
             else {
-                double k = -(1.0 - this.alpha) / n;
+                double k = this.alpha / n;
                 for(int i = 0; i < dim; i++) {
                     int l = index.L[i];
                     int m = index.M[i];
 
                     double c1 = (n + m) / 2.0;
-                    matrix[i, i] = this.alpha * c1 + k * this.omega * this.omega * c1 * c1; // 1
+                    matrix[i, i] = c1; // 1
 
                     // -1
                     if(i - 1 >= 0 && l == index.L[i - 1]) {
@@ -117,23 +116,21 @@ namespace PavelStransky.Systems {
         public Matrix[] ParameterMatrix(Vector basisParams) {
             LipkinFullBasisIndex index = this.CreateBasisIndex(basisParams) as LipkinFullBasisIndex;
 
-            Matrix[] result = new Matrix[5];
+            Matrix[] result = new Matrix[4];
 
             int dim = index.Length;
             int n = index.N;
-                  
+
             result[0] = new Matrix(dim);        // H0
             result[1] = new Matrix(dim);        // + omega H1
-            result[2] = new Matrix(dim);        // + omega^2 H2
 
-            double k = -(1.0 - this.alpha) / n;
+            double k = this.alpha / n;
             for(int i = 0; i < dim; i++) {
                 int l = index.L[i];
                 int m = index.M[i];
 
                 double c1 = (n + m) / 2.0;
-                result[0][i, i] = this.alpha * c1;
-                result[2][i, i] = k * c1 * c1;
+                result[0][i, i] = c1;
 
                 // -1
                 if(i - 1 >= 0 && l == index.L[i - 1]) {
@@ -154,45 +151,39 @@ namespace PavelStransky.Systems {
             }
 
             // Part for alpha as variable;
-            result[3] = new Matrix(dim);        // H0'
-            result[4] = new Matrix(dim);        // + alpha H1
+            result[2] = new Matrix(dim);        // H0'
+            result[3] = new Matrix(dim);        // + alpha H1
 
-            double k3 = -1.0 / n;
+            double k3 = 1.0 / n;
             for(int i = 0; i < dim; i++) {
                 int l = index.L[i];
                 int m = index.M[i];
 
                 double c1 = (n + m) / 2.0;
-                result[3][i, i] = k3 * this.omega * this.omega * c1 * c1;
-                result[4][i, i] = c1 - k3 * this.omega * this.omega * c1 * c1;
+                result[2][i, i] = c1;
+                result[3][i, i] = 0;
 
                 // -1
                 if(i - 1 >= 0 && l == index.L[i - 1]) {
                     result[3][i, i] += k3 * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
-                    result[4][i, i] -= k3 * this.ShiftMinus(l, m) * this.ShiftPlus(l, m - 2);
                     result[3][i - 1, i] = k3 * this.omega * this.ShiftMinus(l, m) * (n + m - 1);
-                    result[4][i - 1, i] = -k3 * this.omega * this.ShiftMinus(l, m) * (n + m - 1);
                 }
                 // +1
                 if(i + 1 < dim && l == index.L[i + 1]) {
                     result[3][i, i] += k3 * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
-                    result[4][i, i] -= k3 * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
                     result[3][i + 1, i] = k3 * this.omega * this.ShiftPlus(l, m) * (n + m + 1);
-                    result[4][i + 1, i] = -k3 * this.omega * this.ShiftPlus(l, m) * (n + m + 1);
                 }
                 // -2
                 if(i - 2 >= 0 && l == index.L[i - 2]) {
                     result[3][i - 2, i] = k3 * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 2);
-                    result[4][i - 2, i] = -k3 * this.ShiftMinus(l, m) * this.ShiftMinus(l, m - 2);
                 }
                 // +2
                 if(i + 2 < dim && l == index.L[i + 2]) {
                     result[3][i + 2, i] = k3 * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 2);
-                    result[4][i + 2, i] = -k3 * this.ShiftPlus(l, m) * this.ShiftPlus(l, m + 2);
                 }
             }
 
-            return result;                                                       
+            return result;
         }
 
         protected double ShiftPlus(int l, int m) {
@@ -207,7 +198,7 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Peres˘v invariant
+        /// Peres≈Øv invariant
         /// </summary>
         /// <param name="type">Typ (0 - H0, 1 - L1, 3 - L1^2)</param>
         public Vector PeresInvariant(int type) {
@@ -224,10 +215,11 @@ namespace PavelStransky.Systems {
 
         #region Implementace IExportable
         /// <summary>
-        /// NaËte v˝sledky ze souboru
+        /// Naƒçte v√Ωsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public LipkinFull(Core.Import import) : base(import) {
+        public LipkinFullLinear(Core.Import import)
+            : base(import) {
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
         #endregion

@@ -374,6 +374,6 @@ namespace PavelStransky.Expression.Functions.Def {
         private const double stepM = 1.2;
         private const double stepD = 2;
         private const double maxSteps = 100000;
-        private const double initStep = 100;
+        private const double initStep = 1000;
     }
 }

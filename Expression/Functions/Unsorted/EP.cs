@@ -11,13 +11,13 @@ using MPIR;
 
 namespace PavelStransky.Expression.Functions.Def {
     /// <summary>
-    /// EP of a matrix in the form A + l B (+ l^2 C)
+    /// EP of a matrix in the form A + l B (+ l^2 C) using various methods
     /// </summary>
     public class EP : Fnc {
         public override string Help { get { return Messages.HelpEP; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(5);
+            this.SetNumParams(6);
 
             this.SetParam(0, true, true, false, Messages.PMatrix, Messages.PMatrixDescription, null, typeof(Matrix));
             this.SetParam(1, true, true, false, Messages.PMatrix, Messages.PMatrixDescription, null, typeof(Matrix));
@@ -25,6 +25,72 @@ namespace PavelStransky.Expression.Functions.Def {
 
             this.SetParam(3, true, true, false, Messages.PIntervalX, Messages.PIntervalXDescription, null, typeof(Vector));
             this.SetParam(4, true, true, false, Messages.PIntervalY, Messages.PIntervalYDescription, null, typeof(Vector));
+
+            this.SetParam(5, false, true, false, Messages.PType, Messages.PTypeDescription, 0, typeof(int));
+        }
+
+        /// <summary>
+        /// Class taking all the data
+        /// </summary>
+        private class Data {
+            public Matrix m1, m2, m3;
+            public double precisionx, precisiony;
+            public int steps = 0;
+            public Guider guider;
+            public int length;
+
+            public DateTime time;
+
+            public Data(Matrix m1, Matrix m2, Matrix m3, double precisionx, double precisiony, Guider guider) {
+                this.m1 = m1;
+                this.m2 = m2;
+                this.m3 = m3;
+                this.precisionx = precisionx;
+                this.precisiony = precisiony;
+                this.guider = guider;
+                this.length = m1.Length;
+
+                this.time = DateTime.Now;
+            }
+
+            public Matrix M1 { get { return m1; } }
+            public Matrix M2 { get { return m2; } }
+            public Matrix M3 { get { return m3; } }
+            public double Precisionx { get { return precisionx; } }
+            public double Precisiony { get { return precisiony; } }
+            public int Length { get { return this.length; } }
+            public int Steps { get { return this.steps; } }
+
+            /// <summary>
+            /// Add steps to the total steps counter
+            /// </summary>
+            /// <param name="steps">Number of steps to add</param>
+            public void AddSteps(int steps) {
+                this.steps += steps;
+            }
+
+            /// <summary>
+            /// Write text to the Writer
+            /// </summary>
+            /// <param name="s">Text</param>
+            public void Write(string s) {
+                if(this.guider != null)
+                    this.guider.Write(s);
+            }
+
+            /// <summary>
+            /// Write text to the Writer and end line
+            /// </summary>
+            /// <param name="s">Text</param>
+            public void WriteLine(string s) {
+                if(this.guider != null)
+                    this.guider.WriteLine(s);
+            }
+
+            public void WriteTime() {
+                this.WriteLine(SpecialFormat.Format(DateTime.Now - this.time));
+                this.time = DateTime.Now;
+            }
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -35,6 +101,8 @@ namespace PavelStransky.Expression.Functions.Def {
             Vector intervalx = arguments[3] as Vector;  // Interval x (minx, maxx, precisionx)
             Vector intervaly = arguments[4] as Vector;  // Interval y (miny, maxy, precisiony)
 
+            int type = (int)arguments[5];           // Type of the calculation (0 - level swap, 1 - Zirnbauer's phase)
+
             double minx = intervalx[0];
             double maxx = intervalx[1];
             double miny = intervaly[0];
@@ -43,17 +111,23 @@ namespace PavelStransky.Expression.Functions.Def {
             double precisionx = intervalx[2];
             double precisiony = intervaly[2];
 
-            if(guider != null) {
-                guider.Write("Expected maximum number of EPs: ");
-                if(m3 == null)
-                    guider.WriteLine(m1.Length * (m1.Length - 1));
-                else
-                    guider.WriteLine(2 * m1.Length * (m1.Length - 1));
-            }
+            // Initiate data class
+            Data data = new Data(m1, m2, m3, precisionx, precisiony, guider);
+
+            data.Write("Maximum number of EPs: ");
+            if(m3 == null)
+                data.WriteLine((m1.Length * (m1.Length - 1)).ToString());
+            else
+                data.WriteLine((2 * m1.Length * (m1.Length - 1)).ToString());
 
             // Final EPs
             ArrayList ep = new ArrayList();
-            this.Recursion(0, ep, m1, m2, m3, minx, maxx, miny, maxy, precisionx, precisiony, guider);
+
+            // Main recursion calculation
+            if(type == 0)
+                this.RecursionSwap(0, ep, minx, maxx, miny, maxy, data);
+            else
+                this.RecursionPhase(0, ep, minx, maxx, miny, maxy, data);
 
             // Finding levels that cross (Algorithm by M. Dvořák)
             int count = ep.Count;
@@ -65,7 +139,7 @@ namespace PavelStransky.Expression.Functions.Def {
             int i = 0;
             foreach(PointD p in ep) {
                 points[i] = p;
-                crossings[i] = this.FindLevels(m1, m2, m3, p.X, p.Y);
+                crossings[i] = this.FindLevels(p.X, p.Y, data);
                 keys[i] = crossings[i].X * count + crossings[i].Y;
                 i++;
             }
@@ -74,8 +148,8 @@ namespace PavelStransky.Expression.Functions.Def {
             crossings = crossings.Sort(keys) as PointVector;
 
             if(guider != null)
-            for(i = 0; i < count; i++)
-                guider.WriteLine(string.Format("{0}[{1:0.00000},{2:0.00000}] ({3}-{4})", i, points[i].X, points[i].Y, crossings[i].X, crossings[i].Y));                        
+                for(i = 0; i < count; i++)
+                    guider.WriteLine(string.Format("{0}[{1},{2}] ({3}-{4})", i, points[i].X, points[i].Y, crossings[i].X, crossings[i].Y));
 
             List result = new List();
             result.Add(points);
@@ -84,59 +158,56 @@ namespace PavelStransky.Expression.Functions.Def {
             return result;
         }
 
+        #region Level Swap
         /// <summary>
         /// Recursive procedure
         /// </summary>
         /// <param name="level">Level of the recursion</param>
         /// <param name="ep">EPs (result)</param>
-        /// <param name="m1">Matrix A</param>
-        /// <param name="m2">Matrix B</param>
-        /// <param name="m3">Matrix C</param>
         /// <param name="minx">Minimum x</param>
         /// <param name="maxx">Maximum x</param>
         /// <param name="miny">Minimum y</param>
         /// <param name="maxy">Maximum y</param>
-        /// <param name="precisionx">Precision x</param>
-        /// <param name="precisiony">Precision y</param>
-        private void Recursion(int level, ArrayList ep, Matrix m1, Matrix m2, Matrix m3, double minx, double maxx, double miny, double maxy, double precisionx, double precisiony, Guider guider) {
-            PointVector ls = this.LevelSwap(m1, m2, m3, minx, maxx, miny, maxy);
+        private void RecursionSwap(int level, ArrayList ep, double minx, double maxx, double miny, double maxy, Data data) {
+            PointVector ls = this.LevelSwap(minx, maxx, miny, maxy, data);
 
             // Maximum number of iteration reached
             if(ls == null) {
-                if(guider != null)
-                    guider.WriteLine("X");
+                data.WriteLine("X");
             }
             // We found at least one level crossing (Be aware that for systems with m3 != null the level crossings can destroy each other!)
             else if(ls.Length > 0) {
+                if(level == 0)
+                    data.WriteLine(string.Format("Expected number of EPs in the interval: {0}", ls.Length));
+
                 // Desired precision reached
-                if(maxx - minx < precisionx && maxy - miny < precisiony) {
+                if(maxx - minx < data.Precisionx && maxy - miny < data.Precisiony) {
 
                     PointD p = new PointD(0.5 * (minx + maxx), 0.5 * (miny + maxy));    // The best approximation of an ep
                     ep.Add(p);
 
                     // Guider info
-                    if(guider != null) {
-                        guider.Write(string.Format("{0}-{1}", ep.Count, level));
-                        for(int i = 0; i < ls.Length; i++)
-                            guider.Write(string.Format("({0:0}-{1:0})", ls[i].X, ls[i].Y));
-                        guider.WriteLine(string.Format("[{0:0.00000},{1:0.00000}]", p.X, p.Y));
-                    }
+                    data.Write(string.Format("{0}-{1}", ep.Count, level));
+                    for(int i = 0; i < ls.Length; i++)
+                        data.Write(string.Format("({0:0}-{1:0}){2}", ls[i].X, ls[i].Y, data.Steps));
+                    data.Write(string.Format("[{0},{1}]", p.X, p.Y));
+                    data.WriteTime();
                 }
                 else {
                     level++;
-                    if(maxx - minx < precisionx) {
-                        this.Recursion(level, ep, m1, m2, m3, minx, maxx, miny, miny + (maxy - miny) / 2, precisionx, precisiony, guider);
-                        this.Recursion(level, ep, m1, m2, m3, minx, maxx, miny + (maxy - miny) / 2, maxy, precisionx, precisiony, guider);
+                    if(maxx - minx < data.Precisionx) {
+                        this.RecursionSwap(level, ep, minx, maxx, miny, miny + (maxy - miny) / 2, data);
+                        this.RecursionSwap(level, ep, minx, maxx, miny + (maxy - miny) / 2, maxy, data);
                     }
-                    else if(maxy - miny < precisiony) {
-                        this.Recursion(level, ep, m1, m2, m3, minx, minx + (maxx - minx) / 2, miny, maxy, precisionx, precisiony, guider);
-                        this.Recursion(level, ep, m1, m2, m3, minx + (maxx - minx) / 2, maxx, miny, maxy, precisionx, precisiony, guider);
+                    else if(maxy - miny < data.Precisiony) {
+                        this.RecursionSwap(level, ep, minx, minx + (maxx - minx) / 2, miny, maxy, data);
+                        this.RecursionSwap(level, ep, minx + (maxx - minx) / 2, maxx, miny, maxy, data);
                     }
                     else {
-                        this.Recursion(level, ep, m1, m2, m3, minx, minx + (maxx - minx) / 2, miny, miny + (maxy - miny) / 2, precisionx, precisiony, guider);
-                        this.Recursion(level, ep, m1, m2, m3, minx, minx + (maxx - minx) / 2, miny + (maxy - miny) / 2, maxy, precisionx, precisiony, guider);
-                        this.Recursion(level, ep, m1, m2, m3, minx + (maxx - minx) / 2, maxx, miny, miny + (maxy - miny) / 2, precisionx, precisiony, guider);
-                        this.Recursion(level, ep, m1, m2, m3, minx + (maxx - minx) / 2, maxx, miny + (maxy - miny) / 2, maxy, precisionx, precisiony, guider);
+                        this.RecursionSwap(level, ep, minx, minx + (maxx - minx) / 2, miny, miny + (maxy - miny) / 2, data);
+                        this.RecursionSwap(level, ep, minx, minx + (maxx - minx) / 2, miny + (maxy - miny) / 2, maxy, data);
+                        this.RecursionSwap(level, ep, minx + (maxx - minx) / 2, maxx, miny, miny + (maxy - miny) / 2, data);
+                        this.RecursionSwap(level, ep, minx + (maxx - minx) / 2, maxx, miny + (maxy - miny) / 2, maxy, data);
                     }
                 }
             }
@@ -145,15 +216,12 @@ namespace PavelStransky.Expression.Functions.Def {
         /// <summary>
         /// Calculation of levels that swap when we go around an exceptional point
         /// </summary>
-        /// <param name="m1">matrix A</param>
-        /// <param name="m2">matrix B</param>
-        /// <param name="m3">matrix C</param>
         /// <param name="minx">Minimum x</param>
         /// <param name="maxx">Maximum x</param>
         /// <param name="miny">Minimum y</param>
         /// <param name="maxy">Maximum y</param>
-        private PointVector LevelSwap(Matrix m1, Matrix m2, Matrix m3, double minx, double maxx, double miny, double maxy) {
-            int length = m1.Length;
+        private PointVector LevelSwap(double minx, double maxx, double miny, double maxy, Data data) {
+            int length = data.Length;
 
             double stepx = (maxx - minx) / initStep;
             double stepy = (maxy - miny) / initStep;
@@ -167,17 +235,18 @@ namespace PavelStransky.Expression.Functions.Def {
             // Initialization
             PointVector last = new PointVector(length);     // Last set of eigenvalues
             PointVector first = new PointVector(length);     // First set of eigenvalues
-            Vector[] v0 = this.EigenSystem(m1, m2, m3, x, y);
+            Vector[] v0 = this.EigenSystem(x, y, data);
             for(int i = 0; i < length; i++) {
                 last[i] = new PointD(v0[0][i], v0[1][i]);
                 first[i] = new PointD(v0[0][i], v0[1][i]);
             }
 
             int steps = 0;
+
             // Leg 1
             while(oldx < maxx) {
                 x = System.Math.Min(oldx + stepx, maxx);
-                if(this.Connect(last, this.EigenSystem(m1, m2, m3, x, y))) {
+                if(this.Connect(last, this.EigenSystem(x, y, data))) {
                     stepx *= stepM;
                     oldx = x;
                 }
@@ -189,7 +258,7 @@ namespace PavelStransky.Expression.Functions.Def {
             // Leg 2
             while(oldy < maxy) {
                 y = System.Math.Min(oldy + stepy, maxy);
-                if(this.Connect(last, this.EigenSystem(m1, m2, m3, x, y))) {
+                if(this.Connect(last, this.EigenSystem(x, y, data))) {
                     stepy *= stepM;
                     oldy = y;
                 }
@@ -202,7 +271,7 @@ namespace PavelStransky.Expression.Functions.Def {
             // Leg 3
             while(oldx > minx) {
                 x = System.Math.Max(oldx - stepx, minx);
-                if(this.Connect(last, this.EigenSystem(m1, m2, m3, x, y))) {
+                if(this.Connect(last, this.EigenSystem(x, y, data))) {
                     stepx *= stepM;
                     oldx = x;
                 }
@@ -215,7 +284,7 @@ namespace PavelStransky.Expression.Functions.Def {
             // Leg 4
             while(oldy > miny) {
                 y = System.Math.Max(oldy - stepy, miny);
-                if(this.Connect(last, this.EigenSystem(m1, m2, m3, x, y))) {
+                if(this.Connect(last, this.EigenSystem(x, y, data))) {
                     stepy *= stepM;
                     oldy = y;
                 }
@@ -237,26 +306,204 @@ namespace PavelStransky.Expression.Functions.Def {
             for(int i = 0; i < a.Count; i++)
                 result[i] = (PointD)a[i];
 
+            data.AddSteps(steps);
             return result;
         }
+        #endregion
+
+        #region Phase
+        /// <summary>
+        /// Recursive procedure
+        /// </summary>
+        /// <param name="level">Level of the recursion</param>
+        /// <param name="ep">EPs (result)</param>
+        /// <param name="minx">Minimum x</param>
+        /// <param name="maxx">Maximum x</param>
+        /// <param name="miny">Minimum y</param>
+        /// <param name="maxy">Maximum y</param>
+        private void RecursionPhase(int level, ArrayList ep, double minx, double maxx, double miny, double maxy, Data data) {
+            double num = this.Phase(minx, maxx, miny, maxy, data);
+
+            // Maximum number of iteration reached
+            if(num < 0) {
+                data.WriteLine("X");
+            }
+            // We found at least one level crossing (Be aware that for systems with m3 != null the level crossings can destroy each other!)
+            else if(System.Math.Round(num) > 0) {
+                if(level == 0)
+                    data.WriteLine(string.Format("Expected number of EPs in the interval: {0}", System.Math.Round(num)));
+
+                // Desired precision reached
+                if(maxx - minx < data.Precisionx && maxy - miny < data.Precisiony) {
+
+                    PointD p = new PointD(0.5 * (minx + maxx), 0.5 * (miny + maxy));    // The best approximation of an ep
+                    ep.Add(p);
+
+                    // Guider info
+                    data.Write(string.Format("{0}-{1}({2}){3}", ep.Count, level, num, data.Steps));
+                    data.Write(string.Format("[{0},{1}]", p.X, p.Y));
+                    data.WriteTime();
+                }
+                else {
+                    level++;
+                    if(maxx - minx < data.Precisionx) {
+                        this.RecursionPhase(level, ep, minx, maxx, miny, miny + (maxy - miny) / 2, data);
+                        this.RecursionPhase(level, ep, minx, maxx, miny + (maxy - miny) / 2, maxy, data);
+                    }
+                    else if(maxy - miny < data.Precisiony) {
+                        this.RecursionPhase(level, ep, minx, minx + (maxx - minx) / 2, miny, maxy, data);
+                        this.RecursionPhase(level, ep, minx + (maxx - minx) / 2, maxx, miny, maxy, data);
+                    }
+                    else {
+                        this.RecursionPhase(level, ep, minx, minx + (maxx - minx) / 2, miny, miny + (maxy - miny) / 2, data);
+                        this.RecursionPhase(level, ep, minx, minx + (maxx - minx) / 2, miny + (maxy - miny) / 2, maxy, data);
+                        this.RecursionPhase(level, ep, minx + (maxx - minx) / 2, maxx, miny, miny + (maxy - miny) / 2, data);
+                        this.RecursionPhase(level, ep, minx + (maxx - minx) / 2, maxx, miny + (maxy - miny) / 2, maxy, data);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculation of phase when we go around exceptional points
+        /// </summary>
+        /// <param name="minx">Minimum x</param>
+        /// <param name="maxx">Maximum x</param>
+        /// <param name="miny">Minimum y</param>
+        /// <param name="maxy">Maximum y</param>
+        private double Phase(double minx, double maxx, double miny, double maxy, Data data) {
+            int length = data.Length;
+
+            double stepx = (maxx - minx) / initStep;
+            double stepy = (maxy - miny) / initStep;
+
+            double x = minx;
+            double y = miny;
+
+            double oldx = x;        // Temporary values (for the adaptive step)
+            double oldy = y;
+
+            // Initialization
+            Vector[] v0 = this.EigenSystem(x, y, data);
+            double last = this.ResultantPhase(v0);
+            double phase = 0.0;
+
+            int steps = 0;
+
+            // Leg 1
+            while(oldx < maxx) {
+                x = System.Math.Min(oldx + stepx, maxx);
+                double p = this.ResultantPhase(this.EigenSystem(x, y, data));
+                double d = this.NormPhase(p - last);
+                if(System.Math.Abs(d) < maxPhase) {
+                    phase += d;
+                    last = p;
+                    stepx *= stepM;
+                    oldx = x;
+                }
+                else if((stepx /= stepD) == 0 || steps > maxSteps)
+                    return -1;
+                steps++;
+            }
+
+            // Leg 2
+            while(oldy < maxy) {
+                y = System.Math.Min(oldy + stepy, maxy);
+                double p = this.ResultantPhase(this.EigenSystem(x, y, data));
+                double d = this.NormPhase(p - last);
+                if(System.Math.Abs(d) < maxPhase) {
+                    phase += d;
+                    last = p;
+                    stepy *= stepM;
+                    oldy = y;
+                }
+                else
+                    if((stepy /= stepD) == 0 || steps > maxSteps)
+                        return -1;
+                steps++;
+            }
+
+            // Leg 3
+            while(oldx > minx) {
+                x = System.Math.Max(oldx - stepx, minx);
+                double p = this.ResultantPhase(this.EigenSystem(x, y, data));
+                double d = this.NormPhase(p - last);
+                if(System.Math.Abs(d) < maxPhase) {
+                    phase += d;
+                    last = p;
+                    stepx *= stepM;
+                    oldx = x;
+                }
+                else
+                    if((stepx /= stepD) == 0 || steps > maxSteps)
+                        return -1;
+                steps++;
+            }
+
+            // Leg 4
+            while(oldy > miny) {
+                y = System.Math.Max(oldy - stepy, miny);
+                double p = this.ResultantPhase(this.EigenSystem(x, y, data));
+                double d = this.NormPhase(p - last);
+                if(System.Math.Abs(d) < maxPhase) {
+                    phase += d;
+                    last = p;
+                    stepy *= stepM;
+                    oldy = y;
+                }
+                else {
+                    if((stepy /= stepD) == 0 || steps > maxSteps)
+                        return -1;
+                }
+                steps++;
+            }
+
+            data.AddSteps(steps);
+            return System.Math.Abs(phase / (2 * System.Math.PI));
+        }
+
+        private double ResultantPhase(Vector[] v) {
+            Vector re = v[0];
+            Vector im = v[1];
+
+            int length = re.Length;
+
+            double result = 0;
+            for(int i = 0; i < length; i++) {
+                for(int j = 0; j < length; j++) {
+                    if(i == j)
+                        continue;
+                    result += System.Math.Atan2(im[i] - im[j], re[i] - re[j]);
+                }
+            }
+
+            return result;
+        }
+
+        private double NormPhase(double phase) {
+            phase %= 2 * System.Math.PI;
+            if(phase < -System.Math.PI)
+                phase += 2 * System.Math.PI;
+            else if(phase > System.Math.PI)
+                phase = 2 * System.Math.PI - phase;
+            return phase;
+        }
+        #endregion
 
         /// <summary>
         /// Calculates eigenvalues
         /// </summary>
-        /// <param name="m1">Matrix A</param>
-        /// <param name="m2">Matrix B</param>
-        /// <param name="m3">Matrix C</param>
         /// <param name="x">Real value of the control parameter</param>
         /// <param name="y">Imaginary value of the control parameter</param>
-        private Vector[] EigenSystem(Matrix m1, Matrix m2, Matrix m3, double x, double y) {
-            int length = m1.Length;
+        private Vector[] EigenSystem(double x, double y, Data data) {
+            int length = data.Length;
 
             // Fills the matrix
             CMatrix c = new CMatrix(length);
             for(int j = 0; j < length; j++)
                 for(int k = 0; k < length; k++) {
-                    c[j, 2 * k] = m1[j, k] + x * m2[j, k] + (m3 != null ? (x * x - y * y) * m3[j, k] : 0.0);
-                    c[j, 2 * k + 1] = y * m2[j, k] + (m3 != null ? 2.0 * x * y * m3[j, k] : 0.0);
+                    c[j, 2 * k] = data.M1[j, k] + x * data.M2[j, k] + (data.M3 != null ? (x * x - y * y) * data.M3[j, k] : 0.0);
+                    c[j, 2 * k + 1] = y * data.M2[j, k] + (data.M3 != null ? 2.0 * x * y * data.M3[j, k] : 0.0);
                 }
 
             // Calculates the eigenvalues
@@ -328,8 +575,8 @@ namespace PavelStransky.Expression.Functions.Def {
             return true;
         }
 
-        private PointD FindLevels(Matrix m1, Matrix m2, Matrix m3, double x, double maxy) {
-            int length = m1.Length;
+        private PointD FindLevels(double x, double maxy, Data data) {
+            int length = data.Length;
             
             double y = 0.0;
             double oldy = 0.0;
@@ -338,7 +585,7 @@ namespace PavelStransky.Expression.Functions.Def {
             // Initialization
             PointVector last = new PointVector(length);     // Last set of eigenvalues
             PointVector first = new PointVector(length);     // First set of eigenvalues
-            Vector[] v0 = this.EigenSystem(m1, m2, m3, x, y);
+            Vector[] v0 = this.EigenSystem(x, y, data);
             for(int i = 0; i < length; i++) {
                 last[i] = new PointD(v0[0][i], v0[1][i]);
                 first[i] = new PointD(v0[0][i], v0[1][i]);
@@ -349,7 +596,7 @@ namespace PavelStransky.Expression.Functions.Def {
             // Leg 2
             while(oldy < maxy) {
                 y = System.Math.Min(oldy + stepy, maxy);
-                if(this.Connect(last, this.EigenSystem(m1, m2, m3, x, y))) {
+                if(this.Connect(last, this.EigenSystem(x, y, data))) {
                     stepy *= stepM;
                     oldy = y;
                 }
@@ -375,5 +622,6 @@ namespace PavelStransky.Expression.Functions.Def {
         private const double stepD = 2;
         private const double maxSteps = 100000;
         private const double initStep = 1000;
+        private const double maxPhase = System.Math.PI / 2;
     }
 }

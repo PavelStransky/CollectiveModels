@@ -9,6 +9,19 @@ namespace PavelStransky.Math {
     public class RMTDistribution {
         private static Random random = new Random();
 
+        public static double GetSemicircle(double r) {
+            double x, y;
+
+            double c = 2.0 / System.Math.PI * r * r;
+
+            do {
+                x = 2.0 * r * random.NextDouble() - r;
+                y = c * r * random.NextDouble();
+            } while(c * System.Math.Sqrt(r * r - x * x) < y);
+
+            return x;
+        }
+
         /// <summary>
         /// Hodnota z GOE rozdìlení
         /// </summary>

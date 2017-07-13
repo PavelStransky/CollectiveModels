@@ -3571,6 +3571,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finds all intersection points of lines given in the form y = y0 + k x.
+        /// </summary>
+        internal static string HelpEPIntersection {
+            get {
+                return ResourceManager.GetString("HelpEPIntersection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator == (equality).
         /// </summary>
         internal static string HelpEquality {
@@ -5308,6 +5317,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generates a random number with semicircle distribution between -R and R.
+        /// </summary>
+        internal static string HelpRandomC {
+            get {
+                return ResourceManager.GetString("HelpRandomC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generates Gaussian distributed random numbers with given variance and mean.
         /// </summary>
         internal static string HelpRandomG {
@@ -5353,6 +5371,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generates an array of random permutated numbers.
+        /// </summary>
+        internal static string HelpRandomPermutation {
+            get {
+                return ResourceManager.GetString("HelpRandomPermutation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value with Poisson distribution.
         /// </summary>
         internal static string HelpRandomPoisson {
@@ -5376,6 +5403,15 @@ namespace PavelStransky.Expression {
         internal static string HelpRandomVectorBrody {
             get {
                 return ResourceManager.GetString("HelpRandomVectorBrody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generates a vector with Wigner semicircle distributed components.
+        /// </summary>
+        internal static string HelpRandomVectorC {
+            get {
+                return ResourceManager.GetString("HelpRandomVectorC", resourceCulture);
             }
         }
         

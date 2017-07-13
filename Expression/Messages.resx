@@ -4110,4 +4110,16 @@ Second differing type: {1}</value>
   <data name="HelpLipkinFullL" xml:space="preserve">
     <value>Creates a class of the Lipkin model linear in both control parameters diagonalized in the full SU(2) basis</value>
   </data>
+  <data name="HelpEPIntersection" xml:space="preserve">
+    <value>Finds all intersection points of lines given in the form y = y0 + k x</value>
+  </data>
+  <data name="HelpRandomC" xml:space="preserve">
+    <value>Generates a random number with semicircle distribution between -R and R</value>
+  </data>
+  <data name="HelpRandomPermutation" xml:space="preserve">
+    <value>Generates an array of random permutated numbers</value>
+  </data>
+  <data name="HelpRandomVectorC" xml:space="preserve">
+    <value>Generates a vector with Wigner semicircle distributed components</value>
+  </data>
 </root>

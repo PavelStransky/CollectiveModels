@@ -244,6 +244,8 @@
     <Compile Include="Functions\Statistics\NoiseGenerator.cs" />
     <Compile Include="Functions\AME\AME.cs" />
     <Compile Include="Functions\AME\ReadAME.cs" />
+    <Compile Include="Functions\Statistics\RandomC.cs" />
+    <Compile Include="Functions\Statistics\RandomVectorC.cs" />
     <Compile Include="Functions\Unsorted\Copy.cs" />
     <Compile Include="Functions\Unsorted\DistanceMatrix.cs" />
     <Compile Include="Functions\Unsorted\EP.cs" />
@@ -254,6 +256,7 @@
     <Compile Include="Functions\Unsorted\InvertArray.cs" />
     <Compile Include="Functions\Spin\Ising2D.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
+    <Compile Include="Functions\Unsorted\RandomPermutation.cs" />
     <Compile Include="Functions\Unsorted\Resultant.cs" />
     <Compile Include="Functions\Unsorted\ResultantBF.cs" />
     <Compile Include="Functions\Unsorted\ResultantMPIR.cs" />
@@ -273,6 +276,7 @@
     <Compile Include="Functions\Vector\Delta3.cs" />
     <Compile Include="Functions\Vector\ECG.cs" />
     <Compile Include="Functions\Vector\EMD.cs" />
+    <Compile Include="Functions\Vector\EPIntersection.cs" />
     <Compile Include="Functions\Vector\FindX.cs" />
     <Compile Include="Functions\Vector\GPSDistance.cs" />
     <Compile Include="Functions\Vector\IMF.cs" />

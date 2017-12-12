@@ -120,6 +120,7 @@
     <Compile Include="Lipkin\LipkinFactorizedBasisIndex.cs" />
     <Compile Include="Lipkin\LipkinFull.cs" />
     <Compile Include="Lipkin\LipkinFullBasisIndex.cs" />
+    <Compile Include="Lipkin\LipkinFullLambda.cs" />
     <Compile Include="Lipkin\LipkinFullLinear.cs" />
     <Compile Include="Lipkin\LipkinOne.cs" />
     <Compile Include="Lipkin\LipkinOneBasisIndex.cs" />

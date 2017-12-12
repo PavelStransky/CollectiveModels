@@ -4108,7 +4108,7 @@ Second differing type: {1}</value>
     <value>Exceptional points of a matrix in the form A + l B (+ l^2 C)</value>
   </data>
   <data name="HelpLipkinFullL" xml:space="preserve">
-    <value>Creates a class of the Lipkin model linear in both control parameters diagonalized in the full SU(2) basis</value>
+    <value>Creates a class of the Lipkin model with control parameters as of PRE 2017, diagonalized in the full SU(2) basis</value>
   </data>
   <data name="HelpEPIntersection" xml:space="preserve">
     <value>Finds all intersection points of lines given in the form y = y0 + k x</value>
@@ -4121,5 +4121,14 @@ Second differing type: {1}</value>
   </data>
   <data name="HelpRandomVectorC" xml:space="preserve">
     <value>Generates a vector with Wigner semicircle distributed components</value>
+  </data>
+  <data name="PIsLinear" xml:space="preserve">
+    <value>linear</value>
+  </data>
+  <data name="PIsLinearDescription" xml:space="preserve">
+    <value>True for the linearized version </value>
+  </data>
+  <data name="HelpExactEPDistribution" xml:space="preserve">
+    <value>Value of the exact EP distribution according to PRE 2017</value>
   </data>
 </root>

@@ -3634,6 +3634,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value of the exact EP distribution according to PRE 2017.
+        /// </summary>
+        internal static string HelpExactEPDistribution {
+            get {
+                return ResourceManager.GetString("HelpExactEPDistribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From the first vector excludes values contained in the second vector.
         /// </summary>
         internal static string HelpExclude {
@@ -4570,7 +4579,7 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a class of the Lipkin model linear in both control parameters diagonalized in the full SU(2) basis.
+        ///   Looks up a localized string similar to Creates a class of the Lipkin model with control parameters as of PRE 2017, diagonalized in the full SU(2) basis.
         /// </summary>
         internal static string HelpLipkinFullL {
             get {
@@ -9255,6 +9264,24 @@ namespace PavelStransky.Expression {
         internal static string PIsing2DDescription {
             get {
                 return ResourceManager.GetString("PIsing2DDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to linear.
+        /// </summary>
+        internal static string PIsLinear {
+            get {
+                return ResourceManager.GetString("PIsLinear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True for the linearized version .
+        /// </summary>
+        internal static string PIsLinearDescription {
+            get {
+                return ResourceManager.GetString("PIsLinearDescription", resourceCulture);
             }
         }
         

@@ -14,7 +14,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override void CreateParameters() {
             this.SetNumParams(2);
-            this.SetParam(0, true, true, false, Messages.PLipkin, Messages.PLipkinDescription, null, typeof(LipkinFull), typeof(LipkinFullLinear));
+            this.SetParam(0, true, true, false, Messages.PLipkin, Messages.PLipkinDescription, null, typeof(LipkinFull), typeof(LipkinFullLinear),typeof(LipkinFullLambda));
             this.SetParam(1, true, true, false, Messages.PMaxEnergy, Messages.PMaxEnergyDescription, null, typeof(Vector), typeof(int));
         }
 
@@ -27,10 +27,12 @@ namespace PavelStransky.Expression.Functions.Def {
             else
                 basisParams = arguments[1] as Vector;
 
-            if(arguments[0] is LipkinFull)           
+            if(arguments[0] is LipkinFull)
                 return new TArray((arguments[0] as LipkinFull).ParameterMatrix(basisParams));
             else if(arguments[0] is LipkinFullLinear)
                 return new TArray((arguments[0] as LipkinFullLinear).ParameterMatrix(basisParams));
+            else if(arguments[0] is LipkinFullLambda)
+                return new TArray((arguments[0] as LipkinFullLambda).ParameterMatrix(basisParams));
 
             return null;
         }

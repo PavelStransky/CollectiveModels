@@ -4131,4 +4131,31 @@ Second differing type: {1}</value>
   <data name="HelpExactEPDistribution" xml:space="preserve">
     <value>Value of the exact EP distribution according to PRE 2017</value>
   </data>
+  <data name="HelpQuench" xml:space="preserve">
+    <value>Returns the survival probability and LDS of a quench</value>
+  </data>
+  <data name="PFinalSystem" xml:space="preserve">
+    <value>fs</value>
+  </data>
+  <data name="PFinalSystemDescription" xml:space="preserve">
+    <value>Final state of the system</value>
+  </data>
+  <data name="PInitialState" xml:space="preserve">
+    <value>i</value>
+  </data>
+  <data name="PInitialStateDescription" xml:space="preserve">
+    <value>Initial state of the system</value>
+  </data>
+  <data name="PInitialSystem" xml:space="preserve">
+    <value>is</value>
+  </data>
+  <data name="PInitialSystemDescription" xml:space="preserve">
+    <value>Initial state of the system</value>
+  </data>
+  <data name="HelpDickeQmn" xml:space="preserve">
+    <value>Calculates the expectation value of the q operator in the Dicke model</value>
+  </data>
+  <data name="HelpAMEMass" xml:space="preserve">
+    <value>Returns a matrix with masses of known isotopes</value>
+  </data>
 </root>

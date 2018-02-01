@@ -2716,6 +2716,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns a matrix with masses of known isotopes.
+        /// </summary>
+        internal static string HelpAMEMass {
+            get {
+                return ResourceManager.GetString("HelpAMEMass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates the AM-FM decomposition of a IMF.
         /// </summary>
         internal static string HelpAMFM {
@@ -3432,6 +3441,15 @@ namespace PavelStransky.Expression {
         internal static string HelpDFA {
             get {
                 return ResourceManager.GetString("HelpDFA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates the expectation value of the q operator in the Dicke model.
+        /// </summary>
+        internal static string HelpDickeQmn {
+            get {
+                return ResourceManager.GetString("HelpDickeQmn", resourceCulture);
             }
         }
         
@@ -5313,6 +5331,15 @@ namespace PavelStransky.Expression {
         internal static string HelpQuantumTemperature {
             get {
                 return ResourceManager.GetString("HelpQuantumTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the survival probability and LDS of a quench.
+        /// </summary>
+        internal static string HelpQuench {
+            get {
+                return ResourceManager.GetString("HelpQuench", resourceCulture);
             }
         }
         
@@ -8755,6 +8782,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fs.
+        /// </summary>
+        internal static string PFinalSystem {
+            get {
+                return ResourceManager.GetString("PFinalSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final state of the system.
+        /// </summary>
+        internal static string PFinalSystemDescription {
+            get {
+                return ResourceManager.GetString("PFinalSystemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to flat.
         /// </summary>
         internal static string PFlat {
@@ -9138,6 +9183,42 @@ namespace PavelStransky.Expression {
         internal static string PInitialConditionDescription {
             get {
                 return ResourceManager.GetString("PInitialConditionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to i.
+        /// </summary>
+        internal static string PInitialState {
+            get {
+                return ResourceManager.GetString("PInitialState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial state of the system.
+        /// </summary>
+        internal static string PInitialStateDescription {
+            get {
+                return ResourceManager.GetString("PInitialStateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is.
+        /// </summary>
+        internal static string PInitialSystem {
+            get {
+                return ResourceManager.GetString("PInitialSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial state of the system.
+        /// </summary>
+        internal static string PInitialSystemDescription {
+            get {
+                return ResourceManager.GetString("PInitialSystemDescription", resourceCulture);
             }
         }
         

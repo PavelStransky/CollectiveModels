@@ -215,6 +215,11 @@ namespace PavelStransky.Expression {
             /// Binding energy (keV)
             /// </summary>
             public double BindingEnergy { get { return this.bindingEnergy; } }
+
+            /// <summary>
+            /// Mass excess (keV)
+            /// </summary>
+            public double MassExcess { get { return this.massExcess; } }
         }
 
         // Data
@@ -311,6 +316,45 @@ namespace PavelStransky.Expression {
             }
 
             return new TArray(result);
+        }
+
+        public Matrix Mass(bool onlyExp) {
+            int maxZ = this.MaximumZ();
+            int maxN = this.MaximumN();
+
+            Matrix result = new Matrix(maxN + 1, maxZ + 1);
+            foreach(AMEItem it in this.ameItem)
+                if(!onlyExp || (onlyExp && it.NuclearMassExperiment)) {
+                    result[it.N, it.Z] = it.NuclearMass;
+                }
+
+            return result;
+        }
+
+        public Matrix BindingEnergy(bool onlyExp) {
+            int maxZ = this.MaximumZ();
+            int maxN = this.MaximumN();
+
+            Matrix result = new Matrix(maxN + 1, maxZ + 1);
+            foreach(AMEItem it in this.ameItem)
+                if(!onlyExp || (onlyExp && it.NuclearMassExperiment)) {
+                    result[it.N, it.Z] = it.BindingEnergy;
+                }
+
+            return result;
+        }
+
+        public Matrix MassExcess(bool onlyExp) {
+            int maxZ = this.MaximumZ();
+            int maxN = this.MaximumN();
+
+            Matrix result = new Matrix(maxN + 1, maxZ + 1);
+            foreach(AMEItem it in this.ameItem)
+                if(!onlyExp || (onlyExp && it.NuclearMassExperiment)) {
+                    result[it.N, it.Z] = it.MassExcess;
+                }
+
+            return result;
         }
 
         public Matrix Isotope(bool onlyExp) {

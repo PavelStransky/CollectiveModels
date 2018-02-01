@@ -74,7 +74,7 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
-        /// Matice s hodnotami vlastních čísel seřazené podle kvantových čísel
+        /// Matice s hodnotami vlastních vektorů seřazených podle kvantových čísel
         /// </summary>
         /// <param name="n">Pořadí vlastní hodnoty</param>
         public Matrix EigenMatrix(int n) {
@@ -366,6 +366,45 @@ namespace PavelStransky.Systems {
                     for(int l = -j; l <= j; l++)
                         result[i, k] += ev[index[i, l]] * ev[index[k, l]];
             */
+            return result;
+        }
+
+        /// <summary>
+        /// Střední hodnota operátoru q = (a+ + a) / (sqrt(2));
+        /// </summary>
+        public Matrix ExpectationValuePositionOperator() {
+            DickeBasisIndex index = this.eigenSystem.BasisIndex as DickeBasisIndex;
+
+            int count = this.eigenSystem.NumEV;
+            int length = index.Length;
+
+            Matrix result = new Matrix(count);
+
+            double c = 1.0 / System.Math.Sqrt(2);
+
+            for(int i = 0; i < count; i++) {
+                Vector ev1 = this.eigenSystem.GetEigenVector(i);
+                for(int j = i; j < count; j++) {
+                    Vector ev2 = this.eigenSystem.GetEigenVector(j);
+                    double d = 0.0;
+                    for(int k = 0; k < length; k++) {
+                        int n = index.N[k];
+                        int m = index.M[k];
+
+                        int k1 = index[n - 1, m];
+                        int k2 = index[n + 1, m];
+
+                        if(k1 >= 0)
+                            d += ev1[k] * System.Math.Sqrt(n) * ev2[k1];
+                        if(k2 >= 0)
+                            d += ev1[k] * System.Math.Sqrt(n + 1) * ev2[k2];
+                    }
+
+                    result[i, j] = c * d;
+                    result[j, i] = c * d;
+                }
+            }
+
             return result;
         }
 

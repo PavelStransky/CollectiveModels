@@ -9,6 +9,8 @@ using PavelStransky.DLLWrapper;
 namespace PavelStransky.Systems {
     public class QuantumDicke : Dicke, IQuantumSystem, IEntanglement {
         private int type;
+        private Matrix qmn = null;
+
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -372,7 +374,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Střední hodnota operátoru q = (a+ + a) / (sqrt(2));
         /// </summary>
-        public Matrix ExpectationValuePositionOperator() {
+        public Matrix ExpectationValuePositionOperator(IOutputWriter writer) {
             DickeBasisIndex index = this.eigenSystem.BasisIndex as DickeBasisIndex;
 
             int count = this.eigenSystem.NumEV;
@@ -383,6 +385,8 @@ namespace PavelStransky.Systems {
             double c = 1.0 / System.Math.Sqrt(2);
 
             for(int i = 0; i < count; i++) {
+                if(writer != null && i % 100 == 0)
+                    writer.Write(".");
                 Vector ev1 = this.eigenSystem.GetEigenVector(i);
                 for(int j = i; j < count; j++) {
                     Vector ev2 = this.eigenSystem.GetEigenVector(j);
@@ -408,6 +412,77 @@ namespace PavelStransky.Systems {
             return result;
         }
 
+        /// <summary>
+        /// Mikrokanonický OTOC pro stav s a časy t
+        /// </summary>
+        /// <param name="s">Stav</param>
+        /// <param name="time">Časy</param>
+        /// <param name="precision">Přesnost</param>
+        public Vector OTOC(int s, Vector time, double precision, IOutputWriter writer) {
+            if(writer != null)
+                writer.Write(string.Format("{0}...", s));
+
+            if(this.qmn == null) {
+                if(writer != null)
+                    writer.Write("Qmn");
+                this.qmn = this.ExpectationValuePositionOperator(writer);
+            }
+
+            int count = this.qmn.Length;
+
+            int[] limit = new int[count];
+            for(int i = 0; i < count; i++)
+                for(int j = i; j < count; j++)
+                    if(this.qmn[i, j] > precision)
+                        limit[i] = j - i;
+
+            // Iterations
+            int delta = limit[s];
+            int delta0 = -1;
+            while(delta0 != delta) {
+                delta0 = delta;
+                for(int j = System.Math.Max(0, s - delta0); j < System.Math.Min(count, s + delta0 + 1); j++)
+                    delta = System.Math.Max(delta, limit[j]);
+            }
+
+            int imin1 = System.Math.Max(0, s - delta);
+            int imax1 = System.Math.Min(count, s + delta + 1);
+
+            int imin2 = System.Math.Max(0, s - 2 * delta);
+            int imax2 = System.Math.Min(count, s + 2 * delta + 1);
+
+            if(writer != null)
+                writer.Write(string.Format("({0},{1})", count, delta));
+
+            int length1 = imax1 - imin1;
+            int length2 = imax2 - imin2;
+
+            Vector ev = this.eigenSystem.GetEigenValues() as Vector;
+
+            int tl = time.Length;
+            Vector result = new Vector(tl);
+
+            for(int i = imin2; i < imax2; i++) {
+                Vector dr = new Vector(tl);
+                Vector di = new Vector(tl);
+                for(int j = imin1; j < imax1; j++) {
+                    double a = this.qmn[s, j] * this.qmn[j, i];
+                    double de1 = a * (ev[s] - ev[j]);
+                    double de2 = a * (ev[j] - ev[i]);
+                    for(int k = 0; k < tl; k++) {
+                        double t = time[k];
+                        dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
+                        di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                    }
+                }
+
+                for(int k = 0; k < tl; k++)
+                    result[k] += dr[k] * dr[k] + di[k] * di[k];
+            }
+
+            return result;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží výsledky do souboru
@@ -419,6 +494,7 @@ namespace PavelStransky.Systems {
             IEParam param = new IEParam();
             param.Add(this.eigenSystem, "EigenSystem");
             param.Add(this.type, "Type");
+            param.Add(this.qmn, "Qmn");
             param.Export(export);
         }
 
@@ -431,6 +507,7 @@ namespace PavelStransky.Systems {
             IEParam param = new IEParam(import);
             this.eigenSystem = (EigenSystem)param.Get();
             this.type = (int)param.Get(0);
+            this.qmn = (Matrix)param.Get();
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
         #endregion

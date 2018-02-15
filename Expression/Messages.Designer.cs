@@ -4930,6 +4930,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculates the microcanonical OTOC.
+        /// </summary>
+        internal static string HelpOTOC {
+            get {
+                return ResourceManager.GetString("HelpOTOC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outer product of two vectors.
         /// </summary>
         internal static string HelpOuterProduct {

@@ -20,7 +20,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             QuantumDicke qd = arguments[0] as QuantumDicke;
-            return qd.ExpectationValuePositionOperator();
+            return qd.ExpectationValuePositionOperator(guider);
         }
     }
 }

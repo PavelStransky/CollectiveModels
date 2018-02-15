@@ -79,9 +79,9 @@ namespace PavelStransky.Systems {
                 if (this.type > 0) {
                     if ((n + (m + this.j + this.type) / 2) % 2 != 0)
                         return -1;
-                    return (n / 2) * mod + (m + this.j) / 2;
+                    return (n / 2) * this.mod + (m + this.j) / 2;
                 }
-                return n * mod + (m + this.j) / 2;
+                return n * this.mod + (m + this.j) / 2;
             }
         }
 

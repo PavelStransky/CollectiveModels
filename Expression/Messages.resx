@@ -4158,4 +4158,7 @@ Second differing type: {1}</value>
   <data name="HelpAMEMass" xml:space="preserve">
     <value>Returns a matrix with masses of known isotopes</value>
   </data>
+  <data name="HelpOTOC" xml:space="preserve">
+    <value>Calculates the microcanonical OTOC</value>
+  </data>
 </root>

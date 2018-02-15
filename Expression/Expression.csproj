@@ -218,6 +218,7 @@
     <Compile Include="Functions\Quantum\EntanglementEntropy.cs" />
     <Compile Include="Functions\Quantum\ExpandBasis.cs" />
     <Compile Include="Functions\Quantum\HOSpectrum3D.cs" />
+    <Compile Include="Functions\Quantum\OTOC.cs" />
     <Compile Include="Functions\Quantum\Quench.cs" />
     <Compile Include="Functions\Quantum\QuenchEntropy.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinFullL.cs" />

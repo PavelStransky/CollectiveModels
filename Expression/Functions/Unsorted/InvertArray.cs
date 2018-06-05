@@ -30,7 +30,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 int lengthX = a.Length;
                 int lengthY = 0;
                 for(int i = 0; i < lengthX; i++)
-                    lengthY = System.Math.Max(lengthX, (a[i] as Vector).Length);
+                    lengthY = System.Math.Max(lengthY, (a[i] as Vector).Length);
 
                 if(arguments.Count > 1) {
                     Vector x = arguments[1] as Vector;

@@ -67,7 +67,7 @@ namespace PavelStransky.Math {
             }
 
             Vector v = new Vector(6);
-            
+
             // Odhady parametrù regrese
             double a = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx * sumx);
             double b = (sumy - a * sumx) / n;
@@ -75,12 +75,12 @@ namespace PavelStransky.Math {
             v[1] = a;
             v[0] = b;
 
-            // Odhad smìrodatné odchylky (s^2)
-            v[2] = (sumy2 - v[0] * sumy - v[1] * sumxy) / (n - 2);
+            // Odhad smìrodatné odchylky s
+            v[2] = System.Math.Sqrt((sumy2 - b * sumy - a * sumxy) / (n - 2));
 
             // Smìrodatné odchylky parametrù
-            v[3] = System.Math.Sqrt(v[2] * sumx2 / (n * sumx2 - sumx * sumx));
-            v[4] = System.Math.Sqrt(n * v[2] / (n * sumx2 - sumx * sumx));
+            v[3] = v[2] * System.Math.Sqrt(1.0 / n * (1.0 + sumx * sumx / (n * sumx2 - sumx * sumx)));
+            v[4] = v[2] / System.Math.Sqrt(sumx2 - sumx * sumx / n);
 
             v[5] = 0;
             for(int i = 0; i < n; i++) {

@@ -15,16 +15,16 @@ namespace PavelStransky.Expression.Functions.Def {
         protected override void CreateParameters() {
             this.SetNumParams(5);
 
-            this.SetParam(0, true, true, false, Messages.PInitialSystem, Messages.PInitialSystemDescription, null, typeof(QuantumDicke));
-            this.SetParam(1, true, true, false, Messages.PFinalSystem, Messages.PFinalSystemDescription, null, typeof(QuantumDicke));
+            this.SetParam(0, true, true, false, Messages.PInitialSystem, Messages.PInitialSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(1, true, true, false, Messages.PFinalSystem, Messages.PFinalSystemDescription, null, typeof(IQuantumSystem));
             this.SetParam(2, true, true, false, Messages.PInitialState, Messages.PInitialStateDescription, 0, typeof(int), typeof(Vector));
             this.SetParam(3, true, true, false, Messages.PTime, Messages.PTimeDescription, null, typeof(Vector));
             this.SetParam(4, false, true, true, Messages.PPrecision, Messages.PPrecisionDescription, 1E-4, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            QuantumDicke di = arguments[0] as QuantumDicke;
-            QuantumDicke df = arguments[1] as QuantumDicke;
+            IQuantumSystem di = arguments[0] as IQuantumSystem;
+            IQuantumSystem df = arguments[1] as IQuantumSystem;
 
             int lengthi = di.EigenSystem.GetEigenVector(0).Length;
             int numEVi = di.EigenSystem.NumEV;
@@ -71,16 +71,13 @@ namespace PavelStransky.Expression.Functions.Def {
 
             // Heisenberg time
             Vector es = df.EigenSystem.GetEigenValues() as Vector;
-            es /= (df.Omega0 * df.J);
+//            es /= (df.Omega0 * df.J);
 
-            double heisenberg1 = 0;
-            double heisenberg2 = 0;
-            for(int i = 1; i < numEVf; i++) {
-                heisenberg1 += (d[i] + d[i - 1]) * (es[i] - es[i - 1]);
-                heisenberg2 += System.Math.Sqrt(d[i] * d[i - 1]) * (es[i] - es[i - 1]);
-            }
-            heisenberg1 = 4.0 * System.Math.PI / heisenberg1;
-            heisenberg2 = 2.0 * System.Math.PI / heisenberg2;
+            double heisenberg = 0;
+            for(int i = 1; i < numEVf; i++) 
+                heisenberg += (d[i] + d[i - 1]) * (es[i] - es[i - 1]);
+
+            heisenberg = 4.0 * System.Math.PI / heisenberg;
 
             // Calculation optimalization
             int mini = -1;
@@ -101,7 +98,7 @@ namespace PavelStransky.Expression.Functions.Def {
 
             double ipr = d.SquaredEuklideanNorm();
             if(guider != null)
-                guider.Write(string.Format("IPR={0:0.000} HT=({1:0},{2:0})", ipr, heisenberg1, heisenberg2));
+                guider.Write(string.Format("IPR={0:0.000} HT={1:0}", ipr, heisenberg));
 
             Vector r = new Vector(tLength);
             for(int i = 0; i < tLength; i++)
@@ -131,7 +128,7 @@ namespace PavelStransky.Expression.Functions.Def {
             result.Add(mini);
             result.Add(maxi);
             result.Add(ac);
-            result.Add(new PointD(heisenberg1, heisenberg2));
+            result.Add(heisenberg);
 
             return result;
         }

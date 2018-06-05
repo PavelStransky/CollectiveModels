@@ -137,9 +137,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 guider.WriteLine();
                 guider.WriteLine(string.Format(Messages.MsgLevelNumber, s.TotalLevels()));
                 guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime, true));
-            }
-
-            
+            }                                                         
 
             return s.GetResult();
         }

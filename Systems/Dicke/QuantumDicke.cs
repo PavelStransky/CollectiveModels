@@ -462,7 +462,15 @@ namespace PavelStransky.Systems {
             int tl = time.Length;
             Vector result = new Vector(tl);
 
+            int li = 0;
             for(int i = imin2; i < imax2; i++) {
+
+                if(100 * (i - imin2) / length2 > li) {
+                    if(writer != null)
+                        writer.Write('.');
+                    li = 100 * (i - imin2) / length2;
+                }
+
                 Vector dr = new Vector(tl);
                 Vector di = new Vector(tl);
                 for(int j = imin1; j < imax1; j++) {

@@ -13,6 +13,7 @@ namespace PavelStransky.Systems {
         private int j, m2;
 
         private int[] nb, m;
+        private int length;
 
         /// <summary>
         /// Konstruktor
@@ -35,26 +36,14 @@ namespace PavelStransky.Systems {
             this.m2 = (int)basisParams[0];
             this.j = (int)basisParams[1];
 
-            int minnb = System.Math.Max(0, (this.m2 - 4 * this.j) / 2);
-            int maxnb = this.m2 / 2;
+            this.length = System.Math.Min(2 * this.j + 1, this.m2 + 1);
 
-            int length = 0;
-            for(int i = minnb; i <= maxnb; i++) {
-                int m1 = this.m2 / 2 - i - this.j;
-                if(m1 >= -this.j && m1 <= this.j)
-                    length++;
-            }
+            this.m = new int[this.length];
+            this.nb = new int[this.length];
 
-            this.m = new int[length];
-            this.nb = new int[length];
-            length = 0;
-            for(int i = minnb; i <= maxnb; i++) {
-                int m1 = this.m2 / 2 - i -this.j;
-                if(m1 >= -this.j && m1 <= this.j) {
-                    this.m[length] = m1;
-                    this.nb[length] = i;
-                    length++;
-                }
+            for(int i = 0; i < length; i++) {
+                this.m[i] = -this.j + i;
+                this.nb[i] = this.m2 - i;
             }
         }
 
@@ -86,23 +75,22 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Poèet prvkù
         /// </summary>
-        public override int Length { get { return this.nb.Length; } }
+        public override int Length { get { return this.length; } }
 
         /// <summary>
         /// Šíøka pásu pásové matice
         /// </summary>
-        public override int BandWidth { get { return System.Math.Min(3, this.Length); } }
+        public override int BandWidth { get { return System.Math.Min(3, this.length); } }
 
         /// <summary>
         /// Maximální hodnota poètu bosonù
         /// </summary>
-        public int MaxNb { get { return this.nb[this.Length - 1]; } }
+        public int MaxNb { get { return this.m2; } }
 
         /// <summary>
         /// Minimální hodnota poètu bosonù
         /// </summary>
-        public int MinNb { get { return this.nb[0]; } }
-
+        public int MinNb { get { return System.Math.Max(0, this.m2 - 2 * this.j); } }
 
         /// <summary>
         /// Vrací index prvku s kvantovými èísly nb, m
@@ -112,10 +100,11 @@ namespace PavelStransky.Systems {
         /// <param name="m">Orbitální kvantové èíslo</param>
         public int this[int nb, int m] {
             get {
-                for(int i = 0; i < this.Length; i++)
-                    if(this.nb[i] == nb && this.m[i] == m)
-                        return i;
-                return -1;
+                if(nb + m + this.j != this.m2)
+                    return -1;
+                if(nb < 0 || m < -this.j || m > this.j)
+                    return -1;
+                return m + this.j;                
             }
         }
 

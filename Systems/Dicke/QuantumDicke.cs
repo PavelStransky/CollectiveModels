@@ -10,6 +10,7 @@ namespace PavelStransky.Systems {
     public class QuantumDicke : Dicke, IQuantumSystem, IEntanglement {
         private int type;
         private Matrix qmn = null;
+        private Matrix pmn = null;
 
         /// <summary>
         /// Konstruktor
@@ -371,16 +372,30 @@ namespace PavelStransky.Systems {
             return result;
         }
 
-        /// <summary>
-        /// Střední hodnota operátoru q = (a+ + a) / (sqrt(2));
-        /// </summary>
         public Matrix ExpectationValuePositionOperator(IOutputWriter writer) {
+            this.ExpectationValuePQOperators(writer);
+            return this.pmn;
+        }
+
+        /// <summary>
+        /// Střední hodnota operátorů
+        /// q = (a+ + a) / (sqrt(2))
+        /// p = (a+ - a) / (i sqrt(2))
+        /// </summary>
+        private void ExpectationValuePQOperators(IOutputWriter writer) {
+            if(this.qmn != null & this.pmn != null)
+                return;
+
+            if(writer != null)
+                writer.Write("QPmn");
+
             DickeBasisIndex index = this.eigenSystem.BasisIndex as DickeBasisIndex;
 
             int count = this.eigenSystem.NumEV;
             int length = index.Length;
 
-            Matrix result = new Matrix(count);
+            this.pmn = new Matrix(count);
+            this.qmn = new Matrix(count);
 
             double c = 1.0 / System.Math.Sqrt(2);
 
@@ -390,7 +405,8 @@ namespace PavelStransky.Systems {
                 Vector ev1 = this.eigenSystem.GetEigenVector(i);
                 for(int j = i; j < count; j++) {
                     Vector ev2 = this.eigenSystem.GetEigenVector(j);
-                    double d = 0.0;
+                    double q = 0.0;
+                    double p = 0.0;
                     for(int k = 0; k < length; k++) {
                         int n = index.N[k];
                         int m = index.M[k];
@@ -398,18 +414,24 @@ namespace PavelStransky.Systems {
                         int k1 = index[n - 1, m];
                         int k2 = index[n + 1, m];
 
-                        if(k1 >= 0)
-                            d += ev1[k] * System.Math.Sqrt(n) * ev2[k1];
-                        if(k2 >= 0)
-                            d += ev1[k] * System.Math.Sqrt(n + 1) * ev2[k2];
+                        if(k1 >= 0) {
+                            double x = ev1[k] * System.Math.Sqrt(n) * ev2[k1];
+                            q += x;
+                            p -= x;
+                        }
+                        if(k2 >= 0) {
+                            double x = ev1[k] * System.Math.Sqrt(n + 1) * ev2[k2];
+                            q += x;
+                            p += x;
+                        }
                     }
 
-                    result[i, j] = c * d;
-                    result[j, i] = c * d;
+                    this.qmn[i, j] = c * q;
+                    this.qmn[j, i] = c * q;
+                    this.pmn[i, j] = c * p;
+                    this.pmn[j, i] = -c * p;
                 }
             }
-
-            return result;
         }
 
         /// <summary>
@@ -422,18 +444,14 @@ namespace PavelStransky.Systems {
             if(writer != null)
                 writer.Write(string.Format("{0}...", s));
 
-            if(this.qmn == null) {
-                if(writer != null)
-                    writer.Write("Qmn");
-                this.qmn = this.ExpectationValuePositionOperator(writer);
-            }
+            this.ExpectationValuePQOperators(writer);
 
             int count = this.qmn.Length;
 
             int[] limit = new int[count];
             for(int i = 0; i < count; i++)
                 for(int j = i; j < count; j++)
-                    if(this.qmn[i, j] > precision)
+                    if(this.qmn[i, j] > precision || this.pmn[i, j] > precision)
                         limit[i] = j - i;
 
             // Iterations
@@ -474,13 +492,14 @@ namespace PavelStransky.Systems {
                 Vector dr = new Vector(tl);
                 Vector di = new Vector(tl);
                 for(int j = imin1; j < imax1; j++) {
-                    double a = this.qmn[s, j] * this.qmn[j, i];
-                    double de1 = a * (ev[s] - ev[j]);
-                    double de2 = a * (ev[j] - ev[i]);
+                    double a = this.qmn[s, j] * this.pmn[j, i];
+                    double b = this.pmn[s, j] * this.qmn[j, i];
+                    double de1 = ev[s] - ev[j];
+                    double de2 = ev[j] - ev[i];
                     for(int k = 0; k < tl; k++) {
                         double t = time[k];
-                        dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
-                        di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                        dr[k] += a * System.Math.Cos(de1 * t) - b * System.Math.Cos(de2 * t);
+                        di[k] += a * System.Math.Sin(de1 * t) - b * System.Math.Sin(de2 * t);
                     }
                 }
 
@@ -503,6 +522,7 @@ namespace PavelStransky.Systems {
             param.Add(this.eigenSystem, "EigenSystem");
             param.Add(this.type, "Type");
             param.Add(this.qmn, "Qmn");
+            param.Add(this.pmn, "Pmn");
             param.Export(export);
         }
 
@@ -516,6 +536,7 @@ namespace PavelStransky.Systems {
             this.eigenSystem = (EigenSystem)param.Get();
             this.type = (int)param.Get(0);
             this.qmn = (Matrix)param.Get();
+            this.pmn = (Matrix)param.Get();
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
         #endregion

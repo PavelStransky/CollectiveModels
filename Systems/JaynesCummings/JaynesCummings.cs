@@ -10,6 +10,7 @@ namespace PavelStransky.Systems {
     public class JaynesCummings: IQuantumSystem, IExportable, IEntanglement {
         // Systém s vlastními hodnotami
         protected EigenSystem eigenSystem;
+        private Matrix[] qmn = null;
 
         // parametry
         protected double omega, omega0, lambda;
@@ -143,6 +144,193 @@ namespace PavelStransky.Systems {
             }
 
             return result;
+        }
+
+        private class Qmn {
+            private JaynesCummings[] jcs;
+            private Matrix[] qmn;
+            private Matrix[] de;
+
+            int minN, maxN, minM, maxM;
+
+            int numEV, size;
+
+            public Qmn(JaynesCummings jc) {
+                this.jcs = new JaynesCummings[5];
+                JaynesCummingsBasisIndex index = jc.eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
+
+                for(int i = 0; i < 5; i++) {
+                    if(i == 2)
+                        this.jcs[i] = jc;
+                    else {
+                        this.jcs[i] = new JaynesCummings(jc.omega, jc.omega0, jc.lambda);
+                        Vector v = new Vector(2);
+                        v[0] = index.M2 - 2 + i;
+                        v[1] = index.J;
+                        this.jcs[i].EigenSystem.Diagonalize(v, true, 0, null, ComputeMethod.LAPACKBand);
+                    }
+                }
+
+                this.minN = System.Math.Max(0, index.M2 - 2 - 2 * index.J);
+                this.maxN = index.M2 + 2;
+                this.minM = -index.J;
+                this.maxM = System.Math.Min(index.M2 + 2 - index.J, index.J);
+
+                this.size = this.maxM - this.minM + 1;
+
+                this.CalculateQmn();
+            }
+
+            private void CalculateQmn() {
+                this.qmn = new Matrix[4];
+                this.de = new Matrix[4];
+
+                double c = 1.0 / System.Math.Sqrt(2);
+
+                for(int l = 0; l < 4; l++) {
+                    JaynesCummingsBasisIndex index1 = this.jcs[l].eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
+                    JaynesCummingsBasisIndex index2 = this.jcs[l + 1].eigenSystem.BasisIndex as JaynesCummingsBasisIndex;
+
+                    int count1 = index1.Length;
+                    int count2 = index2.Length;
+
+                    this.qmn[l] = new Matrix(count1, count2);
+                    this.de[l] = new Matrix(count1, count2);
+
+                    Vector e1 = this.jcs[l].eigenSystem.GetEigenValues() as Vector;
+                    Vector e2 = this.jcs[l + 1].eigenSystem.GetEigenValues() as Vector;
+
+                    for(int i = 0; i < count1; i++) {
+                        Vector ev1 = this.jcs[l].eigenSystem.GetEigenVector(i);
+                        for(int j = 0; j < count2; j++) {
+                            Vector ev2 = this.jcs[l + 1].eigenSystem.GetEigenVector(j);
+                            double d = 0.0;
+                            for(int k = 0; k < count2; k++) {
+                                int n = index2.Nb[k];
+                                int m = index2.M[k];
+
+                                int k0 = index1[n - 1, m];
+
+                                if(k0 >= 0)
+                                    d += ev1[k0] * System.Math.Sqrt(n + 1) * ev2[k];
+                            }
+
+                            this.qmn[l][i, j] = c * d;
+                            this.de[l][i, j] = e2[j] - e1[i];
+                        }
+                    }
+                }
+            }
+
+
+            public Vector CalculateOTOC(int s, Vector time, IOutputWriter writer) {
+
+                int tl = time.Length;
+                Vector result = new Vector(tl);
+
+                // M, M
+                int count = (this.jcs[2].eigenSystem.BasisIndex as JaynesCummingsBasisIndex).Length;
+
+                for(int i = 0; i < count; i++) {
+                    Vector dr = new Vector(tl);
+                    Vector di = new Vector(tl);
+
+                    // M, M-1
+                    int count1 = this.qmn[1].LengthX;
+
+                    for(int j = 0; j < count1; j++) {
+                        double a = this.qmn[1][j, s] * this.qmn[1][j, i];
+                        double de1 = a * this.de[1][j, s];
+                        double de2 = a * this.de[1][j, i];
+                        for(int k = 0; k < tl; k++) {
+                            double t = time[k];
+                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
+                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                        }
+                    }
+
+                    // M, M+1
+                    count1 = this.qmn[2].LengthY;
+
+                    for(int j = 0; j < count1; j++) {
+                        double a = this.qmn[2][s, j] * this.qmn[2][i, j];
+                        double de1 = a * this.de[2][s, j];
+                        double de2 = a * this.de[2][i, j];
+                        for(int k = 0; k < tl; k++) {
+                            double t = time[k];
+                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
+                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                        }
+                    }
+
+                    for(int k = 0; k < tl; k++)
+                        result[k] += dr[k] * dr[k] + di[k] * di[k];
+                }
+                
+                // M, M-2
+                count = (this.jcs[0].eigenSystem.BasisIndex as JaynesCummingsBasisIndex).Length;
+
+                for(int i = 0; i < count; i++) {
+                    Vector dr = new Vector(tl);
+                    Vector di = new Vector(tl);
+
+                    // M, M-1, M-2
+                    int count1 = this.qmn[1].LengthX;
+
+                    for(int j = 0; j < count1; j++) {
+                        double a = this.qmn[1][j, s] * this.qmn[0][i, j];
+                        double de1 = a * this.de[1][j, s];
+                        double de2 = a * this.de[0][i, j];
+                        for(int k = 0; k < tl; k++) {
+                            double t = time[k];
+                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
+                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                        }
+                    }
+
+                    for(int k = 0; k < tl; k++)
+                        result[k] += dr[k] * dr[k] + di[k] * di[k];
+                }
+
+                // M, M+2
+                count = (this.jcs[4].eigenSystem.BasisIndex as JaynesCummingsBasisIndex).Length;
+
+                for(int i = 0; i < count; i++) {
+                    Vector dr = new Vector(tl);
+                    Vector di = new Vector(tl);
+
+                    // M, M+1, M+2
+                    int count1 = this.qmn[2].LengthY;
+
+                    for(int j = 0; j < count1; j++) {
+                        double a = this.qmn[2][s, j] * this.qmn[3][j, i];
+                        double de1 = a * this.de[2][s, j];
+                        double de2 = a * this.de[3][j, i];
+                        for(int k = 0; k < tl; k++) {
+                            double t = time[k];
+                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
+                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                        }
+                    }
+
+                    for(int k = 0; k < tl; k++)
+                        result[k] += dr[k] * dr[k] + di[k] * di[k];
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Mikrokanonický OTOC pro stav s a èasy t
+        /// </summary>
+        /// <param name="s">Stav</param>
+        /// <param name="time">Èasy</param>
+        /// <param name="precision">Pøesnost</param>
+        public Vector OTOC(int s, Vector time, double precision, IOutputWriter writer) {
+            Qmn qmn = new Qmn(this);
+
+            return qmn.CalculateOTOC(s, time, writer);
         }
 
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {

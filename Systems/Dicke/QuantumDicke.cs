@@ -427,8 +427,9 @@ namespace PavelStransky.Systems {
                     }
 
                     this.qmn[i, j] = c * q;
-                    this.qmn[j, i] = c * q;
                     this.pmn[i, j] = c * p;
+
+                    this.qmn[j, i] = c * q;
                     this.pmn[j, i] = -c * p;
                 }
             }
@@ -441,8 +442,12 @@ namespace PavelStransky.Systems {
         /// <param name="time">Časy</param>
         /// <param name="precision">Přesnost</param>
         public Vector OTOC(int s, Vector time, double precision, IOutputWriter writer) {
+            Vector ev = this.eigenSystem.GetEigenValues() as Vector;
+
             if(writer != null)
-                writer.Write(string.Format("{0}...", s));
+                writer.Write(string.Format("{0}({1})...", s, ev[s]));
+
+            DateTime startTime = DateTime.Now;
 
             this.ExpectationValuePQOperators(writer);
 
@@ -451,7 +456,7 @@ namespace PavelStransky.Systems {
             int[] limit = new int[count];
             for(int i = 0; i < count; i++)
                 for(int j = i; j < count; j++)
-                    if(this.qmn[i, j] > precision || this.pmn[i, j] > precision)
+                    if(System.Math.Abs(this.qmn[i, j]) > precision || System.Math.Abs(this.pmn[i, j]) > precision)
                         limit[i] = j - i;
 
             // Iterations
@@ -475,18 +480,16 @@ namespace PavelStransky.Systems {
             int length1 = imax1 - imin1;
             int length2 = imax2 - imin2;
 
-            Vector ev = this.eigenSystem.GetEigenValues() as Vector;
-
             int tl = time.Length;
             Vector result = new Vector(tl);
 
             int li = 0;
             for(int i = imin2; i < imax2; i++) {
 
-                if(100 * (i - imin2) / length2 > li) {
+                if(20 * (i - imin2) / length2 > li) {
                     if(writer != null)
                         writer.Write('.');
-                    li = 100 * (i - imin2) / length2;
+                    li = 20 * (i - imin2) / length2;
                 }
 
                 Vector dr = new Vector(tl);
@@ -507,6 +510,8 @@ namespace PavelStransky.Systems {
                     result[k] += dr[k] * dr[k] + di[k] * di[k];
             }
 
+            if(writer != null)
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
             return result;
         }
 

@@ -151,9 +151,9 @@ namespace PavelStransky.Systems {
             private Matrix[] qmn;
             private Matrix[] de;
 
-            int minN, maxN, minM, maxM;
+            private int minN, maxN, minM, maxM;
 
-            int numEV, size;
+            private int size;
 
             public Qmn(JaynesCummings jc) {
                 this.jcs = new JaynesCummings[5];
@@ -240,12 +240,12 @@ namespace PavelStransky.Systems {
 
                     for(int j = 0; j < count1; j++) {
                         double a = this.qmn[1][j, s] * this.qmn[1][j, i];
-                        double de1 = a * this.de[1][j, s];
-                        double de2 = a * this.de[1][j, i];
+                        double de1 = this.de[1][j, s];
+                        double de2 = this.de[1][j, i];
                         for(int k = 0; k < tl; k++) {
                             double t = time[k];
-                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
-                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                            dr[k] += a * System.Math.Cos(de1 * t) + a * System.Math.Cos(de2 * t);
+                            di[k] += a * System.Math.Sin(de1 * t) + a * System.Math.Sin(de2 * t);
                         }
                     }
 
@@ -254,12 +254,12 @@ namespace PavelStransky.Systems {
 
                     for(int j = 0; j < count1; j++) {
                         double a = this.qmn[2][s, j] * this.qmn[2][i, j];
-                        double de1 = a * this.de[2][s, j];
-                        double de2 = a * this.de[2][i, j];
+                        double de1 = this.de[2][s, j];
+                        double de2 = this.de[2][i, j];
                         for(int k = 0; k < tl; k++) {
                             double t = time[k];
-                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
-                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                            dr[k] -= a * System.Math.Cos(de1 * t) + a * System.Math.Cos(de2 * t);
+                            di[k] -= a * System.Math.Sin(de1 * t) + a * System.Math.Sin(de2 * t);
                         }
                     }
 
@@ -279,12 +279,12 @@ namespace PavelStransky.Systems {
 
                     for(int j = 0; j < count1; j++) {
                         double a = this.qmn[1][j, s] * this.qmn[0][i, j];
-                        double de1 = a * this.de[1][j, s];
-                        double de2 = a * this.de[0][i, j];
+                        double de1 = this.de[1][j, s];
+                        double de2 = this.de[0][i, j];
                         for(int k = 0; k < tl; k++) {
                             double t = time[k];
-                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
-                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                            dr[k] += a * System.Math.Cos(de1 * t) + a * System.Math.Cos(de2 * t);
+                            di[k] += a * System.Math.Sin(de1 * t) + a * System.Math.Sin(de2 * t);
                         }
                     }
 
@@ -304,12 +304,12 @@ namespace PavelStransky.Systems {
 
                     for(int j = 0; j < count1; j++) {
                         double a = this.qmn[2][s, j] * this.qmn[3][j, i];
-                        double de1 = a * this.de[2][s, j];
-                        double de2 = a * this.de[3][j, i];
+                        double de1 = this.de[2][s, j];
+                        double de2 = this.de[3][j, i];
                         for(int k = 0; k < tl; k++) {
                             double t = time[k];
-                            dr[k] += de2 * System.Math.Cos(de1 * t) - de1 * System.Math.Cos(de2 * t);
-                            di[k] += de2 * System.Math.Sin(de1 * t) - de1 * System.Math.Sin(de2 * t);
+                            dr[k] += a * System.Math.Cos(de1 * t) - a * System.Math.Cos(de2 * t);
+                            di[k] += a * System.Math.Sin(de1 * t) - a * System.Math.Sin(de2 * t);
                         }
                     }
 

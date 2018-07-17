@@ -427,10 +427,11 @@ namespace PavelStransky.Math {
             for(int i = 0; i < this.LengthX; i++)
                 for(int j = 0; j < this.LengthY; j++) {
                     result[i, j] += (this[i, j]
-                        + (i > 0 ? this[i - 1, j] + (j > 0 ? this[i - 1, j - 1] : 0.0) + (j < this.LengthY - 1 ? this[i - 1, j + 1] : 0.0) : 0.0)
-                        + (j > 0 ? this[i, j - 1] : 0.0)
-                        + (j < this.LengthY - 1 ? this[i, j + 1] : 0.0)
-                        + (i < this.LengthX - 1 ? this[i + 1, j] + (j > 0 ? this[i + 1, j - 1] : 0.0) + (j < this.LengthY - 1 ? this[i + 1, j + 1] : 0.0) : 0.0)) / 9.0;
+                        + (i > 0 ? this[i - 1, j] + (j > 0 ? this[i - 1, j - 1] : this[i - 1, j]) + (j < this.LengthY - 1 ? this[i - 1, j + 1] : this[i - 1, j]) : this[i, j] + (j > 0 ? this[i, j - 1] : this[i, j]) + (j < this.LengthY - 1 ? this[i, j + 1] : this[i, j]))
+                        + (j > 0 ? this[i, j - 1] : this[i, j])
+                        + (j < this.LengthY - 1 ? this[i, j + 1] : this[i, j])
+                        + (i < this.LengthX - 1 ? this[i + 1, j] + (j > 0 ? this[i + 1, j - 1] : this[i + 1, j]) + (j < this.LengthY - 1 ? this[i + 1, j + 1] : this[i + 1, j]) : this[i, j] + (j > 0 ? this[i, j - 1] : this[i, j]) + (j < this.LengthY - 1 ? this[i, j + 1] : this[i, j]))) 
+                        / 9.0;
                 }
 
             return result;

@@ -261,6 +261,7 @@
     <Compile Include="Functions\Unsorted\Interpolate3D.cs" />
     <Compile Include="Functions\Unsorted\InvertArray.cs" />
     <Compile Include="Functions\Spin\Ising2D.cs" />
+    <Compile Include="Functions\Unsorted\OTOCAsymptoticVariance.cs" />
     <Compile Include="Functions\Unsorted\Phase.cs" />
     <Compile Include="Functions\Unsorted\RandomPermutation.cs" />
     <Compile Include="Functions\Unsorted\Resultant.cs" />

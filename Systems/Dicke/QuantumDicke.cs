@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 using PavelStransky.Math;
 using PavelStransky.Core;
@@ -11,6 +12,8 @@ namespace PavelStransky.Systems {
         private int type;
         private Matrix qmn = null;
         private Matrix pmn = null;
+        private Matrix qmn2 = null;
+        private Matrix pmn2 = null;
 
         /// <summary>
         /// Konstruktor
@@ -383,7 +386,7 @@ namespace PavelStransky.Systems {
         /// p = (a+ - a) / (i sqrt(2))
         /// </summary>
         private void ExpectationValuePQOperators(IOutputWriter writer) {
-            if(this.qmn != null & this.pmn != null)
+            if(this.qmn != null & this.pmn != null & this.qmn2 != null && this.pmn2 != null)
                 return;
 
             if(writer != null)
@@ -396,6 +399,8 @@ namespace PavelStransky.Systems {
 
             this.pmn = new Matrix(count);
             this.qmn = new Matrix(count);
+            this.pmn2 = new Matrix(count);
+            this.qmn2 = new Matrix(count);
 
             double c = 1.0 / System.Math.Sqrt(2);
 
@@ -431,6 +436,12 @@ namespace PavelStransky.Systems {
 
                     this.qmn[j, i] = c * q;
                     this.pmn[j, i] = -c * p;
+
+                    this.qmn2[i, j] = this.qmn[i, j] * this.qmn[j, i];
+                    this.pmn2[i, j] = this.pmn[i, j] * this.pmn[j, i];
+
+                    this.qmn2[j, i] = this.qmn2[i, j];
+                    this.pmn2[j, i] = this.pmn2[i, j];
                 }
             }
         }
@@ -441,7 +452,7 @@ namespace PavelStransky.Systems {
         /// <param name="s">Stav</param>
         /// <param name="time">Časy</param>
         /// <param name="precision">Přesnost</param>
-        public Vector OTOC(int s, Vector time, double precision, IOutputWriter writer) {
+        public ArrayList OTOC(int s, Vector time, double precision, IOutputWriter writer) {
             Vector ev = this.eigenSystem.GetEigenValues() as Vector;
 
             if(writer != null)
@@ -480,8 +491,8 @@ namespace PavelStransky.Systems {
             int length1 = imax1 - imin1;
             int length2 = imax2 - imin2;
 
-            int tl = time.Length;
-            Vector result = new Vector(tl);
+            int timel = time.Length;
+            Vector otoc = new Vector(timel);
 
             int li = 0;
             for(int i = imin2; i < imax2; i++) {
@@ -492,26 +503,91 @@ namespace PavelStransky.Systems {
                     li = 20 * (i - imin2) / length2;
                 }
 
-                Vector dr = new Vector(tl);
-                Vector di = new Vector(tl);
+                Vector dr = new Vector(timel);
+                Vector di = new Vector(timel);
                 for(int j = imin1; j < imax1; j++) {
                     double a = this.qmn[s, j] * this.pmn[j, i];
                     double b = this.pmn[s, j] * this.qmn[j, i];
                     double de1 = ev[s] - ev[j];
                     double de2 = ev[j] - ev[i];
-                    for(int k = 0; k < tl; k++) {
+                    for(int k = 0; k < timel; k++) {
                         double t = time[k];
                         dr[k] += a * System.Math.Cos(de1 * t) - b * System.Math.Cos(de2 * t);
                         di[k] += a * System.Math.Sin(de1 * t) - b * System.Math.Sin(de2 * t);
                     }
                 }
 
-                for(int k = 0; k < tl; k++)
-                    result[k] += dr[k] * dr[k] + di[k] * di[k];
+                for(int k = 0; k < timel; k++)
+                    otoc[k] += dr[k] * dr[k] + di[k] * di[k];
+            }
+
+            if(writer != null)
+                writer.Write('A');
+
+            // Asymptotic mean and variance
+            double asymptotic = 0;
+            double vara = 0, varb = 0, varc = 0, vard = 0, vare = 0, varf = 0, varg = 0, varh = 0, vari = 0, varj = 0, vark = 0, varl = 0;
+            for(int i = imin2; i < imax2; i++) {
+                if(i % 10 == 0 && writer != null)
+                    writer.Write(".");
+                for(int j = imin2; j < imax2; j++) {
+                    asymptotic -= this.qmn2[i, j] * this.pmn2[s, i] + this.qmn2[s, i] * this.pmn2[i, j];
+
+                    vara += this.qmn2[s, i] * this.qmn2[s, j] * this.pmn2[s, i] * this.pmn2[s, j];
+                    varj += this.pmn2[s, i] * this.pmn2[s, j] * this.qmn2[i, j] * this.qmn2[i, j];
+
+                    double tb = this.qmn[s, i] * this.qmn[i, j] * this.pmn[s, i] * this.pmn[i, j];
+                    double tc = this.qmn2[s, i] * this.pmn2[i, j];
+                    double td = this.pmn2[s, i] * this.qmn2[i, j] * this.pmn2[j, s];
+                    double te = this.pmn[s, i] * this.pmn[i, j] * this.qmn2[s, i];
+                    double tg = this.qmn2[s, i] * this.pmn2[s, i];
+                    double th = this.qmn2[s, i] * this.qmn2[i, j] * this.pmn2[j, s];
+                    double ti = this.pmn2[s, i] * this.qmn2[i, j];
+
+                    for(int k = imin2; k < imax2; k++) {
+                        varb += tb * this.qmn[j, k] * this.qmn[k, s] * this.pmn[j, k] * this.pmn[k, s];
+                        varc += tc * this.qmn2[j, k] * this.pmn2[k, s];
+                        vard += td * this.qmn2[i, k];
+                        vare += te * this.pmn[j, k] * this.pmn[k, s] * this.qmn2[k, s];
+                        varg += tg * this.qmn2[s, k] * this.pmn2[k, j];
+                        varh += th * this.pmn2[i, k];
+                        vari += ti * this.qmn2[j, k] * this.pmn2[k, s];
+
+                        double tf = this.qmn[s, i] * this.qmn[i, k] * this.qmn[k, j] * this.qmn[j, s] * this.pmn[s, i] * this.pmn[j, s];
+                        double tk = this.pmn2[s, i] * this.pmn2[j, s] * this.qmn[i, k] * this.qmn[k, j];
+                        double tl = this.qmn2[s, i] * this.qmn2[j, s] * this.pmn[i, k] * this.pmn[k, j];
+
+                        for(int l = imin2; l < imax2; l++) {
+                            varf += tf * this.pmn[i, l] * this.pmn[l, j];
+                            vark += tk * this.qmn[j, l] * this.qmn[l, i];
+                            varl += tl * this.pmn[j, l] * this.pmn[l, i];
+                        }
+                    }
+                }
             }
 
             if(writer != null)
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+
+            Vector var = new Vector(12);
+            var[0] = 4 * vara;
+            var[1] = 2 * varb;
+            var[2] = 2 * varc;
+            var[3] = 2 * vard;
+            var[4] = 2 * vare;
+            var[5] = 2 * varf;
+            var[6] = 2 * varg;
+            var[7] = 2 * varh;
+            var[8] = 2 * vari;
+            var[9] = varj;
+            var[10] = vark;
+            var[11] = varl;
+
+            ArrayList result = new ArrayList();
+            result.Add(otoc);
+            result.Add(asymptotic);
+            result.Add(var);
+
             return result;
         }
 

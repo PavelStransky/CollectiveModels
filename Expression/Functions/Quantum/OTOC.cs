@@ -26,8 +26,12 @@ namespace PavelStransky.Expression.Functions.Def {
             Vector time = (Vector)arguments[2];
             double precision = (double)arguments[3];
 
-            if(arguments[0] is QuantumDicke)
-                return (arguments[0] as QuantumDicke).OTOC(s, time, precision, guider);
+            List result = new List();
+
+            if(arguments[0] is QuantumDicke) {
+                result.AddRange((arguments[0] as QuantumDicke).OTOC(s, time, precision, guider));
+                return result;
+            }
             else if(arguments[0] is JaynesCummings)
                 return (arguments[0] as JaynesCummings).OTOC(s, time, precision, guider);
 

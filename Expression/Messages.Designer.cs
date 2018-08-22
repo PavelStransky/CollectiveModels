@@ -9376,6 +9376,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to isvar.
+        /// </summary>
+        internal static string PIsVariance {
+            get {
+                return ResourceManager.GetString("PIsVariance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variance calculated (needs time, returned in the third argument).
+        /// </summary>
+        internal static string PIsVarianceDescription {
+            get {
+                return ResourceManager.GetString("PIsVarianceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to item.
         /// </summary>
         internal static string PItem {

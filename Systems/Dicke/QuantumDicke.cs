@@ -452,7 +452,7 @@ namespace PavelStransky.Systems {
         /// <param name="s">Stav</param>
         /// <param name="time">Časy</param>
         /// <param name="precision">Přesnost</param>
-        public ArrayList OTOC(int s, Vector time, double precision, IOutputWriter writer) {
+        public ArrayList OTOC(int s, Vector time, double precision, bool isVar, IOutputWriter writer) {
             Vector ev = this.eigenSystem.GetEigenValues() as Vector;
 
             if(writer != null)
@@ -484,6 +484,9 @@ namespace PavelStransky.Systems {
 
             int imin2 = System.Math.Max(0, s - 2 * delta);
             int imax2 = System.Math.Min(count, s + 2 * delta + 1);
+
+            int imin3 = System.Math.Max(0, s - 3 * delta);
+            int imax3 = System.Math.Min(count, s + 3 * delta + 1);
 
             if(writer != null)
                 writer.Write(string.Format("({0},{1})", count, delta));
@@ -526,41 +529,38 @@ namespace PavelStransky.Systems {
 
             // Asymptotic mean and variance
             double asymptotic = 0;
-            double vara = 0, varb = 0, varc = 0, vard = 0, vare = 0, varf = 0, varg = 0, varh = 0, vari = 0, varj = 0, vark = 0, varl = 0;
+            double vara = 0, varb = 0, varc = 0, vare = 0, varf = 0, varg = 0, vari = 0, vark = 0, varl = 0;
             for(int i = imin2; i < imax2; i++) {
                 if(i % 10 == 0 && writer != null)
                     writer.Write(".");
                 for(int j = imin2; j < imax2; j++) {
                     asymptotic -= this.qmn2[i, j] * this.pmn2[s, i] + this.qmn2[s, i] * this.pmn2[i, j];
 
-                    vara += this.qmn2[s, i] * this.qmn2[s, j] * this.pmn2[s, i] * this.pmn2[s, j];
-                    varj += this.pmn2[s, i] * this.pmn2[s, j] * this.qmn2[i, j] * this.qmn2[i, j];
+                    if(isVar) {
+                        vara += this.qmn2[s, i] * this.qmn2[s, j] * this.pmn2[s, i] * this.pmn2[s, j];
 
-                    double tb = this.qmn[s, i] * this.qmn[i, j] * this.pmn[s, i] * this.pmn[i, j];
-                    double tc = this.qmn2[s, i] * this.pmn2[i, j];
-                    double td = this.pmn2[s, i] * this.qmn2[i, j] * this.pmn2[j, s];
-                    double te = this.pmn[s, i] * this.pmn[i, j] * this.qmn2[s, i];
-                    double tg = this.qmn2[s, i] * this.pmn2[s, i];
-                    double th = this.qmn2[s, i] * this.qmn2[i, j] * this.pmn2[j, s];
-                    double ti = this.pmn2[s, i] * this.qmn2[i, j];
+                        double tb = this.qmn[s, i] * this.qmn[i, j] * this.pmn[s, i] * this.pmn[i, j];
+                        double tc = this.qmn2[s, i] * this.pmn2[i, j];
+                        double te = this.pmn[s, i] * this.pmn[i, j] * this.qmn2[s, i];
+                        double tg = this.qmn2[s, i] * this.pmn2[s, i];
+                        double ti = this.pmn2[s, i] * this.qmn2[i, j];
 
-                    for(int k = imin2; k < imax2; k++) {
-                        varb += tb * this.qmn[j, k] * this.qmn[k, s] * this.pmn[j, k] * this.pmn[k, s];
-                        varc += tc * this.qmn2[j, k] * this.pmn2[k, s];
-                        vard += td * this.qmn2[i, k];
-                        vare += te * this.pmn[j, k] * this.pmn[k, s] * this.qmn2[k, s];
-                        varg += tg * this.qmn2[s, k] * this.pmn2[k, j];
-                        varh += th * this.pmn2[i, k];
-                        vari += ti * this.qmn2[j, k] * this.pmn2[k, s];
+                        for(int k = imin2; k < imax2; k++) {
+                            varb += tb * this.qmn[j, k] * this.qmn[k, s] * this.pmn[j, k] * this.pmn[k, s];
+                            varc += tc * this.qmn2[j, k] * this.pmn2[k, s];
+                            vare += te * this.pmn[j, k] * this.pmn[k, s] * this.qmn2[k, s];
+                            varg += tg * this.qmn2[s, k] * this.pmn2[k, j];
+                            vari += ti * this.qmn2[j, k] * this.pmn2[k, s];
 
-                        double tf = this.qmn[s, i] * this.qmn[i, k] * this.qmn[k, j] * this.qmn[j, s] * this.pmn[s, i] * this.pmn[j, s];
-                        double tk = this.pmn2[s, i] * this.pmn2[j, s] * this.qmn[i, k] * this.qmn[k, j];
-                        double tl = this.qmn2[s, i] * this.qmn2[j, s] * this.pmn[i, k] * this.pmn[k, j];
+                            double tf = this.qmn[s, i] * this.qmn[i, k] * this.qmn[k, j] * this.qmn[j, s] * this.pmn[s, i] * this.pmn[j, s];
+                            double tk = this.pmn2[s, i] * this.pmn2[j, s] * this.qmn[i, k] * this.qmn[k, j];
+                            double tl = this.qmn2[s, i] * this.qmn2[j, s] * this.pmn[i, k] * this.pmn[k, j];
 
-                        for(int l = imin2; l < imax2; l++) {
-                            varf += tf * this.pmn[i, l] * this.pmn[l, j];
-                            vark += tk * this.qmn[j, l] * this.qmn[l, i];
-                            varl += tl * this.pmn[j, l] * this.pmn[l, i];
+                            for(int l = imin2; l < imax2; l++) {
+                                varf += tf * this.pmn[i, l] * this.pmn[l, j];
+                                vark += tk * this.qmn[j, l] * this.qmn[l, i];
+                                varl += tl * this.pmn[j, l] * this.pmn[l, i];
+                            }
                         }
                     }
                 }
@@ -569,19 +569,16 @@ namespace PavelStransky.Systems {
             if(writer != null)
                 writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
 
-            Vector var = new Vector(12);
-            var[0] = 4 * vara;
-            var[1] = 2 * varb;
-            var[2] = 2 * varc;
-            var[3] = 2 * vard;
-            var[4] = 2 * vare;
-            var[5] = 2 * varf;
-            var[6] = 2 * varg;
-            var[7] = 2 * varh;
-            var[8] = 2 * vari;
-            var[9] = varj;
-            var[10] = vark;
-            var[11] = varl;
+            Vector var = new Vector(9);
+            var[0] = vara;
+            var[1] = varb;
+            var[2] = varc;
+            var[3] = vare;
+            var[4] = varf;
+            var[5] = varg;
+            var[6] = vari;
+            var[7] = vark;
+            var[8] = varl;
 
             ArrayList result = new ArrayList();
             result.Add(otoc);

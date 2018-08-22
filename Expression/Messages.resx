@@ -4161,4 +4161,10 @@ Second differing type: {1}</value>
   <data name="HelpOTOC" xml:space="preserve">
     <value>Calculates the microcanonical OTOC</value>
   </data>
+  <data name="PIsVariance" xml:space="preserve">
+    <value>isvar</value>
+  </data>
+  <data name="PIsVarianceDescription" xml:space="preserve">
+    <value>Variance calculated (needs time, returned in the third argument)</value>
+  </data>
 </root>

@@ -524,14 +524,16 @@ namespace PavelStransky.Systems {
                     otoc[k] += dr[k] * dr[k] + di[k] * di[k];
             }
 
-            if(writer != null)
-                writer.Write('A');
-
+            if(writer != null) {
+                writer.Write(SpecialFormat.Format(DateTime.Now - startTime));
+                startTime = DateTime.Now;
+            }
+            
             // Asymptotic mean and variance
             double asymptotic = 0;
             double vara = 0, varb = 0, varc = 0, vare = 0, varf = 0, varg = 0, vari = 0, vark = 0, varl = 0;
             for(int i = imin2; i < imax2; i++) {
-                if(i % 10 == 0 && writer != null)
+                if(isVar && i % 10 == 0 && writer != null)
                     writer.Write(".");
                 for(int j = imin2; j < imax2; j++) {
                     asymptotic -= this.qmn2[i, j] * this.pmn2[s, i] + this.qmn2[s, i] * this.pmn2[i, j];
@@ -566,8 +568,11 @@ namespace PavelStransky.Systems {
                 }
             }
 
-            if(writer != null)
-                writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+            if(writer != null) {
+                if(isVar)
+                    writer.Write(SpecialFormat.Format(DateTime.Now - startTime));
+                writer.WriteLine();
+            }                   
 
             Vector var = new Vector(9);
             var[0] = vara;
@@ -584,6 +589,7 @@ namespace PavelStransky.Systems {
             result.Add(otoc);
             result.Add(asymptotic);
             result.Add(var);
+            result.Add(delta);
 
             return result;
         }
@@ -599,8 +605,6 @@ namespace PavelStransky.Systems {
             IEParam param = new IEParam();
             param.Add(this.eigenSystem, "EigenSystem");
             param.Add(this.type, "Type");
-            param.Add(this.qmn, "Qmn");
-            param.Add(this.pmn, "Pmn");
             param.Export(export);
         }
 
@@ -613,8 +617,6 @@ namespace PavelStransky.Systems {
             IEParam param = new IEParam(import);
             this.eigenSystem = (EigenSystem)param.Get();
             this.type = (int)param.Get(0);
-            this.qmn = (Matrix)param.Get();
-            this.pmn = (Matrix)param.Get();
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
         #endregion

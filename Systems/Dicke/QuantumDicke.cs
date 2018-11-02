@@ -594,6 +594,26 @@ namespace PavelStransky.Systems {
             return result;
         }
 
+        public double LevelDensity(double e, double step) {
+            double result = 0;
+            double coef = this.Gamma * this.Gamma / (2 * this.Omega * this.Omega0);
+            double b = 1;
+
+            for(double phi = 0; phi < System.Math.PI; phi++) {
+                double br = 1 + 2 * this.Delta * System.Math.Cos(2 * phi) + this.Delta * this.Delta;
+                if(br < 0)
+                    continue;
+                double a = coef * br;
+                double c = -e - a;
+                double d = b * b - 4 * a * c;
+
+                if(d > 0) 
+                    result += System.Math.Sqrt(d) / a;                
+            }
+
+            return result;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží výsledky do souboru

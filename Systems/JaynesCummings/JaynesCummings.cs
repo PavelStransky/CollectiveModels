@@ -135,7 +135,10 @@ namespace PavelStransky.Systems {
                             koef = index.Nb[j];
                             break;
                         case 1:
-                            koef = 0.5 * index.M[j];
+                            koef = index.M[j];
+                            break;
+                        case 2:
+                            koef = index.M[j] + index.Nb[j];
                             break;
                     }
 

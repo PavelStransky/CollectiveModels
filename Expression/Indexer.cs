@@ -160,6 +160,8 @@ namespace PavelStransky.Expression {
                                 m[i[k], j[l]] = (double)result;
                             else if(result is Matrix)
                                 m[i[k], j[l]] = (result as Matrix)[k, l];
+                            else if(result is Vector) 
+                                m[i[k], j[l]] = (result as Vector)[il == m.LengthX ? k : l];                                                            
                         }
                 }
             }

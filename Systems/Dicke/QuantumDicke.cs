@@ -595,23 +595,34 @@ namespace PavelStransky.Systems {
         }
 
         public double LevelDensity(double e, double step) {
-            double result = 0;
-            double coef = this.Gamma * this.Gamma / (2 * this.Omega * this.Omega0);
-            double b = 1;
+            if(e < this.EMin)
+                return 0;
 
-            for(double phi = 0; phi < System.Math.PI; phi++) {
+            double result = 0;
+            double coef = this.Gamma * this.Gamma / (2 * this.J * this.Omega);
+            if(coef == 0)
+                coef = 1e-10 / (2 * this.J * this.Omega);
+
+            double b = this.Omega0;
+
+            for(double phi = 0; phi < System.Math.PI; phi += step) {
                 double br = 1 + 2 * this.Delta * System.Math.Cos(2 * phi) + this.Delta * this.Delta;
-                if(br < 0)
-                    continue;
                 double a = coef * br;
-                double c = -e - a;
+                double c = -e - a * this.J * this.J;
                 double d = b * b - 4 * a * c;
 
-                if(d > 0) 
-                    result += System.Math.Sqrt(d) / a;                
+                if(d > 0) {
+                    d = System.Math.Sqrt(d);
+                    double jz1 = (-b - d) / (2 * a);
+                    double jz2 = (-b + d) / (2 * a);
+                    if(jz1 < -this.J) jz1 = -this.J; else if(jz1 > this.J) jz1 = this.J;
+                    if(jz2 < -this.J) jz2 = -this.J; else if(jz2 > this.J) jz2 = this.J;
+                                        
+                    result += jz2 - jz1;
+                }
             }
 
-            return result;
+            return result * step / (System.Math.PI * this.Omega);
         }
 
         #region Implementace IExportable

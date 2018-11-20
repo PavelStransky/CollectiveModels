@@ -80,13 +80,14 @@ namespace PavelStransky.Systems {
             double volume = 64;
 
             int length = (int)System.Math.Sqrt(1 / precision);
+            length = 1000;
             Vector result = new Vector(length + 1);
 
             if(writer != null)
                 writer.Write("0");
 
             DateTime time = DateTime.Now;
-            for(i = 0; i <= length; i++) {
+            for(i = 1; i <= length; i++) {
                 double e = i * emax / length;
 
                 if(writer != null) {
@@ -110,10 +111,7 @@ namespace PavelStransky.Systems {
                     }
                 }
 
-                if(i == 0)
-                    result[i] = d * volume / num;
-                else
-                    result[i] = result[i - 1] + d * volume / num;
+                result[i] = result[i - 1] + d * volume / num;
             }
 
             return result;

@@ -79,6 +79,8 @@ namespace PavelStransky.Systems {
                 return new ClassicalGCMJ(this);
             else if(typeName == typeof(ClassicalIBM).FullName || typeName == "PavelStransky.IBM.ClassicalIBM")
                 return new ClassicalIBM(this);
+            else if(typeName == typeof(IntrinsicIBM).FullName)
+                return new IntrinsicIBM(this);
             else if(typeName == typeof(LHOQuantumGCMIC).FullName
                 || typeName == "PavelStransky.GCM.LHOQuantumGCMC"
                 || typeName == "PavelStransky.GCM.LHOQuantumGCMIC")

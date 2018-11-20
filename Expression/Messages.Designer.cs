@@ -4165,6 +4165,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates the intrinsic IBM class.
+        /// </summary>
+        internal static string HelpIIBM {
+            get {
+                return ResourceManager.GetString("HelpIIBM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculates one Intrinsic Mode Function.
         /// </summary>
         internal static string HelpIMF {
@@ -7783,6 +7792,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to beta0.
+        /// </summary>
+        internal static string PBeta0 {
+            get {
+                return ResourceManager.GetString("PBeta0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position of the deformed local minimum.
+        /// </summary>
+        internal static string PBeta0Description {
+            get {
+                return ResourceManager.GetString("PBeta0Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beta parameter.
         /// </summary>
         internal static string PBetaDescription {
@@ -10929,6 +10956,24 @@ namespace PavelStransky.Expression {
         internal static string PRelaxationRateDescription {
             get {
                 return ResourceManager.GetString("PRelaxationRateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rho.
+        /// </summary>
+        internal static string PRho {
+            get {
+                return ResourceManager.GetString("PRho", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External parameter (for rho in (0; 1/beta0) Hamiltonian 1, for rho &gt; 1/beta0 or rho &lt; 0 Hamiltonian 2).
+        /// </summary>
+        internal static string PRhoDescription {
+            get {
+                return ResourceManager.GetString("PRhoDescription", resourceCulture);
             }
         }
         

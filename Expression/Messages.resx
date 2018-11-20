@@ -4167,4 +4167,19 @@ Second differing type: {1}</value>
   <data name="PIsVarianceDescription" xml:space="preserve">
     <value>Variance calculated (needs time, returned in the third argument)</value>
   </data>
+  <data name="HelpIIBM" xml:space="preserve">
+    <value>Creates the intrinsic IBM class</value>
+  </data>
+  <data name="PBeta0" xml:space="preserve">
+    <value>beta0</value>
+  </data>
+  <data name="PBeta0Description" xml:space="preserve">
+    <value>Position of the deformed local minimum</value>
+  </data>
+  <data name="PRho" xml:space="preserve">
+    <value>rho</value>
+  </data>
+  <data name="PRhoDescription" xml:space="preserve">
+    <value>External parameter (for rho in (0; 1/beta0) Hamiltonian 1, for rho &gt; 1/beta0 or rho &lt; 0 Hamiltonian 2)</value>
+  </data>
 </root>

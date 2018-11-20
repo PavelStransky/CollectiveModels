@@ -110,6 +110,7 @@
     <Compile Include="GCM\Quantum\BasisIndex\LHOPolarIndexO.cs" />
     <Compile Include="GCM\Quantum\LHOQuantumGCM1.cs" />
     <Compile Include="GeometricCounterExample.cs" />
+    <Compile Include="IBM\IntrinsicIBM.cs" />
     <Compile Include="IEntanglement.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="IQuantumSystem.cs" />

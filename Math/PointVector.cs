@@ -318,7 +318,7 @@ namespace PavelStransky.Math {
                 this.item = new PointD[int.Parse(t.ReadLine())];
                 for(int i = 0; i < this.Length; i++) {
                     string line = t.ReadLine();
-                    string[] s = line.Split('\t');
+                    string[] s = line.Split('\t', ' ', ',');
                     this.item[i] = new PointD(double.Parse(s[0]), double.Parse(s[1]));
                 }
             }

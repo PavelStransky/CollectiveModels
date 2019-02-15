@@ -9,12 +9,12 @@ namespace PavelStransky.Expression.Functions.Def {
     /// Reduces the size of a matrix by a given factor
     /// </summary>
     public class ReduceMatrixSize : Fnc {
-        public override string Help { get { return Messages.HelpReduceMatrixSize; } }
+        public override string Help { get { return Messages.HelpReduceSize; } }
 
         protected override void CreateParameters() {
             this.SetNumParams(3);
             this.SetParam(0, true, true, false, Messages.PMatrix, Messages.PMatrixDescription, null, typeof(Matrix));
-            this.SetParam(1, true, true, false, Messages.PFactorX, Messages.PFactorXDescription, 1, typeof(int));
+            this.SetParam(1, true, true, false, Messages.PFactor, Messages.PFactorXDescription, 1, typeof(int));
             this.SetParam(2, false, true, false, Messages.PFactorY, Messages.PFactorYDescription, 0, typeof(int));
         }
 

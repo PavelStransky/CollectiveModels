@@ -71,9 +71,12 @@ namespace PavelStransky.Expression {
                             value = Color.FromName(value as string);
                         else if(value is int)
                             value = ColorArray.GetColor((int)value);
-                        else if(value is Vector && (value as Vector).Length == 3) {
+                        else if(value is Vector)                         {
                             Vector v = value as Vector;
-                            value = Color.FromArgb((int)(255.0 * v[0]), (int)(255.0 * v[1]), (int)(255.0 * v[2]));
+                            if(v.Length == 3) 
+                                value = Color.FromArgb((int)(255.0 * v[0]), (int)(255.0 * v[1]), (int)(255.0 * v[2]));
+                            else if(v.Length == 4)  // With alpha channel
+                                value = Color.FromArgb((int)(255.0 * v[0]), (int)(255.0 * v[1]), (int)(255.0 * v[2]), (int)(255.0 * v[3]));
                         }
                     }
 

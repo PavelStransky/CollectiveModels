@@ -19,7 +19,7 @@ namespace PavelStransky.Expression {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Messages {
@@ -2698,6 +2698,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adds a range of elements to the the list.
+        /// </summary>
+        internal static string HelpAddRange {
+            get {
+                return ResourceManager.GetString("HelpAddRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Two-neutron separation energies.
         /// </summary>
         internal static string HelpAME2NSE {
@@ -4615,6 +4624,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a class of the Lipkin model with all possible two-body terms.
+        /// </summary>
+        internal static string HelpLipkinG {
+            get {
+                return ResourceManager.GetString("HelpLipkinG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a Lipkin model class diagonalized in the full SU(2) basis + one single spin.
         /// </summary>
         internal static string HelpLipkinOne {
@@ -5533,6 +5551,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reduces the size of a matrix by a given factor.
+        /// </summary>
+        internal static string HelpReduceSize {
+            get {
+                return ResourceManager.GetString("HelpReduceSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Polynomial regression of data.
         /// </summary>
         internal static string HelpRegression {
@@ -5673,6 +5700,15 @@ namespace PavelStransky.Expression {
         internal static string HelpSaveNow {
             get {
                 return ResourceManager.GetString("HelpSaveNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Separates a set of points into lines.
+        /// </summary>
+        internal static string HelpSeparate {
+            get {
+                return ResourceManager.GetString("HelpSeparate", resourceCulture);
             }
         }
         
@@ -8764,6 +8800,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fx.
+        /// </summary>
+        internal static string PFactor {
+            get {
+                return ResourceManager.GetString("PFactor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of reduced points in direction x.
+        /// </summary>
+        internal static string PFactorDescription {
+            get {
+                return ResourceManager.GetString("PFactorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to filename.
         /// </summary>
         internal static string PFileName {
@@ -9462,6 +9516,96 @@ namespace PavelStransky.Expression {
         internal static string PJDescription {
             get {
                 return ResourceManager.GetString("PJDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jx.
+        /// </summary>
+        internal static string PJx {
+            get {
+                return ResourceManager.GetString("PJx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jx2.
+        /// </summary>
+        internal static string PJx2 {
+            get {
+                return ResourceManager.GetString("PJx2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the Jx^2 term.
+        /// </summary>
+        internal static string PJx2Description {
+            get {
+                return ResourceManager.GetString("PJx2Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the Jx term.
+        /// </summary>
+        internal static string PJxDescription {
+            get {
+                return ResourceManager.GetString("PJxDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jxz.
+        /// </summary>
+        internal static string PJxz {
+            get {
+                return ResourceManager.GetString("PJxz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the Jxz term.
+        /// </summary>
+        internal static string PJxzDescription {
+            get {
+                return ResourceManager.GetString("PJxzDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jz.
+        /// </summary>
+        internal static string PJz {
+            get {
+                return ResourceManager.GetString("PJz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jz2.
+        /// </summary>
+        internal static string PJz2 {
+            get {
+                return ResourceManager.GetString("PJz2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the Jz^2 term.
+        /// </summary>
+        internal static string PJz2Description {
+            get {
+                return ResourceManager.GetString("PJz2Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter of the Jz term.
+        /// </summary>
+        internal static string PJzDescription {
+            get {
+                return ResourceManager.GetString("PJzDescription", resourceCulture);
             }
         }
         

@@ -496,6 +496,13 @@ namespace PavelStransky.Math {
         /// </summary>
         public double LastItem { get { return this[this.Length - 1]; } set { this[this.Length - 1] = value; } }
 
+        /// <summary>
+        /// Vrátí pole s hodnotami
+        /// </summary>
+        public double[] GetItems() {
+            return this.item;
+        }
+
 		/// <summary>
 		/// Vektor vynuluje
 		/// </summary>

@@ -73,6 +73,22 @@ namespace PavelStransky.Expression.Functions.Def {
                 else
                     this.BadTypeError(arguments[1], 1);
             }
+            else if(type == "dataext") {
+                if (arguments[1] is PointVector) {
+                    PointVector pv = arguments[1] as PointVector;
+                    FileStream f = new FileStream(fileName, FileMode.Create);
+                    StreamWriter t = new StreamWriter(f);
+                    for (int i = 1; i < pv.Length; i++) {
+                        t.WriteLine(string.Format("{0}\t{1}", pv[i-1].X, pv[i-1].Y));
+                        t.WriteLine(string.Format("{0}\t{1}", pv[i].X, pv[i].Y));
+                        t.WriteLine();
+                    }
+                    t.Close();
+                    f.Close();
+                }
+                else
+                    this.BadTypeError(arguments[1], 1);
+            }
             else if(type == "kml") {
                 List a = arguments[1] as List;
                 FileStream f = new FileStream(fileName, FileMode.Create);

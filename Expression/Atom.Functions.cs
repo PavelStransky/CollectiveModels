@@ -24,7 +24,7 @@ namespace PavelStransky.Expression {
 
             for(int i = 0; i < length; i++) {
                 // Konstruujeme všechny tøídy ze jmenného prostoru PavelStransky.Expression.Functions.Def
-                if(types[i].Namespace != "PavelStransky.Expression.Functions.Def")
+                if(types[i].Namespace != "PavelStransky.Expression.Functions.Def" || types[i].IsNested)
                     continue;
 
                 // Najdeme konstruktory

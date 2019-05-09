@@ -515,6 +515,10 @@ namespace PavelStransky.Expression {
             return result;
         }
 
+        public Array GetItems() {
+            return this.data;
+        }
+
         #region Implementace IExportable
         /// <summary>
         /// Uloží obsah øady do souboru

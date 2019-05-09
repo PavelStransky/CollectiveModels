@@ -4182,4 +4182,52 @@ Second differing type: {1}</value>
   <data name="PRhoDescription" xml:space="preserve">
     <value>External parameter (for rho in (0; 1/beta0) Hamiltonian 1, for rho &gt; 1/beta0 or rho &lt; 0 Hamiltonian 2)</value>
   </data>
+  <data name="HelpReduceSize" xml:space="preserve">
+    <value>Reduces the size of a matrix by a given factor</value>
+  </data>
+  <data name="PFactor" xml:space="preserve">
+    <value>fx</value>
+  </data>
+  <data name="PFactorDescription" xml:space="preserve">
+    <value>Number of reduced points in direction x</value>
+  </data>
+  <data name="HelpSeparate" xml:space="preserve">
+    <value>Separates a set of points into lines</value>
+  </data>
+  <data name="HelpLipkinG" xml:space="preserve">
+    <value>Creates a class of the Lipkin model with all possible two-body terms</value>
+  </data>
+  <data name="PJx" xml:space="preserve">
+    <value>jx</value>
+  </data>
+  <data name="PJx2" xml:space="preserve">
+    <value>jx2</value>
+  </data>
+  <data name="PJx2Description" xml:space="preserve">
+    <value>Parameter of the Jx^2 term</value>
+  </data>
+  <data name="PJxDescription" xml:space="preserve">
+    <value>Parameter of the Jx term</value>
+  </data>
+  <data name="PJxz" xml:space="preserve">
+    <value>jxz</value>
+  </data>
+  <data name="PJxzDescription" xml:space="preserve">
+    <value>Parameter of the Jxz term</value>
+  </data>
+  <data name="PJz" xml:space="preserve">
+    <value>jz</value>
+  </data>
+  <data name="PJz2" xml:space="preserve">
+    <value>jz2</value>
+  </data>
+  <data name="PJz2Description" xml:space="preserve">
+    <value>Parameter of the Jz^2 term</value>
+  </data>
+  <data name="PJzDescription" xml:space="preserve">
+    <value>Parameter of the Jz term</value>
+  </data>
+  <data name="HelpAddRange" xml:space="preserve">
+    <value>Adds a range of elements to the the list</value>
+  </data>
 </root>

@@ -322,7 +322,7 @@ namespace PavelStransky.Forms {
             int nGraphs = graphItems.Length;
 
             for(int i = 0; i < nGraphs; i++)
-                graphItems[i].PaintActual(graphics, rectangle, group, time);
+                graphItems[i].PaintActual(graphics, rectangle, group, time, false);
 
             return image;
         }

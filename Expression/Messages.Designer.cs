@@ -2311,6 +2311,42 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to maxcurves.
+        /// </summary>
+        internal static string GPMaxCurves {
+            get {
+                return ResourceManager.GetString("GPMaxCurves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of curves to plot (in order to optimize the speed).
+        /// </summary>
+        internal static string GPMaxCurvesDescription {
+            get {
+                return ResourceManager.GetString("GPMaxCurvesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxpoints.
+        /// </summary>
+        internal static string GPMaxPoints {
+            get {
+                return ResourceManager.GetString("GPMaxPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of points to plot (optimize).
+        /// </summary>
+        internal static string GPMaxPointsDescription {
+            get {
+                return ResourceManager.GetString("GPMaxPointsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maxx.
         /// </summary>
         internal static string GPMaxX {
@@ -10312,6 +10348,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to method.
+        /// </summary>
+        internal static string PNormalMethod {
+            get {
+                return ResourceManager.GetString("PNormalMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0 for Box-Mueller method, n&gt;0 for Central Limit Theorem.
+        /// </summary>
+        internal static string PNormalMethodDescription {
+            get {
+                return ResourceManager.GetString("PNormalMethodDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to level.
         /// </summary>
         internal static string PNuclearLevel {
@@ -10632,6 +10686,24 @@ namespace PavelStransky.Expression {
         internal static string POneOrientationDescription {
             get {
                 return ResourceManager.GetString("POneOrientationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to open.
+        /// </summary>
+        internal static string POpenChannels {
+            get {
+                return ResourceManager.GetString("POpenChannels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of open channels.
+        /// </summary>
+        internal static string POpenChannelsDescription {
+            get {
+                return ResourceManager.GetString("POpenChannelsDescription", resourceCulture);
             }
         }
         

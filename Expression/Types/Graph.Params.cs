@@ -158,6 +158,9 @@ namespace PavelStransky.Expression {
 
             Clip = 1050,
 
+            MaxCurves = 1060,
+            MaxPoints = 1061,
+
             // Tajné parametry
             GroupMaxLength = 10000,
             MatrixAbs = 10001,
@@ -224,6 +227,9 @@ namespace PavelStransky.Expression {
             globalParams.Add(ParametersIndications.RWindowH, Messages.GPRWindowH, Messages.GPRWindowHDescription, 1.0);
 
             globalParams.Add(ParametersIndications.Comment, Messages.GPComment, Messages.GPCommentDescription, string.Empty);
+
+            globalParams.Add(ParametersIndications.MaxCurves, Messages.GPMaxCurves, Messages.GPMaxCurvesDescription, int.MaxValue);
+            globalParams.Add(ParametersIndications.MaxPoints, Messages.GPMaxPoints, Messages.GPMaxPointsDescription, int.MaxValue);
 
             groupParams = new GraphParameterDefinitions();
             groupParams.Add(ParametersIndications.AnimCurve, Messages.GPAnimCurve, Messages.GPAnimCurveDescription, false);

@@ -4230,4 +4230,28 @@ Second differing type: {1}</value>
   <data name="HelpAddRange" xml:space="preserve">
     <value>Adds a range of elements to the the list</value>
   </data>
+  <data name="GPMaxCurves" xml:space="preserve">
+    <value>maxcurves</value>
+  </data>
+  <data name="GPMaxCurvesDescription" xml:space="preserve">
+    <value>Maximum number of curves to plot (in order to optimize the speed)</value>
+  </data>
+  <data name="GPMaxPoints" xml:space="preserve">
+    <value>maxpoints</value>
+  </data>
+  <data name="GPMaxPointsDescription" xml:space="preserve">
+    <value>Maximum number of points to plot (optimize)</value>
+  </data>
+  <data name="PNormalMethod" xml:space="preserve">
+    <value>method</value>
+  </data>
+  <data name="PNormalMethodDescription" xml:space="preserve">
+    <value>0 for Box-Mueller method, n&gt;0 for Central Limit Theorem</value>
+  </data>
+  <data name="POpenChannels" xml:space="preserve">
+    <value>open</value>
+  </data>
+  <data name="POpenChannelsDescription" xml:space="preserve">
+    <value>Number of open channels</value>
+  </data>
 </root>

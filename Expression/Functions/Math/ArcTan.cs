@@ -18,7 +18,7 @@ namespace PavelStransky.Expression.Functions.Def {
         }
         
         protected override double FnDouble(double x, params object[] p) {
-            if(p.Length > 1)
+            if(p.Length >= 1)
                 return System.Math.Atan2(x, (double)p[0]);
             else
                 return System.Math.Atan(x);

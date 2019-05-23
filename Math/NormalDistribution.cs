@@ -12,7 +12,7 @@ namespace PavelStransky.Math {
 		private Random r;
 
 		/// <summary>
-		/// Konstruktor
+		/// Konstruktor (pro výpoèet box-mullerovou metodou)
 		/// </summary>
 		public NormalDistribution() {
 			this.r = new Random();
@@ -25,17 +25,27 @@ namespace PavelStransky.Math {
             return this.GetValue(1.0, 0.0);
         }
 
-		/// <summary>
-		/// Vrátí jednu hodnotu
-		/// </summary>
+        /// <summary>
+        /// Vrátí jednu hodnotu
+        /// </summary>
         /// <param name="variance">Rozptyl rozdìlení</param>
         /// <param name="mean">Støední hodnota rozdìlení</param>
-        public double GetValue(double variance, double mean) {
-			double n1, n2;
-			this.BoxMuller(out n1, out n2, variance, mean);
+        public double GetValue(double variance, double mean, int num = 0) {
+            if (num <= 0) {
+                double n1, n2;
+                this.BoxMuller(out n1, out n2, variance, mean);
 
-			return n1;
-		}
+                return n1;
+            }
+            else {
+                double result = 0;
+                for (int i = 0; i < num; i++)
+                    result += this.r.NextDouble();
+                result -= 0.5 * num;
+                result *= variance * 12 / num;
+                return result;
+            }
+        }
 
         /// <summary>
         /// Vrátí vektor se standardním rozptylem a støední hodnotou
@@ -50,30 +60,36 @@ namespace PavelStransky.Math {
 		/// <param name="length">Délka vektoru</param>
         /// <param name="variance">Rozptyl rozdìlení</param>
         /// <param name="mean">Støední hodnota rozdìlení</param>
-        public Vector GetVector(int length, double variance, double mean) {
-			double n1, n2;
-			Vector result = new Vector(length);
+        public Vector GetVector(int length, double variance, double mean, int num = 0) {
+            Vector result = new Vector(length);
 
-			for(int i = 0; i < length / 2; i++) {
-				this.BoxMuller(out n1, out n2, variance, mean);
-				result[2*i] = n1;
-				result[2*i + 1] = n2;
-			}
+            if (num <= 0) {
+                double n1, n2;
 
-			// Pokud je poèet prvkù lichý, vyplníme ještì poslední hodnotu
-			if(length % 2 > 0) {
-                this.BoxMuller(out n1, out n2, variance, mean);
-				result[length - 1] = n1;
-			}
+                for (int i = 0; i < length / 2; i++) {
+                    this.BoxMuller(out n1, out n2, variance, mean);
+                    result[2 * i] = n1;
+                    result[2 * i + 1] = n2;
+                }
 
-			return result;
-		}
+                // Pokud je poèet prvkù lichý, vyplníme ještì poslední hodnotu
+                if (length % 2 > 0) {
+                    this.BoxMuller(out n1, out n2, variance, mean);
+                    result[length - 1] = n1;
+                }
+            }
+            else
+                for (int i = 0; i < length; i++)
+                    result[i] = this.GetValue(variance, mean);
 
-		/// <summary>
-		/// Box - Mullerova metoda generování dvou hodnot
-		/// </summary>
-		/// <param name="n1">První hodnota</param>
-		/// <param name="n2">Druhá hodnota</param>
+            return result;
+        }
+
+        /// <summary>
+        /// Box - Mullerova metoda generování dvou hodnot
+        /// </summary>
+        /// <param name="n1">První hodnota</param>
+        /// <param name="n2">Druhá hodnota</param>
         /// <param name="variance">Rozptyl rozdìlení</param>
         /// <param name="mean">Støední hodnota rozdìlení</param>
         private void BoxMuller(out double n1, out double n2, double variance, double mean) {

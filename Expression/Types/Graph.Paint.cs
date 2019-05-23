@@ -123,7 +123,8 @@ namespace PavelStransky.Expression {
         /// <param name="time">Èas k vykreslení, -1 pro vykreslení všeho</param>
         /// <param name="group">Skupina køivek pro vykreslení</param>
         /// <param name="rectangle">Obdélník, do kterého se bude vykreslovat</param>
-        public void PaintGraph(Graphics g, Rectangle rectangle, int group, int time) {
+        /// <param name="optimize">True pokud budeme optimalizovat rychlost vykreslování</param>
+        public void PaintGraph(Graphics g, Rectangle rectangle, int group, int time, bool optimize) {
             GraphParameterValues gv = this.groupParamValues[group] as GraphParameterValues;
             TArray aiv = this.itemParamValues[group] as TArray;
 
@@ -157,6 +158,16 @@ namespace PavelStransky.Expression {
             }
 
             int nCurves = (int)gv[ParametersIndications.NumCurves];
+
+            // Optimalizace èasu
+            if (optimize) {
+                int maxCurves = (int)this.graphParamValues[ParametersIndications.MaxCurves];
+                nCurves = System.Math.Min(nCurves, maxCurves);
+
+                int maxPoints = (int)this.graphParamValues[ParametersIndications.MaxPoints];
+                time = System.Math.Min(time, maxPoints);
+            }
+
 
             // Legenda ke køivkám - potøebujeme její šíøku
             bool cLegend = (bool)gv[ParametersIndications.CLegend];

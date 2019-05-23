@@ -15,9 +15,10 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpRandomMatrixSG; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(2);
+            this.SetNumParams(3);
             this.SetParam(0, true, true, false, Messages.PMatrixSize, Messages.PMatrixSizeDescription, null, typeof(int));
             this.SetParam(1, false, true, true, Messages.PVariance, Messages.PVarianceDescription, 1.0, typeof(double));
+            this.SetParam(2, false, true, false, Messages.PNormalMethod, Messages.PNormalMethodDescription, 0, typeof(int));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -25,9 +26,10 @@ namespace PavelStransky.Expression.Functions.Def {
             int ndLength = length * (length - 1) / 2;
 
             double var = (double)arguments[1];
+            int num = (int)arguments[2];
 
-            Vector diag = this.nd.GetVector(length, var * System.Math.Sqrt(2.0), 0.0);
-            Vector ndiag = this.nd.GetVector(ndLength, var, 0.0);
+            Vector diag = this.nd.GetVector(length, var * System.Math.Sqrt(2.0), 0.0, num);
+            Vector ndiag = this.nd.GetVector(ndLength, var, 0.0, num);
 
             Matrix result = new Matrix(length);
             int k = 0;

@@ -235,7 +235,7 @@ namespace PavelStransky.Forms {
         /// <param name="g">Grafický objekt</param>
         /// <param name="rectangle">Obdélník</param>
         public void Paint(Graphics g, Rectangle rectangle) {
-            this.graph.PaintGraph(g, rectangle, this.group, this.time);
+            this.graph.PaintGraph(g, rectangle, this.group, this.time, true);
         }
 
         /// <summary>
@@ -246,13 +246,14 @@ namespace PavelStransky.Forms {
         /// <param name="rectangle">Obdélník</param>
         /// <param name="group">Èíslo skupiny</param>
         /// <param name="time">Èas grafu</param>
-        public void PaintActual(Graphics g, Rectangle rectangle, int group, int time) {
+        /// <param name="optimize">True pokud budeme optimalizovat na rychlost</param>
+        public void PaintActual(Graphics g, Rectangle rectangle, int group, int time, bool optimize) {
             if(!this.animGroup)
                 group = this.group;
             if(!this.graph.AnimCurves(group))
                 time = this.graph.MaxTime(group);
 
-            this.graph.PaintGraph(g, rectangle, group, time);
+            this.graph.PaintGraph(g, rectangle, group, time, optimize);
         }
     }
 }

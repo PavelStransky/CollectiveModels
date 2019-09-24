@@ -5740,6 +5740,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a system to calculate resonances using complex scaling method (Moiseyev).
+        /// </summary>
+        internal static string HelpScattering {
+            get {
+                return ResourceManager.GetString("HelpScattering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Separates a set of points into lines.
         /// </summary>
         internal static string HelpSeparate {
@@ -11730,6 +11739,24 @@ namespace PavelStransky.Expression {
         internal static string PTemperatureDescription {
             get {
                 return ResourceManager.GetString("PTemperatureDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to theta.
+        /// </summary>
+        internal static string PTheta {
+            get {
+                return ResourceManager.GetString("PTheta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theta parameter.
+        /// </summary>
+        internal static string PThetaDescription {
+            get {
+                return ResourceManager.GetString("PThetaDescription", resourceCulture);
             }
         }
         

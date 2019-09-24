@@ -70,7 +70,7 @@ namespace PavelStransky.DLLWrapper {
 
             int n = matrix.Length;
 
-            double* a = matrix.GetItem();
+            double* a = Memory.NewDouble(n * n);
             double* w = Memory.NewDouble(n);
 
             int lda = n;
@@ -86,14 +86,16 @@ namespace PavelStransky.DLLWrapper {
                 double lwork1 = 0;
 
                 // Nejprve zjistíme optimální velikost pomocného pole
+                matrix.Fill(a);
                 LAPackDLLWrapper.dsyev(&jobz, &uplo, &n, a, &lda, w, &lwork1, &lwork, &info);
 
                 lwork = (int)lwork1;
                 work = Memory.NewDouble(lwork);
 
                 // Vlastní výpoèet
+                matrix.Fill(a);
                 LAPackDLLWrapper.dsyev(&jobz, &uplo, &n, a, &lda, w, work, &lwork, &info);
-                success = true;
+                success = (info == 0);
             }
             finally {
                 Memory.Delete(work);
@@ -107,6 +109,8 @@ namespace PavelStransky.DLLWrapper {
                     else
                         result = new Vector[1];
                 }
+                else
+                    throw new Exception("Diagonalization failed. Info = " + info);
 
                 result[0] = ProcessVector(w, n);
 
@@ -119,6 +123,7 @@ namespace PavelStransky.DLLWrapper {
             }
             finally {
                 Memory.Delete(w);
+                Memory.Delete(a);
             }
 
             return result;

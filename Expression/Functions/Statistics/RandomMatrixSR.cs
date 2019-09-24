@@ -42,7 +42,10 @@ namespace PavelStransky.Expression.Functions.Def {
 
             Matrix o = new Matrix(length);
             for (int i = 0; i < length; i++)
-                o.SetColumnVector(i, eigenSystem[i + 1]);
+                if (r.Next(2) == 0) 
+                    o.SetColumnVector(i, eigenSystem[i + 1]);
+                else
+                    o.SetColumnVector(i, -eigenSystem[i + 1]);
 
             // Matice d
             int open = (int)arguments[1];

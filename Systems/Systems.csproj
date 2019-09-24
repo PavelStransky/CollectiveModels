@@ -134,6 +134,8 @@
     <Compile Include="Lipkin\LipkinTwoSpectatorSimple.cs" />
     <Compile Include="ManyBody\PCR3BP.cs" />
     <Compile Include="PT\PTBasisIndex.cs" />
+    <Compile Include="Scattering\ComplexScattering.cs" />
+    <Compile Include="Scattering\ComplexScatteringBasisIndex.cs" />
     <Compile Include="Spheroid\Spheroid.cs" />
     <Compile Include="Spheroid\SpheroidBasisIndex.cs" />
     <Compile Include="Spin\Ising2D.Binder.cs" />

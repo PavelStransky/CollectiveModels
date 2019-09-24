@@ -4254,4 +4254,13 @@ Second differing type: {1}</value>
   <data name="POpenChannelsDescription" xml:space="preserve">
     <value>Number of open channels</value>
   </data>
+  <data name="HelpScattering" xml:space="preserve">
+    <value>Creates a system to calculate resonances using complex scaling method (Moiseyev)</value>
+  </data>
+  <data name="PTheta" xml:space="preserve">
+    <value>theta</value>
+  </data>
+  <data name="PThetaDescription" xml:space="preserve">
+    <value>Theta parameter</value>
+  </data>
 </root>

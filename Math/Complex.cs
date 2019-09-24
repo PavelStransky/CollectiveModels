@@ -204,5 +204,4 @@ namespace PavelStransky.Math.Obsolete {
 
 		private double re, im;
 	}
-
 }

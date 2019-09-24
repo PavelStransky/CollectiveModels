@@ -134,18 +134,22 @@ namespace PavelStransky.Expression.Functions.Def {
 
             PointVector points = new PointVector(count);
             PointVector crossings = new PointVector(count);
+            PointVector energies = new PointVector(count);
             Vector keys = new Vector(count);
 
             int i = 0;
             foreach(PointD p in ep) {
                 points[i] = p;
-                crossings[i] = this.FindLevels(p.X, p.Y, data);
+                ArrayList cr = this.FindLevels(p.X, p.Y, data);
+                crossings[i] = (PointD)cr[0];
+                energies[i] = (PointD)cr[1];
                 keys[i] = crossings[i].X * count + crossings[i].Y;
                 i++;
             }
 
             points = points.Sort(keys) as PointVector;
             crossings = crossings.Sort(keys) as PointVector;
+            energies = energies.Sort(keys) as PointVector;
 
             if(guider != null)
                 for(i = 0; i < count; i++)
@@ -154,6 +158,7 @@ namespace PavelStransky.Expression.Functions.Def {
             List result = new List();
             result.Add(points);
             result.Add(crossings);
+            result.Add(energies);
 
             return result;
         }
@@ -575,7 +580,7 @@ namespace PavelStransky.Expression.Functions.Def {
             return true;
         }
 
-        private PointD FindLevels(double x, double maxy, Data data) {
+        private ArrayList FindLevels(double x, double maxy, Data data) {
             int length = data.Length;
             
             double y = 0.0;
@@ -615,7 +620,13 @@ namespace PavelStransky.Expression.Functions.Def {
 
             int[] mindistance = distance.MinIndex();
 
-            return new PointD(mindistance[0], mindistance[1]);
+            int m1 = mindistance[0];
+            int m2 = mindistance[1];
+
+            ArrayList result = new ArrayList();
+            result.Add(new PointD(m1, m2));
+            result.Add(new PointD(0.5 * (last[m1].X + last[m2].X), 0.5 * (last[m1].Y + last[m2].Y)));
+            return result;
         }
 
         private const double stepM = 1.2;

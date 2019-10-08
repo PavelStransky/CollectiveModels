@@ -8,12 +8,15 @@ using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
                      
 namespace PavelStransky.Systems {
+    /// <summary>
+    /// V(x) = (a + b x + c x^2 + d x^3)exp(-r^2/10)
+    /// </summary>
     public class ComplexScattering : IQuantumSystem, IExportable {
         // Systém s vlastními hodnotami
         private EigenSystem eigenSystem;
 
-        private double z;       // Parametr potenciálu
-        private double theta;   // Komplexní škálování
+        private double a, b, c, d;     // Parametry potenciálu
+        private double theta;          // Komplexní škálování
 
         /// <summary>
         /// Prázdný konstruktor
@@ -28,10 +31,13 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public ComplexScattering(double z, double theta) { 
+        public ComplexScattering(double theta, double a, double b, double c, double d) { 
             this.eigenSystem = new EigenSystem(this);
-            this.z = z;
             this.theta = theta;
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
         }
 
         /// <summary>
@@ -43,7 +49,7 @@ namespace PavelStransky.Systems {
         }
 
         public Complex V(Complex r) {
-            return (0.5 * r * (r + this.z) - 1) * Complex.Exp(-0.1 * r * r);
+            return (this.a + r * (this.b + r * (this.c + r * this.d))) * Complex.Exp(-0.1 * r * r);
         }
 
         /// <summary>
@@ -64,41 +70,76 @@ namespace PavelStransky.Systems {
             for (int i = 0; i < division; i++)
                 xCache[i] = ((double)i / (division - 1) - 0.5) * l;
 
+            if (writer != null) 
+                writer.WriteLine("Preparing potential cache...");
+            
             ComplexVector vCache = this.VCache(xCache);
 
+            if (writer != null)
+                writer.WriteLine("Preparing basis cache...");
+            Vector[] sCache = this.SCache(dim, xCache);
+
+            DateTime timeStart = DateTime.Now;
             if (matrix is CMatrix) {
-                int step = dim / 50;
+                int step = dim / 100;
+                int numElements = dim * (dim + 1) / 2;
+
+                int k = 0;
 
                 for (int i = 0; i < dim; i++) {
+                    Complex z = hbar * (i + 1) * System.Math.PI / l;
+                    z = 0.5 * z * z * Complex.Exp(new Complex(0, -2.0 * this.theta));
+
                     for (int j = i; j < dim; j++) {
-                        Complex r = this.IntegrateMatrixElement(i+1, j+1, vCache);
-                        if (i == j) {
-                            double b = hbar * (i + 1) * System.Math.PI / l;
-                            r += 0.5 * b * b * Complex.Exp(new Complex(0, -2.0 * this.theta));
-                        }
+                        Complex r = this.IntegrateMatrixElement(sCache[i], sCache[j], vCache);
+                        if (i == j)
+                            r += z;
+
                         matrix[i, 2 * j] = r.Real;
                         matrix[i, 2 * j + 1] = r.Imaginary;
                         matrix[j, 2 * i] = r.Real;
                         matrix[j, 2 * i + 1] = r.Imaginary;
+
+                        k++;
                     }
-                    if (writer != null && i % step == 0) {
-                        writer.Write(".");
+                    if (writer != null) {
+                        if ((i + 1) % step == 0)
+                            writer.Write(".");
+                        if ((i + 1) % (10 * step) == 0) {
+                            writer.Write(100 * k / numElements);
+                            writer.Write("%...");
+                            writer.WriteLine(SpecialFormat.Format(DateTime.Now - timeStart));
+                        }
                     }
                 }
             }
         }
 
-        private Complex IntegrateMatrixElement(int m, int n, ComplexVector vCache) {
+        private Vector [] SCache(int dim, Vector xCache) {
+            Vector[] result = new Vector[dim];
+
+            int length = xCache.Length;
+            double coef1 = System.Math.PI / (length - 1);
+            double coef2 = System.Math.Sqrt(2.0 / length);
+
+            for (int m = 0; m < dim; m++) {
+                Vector v = new Vector(length);
+                for (int i = 0; i < length; i++)
+                    v[i] = coef2 * System.Math.Sin(coef1 * i * (m + 1));
+                result[m] = v;
+            }
+
+            return result;
+        }
+
+        private Complex IntegrateMatrixElement(Vector sCache1, Vector sCache2, ComplexVector vCache) {
             Complex result = new Complex();
 
             int length = vCache.Length;
-
-            for (int i = 0; i < length; i++) {
-                double r = i * System.Math.PI / (length - 1);
-                result += System.Math.Sin(m * r) * System.Math.Sin(n * r) * vCache[i];
-            }
-
-            return 2.0 * result / length;
+            for (int i = 0; i < length; i++) 
+                result += sCache1[i] * sCache2[i] * vCache[i];
+            
+            return result;
         }
 
         private ComplexVector VCache(Vector xCache) {
@@ -136,8 +177,11 @@ namespace PavelStransky.Systems {
         public ComplexScattering(Core.Import import) {
             IEParam param = new IEParam(import);
             this.eigenSystem = (EigenSystem)param.Get();
-            this.z = (double)param.Get(0.0);
             this.theta = (double)param.Get(0.0);
+            this.a = (double)param.Get(-1.0);
+            this.b = (double)param.Get(0.0);
+            this.c = (double)param.Get(0.5);
+            this.d = (double)param.Get(0.0);
 
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
@@ -149,8 +193,11 @@ namespace PavelStransky.Systems {
         public void Export(Export export) {
             IEParam param = new IEParam();
             param.Add(this.eigenSystem, "EigenSystem");
-            param.Add(this.z, "Z");
             param.Add(this.theta, "Theta");
+            param.Add(this.a, "A");
+            param.Add(this.b, "B");
+            param.Add(this.c, "C");
+            param.Add(this.d, "D");
             param.Export(export);
         }
 

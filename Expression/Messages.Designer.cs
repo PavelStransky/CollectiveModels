@@ -8251,6 +8251,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to d.
+        /// </summary>
+        internal static string PD {
+            get {
+                return ResourceManager.GetString("PD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter D.
+        /// </summary>
+        internal static string PDDescription {
+            get {
+                return ResourceManager.GetString("PDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to default.
         /// </summary>
         internal static string PDefaultValue {

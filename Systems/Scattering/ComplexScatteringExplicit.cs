@@ -66,24 +66,19 @@ namespace PavelStransky.Systems {
             double hbar = index.Hbar;
 
             DateTime timeStart = DateTime.Now;
-            int step = dim / 100;
-            int numElements = dim * (dim + 1) / 2;
+            int step = dim / 20;
 
-            int k = 0;
+            double x = 2.0 / l * System.Math.Sqrt(2.5 * System.Math.PI);
 
-            Complex a = Complex.Exp(new Complex(0, -this.theta));
-            Complex b = -5.0 * System.Math.PI / l * Complex.Exp(new Complex(0, -2.0 * this.theta));
-            Complex c = 5.0 / (l * l) * Complex.Exp(new Complex(0, -3.0 * this.theta));
-            Complex d = -25.0 * System.Math.PI / (l * l * l) * Complex.Exp(new Complex(0, -4.0 * this.theta));
+            Complex a = Complex.Log(Complex.Exp(new Complex(0, -this.theta)) * x);
+            Complex b = Complex.Log(5.0 * System.Math.PI / l * Complex.Exp(new Complex(0, -2.0 * this.theta)) * x);
+            Complex c = Complex.Log(5.0 / (l * l) * Complex.Exp(new Complex(0, -3.0 * this.theta)) * x);
+            Complex d = Complex.Log(25.0 * System.Math.PI / (l * l * l) * Complex.Exp(new Complex(0, -4.0 * this.theta)) * x);
 
             Complex e = l * l * Complex.Exp(new Complex(0, 2.0 * this.theta));
             Complex f = -5.0 * System.Math.PI * System.Math.PI;
 
-            double x = 2.0 / l * System.Math.Sqrt(2.5 * System.Math.PI);
             Complex y = -2.5 * (System.Math.PI * System.Math.PI) / (l * l) * Complex.Exp(new Complex(0, -2.0 * this.theta));
-            Complex z = -4.0 * y;
-
-            double pi2 = 0.5 * System.Math.PI;
 
             for (int i = 0; i < dim; i++) {
                 int m = i + 1;
@@ -98,21 +93,22 @@ namespace PavelStransky.Systems {
                     int mnp = m + n;
                     int mnm = m - n;
 
-                    Complex alpha = x * Complex.Exp(mnp * mnp * y);
-                    Complex beta = Complex.Exp(m * n * z);
+                    Complex alpha = y * mnm * mnm;
+                    Complex beta = y * mnp * mnp;
 
-                    double cm = System.Math.Cos(pi2 * mnm);
-                    double cp = System.Math.Cos(pi2 * mnp);
+                    int cm = mnm % 2 != 0 ? 0 : (mnm % 4 == 0 ? 1 : -1);
+                    int cp = mnp % 2 != 0 ? 0 : (mnp % 4 == 0 ? 1 : -1);
 
-                    double sm = System.Math.Sin(pi2 * mnm);
-                    double sp = System.Math.Sin(pi2 * mnp);
+                    int sm = mnm % 2 == 0 ? 0 : ((mnm - 1) % 4 == 0 ? 1 : -1);
+                    int sp = mnp % 2 == 0 ? 0 : ((mnp - 1) % 4 == 0 ? 1 : -1);
 
-                    Complex m0 = alpha * a * (beta * cm - cp);
-                    Complex m1 = alpha * b * (beta * mnm * sm - mnp * sp);
-                    Complex m2 = alpha * c * (beta * (e + f * mnm * mnm) * cm - (e + f * mnp) * cp);
-                    Complex m3 = alpha * d * (beta * mnm * (3.0 * e + f * mnm * mnm) * sm - mnp * (3.0 * e + f * mnp * mnp) * sp);
+                    Complex m0 = cm * Complex.Exp(a + alpha) - cp * Complex.Exp(a + beta);
+                    Complex m1 = -(sm * Complex.Exp(b + alpha) * mnm - sp * Complex.Exp(b + beta + System.Math.Log(mnp)));
+                    Complex m2 = cm * Complex.Exp(c + alpha + Complex.Log(e + f * mnm * mnm)) - cp * Complex.Exp(c + beta + Complex.Log(e + f * mnp * mnp));
+                    Complex m3 = -(sm * Complex.Exp(d + alpha + Complex.Log(mnm) + Complex.Log(3.0 * e + f * mnm * mnm)) - sp * Complex.Exp(d + beta + Complex.Log(mnp) + Complex.Log(3.0 * e + f * mnp * mnp)));
 
-                    Complex r = this.a * m0; // + this.b * m1 * this.c * m2 + this.d * m3;
+                    Complex r = this.a * m0 + this.b * m1 + this.c * m2 + this.d * m3;
+
                     if (double.IsNaN(r.Real) || double.IsNaN(r.Imaginary))
                         r = 0;
 
@@ -138,20 +134,16 @@ namespace PavelStransky.Systems {
                             matrix[j, i] = r.Imaginary;
                         }
                     }
-
-                    k++;
                 }
-                if (writer != null) {
-                    if ((i + 1) % step == 0)
-                        writer.Write(".");
-                    if ((i + 1) % (10 * step) == 0) {
-                        writer.Write(100 * k / numElements);
-                        writer.Write("%...");
-                        writer.WriteLine(SpecialFormat.Format(DateTime.Now - timeStart));
-                    }
-                }           
+                if (writer != null && i % step == 0)
+                    writer.Write(".");
             }
+
+            if (writer != null)
+                writer.WriteLine(SpecialFormat.Format(DateTime.Now - timeStart));
         }
+
+
 
         /// <summary>
         /// Peresův invariant

@@ -37,11 +37,11 @@ namespace PavelStransky.Systems {
         protected override void Init(Vector basisParams) {
             base.Init(basisParams);
 
-            this.l = basisParams[0];
-            this.division = (int)basisParams[1];
-            this.hbar = basisParams[2];
-            this.maxN = (int)basisParams[3];
-            this.real = (int)basisParams[4];
+            this.hbar = basisParams[0];
+            this.l = basisParams[1];
+            this.maxN = (int)basisParams[2];
+            this.division = basisParams.Length > 3 ? (int)basisParams[3] : 10000;
+            this.real = basisParams.Length > 4 ? (int)basisParams[4] : 0;
 
             this.n = new int[this.maxN];
             for (int i = 0; i < this.maxN; i++)

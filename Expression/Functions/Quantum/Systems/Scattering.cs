@@ -30,9 +30,9 @@ namespace PavelStransky.Expression.Functions.Def {
             double d = (double)arguments[4];
 
             if((bool)arguments[5])
-                return new ComplexScattering(theta, a, b, c, d);
-            else
                 return new ComplexScatteringExplicit(theta, a, b, c, d);
+            else
+                return new ComplexScattering(theta, a, b, c, d);
         }
 
     }

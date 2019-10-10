@@ -15,6 +15,7 @@ namespace PavelStransky.Systems {
         private int division;
         private int maxN;
         private double hbar;
+        private int real;
 
         private int[] n;
 
@@ -40,11 +41,17 @@ namespace PavelStransky.Systems {
             this.division = (int)basisParams[1];
             this.hbar = basisParams[2];
             this.maxN = (int)basisParams[3];
+            this.real = (int)basisParams[4];
 
             this.n = new int[this.maxN];
             for (int i = 0; i < this.maxN; i++)
                 this.n[i] = i + 1;
         }
+
+        /// <summary>
+        /// True pokud nás zajímá reálná část matice (pro funkci HamiltonianMatrix)
+        /// </summary>
+        public bool Real { get { if (this.real > 0) return true; else return false; } }
 
         /// <summary>
         /// Šířka jámy

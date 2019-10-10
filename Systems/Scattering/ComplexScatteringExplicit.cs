@@ -6,12 +6,12 @@ using System.Numerics;
 using PavelStransky.Core;
 using PavelStransky.DLLWrapper;
 using PavelStransky.Math;
-                     
+
 namespace PavelStransky.Systems {
     /// <summary>
     /// V(x) = (a + b x + c x^2 + d x^3)exp(-r^2/10)
     /// </summary>
-    public class ComplexScattering : IQuantumSystem, IExportable {
+    public class ComplexScatteringExplicit : IQuantumSystem, IExportable {
         // Systém s vlastními hodnotami
         private EigenSystem eigenSystem;
 
@@ -21,7 +21,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Prázdný konstruktor
         /// </summary>
-        protected ComplexScattering() { }
+        protected ComplexScatteringExplicit() { }
 
         /// <summary>
         /// Systém vlastních hodnot
@@ -31,7 +31,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public ComplexScattering(double theta, double a, double b, double c, double d) { 
+        public ComplexScatteringExplicit(double theta, double a, double b, double c, double d) {
             this.eigenSystem = new EigenSystem(this);
             this.theta = theta;
             this.a = a;
@@ -64,20 +64,6 @@ namespace PavelStransky.Systems {
 
             double l = index.L;
             double hbar = index.Hbar;
-            int division = index.Division;
-
-            Vector xCache = new Vector(division);
-            for (int i = 0; i < division; i++)
-                xCache[i] = ((double)i / (division - 1) - 0.5) * l;
-
-            if (writer != null) 
-                writer.WriteLine("Preparing potential cache...");
-            
-            ComplexVector vCache = this.VCache(xCache);
-
-            if (writer != null)
-                writer.WriteLine("Preparing basis cache...");
-            Vector[] sCache = this.SCache(dim, xCache);
 
             DateTime timeStart = DateTime.Now;
             int step = dim / 100;
@@ -85,14 +71,56 @@ namespace PavelStransky.Systems {
 
             int k = 0;
 
+            Complex a = Complex.Exp(new Complex(0, -this.theta));
+            Complex b = -5.0 * System.Math.PI / l * Complex.Exp(new Complex(0, -2.0 * this.theta));
+            Complex c = 5.0 / (l * l) * Complex.Exp(new Complex(0, -3.0 * this.theta));
+            Complex d = -25.0 * System.Math.PI / (l * l * l) * Complex.Exp(new Complex(0, -4.0 * this.theta));
+
+            Complex e = l * l * Complex.Exp(new Complex(0, 2.0 * this.theta));
+            Complex f = -5.0 * System.Math.PI * System.Math.PI;
+
+            double x = 2.0 / l * System.Math.Sqrt(2.5 * System.Math.PI);
+            Complex y = -2.5 * (System.Math.PI * System.Math.PI) / (l * l) * Complex.Exp(new Complex(0, -2.0 * this.theta));
+            Complex z = -4.0 * y;
+
+            double pi2 = 0.5 * System.Math.PI;
+
             for (int i = 0; i < dim; i++) {
-                Complex z = hbar * (i + 1) * System.Math.PI / l;
-                z = 0.5 * z * z * Complex.Exp(new Complex(0, -2.0 * this.theta));
+                int m = i + 1;
+
+                // Kinetic term
+                Complex t = hbar * (i + 1) * System.Math.PI / l;
+                t = 0.5 * t * t * Complex.Exp(new Complex(0, -2.0 * this.theta));
 
                 for (int j = i; j < dim; j++) {
-                    Complex r = this.IntegrateMatrixElement(sCache[i], sCache[j], vCache);
+                    int n = j + 1;
+
+                    int mnp = m + n;
+                    int mnm = m - n;
+
+                    Complex alpha = x * Complex.Exp(mnp * mnp * y);
+                    Complex beta = Complex.Exp(m * n * z);
+
+                    double cm = System.Math.Cos(pi2 * mnm);
+                    double cp = System.Math.Cos(pi2 * mnp);
+
+                    double sm = System.Math.Sin(pi2 * mnm);
+                    double sp = System.Math.Sin(pi2 * mnp);
+
+                    Complex m0 = alpha * a * (beta * cm - cp);
+                    Complex m1 = alpha * b * (beta * mnm * sm - mnp * sp);
+                    Complex m2 = alpha * c * (beta * (e + f * mnm * mnm) * cm - (e + f * mnp) * cp);
+                    Complex m3 = alpha * d * (beta * mnm * (3.0 * e + f * mnm * mnm) * sm - mnp * (3.0 * e + f * mnp * mnp) * sp);
+
+                    Complex r = this.a * m0; // + this.b * m1 * this.c * m2 + this.d * m3;
+                    if (double.IsNaN(r.Real) || double.IsNaN(r.Imaginary))
+                        r = 0;
+
                     if (i == j)
-                        r += z;
+                        r += t;
+
+                    if (double.IsInfinity(r.Real) || double.IsInfinity(r.Imaginary) || double.IsNaN(r.Real) || double.IsNaN(r.Imaginary))
+                        break;
 
                     if (matrix is CMatrix) {
                         matrix[i, 2 * j] = r.Real;
@@ -121,46 +149,8 @@ namespace PavelStransky.Systems {
                         writer.Write("%...");
                         writer.WriteLine(SpecialFormat.Format(DateTime.Now - timeStart));
                     }
-                }
+                }           
             }
-        }
-
-        private Vector [] SCache(int dim, Vector xCache) {
-            Vector[] result = new Vector[dim];
-
-            int length = xCache.Length;
-            double coef1 = System.Math.PI / (length - 1);
-            double coef2 = System.Math.Sqrt(2.0 / length);
-
-            for (int m = 0; m < dim; m++) {
-                Vector v = new Vector(length);
-                for (int i = 0; i < length; i++)
-                    v[i] = coef2 * System.Math.Sin(coef1 * i * (m + 1));
-                result[m] = v;
-            }
-
-            return result;
-        }
-
-        private Complex IntegrateMatrixElement(Vector sCache1, Vector sCache2, ComplexVector vCache) {
-            Complex result = new Complex();
-
-            int length = vCache.Length;
-            for (int i = 0; i < length; i++) 
-                result += sCache1[i] * sCache2[i] * vCache[i];
-            
-            return result;
-        }
-
-        private ComplexVector VCache(Vector xCache) {
-            ComplexVector result = new ComplexVector(xCache.Length);
-            Complex thcexp = Complex.Exp(new Complex(0, this.theta));
-
-            for (int i = 0; i < xCache.Length; i++) {
-                result[i] = this.V(xCache[i] * thcexp);
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -184,7 +174,7 @@ namespace PavelStransky.Systems {
         /// Načte výsledky ze souboru
         /// </summary>
         /// <param name="import">Import</param>
-        public ComplexScattering(Core.Import import) {
+        public ComplexScatteringExplicit(Core.Import import) {
             IEParam param = new IEParam(import);
             this.eigenSystem = (EigenSystem)param.Get();
             this.theta = (double)param.Get(0.0);
@@ -213,4 +203,4 @@ namespace PavelStransky.Systems {
 
         #endregion
     }
-}                      
+}

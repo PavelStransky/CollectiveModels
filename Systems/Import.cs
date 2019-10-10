@@ -194,6 +194,8 @@ namespace PavelStransky.Systems {
                 return new Ising2D(this);
             else if (typeName == typeof(ComplexScattering).FullName)
                 return new ComplexScattering(this);
+            else if (typeName == typeof(ComplexScatteringExplicit).FullName)
+                return new ComplexScatteringExplicit(this);
             else
                 return base.CreateObject(typeName);
         }

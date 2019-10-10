@@ -13,12 +13,13 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpScattering; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(5);
+            this.SetNumParams(6);
             this.SetParam(0, false, true, true, Messages.PTheta, Messages.PThetaDescription, 0.1, typeof(double));
             this.SetParam(1, false, true, true, Messages.PA, Messages.PADescription, -1.0, typeof(double));
             this.SetParam(2, false, true, true, Messages.PB, Messages.PBDescription, 0.0, typeof(double));
             this.SetParam(3, false, true, true, Messages.PC, Messages.PCDescription, 0.5, typeof(double));
             this.SetParam(4, false, true, true, Messages.PD, Messages.PDDescription, 0.0, typeof(double));
+            this.SetParam(5, false, true, true, Messages.PBool, Messages.PBoolDescription, true, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -28,7 +29,10 @@ namespace PavelStransky.Expression.Functions.Def {
             double c = (double)arguments[3];
             double d = (double)arguments[4];
 
-            return new ComplexScattering(theta, a, b, c, d);
+            if((bool)arguments[5])
+                return new ComplexScattering(theta, a, b, c, d);
+            else
+                return new ComplexScatteringExplicit(theta, a, b, c, d);
         }
 
     }

@@ -4269,4 +4269,13 @@ Second differing type: {1}</value>
   <data name="PDDescription" xml:space="preserve">
     <value>Parameter D</value>
   </data>
+  <data name="HelpComplexLevelDensity" xml:space="preserve">
+    <value>Calculates complex level density on a grid</value>
+  </data>
+  <data name="PResonances" xml:space="preserve">
+    <value>res</value>
+  </data>
+  <data name="PResonancesDescription" xml:space="preserve">
+    <value>Resonances</value>
+  </data>
 </root>

@@ -19,7 +19,7 @@ namespace PavelStransky.Expression {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Messages {
@@ -3198,6 +3198,15 @@ namespace PavelStransky.Expression {
         internal static string HelpCombineVectorCH {
             get {
                 return ResourceManager.GetString("HelpCombineVectorCH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculates complex level density on a grid.
+        /// </summary>
+        internal static string HelpComplexLevelDensity {
+            get {
+                return ResourceManager.GetString("HelpComplexLevelDensity", resourceCulture);
             }
         }
         
@@ -11199,6 +11208,24 @@ namespace PavelStransky.Expression {
         internal static string PRelaxationRateDescription {
             get {
                 return ResourceManager.GetString("PRelaxationRateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to res.
+        /// </summary>
+        internal static string PResonances {
+            get {
+                return ResourceManager.GetString("PResonances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resonances.
+        /// </summary>
+        internal static string PResonancesDescription {
+            get {
+                return ResourceManager.GetString("PResonancesDescription", resourceCulture);
             }
         }
         

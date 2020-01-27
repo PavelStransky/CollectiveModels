@@ -15,12 +15,20 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetNumParams(2);
 
             this.SetParam(0, true, true, false, Messages.PDynamicalSystem, Messages.PEnergyDescription, null, typeof(IDynamicalSystem));
-            this.SetParam(1, true, true, false, Messages.PPhaseSpacePosition, Messages.PPhaseSpacePositionDescription, null, typeof(Vector));
+            this.SetParam(1, true, true, false, Messages.PPhaseSpacePosition, Messages.PPhaseSpacePositionDescription, null, typeof(Vector), typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
             IDynamicalSystem dynamicalSystem = arguments[0] as IDynamicalSystem;
-            Vector v = arguments[1] as Vector;
+
+            Vector v = null;
+            if (arguments[1] is Vector)
+                v = arguments[1] as Vector;
+            else if (arguments[1] is double) {
+                v = new Vector(2 * dynamicalSystem.DegreesOfFreedom);
+                v[0] = (double)arguments[1];
+            }
+
             return dynamicalSystem.E(v);
         }
     }

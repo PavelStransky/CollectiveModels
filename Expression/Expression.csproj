@@ -210,6 +210,7 @@
     <Compile Include="Functions\Quantum\Systems\LipkinG.cs" />
     <Compile Include="Functions\Quantum\Systems\Scattering.cs" />
     <Compile Include="Functions\Statistics\RandomMatrixSR.cs" />
+    <Compile Include="Functions\Unsorted\ComplexLevelDensity.cs" />
     <Compile Include="Functions\Unsorted\ReduceSize.cs" />
     <Compile Include="Functions\Matrix\SVD.cs" />
     <Compile Include="Functions\Operators\Modulo.cs" />

@@ -11,7 +11,7 @@ namespace PavelStransky.Systems {
     /// <summary>
     /// V(x) = (a + b x + c x^2 + d x^3)exp(-r^2/10)
     /// </summary>
-    public class ComplexScattering : IQuantumSystem, IExportable {
+    public class ComplexScattering : IQuantumSystem, IExportable, IDynamicalSystem {
         // Systém s vlastními hodnotami
         private EigenSystem eigenSystem;
 
@@ -27,6 +27,8 @@ namespace PavelStransky.Systems {
         /// Systém vlastních hodnot
         /// </summary>
         public EigenSystem EigenSystem { get { return this.eigenSystem; } }
+
+        public int DegreesOfFreedom { get { return 1; } }
 
         /// <summary>
         /// Konstruktor
@@ -209,6 +211,67 @@ namespace PavelStransky.Systems {
             param.Add(this.c, "C");
             param.Add(this.d, "D");
             param.Export(export);
+        }
+
+        public double T(double p) {
+            return 0.5 * p * p;
+        }
+
+        public double V(double x) {
+            return (this.a + x * (this.b + x * (this.c + this.d * x))) * System.Math.Exp(-0.1 * x * x);
+        }
+
+        public double E(Vector x) {
+            return this.T(x[1]) + this.V(x[0]);
+        }
+        
+        public Matrix Jacobian(Vector x) {
+            throw new NotImplementedException();
+        }
+
+        public Vector Equation(Vector x) {
+            Vector result = new Vector(2);
+
+            result[0] = x[1];
+        
+            double q = x[0];
+            double q2 = q * q;
+
+            result[1] = -0.2 * System.Math.Exp(-0.1 * q2) * (this.b * (q2 - 5.0) - q * (this.a + this.d * q * (q2 - 15.0) + this.c * (q2 - 10)));
+
+            return result;
+        }
+
+        public Vector IC(double e) {
+            throw new NotImplementedException();
+        }
+
+        public Vector IC(double e, double l) {
+            throw new NotImplementedException();
+        }
+
+        public bool IC(Vector ic, double e) {
+            throw new NotImplementedException();
+        }
+
+        public Vector Bounds(double e) {
+            throw new NotImplementedException();
+        }
+
+        public Vector CheckBounds(Vector bounds) {
+            throw new NotImplementedException();
+        }
+
+        public double PeresInvariant(Vector x) {
+            throw new NotImplementedException();
+        }
+
+        public bool PostProcess(Vector x) {
+            throw new NotImplementedException();
+        }
+
+        public double[] SALIDecisionPoints() {
+            throw new NotImplementedException();
         }
 
         #endregion

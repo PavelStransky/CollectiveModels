@@ -203,6 +203,10 @@
       <Project>{1C896874-C345-4C0D-BFE6-964A6D6C1F05}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MPIR\mpir.net\build.vc15\mpir.net\mpir.net.vcxproj">
+      <Project>{1e6e20ca-9f97-45a0-b797-c43a9716b95b}</Project>
+      <Name>mpir.net</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages.resx">

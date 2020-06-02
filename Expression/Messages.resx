@@ -4278,4 +4278,16 @@ Second differing type: {1}</value>
   <data name="PResonancesDescription" xml:space="preserve">
     <value>Resonances</value>
   </data>
+  <data name="PXi" xml:space="preserve">
+    <value>xi</value>
+  </data>
+  <data name="PXiDescription" xml:space="preserve">
+    <value>Parameter xi (for the Rabi model)</value>
+  </data>
+  <data name="PM" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="PMDetail" xml:space="preserve">
+    <value>Magnetic quantum number</value>
+  </data>
 </root>

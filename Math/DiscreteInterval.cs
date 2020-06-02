@@ -57,7 +57,10 @@ namespace PavelStransky.Math {
         /// Dopoèítá promìnnou step
         /// </summary>
         private void CalculateStep() {
-            this.step = (this.max - this.min) / (this.num - 1);
+            if (this.max == this.min)
+                this.step = 0;
+            else
+                this.step = (this.max - this.min) / (this.num - 1);
         }
 
         /// <summary>

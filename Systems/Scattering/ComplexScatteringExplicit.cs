@@ -61,7 +61,7 @@ namespace PavelStransky.Systems {
         /// <param name="writer">Writer</param>
         public virtual void HamiltonianMatrix(IMatrix matrix, BasisIndex basisIndex, IOutputWriter writer) {
             ComplexScatteringBasisIndex index = basisIndex as ComplexScatteringBasisIndex;
-
+                                   
             int dim = index.Length;
 
             double l = index.L;

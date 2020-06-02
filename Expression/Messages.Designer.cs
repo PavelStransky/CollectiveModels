@@ -9882,6 +9882,15 @@ namespace PavelStransky.Expression {
         /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
+        internal static string PM {
+            get {
+                return ResourceManager.GetString("PM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
         internal static string PMass {
             get {
                 return ResourceManager.GetString("PMass", resourceCulture);
@@ -10110,6 +10119,15 @@ namespace PavelStransky.Expression {
         internal static string PMaxYDescription {
             get {
                 return ResourceManager.GetString("PMaxYDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Magnetic quantum number.
+        /// </summary>
+        internal static string PMDetail {
+            get {
+                return ResourceManager.GetString("PMDetail", resourceCulture);
             }
         }
         
@@ -12126,6 +12144,24 @@ namespace PavelStransky.Expression {
         internal static string PXDetail {
             get {
                 return ResourceManager.GetString("PXDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xi.
+        /// </summary>
+        internal static string PXi {
+            get {
+                return ResourceManager.GetString("PXi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter xi (for the Rabi model).
+        /// </summary>
+        internal static string PXiDescription {
+            get {
+                return ResourceManager.GetString("PXiDescription", resourceCulture);
             }
         }
         

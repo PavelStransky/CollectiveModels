@@ -219,8 +219,137 @@ namespace PavelStransky.Systems {
             throw new NotImpException(this, "ProbabilityAmplitude");
         }
 
+        /// <summary>
+        /// Vrátí matici <n|V|n> amplitudy vlastní funkce n
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="rx">Rozměry ve směru x</param>
+        /// <param name="ry">Rozměry ve směru y</param>
+        public virtual Matrix[] AmplitudeMatrix(int[] n, IOutputWriter writer, DiscreteInterval intx, DiscreteInterval inty) {
+            int numx = intx.Num;
+            int numy = inty.Num;
+
+            int numn = n.Length;
+
+            // Reálná a imaginární část (proto 2 * numn)
+            Matrix[] result = new Matrix[2 * numn];
+            for (int i = 0; i < 2 * numn; i++) {
+                result[i] = new Matrix(numx, numy);
+            }
+
+            int length = this.eigenSystem.BasisIndex.Length;
+            int length100 = System.Math.Max(length / 100, 1);
+
+            DateTime startTime = DateTime.Now;
+
+            for (int k = 0; k < length; k++) {
+                BasisCache2D cache = new BasisCache2D(intx, inty, k, this.Psi);
+                BasisCache2D cacheR = new BasisCache2D(intx, inty, k, this.PsiR);
+                BasisCache2D cacheI = new BasisCache2D(intx, inty, k, this.PsiI);
+
+                for (int l = 0; l < numn; l++) {
+                    Vector ev = this.eigenSystem.GetEigenVector(n[l]);
+
+                    for (int i = 0; i < numx; i++)
+                        for (int j = 0; j < numy; j++) {
+                            result[l][i, j] += ev[k] * cacheR[i, j] * cache[i, j];
+                            result[l + numn][i, j] += ev[k] * cacheI[i, j] * cache[i, j];
+                        }
+                }
+
+                if (writer != null)
+                    if ((k + 1) % length100 == 0) {
+                        writer.Write('.');
+
+                        if (((k + 1) / length100) % 10 == 0) {
+                            writer.Write((k + 1) / length100);
+                            writer.Write("% ");
+                            writer.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+                            startTime = DateTime.Now;
+                        }
+                    }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vlnová funkce x - HO
+        /// </summary>
+        /// <param name="x">Souřadnice x</param>
+        /// <param name="phi">Souřadnice phi</param>
+        /// <param name="j">Index vlnové funkce</param>
+        private double Psi(double x, double phi, int j) {
+            LipkinFullBasisIndex index = this.eigenSystem.BasisIndex as LipkinFullBasisIndex;
+            int m = System.Math.Abs(index.M[j]);
+            int l = index.L[j];
+
+            double coef = System.Math.Log((2 * l + 1) / (4 * System.Math.PI)) + SpecialFunctions.FactorialILog(l - m) - SpecialFunctions.FactorialILog(l + m);
+
+            double r = SpecialFunctions.Legendre(System.Math.Cos(x), l, m);
+
+            if (r == 0.0)
+                return 0.0;
+
+            double result = 0.5 * coef + System.Math.Log(System.Math.Abs(r));
+            
+            
+            int sign = System.Math.Sign(r);
+            if (index.M[j] < 0 && (m % 2) == 1)
+                sign = -sign;
+            return sign * System.Math.Exp(result);
+        }
+
+        /// <summary>
+        /// Vlnová funkce phi - rotor
+        /// </summary>
+        /// <param name="x">Souřadnice x</param>
+        /// <param name="phi">Souřadnice phi</param>
+        /// <param name="j">Index vlnové funkce</param>
+        private double PsiR(double x, double phi, int j) {
+            LipkinFullBasisIndex index = this.eigenSystem.BasisIndex as LipkinFullBasisIndex;
+            int m = index.M[j];
+            return System.Math.Cos(0.5 * m * phi);
+        }
+
+        /// <summary>
+        /// Vlnová funkce phi - rotor
+        /// </summary>
+        /// <param name="x">Souřadnice x</param>
+        /// <param name="phi">Souřadnice phi</param>
+        /// <param name="j">Index vlnové funkce</param>
+        private double PsiI(double x, double phi, int j) {
+            LipkinFullBasisIndex index = this.eigenSystem.BasisIndex as LipkinFullBasisIndex;
+            int m = index.M[j];
+            return System.Math.Sin(0.5 * m * phi);
+        }
+
+        /// <summary>
+        /// Vrátí matici hustot pro vlastní funkce
+        /// </summary>
+        /// <param name="n">Index vlastní funkce</param>
+        /// <param name="interval">Rozměry v jednotlivých směrech (uspořádané ve tvaru [minx, maxx,] numx, ...)</param>
         public object ProbabilityDensity(int[] n, IOutputWriter writer, params Vector[] interval) {
-            throw new NotImpException(this, "ProbabilityDensity");
+            DiscreteInterval intx = new DiscreteInterval(interval[0]);
+            DiscreteInterval inty = new DiscreteInterval(interval[1]);
+
+            Matrix[] amplitude = this.AmplitudeMatrix(n, writer, intx, inty);
+
+            int numn = amplitude.Length / 2;
+            int numx = amplitude[0].LengthX;
+            int numy = amplitude[0].LengthY;
+
+            Matrix[] result = new Matrix[numn];
+
+            for (int l = 0; l < numn; l++) {
+                result[l] = new Matrix(numx, numy);
+
+                for (int i = 0; i < numx; i++)
+                    for (int j = 0; j < numy; j++)
+                        result[l][i, j] = amplitude[l][i, j] * amplitude[l][i, j] + amplitude[l + numn][i, j] * amplitude[l + numn][i, j];
+            }
+
+            return result;
         }
 
         #region Implementace IExportable

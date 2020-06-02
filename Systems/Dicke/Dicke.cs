@@ -13,7 +13,7 @@ namespace PavelStransky.Systems {
     /// </summary>
     public class Dicke : IExportable {
         // Parameters of the model
-        private double omega0, omega, gamma, j, delta;
+        private double omega0, omega, gamma, j, delta, xi;
 
         /// <summary>
         /// Excitation energy of the atomic part
@@ -66,14 +66,20 @@ namespace PavelStransky.Systems {
         public double Delta { get { return this.delta; } }
 
         /// <summary>
+        /// Introduced to study the Rabi model
+        /// </summary>
+        public double Xi { get { return this.xi; } }
+
+        /// <summary>
         /// Konstruktor
         /// </summary>
-        public Dicke(double omega0, double omega, double gamma, double j, double delta) {
+        public Dicke(double omega0, double omega, double gamma, double j, double delta, double xi) {
             this.omega0 = omega0;
             this.omega = omega;
             this.gamma = gamma;
             this.j = j;
             this.delta = delta;
+            this.xi = xi;
         }
 
         /// <summary>
@@ -94,6 +100,7 @@ namespace PavelStransky.Systems {
             param.Add(this.gamma, "Gamma");
             param.Add(this.j, "J");
             param.Add(this.delta, "Delta");
+            param.Add(this.xi, "Xi");
 
             param.Export(export);
         }
@@ -110,6 +117,7 @@ namespace PavelStransky.Systems {
             this.gamma = (double)param.Get(0.0);
             this.j = (double)param.Get(1.0);
             this.delta = (double)param.Get(0.0);
+            this.xi = (double)param.Get(1.0);
         }
         #endregion
 

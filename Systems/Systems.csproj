@@ -210,6 +210,10 @@
       <Project>{9E5ED9AD-A2C0-44E2-8509-04433994A2B4}</Project>
       <Name>Math</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MPIR\mpir.net\build.vc15\mpir.net\mpir.net.vcxproj">
+      <Project>{1e6e20ca-9f97-45a0-b797-c43a9716b95b}</Project>
+      <Name>mpir.net</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Spin\Ising2D.Polynomial.cs" />

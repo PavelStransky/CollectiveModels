@@ -51,7 +51,19 @@ namespace PavelStransky.Expression.Functions.Def {
                     f.Close();
                 }
             }
-            else if((string)arguments[1] == paramDigits) {
+            else if ((string)arguments[1] == paramJulia) {
+                // Import dat z julie - matice, nevíme, jaké má rozmìry
+                FileStream f = new FileStream(fileName, FileMode.Open);
+                StreamReader t = new StreamReader(f);
+                try {
+                    result = this.ImportJulia(t);
+                }
+                finally {
+                    t.Close();
+                    f.Close();
+                }
+            }
+            else if ((string)arguments[1] == paramDigits) {
                 int digits = (int)arguments[2];
 
                 // Import èíslic - èíslice jsou v textové formì za sebou;
@@ -222,6 +234,7 @@ namespace PavelStransky.Expression.Functions.Def {
                 string[] line = this.DivideLine(t.ReadLine());
 
                 for(int j = 0; j < line.Length; j++)
+                    
                     result[i, j] = double.Parse(line[j]);
             }
             
@@ -246,6 +259,33 @@ namespace PavelStransky.Expression.Functions.Def {
 
                 for(int j = 0; j < its.Length; j++)
                     result[i, j] = double.Parse(its[j]);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Provede import dat z Julie (formát [1 2 3 4 5; 6 7 8 9 ...])
+        /// </summary>
+        /// <param name="t">StreamReader</param>
+        private object ImportJulia(StreamReader t) {
+            string s = t.ReadToEnd().Replace("[", string.Empty).Replace("]", string.Empty).Trim().Replace("\n", ";").Replace("\r", string.Empty);
+            string[] lines = s.Split(';');
+
+            int lengthX = lines.Length;
+            int lengthY = lines[0].Replace('\t', ' ').Trim().Split(' ').Length;
+
+            Matrix result = new Matrix(lengthX, lengthY);
+
+            int i = 0;
+            foreach (string line in lines) {
+                if (line == string.Empty)
+                    continue;
+                string[] items = line.Replace('\t', ' ').Replace(',', ' ').Replace("  ", " ").Trim().Split(' ');
+                int j = 0;
+                foreach (string item in items)
+                    result[i, j++] = double.Parse(item.Trim());
+                i++;
             }
 
             return result;
@@ -420,6 +460,7 @@ namespace PavelStransky.Expression.Functions.Def {
         private const string paramData = "data";
         private const string paramDigits = "digits";
 		private const string paramMatlab = "matlab";
+        private const string paramJulia = "julia";
         private const string paramMatica = "mathmat";
         private const string paramWave = "wav";
         private const string paramKML = "kml";

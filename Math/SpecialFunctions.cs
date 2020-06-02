@@ -447,6 +447,41 @@ namespace PavelStransky.Math {
         }
 
         /// <summary>
+        /// Legendre polynomial (numerical recipes)
+        /// </summary>
+        /// <param name="n">Order of the polynomial</param>
+        /// <param name="m">Associated number</param>
+        /// <param name="x">Value</param>
+        public static double Legendre(double x, int n, int m) {
+            double pmm = 1;
+
+            if (m > 0) {
+                double somx2 = System.Math.Sqrt((1.0 - x) * (1.0 + x));
+                double fact = 1.0;
+                for(int i = 1; i <= m; i++) {
+                    pmm *= -fact * somx2;
+                    fact += 2.0;
+                }
+            }
+
+            if (m == n)
+                return pmm;
+
+            double pmmp1 = x * (2.0 * m + 1) * pmm;
+            if (n == m + 1)
+                return pmmp1;
+                
+            for(int i = m + 2; i <= n; i++) {
+                double p1 = (x * (2 * i - 1) * pmmp1 - (i + m - 1) * pmm) / (i - m);
+
+                pmm = pmmp1;
+                pmmp1 = p1;
+            }
+
+            return pmmp1;
+        }
+
+        /// <summary>
         /// Hermite polynomial (physicists' notation)
         /// </summary>
         /// <param name="n">Order of the polynomial</param>

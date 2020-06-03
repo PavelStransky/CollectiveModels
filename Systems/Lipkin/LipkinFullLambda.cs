@@ -295,7 +295,7 @@ namespace PavelStransky.Systems {
             
             
             int sign = System.Math.Sign(r);
-            if (index.M[j] < 0 && (m % 2) == 1)
+            if (index.M[j] < 0 && (m % 4) > 0)
                 sign = -sign;
             return sign * System.Math.Exp(result);
         }
@@ -339,17 +339,24 @@ namespace PavelStransky.Systems {
             int numx = amplitude[0].LengthX;
             int numy = amplitude[0].LengthY;
 
-            Matrix[] result = new Matrix[numn];
+            Matrix[] m = new Matrix[numn];
+            Vector[] v = new Vector[numn];
 
             for (int l = 0; l < numn; l++) {
-                result[l] = new Matrix(numx, numy);
+                m[l] = new Matrix(numx, numy);
+                v[l] = new Vector(numx);
 
-                for (int i = 0; i < numx; i++)
-                    for (int j = 0; j < numy; j++)
-                        result[l][i, j] = amplitude[l][i, j] * amplitude[l][i, j] + amplitude[l + numn][i, j] * amplitude[l + numn][i, j];
+                for (int i = 0; i < numx; i++) {
+                    Complex x = 0;
+                    for (int j = 0; j < numy; j++) {
+                        m[l][i, j] = amplitude[l][i, j] * amplitude[l][i, j] + amplitude[l + numn][i, j] * amplitude[l + numn][i, j];
+                        x += new Complex(amplitude[l][i, j], amplitude[l + numn][i, j]);
+                    }
+                    v[l][i] = x.Magnitude;
+                }
             }
 
-            return result;
+            return m;
         }
 
         #region Implementace IExportable

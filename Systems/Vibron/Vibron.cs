@@ -17,6 +17,9 @@ namespace PavelStransky.Systems
         // parametry alpha, beta
         private double alpha, beta;
 
+        // Typ modelu (4 pro U(4), 3 pro U(3))
+        private int type;
+
         /// <summary>
         /// Systém vlastních hodnot
         /// </summary>
@@ -30,9 +33,10 @@ namespace PavelStransky.Systems
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public Vibron(double alpha, double beta) {
+        public Vibron(double alpha, double beta, int type) {
             this.alpha = alpha;
             this.beta = beta;
+            this.type = type;
             this.eigenSystem = new EigenSystem(this);
         }
 
@@ -62,11 +66,18 @@ namespace PavelStransky.Systems
             for (int i = 0; i < dim; i++) {
                 int np = index.Np[i];
 
-                matrix[i, i] = a * np  + b * (n * (2 * np + 3) - 2 * np * (np + 1) + l * (l + 1));
+                matrix[i, i] = a * np;
+                if (this.type == 4)
+                    matrix[i, i] += b * (n * (2 * np + 3) - 2 * np * (np + 1) + l * (l + 1));
+                else if (this.type == 3)
+                    matrix[i, i] += b * ((n - np) * (np + 2) + (n - np + 1) * np + l * l);
 
                 // +1
                 if (i + 1 < dim) {
-                    matrix[i + 1, i] = b * System.Math.Sqrt((n - np - 1) * (n - np) * (np - l + 2) * (np + l + 3));
+                    if (this.type == 4)
+                        matrix[i + 1, i] = b * System.Math.Sqrt((n - np - 1) * (n - np) * (np - l + 2) * (np + l + 3));
+                    else if (this.type == 3)
+                        matrix[i + 1, i] = b * System.Math.Sqrt((n - np - 1) * (n - np) * (np - l + 2) * (np + l + 2));
                 }
             }
         }
@@ -97,6 +108,7 @@ namespace PavelStransky.Systems
             param.Add(this.eigenSystem, "EigenSystem");
             param.Add(this.alpha, "Alpha");
             param.Add(this.beta, "Beta");
+            param.Add(this.type, "Type");
             param.Export(export);
         }
 
@@ -109,6 +121,7 @@ namespace PavelStransky.Systems
             this.eigenSystem = (EigenSystem)param.Get();
             this.alpha = (double)param.Get(1.0);
             this.beta = (double)param.Get(0.0);
+            this.type = (int)param.Get(4);
         }
 
         #endregion

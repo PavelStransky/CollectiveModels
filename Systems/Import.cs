@@ -70,6 +70,8 @@ namespace PavelStransky.Systems {
                 return new DickeBasisIndex(this);
             else if (typeName == typeof(ComplexScatteringBasisIndex).FullName)
                 return new ComplexScatteringBasisIndex(this);
+            else if (typeName == typeof(VibronBasisIndex).FullName)
+                return new VibronBasisIndex(this);
 
             else if (typeName == typeof(ClassicalGCM).FullName || typeName == "PavelStransky.GCM.ClassicalGCM")
                 return new ClassicalGCM(this);
@@ -196,6 +198,8 @@ namespace PavelStransky.Systems {
                 return new ComplexScattering(this);
             else if (typeName == typeof(ComplexScatteringExplicit).FullName)
                 return new ComplexScatteringExplicit(this);
+            else if (typeName == typeof(Vibron).FullName)
+                return new Vibron(this);
             else
                 return base.CreateObject(typeName);
         }

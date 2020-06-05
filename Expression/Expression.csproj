@@ -209,6 +209,7 @@
     <Compile Include="Functions\Matrix\GetNonDiagonal.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinG.cs" />
     <Compile Include="Functions\Quantum\Systems\Scattering.cs" />
+    <Compile Include="Functions\Quantum\Systems\Vibron.cs" />
     <Compile Include="Functions\Statistics\RandomMatrixSR.cs" />
     <Compile Include="Functions\Unsorted\ComplexLevelDensity.cs" />
     <Compile Include="Functions\Unsorted\ReduceSize.cs" />

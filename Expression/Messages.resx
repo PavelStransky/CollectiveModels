@@ -4290,4 +4290,7 @@ Second differing type: {1}</value>
   <data name="PMDetail" xml:space="preserve">
     <value>Magnetic quantum number</value>
   </data>
+  <data name="HelpVibron" xml:space="preserve">
+    <value>Creates the quantum Vibron class</value>
+  </data>
 </root>

@@ -189,6 +189,8 @@
     <Compile Include="Traffic\Street.cs" />
     <Compile Include="Traffic\Traffic.cs" />
     <Compile Include="Traffic\TrafficItem.cs" />
+    <Compile Include="Vibron\Vibron.cs" />
+    <Compile Include="Vibron\VibronBasisIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Messages.resx">

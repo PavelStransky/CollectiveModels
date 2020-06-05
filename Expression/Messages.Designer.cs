@@ -6415,6 +6415,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates the quantum Vibron class.
+        /// </summary>
+        internal static string HelpVibron {
+            get {
+                return ResourceManager.GetString("HelpVibron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to cal_{V} matrix (PRL 98, 234301 (2007), expression (27)).
         /// </summary>
         internal static string HelpVMatrix {

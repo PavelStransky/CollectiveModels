@@ -210,9 +210,80 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Peresův invariant
         /// </summary>
-        /// <param name="type">Typ (0 - H0, 1 - L1, 3 - L1^2)</param>
+        /// <param name="type">Typ (0 - H0, 1 - L1, 2 - L2, 3 - l3)</param>
         public Vector PeresInvariant(int type) {
-            throw new NotImpException(this, "PeresInvariant");
+            LipkinFullBasisIndex index = this.eigenSystem.BasisIndex as LipkinFullBasisIndex;
+
+            int count = this.eigenSystem.NumEV;
+            Vector result = new Vector(count);
+
+            switch (type) {
+                case 0: {
+                        Vector e = this.eigenSystem.GetEigenValues() as Vector;
+                        for (int i = 0; i < count; i++) {
+                            Vector ev = this.eigenSystem.GetEigenVector(i);
+                            int length = ev.Length;
+
+                            result[i] = e[i] - 0.5 * index.N;
+
+                            for (int j = 0; j < length; j++)
+                                result[i] -= 0.5 * ev[j] * ev[j] * index.M[j];
+                        }
+                        break;
+                    }
+                case 1: {
+                        for (int i = 0; i < count; i++) {
+                            Vector ev = this.eigenSystem.GetEigenVector(i);
+                            int length = ev.Length;
+
+                            for (int j = 0; j < length; j++) {
+                                if (j > 0)
+                                    result[i] += 0.5 * ev[j] * ev[j - 1] * this.ShiftPlus(index.L[j], index.M[j] - 2);
+                                if (j < length - 1)
+                                    result[i] += 0.5 * ev[j] * ev[j + 1] * this.ShiftMinus(index.L[j], index.M[j] + 2);
+                            }
+                        }
+                        break;
+                    }
+                case 2: {
+                        for (int i = 0; i < count; i++) {
+                            Vector ev = this.eigenSystem.GetEigenVector(i);
+                            int length = ev.Length;
+
+                            for (int j = 0; j < length; j++) {
+                                if (j > 0)
+                                    result[i] += 0.5 * ev[j] * ev[j - 1] * this.ShiftPlus(index.L[j], index.M[j] - 2);
+                                if (j < length - 1)
+                                    result[i] -= 0.5 * ev[j] * ev[j + 1] * this.ShiftMinus(index.L[j], index.M[j] + 2);
+                            }
+                        }
+                        break;
+                    }
+                case 3: {
+                        for (int i = 0; i < count; i++) {
+                            Vector ev = this.eigenSystem.GetEigenVector(i);
+                            int length = ev.Length;
+
+                            for (int j = 0; j < length; j++)
+                                result[i] += 0.5 * ev[j] * ev[j] * index.M[j];
+
+                        }
+                        break;
+                    }
+                case 4: {
+                        for (int i = 0; i < count; i++) {
+                            Vector ev = this.eigenSystem.GetEigenVector(i);
+                            int length = ev.Length;
+
+                            for (int j = 0; j < length; j++)
+                                result[i] += 0.25 * ev[j] * ev[j] * index.M[j] * index.M[j];
+
+                        }
+                        break;
+                    }
+            }
+
+            return result;
         }
 
         public double ProbabilityAmplitude(int n, IOutputWriter writer, params double[] x) {

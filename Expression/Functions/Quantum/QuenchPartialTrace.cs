@@ -70,6 +70,8 @@ namespace PavelStransky.Expression.Functions.Def
                 for (int k = 0; k < lengthi; k++)
                     u[l] += b[k] * dl[k];
             }
+            if (guider != null)
+                guider.Write(string.Format("U={0:0.000}...", u.EuklideanNorm()));
 
             // Calculation optimalization
             int mini = 0;
@@ -108,11 +110,7 @@ namespace PavelStransky.Expression.Functions.Def
 
             int dimj = index.J + 1;
 
-            Vector[,] r = new Vector[dimj, dimj];               // Real part only (the imaginary part is identically 0
-
-            for (int i = 0; i < dimj; i++)
-                for (int j = 0; j < dimj; j++) 
-                    r[i, j] = new Vector(tLength);               
+            Matrix result = new Matrix(dimj);
 
             for (int l = mini; l < maxi; l++)
                 for (int lp = mini; lp < maxi; lp++) {
@@ -127,16 +125,12 @@ namespace PavelStransky.Expression.Functions.Def
                             int i2 = (index.M[mp] + index.J) / 2;
 
                             double d = u[l] * u[lp] * dl[m] * dlp[mp];
-
-                            for (int i = 0; i < tLength; i++) 
-                                r[i1, i2] += d * System.Math.Cos(de * time[i]);
+                            result[i1, i2] += d;
                         }
                 }
-        
-            List result = new List();
-            for (int i = 0; i < dimj; i++)
-                for (int j = 0; j < dimj; j++)
-                    result.Add(r[i, j]);
+
+            if (guider != null)
+                guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
 
             return result;
         }

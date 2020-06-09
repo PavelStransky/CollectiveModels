@@ -207,7 +207,9 @@
     <Compile Include="Functions\Matrix\EigenSystemSymmetric.cs" />
     <Compile Include="Functions\Matrix\FillMatrix.cs" />
     <Compile Include="Functions\Matrix\GetNonDiagonal.cs" />
+    <Compile Include="Functions\Quantum\QuenchPartialTrace.cs" />
     <Compile Include="Functions\Quantum\Systems\LipkinG.cs" />
+    <Compile Include="Functions\Quantum\QuenchPeres.cs" />
     <Compile Include="Functions\Quantum\Systems\Scattering.cs" />
     <Compile Include="Functions\Quantum\Systems\Vibron.cs" />
     <Compile Include="Functions\Statistics\RandomMatrixSR.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 
+using PavelStransky.Core;
 using PavelStransky.Math;
 using PavelStransky.Expression;
 using PavelStransky.Systems;
@@ -36,6 +37,8 @@ namespace PavelStransky.Expression.Functions.Def {
                 guider.Write(string.Format("L=({0},{1}) ", lengthi, lengthf));
 
             int length = System.Math.Min(lengthi, lengthf);
+
+            DateTime startTime = DateTime.Now;
 
             Vector initial = null;
             if(arguments[2] is Vector) {
@@ -92,7 +95,6 @@ namespace PavelStransky.Expression.Functions.Def {
                 }
             }
 
-
             if(guider != null)
                 guider.Write(string.Format("D={0:0.000}({1}-{2}) ", d.Sum(), mini, maxi));
 
@@ -109,17 +111,22 @@ namespace PavelStransky.Expression.Functions.Def {
             int l = 0;
             PointVector ac = new PointVector((maxi - mini + 1) * (maxi - mini) / 2);
 
-            for(int j = mini; j <= maxi; j++) {
-                if(guider != null && j % mi == 0)
-                    guider.Write(".");
-                for(int k = j + 1; k <= maxi; k++) {
-                    double dx = d[j] * d[k];
-                    double de = es[k] - es[j];
-                    ac[l++] = new PointD(de, dx);
-                    for(int i = 0; i < tLength; i++)
-                        r[i] += 2.0 * dx * System.Math.Cos(de * time[i]);
+            if (tLength > 0) {
+                for (int j = mini; j <= maxi; j++) {
+                    if (guider != null && j % mi == 0)
+                        guider.Write(".");
+                    for (int k = j + 1; k <= maxi; k++) {
+                        double dx = d[j] * d[k];
+                        double de = es[k] - es[j];
+                        ac[l++] = new PointD(de, dx);
+                        for (int i = 0; i < tLength; i++)
+                            r[i] += 2.0 * dx * System.Math.Cos(de * time[i]);
+                    }
                 }
             }
+
+            if (guider != null)
+                guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
 
             List result = new List();
             result.Add(r);

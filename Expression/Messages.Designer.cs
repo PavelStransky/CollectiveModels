@@ -5425,6 +5425,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns spin partial trace after a quench.
+        /// </summary>
+        internal static string HelpQuenchPartialTrace {
+            get {
+                return ResourceManager.GetString("HelpQuenchPartialTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the mean value of a Peres operator after a quench.
+        /// </summary>
+        internal static string HelpQuenchPeres {
+            get {
+                return ResourceManager.GetString("HelpQuenchPeres", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value with Brody distribution.
         /// </summary>
         internal static string HelpRandomBrody {

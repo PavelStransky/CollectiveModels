@@ -80,7 +80,7 @@ namespace PavelStransky.Expression.Functions.Def
             if (type == 0)
                 peres = new Vector(index.N);
             else
-                peres = new Vector(index.M);
+                peres = 0.5 * (new Vector(index.M));
 
             // Calculation optimalization
             int mini = 0;

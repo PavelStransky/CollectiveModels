@@ -327,7 +327,7 @@ namespace PavelStransky.Systems {
         /// <remarks>
         /// Pozor, počítá pro l dvojnásobné (abychom zvládli i poločíselné spiny)
         /// </remarks>
-        protected double ShiftPlus(int l, int m) {
+        public double ShiftPlus(int l, int m) {
             if(m > l || m < -l)
                 return 0;
             return 0.5 * System.Math.Sqrt((l - m) * (l + m + 2));
@@ -336,7 +336,7 @@ namespace PavelStransky.Systems {
         /// <remarks>
         /// Pozor, počítá pro l dvojnásobné (abychom zvládli i poločíselné spiny)
         /// </remarks>
-        protected double ShiftMinus(int l, int m) {
+        public double ShiftMinus(int l, int m) {
             if(m > l || m < -l)
                 return 0;
             return 0.5 * System.Math.Sqrt((l + m) * (l - m + 2));

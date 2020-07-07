@@ -18,8 +18,8 @@ namespace PavelStransky.Expression.Functions.Def
         protected override void CreateParameters() {
             this.SetNumParams(6);
 
-            this.SetParam(0, true, true, false, Messages.PInitialSystem, Messages.PInitialSystemDescription, null, typeof(IQuantumSystem));
-            this.SetParam(1, true, true, false, Messages.PFinalSystem, Messages.PFinalSystemDescription, null, typeof(IQuantumSystem));
+            this.SetParam(0, true, true, false, Messages.PInitialSystem, Messages.PInitialSystemDescription, null, typeof(QuantumDicke));
+            this.SetParam(1, true, true, false, Messages.PFinalSystem, Messages.PFinalSystemDescription, null, typeof(QuantumDicke));
             this.SetParam(2, true, true, false, Messages.PInitialState, Messages.PInitialStateDescription, 0, typeof(int), typeof(Vector));
             this.SetParam(3, true, true, false, Messages.PTime, Messages.PTimeDescription, null, typeof(Vector));
             this.SetParam(4, true, true, false, Messages.PPeresOperatorType, Messages.PPeresOperatorTypeDescription, null, typeof(int));
@@ -27,8 +27,8 @@ namespace PavelStransky.Expression.Functions.Def
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
-            IQuantumSystem qi = arguments[0] as IQuantumSystem;
-            IQuantumSystem qf = arguments[1] as IQuantumSystem;
+            QuantumDicke qi = arguments[0] as QuantumDicke;
+            QuantumDicke qf = arguments[1] as QuantumDicke;
 
             int lengthi = qi.EigenSystem.GetEigenVector(0).Length;
             int numEVi = qi.EigenSystem.NumEV;
@@ -77,55 +77,134 @@ namespace PavelStransky.Expression.Functions.Def
             DickeBasisIndex index = qf.EigenSystem.BasisIndex as DickeBasisIndex;
 
             Vector peres = null;
-            if (type == 0)
-                peres = new Vector(index.N);
-            else
-                peres = 0.5 * (new Vector(index.M));
-
-            // Calculation optimalization
-            int mini = 0;
-            int maxi = -1;
-            double precision = (double)arguments[5] / System.Math.Sqrt(System.Math.Abs(peres.MaxAbs()));
-            for(int l = 0; l < numEVf; l++) {
-                if (System.Math.Abs(u[l]) < precision) {
-                    if (maxi < 0)
-                        mini = l;
-                }
-                else
-                    maxi = l;                
-            }
-
             Vector r = new Vector(tLength);
             double mean = 0.0;
-            for (int l = mini; l <= maxi; l++) {
-                Vector dl = qf.EigenSystem.GetEigenVector(l);
-                double v = 0.0;
-                for (int m = 0; m < lengthf; m++)
-                    v += dl[m] * dl[m] * peres[m];
-                mean += u[l] * u[l] * v;
-            }
-            if (guider != null)
-                guider.Write(string.Format("Mean={0:0.000}...", mean));
 
-            r += mean;
+            // Diagonal operators
+            if (type <= 1) {     // N
+                if (type == 0)
+                    peres = new Vector(index.N);
+                else            // Jz
+                    peres = 0.5 * (new Vector(index.M));
 
-            if (tLength > 0) {
+                // Calculation optimalization
+                int mini = 0;
+                int maxi = -1;
+                double precision = (double)arguments[5] / System.Math.Sqrt(System.Math.Abs(peres.MaxAbs()));
+                for (int l = 0; l < numEVf; l++) {
+                    if (System.Math.Abs(u[l]) < precision) {
+                        if (maxi < 0)
+                            mini = l;
+                    }
+                    else
+                        maxi = l;
+                }
+
                 for (int l = mini; l <= maxi; l++) {
                     Vector dl = qf.EigenSystem.GetEigenVector(l);
-                    for (int lp = System.Math.Max(mini, l + 1); lp <= maxi; lp++) {
-                        Vector dlp = qf.EigenSystem.GetEigenVector(lp);
-                        double v = 0;
-                        for (int m = 0; m < lengthf; m++) {
-                            v += dl[m] * dlp[m] * peres[m];
-                        }
-                        v *= 2.0 * u[l] * u[lp];
+                    double v = 0.0;
+                    for (int m = 0; m < lengthf; m++)
+                        v += dl[m] * dl[m] * peres[m];
+                    mean += u[l] * u[l] * v;
+                }
+                if (guider != null)
+                    guider.Write(string.Format("Mean={0:0.000}...", mean));
 
-                        double de = ef[l] - ef[lp];
-                        for (int i = 0; i < tLength; i++)
-                            r[i] += v * System.Math.Cos(de * time[i]);
+                r += mean;
+
+                if (tLength > 0) {
+                    for (int l = mini; l <= maxi; l++) {
+                        Vector dl = qf.EigenSystem.GetEigenVector(l);
+                        for (int lp = System.Math.Max(mini, l + 1); lp <= maxi; lp++) {
+                            Vector dlp = qf.EigenSystem.GetEigenVector(lp);
+                            double v = 0;
+                            for (int m = 0; m < lengthf; m++) {
+                                v += dl[m] * dlp[m] * peres[m];
+                            }
+                            v *= 2.0 * u[l] * u[lp];
+
+                            double de = ef[l] - ef[lp];
+                            for (int i = 0; i < tLength; i++)
+                                r[i] += v * System.Math.Cos(de * time[i]);
+                        }
                     }
                 }
             }
+            // Nondiagonal operator O = J_{+-}
+            else {
+                // Calculation optimalization
+                int mini = 0;
+                int maxi = -1;
+                double precision = (double)arguments[5] / System.Math.Sqrt(qf.ShiftPlus(index.J, 0));
+                for (int l = 0; l < numEVf; l++) {
+                    if (System.Math.Abs(u[l]) < precision) {
+                        if (maxi < 0)
+                            mini = l;
+                    }
+                    else
+                        maxi = l;
+                }
+
+                for (int l = mini; l <= maxi; l++) {
+                    Vector dl = qf.EigenSystem.GetEigenVector(l);
+                    double vp = 0.0;
+                    double vm = 0.0;
+
+                    for (int m = 0; m < lengthf; m++) {
+                        if (index.M[m] < index.J)
+                            vp += dl[m + 1] * dl[m] * qf.ShiftPlus(index.J, index.M[m]);
+                        if (index.M[m] > -index.J)
+                            vm += dl[m - 1] * dl[m] * qf.ShiftMinus(index.J, index.M[m]);
+                    }
+
+                    if (type == 2)               // Jx
+                        mean += u[l] * u[l] * (vp + vm);
+                    else
+                        mean += u[l] * u[l] * (vp - vm);
+
+                }
+                if (guider != null)
+                    guider.Write(string.Format("Mean={0:0.000}...", mean));
+
+                r += mean;
+
+                if (tLength > 0) {
+                    for (int l = mini; l <= maxi; l++) {
+                        Vector dl = qf.EigenSystem.GetEigenVector(l);
+                        for (int lp = System.Math.Max(mini, l + 1); lp <= maxi; lp++) {
+                            Vector dlp = qf.EigenSystem.GetEigenVector(lp);
+
+                            double vp = 0.0;
+                            double vm = 0.0;
+
+                            for (int m = 0; m < lengthf; m++) {
+                                if (index.M[m] < index.J)
+                                    vp += dl[m + 1] * dlp[m] * qf.ShiftPlus(index.J, index.M[m]);
+                                if (index.M[m] > -index.J)
+                                    vm += dl[m - 1] * dlp[m] * qf.ShiftMinus(index.J, index.M[m]);
+                            }
+
+                            vp *= 2.0 * u[l] * u[lp];
+                            vm *= 2.0 * u[l] * u[lp];
+
+                            double de = ef[l] - ef[lp];
+
+                            if (type == 2) {        // Jx
+                                for (int i = 0; i < tLength; i++)
+                                    r[i] += (vp + vm) * System.Math.Cos(de * time[i]);
+                            }
+                            else {                  // Jy
+                                for (int i = 0; i < tLength; i++)
+                                    r[i] += (vp - vm) * System.Math.Sin(de * time[i]);
+                            }
+                        }
+                    }
+                }
+
+                r *= 0.5;
+                mean *= 5;
+            }
+
 
             if (guider != null)
                 guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));

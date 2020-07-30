@@ -130,8 +130,9 @@ namespace PavelStransky.Expression.Functions.Def
                     }
                 }
             }
-            // Nondiagonal operator O = J_{+-}
-            else {
+
+            // Nondiagonal operator O = J_{+-} for Jx, Jy
+            else if(type <= 3) {
                 // Calculation optimalization
                 int mini = 0;
                 int maxi = -1;
@@ -202,9 +203,97 @@ namespace PavelStransky.Expression.Functions.Def
                 }
 
                 r *= 0.5;
-                mean *= 5;
+                mean *= 0.5;
             }
 
+            // Nondiagonal operator O = J_{+-}^{2} for Jx^{2}, Jy^{2}
+            else {
+                // Calculation optimalization
+                int mini = 0;
+                int maxi = -1;
+                double precision = (double)arguments[5] / qf.ShiftPlus(index.J, 0);
+                for (int l = 0; l < numEVf; l++) {
+                    if (System.Math.Abs(u[l]) < precision) {
+                        if (maxi < 0)
+                            mini = l;
+                    }
+                    else
+                        maxi = l;
+                }
+
+                for (int l = mini; l <= maxi; l++) {
+                    Vector dl = qf.EigenSystem.GetEigenVector(l);
+                    double vpp = 0.0;
+                    double vpm = 0.0;
+                    double vmp = 0.0;
+                    double vmm = 0.0;
+
+                    for (int m = 0; m < lengthf; m++) {
+                        if (index.M[m] < index.J - 2)
+                            vpp += dl[m + 2] * dl[m] * qf.ShiftPlus(index.J, index.M[m]) * qf.ShiftPlus(index.J, index.M[m + 1]);
+                        if (index.M[m] > -index.J + 2)
+                            vmm += dl[m - 2] * dl[m] * qf.ShiftMinus(index.J, index.M[m]) * qf.ShiftMinus(index.J, index.M[m - 1]);
+                        if (index.M[m] < index.J)
+                            vpm += dl[m] * dl[m] * qf.ShiftPlus(index.J, index.M[m]) * qf.ShiftMinus(index.J, index.M[m + 1]);
+                        if (index.M[m] > -index.J)
+                            vmp += dl[m] * dl[m] * qf.ShiftMinus(index.J, index.M[m]) * qf.ShiftPlus(index.J, index.M[m - 1]);
+                    }
+
+                    if (type == 4)               // Jx^2
+                        mean += u[l] * u[l] * (vpp + vmm + vpm + vmp);
+                    else
+                        mean -= u[l] * u[l] * (vpp + vmm - vpm - vmp);
+
+                }
+                if (guider != null)
+                    guider.Write(string.Format("Mean={0:0.000}...", mean));
+
+                r += mean;
+
+                if (tLength > 0) {
+                    for (int l = mini; l <= maxi; l++) {
+                        Vector dl = qf.EigenSystem.GetEigenVector(l);
+                        for (int lp = System.Math.Max(mini, l + 1); lp <= maxi; lp++) {
+                            Vector dlp = qf.EigenSystem.GetEigenVector(lp);
+
+                            double vpp = 0.0;
+                            double vpm = 0.0;
+                            double vmp = 0.0;
+                            double vmm = 0.0;
+
+                            for (int m = 0; m < lengthf; m++) {
+                                if (index.M[m] < index.J - 2)
+                                    vpp += dl[m + 2] * dlp[m] * qf.ShiftPlus(index.J, index.M[m]) * qf.ShiftPlus(index.J, index.M[m + 1]);
+                                if (index.M[m] > -index.J + 2)
+                                    vmm += dl[m - 2] * dlp[m] * qf.ShiftMinus(index.J, index.M[m]) * qf.ShiftMinus(index.J, index.M[m - 1]);
+                                if (index.M[m] < index.J)
+                                    vpm += dl[m] * dlp[m] * qf.ShiftPlus(index.J, index.M[m]) * qf.ShiftMinus(index.J, index.M[m + 1]);
+                                if (index.M[m] > -index.J)
+                                    vmp += dl[m] * dlp[m] * qf.ShiftMinus(index.J, index.M[m]) * qf.ShiftPlus(index.J, index.M[m - 1]);
+                            }
+
+                            vpp *= 2.0 * u[l] * u[lp];
+                            vmm *= 2.0 * u[l] * u[lp];
+                            vpm *= 2.0 * u[l] * u[lp];
+                            vmp *= 2.0 * u[l] * u[lp];
+
+                            double de = ef[l] - ef[lp];
+
+                            if (type == 4) {        // Jx^2
+                                for (int i = 0; i < tLength; i++)
+                                    r[i] += (vpp + vmm) * System.Math.Cos(de * time[i]);
+                            }
+                            else {                  // Jy^2
+                                for (int i = 0; i < tLength; i++)
+                                    r[i] -= (vpp + vmm) * System.Math.Sin(de * time[i]);
+                            }
+                        }
+                    }
+                }
+
+                r *= 0.25;
+                mean *= 0.25;
+            }
 
             if (guider != null)
                 guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));

@@ -108,9 +108,15 @@ namespace PavelStransky.Expression.Functions.Def
 
             DickeBasisIndex index = qf.EigenSystem.BasisIndex as DickeBasisIndex;
 
-            int dimj = index.J + 1;
+            int dimj = (index.J + 1);
 
-            Matrix result = new Matrix(dimj);
+            Vector[] resultR = new Vector[dimj * dimj];
+            Vector[] resultI = new Vector[dimj * dimj];
+
+            for (int i = 0; i < dimj * dimj; i++) {
+                resultR[i] = new Vector(tLength);
+                resultI[i] = new Vector(tLength);
+            }
 
             for (int l = mini; l < maxi; l++)
                 for (int lp = mini; lp < maxi; lp++) {
@@ -121,16 +127,29 @@ namespace PavelStransky.Expression.Functions.Def
 
                     for (int m = minif[l]; m < maxif[l]; m++)
                         for (int mp = minif[lp]; mp < maxif[lp]; mp++) {
-                            int i1 = (index.M[m] + index.J) / 2;
-                            int i2 = (index.M[mp] + index.J) / 2;
+                            if (index.N[m] == index.N[mp]) {
+                                int i1 = (index.M[m] + index.J) / 2;
+                                int i2 = (index.M[mp] + index.J) / 2;
 
-                            double d = u[l] * u[lp] * dl[m] * dlp[mp];
-                            result[i1, i2] += d;
+                                double d = u[l] * u[lp] * dl[m] * dlp[mp];
+
+                                for (int ti = 0; ti < tLength; ti++) {
+                                    resultR[i1 + i2 * dimj] += d * System.Math.Cos(de * time[ti]);
+                                    resultI[i1 + i2 * dimj] += d * System.Math.Sin(de * time[ti]);
+                                }
+                            }
                         }
                 }
 
+
             if (guider != null)
                 guider.WriteLine(SpecialFormat.Format(DateTime.Now - startTime));
+
+            List result = new List();
+            for (int i = 0; i < dimj * dimj; i++) {
+                result.Add(resultR[i]);
+                result.Add(resultI[i]);
+            }
 
             return result;
         }

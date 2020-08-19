@@ -100,6 +100,7 @@ namespace PavelStransky.Expression.Functions.Def
                         maxi = l;
                 }
 
+                // Diagonal part (mean value)
                 for (int l = mini; l <= maxi; l++) {
                     Vector dl = qf.EigenSystem.GetEigenVector(l);
                     double v = 0.0;
@@ -152,9 +153,9 @@ namespace PavelStransky.Expression.Functions.Def
                     double vm = 0.0;
 
                     for (int m = 0; m < lengthf; m++) {
-                        if (index.M[m] < index.J)
+                        if (index.M[m] < index.J && index.N[m + 1] == index.N[m])
                             vp += dl[m + 1] * dl[m] * qf.ShiftPlus(index.J, index.M[m]);
-                        if (index.M[m] > -index.J)
+                        if (index.M[m] > -index.J && index.N[m - 1] == index.N[m])
                             vm += dl[m - 1] * dl[m] * qf.ShiftMinus(index.J, index.M[m]);
                     }
 

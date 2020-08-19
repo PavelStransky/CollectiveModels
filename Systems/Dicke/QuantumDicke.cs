@@ -18,8 +18,8 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public QuantumDicke(double omega0, double omega, double gamma, double j, double delta, double xi, int type)
-            : base(omega0, omega, gamma, j, delta, xi) {
+        public QuantumDicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa, int type)
+            : base(omega0, omega, gamma, j, delta, xi, kappa) {
             this.type = type;
             this.eigenSystem = new EigenSystem(this);
         }
@@ -282,6 +282,9 @@ namespace PavelStransky.Systems {
                 int i3 = index[n + 1, m + 2];
                 int i4 = index[n - 1, m - 2];
 
+                int i5 = index[n + 1, m];
+                int i6 = index[n - 1, m];
+
                 matrix[i, i] = this.Omega * n + this.Omega0 * m / 2.0;
 
                 if(i1 >= 0)
@@ -292,6 +295,10 @@ namespace PavelStransky.Systems {
                     matrix[i3, i] = gamman * this.Delta * this.ShiftPlus(j, m) * System.Math.Sqrt(n + 1);
                 if(i4 >= 0)
                     matrix[i4, i] = gamman * this.Delta * this.ShiftMinus(j, m) * System.Math.Sqrt(n);
+                if (i5 >= 0)
+                    matrix[i5, i] = gamman * this.Kappa * 0.5 * m * System.Math.Sqrt(n + 1);
+                if (i6 >= 0)
+                    matrix[i6, i] = gamman * this.Kappa * 0.5 * m * System.Math.Sqrt(n);
 
                 /*
         // Výběrové pravidlo

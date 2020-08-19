@@ -13,7 +13,7 @@ namespace PavelStransky.Systems {
     /// </summary>
     public class Dicke : IExportable {
         // Parameters of the model
-        private double omega0, omega, gamma, j, delta, xi;
+        private double omega0, omega, gamma, j, delta, xi, kappa;
 
         /// <summary>
         /// Excitation energy of the atomic part
@@ -29,6 +29,11 @@ namespace PavelStransky.Systems {
         /// Coupling constant (interaction parameter)
         /// </summary>
         public double Gamma { get { return this.gamma; } }
+
+        /// <summary>
+        /// Additional parameter
+        /// </summary>
+        public double Kappa { get { return this.kappa; } }
 
         /// <summary>
         /// Critical value of the coupling constant
@@ -73,13 +78,14 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public Dicke(double omega0, double omega, double gamma, double j, double delta, double xi) {
+        public Dicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa) {
             this.omega0 = omega0;
             this.omega = omega;
             this.gamma = gamma;
             this.j = j;
             this.delta = delta;
             this.xi = xi;
+            this.kappa = kappa;
         }
 
         /// <summary>
@@ -101,6 +107,7 @@ namespace PavelStransky.Systems {
             param.Add(this.j, "J");
             param.Add(this.delta, "Delta");
             param.Add(this.xi, "Xi");
+            param.Add(this.kappa, "Kappa");
 
             param.Export(export);
         }
@@ -118,6 +125,7 @@ namespace PavelStransky.Systems {
             this.j = (double)param.Get(1.0);
             this.delta = (double)param.Get(0.0);
             this.xi = (double)param.Get(1.0);
+            this.kappa = (double)param.Get(0.0);
         }
         #endregion
 

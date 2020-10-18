@@ -86,6 +86,11 @@ namespace PavelStransky.Systems {
         }
 
         /// <summary>
+        /// Typ báze (0 ... všechny stavy, 1 ... sudé stavy, 2 ... liché stavy)
+        /// </summary>
+        public int Type { get { return this.type; } }
+
+        /// <summary>
         /// Vrací index prvku s kvantovými čísly m, n.
         /// Pokud prvek neexistuje, vrací -1
         /// </summary>

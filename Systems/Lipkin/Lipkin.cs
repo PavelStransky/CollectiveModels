@@ -15,6 +15,9 @@ namespace PavelStransky.Systems {
         protected double alpha, omega;
         protected double alphaIm, omegaIm;
 
+        // Dissipation parameter [ESQPT review 2020, Kopylov & Brandes, New J. Phys. 17, 103031 (2015)]
+        protected double kappa;
+
         /// <summary>
         /// Systém vlastních hodnot
         /// </summary>
@@ -33,12 +36,15 @@ namespace PavelStransky.Systems {
             this.omega = omega;
         }
 
-        public Lipkin(double alpha, double omega, double alphaIm, double omegaIm)
+        public Lipkin(double alpha, double omega, double alphaIm, double omegaIm, double kappa)
             : this(alpha, omega) {
             this.alphaIm = alphaIm;
             this.omegaIm = omegaIm;
+            this.kappa = kappa;
         }
 
+        public Lipkin(double alpha, double omega, double alphaIm, double omegaIm)
+            : this(alpha, omega, alphaIm, omegaIm, 0.0) { }
 
         #region Implementace IExportable
         /// <summary>
@@ -59,6 +65,7 @@ namespace PavelStransky.Systems {
             param.Add(this.alphaIm, "AlphaIm");
             param.Add(this.omegaIm, "OmegaIm");
             this.Export(param);
+            param.Add(this.kappa, "Kappa");
 
             param.Export(export);
         }
@@ -76,6 +83,8 @@ namespace PavelStransky.Systems {
             this.omegaIm = (double)param.Get(0.0);
 
             this.Import(param);
+
+            param.Add(this.kappa, "Kappa");
         }
 
         #endregion

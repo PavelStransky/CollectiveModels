@@ -19,7 +19,7 @@ namespace PavelStransky.Systems {
         /// <param name="j">Total angular momentum</param>
         /// <param name="delta">Constant distinguishing between Tavis-Cummings (Delta=0) and Dicke (Delta=1) models</param>
         /// <param name="xi">Constant for the Rabi model (for Dicke and TC xi = 1)</param>
-        public ClassicalDickeC(double omega0, double omega, double gamma, double j, double delta, double xi) : base(omega0, omega, gamma, j, delta, xi) { }
+        public ClassicalDickeC(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa) : base(omega0, omega, gamma, j, delta, xi, kappa) { }
 
         public ClassicalDickeC(Core.Import import) : base(import) { }
 

@@ -179,11 +179,13 @@ namespace PavelStransky.Expression.Functions.Def
                             double vp = 0.0;
                             double vm = 0.0;
 
-                            for (int m = 0; m < lengthf; m++) {
-                                if (index.M[m] < index.J)
-                                    vp += dl[m + 1] * dlp[m] * qf.ShiftPlus(index.J, index.M[m]);
-                                if (index.M[m] > -index.J)
-                                    vm += dl[m - 1] * dlp[m] * qf.ShiftMinus(index.J, index.M[m]);
+                            if (index.Type == 0) {
+                                for (int m = 0; m < lengthf; m++) {
+                                    if (index.M[m] < index.J)
+                                        vp += dl[m + 1] * dlp[m] * qf.ShiftPlus(index.J, index.M[m]);
+                                    if (index.M[m] > -index.J)
+                                        vm += dl[m - 1] * dlp[m] * qf.ShiftMinus(index.J, index.M[m]);
+                                }
                             }
 
                             vp *= 2.0 * u[l] * u[lp];

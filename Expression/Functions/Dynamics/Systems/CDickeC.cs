@@ -28,7 +28,7 @@ namespace PavelStransky.Expression.Functions.Def {
             double j = (double)arguments[3];
             double delta = (double)arguments[4];
 
-            return new ClassicalDickeC(omega0, omega, gamma, j, delta, 1.0);
+            return new ClassicalDickeC(omega0, omega, gamma, j, delta, 1.0, 0.0);
         }
     }
 }

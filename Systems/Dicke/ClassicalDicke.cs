@@ -18,7 +18,7 @@ namespace PavelStransky.Systems {
         /// <param name="gamma">Coupling constant (interaction parameter)</param>
         /// <param name="j">Total angular momentum</param>
         /// <param name="delta">Constant distinguishing between Tavis-Cummings (Delta=0) and Dicke (Delta=1) models</param>
-        public ClassicalDicke(double omega0, double omega, double gamma, double j, double delta, double xi) : base(omega0, omega, gamma, j, delta, xi) { }
+        public ClassicalDicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa) : base(omega0, omega, gamma, j, delta, xi, kappa) { }
 
         public ClassicalDicke(Core.Import import) : base(import) {}
 

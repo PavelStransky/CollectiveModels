@@ -9718,6 +9718,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to kappa.
+        /// </summary>
+        internal static string PKappa {
+            get {
+                return ResourceManager.GetString("PKappa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter kappa.
+        /// </summary>
+        internal static string PKappaDescription {
+            get {
+                return ResourceManager.GetString("PKappaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to K (mass) parameter of GCM.
         /// </summary>
         internal static string PKDescription {

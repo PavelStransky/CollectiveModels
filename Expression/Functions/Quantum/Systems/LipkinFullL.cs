@@ -13,12 +13,13 @@ namespace PavelStransky.Expression.Functions.Def {
         public override string Help { get { return Messages.HelpLipkinFullL; } }
 
         protected override void CreateParameters() {
-            this.SetNumParams(5);
+            this.SetNumParams(6);
             this.SetParam(0, false, true, true, Messages.PAlpha, Messages.PAlphaDescription, 0.0, typeof(double));
             this.SetParam(1, false, true, true, Messages.POmega, Messages.POmegaDescription, 0.0, typeof(double));
             this.SetParam(2, false, true, true, Messages.PAlpha, Messages.PAlphaDescription, 0.0, typeof(double));
             this.SetParam(3, false, true, true, Messages.POmega, Messages.POmegaDescription, 0.0, typeof(double));
-            this.SetParam(4, false, true, false, Messages.PIsLinear, Messages.PIsLinearDescription, false, typeof(bool));
+            this.SetParam(4, false, true, true, Messages.PKappa, Messages.PKappaDescription, 0.0, typeof(double));
+            this.SetParam(5, false, true, false, Messages.PIsLinear, Messages.PIsLinearDescription, false, typeof(bool));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -28,9 +29,11 @@ namespace PavelStransky.Expression.Functions.Def {
             double alphaIm = (double)arguments[2];
             double omegaIm = (double)arguments[3];
 
-            bool isLinear = (bool)arguments[4];
+            double kappa = (double)arguments[4];
 
-            return new LipkinFullLambda(alpha, omega, alphaIm, omegaIm, isLinear);
+            bool isLinear = (bool)arguments[5];
+
+            return new LipkinFullLambda(alpha, omega, alphaIm, omegaIm, kappa, isLinear);
         }
     }
 }

@@ -28,8 +28,8 @@ namespace PavelStransky.Systems {
             this.eigenSystem = new EigenSystem(this);
         }
 
-        public LipkinFullLambda(double alpha, double omega, double alphaIm, double omegaIm, bool isLinear)
-            : base(alpha, omega, alphaIm, omegaIm) {
+        public LipkinFullLambda(double alpha, double omega, double alphaIm, double omegaIm, double kappa, bool isLinear)
+            : base(alpha, omega, alphaIm, omegaIm, kappa) {
             this.isLinear = isLinear;
             this.eigenSystem = new EigenSystem(this);
         }
@@ -58,6 +58,9 @@ namespace PavelStransky.Systems {
                 Complex o = new Complex(this.omega, this.omegaIm);
                 Complex h = this.isLinear ? Complex.Zero : k * o * o;
                 Complex g = k * o;
+
+                double kappaN = this.kappa / (2 * n);
+
                 for(int i = 0; i < dim; i++) {
                     int l = index.L[i];
                     int m = index.M[i];
@@ -76,7 +79,7 @@ namespace PavelStransky.Systems {
                     // +1
                     if(i + 1 < dim && l == index.L[i + 1]) {
                         matrix[i, 2 * i] += k.Real * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
-                        matrix[i, 2 * i + 1] += k.Imaginary * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
+                        matrix[i, 2 * i + 1] += (k.Imaginary - kappaN) * this.ShiftPlus(l, m) * this.ShiftMinus(l, m + 2);
                         matrix[i + 1, 2 * i] = g.Real * this.ShiftPlus(l, m) * (n + m + 1);
                         matrix[i + 1, 2 * i + 1] = g.Imaginary * this.ShiftPlus(l, m) * (n + m + 1);
                     }

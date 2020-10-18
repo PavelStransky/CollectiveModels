@@ -4299,4 +4299,10 @@ Second differing type: {1}</value>
   <data name="HelpQuenchPeres" xml:space="preserve">
     <value>Returns the mean value of a Peres operator after a quench</value>
   </data>
+  <data name="PKappa" xml:space="preserve">
+    <value>kappa</value>
+  </data>
+  <data name="PKappaDescription" xml:space="preserve">
+    <value>Parameter kappa</value>
+  </data>
 </root>

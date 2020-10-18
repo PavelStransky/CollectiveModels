@@ -296,9 +296,9 @@ namespace PavelStransky.Systems {
                 if(i4 >= 0)
                     matrix[i4, i] = gamman * this.Delta * this.ShiftMinus(j, m) * System.Math.Sqrt(n);
                 if (i5 >= 0)
-                    matrix[i5, i] = gamman * this.Kappa * 0.5 * m * System.Math.Sqrt(n + 1);
+                    matrix[i5, i] = this.Kappa / System.Math.Sqrt(j) * (m + j) * System.Math.Sqrt(n + 1);
                 if (i6 >= 0)
-                    matrix[i6, i] = gamman * this.Kappa * 0.5 * m * System.Math.Sqrt(n);
+                    matrix[i6, i] = this.Kappa / System.Math.Sqrt(j) * (m + j) * System.Math.Sqrt(n);
 
                 /*
         // Výběrové pravidlo

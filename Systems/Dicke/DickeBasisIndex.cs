@@ -38,8 +38,8 @@ namespace PavelStransky.Systems {
             base.Init(basisParams);
 
             this.maxN = (int)basisParams[0];
-            this.j = (int)System.Math.Round(2 * basisParams[1]);
-            this.type = basisParams.Length > 2 ? (int)basisParams[2] : 0;
+            this.j = (int)System.Math.Round(2 * basisParams[2]);
+            this.type = basisParams.Length > 2 ? (int)basisParams[1] : 0;
 
             this.length = 0;
 

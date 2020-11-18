@@ -13,7 +13,7 @@ namespace PavelStransky.Systems {
     /// </summary>
     public class Dicke : IExportable {
         // Parameters of the model
-        private double omega0, omega, gamma, j, delta, xi, kappa;
+        private double omega0, omega, gamma, j, delta, xi, kappa, mu;
 
         /// <summary>
         /// Excitation energy of the atomic part
@@ -31,9 +31,16 @@ namespace PavelStransky.Systems {
         public double Gamma { get { return this.gamma; } }
 
         /// <summary>
-        /// Additional parameter
+        /// Additional parameter (b+ + b) Jz
         /// </summary>
         public double Kappa { get { return this.kappa; } }
+
+        /// <summary>
+        /// Additional parameter (b+ + b) j
+        /// </summary>
+        public double Mu { get { return this.mu; } }
+
+
 
         /// <summary>
         /// Critical value of the coupling constant
@@ -78,7 +85,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public Dicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa) {
+        public Dicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa, double mu) {
             this.omega0 = omega0;
             this.omega = omega;
             this.gamma = gamma;
@@ -86,6 +93,7 @@ namespace PavelStransky.Systems {
             this.delta = delta;
             this.xi = xi;
             this.kappa = kappa;
+            this.mu = mu;
         }
 
         /// <summary>
@@ -108,6 +116,7 @@ namespace PavelStransky.Systems {
             param.Add(this.delta, "Delta");
             param.Add(this.xi, "Xi");
             param.Add(this.kappa, "Kappa");
+            param.Add(this.mu, "Mu");
 
             param.Export(export);
         }
@@ -126,6 +135,7 @@ namespace PavelStransky.Systems {
             this.delta = (double)param.Get(0.0);
             this.xi = (double)param.Get(1.0);
             this.kappa = (double)param.Get(0.0);
+            this.mu = (double)param.Get(this.kappa);
         }
         #endregion
 

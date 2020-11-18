@@ -21,7 +21,7 @@ namespace PavelStransky.Expression.Functions.Def {
             this.SetParam(4, false, true, true, Messages.PDelta, Messages.PDeltaDescription, 1.0, typeof(double));
             this.SetParam(5, false, true, true, Messages.PXi, Messages.PXiDescription, 1.0, typeof(double));
             this.SetParam(6, false, true, true, Messages.PKappa, Messages.PKappaDescription, 0.0, typeof(double));
-            this.SetParam(7, false, true, false, Messages.PParam, Messages.PParamDescription, 0, typeof(int));
+            this.SetParam(7, false, true, true, Messages.PMu, Messages.PMuDescription, 0.0, typeof(double));
         }
 
         protected override object EvaluateFn(Guider guider, ArrayList arguments) {
@@ -32,9 +32,9 @@ namespace PavelStransky.Expression.Functions.Def {
             double delta = (double)arguments[4];
             double xi = (double)arguments[5];
             double kappa = (double)arguments[6];
-            int type = (int)arguments[7];
+            double mu = (double)arguments[7];
 
-            return new QuantumDicke(omega0, omega, gamma, j, delta, xi, kappa, type);
+            return new QuantumDicke(omega0, omega, gamma, j, delta, xi, kappa, mu);
         }
     }
 }

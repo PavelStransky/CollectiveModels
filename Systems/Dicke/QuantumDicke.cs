@@ -9,7 +9,6 @@ using PavelStransky.DLLWrapper;
 
 namespace PavelStransky.Systems {
     public class QuantumDicke : Dicke, IQuantumSystem, IEntanglement {
-        private int type;
         private Matrix qmn = null;
         private Matrix pmn = null;
         private Matrix qmn2 = null;
@@ -18,9 +17,8 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public QuantumDicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa, int type)
-            : base(omega0, omega, gamma, j, delta, xi, kappa) {
-            this.type = type;
+        public QuantumDicke(double omega0, double omega, double gamma, double j, double delta, double xi, double kappa, double mu)
+            : base(omega0, omega, gamma, j, delta, xi, kappa, mu) {
             this.eigenSystem = new EigenSystem(this);
         }
 
@@ -249,8 +247,7 @@ namespace PavelStransky.Systems {
         /// <param name="basisParams">Parametry báze</param>
         public BasisIndex CreateBasisIndex(Vector basisParams) {
             basisParams.Length = 3;
-            basisParams[1] = this.J;
-            basisParams[2] = this.type;
+            basisParams[2] = this.J;
             return new DickeBasisIndex(basisParams);
         }
 
@@ -296,9 +293,9 @@ namespace PavelStransky.Systems {
                 if(i4 >= 0)
                     matrix[i4, i] = gamman * this.Delta * this.ShiftMinus(j, m) * System.Math.Sqrt(n);
                 if (i5 >= 0)
-                    matrix[i5, i] = this.Kappa / System.Math.Sqrt(j) * (m + j) * System.Math.Sqrt(n + 1);
+                    matrix[i5, i] = 1.0 / System.Math.Sqrt(j) * (this.Kappa * m + this.Mu * j) * System.Math.Sqrt(n + 1);
                 if (i6 >= 0)
-                    matrix[i6, i] = this.Kappa / System.Math.Sqrt(j) * (m + j) * System.Math.Sqrt(n);
+                    matrix[i6, i] = 1.0 / System.Math.Sqrt(j) * (this.Kappa * m + this.Mu * j) * System.Math.Sqrt(n);
 
                 /*
         // Výběrové pravidlo
@@ -642,7 +639,7 @@ namespace PavelStransky.Systems {
 
             IEParam param = new IEParam();
             param.Add(this.eigenSystem, "EigenSystem");
-            param.Add(this.type, "Type");
+            param.Add(0, "Type");
             param.Export(export);
         }
 
@@ -654,7 +651,7 @@ namespace PavelStransky.Systems {
             : base(import) {
             IEParam param = new IEParam(import);
             this.eigenSystem = (EigenSystem)param.Get();
-            this.type = (int)param.Get(0);
+            param.Get(0);
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
         #endregion

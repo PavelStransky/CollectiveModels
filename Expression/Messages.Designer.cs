@@ -4651,6 +4651,15 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Makes a psychadelic animation of the Lipkin model.
+        /// </summary>
+        internal static string HelpLipkinAnimation {
+            get {
+                return ResourceManager.GetString("HelpLipkinAnimation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a Lipkin model class diagonalized in the full SU(2) basis.
         /// </summary>
         internal static string HelpLipkinF {
@@ -8611,6 +8620,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to e.
+        /// </summary>
+        internal static string PE {
+            get {
+                return ResourceManager.GetString("PE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter E.
+        /// </summary>
+        internal static string PEDescription {
+            get {
+                return ResourceManager.GetString("PEDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ei.
         /// </summary>
         internal static string PEigenValueIndex {
@@ -11487,6 +11514,24 @@ namespace PavelStransky.Expression {
         internal static string PSignalDescription {
             get {
                 return ResourceManager.GetString("PSignalDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to size.
+        /// </summary>
+        internal static string PSize {
+            get {
+                return ResourceManager.GetString("PSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size of the system.
+        /// </summary>
+        internal static string PSizeDescription {
+            get {
+                return ResourceManager.GetString("PSizeDescription", resourceCulture);
             }
         }
         

@@ -9,13 +9,13 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
     /// <summary>
-    /// V(x) = (a + b x + c x^2 + d x^3)exp(-r^2/10)
+    /// V(x) = (a + b x + c x^2 + d x^3 + e x^4)exp(-r^2/10)
     /// </summary>
     public class ComplexScatteringExplicit : IQuantumSystem, IExportable, IDynamicalSystem {
         // Systém s vlastními hodnotami
         private EigenSystem eigenSystem;
 
-        private double a, b, c, d;     // Parametry potenciálu
+        private double a, b, c, d, e;  // Parametry potenciálu
         private double theta;          // Komplexní škálování
 
         /// <summary>
@@ -33,13 +33,14 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public ComplexScatteringExplicit(double theta, double a, double b, double c, double d) {
+        public ComplexScatteringExplicit(double theta, double a, double b, double c, double d, double e) {
             this.eigenSystem = new EigenSystem(this);
             this.theta = theta;
             this.a = a;
             this.b = b;
             this.c = c;
             this.d = d;
+            this.e = e;
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace PavelStransky.Systems {
         }
 
         public Complex V(Complex r) {
-            return (this.a + r * (this.b + r * (this.c + r * this.d))) * Complex.Exp(-0.1 * r * r);
+            return (this.a + r * (this.b + r * (this.c + r * (this.d + r * this.e)))) * Complex.Exp(-0.1 * r * r);
         }
 
         /// <summary>
@@ -80,9 +81,10 @@ namespace PavelStransky.Systems {
             Complex b = -System.Math.PI / z * Complex.Exp(new Complex(0, -2.0 * this.theta)) * x;
             Complex c = 1.0 / (z * z) * Complex.Exp(new Complex(0, -3.0 * this.theta)) * x;
             Complex d = -System.Math.PI / (z * z * z) * Complex.Exp(new Complex(0, -4.0 * this.theta)) * x;
+            Complex e = 1 / (z * z * z * z) * Complex.Exp(new Complex(0, -5.0 * this.theta)) * x;
 
-            Complex e = 2 * eta * l * l * Complex.Exp(new Complex(0, 2.0 * this.theta));
-            Complex f = -System.Math.PI * System.Math.PI;
+            Complex f = 2 * eta * l * l * Complex.Exp(new Complex(0, 2.0 * this.theta));
+            Complex g = System.Math.PI * System.Math.PI;
 
             Complex y = -(System.Math.PI * System.Math.PI) / (4 * eta * l * l) * Complex.Exp(new Complex(0, -2.0 * this.theta));
 
@@ -108,12 +110,16 @@ namespace PavelStransky.Systems {
                     int sm = mnm % 2 == 0 ? 0 : ((mnm - 1) % 4 == 0 ? 1 : -1);
                     int sp = mnp % 2 == 0 ? 0 : ((mnp - 1) % 4 == 0 ? 1 : -1);
 
+                    Complex gm = g * mnm * mnm;
+                    Complex gp = g * mnp * mnp;
+
                     Complex m0 = cm * alpha - cp * beta;
                     Complex m1 = -(sm * alpha * mnm - sp * beta * mnp);
-                    Complex m2 = cm * alpha * (e + f * mnm * mnm) - cp * beta * (e + f * mnp * mnp);
-                    Complex m3 = -(sm * alpha * mnm * (3.0 * e + f * mnm * mnm) - sp * beta * mnp * (3.0 * e + f * mnp * mnp));
+                    Complex m2 = cm * alpha * (f - gm) - cp * beta * (f - gp);
+                    Complex m3 = -(sm * alpha * mnm * (3.0 * f - gm) - sp * beta * mnp * (3.0 * f - gp));
+                    Complex m4 = cm * alpha * (3.0 * f * f - 6 * f * gm + gm * gm) - cp * beta * (3.0 * f * f - 6 * f * gp + gp * gp);                                                   
 
-                    Complex r = this.a * a * m0 + this.b * b * m1 + this.c * c * m2 + this.d * d * m3;
+                    Complex r = this.a * a * m0 + this.b * b * m1 + this.c * c * m2 + this.d * d * m3 + this.e * e * m4;
 
                     if (double.IsNaN(r.Real) || double.IsNaN(r.Imaginary))
                         r = 0;
@@ -180,6 +186,7 @@ namespace PavelStransky.Systems {
             this.b = (double)param.Get(0.0);
             this.c = (double)param.Get(0.5);
             this.d = (double)param.Get(0.0);
+            this.e = (double)param.Get(0.0);
 
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
@@ -196,6 +203,7 @@ namespace PavelStransky.Systems {
             param.Add(this.b, "B");
             param.Add(this.c, "C");
             param.Add(this.d, "D");
+            param.Add(this.e, "E");
             param.Export(export);
         }
 
@@ -204,7 +212,7 @@ namespace PavelStransky.Systems {
         }
 
         public double V(double x) {
-            return (this.a + x * (this.b + x * (this.c + this.d * x))) * System.Math.Exp(-0.1 * x * x);
+            return (this.a + x * (this.b + x * (this.c + x * (this.d + x * this.e)))) * System.Math.Exp(-0.1 * x * x);
         }
 
         public double E(Vector x) {

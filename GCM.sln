@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Systems", "Systems\Systems.csproj", "{A516A842-63B3-4D31-885B-454E858A7368}"
 EndProject
@@ -186,36 +186,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA3EB877-6DD9-482B-BAFD-1A9A54BBC472}
-	EndGlobalSection
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 7
-		SccProjectUniqueName0 = Systems\\Systems.csproj
-		SccProjectName0 = \u0022$/CollectiveModels/Systems\u0022,\u0020NLCAAAAA
-		SccLocalPath0 = Systems
-		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
-		SccProjectUniqueName1 = Expression\\Expression.csproj
-		SccProjectName1 = \u0022$/CollectiveModels/Expression\u0022,\u0020OBAAAAAA
-		SccLocalPath1 = Expression
-		SccProvider1 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
-		SccProjectUniqueName2 = DLLWrapper\\DLLWrapper.csproj
-		SccProjectName2 = \u0022$/CollectiveModels/DLLWrapper\u0022,\u0020WJBAAAAA
-		SccLocalPath2 = DLLWrapper
-		SccProvider2 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
-		SccProjectUniqueName3 = Core\\Core.csproj
-		SccProjectName3 = \u0022$/CollectiveModels/Core\u0022,\u0020WXBAAAAA
-		SccLocalPath3 = Core
-		SccProvider3 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
-		SccProjectUniqueName4 = Forms\\Forms.csproj
-		SccProjectName4 = \u0022$/CollectiveModels/Forms\u0022,\u0020BCAAAAAA
-		SccLocalPath4 = Forms
-		SccProvider4 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
-		SccProjectUniqueName5 = Math\\Math.csproj
-		SccProjectName5 = \u0022$/CollectiveModels/Math\u0022,\u0020SAAAAAAA
-		SccLocalPath5 = Math
-		SccProvider5 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
-		SccProjectUniqueName6 = Test\\Test.csproj
-		SccProjectName6 = \u0022$/CollectiveModels/Test\u0022,\u0020YAAAAAAA
-		SccLocalPath6 = Test
-		SccProvider6 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
 	EndGlobalSection
 EndGlobal

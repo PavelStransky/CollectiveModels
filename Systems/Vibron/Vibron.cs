@@ -61,7 +61,7 @@ namespace PavelStransky.Systems
             int l = index.L;
 
             double a = this.alpha / n;
-            double b = this.beta / (n * n);
+            double b = this.beta / (n * (n + this.type - 2));
 
             for (int i = 0; i < dim; i++) {
                 int np = index.Np[i];

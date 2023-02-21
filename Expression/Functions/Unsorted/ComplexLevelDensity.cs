@@ -97,7 +97,7 @@ namespace PavelStransky.Expression.Functions.Def
                 double dg = p.Y - resonances[i].Y;
                 double denominator = de * de + dg * dg;
                 result.X += dg / denominator;
-                result.Y += de / denominator;
+                result.Y -= de / denominator;
             }
             result.X *= 1.0 / System.Math.PI;
             result.Y *= 1.0 / System.Math.PI;

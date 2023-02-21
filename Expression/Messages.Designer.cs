@@ -8800,6 +8800,24 @@ namespace PavelStransky.Expression {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to eta.
+        /// </summary>
+        internal static string PEta {
+            get {
+                return ResourceManager.GetString("PEta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter eta.
+        /// </summary>
+        internal static string PEtaDescription {
+            get {
+                return ResourceManager.GetString("PEtaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to evectors.
         /// </summary>
         internal static string PEVectors {

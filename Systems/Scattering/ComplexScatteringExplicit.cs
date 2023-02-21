@@ -9,13 +9,14 @@ using PavelStransky.Math;
 
 namespace PavelStransky.Systems {
     /// <summary>
-    /// V(x) = (a + b x + c x^2 + d x^3 + e x^4)exp(-r^2/10)
+    /// V(x) = (a + b x + c x^2 + d x^3 + e x^4)exp(-eta r^2)
     /// </summary>
     public class ComplexScatteringExplicit : IQuantumSystem, IExportable, IDynamicalSystem {
         // Systém s vlastními hodnotami
         private EigenSystem eigenSystem;
 
         private double a, b, c, d, e;  // Parametry potenciálu
+        private double eta;            // Parametr v Gaussovce
         private double theta;          // Komplexní škálování
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace PavelStransky.Systems {
         /// <summary>
         /// Konstruktor
         /// </summary>
-        public ComplexScatteringExplicit(double theta, double a, double b, double c, double d, double e) {
+        public ComplexScatteringExplicit(double theta, double a, double b, double c, double d, double e, double eta) {
             this.eigenSystem = new EigenSystem(this);
             this.theta = theta;
             this.a = a;
@@ -41,6 +42,7 @@ namespace PavelStransky.Systems {
             this.c = c;
             this.d = d;
             this.e = e;
+            this.eta = eta;
         }
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace PavelStransky.Systems {
         }
 
         public Complex V(Complex r) {
-            return (this.a + r * (this.b + r * (this.c + r * (this.d + r * this.e)))) * Complex.Exp(-0.1 * r * r);
+            return (this.a + r * (this.b + r * (this.c + r * (this.d + r * this.e)))) * Complex.Exp(-this.eta * r * r);
         }
 
         /// <summary>
@@ -68,14 +70,12 @@ namespace PavelStransky.Systems {
             double l = index.L;
             double hbar = index.Hbar;
 
-            double eta = 0.1;
-
             DateTime timeStart = DateTime.Now;
             int step = dim / 20;
 
-            double x = 2.0 / l * System.Math.Sqrt(0.25 * System.Math.PI / eta);
+            double x = 2.0 / l * System.Math.Sqrt(0.25 * System.Math.PI / this.eta);
 
-            Complex z = 2 * eta * l;
+            Complex z = 2 * this.eta * l;
 
             Complex a = Complex.Exp(new Complex(0, -this.theta)) * x;
             Complex b = -System.Math.PI / z * Complex.Exp(new Complex(0, -2.0 * this.theta)) * x;
@@ -83,10 +83,10 @@ namespace PavelStransky.Systems {
             Complex d = -System.Math.PI / (z * z * z) * Complex.Exp(new Complex(0, -4.0 * this.theta)) * x;
             Complex e = 1 / (z * z * z * z) * Complex.Exp(new Complex(0, -5.0 * this.theta)) * x;
 
-            Complex f = 2 * eta * l * l * Complex.Exp(new Complex(0, 2.0 * this.theta));
+            Complex f = 2 * this.eta * l * l * Complex.Exp(new Complex(0, 2.0 * this.theta));
             Complex g = System.Math.PI * System.Math.PI;
 
-            Complex y = -(System.Math.PI * System.Math.PI) / (4 * eta * l * l) * Complex.Exp(new Complex(0, -2.0 * this.theta));
+            Complex y = -(System.Math.PI * System.Math.PI) / (4 * this.eta * l * l) * Complex.Exp(new Complex(0, -2.0 * this.theta));
 
             for (int i = 0; i < dim; i++) {
                 int m = i + 1;
@@ -187,6 +187,7 @@ namespace PavelStransky.Systems {
             this.c = (double)param.Get(0.5);
             this.d = (double)param.Get(0.0);
             this.e = (double)param.Get(0.0);
+            this.eta = (double)param.Get(0.1);
 
             this.eigenSystem.SetParrentQuantumSystem(this);
         }
@@ -204,6 +205,7 @@ namespace PavelStransky.Systems {
             param.Add(this.c, "C");
             param.Add(this.d, "D");
             param.Add(this.e, "E");
+            param.Add(this.eta, "Eta");
             param.Export(export);
         }
 
@@ -212,7 +214,7 @@ namespace PavelStransky.Systems {
         }
 
         public double V(double x) {
-            return (this.a + x * (this.b + x * (this.c + x * (this.d + x * this.e)))) * System.Math.Exp(-0.1 * x * x);
+            return (this.a + x * (this.b + x * (this.c + x * (this.d + x * this.e)))) * System.Math.Exp(-this.eta * x * x);
         }
 
         public double E(Vector x) {
